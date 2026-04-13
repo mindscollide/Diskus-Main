@@ -13,11 +13,16 @@ import ReopenOrOnHoldDetailsModal from "../ReopenOrOnHoldDetailsModal";
 import ArrowBack from "../../../../assets/images/arrow-left-compliance.png";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { useDispatch } from "react-redux";
-import { clearAuthorityMessage } from "../../../../store/actions/ComplainSettingActions";
+import {
+  clearAuthorityMessage,
+  ViewComplianceDetailsByViewTypeAPI,
+} from "../../../../store/actions/ComplainSettingActions";
+import { useNavigate } from "react-router-dom";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState({
     open: false,
@@ -25,11 +30,11 @@ const ViewCompliance = () => {
     severity: "error",
   });
   const complainceRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
 
   const complainceSeverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
   // const [isViewDetailsBtnActive, setIsViewDetailsBtnActive] = useState(true);
 
@@ -47,15 +52,19 @@ const ViewCompliance = () => {
     isViewDetailsOpen,
     setIsViewDetailsOpen,
     setShowViewCompliance,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
     emptyComplianceState,
+    setViewComplianceTasksContextData,
   } = useComplianceContext();
 
   console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(mainComplianceTabs, "mainComplianceTabs");
   console.log(complianceInfo, "complianceInfocomplianceInfo");
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
 
   console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
@@ -93,7 +102,7 @@ const ViewCompliance = () => {
         // });
         console.log(
           viewComplianceByMeDetails,
-          "complianceDetailscomplianceDetails"
+          "complianceDetailscomplianceDetails",
         );
         setComplianceDetailsState({
           complianceTitle: complianceTitle,
@@ -103,7 +112,7 @@ const ViewCompliance = () => {
           //   criticality: criticalityLevel,
           authority: {
             value: authority.authorityId,
-            label: `${authority.authorityShortCode} - ${authority.authorityName}`,
+            label: `${authority.authorityName} ${authority.authorityShortCode}`,
           },
           criticality: {
             value: 0,
@@ -135,7 +144,7 @@ const ViewCompliance = () => {
                 value: data.statusId,
                 label: data.statusName,
               };
-            }
+            },
           );
           setAllowedComplianceStatusOptions(allowedStatuses);
         }
@@ -154,19 +163,25 @@ const ViewCompliance = () => {
     setShowViewCompliance(false);
     setViewComplianceDetailsTab(1);
     emptyComplianceState();
+
+    // 🔥 ADD THIS
+    setViewComplianceTasksContextData([]);
   };
 
   // To Show Reopen View Detail Bar when Reopen or Hold status coming
   const shouldShowReopenSection = useMemo(() => {
-    const history = viewComplianceByMeDetails?.complianceStatusChangeHistory;
+    const history = complianceDetailsState?.complianceStatusChangeHistory;
+    console.log(history, "historyhistory");
 
     if (!Array.isArray(history) || history.length === 0) return false;
 
     return history.some(
       (item) =>
-        item?.fromStatus?.statusId === 6 || item?.fromStatus?.statusId === 7
+        item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
     );
-  }, [viewComplianceByMeDetails?.complianceStatusChangeHistory]);
+  }, [complianceDetailsState?.complianceStatusChangeHistory]);
+
+  console.log(shouldShowReopenSection, "historyhistory");
 
   useEffect(() => {
     if (
@@ -176,13 +191,37 @@ const ViewCompliance = () => {
       complainceSeverityMessage !== null
     ) {
       try {
-        showMessage(complainceRespnseMessage, complainceSeverityMessage, setOpen);
+        showMessage(
+          complainceRespnseMessage,
+          complainceSeverityMessage,
+          setOpen,
+        );
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
       } catch (error) {}
     }
   }, [complainceRespnseMessage, complainceSeverityMessage]);
+
+  const onClickDetailTab = () => {
+    setViewComplianceDetailsTab(1);
+    const Data = {
+      complianceId: Number(complianceInfo?.complianceId),
+      viewType: mainComplianceTabs === 2 ? 1 : mainComplianceTabs === 3 ? 2 : 0,
+    };
+    console.log(Data, "DataDataDataData");
+    dispatch(
+      ViewComplianceDetailsByViewTypeAPI(
+        navigate,
+        Data,
+        t,
+        2,
+        setComplianceAddEditViewState,
+        setCreateEditComplaince,
+        setShowViewCompliance,
+      ),
+    );
+  };
 
   return (
     <>
@@ -220,9 +259,7 @@ const ViewCompliance = () => {
                     : styles["viewComplianceTabBtn"]
                 }
                 text={t("Details")}
-                onClick={() => {
-                  setViewComplianceDetailsTab(1);
-                }}
+                onClick={onClickDetailTab}
               />
               <CustomButton
                 className={
@@ -257,7 +294,7 @@ const ViewCompliance = () => {
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(
-                          "The-status-of-this-compliance-was-changed-multiple-times."
+                          "The-status-of-this-compliance-was-changed-multiple-times.",
                         )}
                       </span>
                       <Button
@@ -275,7 +312,11 @@ const ViewCompliance = () => {
                       <div className={styles.ProgressBarDiv}>
                         <div className="d-flex justify-content-between">
                           <span className={styles["progressBarHeading"]}>
-                            {t("My-progress")}
+                            {mainComplianceTabs === 2 ? (
+                              <>{t("Compliance-progress")}</>
+                            ) : (
+                              <> {t("My-progress")}</>
+                            )}
                           </span>
                           <span className={styles["progressBarHeading"]}>
                             {`${complianceDetailsState.progressPercent}%`}

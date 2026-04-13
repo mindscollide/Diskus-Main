@@ -27,6 +27,7 @@ const initialState = {
   ChangeTaskStatus: null,
   ComplianceDataRoomMapFolderId: 0,
   addReopenComplianceDetails: null,
+  changeCheckListStatus: null,
   // MQTT
   SocketAuthorityInactive: null,
   SocketAuthorityActive: null,
@@ -62,6 +63,8 @@ const initialState = {
   complianceUpdateMqttData: null,
   complianceReopenMqttData: null,
   taskMappedCheckListData: null,
+  ComplianceListData: null,
+  taskStatusChangeUserMqtt: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -624,7 +627,11 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsByComplianceId: null,
         ViewComplianceByMeDetails: null,
       };
-
+    case actions.CLEAR_COMPLIANCEDETAILS_TAB:
+      return {
+        ...state,
+        ViewComplianceByMeDetails: null,
+      };
     case actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT:
       return {
         ...state,
@@ -1298,6 +1305,147 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         taskMappedCheckListData: action.payload,
+      };
+    }
+
+    // For Compliance UPCOMING DEADLINE DASHBOARD MANAGER MQTT
+    case actions.UPCOMING_DEADLINE_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetUpcomingDealineComplianceDashboard: action.payload,
+      };
+
+    // For Compliance UPCOMING COMPLIANCE DEADLINE USER MQTT
+    case actions.UPCOMING_COMPLIANCE_DEADLINE_USER_MQTT:
+      return {
+        ...state,
+        GetUpcomingDealineComplianceDashboard: action.payload,
+      };
+
+    // For Compliance UPCOMING COMPLIANCE DEADLINE USER MQTT
+    case actions.QUARTERLY_TASK_DASHBOARD_FOR_USER_MQTT:
+      return {
+        ...state,
+        GetComlianceQuarterlyTasksDashboardData: action.payload,
+      };
+
+    // For Compliance UPCOMING COMPLIANCE DEADLINE MANAGER MQTT
+    case actions.QUARTERLY_TASK_DASHBOARD_FOR_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComlianceQuarterlyTasksDashboardData: action.payload,
+      };
+
+    // For Compliance Tasks Dashboard Mqtt User
+    case actions.TASK_DASHBOARD_FOR_USER_MQTT:
+      return {
+        ...state,
+        GetComplianceTasksDashboardData: action.payload,
+      };
+
+    // For Compliance Tasks Dashboard Mqtt Manager
+    case actions.TASK_DASHBOARD_FOR_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComplianceTasksDashboardData: action.payload,
+      };
+
+    //For Compliance By Dashboard Mqtt User
+    case actions.COMPLIANCE_BY_DASHBOARD_USER_MQTT:
+      return {
+        ...state,
+        GetComplianceByDashboardData: action.payload,
+      };
+
+    //For Compliance By Dashboard Mqtt Manager
+    case actions.COMPLIANCE_BY_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComplianceByDashboardData: action.payload,
+      };
+
+    // For Quarterly Submitted Dashboard Mqtt For User
+    case actions.QUARTERLY_SUBMITTED_DASHBOARD_USER_MQTT:
+      return {
+        ...state,
+        GetQuarterlySubmittedDashboard: action.payload,
+      };
+
+    // For Quarterly Submitted Dashboard Mqtt For Manager
+    case actions.QUARTERLY_SUBMITTED_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetQuarterlySubmittedDashboard: action.payload,
+      };
+
+    // For Reopen Compliance Dashboard Mqtt For User
+    case actions.REOPEN_COMPLIANCE_DASHBOARD_USER_MQTT:
+      return {
+        ...state,
+        GetComplianceReopenDashboardData: action.payload,
+      };
+
+    // For Reopen Compliance Dashboard Mqtt For MANAGER
+    case actions.REOPEN_COMPLIANCE_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComplianceReopenDashboardData: action.payload,
+      };
+
+    //GET Compliance By Authorities Api
+    case actions.GET_ALL_COMPLIANCE_AUTHORITIES_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_ALL_COMPLIANCE_AUTHORITIES_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ComplianceListData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_ALL_COMPLIANCE_AUTHORITIES_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ComplianceListData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.CHANGE_CHECKLIST_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.CHANGE_CHECKLIST_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        changeCheckListStatus: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+    case actions.CHANGE_CHECKLIST_STATUS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        changeCheckListStatus: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // For TASK STATUS CHANGED FOR USER
+    case actions.TASK_STATUS_CHANGED_FOR_USER_MQTT: {
+      return {
+        ...state,
+        taskStatusChangeUserMqtt: action.payload,
       };
     }
 

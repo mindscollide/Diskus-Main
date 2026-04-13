@@ -183,7 +183,7 @@ const Notes = () => {
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -209,7 +209,7 @@ const Notes = () => {
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -253,8 +253,8 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        4,
-      ),
+        4
+      )
     );
     //Retrive Documents of the Notes
     let Data = {
@@ -273,8 +273,8 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        1,
-      ),
+        1
+      )
     );
     //Retrive Documents of the Notes
     let Data = {
@@ -733,7 +733,7 @@ const Notes = () => {
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data2, t, data.displayFileName),
+      DataRoomDownloadFileApiFunc(navigate, data2, t, data.displayFileName)
     );
   };
   const handleClickOpenDoc = (data) => {
@@ -749,7 +749,7 @@ const Notes = () => {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer",
+        "noopener noreferrer"
       );
     }
   };
@@ -758,7 +758,7 @@ const Notes = () => {
     <>
       <div className={styles["notescontainer"]}>
         <Row>
-          <Col lg={7} md={7} sm={12} className="d-flex gap-4 ">
+          <Col lg={7} md={7} sm={12} className='d-flex gap-4 '>
             <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
 
             <Button
@@ -769,7 +769,7 @@ const Notes = () => {
             />
           </Col>
           <Col sm={12} md={5} lg={5}>
-            <div className="position-relative w-100">
+            <div className='position-relative w-100'>
               <TextField
                 width={"100%"}
                 placeholder={t("Search-on-notes-title")}
@@ -778,7 +778,7 @@ const Notes = () => {
                 value={noteSearchState.searchValue}
                 change={HandleSearchNotessMain}
                 onKeyDown={handleKeyDownSearch}
-                labelclass="d-none"
+                labelclass='d-none'
                 inputicon={
                   <>
                     <Row>
@@ -786,28 +786,26 @@ const Notes = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center justify-content-end"
-                      >
+                        className='d-flex gap-2 align-items-center justify-content-end'>
                         {noteSearchState.searchValue && enterpressed ? (
                           <>
                             <img
                               src={BlackCrossIcon}
-                              className="cursor-pointer"
-                              draggable="false"
-                              alt=""
+                              className='cursor-pointer'
+                              draggable='false'
+                              alt=''
                               onClick={handleResettingPage}
                             />
                           </>
                         ) : null}
                         <Tooltip
-                          placement="bottomLeft"
-                          title={t("Search-filters")}
-                        >
+                          placement='bottomLeft'
+                          title={t("Search-filters")}>
                           <img
                             src={searchicon}
-                            alt=""
+                            alt=''
                             className={styles["Search_Bar_icon_class"]}
-                            draggable="false"
+                            draggable='false'
                             onClick={HandleShowSearch}
                           />
                         </Tooltip>
@@ -820,50 +818,49 @@ const Notes = () => {
               {searchnotes ? (
                 <>
                   <section className={styles["SearhBar_Polls"]}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         <img
                           src={BlackCrossIcon}
                           className={styles["Cross_Icon_Styling"]}
-                          width="16px"
-                          height="16px"
-                          alt=""
+                          width='16px'
+                          height='16px'
+                          alt=''
                           onClick={handleMainSearchModal}
-                          draggable="false"
+                          draggable='false'
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <TextField
                           placeholder={t("Notes-title")}
                           applyClass={"Search_Modal_Fields"}
-                          labelclass="d-none"
+                          labelclass='d-none'
                           name={"searchbytitle"}
                           value={searchBoxState.searchByTitle}
                           change={HandleSearchboxNameTitle}
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={6} md={6} sm={6}>
                         <DatePicker
                           value={searchBoxState.DateView}
                           format={"DD/MM/YYYY"}
-                          placeholder="DD/MM/YYYY"
+                          placeholder='DD/MM/YYYY'
                           render={
                             <InputIcon
-                              placeholder="DD/MM/YYYY"
-                              className="datepicker_input"
+                              placeholder='DD/MM/YYYY'
+                              className='datepicker_input'
                             />
                           }
                           editable={false}
-                          className="datePickerTodoCreate2"
+                          className='datePickerTodoCreate2'
                           onOpenPickNewDate={false}
                           calendar={calendarValue} // Arabic calendar
                           locale={localValue} // Arabic locale
@@ -881,13 +878,12 @@ const Notes = () => {
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-end gap-2"
-                      >
+                        className='d-flex justify-content-end gap-2'>
                         <Button
                           text={t("Reset")}
                           className={styles["Reset_Button_polls_SearchModal"]}
@@ -915,6 +911,7 @@ const Notes = () => {
                 console.log(data, "datdayaminyamin");
                 return (
                   <CustomAccordion
+                    key={data.pK_NotesID}
                     StartField={data.title}
                     isExpand={isExpanded}
                     notesID={data.pK_NotesID}
@@ -927,11 +924,11 @@ const Notes = () => {
                         {data?.isAttachment ? (
                           <span>
                             <img
-                              draggable="false"
-                              alt=""
+                              draggable='false'
+                              alt=''
                               src={ClipIcon}
-                              width="15.96px"
-                              height="14.68px"
+                              width='15.96px'
+                              height='14.68px'
                               className={
                                 styles["attachIcon-In-Collapse-material"]
                               }
@@ -939,16 +936,15 @@ const Notes = () => {
                           </span>
                         ) : (
                           <span>
-                            <img draggable="false" width={15} alt="" />
+                            <img draggable='false' width={15} alt='' />
                           </span>
                         )}
                         <span
-                          className={styles["collapse-text-attached-material"]}
-                        >
+                          className={styles["collapse-text-attached-material"]}>
                           {`${_justShowDateformat(
-                            data?.modifiedDate + data?.modifiedTime,
+                            data?.modifiedDate + data?.modifiedTime
                           )} ${" | "} ${_justShowDay(
-                            data?.modifiedDate + data?.modifiedTime,
+                            data?.modifiedDate + data?.modifiedTime
                           )}`}
                         </span>
                       </>
@@ -962,13 +958,12 @@ const Notes = () => {
                                 className={styles["MinusIcon_span"]}
                                 onClick={() =>
                                   handleClickExpand(data?.pK_NotesID)
-                                }
-                              >
+                                }>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={MinusExpand}
                                   className={styles["MinusIcon"]}
-                                  alt=""
+                                  alt=''
                                 />
                               </span>
                             ) : (
@@ -976,12 +971,11 @@ const Notes = () => {
                                 className={styles["PlusIcon_span"]}
                                 onClick={() =>
                                   handleClickExpand(data?.pK_NotesID)
-                                }
-                              >
+                                }>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={PlusExpand}
-                                  alt=""
+                                  alt=''
                                   className={styles["PlusIcon"]}
                                   onClick={() =>
                                     handleClickExpand(data?.pK_NotesID)
@@ -991,12 +985,12 @@ const Notes = () => {
                             )}
                           </>
                         )}
-                        <Tooltip placement="bottomLeft" title={t("Edit")}>
+                        <Tooltip placement='bottomLeft' title={t("Edit")}>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={EditIconNote}
                             width={17}
-                            alt=""
+                            alt=''
                             className={styles["editIcon-In-Collapse-material"]}
                             onClick={() => editIconModal(data?.pK_NotesID)}
                           />
@@ -1011,13 +1005,13 @@ const Notes = () => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className={styles["NotesAttachments"]}
-                            >
+                              className={styles["NotesAttachments"]}>
                               {data?.notesAttachments.length > 0
                                 ? data?.notesAttachments.map((file) => {
                                     return (
                                       <AttachmentViewer
                                         data={file}
+                                        key={file.pK_FileID}
                                         id={file.pK_FileID}
                                         name={file.displayFileName}
                                         handleEyeIcon={() =>
@@ -1045,9 +1039,8 @@ const Notes = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["emptyNotesState"]}
-                  >
-                    <img draggable="false" src={NotesMainEmpty} alt="" />
+                    className={styles["emptyNotesState"]}>
+                    <img draggable='false' src={NotesMainEmpty} alt='' />
                     <p className={styles["emptystatetext"]}>
                       {t("Notes-you-add-appear-here")}
                     </p>
@@ -1058,8 +1051,7 @@ const Notes = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Notes_spinner"]}
-                  ></Col>
+                    className={styles["Notes_spinner"]}></Col>
                 </Row>
               </>
             )}
@@ -1069,8 +1061,7 @@ const Notes = () => {
             sm={12}
             md={12}
             lg={12}
-            className="d-flex justify-content-center my-3 pagination-groups-table"
-          >
+            className='d-flex justify-content-center my-3 pagination-groups-table'>
             {notes !== null && notes !== undefined && notes.length > 0 ? (
               <>
                 <CustomPagination

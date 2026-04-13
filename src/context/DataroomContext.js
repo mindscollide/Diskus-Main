@@ -1,5 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
 
+/**
+ * @context DataroomContext
+ * @description Provides shared breadcrumb navigation state for the Dataroom
+ * (document repository) module, allowing nested folder views to keep the
+ * breadcrumb trail in sync across the component tree.
+ *
+ * @provides {Array<{name: string, id: number}>} breadCrumbsItems    - Ordered list of breadcrumb entries representing the current folder path
+ * @provides {Function}                          setBreadCrumbsItems - Setter to update the breadcrumb trail when navigating folders
+ *
+ * Usage:
+ *   import { useDataroomContext } from '../context/DataroomContext';
+ *   const { breadCrumbsItems, setBreadCrumbsItems } = useDataroomContext();
+ */
+
 // Create the Context
 export const DataroomContext = createContext();
 
@@ -30,6 +44,12 @@ export const DataroomProvider = ({ children }) => {
   );
 };
 
+/**
+ * @hook useDataroomContext
+ * @description Consumes DataroomContext and returns the breadcrumb navigation
+ *   state and its setter. Throws an error if called outside of DataroomProvider.
+ * @returns {{ breadCrumbsItems: Array<{name: string, id: number}>, setBreadCrumbsItems: Function }} DataroomContext value
+ */
 // Custom Hook to consume the context
 export const useDataroomContext = () => {
   const context = useContext(DataroomContext);

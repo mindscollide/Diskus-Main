@@ -841,11 +841,11 @@ const WebNotfication = ({
               "NotificationClickMeetingID",
               PayLoadData.MeetingID
             );
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            // dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
             setViewProposeDatePoll(true);
             dispatch(proposedMeetingDatesGlobalFlag(true));
             dispatch(viewProposeDateMeetingPageFlag(true));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
+            // dispatch(viewAdvanceMeetingPublishPageFlag(false));
           } else {
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -1733,7 +1733,7 @@ const WebNotfication = ({
                 </Row>
               )
             }
-            height="68vh"
+            height="50vh"
             style={{ overflowX: "hidden" }}
           >
             {/* Render "Today" Notifications */}

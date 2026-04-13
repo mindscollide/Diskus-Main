@@ -143,11 +143,19 @@
   font-weight: 600;
   cursor: pointer;
   font-size: 12px;
-  color: #505050 !important;
-
 }
+
 .columnValue {
-  font-size: 12px;
+  font-size: 12px ;
   font-weight: 400;
-  color: #505050 !important;
+  color:#505050;
+}
+.PaginationStyle-Committee {
+  padding: 12px 40px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+}
+.DraftMeeting_Pagination{
+  position: absolute;
+  bottom: 10px;
 }

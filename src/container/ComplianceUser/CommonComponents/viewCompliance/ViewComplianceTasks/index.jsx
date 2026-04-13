@@ -13,6 +13,7 @@ import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  ChangeTaskStatusAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
   GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
@@ -34,7 +35,6 @@ import { Checkbox } from "antd";
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [viewComplianceTasksData, setViewComplianceTasksData] = useState([]);
   const accordionContainerRef = useRef();
   const { t } = useTranslation();
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
@@ -67,7 +67,7 @@ const ViewComplianceTasks = () => {
     const allowedStatusIds = TASK_STATUS_TRANSITIONS[record.taskStatusId] || [];
 
     return taskStatus.filter((status) =>
-      allowedStatusIds.includes(status.value)
+      allowedStatusIds.includes(status.value),
     );
   };
   // context
@@ -82,55 +82,28 @@ const ViewComplianceTasks = () => {
   } = useComplianceContext();
   console.log(
     complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState"
+    "complianceDetailsStatecomplianceDetailsState",
   );
   console.log(expandChecklistOnTasksPage, "expandChecklistOnTasksPage");
   console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
+  
 
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceId
+        .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
   const getAllComplianceChecklistTaskForMe = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceIdForMe
+        .GetComplianceChecklistsWithTasksByComplianceIdForMe,
   );
 
   console.log(
     getAllComplianceChecklistTask,
-    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask"
+    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask",
   );
-
-  // Status for All tasks
-  // const getAllTasksStatus = useSelector(
-  //   (state) => state.getTodosStatus.Response
-  // );
-  // console.log(getAllTasksStatus, "getAllTasksStatus");
-  // global State Response
-
-  // initial UseEffect
-  // useEffect(() => {
-  //   dispatch(getTodoStatus(navigate, t));
-
-  //   return () => {
-  //     dispatch(cleareMessage());
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (getAllTasksStatus && getAllTasksStatus.length > 0) {
-  //     try {
-  //       const statuses = getAllTasksStatus.map((item) => ({
-  //         value: item.pK_TSID,
-  //         label: item.status,
-  //       }));
-  //       setTaskStatus(statuses);
-  //     } catch (error) {}
-  //   }
-  // }, [getAllTasksStatus]);
 
   useEffect(() => {
     if (allTasksStatusForFilter?.length > 0) {
@@ -148,26 +121,28 @@ const ViewComplianceTasks = () => {
     if (complianceDetailsState.complianceId !== 0) {
       console.log(
         complianceDetailsState.complianceId,
-        "complianceDetailsState.complianceIdcomplianceDetailsState.complianceId"
+        "complianceDetailsState.complianceIdcomplianceDetailsState.complianceId",
       );
       let Data = {
         complianceId: complianceDetailsState.complianceId,
       };
       if (complianceViewMode === "byMe") {
         dispatch(
-          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t),
         );
       } else if (complianceViewMode === "forMe") {
         dispatch(
           GetComplianceChecklistsWithTasksByComplianceIdForMeAPI(
             navigate,
             Data,
-            t
-          )
+            t,
+          ),
         );
       }
+    } else {
+      setViewComplianceTasksContextData([]);
     }
-  }, [complianceDetailsState]);
+  }, [complianceDetailsState?.complianceId]);
 
   useEffect(() => {
     if (
@@ -221,60 +196,6 @@ const ViewComplianceTasks = () => {
     });
   };
 
-  // const handleStatusChange = async (taskId, newStatus) => {
-  //   let previousStatus = null;
-
-  //   // 🔎 Find current task + status
-  //   viewComplianceTasksData.forEach((checklist) => {
-  //     checklist.taskList?.forEach((task) => {
-  //       if (task.taskId === taskId) {
-  //         previousStatus = task.taskStatus;
-  //       }
-  //     });
-  //   });
-
-  //   // ❌ Safety check (UI should already block this)
-  //   const allowedTransitions = TASK_STATUS_TRANSITIONS[previousStatus] || [];
-
-  //   if (!allowedTransitions.includes(newStatus)) {
-  //     console.warn(`Invalid transition: ${previousStatus} → ${newStatus}`);
-  //     return;
-  //   }
-
-  //   // ✅ Optimistic UI update
-  //   setViewComplianceTasksData((prev) =>
-  //     prev.map((checklist) => ({
-  //       ...checklist,
-  //       taskList: checklist.taskList?.map((task) =>
-  //         task.taskId === taskId ? { ...task, taskStatus: newStatus } : task
-  //       ),
-  //     }))
-  //   );
-
-  //   try {
-  //     // 🚀 API payload
-  //     const payload = {
-  //       taskId,
-  //       status: newStatus,
-  //     };
-
-  //     // await dispatch(
-  //     //   UpdateComplianceTaskStatusAPI(navigate, payload, t)
-  //     // );
-  //   } catch (error) {
-  //     // 🔁 Rollback on failure
-  //     setViewComplianceTasksData((prev) =>
-  //       prev.map((checklist) => ({
-  //         ...checklist,
-  //         taskList: checklist.taskList?.map((task) =>
-  //           task.taskId === taskId
-  //             ? { ...task, taskStatus: previousStatus }
-  //             : task
-  //         ),
-  //       }))
-  //     );
-  //   }
-  // };
   const resetAllSorts = () => {
     setTaskTitleSort(null);
     setAssignedToSort(null);
@@ -284,7 +205,7 @@ const ViewComplianceTasks = () => {
     checklistId,
     pagination,
     filters,
-    sorter
+    sorter,
   ) => {
     setActiveSortedChecklistId(checklistId);
 
@@ -327,6 +248,7 @@ const ViewComplianceTasks = () => {
         return "#000";
     }
   };
+
   const statusSelectStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -362,32 +284,38 @@ const ViewComplianceTasks = () => {
       display: "none",
     }),
   };
+
   // functions
   const handleStatusChange = (taskId, selectedStatus) => {
-    setViewComplianceTasksContextData((prev) =>
-      prev.map((checklist) => ({
-        ...checklist,
-        taskList: checklist.taskList?.map((task) =>
-          task.taskId === taskId
-            ? {
-                ...task,
-                taskStatusId: selectedStatus.value,
-                taskStatus: selectedStatus.label,
-              }
-            : task
-        ),
-      }))
+    console.log({ selectedStatus, taskId }, "selectedStatusselectedStatus");
+    setViewComplianceTasksContextData(
+      (prev) =>
+        prev.map((checklist) => ({
+          ...checklist,
+          taskList: checklist.taskList?.map((task) =>
+            task.taskId === taskId
+              ? {
+                  ...task,
+                  taskStatusId: selectedStatus.value,
+                  taskStatus: selectedStatus.label,
+                }
+              : task,
+          ),
+        })),
+      // 🔗 Call API after status change
+      statusChangeHandler(selectedStatus.value, taskId),
     );
+  };
 
-    // 🔗 API payload (when you connect backend)
-    /*
-    dispatch(
-      UpdateComplianceTaskStatusAPI(navigate, {
-        taskId,
-        statusId: selectedStatus.value,
-      }, t)
-    );
-    */
+  const statusChangeHandler = (statusId, taskId) => {
+    console.log(statusId, taskId, "statusIdtaskId");
+    let complianceId = complianceDetailsState?.complianceId;
+    const Data = {
+      TaskID: taskId,
+      NewStatusID: statusId,
+    };
+    dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
+    // dispatch(updateTodoStatusFunc(navigate, statusId, taskId, t, false, 1));
   };
 
   const handleClickTitle = (id) => {
@@ -483,10 +411,12 @@ const ViewComplianceTasks = () => {
         taskTitleSort === "descend"
           ? b.taskTitle?.toLowerCase().localeCompare(a.taskTitle?.toLowerCase())
           : taskTitleSort === "ascend"
-          ? a.taskTitle?.toLowerCase().localeCompare(b.taskTitle?.toLowerCase())
-          : a.taskTitle
-              ?.toLowerCase()
-              .localeCompare(b.taskTitle?.toLowerCase()),
+            ? a.taskTitle
+                ?.toLowerCase()
+                .localeCompare(b.taskTitle?.toLowerCase())
+            : a.taskTitle
+                ?.toLowerCase()
+                .localeCompare(b.taskTitle?.toLowerCase()),
     },
 
     {
@@ -528,12 +458,12 @@ const ViewComplianceTasks = () => {
               ?.toLowerCase()
               .localeCompare(a.assignedUsers[0]?.name?.toLowerCase())
           : assignedToSort === "ascend"
-          ? a.assignedUsers[0]?.name
-              ?.toLowerCase()
-              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
-          : a.assignedUsers[0]?.name
-              ?.toLowerCase()
-              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
+            ? a.assignedUsers[0]?.name
+                ?.toLowerCase()
+                .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
+            : a.assignedUsers[0]?.name
+                ?.toLowerCase()
+                .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
     },
     {
       title: (
@@ -558,12 +488,12 @@ const ViewComplianceTasks = () => {
               ?.toLowerCase()
               .localeCompare(a.deadLineDate?.toLowerCase())
           : dueDateSort === "ascend"
-          ? a.deadLineDate
-              ?.toLowerCase()
-              .localeCompare(b.deadLineDate?.toLowerCase())
-          : a.deadLineDate
-              ?.toLowerCase()
-              .localeCompare(b.deadLineDate?.toLowerCase()),
+            ? a.deadLineDate
+                ?.toLowerCase()
+                .localeCompare(b.deadLineDate?.toLowerCase())
+            : a.deadLineDate
+                ?.toLowerCase()
+                .localeCompare(b.deadLineDate?.toLowerCase()),
 
       dataIndex: "deadLineDate",
       key: "deadLineDate",
@@ -648,7 +578,6 @@ const ViewComplianceTasks = () => {
               {/* Attachment */}
               {hasAttachments > 0 ? (
                 <img
-                  className="cursor-pointer"
                   draggable="false"
                   alt=""
                   src={IconAttachment}
@@ -664,24 +593,63 @@ const ViewComplianceTasks = () => {
     },
   ];
 
+  const allExpanded =
+    viewComplianceTasksContextData?.length > 0 &&
+    expandedCheckListIds.length === viewComplianceTasksContextData.length;
+
+  const handleExpandBtn = () => {
+    if (!viewComplianceTasksContextData?.length) return;
+
+    if (allExpanded) {
+      setExpandedCheckListIds([]);
+      setAddChecklistCloseState(false);
+    } else {
+      const allIds = viewComplianceTasksContextData.map(
+        (item) => item.checklistId,
+      );
+
+      setExpandedCheckListIds(allIds);
+      setAddChecklistCloseState(true);
+    }
+  };
+
   // Row
   return (
     <>
       {viewComplianceTasksContextData?.length > 0 ? (
-        <Row className="mt-3">
-          <div
-            ref={accordionContainerRef}
-            className={
-              addChecklistCloseState
-                ? styles["taskAccordian_closed"]
-                : styles["taskAccordian"]
-            }
-          >
-            {
-              viewComplianceTasksContextData?.length > 0
+        <>
+          <Row className="my-2">
+            <Col sm={12} md={6} lg={6} className="d-flex align-items-end" />
+
+            <Col
+              sm={12}
+              md={6}
+              lg={6}
+              className="d-flex justify-content-end align-items-center"
+            >
+              {viewComplianceTasksContextData?.length > 0 && (
+                <Button
+                  text={allExpanded ? t("Collapse-all") : t("Expand-all")}
+                  className={styles["viewCompliance_ExapnAllBtn"]}
+                  onClick={handleExpandBtn}
+                />
+              )}
+            </Col>
+          </Row>
+
+          <Row className="mt-3">
+            <div
+              ref={accordionContainerRef}
+              className={
+                addChecklistCloseState
+                  ? styles["taskAccordian_closed"]
+                  : styles["taskAccordian"]
+              }
+            >
+              {viewComplianceTasksContextData?.length > 0
                 ? viewComplianceTasksContextData.map((data, index) => {
                     const isExpanded = expandedCheckListIds.find(
-                      (data2, index) => data2 === data.checklistId
+                      (data2, index) => data2 === data.checklistId,
                     );
 
                     // const taskData = data.taskList;
@@ -689,7 +657,7 @@ const ViewComplianceTasks = () => {
                       (task, index) => ({
                         ...task,
                         key: task.taskId || `${data.checklistId}-${index}`,
-                      })
+                      }),
                     );
 
                     return (
@@ -698,7 +666,8 @@ const ViewComplianceTasks = () => {
                           isExpand={isExpanded}
                           notesID={data.checklistId}
                           isCompliance={false}
-                          isComplianceTask={true}
+                          isComplianceTask={false}
+                          isComplianceTaskView={true}
                           StartField={
                             <Row>
                               <Col
@@ -709,15 +678,26 @@ const ViewComplianceTasks = () => {
                               >
                                 {t("Checklist-title")}
                               </Col>
-
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className={`m-0 ${styles.checklistTitleValue}`}
-                              >
-                                {data.checklistTitle}
-                              </Col>
+                              <Row>
+                                <Col
+                                  sm={12}
+                                  md={10}
+                                  lg={10}
+                                  className={`m-0 ${styles.checklistTitleValue}`}
+                                >
+                                  {data.checklistTitle}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={2}
+                                  lg={2}
+                                  className={`d-flex justify-content-end ${styles.noChecklistMsg_subMsg}`}
+                                >
+                                  {`${t("Due-date")} : ${formatDateToYMD(
+                                    data.dueDate,
+                                  )}`}
+                                </Col>
+                              </Row>
                             </Row>
                           }
                           attachmentsRow={
@@ -732,7 +712,7 @@ const ViewComplianceTasks = () => {
                                       data.checklistId,
                                       pagination,
                                       filters,
-                                      sorter
+                                      sorter,
                                     )
                                   }
                                 />
@@ -805,45 +785,10 @@ const ViewComplianceTasks = () => {
                       </div>
                     );
                   })
-                : ""
-
-              // (
-              //   <>
-              //     <Row className="mt-5 ">
-              //       <Col
-              //         lg={12}
-              //         ms={12}
-              //         sm={12}
-              //         className="d-flex justify-content-center align-items-center"
-              //       >
-              //         <img draggable={false} src={NoTaskImg} alt="" />
-              //       </Col>
-              //     </Row>
-              //     <Row>
-              //       <Col
-              //         lg={12}
-              //         ms={12}
-              //         sm={12}
-              //         className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
-              //       >
-              //         {t("No-tasks-available")}
-              //       </Col>
-              //     </Row>
-              //     <Row>
-              //       <Col
-              //         lg={12}
-              //         md={12}
-              //         sm={12}
-              //         className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
-              //       >
-              //         {t("You-dont-have-any-tasks-at-the-moment")}
-              //       </Col>
-              //     </Row>
-              //   </>
-              // )
-            }
-          </div>
-        </Row>
+                : ""}
+            </div>
+          </Row>
+        </>
       ) : (
         <Row className="d-flex align-items-center justify-content-center mt-5">
           <Row className="mt-5 ">

@@ -28,6 +28,7 @@ const ReopenedCompliance = () => {
     setShowViewCompliance,
     reopenDashboardList,
     setReopenDashboardList,
+    setViewAllReopenDashboardButtonFlag,
   } = useComplianceContext();
 
   const GetComplianceReopenDashboardData = useSelector(
@@ -76,6 +77,11 @@ const ReopenedCompliance = () => {
         setShowViewCompliance,
       ),
     );
+  };
+
+  const onClickViewAllReopenDashboardButton = () => {
+    setViewAllReopenDashboardButtonFlag(true);
+    setMainComplianceTabs(2);
   };
 
   return (
@@ -164,7 +170,7 @@ const ReopenedCompliance = () => {
           <CustomButton
             text={t("View-all-reopened-compliances")}
             className={styles.ViewAllComplianceButton}
-            onClick={() => setMainComplianceTabs(2)}
+            onClick={onClickViewAllReopenDashboardButton}
           />
         </div>
       )}

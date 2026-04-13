@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { Notification } from "../../../../components/elements/index";
 import {
   addUpdateFieldValueApi,
-  clearWorkFlowResponseMessage,
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
 } from "../../../../store/actions/workflow_actions";
@@ -26,50 +25,372 @@ import {
   revertReadOnlyFreetextElements,
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
-import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
-const SignatureViewer = () => {
+// ─── Pure helpers ─────────────────────────────────────────────────────────────
+
+const containsNull = (arr) => arr.some((el) => el === null);
+
+const getCurrentUserID = () =>
+  localStorage.getItem("userID") !== null
+    ? Number(localStorage.getItem("userID"))
+    : 0;
+
+const revertXmlField = (data) =>
+  data.map((item) => {
+    const xml = item.xmlField
+      ? item.xmlField
+          .split("_#_")
+          .map((str) => {
+            try {
+              return JSON.parse(str);
+            } catch (err) {
+              console.error("revertXmlField parse error:", err, str);
+              return null;
+            }
+          })
+          .filter(Boolean)
+      : [];
+    return {
+      actorID: item.actorID,
+      userID: item.userID,
+      actorColor: item.actorColor,
+      xml,
+    };
+  });
+
+/**
+ * Extract the Set of ffield names assigned to a specific user.
+ * Used to determine widget annotation ownership without relying on Subject.
+ */
+const getUserFieldNames = (userAnnotations, userID) => {
+  const entry = userAnnotations.find((u) => u.userID === userID);
+  if (!entry) return new Set();
+  const names = new Set();
+  entry.xml.forEach(({ ffield }) => {
+    if (!ffield) return;
+    try {
+      const doc = new DOMParser().parseFromString(ffield, "text/xml");
+      const name = doc.documentElement.getAttribute("name");
+      if (name) names.add(name);
+    } catch {
+      /* ignore malformed ffield */
+    }
+  });
+  return names;
+};
+
+/**
+ * Build HideArray / ReadArray from userAnnotations.
+ *
+ * HideArray — field names whose owner is in hiddenUsers
+ *             (their turn hasn't arrived yet in an ordered workflow).
+ *
+ * ReadArray — field names of EVERY other non-current user that is NOT hidden.
+ *             This covers already-signed users so their data stays visible
+ *             but fully locked.
+ */
+const buildHideReadArrays = (annotations, hiddenUsers, currentUserID) => {
+  const HideArray = [];
+  const ReadArray = [];
+
+  annotations.forEach((obj) => {
+    if (obj.userID === currentUserID) return; // own fields stay editable
+
+    obj.xml.forEach(({ ffield }) => {
+      const matches = ffield?.match(/<ffield[^>]*\sname="([^"]+)"/g) ?? [];
+      matches.forEach((match) => {
+        const name = match.match(/name="([^"]+)"/)?.[1];
+        if (!name) return;
+
+        if (hiddenUsers.includes(obj.userID)) {
+          HideArray.push(name); // hide entirely
+        } else {
+          ReadArray.push(name); // show but lock — signed or pending
+        }
+      });
+    });
+  });
+
+  return { HideArray, ReadArray };
+};
+
+const mergeXFDFIntoAnnotations = (
+  xfdfString,
+  userSelectID,
+  userAnnotations,
+) => {
+  const userSelect = parseInt(userSelectID, 10);
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xfdfString, "text/xml");
+
+  xmlDoc.querySelectorAll("widget").forEach((widget) => {
+    const widgetName = widget.getAttribute("name");
+    const fieldName = widget.getAttribute("field");
+    let found = false;
+
+    userAnnotations.forEach((user) => {
+      user.xml.forEach((xml) => {
+        if (xml.widget?.includes(widgetName)) {
+          const ffieldEl = xmlDoc.querySelector(`ffield[name="${fieldName}"]`);
+          if (ffieldEl) {
+            xml.ffield = ffieldEl.outerHTML;
+            xml.widget = widget.outerHTML;
+          }
+          found = true;
+        }
+      });
+    });
+
+    if (!found) {
+      const target = userAnnotations.find((u) => u.userID === userSelect);
+      if (target) {
+        const ffieldEl = xmlDoc.querySelector(`ffield[name="${fieldName}"]`);
+        if (ffieldEl)
+          target.xml.push({
+            ffield: ffieldEl.outerHTML,
+            widget: widget.outerHTML,
+          });
+      }
+    }
+  });
+};
+
+const filterAnnotationsAgainstXFDF = (userAnnotations, xfdfString) => {
+  const parser = new DOMParser();
+  const mainDoc = parser.parseFromString(xfdfString, "text/xml");
+  const exists = (name, tag) =>
+    mainDoc.querySelectorAll(`${tag}[name="${name}"]`).length > 0;
+
+  return userAnnotations.map((user) => ({
+    ...user,
+    xml: user.xml.filter((item) => {
+      const ffieldName = new DOMParser()
+        .parseFromString(item.ffield, "text/xml")
+        .documentElement.getAttribute("name");
+      const widgetName = new DOMParser()
+        .parseFromString(item.widget, "text/xml")
+        .documentElement.getAttribute("name");
+      return exists(ffieldName, "ffield") && exists(widgetName, "widget");
+    }),
+  }));
+};
+
+const convertAnnotationsForApi = (filtered) =>
+  filtered.map((u) => ({
+    ActorID: u.actorID,
+    xmlList: u.xml.map((x) => JSON.stringify(x)),
+  }));
+
+/**
+ * Parse the owner userID from a FreeText annotation's Subject.
+ * Subject format: "<label>-<userID>"  e.g. "Title-42"
+ */
+const getAnnotationOwnerIDFromSubject = (annot) => {
+  if (!annot.Subject) return null;
+  const parts = annot.Subject.split("-");
+  const lastPart = parts[parts.length - 1];
+  const parsed = Number(lastPart);
+  return Number.isFinite(parsed) && lastPart !== "" ? parsed : null;
+};
+
+/**
+ * Lock / unlock annotations based on who the current user is.
+ *
+ * Widget annotations  → ownership is determined by comparing the widget's
+ *                       field name against currentUserFieldNames (a Set).
+ * FreeText annotations → ownership is determined via the Subject attribute.
+ *
+ * Non-owner annotations:
+ *   • annotation-level  Locked = true, ReadOnly = true
+ *   • no resize / move / rotate
+ * Owner widget annotations:
+ *   • clear PDF field-level ReadOnly so the widget is clickable (re-sign support)
+ *   • annotation-level flags left unlocked
+ */
+const applyAnnotationLocks = (
+  annotationManager,
+  annotations,
+  currentUserID,
+  currentUserFieldNames, // Set<string>
+) => {
+  annotations.forEach((annot) => {
+    const isWidget =
+      typeof annot.getField === "function" ||
+      annot.constructor?.name?.includes("Widget");
+
+    let isOwner = false;
+
+    if (isWidget) {
+      try {
+        const field = annot.getField?.();
+        const fieldName = field?.name;
+        isOwner = fieldName ? currentUserFieldNames.has(fieldName) : false;
+      } catch {
+        isOwner = false;
+      }
+    } else {
+      // FreeText or other annotation types — use Subject
+      const ownerID = getAnnotationOwnerIDFromSubject(annot);
+      isOwner = ownerID === currentUserID;
+    }
+
+    // Apply annotation-level lock state
+    annot.Locked = !isOwner;
+    annot.ReadOnly = !isOwner;
+    annot.NoResize = true;
+    annot.NoMove = true;
+    annot.NoRotate = true;
+
+    // For the owner's widget fields clear the PDF field-level ReadOnly flag
+    // so clicking opens the appropriate tool (signature panel, text editor…)
+    if (isOwner && isWidget) {
+      try {
+        const field = annot.getField?.();
+        if (field) field.flags.set("ReadOnly", false);
+      } catch {
+        /* getField not available on every subtype */
+      }
+    }
+
+    annotationManager.updateAnnotation(annot);
+    annotationManager.redrawAnnotation(annot);
+  });
+};
+
+/**
+ * Validate that all fields assigned to the current user are filled.
+ * Called synchronously at submit time with the already-exported xfdfString.
+ *
+ * Field type is read from the stored `ffield` XML in userAnnotations — the
+ * same data Apryse wrote when the designer created the fields.
+ *
+ * Per-type strategy
+ * ─────────────────
+ * Btn (checkbox / radio)
+ *   Always valid — any state (checked or unchecked) is acceptable.
+ *
+ * Sig (signature)
+ *   Apryse NEVER writes signature values into <fields><value>; they are
+ *   stored as appearance streams.  Instead we inspect the widget element
+ *   inside Apryse's proprietary <pdf-info> section:
+ *     • unsigned widget  → self-closing or has 0 child elements
+ *     • signed   widget  → has ≥ 1 child (apref / ap / inline appearance)
+ *   As a belt-and-suspenders fallback we also check <fields><value> in case
+ *   a future Apryse version writes the value there.
+ *
+ * Tx / Ch (text / choice)
+ *   Reliably stored in <fields><field name="…"><value>.
+ */
+const validateViaXFDF = (
+  xfdfString,
+  currentUserFieldNames,
+  userAnnotations,
+  currentUserID,
+) => {
+  if (currentUserFieldNames.size === 0)
+    return { valid: true, unfilledCount: 0 };
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xfdfString, "text/xml");
+
+  // Build field-type map from stored ffield XML (designer-time metadata)
+  const fieldTypeMap = new Map();
+  const userEntry = userAnnotations.find((u) => u.userID === currentUserID);
+  userEntry?.xml.forEach(({ ffield }) => {
+    if (!ffield) return;
+    try {
+      const d = parser.parseFromString(ffield, "text/xml");
+      const name = d.documentElement.getAttribute("name");
+      const type = d.documentElement.getAttribute("type") || "";
+      if (name) fieldTypeMap.set(name, type);
+    } catch {
+      /* malformed ffield string — skip */
+    }
+  });
+
+  let unfilledCount = 0;
+
+  for (const fieldName of currentUserFieldNames) {
+    const fieldType = fieldTypeMap.get(fieldName) || "";
+
+    // ── Btn ──────────────────────────────────────────────────────────────────
+    if (fieldType === "Btn") continue; // checkbox / radio always valid
+
+    // ── Sig ──────────────────────────────────────────────────────────────────
+    if (fieldType === "Sig") {
+      // Belt-and-suspenders check 1: <fields> value (works in some Apryse builds)
+      const fieldEl =
+        doc.querySelector(`fields field[name="${CSS.escape(fieldName)}"]`) ??
+        doc.querySelector(`fields field[name="${fieldName}"]`);
+      const fieldValue = (
+        fieldEl?.querySelector("value")?.textContent ?? ""
+      ).trim();
+      if (fieldValue) continue; // value present → signed
+
+      // Belt-and-suspenders check 2: widget element children in <pdf-info>
+      // Apryse adds an apref / ap child to the widget after applying a signature.
+      const widget = doc.querySelector(`widget[field="${fieldName}"]`);
+      if (widget && widget.childElementCount > 0) continue; // has appearance → signed
+
+      unfilledCount++; // widget found but no evidence of signing
+      continue;
+    }
+
+    // ── Tx / Ch (text, choice) ────────────────────────────────────────────────
+    const fieldEl =
+      doc.querySelector(`fields field[name="${CSS.escape(fieldName)}"]`) ??
+      doc.querySelector(`fields field[name="${fieldName}"]`);
+    const value = (fieldEl?.querySelector("value")?.textContent ?? "").trim();
+    if (!value) unfilledCount++;
+  }
+
+  return { valid: unfilledCount === 0, unfilledCount };
+};
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+const PendingSignatureViewer = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { webViewer } = useSelector((state) => state);
+
+  const { webViewer } = useSelector((s) => s);
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
-    getDataroomAnnotation,
     ResponseMessage,
     getSignatureFileAnnotationResponse,
-  } = useSelector((state) => state.SignatureWorkFlowReducer);
-  const workflowResponseMessage = useSelector((state) => state);
+  } = useSelector((s) => s.SignatureWorkFlowReducer);
 
-  // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
-  const [Instance, setInstance] = useState(null);
-  const viewer = useRef(null);
-  const [isSigned, setIsSigned] = useState(true);
+
+  // ── WebViewer ──────────────────────────────────────────────────────────────
+  const viewerRef = useRef(null);
+  const webViewerInitialized = useRef(false);
+  const [instance, setInstance] = useState(null);
+
+  // ── Data state ─────────────────────────────────────────────────────────────
+  const [fieldsData, setFieldsData] = useState([]);
   const [signerData, setSignerData] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
-  const [FieldsData, setFieldsData] = useState([]);
-  const [reasonModal, setReasonModal] = useState(false);
-  const [declineConfirmationModal, setDeclineConfirmationModal] =
-    useState(false);
-  const [declineReasonMessage, setDeclineReasonMessage] = useState("");
-  const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
-  const [removeXmlAfterHideDAta, setRemoveXmlAfterHideDAta] = useState("");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-  const [pdfResponceData, setPdfResponceData] = useState({
+  // ── Annotation state ───────────────────────────────────────────────────────
+  const [userAnnotations, setUserAnnotations] = useState([]);
+  const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
+  const [hiddenUsers, setHiddenUsers] = useState([]);
+
+  const [removeXmlAfterHideData, setRemoveXmlAfterHideData] = useState("");
+  const [removeXmlAfterFreetextHideData, setRemoveXmlAfterFreetextHideData] =
+    useState([]);
+
+  // ── PDF data ───────────────────────────────────────────────────────────────
+  const [pdfData, setPdfData] = useState({
     xfdfData: "",
     attachmentBlob: "",
-    removedAnnotations: "",
     workFlowID: 0,
     documentID: 0,
     title: "",
@@ -81,831 +402,729 @@ const SignatureViewer = () => {
     isCreator: 0,
   });
 
-  const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
-  const [userAnnotations, setUserAnnotations] = useState([]);
-  const [hiddenUsers, setHiddenUsers] = useState([]);
-  const [readOnlyUsers, setReadOnlyUsers] = useState([]);
-  const [removeXmlAfterFreetextHideDAta, setRemoveXmlAfterFreetextHideDAta] =
-    useState([]);
+  // ── UI state ───────────────────────────────────────────────────────────────
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+  const [reasonModal, setReasonModal] = useState(false);
+  const [declineConfirmationModal, setDeclineConfirmationModal] =
+    useState(false);
+  const [declineReasonMessage, setDeclineReasonMessage] = useState("");
+  const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
 
-  // Refs
-  const userAnnotationsCopyData = useRef(userAnnotationsCopy);
+  // ── Stable refs ────────────────────────────────────────────────────────────
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
-  const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
-  const removedAnnotationsRef = useRef(pdfResponceData.removedAnnotations);
+  const userAnnotationsCopyRef = useRef(userAnnotationsCopy);
+  const pdfXfdfRef = useRef(pdfData.xfdfData);
   const participantsRef = useRef(participants);
-  const removeXmlAfterHideDAtaRef = useRef(removeXmlAfterHideDAta);
   const hiddenUsersRef = useRef(hiddenUsers);
-  const readOnlyUsersRef = useRef(readOnlyUsers);
-  const removeXmlAfterFreetextHideDAtaRef = useRef(
-    removeXmlAfterFreetextHideDAta
-  );
-  const webViewerInitializedRef = useRef(false);
+  const removeXmlAfterHideDataRef = useRef(removeXmlAfterHideData);
+  const removeXmlAfterFreetextHideRef = useRef(removeXmlAfterFreetextHideData);
+  const fieldsDataRef = useRef(fieldsData);
+  const pdfDataRef = useRef(pdfData);
 
-  // ===== this use for current state update get =====//
-  useEffect(() => {
-    userAnnotationsCopyData.current = userAnnotationsCopy;
-  }, [userAnnotationsCopy]);
+  /**
+   * Set of ffield names that belong to the current user.
+   * Kept in a ref so WebViewer event callbacks can always read the latest value
+   * without needing the effect to re-run.
+   */
+  const currentUserFieldNamesRef = useRef(new Set());
 
+  /**
+   * Set of field names that the current user has already filled / signed during
+   * this session.  Populated exclusively via the `fieldChanged` event — the only
+   * reliable signal that Apryse provides for signature fields (Apryse stores
+   * signature data as an appearance stream, NOT as an XFDF field value, so
+   * XFDF parsing always returns empty for signature fields even after signing).
+   */
+  const filledFieldsRef = useRef(new Set());
+
+  // ── Sync state → refs ──────────────────────────────────────────────────────
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
-
-  useEffect(() => {
-    readOnlyUsersRef.current = readOnlyUsers;
-  }, [readOnlyUsers]);
-
-  useEffect(() => {
-    hiddenUsersRef.current = hiddenUsers;
-  }, [hiddenUsers]);
-
-  useEffect(() => {
-    userAnnotationsRef.current = userAnnotations;
-  }, [userAnnotations]);
-
-  useEffect(() => {
-    removeXmlAfterFreetextHideDAtaRef.current = removeXmlAfterFreetextHideDAta;
-  }, [removeXmlAfterFreetextHideDAta]);
-
-  useEffect(() => {
-    pdfResponceDataRef.current = pdfResponceData.xfdfData;
-  }, [pdfResponceData]);
-
-  useEffect(() => {
-    removedAnnotationsRef.current = pdfResponceData.removedAnnotations;
-  }, [pdfResponceData]);
-
-  useEffect(() => {
-    participantsRef.current = participants;
-  }, [participants]);
-
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
 
   useEffect(() => {
-    removeXmlAfterHideDAtaRef.current = removeXmlAfterHideDAta;
-  }, [removeXmlAfterHideDAta]);
+    userAnnotationsRef.current = userAnnotations;
+    // Recompute the current user's field names whenever annotations update
+    currentUserFieldNamesRef.current = getUserFieldNames(
+      userAnnotations,
+      getCurrentUserID(),
+    );
+  }, [userAnnotations]);
 
   useEffect(() => {
-    if (ResponseMessage) {
-      try {
-        showMessage(ResponseMessage, "error", setOpen);
-      } catch (error) { }
-    }
-  }, [ResponseMessage]);
-
-  // === Api calling === //
-  async function apiCall(Data) {
-    await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t, 1));
-    await dispatch(allAssignessList(navigate, t, false));
-  }
-
+    userAnnotationsCopyRef.current = userAnnotationsCopy;
+  }, [userAnnotationsCopy]);
   useEffect(() => {
-    if (docWorkflowID) {
-      let Data = {
-        FileID: Number(docWorkflowID),
-      };
-      apiCall(Data);
-    }
+    pdfXfdfRef.current = pdfData.xfdfData;
+  }, [pdfData.xfdfData]);
+  useEffect(() => {
+    participantsRef.current = participants;
+  }, [participants]);
+  useEffect(() => {
+    hiddenUsersRef.current = hiddenUsers;
+  }, [hiddenUsers]);
+  useEffect(() => {
+    removeXmlAfterHideDataRef.current = removeXmlAfterHideData;
+  }, [removeXmlAfterHideData]);
+  useEffect(() => {
+    removeXmlAfterFreetextHideRef.current = removeXmlAfterFreetextHideData;
+  }, [removeXmlAfterFreetextHideData]);
+  useEffect(() => {
+    fieldsDataRef.current = fieldsData;
+  }, [fieldsData]);
+  useEffect(() => {
+    pdfDataRef.current = pdfData;
+  }, [pdfData]);
+
+  // ── Initial API calls ──────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!docWorkflowID) return;
+    dispatch(
+      getWorkFlowByWorkFlowIdwApi(
+        { FileID: Number(docWorkflowID) },
+        navigate,
+        t,
+        1,
+      ),
+    );
+    dispatch(allAssignessList(navigate, t, false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docWorkflowID]);
 
-  // === checker for null array === //
-  function containsNull(arr) {
-    return arr.some((element) => element === null);
-  }
-
-  // === this is responce of GetAllFieldsByWorkFlowID ===//
   useEffect(() => {
-    if (getAllFieldsByWorkflowID) {
-      try {
-        let newFieldsData = [];
-        let revertedData;
+    if (ResponseMessage) showMessage(ResponseMessage, "error", setNotification);
+  }, [ResponseMessage]);
 
-        if (
-          getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
-            .length > 0
-        ) {
-          getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails.forEach(
-            (fieldsData) => {
-              newFieldsData.push({
-                pK_WorkFlowActionableBundle_ID:
-                  fieldsData.pK_WorkFlowActionableBundle_ID,
-                titles: fieldsData.titles,
-                bundleDeadline: fieldsData.bundleDeadline,
-                fK_ActionAbleBundleStatusState:
-                  fieldsData.fK_ActionAbleBundleStatusState,
-                bundleAssignedDate: fieldsData.bundleAssignedDate,
-                bundleDependenceID: fieldsData.bundleDependenceID,
-                actor_ID: fieldsData.actor_ID,
-                userID: fieldsData.userID,
-                actorName: fieldsData.actorName,
-                actorDesignation: fieldsData.actorDesignation,
-                actorEmail: fieldsData.actorEmail,
-                actorColor: fieldsData.actorColor,
-              });
-            }
-          );
+  // ── getAllFieldsByWorkflowID ────────────────────────────────────────────────
+  useEffect(() => {
+    if (!getAllFieldsByWorkflowID) return;
+    try {
+      const { bundleDetails, listOfFields } =
+        getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails;
+      if (!bundleDetails.length) return;
 
-          setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers);
-          setReadOnlyUsers(getAllFieldsByWorkflowID.readOnlyUsers);
+      setFieldsData(
+        bundleDetails.map((f) => ({
+          pK_WorkFlowActionableBundle_ID: f.pK_WorkFlowActionableBundle_ID,
+          titles: f.titles,
+          bundleDeadline: f.bundleDeadline,
+          fK_ActionAbleBundleStatusState: f.fK_ActionAbleBundleStatusState,
+          bundleAssignedDate: f.bundleAssignedDate,
+          bundleDependenceID: f.bundleDependenceID,
+          actor_ID: f.actor_ID,
+          userID: f.userID,
+          actorName: f.actorName,
+          actorDesignation: f.actorDesignation,
+          actorEmail: f.actorEmail,
+          actorColor: f.actorColor,
+        })),
+      );
 
-          function revert(data) {
-            return data.map((item) => {
-              const xmlField = item.xmlField
-                ? item.xmlField.split("_#_").map((str) => {
-                  try {
-                    return JSON.parse(str);
-                  } catch (error) {
-                    console.error(
-                      "Error parsing JSON:",
-                      error,
-                      "Input:",
-                      str
-                    );
-                    return null;
-                  }
-                })
-                : [];
-              return {
-                actorID: item.actorID,
-                userID: item.userID,
-                actorColor: item.actorColor,
-                xml: xmlField,
-              };
-            });
-          }
+      // hiddenUsers come from the API (future signers in ordered workflows)
+      setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers ?? []);
 
-          if (
-            containsNull(
-              getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
-            )
-          ) {
-            let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
-            if (bundleModels?.length > 0) {
-              let listOfUsers = [];
-              bundleModels.forEach((users) => {
-                users.actors.forEach((usersData) => {
-                  listOfUsers.push({
-                    actorID: usersData.fK_WorkFlowActor_ID,
-                    userID: usersData.pK_UID,
-                    actorColor: usersData.actorColor,
-                    xml: [],
-                  });
-                });
-              });
-              setUserAnnotations(listOfUsers);
-            }
-          } else {
-            revertedData = revert(
-              getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
-            );
-            setUserAnnotations(revertedData);
-            setUserAnnotationsCopy(revertedData);
-          }
-          setFieldsData(newFieldsData);
-        }
-      } catch (error) {
-        console.error("Error processing fields data:", error);
+      if (containsNull(listOfFields)) {
+        const bundles = getWorkfFlowByFileId?.workFlow?.bundleModels ?? [];
+        setUserAnnotations(
+          bundles.flatMap((b) =>
+            b.actors.map((a) => ({
+              actorID: a.fK_WorkFlowActor_ID,
+              userID: a.pK_UID,
+              actorColor: a.actorColor,
+              xml: [],
+            })),
+          ),
+        );
+      } else {
+        const reverted = revertXmlField(listOfFields);
+        setUserAnnotations(reverted);
+        setUserAnnotationsCopy(reverted);
       }
+    } catch (err) {
+      console.error("getAllFieldsByWorkflowID handler:", err);
     }
   }, [getAllFieldsByWorkflowID]);
 
-  // === Get Workflow by FileID Api responce Update Also trigger when FieldsDatavalues update its contain color of users===//
+  // ── getWorkfFlowByFileId ───────────────────────────────────────────────────
   useEffect(() => {
-    if (getWorkfFlowByFileId) {
-      try {
-        let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
-        if (bundleModels?.length > 0) {
-          let listOfUsers = [];
-          let signersData = [];
-          bundleModels.forEach((users) => {
-            users.actors.forEach((usersData) => {
-              listOfUsers.push({
-                name: usersData.name,
-                pk_UID: usersData.pK_UID,
-              });
-              signersData.push({
-                Name: usersData.name,
-                EmailAddress: usersData.emailAddress,
-                userID: usersData.pK_UID,
-              });
-            });
-          });
-          setSignerData(signersData);
-          setParticipants(listOfUsers);
-          setLastParticipants(listOfUsers);
-          setSelectedUser(listOfUsers[0].pk_UID);
-
-          if (
-            getAllFieldsByWorkflowID?.signatureWorkFlowFieldDetails
-              ?.bundleDetails?.length > 0
-          ) {
-            if (
-              containsNull(
-                getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                  .listOfFields
-              )
-            ) {
-              let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
-              if (bundleModels?.length > 0) {
-                let listOfUsers = [];
-                bundleModels.forEach((users) => {
-                  users.actors.forEach((usersData) => {
-                    listOfUsers.push({
-                      actorID: usersData.fK_WorkFlowActor_ID,
-                      userID: usersData.pK_UID,
-                      actorColor: usersData.actorColor,
-                      xml: [],
-                    });
-                  });
-                });
-                setUserAnnotations(listOfUsers);
-              }
-            }
-          }
-        }
-
-        setPdfResponceData((prevData) => ({
-          ...prevData,
-          xfdfData: "",
-          attachmentBlob: webViewer.attachmentBlob,
-          removedAnnotations: "",
-          workFlowID: getWorkfFlowByFileId?.workFlow?.workFlow.pK_WorkFlow_ID,
-          documentID: Number(docWorkflowID),
-          title: getWorkfFlowByFileId?.workFlow?.workFlow.title,
-          description: getWorkfFlowByFileId?.workFlow?.workFlow.description,
-          creationDateTime:
-            getWorkfFlowByFileId?.workFlow?.workFlow.creationDateTime,
-          isDeadline: getWorkfFlowByFileId?.workFlow?.workFlow.isDeadline,
-          deadlineDatetime:
-            getWorkfFlowByFileId?.workFlow?.workFlow.deadlineDatetime,
-          creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
-          isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
-        }));
-      } catch (error) {
-        console.error("Error processing workflow data:", error);
-      }
-    }
-  }, [getWorkfFlowByFileId, FieldsData]);
-
-  // === Combined useEffect for processing API response and initializing WebViewer === //
-  useEffect(() => {
-    // Process API response when it arrives
-    if (getSignatureFileAnnotationResponse) {
-      try {
-        let currentUserID =
-          localStorage.getItem("userID") !== null
-            ? Number(localStorage.getItem("userID"))
-            : 0;
-
-        let HideArray = [];
-        let ReadArray = [];
-
-        // Iterate over each object in the data array
-        userAnnotationsRef.current.forEach((obj) => {
-          // Check if userID does not match currentID
-          if (obj.userID !== currentUserID) {
-            // Iterate over xml array in the current object
-            obj.xml.forEach((item) => {
-              // Extract all 'name' attributes from ffield excluding font tag
-              let ffield = item.ffield;
-              let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-              if (matches) {
-                matches.forEach((match) => {
-                  // Extract the name value and push into nameArray
-                  let name = match.match(/name="([^"]+)"/)[1];
-                  if (hiddenUsersRef.current.includes(obj.userID)) {
-                    HideArray.push(name);
-                  } else if (readOnlyUsersRef.current.includes(obj.userID)) {
-                    ReadArray.push(name);
-                  }
-                });
-              }
-            });
-          }
-        });
-
-        let newProcessXmlForReadOnly = processXmlForReadOnly(
-          getSignatureFileAnnotationResponse.annotationString,
-          ReadArray
-        );
-
-        // Process the XML to hide fields
-        const { updatedXmlString, removedItems } = processXmlToHideFields(
-          newProcessXmlForReadOnly,
-          HideArray
-        );
-        setRemoveXmlAfterHideDAta(removedItems);
-        const readonlyFreetextXmlString = readOnlyFreetextElements(
-          updatedXmlString,
-          readOnlyUsersRef.current
-        );
-
-        const { hideFreetextXmlString, removedHideFreetextElements } =
-          hideFreetextElements(
-            readonlyFreetextXmlString,
-            hiddenUsersRef.current
-          );
-
-        setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
-
-        setPdfResponceData((prevData) => ({
-          ...prevData,
-          xfdfData: hideFreetextXmlString,
-          attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
-        }));
-      } catch (error) {
-        console.error("Error processing signature file annotation:", error);
-      }
-    }
-
-    // Initialize WebViewer when blob is available and not already initialized
-    if (
-      pdfResponceData.attachmentBlob !== "" &&
-      !webViewerInitializedRef.current
-    ) {
-      const initializeWebViewer = async () => {
-        try {
-          const instance = await WebViewer(
-            {
-              path: "/webviewer/lib",
-              showLocalFilePicker: true,
-              fullAPI: true,
-              licenseKey:
-                process.env.REACT_APP_APRYSEKEY,
-            },
-            viewer.current
-          );
-
-          setInstance(instance);
-          webViewerInitializedRef.current = true;
-
-          instance.UI.loadDocument(
-            handleBlobFiles(pdfResponceData.attachmentBlob),
-            {
-              filename: pdfResponceData.title,
-            }
-          );
-
-          const { documentViewer, annotationManager, Tools } = instance.Core;
-          const { FitMode, setFitMode } = instance.UI;
-          documentViewer.addEventListener("documentLoaded", async () => {
-            await documentViewer.getAnnotationsLoadedPromise();
-
-            if (pdfResponceData.xfdfData !== "" && annotationManager) {
-              try {
-                const cleanedXFDF = sanitizeXFDF(
-                  pdfResponceDataRef.current,
-                  documentViewer
-                );
-                await annotationManager.importAnnotations(cleanedXFDF);
-                // ✅ Always fit to width on load
-                setFitMode(FitMode.FitWidth);
-                // Lock All Annotations
-                const annotations = annotationManager.getAnnotationsList();
-                annotations.forEach((annot) => {
-                  annot.Locked = true;
-                  annot.ReadOnly = true;
-                  annot.NoResize = true;
-                  annot.NoMove = true;
-                  annot.NoRotate = true;
-                  annotationManager.redrawAnnotation(annot);
-                });
-              } catch (error) {
-                console.error("Error importing annotations:", error);
-              }
-            }
-
-            documentViewer.refreshAll();
-            documentViewer.updateView();
-          });
-
-          // Disable header tools and elements
-          instance.UI.disableTools([Tools.disableTextSelection]);
-          instance.UI.disableElements([
-            "colorPalette",
-            "underlineToolGroupButton",
-            "textSelectButton",
-            "textSelectButtonGroup",
-            "textSelectButtonGroupButton",
-            "textPopup",
-            "outlinesPanelButton",
-            "comboBoxFieldToolGroupButton",
-            "listBoxFieldToolGroupButton",
-            "toolsOverlay",
-            "toolbarGroup-Shapes",
-            "toolbarGroup-Edit",
-            "toolbarGroup-Insert",
-            "shapeToolGroupButton",
-            "menuButton",
-            "freeHandHighlightToolGroupButton",
-            "underlineToolGroupButton",
-            "freeHandToolGroupButton",
-            "stickyToolGroupButton",
-            "squigglyToolGroupButton",
-            "strikeoutToolGroupButton",
-            "notesPanel",
-            "viewControlsButton",
-            "selectToolButton",
-            "toggleNotesButton",
-            "searchButton",
-            "freeTextToolGroupButton",
-            "crossStampToolButton",
-            "checkStampToolButton",
-            "dotStampToolButton",
-            "rubberStampToolGroupButton",
-            "dateFreeTextToolButton",
-            "eraserToolButton",
-            "panToolButton",
-            "signatureToolGroupButton",
-            "viewControlsOverlay",
-            "contextMenuPopup",
-            "signaturePanelButton",
-            "annotationPopup",
-            "textPopup",
-            "richTextPopup",
-            "toolbarGroup-Annotate",
-            "leftPanelButton",
-            "zoomOverlayButton",
-            "toolbarGroup-Forms",
-          ]);
-
-          // Custom header buttons
-          const handleClickDeclineBtn = () => {
-            setReasonModal(true);
-          };
-
-          const handleClickCloseBtn = () => {
-            window.close();
-          };
-
-          const handleClickSaveBtn = async () => {
-            try {
-              const xfdfString = await annotationManager.exportAnnotations();
-              let currentUserID =
-                localStorage.getItem("userID") !== null
-                  ? Number(localStorage.getItem("userID"))
-                  : 0;
-
-              let HideArray = [];
-              let ReadArray = [];
-
-              // Iterate over each object in the data array
-              await userAnnotationsRef.current.forEach((obj) => {
-                if (obj.userID !== currentUserID) {
-                  obj.xml.forEach((item) => {
-                    let ffield = item.ffield;
-                    let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-                    if (matches) {
-                      matches.forEach((match) => {
-                        let name = match.match(/name="([^"]+)"/)[1];
-                        if (hiddenUsersRef.current.includes(obj.userID)) {
-                          HideArray.push(name);
-                        } else if (
-                          readOnlyUsersRef.current.includes(obj.userID)
-                        ) {
-                          ReadArray.push(name);
-                        }
-                      });
-                    }
-                  });
-                }
-              });
-
-              let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
-                xfdfString,
-                ReadArray
-              );
-
-              const revertedHideFieldsXml = await revertProcessXmlToHideFields(
-                newProcessXmlForReadOnly,
-                removeXmlAfterHideDAtaRef.current
-              );
-
-              const afterAddReadOnlyFreetextElements =
-                await revertReadOnlyFreetextElements(
-                  revertedHideFieldsXml,
-                  readOnlyUsersRef.current
-                );
-
-              const doc = new DOMParser().parseFromString(
-                afterAddReadOnlyFreetextElements,
-                "text/xml"
-              );
-              const annots = doc.getElementsByTagName("annots");
-
-              if (annots?.length === 0 || !annots[0].hasChildNodes()) {
-                showMessage(
-                  t("Signature-is-required"),
-                  "warning",
-                  setOpen
-                );
-                return;
-              }
-
-              const afterAddRevertHideFreetextElements =
-                await revertHideFreetextElements(
-                  afterAddReadOnlyFreetextElements,
-                  removeXmlAfterFreetextHideDAtaRef.current
-                );
-
-              const parser = new DOMParser();
-              const mainXmlDoc = parser.parseFromString(
-                afterAddRevertHideFreetextElements,
-                "text/xml"
-              );
-
-              function existsInMainXML(name, type, mainXmlDoc) {
-                const elements = mainXmlDoc.querySelectorAll(
-                  `${type}[name="${name}"]`
-                );
-                return elements.length > 0;
-              }
-
-              let covert = userAnnotationsRef.current.map((user) => {
-                let filteredXml = user.xml.filter((item) => {
-                  const ffieldDoc = parser.parseFromString(
-                    item.ffield,
-                    "text/xml"
-                  );
-                  const widgetDoc = parser.parseFromString(
-                    item.widget,
-                    "text/xml"
-                  );
-                  const ffieldName =
-                    ffieldDoc.documentElement.getAttribute("name");
-                  const widgetName =
-                    widgetDoc.documentElement.getAttribute("name");
-
-                  return (
-                    existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
-                    existsInMainXML(widgetName, "widget", mainXmlDoc)
-                  );
-                });
-
-                return { ...user, xml: filteredXml };
-              });
-
-              let convertData = [];
-              covert.forEach((data) => {
-                const xmlListStrings = data.xml.map((xmlObj) =>
-                  JSON.stringify(xmlObj)
-                );
-                convertData.push({
-                  ActorID: data.actorID,
-                  xmlList: xmlListStrings,
-                });
-              });
-
-              // add annotation of files attachment api
-              let addAnnoatationofFilesAttachment = {
-                FileID: Number(docWorkflowID),
-                AnnotationString: afterAddRevertHideFreetextElements,
-                CreatorID: pdfResponceData.creatorID,
-              };
-
-              let userID =
-                localStorage.getItem("userID") !== null
-                  ? Number(localStorage.getItem("userID"))
-                  : 0;
-
-              let findActionBundleID = FieldsData.find(
-                (actorData) => Number(actorData.userID) === userID
-              );
-
-              // Update Actor Bundle Status APi Call
-              let UpdateActorBundle = {
-                WorkFlowID: pdfResponceData.workFlowID,
-                UserID: userID,
-                WorkFlowActionableBundleID: findActionBundleID
-                  ? findActionBundleID.pK_WorkFlowActionableBundle_ID
-                  : 0,
-              };
-
-              let newData = { ActorsFieldValuesList: convertData };
-
-              dispatch(
-                addUpdateFieldValueApi(
-                  newData,
-                  navigate,
-                  t,
-                  addAnnoatationofFilesAttachment,
-                  "",
-                  3,
-                  "",
-                  UpdateActorBundle
-                )
-              );
-            } catch (error) {
-              console.error("Error saving annotations:", error);
-            }
-          };
-
-          let ifUserExist = signerDataRef.current.find(
-            (user) =>
-              Number(user.userID) === Number(localStorage.getItem("userID"))
-          );
-
-          if (ifUserExist !== undefined) {
-            instance.UI.setHeaderItems((header) => {
-              header.push({
-                type: "customElement",
-                render: () => {
-                  const textBoxButton = document.createElement("button");
-                  textBoxButton.textContent = "Decline";
-                  textBoxButton.style.background = "#fff";
-                  textBoxButton.style.border = "1px solid #e1e1e1";
-                  textBoxButton.style.color = "#5a5a5a";
-                  textBoxButton.style.padding = "8px 30px";
-                  textBoxButton.style.cursor = "pointer";
-                  textBoxButton.style.borderRadius = "4px";
-                  textBoxButton.onclick = handleClickDeclineBtn;
-                  return textBoxButton;
-                },
-              });
-
-              header.push({
-                type: "customElement",
-                render: () => {
-                  const SaveButton = document.createElement("button");
-                  SaveButton.textContent = "Submit";
-                  SaveButton.style.background = "#6172d6";
-                  SaveButton.style.color = "#fff";
-                  SaveButton.style.borderRadius = "4px";
-                  SaveButton.style.cursor = "pointer";
-                  SaveButton.style.padding = "8px 30px";
-                  SaveButton.style.margin = "10px 0 10px 10px";
-                  SaveButton.style.border = "1px solid #6172d6";
-                  SaveButton.onclick = handleClickSaveBtn;
-                  return SaveButton;
-                },
-              });
-            });
-          } else {
-            instance.UI.setHeaderItems((header) => {
-              header.push({
-                type: "customElement",
-                render: () => {
-                  const textBoxButton = document.createElement("button");
-                  textBoxButton.textContent = "Close";
-                  textBoxButton.style.background = "#fff";
-                  textBoxButton.style.border = "1px solid #e1e1e1";
-                  textBoxButton.style.color = "#5a5a5a";
-                  textBoxButton.style.padding = "8px 30px";
-                  textBoxButton.style.cursor = "pointer";
-                  textBoxButton.style.borderRadius = "4px";
-                  textBoxButton.onclick = handleClickCloseBtn;
-                  return textBoxButton;
-                },
-              });
-            });
-          }
-        } catch (error) {
-          console.error("Error initializing WebViewer:", error);
-        }
-      };
-
-      initializeWebViewer();
-    }
-  }, [getSignatureFileAnnotationResponse, pdfResponceData.attachmentBlob]);
-
-  // this will generate my xfdf files for user base and send into AddUpdateFieldValue
-  const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
+    if (!getWorkfFlowByFileId) return;
     try {
-      let userSelect = parseInt(userSelectID);
-      // Iterate over each user's annotations
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-      xmlDoc.querySelectorAll("widget").forEach((widget) => {
-        const widgetName = widget.getAttribute("name");
-        const ffieldName = widget.getAttribute("field");
-        let widgetFound = false;
-        userAnnotations.forEach((user) => {
-          user.xml.forEach((xml) => {
-            if (xml.widget.includes(widgetName)) {
-              // Replace the ffield and widget with new values from the main XML
-              const ffieldElement = xmlDoc.querySelector(
-                `ffield[name="${ffieldName}"]`
-              );
-              const widgetElement = widget;
-              if (ffieldElement && widgetElement) {
-                xml.ffield = ffieldElement.outerHTML;
-                xml.widget = widgetElement.outerHTML;
-                widgetFound = true;
-              } else {
-                console.log("Element not found:", ffieldName, widgetName);
-              }
-            }
-          });
-        });
-        // If the widget was not found in userAnnotations, add it
-        if (!widgetFound) {
-          userAnnotations.forEach((user) => {
-            if (user.userID === userSelect) {
-              user.xml.push({
-                ffield: xmlDoc.querySelector(`ffield[name="${ffieldName}"]`)
-                  .outerHTML,
-                widget: widget.outerHTML,
-              });
-            }
-          });
-        }
-      });
-      // Update the state with the modified userAnnotations
-      setUserAnnotations(userAnnotations);
-    } catch (error) {
-      console.error("Error updating XFDF:", error);
-    }
-  };
+      const { bundleModels, workFlow } = getWorkfFlowByFileId.workFlow;
 
-  // ==== this is use for add participants in side bar ====//
-  useEffect(() => {
-    if (Instance && participants) {
-      // Rerender the custom panel to reflect the updated participants
-      Instance.UI.disableElement("customPanel");
-      Instance.UI.enableElement("customPanel");
-      Instance.UI.setActiveLeftPanel("customPanel");
-      let usersNotInParticipants = lastParticipants.filter(
-        (lastParticipant) =>
-          !participants.some(
-            (participant) => participant.pk_UID === lastParticipant.pk_UID
-          )
-      );
-      if (usersNotInParticipants.length > 0) {
-        setLastParticipants(participants);
-      } else {
-        setLastParticipants(participants);
+      if (bundleModels?.length) {
+        const listOfUsers = [];
+        const signersArr = [];
+
+        bundleModels.forEach((b) =>
+          b.actors.forEach((a) => {
+            listOfUsers.push({ name: a.name, pk_UID: a.pK_UID });
+            signersArr.push({
+              Name: a.name,
+              EmailAddress: a.emailAddress,
+              userID: a.pK_UID,
+            });
+          }),
+        );
+
+        setSignerData(signersArr);
+        setParticipants(listOfUsers);
+        setLastParticipants(listOfUsers);
+        setSelectedUser(listOfUsers[0]?.pk_UID);
+
+        const { listOfFields } =
+          getAllFieldsByWorkflowID?.signatureWorkFlowFieldDetails ?? {};
+        if (listOfFields && containsNull(listOfFields)) {
+          setUserAnnotations(
+            bundleModels.flatMap((b) =>
+              b.actors.map((a) => ({
+                actorID: a.fK_WorkFlowActor_ID,
+                userID: a.pK_UID,
+                actorColor: a.actorColor,
+                xml: [],
+              })),
+            ),
+          );
+        }
       }
-    }
-  }, [participants]);
 
-  // === this is for update instance ===//
+      setPdfData((prev) => ({
+        ...prev,
+        attachmentBlob: webViewer.attachmentBlob,
+        workFlowID: workFlow.pK_WorkFlow_ID,
+        documentID: Number(docWorkflowID),
+        title: workFlow.title,
+        description: workFlow.description,
+        creationDateTime: workFlow.creationDateTime,
+        isDeadline: workFlow.isDeadline,
+        deadlineDatetime: workFlow.deadlineDatetime,
+        creatorID: workFlow.creatorID,
+        isCreator: workFlow.isCreator,
+      }));
+    } catch (err) {
+      console.error("getWorkfFlowByFileId handler:", err);
+    }
+  }, [getWorkfFlowByFileId, fieldsData]);
+
+  // ── getSignatureFileAnnotationResponse ────────────────────────────────────
+  //
+  // Pre-processes the XFDF before it is loaded into the viewer:
+  //   • Hidden users   → their ffield / widget / freetext elements are stripped
+  //   • All other non-current users → their ffield elements get ReadOnly flag
+  //     and their freetext annotations get print+locked flags
+  //   This ensures already-signed data is visible but not editable.
+  //
   useEffect(() => {
-    if (Instance) {
-      const { annotationManager } = Instance.Core;
-      annotationManager.addEventListener(
-        "annotationChanged",
-        async (annotations, action, { imported }) => {
-          if (imported) {
-            return;
-          }
-
-          try {
-            // Export annotations to XFDF format using `exportAnnotations`
-            const xfdfString = await annotationManager.exportAnnotations();
-
-            // Update the user's annotations based on the action
-            updateXFDF(
-              action,
-              xfdfString,
-              selectedUserRef.current,
-              userAnnotationsRef.current
-            );
-          } catch (error) {
-            console.error("Error updating annotations:", error);
-          }
-        }
+    if (!getSignatureFileAnnotationResponse) return;
+    try {
+      const currentUserID = getCurrentUserID();
+      const { HideArray, ReadArray } = buildHideReadArrays(
+        userAnnotationsRef.current,
+        hiddenUsersRef.current,
+        currentUserID,
       );
+
+      // 1. Mark non-hidden other users' widget fields as ReadOnly in XFDF
+      const withReadOnly = processXmlForReadOnly(
+        getSignatureFileAnnotationResponse.annotationString,
+        ReadArray,
+      );
+
+      // 2. Strip widget / ffield entries for hidden users (ordered workflow)
+      const { updatedXmlString, removedItems } = processXmlToHideFields(
+        withReadOnly,
+        HideArray,
+      );
+      setRemoveXmlAfterHideData(removedItems);
+
+      // All non-current, non-hidden users → their freetext labels are read-only
+      const readOnlyUserIDs = userAnnotationsRef.current
+        .filter(
+          (u) =>
+            u.userID !== currentUserID &&
+            !hiddenUsersRef.current.includes(u.userID),
+        )
+        .map((u) => u.userID);
+
+      // 3. Lock freetext (label) annotations belonging to readOnly users
+      const withReadOnlyFreetext = readOnlyFreetextElements(
+        updatedXmlString,
+        readOnlyUserIDs,
+      );
+
+      // 4. Remove freetext annotations belonging to hidden users
+      const { hideFreetextXmlString, removedHideFreetextElements } =
+        hideFreetextElements(withReadOnlyFreetext, hiddenUsersRef.current);
+      setRemoveXmlAfterFreetextHideData(removedHideFreetextElements);
+
+      setPdfData((prev) => ({
+        ...prev,
+        xfdfData: hideFreetextXmlString,
+        attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
+      }));
+    } catch (err) {
+      console.error("getSignatureFileAnnotationResponse handler:", err);
     }
-  }, [Instance]);
+  }, [getSignatureFileAnnotationResponse]);
 
-  const handleClickDeclineBtn = () => {
-    if (declineReasonMessage !== "") {
-      let userID = localStorage.getItem("userID");
+  // ─── Save / submit handler ────────────────────────────────────────────────
 
-      let findActorID = userAnnotationsRef.current.find(
-        (data) => Number(data.userID) === Number(userID)
-      );
-      if (findActorID !== undefined) {
-        let Data = {
-          FK_WorkFlow_ID: pdfResponceData.workFlowID,
-          Reason: declineReasonMessage,
-          DeclinedById: Number(findActorID.actorID),
-        };
+  const handleSave = useCallback(
+    async (annotationManager) => {
+      try {
+        const currentUserID = getCurrentUserID();
+        const currentUserFieldNames = currentUserFieldNamesRef.current;
+
+        // Export XFDF once — used for both validation and API payload
+        const xfdfString = await annotationManager.exportAnnotations();
+
+        // ── Validation: every assigned field must be filled ──────────────────
+        // validateViaXFDF inspects the exported XFDF synchronously:
+        //   • Sig fields  → widget.childElementCount > 0 (appearance stream present)
+        //   • Tx/Ch fields → <fields><field><value> non-empty
+        //   • Btn fields   → always considered filled
+        const { valid } = validateViaXFDF(
+          xfdfString,
+          currentUserFieldNames,
+          userAnnotationsRef.current,
+          currentUserID,
+        );
+
+        if (!valid) {
+          showMessage(
+            t("Please-fill-all-required-fields-before-submitting"),
+            "warning",
+            setNotification,
+          );
+          return;
+        }
+
+        // ── Revert XFDF transformations before sending to API ────────────────
+        const { HideArray, ReadArray } = buildHideReadArrays(
+          userAnnotationsRef.current,
+          hiddenUsersRef.current,
+          currentUserID,
+        );
+
+        const readOnlyUserIDs = userAnnotationsRef.current
+          .filter(
+            (u) =>
+              u.userID !== currentUserID &&
+              !hiddenUsersRef.current.includes(u.userID),
+          )
+          .map((u) => u.userID);
+
+        let reverted = await revertProcessXmlForReadOnly(xfdfString, ReadArray);
+        reverted = await revertProcessXmlToHideFields(
+          reverted,
+          removeXmlAfterHideDataRef.current,
+        );
+        reverted = await revertReadOnlyFreetextElements(
+          reverted,
+          readOnlyUserIDs,
+        );
+        reverted = await revertHideFreetextElements(
+          reverted,
+          removeXmlAfterFreetextHideRef.current,
+        );
+
+        // ── Build API payload ────────────────────────────────────────────────
+        const filtered = filterAnnotationsAgainstXFDF(
+          userAnnotationsRef.current,
+          reverted,
+        );
+        const convertData = convertAnnotationsForApi(filtered);
+        const userID = getCurrentUserID();
+        const findActionBundleID = fieldsDataRef.current.find(
+          (d) => Number(d.userID) === userID,
+        );
+
         dispatch(
-          declineReasonApi(
+          addUpdateFieldValueApi(
+            { ActorsFieldValuesList: convertData },
             navigate,
             t,
-            Data,
-            setReasonModal,
-            setDeclineConfirmationModal
-          )
+            {
+              FileID: Number(docWorkflowID),
+              AnnotationString: reverted,
+              CreatorID: pdfDataRef.current.creatorID,
+            },
+            "",
+            3,
+            "",
+            {
+              WorkFlowID: pdfDataRef.current.workFlowID,
+              UserID: userID,
+              WorkFlowActionableBundleID:
+                findActionBundleID?.pK_WorkFlowActionableBundle_ID ?? 0,
+            },
+          ),
         );
+      } catch (err) {
+        console.error("handleSave:", err);
       }
-    } else {
+    },
+    [docWorkflowID, dispatch, navigate, t],
+  );
+
+  // ─── WebViewer initialisation ─────────────────────────────────────────────
+
+  useEffect(() => {
+    if (
+      !pdfData.attachmentBlob ||
+      webViewerInitialized.current ||
+      !viewerRef.current
+    )
+      return;
+
+    const init = async () => {
+      try {
+        const inst = await WebViewer(
+          {
+            path: "/webviewer/lib",
+            fullAPI: true,
+            licenseKey: process.env.REACT_APP_APRYSEKEY,
+          },
+          viewerRef.current,
+        );
+
+        setInstance(inst);
+        webViewerInitialized.current = true;
+
+        const { UI, Core } = inst;
+        const { documentViewer, annotationManager } = Core;
+
+        UI.loadDocument(handleBlobFiles(pdfData.attachmentBlob), {
+          filename: pdfData.title,
+        });
+
+        // Disable all authoring / editing toolbar elements
+        UI.disableElements([
+          "linkButton",
+          "annotationStyleEditButton",
+          "annotationDeleteButton",
+          "indexPanel",
+          "formFieldPanel",
+          "groupedLeftHeaderButtons",
+          "toolbarGroup-FillAndSign",
+          "signatureListPanel",
+          "insertGroupedItems",
+          "view-controls-toggle-button",
+          "searchPanelToggle",
+          "notesPanelToggle",
+          "colorPalette",
+          "underlineToolGroupButton",
+          "textSelectButton",
+          "textSelectButtonGroup",
+          "textPopup",
+          "outlinesPanelButton",
+          "comboBoxFieldToolGroupButton",
+          "listBoxFieldToolGroupButton",
+          "toolsOverlay",
+          "toolbarGroup-Shapes",
+          "toolbarGroup-Edit",
+          "toolbarGroup-Insert",
+          "shapeToolGroupButton",
+          "menuButton",
+          "freeHandHighlightToolGroupButton",
+          "freeHandToolGroupButton",
+          "stickyToolGroupButton",
+          "squigglyToolGroupButton",
+          "strikeoutToolGroupButton",
+          "notesPanel",
+          "viewControlsButton",
+          "selectToolButton",
+          "toggleNotesButton",
+          "searchButton",
+          "freeTextToolGroupButton",
+          "crossStampToolButton",
+          "checkStampToolButton",
+          "dotStampToolButton",
+          "rubberStampToolGroupButton",
+          "dateFreeTextToolButton",
+          "eraserToolButton",
+          "panToolButton",
+          "signatureToolGroupButton",
+          "viewControlsOverlay",
+          "contextMenuPopup",
+          "signaturePanelButton",
+          "annotationPopup",
+          "richTextPopup",
+          "toolbarGroup-Annotate",
+          "leftPanelButton",
+          "zoomOverlayButton",
+          "toolbarGroup-Forms",
+        ]);
+
+        // ── documentLoaded ────────────────────────────────────────────────────
+        documentViewer.addEventListener("documentLoaded", async () => {
+          await documentViewer.getAnnotationsLoadedPromise();
+          UI.setFitMode(UI.FitMode.FitWidth);
+
+          if (pdfXfdfRef.current) {
+            try {
+              const cleanedXFDF = sanitizeXFDF(
+                pdfXfdfRef.current,
+                documentViewer,
+              );
+              await annotationManager.importAnnotations(cleanedXFDF);
+
+              // Apply locks immediately after import so the UI reflects
+              // the correct editable / read-only state from the start.
+              const currentUserID = getCurrentUserID();
+              applyAnnotationLocks(
+                annotationManager,
+                annotationManager.getAnnotationsList(),
+                currentUserID,
+                currentUserFieldNamesRef.current,
+              );
+            } catch (err) {
+              console.error("importAnnotations:", err);
+            }
+          }
+
+          documentViewer.refreshAll();
+          documentViewer.updateView();
+        });
+
+        // ── Header buttons ─────────────────────────────────────────────────────
+        const topHeader = UI.getModularHeader("default-top-header");
+        const existingItems = topHeader.getItems();
+        const currentUserID = getCurrentUserID();
+        const isSignatory = signerDataRef.current.some(
+          (u) => Number(u.userID) === currentUserID,
+        );
+
+        let actionGroup;
+
+        if (isSignatory) {
+          const declineButton = new UI.Components.CustomButton({
+            dataElement: "declineButton",
+            label: t("Decline"),
+            title: t("Decline"),
+            onClick: () => setReasonModal(true),
+            style: {
+              background: "#fff",
+              border: "1px solid #e1e1e1",
+              color: "#5a5a5a",
+              padding: "8px 30px",
+              borderRadius: "4px",
+            },
+          });
+
+          const submitButton = new UI.Components.CustomButton({
+            dataElement: "submitButton",
+            label: t("Submit"),
+            title: t("Submit"),
+            // handleSave reads from refs — always uses latest data
+            onClick: () => handleSave(annotationManager),
+            style: {
+              background: "#6172d6",
+              border: "1px solid #6172d6",
+              color: "#fff",
+              padding: "8px 30px",
+              borderRadius: "4px",
+              marginLeft: "10px",
+            },
+          });
+
+          actionGroup = new UI.Components.GroupedItems({
+            dataElement: "pendingSignatureActionButtons",
+            grow: 0,
+            gap: 8,
+            position: "end",
+            alwaysVisible: true,
+            items: [declineButton, submitButton],
+          });
+        } else {
+          // Non-signatory viewers get a read-only Close button
+          const closeButton = new UI.Components.CustomButton({
+            dataElement: "closeButton",
+            label: t("Close"),
+            title: t("Close"),
+            onClick: () => window.close(),
+            style: {
+              background: "#fff",
+              border: "1px solid #e1e1e1",
+              color: "#5a5a5a",
+              padding: "8px 30px",
+              borderRadius: "4px",
+            },
+          });
+
+          actionGroup = new UI.Components.GroupedItems({
+            dataElement: "pendingSignatureActionButtons",
+            grow: 0,
+            gap: 8,
+            position: "end",
+            alwaysVisible: true,
+            items: [closeButton],
+          });
+        }
+
+        topHeader.setItems([...existingItems, actionGroup]);
+      } catch (err) {
+        console.error("WebViewer init error:", err);
+      }
+    };
+
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pdfData.attachmentBlob]);
+
+  // ── annotationChanged + fieldChanged event listeners ──────────────────────
+  //
+  // annotationChanged: syncs the userAnnotations XFDF snapshot and re-applies
+  //   locks in case Apryse resets any flags internally.
+  //
+  // fieldChanged: fires AFTER Apryse finishes its own post-commit processing.
+  //   This is the only reliable place to clear the field-level ReadOnly that
+  //   Apryse sets after a signature is committed, so the user can re-sign.
+  //
+  useEffect(() => {
+    if (!instance) return;
+    const { annotationManager } = instance.Core;
+    const currentUserID = getCurrentUserID();
+
+    const annotHandler = async (annotations, action, { imported }) => {
+      if (imported) return;
+
+      // ── Sync XFDF snapshot ────────────────────────────────────────────────
+      try {
+        const xfdfString = await annotationManager.exportAnnotations();
+        const snapshot = userAnnotationsRef.current.map((u) => ({
+          ...u,
+          xml: [...u.xml],
+        }));
+        mergeXFDFIntoAnnotations(xfdfString, selectedUserRef.current, snapshot);
+        setUserAnnotations(snapshot);
+      } catch (err) {
+        console.error("annotationChanged snapshot:", err);
+      }
+
+      // Re-apply locks after every change in case Apryse overwrites them
+      applyAnnotationLocks(
+        annotationManager,
+        annotations,
+        currentUserID,
+        currentUserFieldNamesRef.current,
+      );
+    };
+
+    // fieldChanged fires AFTER Apryse finishes all internal post-commit work.
+    // It receives (field, newValue) — the only reliable hook for two jobs:
+    //
+    //  1. Track filled state in filledFieldsRef so validation works correctly.
+    //     Apryse stores signature appearances as PDF streams, NOT as XFDF values,
+    //     so XFDF parsing always returns "" for signed signature fields.
+    //     Instead we trust fieldChanged: if it fired for a Sig field, it was signed.
+    //
+    //  2. Clear the field-level ReadOnly flag that Apryse sets after committing
+    //     a signature, so the widget stays clickable for re-signing.
+    const fieldHandler = (field, newValue) => {
+      try {
+        const fieldName = field.name;
+        if (!currentUserFieldNamesRef.current.has(fieldName)) return;
+
+        // ── 1. Track filled state ───────────────────────────────────────────
+        const fieldType = field.type || "";
+
+        if (fieldType === "Sig") {
+          // Any fieldChanged on a signature field = the user completed signing.
+          // Do NOT check newValue — Apryse passes "" for appearance-based sigs.
+          filledFieldsRef.current.add(fieldName);
+        } else if (fieldType === "Btn") {
+          // Checkbox / radio — always valid; mark filled unconditionally.
+          filledFieldsRef.current.add(fieldName);
+        } else {
+          // Text / Choice fields: filled only when the value is non-empty.
+          const strValue = String(newValue ?? "").trim();
+          if (strValue) {
+            filledFieldsRef.current.add(fieldName);
+          } else {
+            filledFieldsRef.current.delete(fieldName);
+          }
+        }
+
+        // ── 2. Re-sign unlock ───────────────────────────────────────────────
+        // Clear the PDF field-level ReadOnly that Apryse applies post-commit.
+        field.flags.set("ReadOnly", false);
+
+        field.widgets?.forEach((annot) => {
+          annot.Locked = false;
+          annot.ReadOnly = false;
+          annot.NoResize = false;
+          annot.NoMove = false;
+          annot.NoRotate = false;
+          annotationManager.updateAnnotation(annot);
+          annotationManager.redrawAnnotation(annot);
+        });
+      } catch (err) {
+        console.error("fieldChanged:", err);
+      }
+    };
+
+    annotationManager.addEventListener("annotationChanged", annotHandler);
+    annotationManager.addEventListener("fieldChanged", fieldHandler);
+
+    return () => {
+      annotationManager.removeEventListener("annotationChanged", annotHandler);
+      annotationManager.removeEventListener("fieldChanged", fieldHandler);
+    };
+  }, [instance]);
+
+  // ── Participants change ────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!instance || !participants.length) return;
+    instance.UI.disableElement("customPanel");
+    instance.UI.enableElement("customPanel");
+    instance.UI.setActiveLeftPanel("customPanel");
+    setLastParticipants(participants);
+  }, [participants]);
+
+  // ─── Decline confirm ──────────────────────────────────────────────────────
+
+  const handleConfirmDecline = () => {
+    if (!declineReasonMessage) {
       setDeclineErrorMessage(true);
+      return;
     }
+
+    const userID = getCurrentUserID();
+    const actorData = userAnnotationsRef.current.find(
+      (d) => Number(d.userID) === userID,
+    );
+    if (!actorData) return;
+
+    dispatch(
+      declineReasonApi(
+        navigate,
+        t,
+        {
+          FK_WorkFlow_ID: pdfDataRef.current.workFlowID,
+          Reason: declineReasonMessage,
+          DeclinedById: Number(actorData.actorID),
+        },
+        setReasonModal,
+        setDeclineConfirmationModal,
+      ),
+    );
   };
+
+  // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div style={{ height: "100vh", width: "100%" }}>
+        <div ref={viewerRef} style={{ height: "100%", width: "100%" }} />
       </div>
 
       {reasonModal && (
@@ -914,20 +1133,22 @@ const SignatureViewer = () => {
           setShow={setReasonModal}
           declineReasonMessage={declineReasonMessage}
           setDeclineReasonMessage={setDeclineReasonMessage}
-          handleClickDecline={handleClickDeclineBtn}
+          handleClickDecline={handleConfirmDecline}
           declineErrorMessage={declineErrorMessage}
           setDeclineErrorMessage={setDeclineErrorMessage}
         />
       )}
+
       {declineConfirmationModal && (
         <DeclineReasonCloseModal
-          setShow={setDeclineConfirmationModal}
           show={declineConfirmationModal}
+          setShow={setDeclineConfirmationModal}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+
+      <Notification open={notification} setOpen={setNotification} />
     </>
   );
 };
 
-export default SignatureViewer;
+export default PendingSignatureViewer;

@@ -17,6 +17,16 @@ import SingleIcon from "../../../../../assets/images/Single-Icon.png";
 import BlockedContactsIcon from "../../../../../assets/images/Blocked-Contacts.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component BlockedUsersList
+ * @description Renders the list of contacts blocked by the current user within
+ * the Talk module. Fetches blocked users from the API on mount and populates
+ * from Redux state. Supports inline search filtering by name and shows a
+ * loading spinner while data is being retrieved. Each row includes an Unblock
+ * button that dispatches the BlockUnblockUser action. Reacts to Socket.io
+ * unblock events to remove users from the list in real time without a
+ * full refresh.
+ */
 const BlockedUsersList = () => {
   const dispatch = useDispatch();
 

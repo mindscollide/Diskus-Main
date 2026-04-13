@@ -20,6 +20,7 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
     resetModalStates,
     complianceDetailsState,
     complianceOnHoldSelectOption,
+    statusChangeType,
   } = useComplianceContext();
 
   console.log(selectOptions, "selectOptionsselectOptions");
@@ -60,14 +61,22 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
         modalTitleClassName={styles.StatusTitle}
         contentClassName={styles["StatusChangeModal"]}
         onHide={handleCloseButton}
-        ModalTitle={t("Cancel-compliance?")}
+        ModalTitle={
+          statusChangeType === "checklist"
+            ? t("Cancel-checklist")
+            : t("Cancel-compliance?")
+        }
         closeButton={true}
         ModalBody={
           <>
             <div className={styles.confirmationMessage}>
-              {t(
-                "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress"
-              )}
+              {statusChangeType === "checklist"
+                ? t(
+                    "Once-cancelled,-this-checklist-cannot-be-Re-opened-or-moved-back-to-In-Progress",
+                  )
+                : t(
+                    "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress",
+                  )}
             </div>
             <div className="mt-4">
               <CustomRadioGroup
@@ -78,11 +87,17 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
                 onChange={(event) => setSelectOption(event.target.value)}
                 options={[
                   {
-                    label: t("Cancel-compliance-only"),
+                    label:
+                      statusChangeType === "checklist"
+                        ? t("Cancel-Checklist-only")
+                        : t("Cancel-compliance-only"),
                     value: 0,
                   },
                   {
-                    label: t("Cancel-compliance-with-associated-items"),
+                    label:
+                      statusChangeType === "checklist"
+                        ? t("Cancel-Checklist-with-associated-items")
+                        : t("Cancel-compliance-with-associated-items"),
                     value: 1,
                   },
                 ]}

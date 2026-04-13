@@ -45,10 +45,16 @@ import {
   GetQuarterReport,
   GetComplianceStandingReport,
   GetAccumulativeReport,
+  GetAllComplianceAuthority,
+  ChangeChecklistAllowedTransactionStatusRM,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 import { taskReducerLoader } from "./ToDoList_action";
-import { isFunction } from "../../commen/functions/utils";
+import {
+  checklistStatusErrorMap,
+  isFunction,
+} from "../../commen/functions/utils";
+import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -1209,6 +1215,7 @@ const AddComplianceChecklistAPI = (
   t,
   complianceInfo,
   setChecklistData,
+  setNewChecklistIds,
 ) => {
   const complianceId = {
     complianceId: complianceInfo.complianceId,
@@ -1230,6 +1237,7 @@ const AddComplianceChecklistAPI = (
               t,
               complianceInfo,
               setChecklistData,
+              setNewChecklistIds,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -1241,6 +1249,15 @@ const AddComplianceChecklistAPI = (
                   "Compliance_ComplianceServiceManager_AddComplianceChecklist_01".toLowerCase(),
                 )
             ) {
+              const newChecklistId =
+                response.data.responseResult.checklistId ||
+                response.data.responseResult.data?.checklistId;
+
+              if (newChecklistId) {
+                console.log("newChecklistId");
+                setNewChecklistIds((prev) => [...prev, newChecklistId]);
+              }
+
               await dispatch(
                 AddComplianceChecklistSuccess(
                   response.data.responseResult,
@@ -1267,7 +1284,12 @@ const AddComplianceChecklistAPI = (
                 )
             ) {
               // The Name is Unique
-              await dispatch(AddComplianceChecklistFail(""));
+              await dispatch(
+                AddComplianceChecklistSuccess(
+                  response.data.responseResult,
+                  t("Checklist-title-already-exists-in-this-compliance"),
+                ),
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2098,6 +2120,12 @@ const viewComplianceByMeDetails_fail = (response) => {
   };
 };
 
+const clearComplianceDetailsTab = () => {
+  return {
+    type: actions.CLEAR_COMPLIANCEDETAILS_TAB,
+  };
+};
+
 // const ViewComplianceByMeDetailsAPI = (
 //   navigate,
 //   Data,
@@ -2259,7 +2287,7 @@ const ViewComplianceDetailsByViewTypeAPI = (
               );
               switch (value) {
                 case 1:
-                  setComplianceAddEditViewState(2);
+                  setComplianceAddEditViewState(1);
                   setCreateEditComplaince(true);
                   setShowViewCompliance(false);
                   break;
@@ -3255,7 +3283,13 @@ const EditComplianceFail = (message) => {
   };
 };
 
-const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
+const EditComplianceAPI = (
+  navigate,
+  Data,
+  t,
+  setChecklistTabs,
+  flag = null,
+) => {
   return (dispatch) => {
     dispatch(EditComplianceInit());
 
@@ -3268,7 +3302,9 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+          dispatch(
+            EditComplianceAPI(navigate, Data, t, setChecklistTabs, flag),
+          );
         } else if (response.data.responseCode === 200) {
           const message =
             response.data.responseResult?.responseMessage?.toLowerCase() || "";
@@ -3284,6 +3320,34 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
 
               isFunction(setChecklistTabs) && setChecklistTabs(2);
+              console.log(ViewComplianceDetailsByViewTypeAPI, "Check Console");
+
+              if (flag === 3) {
+                console.log("Check Console");
+                // The new status is in Data.newStatusId
+                if (
+                  Data.newStatusId === 7 ||
+                  Data.newStatusId === 9 ||
+                  Data.newStatusId === 6
+                ) {
+                  console.log(Data, "Check Console");
+
+                  await dispatch(
+                    ViewComplianceDetailsByViewTypeAPI(
+                      navigate,
+                      {
+                        complianceId: Data.complianceId,
+                        viewType: 1,
+                      },
+                      t,
+                      0,
+                      null,
+                      null,
+                      null,
+                    ),
+                  );
+                }
+              }
             } else if (
               message.includes(
                 "compliance_complianceservicemanager_editcompliance_02",
@@ -4310,6 +4374,7 @@ const SaveComplianceDocumentsAndMappingsAPI = (
                   editComplianceData,
                   t,
                   setChecklistTabs,
+                  3,
                 ),
               );
             } else if (
@@ -4535,7 +4600,7 @@ const ChangeTaskStatusFail = (message) => {
   };
 };
 
-const ChangeTaskStatusAPI = (navigate, Data, t) => {
+const ChangeTaskStatusAPI = (navigate, Data, complianceId, t) => {
   return (dispatch) => {
     dispatch(ChangeTaskStatusInit());
     let form = new FormData();
@@ -4546,7 +4611,7 @@ const ChangeTaskStatusAPI = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ChangeTaskStatusAPI(navigate, Data, t));
+          dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -4560,6 +4625,16 @@ const ChangeTaskStatusAPI = (navigate, Data, t) => {
                 ChangeTaskStatusSuccess(
                   response.data.responseResult,
                   t("Task status changed successfully"),
+                ),
+              );
+              const Data_compId = {
+                complianceId: complianceId,
+              };
+              dispatch(
+                GetComplianceChecklistsWithTasksByComplianceIdAPI(
+                  navigate,
+                  Data_compId,
+                  t,
                 ),
               );
             } else if (
@@ -5078,6 +5153,438 @@ const taskMappedChecklistMQTT = (mqttData) => {
   };
 };
 
+//For UpcomingDeadlineManagerDashboard Mqtt for manager
+const UpcomingDeadlineManagerDashboardMqtt = (data) => {
+  return {
+    type: actions.UPCOMING_DEADLINE_DASHBOARD_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+//For UpcomingDeadlineManagerDashboard Mqtt for User
+const UpcomingDeadlineUserDashboardMqtt = (data) => {
+  return {
+    type: actions.UPCOMING_COMPLIANCE_DEADLINE_USER_MQTT,
+    payload: data,
+  };
+};
+
+//For Quarterly Task Dashboard User Mqtt for User
+const QuarterlyTaskDashboardUserMqtt = (data) => {
+  return {
+    type: actions.QUARTERLY_TASK_DASHBOARD_FOR_USER_MQTT,
+    payload: data,
+  };
+};
+
+//For Quarterly Task Dashboard User Mqtt for User
+const QuarterlyTaskDashboardManagerMqtt = (data) => {
+  return {
+    type: actions.QUARTERLY_TASK_DASHBOARD_FOR_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+//For Task Dashboard Mqtt for User
+const TasksDashboardForUserMqtt = (data) => {
+  console.log(data, "check Data Occur");
+  return {
+    type: actions.TASK_DASHBOARD_FOR_USER_MQTT,
+    payload: data,
+  };
+};
+
+const TasksDashboardFormManagerMqtt = (data) => {
+  console.log(data, "check Data Occur");
+  return {
+    type: actions.TASK_DASHBOARD_FOR_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+// For Compliance By Dashboard Mqtt For User
+const ComplianceByUserMqtt = (data) => {
+  return {
+    type: actions.COMPLIANCE_BY_DASHBOARD_USER_MQTT,
+    payload: data,
+  };
+};
+
+// For Compliance By Dashboard Mqtt For MANAGER
+const ComplianceByManagerMqtt = (data) => {
+  return {
+    type: actions.COMPLIANCE_BY_DASHBOARD_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+// For Quarterly Submitted Dashboard Mqtt For User
+const QuarterlySubmittedByUserMqtt = (data) => {
+  return {
+    type: actions.QUARTERLY_SUBMITTED_DASHBOARD_USER_MQTT,
+    payload: data,
+  };
+};
+
+// For Quarterly Submitted Dashboard Mqtt For MANAGER
+const QuarterlySubmittedByManagerMqtt = (data) => {
+  return {
+    type: actions.QUARTERLY_SUBMITTED_DASHBOARD_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+// For Reopen Compliance Dashboard Mqtt For User
+const ReopenedComplianceUserMqtt = (data) => {
+  return {
+    type: actions.REOPEN_COMPLIANCE_DASHBOARD_USER_MQTT,
+    payload: data,
+  };
+};
+
+// For Reopen Compliance Dashboard Mqtt For User
+const ReopenedComplianceManagerMqtt = (data) => {
+  return {
+    type: actions.REOPEN_COMPLIANCE_DASHBOARD_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+//GET Compliance By Authorities Api
+const GetComplianceAuthorityInit = () => {
+  return {
+    type: actions.GET_ALL_COMPLIANCE_AUTHORITIES_INIT,
+  };
+};
+
+const GetComplianceAuthoritySuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_COMPLIANCE_AUTHORITIES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceAuthorityFail = (message) => {
+  return {
+    type: actions.GET_ALL_COMPLIANCE_AUTHORITIES_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceByAuthorityAPI = (navigate, Data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceAuthorityInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllComplianceAuthority.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceByAuthorityAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllCompliancesByAuthorityID_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetComplianceAuthoritySuccess(response.data.responseResult, ""),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllCompliancesByAuthorityID_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetComplianceAuthorityFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllCompliancesByAuthorityID_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetComplianceAuthorityFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceAuthorityFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(GetComplianceAuthorityFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetComplianceAuthorityFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Update Compliance
+const updateCheckListStatusInit = () => {
+  return {
+    type: actions.CHANGE_CHECKLIST_STATUS_INIT,
+  };
+};
+
+const updateCheckListStatusSuccess = (response, message) => {
+  return {
+    type: actions.CHANGE_CHECKLIST_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const updateCheckListStatusFail = (message) => {
+  return {
+    type: actions.CHANGE_CHECKLIST_STATUS_FAIL,
+    message: message,
+  };
+};
+
+const updateCheckListStatusApi = (navigate, Data, t) => {
+  return (dispatch) => {
+    dispatch(updateCheckListStatusInit());
+
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      ChangeChecklistAllowedTransactionStatusRM.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateCheckListStatusApi(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          const message =
+            response.data.responseResult.responseMessage?.toLowerCase() || "";
+
+          const messageMap = {
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_01: {
+              type: "success",
+              text: "Checklist-status-changed-successfully",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_02: {
+              type: "success",
+              text: "Checklist-is-required",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_03: {
+              type: "success",
+              text: "OrganizationID-is-required",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_04: {
+              type: "success",
+              text: "ComplianceID-is-required",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_05: {
+              type: "success",
+              text: "StatusID-is-required",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_06: {
+              type: "success",
+              text: "StatusChangeBy-is-required",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_07: {
+              type: "success",
+              text: "Invalid-StatusChangeBy-user",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_08: {
+              type: "success",
+              text: "Invalid-checklist-status",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_09: {
+              type: "success",
+              text: "UpdatedDueDate-is-required",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_11: {
+              type: "success",
+              text: "Checklist-not-found-for-this-Compliance",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_12: {
+              type: "success",
+              text: "Checklist-does-not-belong-to-provided-Compliance",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_13: {
+              type: "success",
+              text: "Completed-or-Cancelled-checklist-cannot-be-changed",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_14: {
+              type: "success",
+              text: "Transition-not-allowed",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_15: {
+              type: "success",
+              text: "Pending-to-InProgress-requires-at-least-one-task-in-the-checklist",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_16: {
+              type: "success",
+              text: "Checklist-update-failed",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_17: {
+              type: "success",
+              text: "Checklist-cannot-be-marked-completed-while-tasks-are-still-pending",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_18: {
+              type: "success",
+              text: "Reason-required-for-OnHold-or-Cancelled",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_19: {
+              type: "success",
+              text: "Already-in-requested-status",
+            },
+
+            Compliance_ComplianceServiceManager_ChangeChecklistStatus_50: {
+              type: "fail",
+              text: "Something-went-wrong",
+            },
+          };
+
+          let handled = false;
+
+          for (const key of Object.keys(messageMap)) {
+            if (message.includes(key.toLowerCase())) {
+              handled = true;
+              const action = messageMap[key];
+
+              if (action.type === "success") {
+                await dispatch(
+                  updateCheckListStatusSuccess(null, t(action.text)),
+                );
+
+                await dispatch(
+                  ViewComplianceDetailsByViewTypeAPI(
+                    navigate,
+                    {
+                      complianceId: Data.ComplianceID, // 🔥 from your payload
+                      viewType: 1,
+                    },
+                    t,
+                    0,
+                    null,
+                    null,
+                    null,
+                  ),
+                );
+              } else {
+                await dispatch(updateCheckListStatusFail(t(action.text)));
+              }
+
+              break;
+            }
+          }
+
+          if (!handled) {
+            await dispatch(
+              updateCheckListStatusFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// 🔹 Main API Function
+// export const updateCheckListStatusApi = (navigate, t, Data) => {
+//   return async (dispatch) => {
+//     dispatch(updateCheckListStatusInit());
+
+//     try {
+//       let form = new FormData();
+//       form.append(
+//         "RequestMethod",
+//         ChangeChecklistAllowedTransactionStatusRM.RequestMethod,
+//       );
+//       form.append("RequestData", JSON.stringify(Data));
+
+//       const response = await axiosInstance.post(complainceApi, form);
+
+//       // 🔁 Token Expired
+//       if (response.data.responseCode === 417) {
+//         await dispatch(RefreshToken(navigate, t));
+//         return dispatch(updateCheckListStatusApi(navigate, t, Data));
+//       }
+
+//       // ❌ Non-200 response
+//       if (response.data.responseCode !== 200) {
+//         return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+//       }
+
+//       const result = response.data.responseResult;
+//       const message = result?.responseMessage || "";
+
+//       //  Success
+//       if (result?.isExecuted === true) {
+//         return dispatch(updateCheckListStatusSuccess(result, ""));
+//       }
+
+//       // 🔎 Match Error Code
+//       const matchedKey = Object.keys(checklistStatusErrorMap).find((key) =>
+//         message.toLowerCase().includes(key.toLowerCase()),
+//       );
+
+//       if (matchedKey) {
+//         return dispatch(
+//           updateCheckListStatusFail(t(checklistStatusErrorMap[matchedKey])),
+//         );
+//       }
+
+//       // ❌ Default Fallback
+//       return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+//     } catch (error) {
+//       console.error("updateCheckListStatusApi Error:", error);
+
+//       return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+//     }
+//   };
+// };
+
+// For TASK STATUS CHANGED FOR USER
+const taskStatusChangedUserMqtt = (mqttData) => {
+  console.log(mqttData, "REOPENCOMPLIANCE");
+
+  return {
+    type: actions.TASK_STATUS_CHANGED_FOR_USER_MQTT,
+    payload: mqttData,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -5139,4 +5646,20 @@ export {
   complianceUpdateMQTT,
   complianceReopenMQTT,
   taskMappedChecklistMQTT,
+  UpcomingDeadlineManagerDashboardMqtt,
+  UpcomingDeadlineUserDashboardMqtt,
+  QuarterlyTaskDashboardUserMqtt,
+  QuarterlyTaskDashboardManagerMqtt,
+  TasksDashboardForUserMqtt,
+  TasksDashboardFormManagerMqtt,
+  ComplianceByUserMqtt,
+  ComplianceByManagerMqtt,
+  QuarterlySubmittedByUserMqtt,
+  QuarterlySubmittedByManagerMqtt,
+  ReopenedComplianceUserMqtt,
+  ReopenedComplianceManagerMqtt,
+  GetComplianceByAuthorityAPI,
+  updateCheckListStatusApi,
+  clearComplianceDetailsTab,
+  taskStatusChangedUserMqtt,
 };

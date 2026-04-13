@@ -81,7 +81,7 @@ const ModalToDoListChecklist = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   //Get Current User ID
-  let createrID = localStorage.getItem("userID");
+  let createrID = Number(localStorage.getItem("userID"));
   let createrName = localStorage.getItem("name");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -287,7 +287,7 @@ const ModalToDoListChecklist = ({
 
     // Step 2: Validate and process task creation date and time
     if (!task.creationDate) {
-      showMessage(t("Creation date is required"), "error", setOpen); // Validate task creation date
+      showMessage(t("Due date is required"), "error", setOpen); // Validate task creation date
       return;
     }
 
@@ -593,7 +593,7 @@ const ModalToDoListChecklist = ({
                 <Row className="my-3">
                   <Col lg={5} md={5} sm={12} xs={12}>
                     <span className="createTask_label">{`${t(
-                      "Add-assignee"
+                      "assignee"
                     )}*`}</span>
                     <Select
                       isSearchable={true}
@@ -602,7 +602,7 @@ const ModalToDoListChecklist = ({
                       onChange={onChangeSearch}
                       value={selectedAsignee}
                       placeholder={t("Add-assignee")}
-                      applyClass="assigneeFindInCreateToDo"
+                      classNamePrefix="createTaskifield"
                     />
                   </Col>
                   <Col lg={2} md={2} sm={12} xs={12}></Col>

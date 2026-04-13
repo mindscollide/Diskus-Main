@@ -21,7 +21,6 @@ import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
-import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
 import { onDragEnd } from "./drageFunction";
@@ -66,9 +65,7 @@ const Agenda = ({}) => {
   const voteConfirmationModal = useSelector(
     (state) => state.NewMeetingreducer.voteConfirmationModal
   );
-  const importPreviousAgendaModal = useSelector(
-    (state) => state.NewMeetingreducer.importPreviousAgendaModal
-  );
+
   const cancelAgenda = useSelector(
     (state) => state.NewMeetingreducer.cancelAgenda
   );
@@ -481,7 +478,6 @@ const Agenda = ({}) => {
       {NewMeetingreducer.viewVotesAgenda && (
         <ViewVoteModal advanceMeetingModalID={advanceMeetingModalID} />
       )}
-      {importPreviousAgendaModal && <ImportPrevious />}
       {cancelAgenda && (
         <CancelAgenda setSceduleMeeting={setViewAdvanceMeetingModal} />
       )}

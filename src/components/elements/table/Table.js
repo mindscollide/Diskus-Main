@@ -20,6 +20,7 @@ const CustomTable = ({
   sticky = true,
   getPopupContainer,
   showSorterTooltip = false,
+  rowKey = "key",
 }) => {
   return (
     <>
@@ -41,6 +42,7 @@ const CustomTable = ({
         size={size}
         showSorterTooltip={showSorterTooltip}
         sticky={sticky}
+        rowKey={rowKey}
         tableLayout="fixed"
         getPopupContainer={getPopupContainer}
       />

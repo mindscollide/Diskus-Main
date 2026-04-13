@@ -1,5 +1,14 @@
 // import { isArray } from "lodash"
 
+/**
+ * Resolves the current user's role flags within a meeting attendee list.
+ * @param {Object} data          - Meeting data object. Shape varies by source:
+ *   source 1 expects a `meetingAttendees` array; source 2 uses flat role fields.
+ * @param {number} currentUserId - The ID of the logged-in user.
+ * @param {number} currentSource - Data source identifier (1 = getAllMeetings, 2 = MQTT add/update organizers).
+ * @returns {{ isAgendaContributor: boolean, isOrganiser: boolean, isParticipant: boolean, userData: Object|null, isPrimaryOrganizer: boolean }}
+ *   Role flags and the raw user object for the current user.
+ */
 const getUserInfo = (data, currentUserId, currentSource) => {
   // current Source 1 = get All meetings
   // current Source 2 = mqtt aad and update organizers
@@ -56,6 +65,17 @@ const getUserInfo = (data, currentUserId, currentSource) => {
   return userInfo;
 };
 
+/**
+ * @hook getAllUnpublishedMeetingData
+ * @description Transforms a raw array of meeting objects (from the "get all meetings"
+ * API response) into a normalised flat structure consumed by the meetings list UI.
+ * Reads the current user's ID from localStorage and resolves role flags for each
+ * meeting using `getUserInfo`. Filters meeting agendas to only those the user can view.
+ * @param {Array<Object>} meetingData    - Raw meeting records from the API.
+ * @param {number}        currentSourceID - Source identifier forwarded to getUserInfo (use 1 for this path).
+ * @returns {Promise<Array<Object>>} Normalised meeting records with role, agenda,
+ *   poll, status, and recording fields.
+ */
 export const getAllUnpublishedMeetingData = async (
   meetingData,
   currentSourceID
@@ -92,7 +112,7 @@ export const getAllUnpublishedMeetingData = async (
         meetingType:
           data.meetingTypeID === 1 && data.isQuickMeeting === true
             ? 0
-            : data.meetingTypeID ,
+            : data.meetingTypeID || data.meetingType,
         meetingEndTime: data.meetingEndTime || "",
         meetingStartTime: data.meetingStartTime || "",
         pK_MDID: data.pK_MDID || 0,

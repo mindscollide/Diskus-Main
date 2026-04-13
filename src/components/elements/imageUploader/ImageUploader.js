@@ -54,6 +54,8 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
     }
     return [];
   }, [pictureObj.DisplayProfilePictureName]);
+
+  
   useEffect(() => {
     setFileList(memoizedFile);
   }, [memoizedFile]);
@@ -61,26 +63,26 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   //For Removing Profile Picture funtion
   const onRemovePicture = () => {
     // Simulate base64 processing for DefaultAvatar
-    fetch(DefaultAvatar)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64Image = reader.result.split(",")[1]; // Get the base64 string
-          dispatch(
-            updateUserProfilePicture(
-              navigate,
-              t,
-              "DefaultAvatar.png",
-              base64Image
-            )
-          );
-        };
-        reader.readAsDataURL(blob);
-      })
-      .catch((err) =>
-        console.error("Error converting DefaultAvatar to base64:", err)
-      );
+    // fetch(DefaultAvatar)
+    //   .then((res) => res.blob())
+    //   .then((blob) => {
+    //     const reader = new FileReader();
+    //     reader.onloadend = () => {
+    //       const base64Image = reader.result.split(",")[1]; // Get the base64 string
+    //       dispatch(
+    //         updateUserProfilePicture(
+    //           navigate,
+    //           t,
+    //           "DefaultAvatar.png",
+    //           base64Image
+    //         )
+    //       );
+    //     };
+    //     reader.readAsDataURL(blob);
+    //   })
+    //   .catch((err) =>
+    //     console.error("Error converting DefaultAvatar to base64:", err)
+    //   );
 
     // Reset fileList to empty
     setFileList([]);

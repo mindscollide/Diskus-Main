@@ -1,3 +1,19 @@
+/**
+ * @file store.js
+ * @description Redux store configuration.
+ *
+ * Combines ~50 domain reducers via `combineReducers` into `AppReducer`.
+ * The `rootReducer` wrapper intercepts `SET_INITIAL_ALLSTATE` and sets
+ * `state = undefined` before passing to `AppReducer`, which causes every
+ * reducer to return its initial state — effectively wiping all Redux state
+ * on logout.
+ *
+ * Middleware: Redux Thunk (async action creators).
+ * ImmutableStateInvariantMiddleware is disabled (`immutableCheck: false`)
+ * for performance, as some parts of the codebase mutate state directly.
+ *
+ * @see src/store/action_types.js for SET_INITIAL_ALLSTATE constant
+ */
 import { applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";

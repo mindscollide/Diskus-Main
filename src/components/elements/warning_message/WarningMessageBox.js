@@ -4,6 +4,25 @@ import styles from "./WarningMessageBox.module.css";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
+
+/**
+ * @component WarningMessageBox
+ * @description Renders a styled warning banner with a bold "Warning" heading
+ * (preceded by an exclamation-triangle icon) and a configurable message body.
+ * Used across the platform to surface non-blocking alerts — for example, when a
+ * feature is unavailable due to missing permissions or incomplete configuration.
+ * The heading label is translated via react-i18next.
+ *
+ * @param {string} text      - The warning message text displayed in the body of the box.
+ * @param {string} textClass - Additional CSS class applied to the `<p>` element that
+ *                             wraps the message text (allows per-call-site typography overrides).
+ *
+ * @example
+ * <WarningMessageBox
+ *   text="You do not have permission to perform this action."
+ *   textClass="text-danger"
+ * />
+ */
 const WarningMessageBox = ({ text, textClass }) => {
   const { t } = useTranslation();
   return (

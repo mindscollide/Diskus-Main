@@ -2365,7 +2365,9 @@ const GetAllMeetingDetailsApiFunc = (
                 )
               );
               try {
-                dispatch(meetingDetailsGlobalFlag(true));
+                if (flag && flag !== 6) {
+                  setSceduleMeeting(true);
+                }
                 console.log("rolerole goes in this check");
                 // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);

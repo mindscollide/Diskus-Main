@@ -2,6 +2,7 @@
   width: 100%;
   padding: 10px 20px;
   overflow-x: auto; /* prevents breaking on smaller screens */
+  background: #fff;
 }
 
 .iconTextWrapper {
@@ -64,9 +65,9 @@
   grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   font-weight: 600;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
   padding: 12px 16px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #a2a2a2;
   color: #6172d6;
   font-family: "Montserrat";
 }
@@ -77,7 +78,7 @@
   grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   align-items: center;
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   font-family: "Montserrat";
   color: #5a5a5a;
@@ -113,7 +114,7 @@
 
 .collapseWrapper :global(.ant-collapse-item) {
   background: #fff;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 2px solid #e1e1e1;
 }
 
 .collapseWrapper :global(.ant-collapse-header) {
@@ -127,8 +128,12 @@
 }
 
 .panelContent {
+  border-radius: 8px;
   padding: 16px;
-  background: #f6f9fc !important;
+}
+
+.panelContentDownload {
+  padding: 14px 0px;
 }
 .MainAccordianTable {
   max-height: 300px;
@@ -213,14 +218,35 @@
 
 .reportTitleRow {
   align-items: center;
-  padding: 0px 20px;
+  margin: 0px 10px;
+  padding: 20px 30px;
+  background: #f6f9fc;
+  border-radius: 8px;
 }
-
+.ComplianceMainHeading P.complianceTitleListDownload {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 2%;
+  color: #5a5a5a !important;
+}
 .titleSection label {
   font-size: 10px;
+  /* font-size: 8px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #5a5a5a;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+.titleSection p {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  line-height: 20px;
+  letter-spacing: 0%;
 }
 .titleSection label.ChecklistTitle {
   font-size: 10px;
@@ -228,8 +254,42 @@
   font-family: "Montserrat";
   color: #6172d6;
 }
+.titleSectionDownload label {
+  font-size: 8px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #5a5a5a;
+}
+.titleSectionDownload p {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+.titleSectionDownload label.ChecklistTitleDownload {
+  font-size: 8px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+}
+
+.titleSectionDownload p.longTitleHeadingDownload {
+  color: #5a5a5a;
+  margin-bottom: 15px;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
 .longTitle {
-  font-size: 30px;
+  font-size: 16px;
   font-weight: 500;
   color: #6172d6;
   font-family: "Montserrat";
@@ -266,9 +326,7 @@
   display: flex;
   justify-content: end;
   gap: 10px;
-  background: #ecefff;
   border-radius: 8px;
-  padding: 24px 30px;
 }
 
 .chartWrapper {
@@ -332,7 +390,11 @@
   gap: 10px;
   font-size: 13px;
 }
-.customLegend div {
+.legendItem {
+  display: flex;
+
+  align-items: center;
+  gap: 8px;
   font-family: "Montserrat";
   font-weight: 600;
   font-size: 12px;
@@ -340,6 +402,10 @@
   letter-spacing: 2%;
   color: #5a5a5a;
 }
+.legendText {
+  font-weight: 500;
+}
+
 .legendDotBlue,
 .legendDotYellow,
 .legendOrange {
@@ -361,9 +427,9 @@
 }
 .ComplianceMainHeading {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  flex-direction: column; /* ✅ IMPORTANT */
+  align-items: flex-start; /* align left */
+  gap: 4px;
   padding: 0px 30px;
 }
 
@@ -377,7 +443,7 @@
 }
 
 .ComplianceMainHeading p {
-  font-size: 24px;
+  font-size: 16px;
   color: #6172d6;
   font-family: "Montserrat";
   line-height: 100%;
@@ -398,7 +464,7 @@
 }
 
 .iconTextWrapperDownload label {
-  font-size: 10px;
+  font-size: 8px;
   color: #6172d6;
   font-family: "Montserrat";
   font-weight: 700;
@@ -406,7 +472,7 @@
 
 .iconTextWrapperDownload p,
 .ComplianceReportHeadings {
-  font-size: 20px;
+  font-size: 12px;
   color: #5a5a5a;
   font-family: "Montserrat";
   margin: 0;
@@ -447,4 +513,136 @@
 }
 .goBackButton {
   cursor: pointer;
+}
+/* Download Report */
+.TextDownload p {
+  font-size: 30px;
+  color: #6172d6;
+  font-family: "Montserrat";
+  font-weight: 700;
+  margin: 0;
+  /* line-height: 140%; */
+  letter-spacing: 2%;
+  text-align: center;
+}
+.longTitleHeading {
+  color: #5a5a5a;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Montserrat";
+  line-height: 1.4;
+  margin-bottom: 15px;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+}
+/* Download Report */
+
+/* Header and footer */
+/* HEADER */
+.reportHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #f6f9fc;
+}
+
+.headerRight p {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
+}
+
+.headerLine {
+  height: 3px;
+  background: linear-gradient(to right, #6172d6, #4adede);
+  margin-bottom: 10px;
+}
+
+/* FOOTER */
+.reportFooter {
+  width: 100%;
+  background: #6172d6;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.reportFooter div {
+  font-family: "Montserrat";
+  color: #ffffff;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+/* #content-id {
+  padding-bottom: 60px; 
+} */
+
+@media print {
+  .reportFooter {
+    position: fixed;
+    bottom: 0;
+  }
+
+  .reportHeader {
+    position: fixed;
+    top: 0;
+  }
+
+  #content-id {
+    margin-top: 80px;
+    margin-bottom: 60px;
+  }
+}
+.dueDate {
+  display: flex;
+  gap: 4px;
+}
+
+.dueDate label,
+p {
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.TextDownloadWrapper {
+  display: flex;
+  gap: 30px;
+  margin: 1px 0;
+}
+.TextDownload {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  white-space: nowrap;
+  background: #ecefff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  justify-content: center;
+  height: 130px;
+}
+
+.TextDownload label {
+  font-size: 10px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 700;
+  /* line-height: 140%; */
+  /* letter-spacing: 2%; */
+  text-align: center;
+  margin-top: 5px;
 }

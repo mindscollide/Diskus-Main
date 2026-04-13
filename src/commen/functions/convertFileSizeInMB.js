@@ -27,19 +27,32 @@ export function formatFileSize(kb) {
  * @param {number} mb - File size in megabytes.
  * @returns {string} - Formatted file size string like "0.98 MB"
  */
-export function formatMB(mb) {
-  if (typeof mb !== "number" || isNaN(mb)) return "Invalid input";
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const formatter = new Intl.NumberFormat(currentLanguage, {
+export function formatMB(fileSizeOnDiskus) {
+  if (typeof fileSizeOnDiskus !== "number" || isNaN(fileSizeOnDiskus)) {
+    return "";
+  }
+
+  let currentLanguage = localStorage.getItem("i18nextLng") || "en";
+
+  const locale = currentLanguage === "ar" ? "ar-EG" : "en-US";
+
+  const formatter = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  const formattedNumber = formatter.format(mb);
+  let value;
+  let unit;
 
-  if (currentLanguage === "ar") {
-    return `${formattedNumber} MB`; // Arabic text for MB
+  if (fileSizeOnDiskus >= 1) {
+    value = fileSizeOnDiskus;
+    unit = "MB";
+  } else {
+    value = fileSizeOnDiskus * 1000; // Convert MB to KB
+    unit = "KB";
   }
 
-  return `${formattedNumber} MB`;
+  const formattedNumber = formatter.format(value);
+
+  return `${formattedNumber} ${unit}`;
 }

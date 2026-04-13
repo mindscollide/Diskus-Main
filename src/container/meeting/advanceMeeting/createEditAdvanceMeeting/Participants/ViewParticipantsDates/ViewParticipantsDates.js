@@ -38,7 +38,7 @@ const ViewParticipantsDates = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const MeetingStatusSocket = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusSocket,
+    (state) => state.meetingIdReducer.MeetingStatusSocket
   );
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
@@ -50,11 +50,16 @@ const ViewParticipantsDates = ({
   });
 
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails,
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
   const userWiseMeetingProposed = useSelector(
-    (state) => state.NewMeetingreducer.userWiseMeetingProposed,
+    (state) => state.NewMeetingreducer.userWiseMeetingProposed
+  );
+
+  console.log(
+    userWiseMeetingProposed,
+    "userWiseMeetingProposeduserWiseMeetingProposed"
   );
 
   const [prposedData, setPrposedData] = useState([]);
@@ -69,7 +74,7 @@ const ViewParticipantsDates = ({
   });
   const [selectAll, setSelectAll] = useState(false);
   let currentMeetingID = Number(
-    localStorage.getItem("viewProposeDatePollMeetingID"),
+    localStorage.getItem("viewProposeDatePollMeetingID")
   );
 
   // const changeDateStartHandler2 = (date, value) => {
@@ -100,10 +105,10 @@ const ViewParticipantsDates = ({
 
   const callApis = async () => {
     let NotificationClickProposedMeetingFlag = JSON.parse(
-      localStorage.getItem("ProposedMeetingOperations"),
+      localStorage.getItem("ProposedMeetingOperations")
     );
     let NotificationClickMeetingID = localStorage.getItem(
-      "NotificationClickMeetingID",
+      "NotificationClickMeetingID"
     );
 
     if (NotificationClickProposedMeetingFlag) {
@@ -120,8 +125,8 @@ const ViewParticipantsDates = ({
           false,
           setCurrentMeetingID,
           setSceduleMeeting,
-          setDataroomMapFolderId,
-        ),
+          setDataroomMapFolderId
+        )
       );
     } else {
       let Data = {
@@ -137,8 +142,8 @@ const ViewParticipantsDates = ({
           false,
           setCurrentMeetingID,
           setSceduleMeeting,
-          setDataroomMapFolderId,
-        ),
+          setDataroomMapFolderId
+        )
       );
     }
   };
@@ -157,7 +162,7 @@ const ViewParticipantsDates = ({
       localStorage.removeItem("ProposedMeetOperationsDateSelected");
       localStorage.removeItem("ProposedMeetOperationsDateSelectedMeetID");
       localStorage.removeItem(
-        "ProposedMeetOperationsDateSelectedSendResponseByDate",
+        "ProposedMeetOperationsDateSelectedSendResponseByDate"
       );
       localStorage.removeItem("BeforeProposedDateSelectedCheck");
       localStorage.removeItem("NotificationClickSendResponseByDate");
@@ -170,91 +175,98 @@ const ViewParticipantsDates = ({
       if (
         userWiseMeetingProposed !== null &&
         userWiseMeetingProposed !== undefined &&
-        userWiseMeetingProposed.length > 0
+        userWiseMeetingProposed?.selectedProposedDates.length > 0
       ) {
+        const {
+          selectedProposedDates,
+          userID,
+          userEmail,
+          designation,
+          userName,
+          title,
+        } = userWiseMeetingProposed;
         let uniqueDates = new Set();
         let datesarry = [];
-        userWiseMeetingProposed.forEach((datesData, index) => {
-          if (Number(datesData.userID) === Number(currentUserId)) {
-            console.log(datesData, "newDatanewDatanewData");
-            datesData.selectedProposedDates.forEach((newData, index) => {
-              if (
-                newData.proposedDate === "10000101" &&
-                newData.startTime === "000000" &&
-                newData.endTime === "000000"
-              ) {
-                setSelectAll(newData.isSelected);
-              }
-            });
-          }
-          // Loop through the data to find the specific date combination
+        if (Number(userID) === Number(currentUserId)) {
+          selectedProposedDates.forEach((newData, index) => {
+            if (
+              newData.proposedDate === "10000101" &&
+              newData.startTime === "000000" &&
+              newData.endTime === "000000"
+            ) {
+              setSelectAll(newData.isSelected);
+              return;
+            }
+          });
+        }
+        // Loop through the data to find the specific date combination
 
-          if (Number(datesData.userID) === Number(currentUserId)) {
-            datesData.selectedProposedDates.forEach((data) => {
-              if (
-                data.proposedDate !== "10000101" ||
-                data.endTime !== "000000" ||
-                data.startTime !== "000000"
-              ) {
-                const uniqueID = data.proposedDateID;
-                if (!uniqueDates.has(uniqueID)) {
-                  uniqueDates.add(uniqueID);
-                  datesarry.push({
-                    userID: datesData.userID,
-                    endTime: resolutionResultTable(
-                      data.proposedDate + data.endTime,
-                    ),
-                    proposedDate: resolutionResultTable(
-                      data.proposedDate + data.startTime,
-                    ),
-                    proposedDateID: data.proposedDateID,
-                    startTime: resolutionResultTable(
-                      data.proposedDate + data.startTime,
-                    ),
-                    EndtimeSend: data.endTime,
-                    ProposedDateSend: data.proposedDate,
-                    proposedDateIDSend: data.proposedDateID,
-                    StartTimeSend: data.startTime,
-                    isSelected: data.isSelected,
-                  });
-                }
+        if (Number(userID) === Number(currentUserId)) {
+          selectedProposedDates.forEach((data) => {
+            if (
+              data.proposedDate !== "10000101" ||
+              data.endTime !== "000000" ||
+              data.startTime !== "000000"
+            ) {
+              const uniqueID = data.proposedDateID;
+              if (!uniqueDates.has(uniqueID)) {
+                uniqueDates.add(uniqueID);
+                datesarry.push({
+                  userID: userID,
+                  endTime: resolutionResultTable(
+                    data.proposedDate + data.endTime
+                  ),
+                  proposedDate: resolutionResultTable(
+                    data.proposedDate + data.startTime
+                  ),
+                  proposedDateID: data.proposedDateID,
+                  startTime: resolutionResultTable(
+                    data.proposedDate + data.startTime
+                  ),
+                  EndtimeSend: data.endTime,
+                  ProposedDateSend: data.proposedDate,
+                  proposedDateIDSend: data.proposedDateID,
+                  StartTimeSend: data.startTime,
+                  isSelected: data.isSelected,
+                });
               }
-            });
-          }
+            }
+          });
+        }
 
-          //now For Sending Data
-          let SenddataObject = [];
-          datesData.selectedProposedDates.forEach((data, index) => {
-            SenddataObject.push({
+        //now For Sending Data
+        let SenddataObject = [];
+        selectedProposedDates.forEach((data, index) => {
+          SenddataObject.push({
+            EndtimeSend: data.endTime,
+            ProposedDateSend: data.proposedDate,
+            proposedDateIDSend: data.proposedDateID,
+            StartTimeSend: data.startTime,
+            isSelected: data.isSelected,
+          });
+        });
+
+        // now for the default Data
+        let DefaultDate = [];
+        selectedProposedDates.forEach((data, index) => {
+          if (
+            data.proposedDate === "10000101" &&
+            data.endTime === "000000" &&
+            data.startTime === "000000"
+          ) {
+            DefaultDate.push({
               EndtimeSend: data.endTime,
               ProposedDateSend: data.proposedDate,
               proposedDateIDSend: data.proposedDateID,
               StartTimeSend: data.startTime,
               isSelected: data.isSelected,
             });
-          });
-
-          // now for the default Data
-          let DefaultDate = [];
-          datesData.selectedProposedDates.forEach((data, index) => {
-            if (
-              data.proposedDate === "10000101" &&
-              data.endTime === "000000" &&
-              data.startTime === "000000"
-            ) {
-              DefaultDate.push({
-                EndtimeSend: data.endTime,
-                ProposedDateSend: data.proposedDate,
-                proposedDateIDSend: data.proposedDateID,
-                StartTimeSend: data.startTime,
-                isSelected: data.isSelected,
-              });
-            } else {
-            }
-          });
-          setNoneOfAbove(DefaultDate);
-          setPrposedData(datesarry);
+          } else {
+          }
         });
+        setNoneOfAbove(DefaultDate);
+        setPrposedData(datesarry);
+        // });
       } else {
       }
     } catch (error) {
@@ -286,7 +298,7 @@ const ViewParticipantsDates = ({
 
     // Find the index of the clicked data object in the array
     const dataIndex = updatedData.findIndex(
-      (data) => data.proposedDateID === clickedData.proposedDateID,
+      (data) => data.proposedDateID === clickedData.proposedDateID
     );
 
     // If the dataIndex is valid
@@ -329,13 +341,13 @@ const ViewParticipantsDates = ({
 
   const handleSave = () => {
     let NotificationClickProposedMeetingFlag = JSON.parse(
-      localStorage.getItem("ProposedMeetingOperations"),
+      localStorage.getItem("ProposedMeetingOperations")
     );
     let NotificationClickMeetingID = localStorage.getItem(
-      "NotificationClickMeetingID",
+      "NotificationClickMeetingID"
     );
     let findIsanySelected = prposedData.some(
-      (data, index) => data.isSelected === true,
+      (data, index) => data.isSelected === true
     );
     if (selectAll && findIsanySelected === false) {
       let defaultarr = [];
@@ -355,7 +367,7 @@ const ViewParticipantsDates = ({
         ProposedDates: defaultarr,
       };
       dispatch(
-        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll),
+        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
       );
     } else if (findIsanySelected) {
       let newarr = [];
@@ -378,13 +390,13 @@ const ViewParticipantsDates = ({
       };
 
       dispatch(
-        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll),
+        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
       );
     } else if (!selectAll) {
       showMessage(
         t("Please-select-any-of-the-given-options"),
         "error",
-        setOpen,
+        setOpen
       );
     }
   };
@@ -437,7 +449,7 @@ const ViewParticipantsDates = ({
           meetingStatusID,
           meetingID,
           meetingDeatils.MeetingID,
-          "MeetingStatusSocketMeetingStatusSocket",
+          "MeetingStatusSocketMeetingStatusSocket"
         );
       } catch (error) {}
     }
@@ -445,13 +457,12 @@ const ViewParticipantsDates = ({
 
   return (
     <section>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex align-items-center align-items-center gap-3"
-        >
+          className='d-flex align-items-center align-items-center gap-3'>
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Propose-meeting-date")}
           </span>
@@ -479,7 +490,7 @@ const ViewParticipantsDates = ({
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <p className={styles["Paragraph_Styles"]}>
                   {meetingDeatils.MeetingDiscription}
@@ -501,8 +512,7 @@ const ViewParticipantsDates = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Prposed_Meeting_date"]}
-                  >
+                    className={styles["Scroller_Prposed_Meeting_date"]}>
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
                           console.log(data, "prposedData");
@@ -512,13 +522,12 @@ const ViewParticipantsDates = ({
                             Number(data.userID) === Number(currentUserId);
                           let currentDate = new Date();
                           return (
-                            <Row className="m-0 p-0 mt-2" key={index}>
+                            <Row className='m-0 p-0 mt-2' key={index}>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["Box_To_Show_Time"]}
-                              >
+                                className={styles["Box_To_Show_Time"]}>
                                 <Row className={styles["Inner_Send_class"]}>
                                   <Col lg={10} md={10} sm={12}>
                                     <span className={styles["Time_Class"]}>
@@ -526,14 +535,14 @@ const ViewParticipantsDates = ({
                                       - {moment(data.endTime).format("hh:mm A")}
                                       ,{" "}
                                       {changeDateStartHandler2(
-                                        data.proposedDate,
+                                        data.proposedDate
                                       )}
                                     </span>
                                   </Col>
                                   <Col lg={2} md={2} sm={2}>
                                     <Checkbox
                                       prefixCls={"ProposedMeeting_Checkbox"}
-                                      classNameCheckBoxP="d-none"
+                                      classNameCheckBoxP='d-none'
                                       className={"cursor-pointer"}
                                       disabled={
                                         currentDate > data.startTime
@@ -555,7 +564,7 @@ const ViewParticipantsDates = ({
                   </Col>
                 </Row>
 
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Prposed_On_Heading"]}>
                       {t("Send-response-by")}{" "}
@@ -563,20 +572,20 @@ const ViewParticipantsDates = ({
                   </Col>
                 </Row>
 
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Date"]}>
                       {JSON.parse(
-                        localStorage.getItem("ProposedMeetingOperations"),
+                        localStorage.getItem("ProposedMeetingOperations")
                       ) === true
                         ? changeDateStartHandler2(
                             localStorage.getItem(
-                              "NotificationClickSendResponseByDate",
-                            ),
+                              "NotificationClickSendResponseByDate"
+                            )
                           )
                         : responseByDate !== undefined
-                          ? changeDateStartHandler2(responseByDate)
-                          : null}
+                        ? changeDateStartHandler2(responseByDate)
+                        : null}
                     </span>
                   </Col>
                 </Row>
@@ -585,19 +594,17 @@ const ViewParticipantsDates = ({
                 lg={2}
                 md={2}
                 sm={2}
-                className="d-flex justify-content-center mt-4"
-              >
+                className='d-flex justify-content-center mt-4'>
                 <span className={styles["OR_Heading"]}>{"OR"}</span>
               </Col>
 
               <Col lg={4} md={4} sm={4}>
-                <Row className="m-0 p-0 mt-4">
+                <Row className='m-0 p-0 mt-4'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Box_To_Show_Time"]}
-                  >
+                    className={styles["Box_To_Show_Time"]}>
                     <Row className={styles["Inner_Send_class"]}>
                       <Col lg={10} md={10} sm={10}>
                         <span className={styles["Time_Class"]}>
@@ -607,7 +614,7 @@ const ViewParticipantsDates = ({
                       <Col lg={2} md={2} sm={2}>
                         <Checkbox
                           prefixCls={"ProposedMeeting_Checkbox"}
-                          classNameCheckBoxP="d-none"
+                          classNameCheckBoxP='d-none'
                           checked={selectAll}
                           onChange={handleSelectAllChange}
                         />
@@ -622,8 +629,7 @@ const ViewParticipantsDates = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_ProposedMeeting"]}

@@ -429,7 +429,13 @@ export const editResolutionTimeView = (dateTime) => {
 };
 
 export const resolutionResultTable = (dateTime) => {
-  let fullDateYear =
+  try {
+    if(dateTime !== null && dateTime !== undefined) {
+      if (!dateTime || dateTime.length < 14) {
+        return "Invalid date";
+      }
+    }
+    let fullDateYear =
     dateTime.slice(0, 4) +
     "-" +
     dateTime.slice(4, 6) +
@@ -446,6 +452,12 @@ export const resolutionResultTable = (dateTime) => {
   let convertTime = new Date(fullDateYear);
 
   return convertTime;
+  } catch (error) {
+    console.error("Error converting date:", error);
+    return "Invalid date";
+    
+  }
+
 };
 
 export const createConvert = (dateTime) => {

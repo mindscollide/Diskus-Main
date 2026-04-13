@@ -17,6 +17,7 @@ import SortIconDescend from "../../../../assets/images/sortingIcons/SorterIconDe
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import CancelMeetingIcon from "../../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
 import ChevronDownIcon from "../../../../assets/images/dropdown-icon.png";
+import DoubleArrowIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 
 import EditIcon from "../../../../assets/images/New Meeting Listing Icons/EditMeeting.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
@@ -40,31 +41,40 @@ import {
   pollsGlobalFlag,
   proposedMeetingDatesGlobalFlag,
   scheduleMeetingPageFlag,
+  searchNewUserMeeting,
   uploadGlobalFlag,
   viewMeetingFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { mqttMeetingData } from "../../../../hooks/meetingResponse/response";
+import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
+import DeleteMeetingModal from "../scedulemeeting/meetingDetails/ProposedMeeting/DeleteMeetingModal/DeleteMeetingModal";
+import DeleteMeetingConfirmationModal from "../deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import { UpdateOrganizersMeeting } from "../../../../store/actions/MeetingOrganizers_action";
 
 const DraftMeeting = () => {
   const { t } = useTranslation();
   const { isMeetingTypeFilter } = useNewMeetingContext();
 
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings,
+    (state) => state.NewMeetingreducer.searchMeetings
   );
 
   const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
   );
   const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
   );
   const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
   );
   const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
+  );
+
+  const deleteMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.deleteMeetingModal
   );
   const {
     setViewFlag,
@@ -89,16 +99,24 @@ const DraftMeeting = () => {
     editFlag,
     setEditFlag,
     setCurrentMeetingID,
+    setViewAdvanceMeetingModal,
+    setVideoTalk,
+    setEditorRole,
   } = useMeetingContext();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
-  const [organizerNameSort, setOrganizerNameSort] = useState("ascend");
-  const [meetingTimeSort, setMeetingTimeSort] = useState("ascend");
-  const [meetingDateSort, setMeetingDateSort] = useState("ascend");
+
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
   const [duplicatedRows, setDuplicatedRows] = useState([]);
   const [rows, setRow] = useState([]);
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let userID = localStorage.getItem("userID");
 
   console.log(rows, "rows");
   const [dublicatedrows, setDublicatedrows] = useState([]);
@@ -113,7 +131,7 @@ const DraftMeeting = () => {
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
             meetingAgenda: meeting.meetingAgenda.filter(
-              (agenda) => agenda.objMeetingAgenda.canView,
+              (agenda) => agenda.objMeetingAgenda.canView
             ),
           }));
           copyMeetingData.forEach((data) => {
@@ -207,7 +225,7 @@ const DraftMeeting = () => {
       let meetingData = mqttMeetingAcRemoved;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
         setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -247,7 +265,7 @@ const DraftMeeting = () => {
       let meetingData = mqttMeetingOrgRemoved;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
         setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -260,7 +278,7 @@ const DraftMeeting = () => {
 
   const handleApplyMeetingTypeFilter = () => {
     const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
+      selectedMeetingTypeValues.includes(item.meetingtype?.toString())
     );
     setRow(filteredData);
     setMeetingTypeFilterVisible(false);
@@ -279,116 +297,93 @@ const DraftMeeting = () => {
     setSelectedMeetingTypeValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
+        : [...prevValues, String(filterValue)]
     );
   };
+  const handleEditMeeting = async (id, agendaContributorFlag, record) => {
+    let Data = {
+      MeetingID: Number(id),
+    };
+    await dispatch(
+      GetAllMeetingDetailsApiFunc(
+        navigate,
+        t,
+        Data,
+        false,
+        setCurrentMeetingID,
+        setSceduleMeeting,
+        setDataroomMapFolderId,
+        0,
+        1
+      )
+    );
+    dispatch(scheduleMeetingPageFlag(true));
+  };
+
   const moreButtons = (record) => {
     const handleEdit = async () => {
-      // const handleEditMeeting = async (record.pK_MDID, record.isQuickMeeting, "Organizer", record) => {
-      let Data = { MeetingID: Number(record.pK_MDID) };
-
-      if (record.isQuickMeeting) {
-        await dispatch(
-          ViewMeeting(
-            navigate,
-            Data,
-            t,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            2,
-          ),
-        );
-      } else if (record.isQuickMeeting === false) {
-        if (record.isAgendaContributor) {
-          dispatch(scheduleMeetingPageFlag(true));
-          dispatch(viewMeetingFlag(false));
-          dispatch(meetingDetailsGlobalFlag(false));
-          dispatch(organizersGlobalFlag(false));
-          dispatch(agendaContributorsGlobalFlag(false));
-          dispatch(participantsGlobalFlag(false));
-          dispatch(agendaGlobalFlag(true));
-          dispatch(meetingMaterialGlobalFlag(false));
-          dispatch(minutesGlobalFlag(false));
-          dispatch(proposedMeetingDatesGlobalFlag(false));
-          dispatch(actionsGlobalFlag(false));
-          dispatch(pollsGlobalFlag(false));
-          dispatch(attendanceGlobalFlag(false));
-          dispatch(uploadGlobalFlag(false));
-          let Data = {
-            MeetingID: Number(record.pK_MDID),
-          };
-          await dispatch(
-            GetAllMeetingDetailsApiFunc(
-              navigate,
-              t,
-              Data,
-              true,
-              setCurrentMeetingID,
-              setSceduleMeeting,
-              setDataroomMapFolderId,
-              0,
-              1,
-              "Agenda Contributor",
-            ),
-          );
-        } else {
-          let Data = {
-            MeetingID: Number(record.pK_MDID),
-          };
-          await dispatch(
-            GetAllMeetingDetailsApiFunc(
-              navigate,
-              t,
-              Data,
-              true,
-              setCurrentMeetingID,
-              setSceduleMeeting,
-              setDataroomMapFolderId,
-              0,
-              1,
-              "Organizer",
-            ),
-          );
-          dispatch(scheduleMeetingPageFlag(true));
-          dispatch(viewMeetingFlag(false));
-          dispatch(meetingDetailsGlobalFlag(true));
-          dispatch(organizersGlobalFlag(false));
-          dispatch(agendaContributorsGlobalFlag(false));
-          dispatch(participantsGlobalFlag(false));
-          dispatch(agendaGlobalFlag(false));
-          dispatch(meetingMaterialGlobalFlag(false));
-          dispatch(minutesGlobalFlag(false));
-          dispatch(proposedMeetingDatesGlobalFlag(false));
-          dispatch(actionsGlobalFlag(false));
-          dispatch(pollsGlobalFlag(false));
-          dispatch(attendanceGlobalFlag(false));
-          dispatch(uploadGlobalFlag(false));
-        }
+      handleEditMeeting(record.pK_MDID, record.isAgendaContributor, record);
+      setVideoTalk({
+        isChat: record.isChat,
+        isVideoCall: record.isVideoCall,
+        talkGroupID: record.talkGroupID,
+      });
+      localStorage.setItem("videoCallURL", record.videoCallURL);
+      setEditorRole({
+        status: record.status,
+        role: record.isAgendaContributor ? "Agenda Contributor" : "Organizer",
+      });
+      setEditMeeting(true);
+      if (record.isAgendaContributor) {
+        dispatch(agendaGlobalFlag(true));
+        dispatch(meetingDetailsGlobalFlag(false));
+      } else {
+        dispatch(meetingDetailsGlobalFlag(true));
+        dispatch(agendaGlobalFlag(false));
       }
+
+      dispatch(organizersGlobalFlag(false));
+      dispatch(agendaContributorsGlobalFlag(false));
+      dispatch(participantsGlobalFlag(false));
+      dispatch(meetingMaterialGlobalFlag(false));
+      dispatch(minutesGlobalFlag(false));
+      dispatch(proposedMeetingDatesGlobalFlag(false));
+      dispatch(actionsGlobalFlag(false));
+      dispatch(pollsGlobalFlag(false));
+      dispatch(attendanceGlobalFlag(false));
+      dispatch(uploadGlobalFlag(false));
     };
 
     const handleCancel = () => {
       console.log("Cancel Meeting", record);
+      let Data = {
+        MeetingID: record.pK_MDID,
+        StatusID: 4,
+      };
+
+      setDeleteMeetingRecord(Data);
+      setDeleteMeetingConfirmationModal(true);
     };
 
     const handleClickPublish = () => {
       console.log("Talk", record);
+      let Data = { MeetingID: record.pK_MDID, StatusID: 1 };
+      dispatch(UpdateOrganizersMeeting(false, navigate, t, 5, Data));
     };
 
     return (
       <div className={styles.morebuttons}>
         <div className={styles.morebtn} onClick={handleEdit}>
-          <img src={EditIcon} alt="" width="16" height="16" />
+          <img src={EditIcon} alt='' width='16' height='16' />
           <span>{t("Edit-meeting")}</span>
         </div>
 
         <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Delete-meeting")}</span>
         </div>
-        <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+        <div className={styles.morebtn} onClick={handleClickPublish}>
+          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Publish-meeting")}</span>
         </div>
       </div>
@@ -399,15 +394,14 @@ const DraftMeeting = () => {
       {meetingTypeFilters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}
-        >
+          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
           <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between p-1">
+      <div className='d-flex align-items-center justify-content-between p-1'>
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -422,17 +416,42 @@ const DraftMeeting = () => {
       </div>
     </Menu>
   );
+
+  const handleClickMeetingView = (record) => {
+    setAdvanceMeetingModalID(record.pK_MDID);
+    setViewAdvanceMeetingModal(true);
+    localStorage.setItem("videoCallURL", record.videoCallURL);
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    setEditorRole({
+      status: record.status,
+      role: record.isParticipant
+        ? "Participant"
+        : record.isAgendaContributor
+        ? "Agenda Contributor"
+        : "Organizer",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    localStorage.setItem("isMinutePublished", record.isMinutePublished);
+    localStorage.setItem("meetingTitle", record.title);
+  };
   const columns = useMemo(() => {
     return [
       {
         title: (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className='d-flex align-items-center gap-2'>
               <span>{t("Meeting-title")}</span>
-              {meetingTitleSort === "ascend" ? (
-                <img src={SortIconAscend} alt="SortIconAscend" />
+              {meetingTitleSort === null ? (
+                <img src={DoubleArrowIcon} alt='DoubleArrowIcon' />
+
+              ) : meetingTitleSort === "ascend" ? (
+                <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
-                <img src={SortIconDescend} alt="SortIconDescend" />
+                <img src={SortIconDescend} alt='SortIconDescend' />
               )}
             </div>
           </>
@@ -443,19 +462,28 @@ const DraftMeeting = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => {
-          return <span className={styles.tableRow}>{text}</span>;
+        render: (text, record) => {
+          return (
+            <span
+              onClick={() => handleClickMeetingView(record)}
+              className={styles.tableRow}>
+              {text}
+            </span>
+          );
         },
       },
       {
         title: (
           <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
+            <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Organizer")}</span>
-              {organizerNameSort === "ascend" ? (
-                <img src={SortIconAscend} alt="SortIconAscend" />
+              {organizerNameSort === null ? (
+                      <img src={DoubleArrowIcon} alt='DoubleArrowIcon' />
+
+              ) : organizerNameSort === "ascend" ? (
+                <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
-                <img src={SortIconDescend} alt="SortIconDescend" />
+                <img src={SortIconDescend} alt='SortIconDescend' />
               )}
             </div>
           </>
@@ -467,16 +495,22 @@ const DraftMeeting = () => {
         sorter: (a, b) =>
           a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
         sortOrder: organizerNameSort,
+        render: (text, record) => {
+          return <span className={styles.columnValue}>{text}</span>;
+        },
       },
       {
         title: (
           <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
+            <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Time")}</span>
-              {meetingTimeSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
+              {meetingTimeSort === null ? (
+                          <img src={DoubleArrowIcon} alt='DoubleArrowIcon' />
+
+              ) : meetingTimeSort === "ascend" ? (
+                <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
-                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
+                <img src={ArrowUpIcon} alt='ArrowDownIcon' />
               )}
             </div>
           </>
@@ -493,28 +527,33 @@ const DraftMeeting = () => {
         sortOrder: meetingTimeSort,
         render: (text, record) => {
           let meetingStartTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.dateOfMeeting + record.meetingStartTime
           );
           let meetingEndTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingEndTime,
+            record.dateOfMeeting + record.meetingEndTime
           );
           if (!meetingStartTime && !meetingEndTime) return;
           return (
-            <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime,
-            ).format("hh:mm a")}`}</>
+            <span className={styles.columnValue}>{`${moment(
+              meetingStartTime
+            ).format("hh:mm a")} - ${moment(meetingEndTime).format(
+              "hh:mm a"
+            )}`}</span>
           );
         },
       },
       {
         title: (
           <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
+            <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Date")}</span>
-              {meetingDateSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
+              {meetingDateSort === null ? (
+                         <img src={DoubleArrowIcon} alt='DoubleArrowIcon' />
+
+              ) : meetingDateSort === "ascend" ? (
+                <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
-                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
+                <img src={ArrowUpIcon} alt='ArrowDownIcon' />
               )}
             </div>
           </>
@@ -527,26 +566,30 @@ const DraftMeeting = () => {
           const dateA = new Date(
             a.dateOfMeeting.substring(0, 4),
             parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8),
+            a.dateOfMeeting.substring(6, 8)
           );
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8),
+            b.dateOfMeeting.substring(6, 8)
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.dateOfMeeting + record.meetingStartTime
           );
-          return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
+          return (
+            <span className={styles.columnValue}>{`${moment(meetingDate).format(
+              "Do MMM, YYYY"
+            )}`}</span>
+          );
         },
       },
       {
         title: (
-          <span className="d-flex justify-content-center align-items-center">
+          <span className='d-flex justify-content-center align-items-center'>
             {t("Meeting-type")}
           </span>
         ),
@@ -585,14 +628,18 @@ const DraftMeeting = () => {
         render: (_, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType,
+            (f) => Number(f.value) === meetingType
           );
 
           if (record.isQuickMeeting && meetingType === 1) {
             return t("Quick-meeting");
           }
 
-          return matchedFilter ? t(matchedFilter.text) : "";
+          return matchedFilter ? (
+            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
+          ) : (
+            ""
+          );
         },
       },
 
@@ -603,18 +650,17 @@ const DraftMeeting = () => {
         key: "meetingAction",
         render: (text, record) => {
           return (
-            <div className="d-flex justify-content-center align-items-center gap-2">
+            <div className='d-flex justify-content-center align-items-center gap-2'>
               <div>
                 <Popover
                   content={moreButtons(record)}
-                  trigger="click"
-                  overlayClassName="MoreButtons_overlay"
+                  trigger='click'
+                  overlayClassName='MoreButtons_overlay'
                   showArrow={false}
-                  placement="bottomRight"
-                >
+                  placement='bottomRight'>
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text="More"
+                    text='More'
                     icon2={<img src={ChevronDownIcon} width={10} />}
                   />
                 </Popover>
@@ -633,23 +679,66 @@ const DraftMeeting = () => {
     isMeetingTypeFilter,
     selectedMeetingTypeValues,
   ]);
-
+  const handelChangePagination = async (current, PageSize) => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: Number(current),
+      Length: Number(PageSize),
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    localStorage.setItem("MeetingPageRows", PageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+  };
   return (
     <Row>
       <Col sm={12} md={12} lg={12}>
         <Table
           onChange={handleChangeMeetingTable}
-          className="MeetingTable"
+          className='MeetingTable'
           column={columns}
           size={"small"}
           rows={rows}
           sticky={true}
           pagination={false}
           scroll={{
-            y: 450,
+            y: 400,
           }}
         />
       </Col>
+      {rows.length > 0 && (
+        <Col className={styles["DraftMeeting_Pagination"]}>
+          <div className='d-flex justify-content-center mt-2 '>
+            <Row className={styles["PaginationStyle-Committee"]}>
+              <Col
+                className={"pagination-groups-table"}
+                sm={12}
+                md={12}
+                lg={12}>
+                <CustomPagination
+                  current={
+                    meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1
+                  }
+                  pageSize={
+                    meetingpageRow !== null ? Number(meetingpageRow) : 30
+                  }
+                  onChange={handelChangePagination}
+                  total={totalRecords}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      )}
+      {deleteMeetingModal && <DeleteMeetingModal />}
+      {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
     </Row>
   );
 };

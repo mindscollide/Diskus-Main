@@ -1,6 +1,40 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { mqttMeetingData } from "../hooks/meetingResponse/response";
+import { useTranslation } from "react-i18next";
+
+/**
+ * @context NewMeetingContext
+ * @description Provides state management for the meetings listing and creation
+ * flow. Handles paginated meeting records (synced with Redux search results and
+ * real-time MQTT reminder notifications), filter state (status, meeting type,
+ * date, title, host), loading indicators, and creation-mode flags for quick,
+ * advanced, and proposed meetings.
+ *
+ * @provides {Array}    meetingsRecords               - Paginated list of meeting records currently displayed
+ * @provides {number}   totalMeetingRecords           - Total count of meetings matching the current filters
+ * @provides {Object}   searchFilters                 - Active search payload ({ Date, Title, HostName, PageNumber, Length })
+ * @provides {Array<string>} selectedStatusFilters    - Array of active meeting status IDs for filtering
+ * @provides {Array<string>} selectedMeetingTypeFilters - Array of active meeting type IDs for filtering
+ * @provides {Array}    isMeetingTypeFilter           - Formatted meeting-type options for the filter dropdown
+ * @provides {boolean}  isPublishedMeeting            - Whether the "published" meetings tab is active
+ * @provides {boolean}  isDraftMeetings               - Whether the "draft" meetings tab is active
+ * @provides {boolean}  isProposedMeeting             - Whether the "proposed" meetings tab is active
+ * @provides {boolean}  isLoading                     - Whether a meeting list API call is in progress
+ * @provides {number}   minutesAgo                    - Minutes since the earliest active meeting started
+ * @provides {Array}    startMeetingButton            - Per-meeting start-button visibility flags
+ * @provides {boolean}  quickMeeting                  - Whether the quick-meeting creation form is open
+ * @provides {boolean}  proposedNewMeeting            - Whether the proposed-meeting creation form is open
+ * @provides {boolean}  isAdvanceMeetingCreate        - Whether the advanced meeting creation flow is active
+ * @provides {boolean}  isProposedMeetingCreate       - Whether the proposed meeting creation flow is active
+ * @provides {number}   meetingMapFolderId            - Dataroom folder ID mapped to the current meeting
+ * @provides {Object}   createdMeetingInfo            - ID and title of the most recently created meeting
+ * @provides {Array}    duplicatedMeetingData         - Meeting data staged for duplication
+ *
+ * Usage:
+ *   import { useNewMeetingContext } from '../context/NewMeetingContext';
+ *   const { meetingsRecords, searchFilters, setSearchFilters } = useNewMeetingContext();
+ */
 
 /**
  * Context for managing meeting-related states across the application.
@@ -247,7 +281,7 @@ export const NewMeetingProvider = ({ children }) => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: "Quick-meeting",
+          text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -357,9 +391,13 @@ export const NewMeetingProvider = ({ children }) => {
 };
 
 /**
- * Custom hook to easily consume the NewMeetingContext.
- * Throws an error if used outside of a provider.
+ * @hook useNewMeetingContext
+ * @description Consumes NewMeetingContext and returns all meeting listing and
+ *   creation state values and setters. Throws an error if called outside of
+ *   NewMeetingProvider.
+ * @returns {Object} All meeting listing state values and setter functions from NewMeetingProvider
  */
+// Custom Hook to consume the context
 export const useNewMeetingContext = () => {
   // Access the context
   const context = useContext(NewMeetingContext);

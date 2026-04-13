@@ -52,7 +52,7 @@ const CreateEditAdvanceMeeting = (
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
 
   const { editorRole, setEditorRole, setCurrentMeetingID, currentMeeting } =
@@ -418,15 +418,14 @@ const CreateEditAdvanceMeeting = (
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className="mb-4">
+        <Col lg={12} md={12} sm={12} className='mb-4'>
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="py-2 d-flex gap-2 flex-wrap"
-              >
+                className='py-2 d-flex gap-2 flex-wrap'>
                 <Button
                   text={t("Meeting-details")}
                   className={

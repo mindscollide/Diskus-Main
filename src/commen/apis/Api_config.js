@@ -2208,3 +2208,11 @@ export const GetComplianceStandingReport = {
 export const GetAccumulativeReport = {
   RequestMethod: "ServiceManager.GetAccumulativeReport",
 };
+
+export const GetAllComplianceAuthority = {
+  RequestMethod: "ServiceManager.GetAllCompliancesByAuthorityID",
+};
+
+export const ChangeChecklistAllowedTransactionStatusRM = {
+  RequestMethod: "ServiceManager.ChangeChecklistAllowedTransactionStatus"
+}

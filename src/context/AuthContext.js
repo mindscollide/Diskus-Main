@@ -3,6 +3,22 @@ import { initaialStateFun } from "../store/actions/Auth_Sign_Out";
 import { useDispatch } from "react-redux";
 import { LoginFlowRoutes } from "../store/actions/UserManagementActions";
 
+/**
+ * @context AuthContext
+ * @description Provides authentication utilities to the component tree, primarily
+ * a centralised sign-out function that clears Redux state, localStorage, and
+ * sessionStorage while preserving any "remember me" preferences and the active
+ * i18n language setting.
+ *
+ * @provides {Function} signOut - Dispatches the Redux sign-out action, redirects
+ *   the user to the root route, and selectively clears stored credentials
+ *   depending on the current "remember email / remember password" flags.
+ *
+ * Usage:
+ *   import { useAuthContext } from '../context/AuthContext';
+ *   const { signOut } = useAuthContext();
+ */
+
 // Create the Context
 export const AuthContext = createContext();
 
@@ -74,6 +90,12 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+/**
+ * @hook useAuthContext
+ * @description Consumes AuthContext and returns the authentication utilities
+ *   provided by AuthProvider. Throws if called outside of AuthProvider.
+ * @returns {{ signOut: Function }} Authentication context value
+ */
 // Custom Hook to consume the context
 export const useAuthContext = () => {
   const context = useContext(AuthContext);

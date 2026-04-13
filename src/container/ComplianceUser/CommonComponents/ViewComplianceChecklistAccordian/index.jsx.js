@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./checklistAccordian.module.css";
 import CustomAccordion from "../../../../components/elements/accordian/CustomAccordion";
 import { useTranslation } from "react-i18next";
@@ -10,33 +10,77 @@ import NoChecklistImg from "../../../../assets/images/NoChecklistImg.png";
 import Select from "react-select";
 import { ProgressLoader } from "../../../../components/elements/ProgressLoader/ProgressLoader";
 import { formatDateToYMD } from "../commonFunctions";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateCheckListStatusApi } from "../../../../store/actions/ComplainSettingActions";
+import { useNavigate } from "react-router-dom";
+import CompliaceStatusOnHoldModal from "../StatusChangeModals/ComplianceStatusOnHoldModal";
+import ComplianceStatusCompleteExceptionModal from "../StatusChangeModals/ComplianceStatusCompleteModal";
+import ComplianceStatusCancelModal from "../StatusChangeModals/ComplianceStatusCancel";
 
 const ViewComplianceChecklistAccordian = () => {
   const accordionContainerRef = useRef();
+  const {
+    complianceInfo,
+    complianceOnHoldModal,
+    comlianceCompleteExceptionModal,
+    complianceCancelModal,
+    viewComplianceTasksContextData,
+    resetModalStates,
+    setComlianceCompleteExceptionModal,
+    setComplianceCompleteModalType,
+    allCheckListByComplianceId,
+    setExpandChecklistOnTasksPage,
+    setViewComplianceDetailsTab,
+    complianceViewMode,
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+    setComplianceStatusChangeReasonModal,
+    setComplianceOnHoldModal,
+    complianceCancelSelectOption,
+    setComplianceCancelModal,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    setShowViewCompliance,
+    setTempSelectedComplianceStatus,
+    setSelectedChecklistId,
+    setSelectedChecklistDueDate,
+    setStatusChangeType,
+  } = useComplianceContext();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // Add a ref to store the expanded state when data refreshes
+  const previousExpandedIdsRef = useRef([]);
+
+  const isStatusUpdateRef = useRef(false);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
+
+  console.log(getCheckListData, "Local state AFTER update");
+
+  //To show Checklist label on Different Modal
+  const [isChecklistTrue, setIsChecklistTrue] = useState(false);
   // const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
+  const viewComplianceByMeDetails = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
+  );
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+  console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
+
+  console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
 
   const allExpanded =
     getCheckListData.length > 0 &&
     expandedCheckListIds.length === getCheckListData.length;
 
-  // context
-  const {
-    allCheckListByComplianceId,
-    setExpandChecklistOnTasksPage,
-    setViewComplianceDetailsTab,
-    complianceViewMode,
-  } = useComplianceContext();
+  console.log(allExpanded, "selectedChecklistStatus");
 
   console.log(
     {
       allCheckListByComplianceId,
-      setExpandChecklistOnTasksPage,
-      setViewComplianceDetailsTab,
-      complianceViewMode,
     },
     "CheckListByComplianceCheckListByCompliance",
   );
@@ -44,76 +88,167 @@ const ViewComplianceChecklistAccordian = () => {
   useEffect(() => {
     if (allCheckListByComplianceId && allCheckListByComplianceId.length !== 0) {
       setGetCheckListData(allCheckListByComplianceId);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      setExpandedCheckListIds([]);
+
+      // 🔥 CRITICAL: Preserve expanded state when data refreshes
+      if (!isStatusUpdateRef.current) {
+        // Only collapse all on initial load, not on refresh
+        if (previousExpandedIdsRef.current.length === 0) {
+          // This is initial load
+          setExpandedCheckListIds([]);
+        } else {
+          // This is a refresh - restore previous expanded state
+          setExpandedCheckListIds(previousExpandedIdsRef.current);
+        }
+      }
+
+      // Reset the ref after preserving the state
+      setTimeout(() => {
+        isStatusUpdateRef.current = false;
+      }, 0);
     }
   }, [allCheckListByComplianceId]);
+
+  // Save expanded state before it gets cleared
+  useEffect(() => {
+    // Store current expanded IDs before they might be cleared
+    if (expandedCheckListIds.length > 0) {
+      previousExpandedIdsRef.current = [...expandedCheckListIds];
+    }
+
+    // Update addChecklistCloseState based on expanded state
+    setAddChecklistCloseState(expandedCheckListIds.length > 0);
+  }, [expandedCheckListIds]);
+
+  const BLOCKED_TASK_STATUSES = ["In Progress", "On Hold", "Pending"];
+
+  const canChecklistBeCompleted = (checklistId) => {
+    //  STEP 1: If data not loaded → BLOCK
+    if (!viewComplianceByMeDetails?.checklistTasks?.length) {
+      console.log(" Data not loaded yet");
+      return false; // treat as NOT allowed
+    }
+
+    const checklistTasks = viewComplianceByMeDetails.checklistTasks.filter(
+      (task) => task.checklistId === checklistId,
+    );
+
+    console.log("Checklist Tasks:", checklistTasks);
+
+    const hasBlockedTask = checklistTasks.some((task) =>
+      BLOCKED_TASK_STATUSES.includes(task.taskStatus?.statusName),
+    );
+
+    console.log("Has Blocked Task:", hasBlockedTask);
+
+    return !hasBlockedTask;
+  };
 
   // functions
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
+      let newExpanded;
       if (prev.includes(data.checklistId)) {
         // collapse
-
-        return prev.filter((id) => id !== data.checklistId);
+        newExpanded = prev.filter((id) => id !== data.checklistId);
       } else {
         setAddChecklistCloseState(true);
         // expand
-        return [...prev, data.checklistId];
+        newExpanded = [...prev, data.checklistId];
       }
+
+      // Store in ref for persistence across refreshes
+      previousExpandedIdsRef.current = [...newExpanded];
+
+      return newExpanded;
     });
   };
 
-  // const handleExpandBtn = () => {
-  //   if (isExpandBtnClicked) {
-  //     if (getCheckListData?.length > 0) {
-  //       const allIds = getCheckListData.map((item) => item.checklistId);
-
-  //       setAddChecklistCloseState(true);
-  //       setExpandedCheckListIds(allIds);
-  //       setIsExpandBtnClicked(!isExpandBtnClicked);
-  //     }
-  //   }
-  // };
-  // const handleExpandBtn = () => {
-  //   if (getCheckListData?.length === 0) return;
-
-  //   if (!isExpandBtnClicked) {
-  //     // 👉 EXPAND ALL
-  //     const allIds = getCheckListData.map((item) => item.checklistId);
-
-  //     setExpandedCheckListIds(allIds);
-  //     setAddChecklistCloseState(true);
-  //   } else {
-  //     // 👉 COLLAPSE ALL
-  //     setExpandedCheckListIds([]);
-  //     setAddChecklistCloseState(false);
-  //   }
-
-  //   // 🔄 toggle button state
-  //   setIsExpandBtnClicked((prev) => !prev);
-  // };
   const handleExpandBtn = () => {
     if (getCheckListData.length === 0) return;
 
     if (allExpanded) {
       // 👉 COLLAPSE ALL
       setExpandedCheckListIds([]);
+      previousExpandedIdsRef.current = [];
       setAddChecklistCloseState(false);
     } else {
       // 👉 EXPAND ALL
       const allIds = getCheckListData.map((item) => item.checklistId);
 
       setExpandedCheckListIds(allIds);
+      previousExpandedIdsRef.current = [...allIds];
       setAddChecklistCloseState(true);
     }
   };
 
-  const handleChecklistStatusChange = (checklistId, selectedStatus) => {
+  const handleChecklistStatusChange = (
+    checklistId,
+    selectedStatus,
+    dueDate,
+  ) => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
 
-    // 🔁 Update local UI immediately (optional but recommended)
+    //  PREVENT COMPLETED IF TASKS ARE BLOCKED
+    if (selectedStatus.label === "Completed") {
+      const allowed = canChecklistBeCompleted(checklistId);
+      console.log(allowed, "allowedallowed");
+      if (!allowed) {
+        setComlianceCompleteExceptionModal(true);
+        setComplianceCompleteModalType("checklist");
+        return;
+      }
+    }
+
+    //  NEW: Handle On Hold selection
+    if (selectedStatus.label === "On Hold") {
+      setComplianceOnHoldModal(true); // Open On Hold modal
+      setStatusChangeType("checklist"); // Set type
+      setTempSelectedComplianceStatus(selectedStatus);
+      setSelectedChecklistId(checklistId);
+      setSelectedChecklistDueDate(dueDate);
+      return; // Stop here to prevent API call
+    }
+
+    // 🔥 CANCEL
+    if (selectedStatus.label === "Cancelled") {
+      setStatusChangeType("checklist");
+
+      setTempSelectedComplianceStatus(selectedStatus);
+      setSelectedChecklistId(checklistId);
+      setSelectedChecklistDueDate(dueDate);
+
+      setComplianceCancelModal(true);
+      return;
+    }
+
+    let Data = {
+      ChecklistID: checklistId,
+      ComplianceID: complianceInfo?.complianceId,
+      NewStatusID: selectedStatus?.value,
+      StatusChangeReason: "",
+      UpdatedDueDate: `${dueDate}185958`,
+      ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
+    };
+
+    // Set flag BEFORE API call to prevent collapse on refresh
+    isStatusUpdateRef.current = true;
+
+    previousExpandedIdsRef.current = [...expandedCheckListIds];
+
+    dispatch(
+      updateCheckListStatusApi(
+        navigate,
+        Data,
+        t,
+        1,
+        setComplianceAddEditViewState,
+        setCreateEditComplaince,
+        setShowViewCompliance,
+      ),
+    );
+
+    // Update local UI immediately (optional but recommended)
     setGetCheckListData((prev) =>
       prev.map((item) =>
         item.checklistId === checklistId
@@ -134,6 +269,7 @@ const ViewComplianceChecklistAccordian = () => {
     //   statusId: selectedStatus.value,
     // });
   };
+
   // styling for select:
   const getStatusColor = (status) => {
     switch (status) {
@@ -157,6 +293,7 @@ const ViewComplianceChecklistAccordian = () => {
         return "#000";
     }
   };
+
   const statusSelectStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -192,6 +329,35 @@ const ViewComplianceChecklistAccordian = () => {
     }),
   };
 
+  const handleClickOnHoldModal = useCallback(() => {
+    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
+    setComplianceOnHoldModal(false);
+    setComplianceStatusChangeReasonModal(true);
+
+    // if (tempSelectComplianceStatus) {
+    //   updateCompliance(tempSelectComplianceStatus);
+    // }
+    // resetModalStates();
+  }, [
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+  ]);
+
+  const handleClickCancelModal = useCallback(() => {
+    // console.log(handleProceedButtonView, "handleProceedButtonView");
+    setComplianceCancelModal(false);
+    setComplianceStatusChangeReasonModal(true);
+    // if (tempSelectComplianceStatus) {
+    //   updateCompliance(tempSelectComplianceStatus);
+    // }
+    // resetModalStates();
+  }, [
+    tempSelectComplianceStatus,
+    complianceCancelSelectOption,
+    complianceOnHoldReasonState,
+  ]);
+
   return (
     <>
       <Row className="my-2">
@@ -210,11 +376,6 @@ const ViewComplianceChecklistAccordian = () => {
           className="d-flex justify-content-end align-items-center"
         >
           {getCheckListData?.length > 0 && (
-            // <Button
-            //   text={!isExpandBtnClicked ? t("Expand-all") : t("Collapse-all")}
-            //   className={styles["viewCompliance_ExapnAllBtn"]}
-            //   onClick={handleExpandBtn}
-            // />
             <Button
               text={allExpanded ? t("Collapse-all") : t("Expand-all")}
               className={styles["viewCompliance_ExapnAllBtn"]}
@@ -238,12 +399,13 @@ const ViewComplianceChecklistAccordian = () => {
               (data2, index) => data2 === data.checklistId,
             );
 
-            console.log(isExpanded, data, "isExpandedisExpanded");
+            console.log(data, "selectedChecklistStatus5555");
             const checklistStatusOptions =
               data.complianceCheckListAllowed?.map((status) => ({
                 value: status.statusId,
                 label: status.statusName,
               })) || [];
+            console.log(data.complianceCheckListAllowed, "Allowed BEFORE");
 
             const selectedChecklistStatus = data.status
               ? {
@@ -251,6 +413,11 @@ const ViewComplianceChecklistAccordian = () => {
                   label: data.status.statusName,
                 }
               : null;
+
+            console.log(
+              selectedChecklistStatus,
+              "selectedChecklistStatusChecklistvee",
+            );
 
             return (
               <div key={index}>
@@ -278,7 +445,7 @@ const ViewComplianceChecklistAccordian = () => {
                           </div>
                         </Col>
                       </Row>
-                      <Row className="mt-2">
+                      <Row className="mt-3">
                         <Col sm={12} md={3} lg={3}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Due-date",
@@ -290,7 +457,7 @@ const ViewComplianceChecklistAccordian = () => {
                         <Col sm={12} md={2} lg={2}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Status",
-                          )}:`}</div>
+                          )}`}</div>
                           {complianceViewMode === "byMe" ? (
                             <Select
                               isSearchable={true}
@@ -300,6 +467,7 @@ const ViewComplianceChecklistAccordian = () => {
                                 handleChecklistStatusChange(
                                   data.checklistId,
                                   selectedOption,
+                                  data.dueDate,
                                 )
                               }
                               styles={statusSelectStyles}
@@ -328,7 +496,9 @@ const ViewComplianceChecklistAccordian = () => {
                             <Col sm={12} md={3} lg={3}>
                               <div className="d-flex justify-content-between align-items-center">
                                 <span className={styles["progressBarHeading"]}>
-                                  {t("Checklist-progress")}
+                                  {complianceViewMode === "byMe"
+                                    ? t("Checklist-progress")
+                                    : t("My-progress")}
                                 </span>
                                 <span className={styles["progressBarHeading"]}>
                                   {`${data.checklistProgress}%`}
@@ -429,6 +599,27 @@ const ViewComplianceChecklistAccordian = () => {
           </>
         )}
       </div>
+
+      {/* This is For On Hold Modal */}
+      {/* {complianceOnHoldModal && (
+        <CompliaceStatusOnHoldModal
+          view={true}
+          handleProceedButtonView={handleClickOnHoldModal}
+        />
+      )} */}
+
+      {/* This is for completion Modal */}
+      {comlianceCompleteExceptionModal && (
+        <ComplianceStatusCompleteExceptionModal />
+      )}
+
+      {/* This is For Cancel Modal */}
+      {/* {complianceCancelModal && (
+        <ComplianceStatusCancelModal
+          view={true}
+          handleProceedButtonView={handleClickCancelModal}
+        />
+      )} */}
     </>
   );
 };

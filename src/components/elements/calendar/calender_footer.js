@@ -1,4 +1,15 @@
 // CalendarFooter.js
+
+/**
+ * @component CalendarFooter
+ * @description Renders a colour-coded legend at the bottom of the Diskus
+ * calendar. Each indicator circle is shown only when the corresponding
+ * calendar integration (Diskus, Google, Microsoft) has a colour stored in
+ * localStorage, giving users a visual key for event sources.
+ *
+ * @returns {JSX.Element} A footer row containing coloured circles and labels
+ *   for each active calendar integration.
+ */
 import React from "react";
 import styles from "./Calendar.module.css";
 import { Row, Col } from "react-bootstrap";

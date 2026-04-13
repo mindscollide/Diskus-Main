@@ -12,7 +12,8 @@ import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./SearchComplianceReportModal.module.css";
-import { DatePicker, Select } from "antd";
+import { DatePicker } from "antd";
+import Select from "react-select";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 
 const SearchComplianceReportModal = () => {
@@ -48,12 +49,15 @@ const SearchComplianceReportModal = () => {
   };
 
   const mapReportTypeTextToIds = (text = "") => {
-    if (!text.trim()) return "";
+    if (!text) return "";
 
-    const tokens = text
-      .toLowerCase()
-      .split(",")
-      .map((t) => t.trim());
+    // convert to array safely
+    const tokens = Array.isArray(text)
+      ? text
+      : text
+          .toLowerCase()
+          .split(",")
+          .map((t) => t.trim());
 
     const ids = tokens.map((token) => REPORT_TYPE_MAP[token]).filter(Boolean);
 
@@ -66,9 +70,7 @@ const SearchComplianceReportModal = () => {
       searchComplianceReportPayload.reportTitle ||
       searchComplianceReportPayload.reportTitleOutside ||
       "",
-    reportTypeIds: mapReportTypeTextToIds(
-      searchComplianceReportPayload.reportType,
-    ),
+    reportTypeIds: searchComplianceReportPayload.reportType?.value || "",
     generatedOnStartDate: searchComplianceReportPayload.dueDateFrom || "",
     generatedOnEndDate: searchComplianceReportPayload.dueDateTo || "",
     length: searchComplianceReportPayload.length || 10,
@@ -79,6 +81,8 @@ const SearchComplianceReportModal = () => {
     const data = buildApiPayload();
     setComplianceReportList([]);
     dispatch(ComplianceReportListingAPI(navigate, data, t));
+    setsearchbox(false);
+    setEnterpressed(false);
   };
 
   /* ---------------------------------- */
@@ -128,8 +132,8 @@ const SearchComplianceReportModal = () => {
           length: 10,
           sRow: 0,
         },
-        t,
-      ),
+        t
+      )
     );
   };
 
@@ -149,7 +153,7 @@ const SearchComplianceReportModal = () => {
           <span ref={searchBoxRef} className="position-relative">
             <TextField
               placeholder={t(
-                "Report-title.click-the-icon-to-view-more-options",
+                "Report-title.click-the-icon-to-view-more-options"
               )}
               name={"reportTitleOutside"}
               disable={searchbox}
@@ -234,20 +238,51 @@ const SearchComplianceReportModal = () => {
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <TextField
-                          labelclass={"d-none"}
+                        <Select
                           placeholder={t("Report-type")}
-                          name={"reportType"}
-                          value={searchComplianceReportPayload?.reportType}
-                          type="text"
-                          applyClass={"usermanagementTextField"}
-                          change={handleChange}
+                          className="usermanagementTextField"
+                          value={
+                            searchComplianceReportPayload?.reportType || null
+                          }
+                          onChange={(value) =>
+                            setSearchComplianceReportPayload((prev) => ({
+                              ...prev,
+                              reportType: value,
+                            }))
+                          }
+                          options={[
+                            {
+                              label: "End of Compliance",
+                              value: 1,
+                            },
+                            {
+                              label: "Quarterly",
+                              value: 2,
+                            },
+                            {
+                              label: "Accumulative",
+                              value: 3,
+                            },
+                          ]}
+                          allowClear
                         />
                       </Col>
                     </Row>
 
                     <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12} xs={12}>
+                      <Col lg={6} md={6} sm={6} xs={6}>
+                        <TextField
+                          labelclass={"d-none"}
+                          placeholder={t("generated-on")}
+                          maxLength={100}
+                          name={"generatedOn"}
+                          value={searchComplianceReportPayload?.generatedOn}
+                          type="text"
+                          applyClass={"usermanagementTextField"}
+                          change={handleChange}
+                        />
+                      </Col>
+                      <Col lg={6} md={6} sm={6} xs={6}>
                         <DatePicker.RangePicker
                           format="DD/MM/YYYY"
                           placeholder={["Start Date", "End Date"]}

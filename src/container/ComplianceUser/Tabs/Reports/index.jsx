@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import CustomTable from "../../../../components/elements/table/Table";
@@ -8,8 +8,8 @@ import styles from "./Report.module.css";
 import CustomButton from "../../../../components/elements/button/Button";
 import { Col, Row } from "react-bootstrap";
 import NoReportImg from "../../../../assets/images/NoReportsImg.png";
-import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
-import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
+import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import ComplianceReportLiting from "../../../../assets/images/compliance-report-listing.png";
 import ComplianceStatusReportCheckedIcon from "../../../../assets/images/ComplianceStatusReportCheckedIcon.png";
@@ -17,7 +17,7 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { Checkbox } from "antd";
 import {
   formatDateToYMD,
-  getDueDateTimeNumber,
+  formatGeneratedOnDateTime,
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 import {
@@ -27,9 +27,11 @@ import {
   GetEndOfComplianceReportAPI,
   GetQuarterReportAPI,
 } from "../../../../store/actions/ComplainSettingActions";
-import { useSelector } from "react-redux";
-import { formatDateToYYYYMMDD } from "../../../../commen/functions/date_formater";
 
+/**
+ * Reports component — renders the compliance report listing for end users.
+ * Handles lazy-load scrolling, column sorting/filtering, and report fetch/download.
+ */
 const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -67,8 +69,6 @@ const Reports = () => {
     emptyComplianceState,
   } = useComplianceContext();
 
-  console.log(complianceReportList, "complianceReportList");
-
   //  Initial Load
   useEffect(() => {
     dispatch(
@@ -77,7 +77,7 @@ const Reports = () => {
   }, []);
 
   useEffect(() => {
-    return setSearchComplianceReportPayload({
+    setSearchComplianceReportPayload({
       reportTitle: "",
       reportTitleOutside: "",
       reportType: "",
@@ -112,8 +112,8 @@ const Reports = () => {
     setIsScroll(false);
   }, [GetReportListingData]);
 
-  // ✅ Lazy Load Scroll
-  useAntTableScrollBottomVirtual(() => {
+  // Lazy Load Scroll
+  const handleScrollBottom = useCallback(() => {
     if (complianceReportList.length < complianceReportTotal) {
       const nextPayload = {
         ...searchComplianceReportPayload,
@@ -125,130 +125,161 @@ const Reports = () => {
 
       dispatch(ComplianceReportListingAPI(navigate, nextPayload, t));
     }
-  }, 10);
+  }, [
+    complianceReportList.length,
+    complianceReportTotal,
+    searchComplianceReportPayload,
+  ]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Function
-  const resetAllSorts = () => {
-    setReportTitleSort(null);
-    setGeneratedOnSort(null);
-    setStartDateSort(null);
-    setEndDateSort(null);
-  };
+  useAntTableScrollBottomVirtual(handleScrollBottom, 10);
 
-  const handleChangeComplianceSorter = (pagination, filters, sorter) => {
-    resetAllSorts();
+  /**
+   * Handles Ant Design table change events for sorting and filtering.
+   * Resets all sort states before applying the new sort, and updates
+   * reportTypeFilter when a filter is applied.
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleChangeComplianceSorter = useCallback(
+    (pagination, filters, sorter) => {
+      setReportTitleSort(null);
+      setGeneratedOnSort(null);
+      setStartDateSort(null);
+      setEndDateSort(null);
 
-    if (sorter.columnKey === "reportTitle") {
-      setReportTitleSort(sorter.order);
-    } else if (sorter.columnKey === "generatedOn") {
-      setGeneratedOnSort(sorter.order);
-    } else if (sorter.columnKey === "startDate") {
-      setStartDateSort(sorter.order);
-    } else if (sorter.columnKey === "endDate") {
-      setEndDateSort(sorter.order);
-    }
+      if (sorter.columnKey === "reportTitle") {
+        setReportTitleSort(sorter.order);
+      } else if (sorter.columnKey === "generatedOn") {
+        setGeneratedOnSort(sorter.order);
+      } else if (sorter.columnKey === "startDate") {
+        setStartDateSort(sorter.order);
+      } else if (sorter.columnKey === "endDate") {
+        setEndDateSort(sorter.order);
+      }
 
-    if (filters?.type) {
-      setReportTypeFilter(filters.type || [1, 2, 3]);
-    }
-  };
+      if (filters?.type) {
+        setReportTypeFilter(filters.type || [1, 2, 3]);
+      }
+    },
+    []
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getReportTypeColumnProps = () => ({
-    filteredValue: reportTypeFilter,
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-      <div style={{ padding: 8 }}>
-        <Checkbox.Group
-          options={reportTypeOptions}
-          value={selectedKeys}
-          onChange={(checkedValues) => setSelectedKeys(checkedValues)}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: 8,
-          }}
-        />
-
-        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-          {/* Reset */}
-          <CustomButton
-            text={t("Reset")}
-            className={styles["ResetButtonFilter"]}
-            onClick={() => {
-              const all = reportTypeOptions.map((c) => c.value);
-              setSelectedKeys(all);
-              setReportTypeFilter(all);
-              confirm();
+  /**
+   * Returns the Ant Design column props for the report type filter column.
+   * Memoized to avoid unnecessary recomputation of the columns array.
+   */
+  const reportTypeColumnProps = useMemo(
+    () => ({
+      filteredValue: reportTypeFilter,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={reportTypeOptions}
+            value={selectedKeys}
+            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
             }}
           />
 
-          {/* OK */}
-          <CustomButton
-            text={t("Ok")}
-            className={styles["ResetButtonFilter"]}
-            onClick={() => {
-              setReportTypeFilter(selectedKeys);
-              confirm();
-            }}
-          />
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            {/* Reset */}
+            <CustomButton
+              text={t("Reset")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                const all = reportTypeOptions.map((c) => c.value);
+                setSelectedKeys(all);
+                setReportTypeFilter(all);
+                confirm();
+              }}
+            />
+
+            {/* OK */}
+            <CustomButton
+              text={t("Ok")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                setReportTypeFilter(selectedKeys);
+                confirm();
+              }}
+            />
+          </div>
         </div>
-      </div>
-    ),
-    onFilter: (value, record) => value === record.reportTypeId,
-    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
-  });
+      ),
+      onFilter: (value, record) => value === record.reportTypeId,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+    }),
+    [reportTypeFilter]
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ✅ Report Click Handlers
-  const fetchReport = (record, isDownload = false) => {
-    const data = {
-      reportId: Number(record?.reportId),
-      reportTypeId: record?.reportTypeId,
-    };
+  /**
+   * Fetches or downloads a compliance report.
+   * @param {object} record - The report row record from the table.
+   * @param {boolean} isDownload - Whether to trigger a PDF download (true) or view (false).
+   */
+  const fetchReport = useCallback(
+    (record, isDownload = false) => {
+      const data = {
+        reportId: Number(record?.reportId),
+        reportTypeId: record?.reportTypeId,
+      };
 
-    if (isDownload) {
-      setAutoPdfDownload(true);
-      console.log("Check sRow");
+      if (isDownload) {
+        setAutoPdfDownload(true);
 
-      // Store old payload
-      const oldPayload = { ...searchComplianceReportPayload };
-      console.log(oldPayload, "Check sRow");
+        // Store old payload
+        const oldPayload = { ...searchComplianceReportPayload };
 
-      // Reset sRow temporarily
-      setSearchComplianceReportPayload({ ...oldPayload, sRow: 0 });
+        // Reset sRow temporarily
+        setSearchComplianceReportPayload({ ...oldPayload, sRow: 0 });
 
-      if (record?.reportTypeId === 1) {
-        console.log("Check sRow");
-        setEndOfComplianceReport(true);
-        dispatch(GetEndOfComplianceReportAPI(navigate, data, t, false));
-      } else if (record?.reportTypeId === 2) {
-        console.log("Check sRow");
-        setEndOfQuarterReport(true);
-        dispatch(GetQuarterReportAPI(navigate, data, t, false));
-      } else if (record?.reportTypeId === 3) {
-        setAccumulativeReport(true);
-        dispatch(GetAccumulativeReportAPI(navigate, data, t, false));
+        if (record?.reportTypeId === 1) {
+          setEndOfComplianceReport(true);
+          dispatch(GetEndOfComplianceReportAPI(navigate, data, t, false));
+        } else if (record?.reportTypeId === 2) {
+          setEndOfQuarterReport(true);
+          dispatch(GetQuarterReportAPI(navigate, data, t, false));
+        } else if (record?.reportTypeId === 3) {
+          setAccumulativeReport(true);
+          dispatch(GetAccumulativeReportAPI(navigate, data, t, false));
+        }
+
+        // Restore the original payload immediately after dispatch
+        setSearchComplianceReportPayload(oldPayload);
+      } else {
+        // Normal View Report
+        setAutoPdfDownload(false);
+
+        if (record?.reportTypeId === 1) {
+          setEndOfComplianceReport(true);
+          dispatch(GetEndOfComplianceReportAPI(navigate, data, t, true));
+        } else if (record?.reportTypeId === 2) {
+          setEndOfQuarterReport(true);
+          dispatch(GetQuarterReportAPI(navigate, data, t, true));
+        } else if (record?.reportTypeId === 3) {
+          setAccumulativeReport(true);
+          dispatch(GetAccumulativeReportAPI(navigate, data, t, true));
+        }
       }
+    },
+    [
+      searchComplianceReportPayload,
+      setAutoPdfDownload,
+      setEndOfComplianceReport,
+      setEndOfQuarterReport,
+      setAccumulativeReport,
+      setSearchComplianceReportPayload,
+    ]
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
-      // Restore the original payload immediately after dispatch
-      setSearchComplianceReportPayload(oldPayload);
-    } else {
-      // Normal View Report
-      setAutoPdfDownload(false);
-      console.log("Check sRow");
-
-      if (record?.reportTypeId === 1) {
-        setEndOfComplianceReport(true);
-        dispatch(GetEndOfComplianceReportAPI(navigate, data, t, true));
-      } else if (record?.reportTypeId === 2) {
-        setEndOfQuarterReport(true);
-        dispatch(GetQuarterReportAPI(navigate, data, t, true));
-      } else if (record?.reportTypeId === 3) {
-        setAccumulativeReport(true);
-        dispatch(GetAccumulativeReportAPI(navigate, data, t, true));
-      }
-    }
-  };
-
-  const onClickOfViewPort = () => {
+  /**
+   * Opens the organisation-wide compliance standing report view.
+   */
+  const onClickOfViewPort = useCallback(() => {
     setComplianceStandingReport(true);
     dispatch(
       GetComplianceStandingReportAPI(
@@ -257,7 +288,7 @@ const Reports = () => {
         t
       )
     );
-  };
+  }, [setComplianceStandingReport]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const columns = useMemo(
     () => [
@@ -268,7 +299,7 @@ const Reports = () => {
         width: "20%",
         ellipsis: true,
         align: "left",
-        ...getReportTypeColumnProps(),
+        ...reportTypeColumnProps,
         render: (_, record) => {
           return (
             <span>
@@ -290,13 +321,13 @@ const Reports = () => {
             ) : reportTitleSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
         dataIndex: "reportTitle",
         key: "reportTitle",
-        width: "35%",
+        width: "27%",
         ellipsis: true,
         sorter: (a, b) =>
           reportTitleSort === "descend"
@@ -312,7 +343,11 @@ const Reports = () => {
                 .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
         render: (text) => {
-          return <span>{text}</span>;
+          const complianceTitle = text?.includes(" - ")
+            ? text.split(" - ")[1]
+            : text;
+
+          return <span>{complianceTitle}</span>;
         },
       },
       {
@@ -320,48 +355,72 @@ const Reports = () => {
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Generated-on")}
             {generatedOnSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" />
             ) : generatedOnSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt="" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" />
             )}
           </span>
         ),
         dataIndex: "generatedOn",
         key: "generatedOn",
-        width: "13%",
+        width: "15%",
         ellipsis: true,
         align: "left",
-        render: (_, record) => {
-          return <span>{`${formatDateToYMD(record.generatedOn)}`}</span>;
-        },
+        sortDirections: ["descend", "ascend"],
+        onHeaderCell: () => ({
+          onClick: () => {
+            setGeneratedOnSort((order) => {
+              if (order === "descend") return "ascend";
+              if (order === "ascend") return null;
+              return "descend";
+            });
+          },
+        }),
         sorter: (a, b) => {
-          const aTime = getDueDateTimeNumber(a.generatedOn, a.generatedOnTime);
-          const bTime = getDueDateTimeNumber(b.generatedOn, b.generatedOnTime);
-
-          if (generatedOnSort === "descend") return bTime - aTime;
-          if (generatedOnSort === "ascend") return aTime - bTime;
-
-          return aTime - bTime;
+          const parseDateTime = (d, t) =>
+            Date.parse(
+              `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}, ${t.slice(
+                0,
+                2
+              )}:${t.slice(2, 4)}:${t.slice(4, 6)}`
+            );
+          const diff =
+            parseDateTime(a.generatedOn, a.generatedOnTime) -
+            parseDateTime(b.generatedOn, b.generatedOnTime);
+          return generatedOnSort === "descend"
+            ? -diff
+            : generatedOnSort === "ascend"
+            ? diff
+            : 0;
         },
+        render: (_, record) => (
+          <span>
+            {formatGeneratedOnDateTime(
+              record.generatedOn,
+              record.generatedOnTime
+            )}
+          </span>
+        ),
+        generatedOnSort,
       },
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("Start-date")}
+            {t("Starts-dates")}
             {startDateSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
             ) : startDateSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
         dataIndex: "startDate",
         key: "startDate",
-        width: "13%",
+        width: "12%",
         ellipsis: true,
         align: "left",
         render: (_, record) => <span>{formatDateToYMD(record.startDate)}</span>,
@@ -384,13 +443,13 @@ const Reports = () => {
             ) : endDateSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
         dataIndex: "endDate",
         key: "endDate",
-        width: "13%",
+        width: "12%",
         ellipsis: true,
         align: "left",
         render: (_, record) => <span>{formatDateToYMD(record.endDate)}</span>,
@@ -443,52 +502,56 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t]
+    [
+      reportTitleSort,
+      reportTypeColumnProps,
+      generatedOnSort,
+      startDateSort,
+      endDateSort,
+      fetchReport,
+      t,
+    ]
   );
 
   return (
     <>
-      {complianceReportList?.length > 0 ? (
-        <>
-          <section className={styles["ComplianceStatusReport_Section"]}>
-            <Row className={styles["ComplianceReport"]}>
-              <Col lg={2} ms={2} sm={2}>
-                <img className="" src={ComplianceReportLiting} alt="" />
-              </Col>
-              <Col lg={7} ms={6} sm={6}>
-                <h4 className={styles["ComplianceStatusReport_heading"]}>
-                  {t("Organizations-compliance-status-report-as-of-today.")}
+      <section className={styles["ComplianceStatusReport_Section"]}>
+        <Row className={styles["ComplianceReport"]}>
+          <Col lg={2} md={2} sm={2}>
+            <img className=" " src={ComplianceReportLiting} alt="" />
+          </Col>
+          <Col lg={7} md={6} sm={6}>
+            <h4 className={styles["ComplianceStatusReport_heading"]}>
+              {t("Organizations-compliance-status-report-as-of-today.")}
 
-                  <span
-                    className={
-                      styles["ComplianceStatusReportGenerated_heading"]
-                    }
-                  >
-                    Generated{" "}
-                    <img src={ComplianceStatusReportCheckedIcon} alt="" />
-                  </span>
-                </h4>
-              </Col>
-              <Col lg={3} ms={4} sm={4}>
-                <div className="d-flex align-items-center justify-content-center mt-3">
-                  <CustomButton
-                    className={styles["actionButtons_complianceStatusReport"]}
-                    text={"View Report"}
-                    onClick={onClickOfViewPort}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </section>
-          <CustomTable
-            rows={complianceReportList}
-            column={columns}
-            className={"Compliance_Table Report_Table  mt-3"}
-            scroll={{ x: "max-content", y: 400 }}
-            pagination={false}
-            onChange={handleChangeComplianceSorter}
-          />
-        </>
+              {/* <span
+                className={styles["ComplianceStatusReportGenerated_heading"]}
+              >
+                {t("Generated")}
+                <img src={ComplianceStatusReportCheckedIcon} alt="" />
+              </span> */}
+            </h4>
+          </Col>
+          <Col lg={3} md={4} sm={4}>
+            <div className="d-flex align-items-center justify-content-center  mt-3">
+              <CustomButton
+                className={styles["actionButtons_complianceStatusReport"]}
+                text={"View Report"}
+                onClick={onClickOfViewPort}
+              />
+            </div>
+          </Col>
+        </Row>
+      </section>
+      {complianceReportList?.length > 0 ? (
+        <CustomTable
+          rows={complianceReportList}
+          column={columns}
+          className={"Compliance_Table Report_Table  mt-3"}
+          scroll={{ y: 400 }}
+          pagination={false}
+          onChange={handleChangeComplianceSorter}
+        />
       ) : (
         <>
           <section
@@ -516,7 +579,6 @@ const Reports = () => {
               >
                 <span className={styles["EmptyComplianceState_heading"]}>
                   {t("No-reports-available")}
-                  {/* } */}
                 </span>
               </Col>
             </Row>
@@ -529,8 +591,6 @@ const Reports = () => {
               >
                 <span className={styles["EmptyAuthorityState_subHeading"]}>
                   {t("You-don't-have-any-report-at-the-moment")}
-
-                  {/* } */}
                 </span>
               </Col>
             </Row>

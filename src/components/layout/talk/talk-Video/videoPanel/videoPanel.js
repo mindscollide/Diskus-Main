@@ -6,6 +6,15 @@ import VideoPanelFooter from "./videoPanelFooter/videoPanelFooter";
 import "./videoPanel.css";
 import { Triangle } from "react-bootstrap-icons";
 
+/**
+ * @component VideoPanel
+ * @description Slide-over panel container for the Talk module's video call
+ * interface. Composes `VideoPanelHeader`, `VideoPanelBody`, and (currently
+ * commented-out) `VideoPanelFooter` into a single scrollable panel.
+ * Applies `videocall-normal-panel` or `videocall-normal-recent` CSS class to
+ * the body area depending on whether `videoFeatureReducer.ContactVideoFlag`
+ * is active, toggling between the contacts view and recent calls view layout.
+ */
 const VideoPanel = () => {
   const ContactVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.ContactVideoFlag

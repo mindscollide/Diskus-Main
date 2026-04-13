@@ -206,11 +206,27 @@ const ViewMeetingModal = ({
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-
+  console.log(
+    {
+      agendaContributors,
+      meetingDetails,
+      organizers,
+      participants,
+      agenda,
+      minutes,
+      attendance,
+      polls,
+      actionsPage,
+      meetingMaterial,
+    },
+    "routeIDrouteID"
+  );
 
   useEffect(() => {
     if (
-      (Number(editorRole?.status) === 10 || Number(editorRole?.status) === 9) &&
+      (Number(editorRole?.status) === 10 ||
+        Number(editorRole?.status) === 9 ||
+        Number(editorRole?.status) === 1) &&
       editorRole.role !== ""
     ) {
       if (routeID !== null && routeID !== 0) {
@@ -361,18 +377,18 @@ const ViewMeetingModal = ({
         }
       }
     } else {
-      // setMeetingMaterial(false);
-      // setAgendaContributors(false);
-      // setorganizers(false);
-      // setmeetingDetails(false);
-      // setMinutes(false);
-      // setAttendance(false);
-      // setAgenda(false);
-      // setParticipants(false);
-      // setPolls(false);
-      // setAttendees(false);
-      // setactionsPage(false);
-      // setRecording(false);
+      setMeetingMaterial(false);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setmeetingDetails(true);
+      setMinutes(false);
+      setAttendance(false);
+      setAgenda(false);
+      setParticipants(false);
+      setPolls(false);
+      setAttendees(false);
+      setactionsPage(false);
+      setRecording(false);
     }
 
     return () => {

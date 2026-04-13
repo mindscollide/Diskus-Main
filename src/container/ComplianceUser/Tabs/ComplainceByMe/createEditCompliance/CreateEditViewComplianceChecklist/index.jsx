@@ -14,7 +14,11 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { Button, Notification } from "../../../../../../components/elements";
-import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  forRecentActivity,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -31,7 +35,10 @@ import deleteIcon from "../../../../../../assets/images/Icon material-delete.png
 import editIcon from "../../../../../../assets/images/Icon material-edit.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
-import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
+import {
+  formatDateToYMD,
+  parseUTCDateString,
+} from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
@@ -51,10 +58,16 @@ const CreateEditViewComplianceChecklist = () => {
     severity: "error",
   });
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
+  );
+
+  const getAllComplianceChecklistTask = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetComplianceChecklistsWithTasksByComplianceId,
   );
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
@@ -64,6 +77,9 @@ const CreateEditViewComplianceChecklist = () => {
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
 
   const [isEditTrue, setIsEditTrue] = useState(false);
+
+  const [getCheckListData, setGetCheckListData] = useState([]);
+
   const {
     complianceAddEditViewState,
     complianceInfo,
@@ -78,32 +94,27 @@ const CreateEditViewComplianceChecklist = () => {
     setCloseConfirmationModal,
     setDeleteChecklistConfirmationModalState,
     setDeleteChecklistId,
+    newChecklistIds,
+    setNewChecklistIds,
   } = useComplianceContext();
+  console.log(checkListData, "checkListData");
+  console.log(newChecklistIds, "newChecklistIds");
   console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceAddEditViewState, "complianceAddEditViewState");
+  console.log(isChecklistTitleExist, "isChecklistTitleExist");
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsByComplianceId
+        .GetComplianceChecklistsByComplianceId,
   );
-  console.log(
-    GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId"
-  );
+
   let currentLanguage = localStorage.getItem("i18nextLng");
-  // const [checkListData, setChecklistData] = useState({
-  //   checklistTitle: "",
-  //   checklistDescription: "",
-  //   checklistDueDate: "",
-  // });
+
   const changeComplainceDueDate = (date) => {
-    let meetingDateValueFormat2 = new Date(date);
-    meetingDateValueFormat2.setHours(23);
-    meetingDateValueFormat2.setMinutes(59);
-    meetingDateValueFormat2.setSeconds(58);
     setChecklistData((prev) => ({
       ...prev,
-      checklistDueDate: meetingDateValueFormat2,
+      checklistDueDate: new Date(date), // keep the date object as is
     }));
   };
 
@@ -142,7 +153,7 @@ const CreateEditViewComplianceChecklist = () => {
           description: checkListData.checklistDescription,
           complianceId: complianceInfo.complianceId,
           dueDate: multiDatePickerDateChangIntoUTC(
-            checkListData.checklistDueDate
+            checkListData.checklistDueDate,
           ),
         };
         dispatch(
@@ -152,8 +163,8 @@ const CreateEditViewComplianceChecklist = () => {
             t,
             complianceInfo,
             setChecklistData,
-            setIsEditTrue
-          )
+            setIsEditTrue,
+          ),
         );
       } else {
         // Add
@@ -162,7 +173,7 @@ const CreateEditViewComplianceChecklist = () => {
           description: checkListData.checklistDescription,
           complianceId: complianceInfo.complianceId,
           dueDate: multiDatePickerDateChangIntoUTC(
-            checkListData.checklistDueDate
+            checkListData.checklistDueDate,
           ),
         };
         console.log(Data, "handleClickSaveBtn");
@@ -172,8 +183,9 @@ const CreateEditViewComplianceChecklist = () => {
             Data,
             t,
             complianceInfo,
-            setChecklistData
-          )
+            setChecklistData,
+            setNewChecklistIds,
+          ),
         );
       }
     }
@@ -197,9 +209,7 @@ const CreateEditViewComplianceChecklist = () => {
           checklistId: checklistData.checklistId,
           checklistTitle: checklistData.checklistTitle,
           checklistDescription: checklistData.checklistDescription,
-          checklistDueDate: checklistData.dueDate
-            ? moment(checklistData.dueDate, "YYYYMMDD").endOf("day").toDate()
-            : null,
+          checklistDueDate: checklistData.checklistDueDate,
         });
       } catch (error) {}
   };
@@ -230,17 +240,25 @@ const CreateEditViewComplianceChecklist = () => {
     }
   }, [complianceInfo]);
 
-  const [getCheckListData, setGetCheckListData] = useState([]);
-
   useEffect(() => {
     if (
       GetComplianceChecklistsByComplianceId &&
       GetComplianceChecklistsByComplianceId !== null
     ) {
       setChecklistCount(
-        GetComplianceChecklistsByComplianceId.checklistList.length
+        GetComplianceChecklistsByComplianceId?.checklistList?.length,
       );
-      setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
+      let updateTIme = GetComplianceChecklistsByComplianceId?.checklistList.map(
+        (data, index) => {
+          return {
+            ...data,
+            checklistDueDate: forRecentActivity(data.dueDate + data.dueTime),
+          };
+        },
+      );
+
+      console.log(updateTIme, "updateTIme");
+      setGetCheckListData(updateTIme);
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
     } else {
@@ -265,6 +283,42 @@ const CreateEditViewComplianceChecklist = () => {
       } catch (error) {}
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
+
+  const parseComplianceDueDate = (dueDate) => {
+    if (!dueDate) return null;
+
+    const dateStr = String(dueDate);
+
+    // ISO format
+    if (dateStr.includes("T")) {
+      return new Date(dateStr);
+    }
+
+    // YYYYMMDDHHMMSS format
+    if (dateStr.length === 14) {
+      const year = dateStr.slice(0, 4);
+      const month = dateStr.slice(4, 6) - 1;
+      const day = dateStr.slice(6, 8);
+      const hour = dateStr.slice(8, 10);
+      const minute = dateStr.slice(10, 12);
+      const second = dateStr.slice(12, 14);
+
+      return new Date(year, month, day, hour, minute, second);
+    }
+
+    return null;
+  };
+
+  const maxChecklistDate = React.useMemo(() => {
+    const parsedDate = parseComplianceDueDate(complianceDetailsState?.dueDate);
+
+    if (!parsedDate) return null;
+
+    parsedDate.setHours(0, 0, 0, 0);
+    parsedDate.setDate(parsedDate.getDate() - 1);
+
+    return parsedDate;
+  }, [complianceDetailsState?.dueDate]);
 
   const handleClickPrevBtn = () => {
     setChecklistData({
@@ -311,71 +365,41 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleOpenAddChecklist = () => {
     setAddChecklistCloseState(false);
+    setIsEditTrue(false); // make sure we are in create mode
+    setChecklistData({
+      checklistId: 0,
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "", // set to today by default
+    });
   };
 
   const handleBlur = (event) => {
     setIsChecklistTitleExist(null);
-    setErrors({
-      checklistTitle: "",
-    });
+    setErrors({ checklistTitle: "" });
+
     const { name, value } = event.target;
 
+    // View mode: do nothing
     if (complianceAddEditViewState === 3) return;
-    if (complianceAddEditViewState === 2 || isEditTrue) {
-      let getCheckObj = getCheckListData.find(
-        (data, index) => data.checklistId === checkListData.checklistId
-      );
-      if (getCheckObj !== undefined) {
-        if (getCheckObj.checklistTitle !== checkListData.checklistTitle) {
-          if (complianceInfo.complianceId !== 0) {
-            const Data = {
-              ComplianceID: complianceInfo.complianceId,
-              ChecklistTitle: checkListData.checklistTitle,
-            };
-            dispatch(
-              CheckChecklistTitleExistsAPI(
-                navigate,
-                Data,
-                t,
-                setErrors,
-                setIsChecklistTitleExist
-              )
-            );
-          }
-        }
-      }
-      console.log(
-        { getCheckObj, getCheckListData, checkListData },
-        "handleBlur"
-      );
-      return;
-    }
 
-    // Checklist uniqueness (API placeholder)
     if (name === "checklistTitle" && value) {
-      try {
-        // if (complianceAddEditViewState === 2) {
-        if (
-          checkListData.checklistTitle !== null &&
-          complianceInfo.complianceId !== 0
-        ) {
-          const Data = {
-            ComplianceID: complianceInfo.complianceId,
-            ChecklistTitle: checkListData.checklistTitle,
-          };
-          // call API here
-          dispatch(
-            CheckChecklistTitleExistsAPI(
-              navigate,
-              Data,
-              t,
-              setErrors,
-              setIsChecklistTitleExist
-            )
-          );
-        }
-        // }
-      } catch (error) {}
+      // Always run uniqueness check in edit or add mode
+      if (complianceInfo.complianceId !== 0) {
+        const Data = {
+          ComplianceID: complianceInfo.complianceId,
+          ChecklistTitle: checkListData.checklistTitle,
+        };
+        dispatch(
+          CheckChecklistTitleExistsAPI(
+            navigate,
+            Data,
+            t,
+            setErrors,
+            setIsChecklistTitleExist,
+          ),
+        );
+      }
     }
   };
 
@@ -383,14 +407,70 @@ const CreateEditViewComplianceChecklist = () => {
     // emptyComplianceState();
     // setChecklistTabs(1);
     // setCreateEditComplaince(false);
+    setNewChecklistIds([]);
     setCloseConfirmationModal(true);
   };
 
+  const today = React.useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
   const isLockedStatus =
-    complianceDetailsState?.status?.value === 7 ||
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
-    complianceDetailsState?.status?.value === 2;
+    complianceDetailsState?.status?.value === 3;
+
+  console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
+
+  const isReopendCompliance = complianceDetailsState?.status?.value === 6;
+
+  const getMinChecklistDueDateFromTasks = () => {
+    if (!getAllComplianceChecklistTask?.checklistList) return today;
+
+    let tasks = [];
+
+    if (checkListData.checklistId !== 0) {
+      // EDIT FLOW: current checklist ke tasks
+      const checklist = getAllComplianceChecklistTask.checklistList.find(
+        (cl) => cl.checklistId === checkListData.checklistId,
+      );
+      tasks = checklist?.taskList || [];
+    } else {
+      // CREATE FLOW: new checklist ke tasks
+      tasks = checkListData?.taskList || [];
+    }
+
+    // Sirf active tasks
+    const activeTasks = tasks.filter((task) => task.taskStatusId !== 5);
+
+    if (activeTasks.length === 0) return today;
+
+    // Maximum due date among active tasks
+    const maxTaskDate = activeTasks.reduce((max, task) => {
+      const taskDate = new Date(
+        task.deadLineDate.slice(0, 4),
+        task.deadLineDate.slice(4, 6) - 1,
+        task.deadLineDate.slice(6, 8),
+      );
+      return taskDate > max ? taskDate : max;
+    }, new Date(0));
+
+    return maxTaskDate;
+  };
+
+  const editableStatuses = new Set([1, 2, 4, 7]);
+
+  const statusValue = complianceDetailsState?.status?.value;
+
+  const isComplianceEditable =
+    statusValue !== undefined && editableStatuses.has(statusValue);
+
+  console.log(
+    { isComplianceEditable, editableStatuses, statusValue },
+    "isComplianceEditable",
+  );
 
   return (
     <>
@@ -454,19 +534,14 @@ const CreateEditViewComplianceChecklist = () => {
               </div>
               <DatePicker
                 disabled={isLockedStatus && !isEditTrue}
-                value={checkListData.checklistDueDate}
+                value={checkListData.checklistDueDate || ""}
                 format={"DD/MM/YYYY"}
-                minDate={moment().toDate()}
                 placeholder={t("Due-date")}
-                maxDate={moment(complianceDetailsState.dueDate)
-                  .subtract(1, "day")
-                  .endOf("day")
-                  .toDate()}
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}
                     className={`${styles["datepicker_input"]} ${
-                      isLockedStatus && !isEditTrue
+                      (isLockedStatus && !isEditTrue) || isChecklistTitleExist
                         ? styles["disabledInput"]
                         : ""
                     }`}
@@ -475,20 +550,22 @@ const CreateEditViewComplianceChecklist = () => {
                 editable={false}
                 className="datePickerTodoCreate2"
                 containerClassName={"Complaince_createEditDueDate"}
-                onOpenPickNewDate={true}
-                inputMode=""
-                calendarPosition="bottom-center"
-                calendar={gregorian}
-                locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
                 onFocusedDateChange={changeComplainceDueDate}
                 onChange={changeComplainceDueDate}
+                maxDate={maxChecklistDate}
+                calendar={gregorian}
+                locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
+                calendarPosition="bottom-center"
+                minDate={getMinChecklistDueDateFromTasks()}
               />
             </div>
           </Row>
           <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
               <TextAreafieldwithCount
-                disabled={isLockedStatus && !isEditTrue}
+                disabled={
+                  (isLockedStatus && !isEditTrue) || isChecklistTitleExist
+                }
                 label={
                   <>
                     {t("Checklist-description")}
@@ -569,7 +646,7 @@ const CreateEditViewComplianceChecklist = () => {
         {getCheckListData?.length > 0 ? (
           getCheckListData.map((data, index) => {
             const isExpanded = expandedCheckListIds.find(
-              (data2, index) => data2 === data.checklistId
+              (data2, index) => data2 === data.checklistId,
             );
 
             return (
@@ -609,7 +686,9 @@ const CreateEditViewComplianceChecklist = () => {
                             {t("Due-date")}
                           </p>
                           <p className={styles["ViewChecklistDetailStyles"]}>
-                            {formatDateToYMD(data.dueDate)}
+                            {moment(
+                              forRecentActivity(data.dueDate + data.dueTime),
+                            ).format("DD MMM YYYY")}
                           </p>
                         </div>
                       ) : (
@@ -630,45 +709,53 @@ const CreateEditViewComplianceChecklist = () => {
                     </>
                   }
                   endField={
-                    <>
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="d-flex justify-content-end gap-3 align-items-center"
-                        >
-                          <img
-                            className="cursor-pointer"
-                            draggable="false"
-                            alt=""
-                            src={deleteIcon}
-                            onClick={() =>
-                              handleDeleteChecklist(data?.checklistId)
-                            }
-                          />
-                          {/* Edit Checklist */}
-                          <img
-                            className="cursor-pointer"
-                            draggable="false"
-                            alt=""
-                            src={editIcon}
-                            onClick={() => handleEditChecklist(data)}
-                          />
-                          <img
-                            src={Accordion_Arrow}
-                            onClick={() => handleClickExpandCheckList(data)}
-                            alt=""
-                            className={`cursor-pointer
+                    (isComplianceEditable ||
+                      newChecklistIds?.includes(data?.checklistId)) && (
+                      <>
+                        <Row key={data.checklistId}>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="d-flex justify-content-end gap-3 align-items-center"
+                          >
+                            <img
+                              className={`${!isLockedStatus ? "cursor-pointer" : styles["NoCursorAlign"]}`}
+                              draggable="false"
+                              alt=""
+                              src={deleteIcon}
+                              disabled={isLockedStatus}
+                              onClick={() =>
+                                !isLockedStatus &&
+                                handleDeleteChecklist(data?.checklistId)
+                              }
+                            />
+                            {/* Edit Checklist */}
+                            <img
+                              className={`${!isLockedStatus ? "cursor-pointer" : styles["NoCursorAlign"]}`}
+                              draggable="false"
+                              alt=""
+                              src={editIcon}
+                              disabled={isLockedStatus}
+                              onClick={() =>
+                                !isLockedStatus && handleEditChecklist(data)
+                              }
+                            />
+                            <img
+                              src={Accordion_Arrow}
+                              onClick={() => handleClickExpandCheckList(data)}
+                              alt=""
+                              className={`cursor-pointer
                                   ${
                                     isExpanded
                                       ? null
                                       : styles["AccordionArrowDown"]
                                   }`}
-                          />
-                        </Col>
-                      </Row>
-                    </>
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    )
                   }
                 />
               </div>

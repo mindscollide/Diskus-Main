@@ -16,7 +16,10 @@ const ReopenOrOnHoldDetailsModal = () => {
 
   const { isViewDetailsOpen, setIsViewDetailsOpen, complianceDetailsState } =
     useComplianceContext();
-    console.log(complianceDetailsState,"complianceDetailsStatecomplianceDetailsState")
+  console.log(
+    complianceDetailsState,
+    "complianceDetailsStatecomplianceDetailsState",
+  );
 
   const handleCloseButton = () => {
     setIsViewDetailsOpen(false);
@@ -94,7 +97,7 @@ const ReopenOrOnHoldDetailsModal = () => {
                   <Row>
                     <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
                     <div className={styles.textValue}>
-                      {truncateByWords(item.statusChangeReason) || "-"}
+                      {item.statusChangeReason || "-"}
                       <p></p>
                     </div>
                   </Row>

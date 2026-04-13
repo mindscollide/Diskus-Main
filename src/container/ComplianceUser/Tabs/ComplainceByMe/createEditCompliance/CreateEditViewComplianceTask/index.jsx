@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./createEditViewComplianceTask.module.css";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
 import { useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useComplianceContext } from "../../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
+import IconAttachment from "../../../../../../assets/images/Icon-Attachment.png";
 import deleteIcon from "../../../../../../assets/images/Icon material-delete.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
@@ -22,27 +23,49 @@ import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoCheck
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import { ViewToDoList } from "../../../../../../store/actions/ToDoList_action";
+import TaskViewDetailsModal from "../../../../../taskViewDetailsModal";
 
 const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const isFirstLoad = useRef(true);
+  const lastUpdatedChecklistId = useRef(null);
   const [show, setShow] = useState(false);
+
+  const {
+    complianceAddEditViewState,
+    complianceInfo,
+    setChecklistCount,
+    setChecklistTabs,
+    setTaskCount,
+    emptyComplianceState,
+    setCreateEditComplaince,
+    setCloseConfirmationModal,
+    complianceDetailsState,
+    newChecklistIds,
+  } = useComplianceContext();
 
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
-  console.log(expandedCheckListIds, "ComplianceChecklistData");
+  const [taskView, setTaskView] = useState(false);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
+
+  const [checkListData, setCheckListData] = useState(0);
+
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
+
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
       if (prev.includes(data.checklistId)) {
@@ -55,17 +78,8 @@ const CreateEditViewComplianceTask = () => {
     });
   };
 
-  const {
-    complianceAddEditViewState,
-    complianceInfo,
-    setChecklistCount,
-    setChecklistTabs,
-    setTaskCount,
-    emptyComplianceState,
-    setCreateEditComplaince,
-    setCloseConfirmationModal,
-    complianceDetailsState,
-  } = useComplianceContext();
+  console.log(newChecklistIds, "newChecklistIds");
+  console.log(complianceAddEditViewState, "complianceAddEditViewState");
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
@@ -73,46 +87,27 @@ const CreateEditViewComplianceTask = () => {
         complianceId: complianceInfo.complianceId,
       };
       dispatch(
-        GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+        GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t),
       );
     }
   }, [complianceInfo]);
   console.log(
     ComplianceChecklistData,
-    "ComplianceChecklistDataComplianceChecklistData"
+    "ComplianceChecklistDataComplianceChecklistData",
   );
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsByComplianceId
+        .GetComplianceChecklistsByComplianceId,
   );
 
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceId
+        .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
-  // useEffect(() => {
-  //   if (
-  //     GetComplianceChecklistsByComplianceId !== null &&
-  //     GetComplianceChecklistsByComplianceId !== undefined
-  //   ) {
-  //     try {
-  //       let modifyData = [
-  //         ...GetComplianceChecklistsByComplianceId.checklistList,
-  //       ].map((data2, index) => {
-  //         return {
-  //           ...data2,
-  //           checkListTasks: [],
-  //         };
-  //       });
-  //       setComplianceCheckListData(modifyData);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // }, [GetComplianceChecklistsByComplianceId]);
+  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
 
   useEffect(() => {
     if (
@@ -131,46 +126,52 @@ const CreateEditViewComplianceTask = () => {
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
   useEffect(() => {
-    if (
-      getAllComplianceChecklistTask &&
-      getAllComplianceChecklistTask !== null
-    ) {
+    if (getAllComplianceChecklistTask === null) {
+      // 🔥 CLEAR UI when API returns null
+      setComplianceCheckListData([]);
+      setTaskCount(0);
+      return;
+    }
+
+    if (getAllComplianceChecklistTask) {
       try {
-        console.log(
-          getAllComplianceChecklistTask,
-          "getAllComplianceChecklistTask"
-        );
+        const checklistList = getAllComplianceChecklistTask.checklistList || [];
 
-        setComplianceCheckListData(getAllComplianceChecklistTask.checklistList);
+        setComplianceCheckListData(checklistList);
 
-        const checklistList = getAllComplianceChecklistTask.checklistList;
-
-        setExpandedCheckListIds(
-          getAllComplianceChecklistTask.checklistList.map(
-            (data, index) => data.checklistId
-          )
-        );
+        // expand logic
+        if (isFirstLoad.current) {
+          setExpandedCheckListIds(
+            checklistList.map((data) => data.checklistId),
+          );
+          isFirstLoad.current = false;
+        }
 
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
-          0
+          0,
         );
+
         setTaskCount(totalTaskCount);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [getAllComplianceChecklistTask]);
 
   console.log(
     GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId"
+    "GetComplianceChecklistsByComplianceId",
   );
   const handleDeleteTask = (TaskId) => {
     console.log(TaskId, "TaskId");
+
+    let complianceId = complianceInfo?.complianceId;
     const Data = {
       TaskID: TaskId,
       NewStatusID: 6,
     };
-    dispatch(ChangeTaskStatusAPI(navigate, Data, t));
+    dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
   };
 
   const handleCloseButton = () => {
@@ -189,12 +190,30 @@ const CreateEditViewComplianceTask = () => {
     setChecklistTabs(2);
   };
 
-  const [checkListData, setCheckListData] = useState(0);
-
   const handleAddTaskInCheckList = (checkListData) => {
+    //  store which checklist is being updated
+    lastUpdatedChecklistId.current = checkListData?.checklistId;
+
     setCheckListData(checkListData);
-    console.log(checkListData, "checklistIdchecklistId");
     setShow(true);
+  };
+
+  const handleClickTitle = (id) => {
+    console.log(id, "CheckID resolved");
+    let Data = { ToDoListID: id };
+    dispatch(ViewToDoList(navigate, Data, t, setTaskView));
+  };
+
+  // Helper function to check if add task button should be enabled
+  const isAddTaskEnabled = (checklistId) => {
+    const isNewChecklist = newChecklistIds?.includes(checklistId);
+
+    // If it's a newly created checklist, always enable
+    if (isNewChecklist) return true;
+
+    // Otherwise, check compliance status
+    const disabledStatuses = [7, 9, 6, 5, 3, 4]; // Closed, Cancelled, etc.
+    return !disabledStatuses.includes(complianceDetailsState?.status?.value);
   };
 
   return (
@@ -202,11 +221,15 @@ const CreateEditViewComplianceTask = () => {
       <div className={styles["checklistAccordian"]}>
         {ComplianceChecklistData && ComplianceChecklistData?.length > 0
           ? ComplianceChecklistData.map((data, index) => {
+              console.log(data, "Cajhsaksbhab");
               const isExpanded = expandedCheckListIds.find(
-                (data2, index) => data2 === data.checklistId
+                (data2, index) => data2 === data.checklistId,
               );
+
+              const isAddEnabled = isAddTaskEnabled(data.checklistId);
+
               return (
-                <div key={index}>
+                <div key={data.checklistId}>
                   <CustomAccordion
                     isExpand={isExpanded}
                     isCompliance={true}
@@ -222,23 +245,40 @@ const CreateEditViewComplianceTask = () => {
                         <div className={styles["TaskList"]}>
                           {data.taskList.length > 0 &&
                             data.taskList.map((data2, index) => {
+                              console.log(data2, "data2data2");
                               return (
                                 <div
                                   className={styles["TaskStyle"]}
                                   // onClick={handleOpenAddChecklist}
                                 >
                                   <Row>
-                                    <Col sm={12} md={11} lg={11}>
-                                      <div className={styles["TaskTitle"]}>
+                                    <Col sm={12} md={10} lg={10}>
+                                      <div
+                                        className={styles["TaskTitle"]}
+                                        onClick={() =>
+                                          handleClickTitle(data2?.taskId)
+                                        }
+                                      >
                                         {data2.taskTitle}
                                       </div>
                                     </Col>
                                     <Col
                                       sm={12}
-                                      md={1}
-                                      lg={1}
-                                      className="d-flex justify-content-end align-items-center "
+                                      md={2}
+                                      lg={2}
+                                      className="d-flex justify-content-end align-items-center gap-4"
                                     >
+                                      {data2.hasAttachments > 0 && (
+                                        <img
+                                          draggable="false"
+                                          width={"13px"}
+                                          height={"13px"}
+                                          alt=""
+                                          src={IconAttachment}
+                                          // onClick={() => handleDeleteTaskModal(record.authorityId)}
+                                        />
+                                      )}
+
                                       <img
                                         src={DeleteIcon}
                                         alt=""
@@ -258,16 +298,12 @@ const CreateEditViewComplianceTask = () => {
                           <Col sm={12} md={12} lg={12}>
                             <div
                               className={
-                                complianceDetailsState.status.value === 7 ||
-                                complianceDetailsState.status.value === 9 ||
-                                complianceDetailsState.status.value === 5
+                                !isAddEnabled //  Use the new condition
                                   ? styles["createNewTaskBtnStyleDisabled"]
                                   : styles["createNewTaskBtnStyle"]
                               }
                               onClick={
-                                complianceDetailsState.status.value === 7 ||
-                                complianceDetailsState.status.value === 9 ||
-                                complianceDetailsState.status.value === 5
+                                !isAddEnabled //  Use the new condition
                                   ? undefined
                                   : () => handleAddTaskInCheckList(data)
                               }
@@ -289,7 +325,7 @@ const CreateEditViewComplianceTask = () => {
                           >
                             <span className={styles["dueDateStyle"]}>
                               {`${t("Due-date")}: ${formatDateToYMD(
-                                data.dueDate
+                                data.dueDate,
                               )}`}{" "}
                               {}
                             </span>
@@ -343,6 +379,14 @@ const CreateEditViewComplianceTask = () => {
           setShow={setShow}
         />
       )}
+
+      {taskView && (
+        <TaskViewDetailsModal
+          viewFlagToDo={taskView}
+          setViewFlagToDo={setTaskView}
+        />
+      )}
+
       <Notification open={open} setOpen={setOpen} />
       <ComplianceCloseConfirmationModal />
     </>

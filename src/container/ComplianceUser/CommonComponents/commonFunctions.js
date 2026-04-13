@@ -45,14 +45,61 @@ export const formatDateToYMD = (value) => {
   });
 };
 
+export const formatDateToYMDLong = (value) => {
+  if (!value) return "";
+
+  let date;
+
+  // ✅ If it's already a Date instance
+  if (value instanceof Date && !isNaN(value)) {
+    date = value;
+  }
+  // ✅ If it's a yyyymmdd string
+  else if (typeof value === "string" && value.length >= 8) {
+    const year = value.substring(0, 4);
+    const month = value.substring(4, 6);
+    const day = value.substring(6, 8);
+
+    date = new Date(`${year}-${month}-${day}`);
+  } else {
+    return "";
+  }
+
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 export const parseYYYYMMDDToEndOfDay = (dateString) => {
-  if (!dateString || dateString.length < 8) return null;
+  try {
+    if (!dateString || dateString.length < 8) return null;
 
-  const year = dateString.slice(0, 4);
-  const month = dateString.slice(4, 6) - 1; // JS months are 0-based
-  const day = dateString.slice(6, 8);
+    const year = dateString?.slice(0, 4);
+    const month = dateString?.slice(4, 6) - 1; // JS months are 0-based
+    const day = dateString?.slice(6, 8);
 
-  return new Date(year, month, day, 23, 59, 58);
+    return new Date(year, month, day, 23, 59, 58);
+  } catch (error) {
+    console.log(error, dateString);
+  }
+};
+
+// 20260316235958 -> Date object
+export const parseYYYYMMDDHHmmssToDate = (dateString) => {
+  if (!dateString) return new Date();
+  // Ensure it's a string
+  dateString = dateString.toString();
+
+  const year = parseInt(dateString.slice(0, 4));
+  const month = parseInt(dateString.slice(4, 6)) - 1; // Month is 0-based
+  const day = parseInt(dateString.slice(6, 8));
+  const hour = parseInt(dateString.slice(8, 10));
+  const minute = parseInt(dateString.slice(10, 12));
+  const second = parseInt(dateString.slice(12, 14));
+
+  return new Date(year, month, day, hour, minute, second);
 };
 
 export const getDueDateTimeNumber = (dueDate, dueTime) => {
@@ -80,11 +127,13 @@ const allStatuses = [
   { statusId: 6, statusName: "Reopened" },
   { statusId: 7, statusName: "On Hold" },
   { statusId: 9, statusName: "Cancelled" },
+  { statusId: 4, statusName: "Overdue" },
 ];
 const statusTransitions = {
   1: [2, 7], // Not Started → In Progress, On Hold
   2: [5, 7, 9], // In Progress → Submitted, On Hold, Cancelled
   7: [2, 9], // On Hold → In Progress, Cancelled
+  4: [5, 7, 9],
   5: [3, 6, 7], // Submitted → Completed, Reopened, On Hold
   6: [5, 7, 9], // Reopened → Submitted, On Hold, Cancelled
   3: [6], // Completed → Reopened
@@ -118,4 +167,62 @@ export const getAllowedStatuses = (currentStatusId) => {
       : null,
     allowedStatuses: allowed,
   };
+};
+
+export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
+  if (!dateStr || !timeStr) return "-";
+
+  const year = +dateStr.slice(0, 4);
+  const month = +dateStr.slice(4, 6) - 1;
+  const day = +dateStr.slice(6, 8);
+
+  const hours = +timeStr.slice(0, 2);
+  const minutes = +timeStr.slice(2, 4);
+  const seconds = +timeStr.slice(4, 6);
+
+  // Treat API time as UTC
+  const date = new Date(Date.UTC(year, month, day, hours, minutes, seconds));
+
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  return `${formattedTime} ${formattedDate}`;
+};
+
+export const parseBackendDate = (dateStr) => {
+  if (!dateStr) return null;
+
+  const year = +dateStr.slice(0, 4);
+  const month = +dateStr.slice(4, 6) - 1; // JS months are 0-indexed
+  const day = +dateStr.slice(6, 8);
+  const hours = +dateStr.slice(8, 10);
+  const minutes = +dateStr.slice(10, 12);
+  const seconds = +dateStr.slice(12, 14);
+
+  return new Date(year, month, day, hours, minutes, seconds);
+};
+
+export const getDynamicFileName = (name) => {
+  const now = new Date();
+
+  // YYYYMMDD format
+  const date = now.toISOString().slice(0, 10).replace(/-/g, "");
+
+  // HHMMSS format (using padStart to ensure 2 digits for each)
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const time = `${hours}${minutes}${seconds}`;
+
+  return `${name}_${date}_${time}.pdf`;
 };

@@ -24,21 +24,21 @@ const ViewProposedMeetingModal = () => {
   let locale = localStorage.getItem("i18nextLng");
 
   const MeetingStatusSocket = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusSocket,
+    (state) => state.meetingIdReducer.MeetingStatusSocket
   );
   //Getting all Proposed meeting Data
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails,
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
   //Getting all Proposed meeting Participants
   const getAllSavedparticipantsData = useSelector(
-    (state) => state.NewMeetingreducer.getAllSavedparticipants,
+    (state) => state.NewMeetingreducer.getAllSavedparticipants
   );
 
   //Getting all Proposed meeting Dates
   const getAllProposedDatesData = useSelector(
-    (state) => state.NewMeetingreducer.getAllProposedDates,
+    (state) => state.NewMeetingreducer.getAllProposedDates
   );
 
   //Local States
@@ -65,12 +65,13 @@ const ViewProposedMeetingModal = () => {
   useEffect(() => {
     try {
       if (
+        getAllMeetingDetails !== null &&
         getAllMeetingDetails.advanceMeetingDetails !== null &&
         getAllMeetingDetails.advanceMeetingDetails !== undefined
       ) {
         console.log(
           getAllMeetingDetails,
-          "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails",
+          "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails"
         );
         //For Meeting Title
         setBasicMeetingTitle({
@@ -147,7 +148,7 @@ const ViewProposedMeetingModal = () => {
           MeetingStatusSocket,
           meetingStatusID,
           meetingID,
-          "MeetingStatusSocketMeetingStatusSocket",
+          "MeetingStatusSocketMeetingStatusSocket"
         );
       } catch (error) {}
     }
@@ -155,7 +156,7 @@ const ViewProposedMeetingModal = () => {
 
   return (
     <>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col lg={12} md={12} sm={12}>
           <span className={styles["ViewProposedMeetingMainHeading"]}>
             {t("View-proposed-meeting")}
@@ -163,9 +164,9 @@ const ViewProposedMeetingModal = () => {
         </Col>
       </Row>
       <section className={styles["BackGroundPaperEffect"]}>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col lg={6} md={6} sm={6}>
-            <div className="d-flex flex-column flex-wrap">
+            <div className='d-flex flex-column flex-wrap'>
               <span className={styles["MeetingTypeHeading"]}>
                 {basicmeetingTitle.MeetingType}
               </span>
@@ -174,7 +175,7 @@ const ViewProposedMeetingModal = () => {
               </span>
             </div>
 
-            <div className="d-flex flex-column flex-wrap">
+            <div className='d-flex flex-column flex-wrap'>
               <span className={styles["MeetingDescriptionHeading"]}>
                 {t("Description")}
               </span>
@@ -184,7 +185,7 @@ const ViewProposedMeetingModal = () => {
             </div>
           </Col>
           <Col lg={6} md={6} sm={6}>
-            <div className="d-flex flex-column flex-wrap">
+            <div className='d-flex flex-column flex-wrap'>
               <span className={styles["ProposedOnHeading"]}>
                 {t("Proposed-on")}
               </span>
@@ -195,10 +196,10 @@ const ViewProposedMeetingModal = () => {
                     console.log(dateData, "dateData");
                     const formattedDate = ProposedMeetingViewDateFormatWithTime(
                       dateData,
-                      locale,
+                      locale
                     );
                     return (
-                      <Col lg={6} md={6} sm={6} className="mt-2" key={index}>
+                      <Col lg={6} md={6} sm={6} className='mt-2' key={index}>
                         <span className={styles["BoxCardDate"]}>
                           {formattedDate}
                         </span>
@@ -210,9 +211,9 @@ const ViewProposedMeetingModal = () => {
                 )}
               </Row>
             </div>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={12} md={12} sm={12}>
-                <div className="d-flex flex-column flex-wrap">
+                <div className='d-flex flex-column flex-wrap'>
                   <span className={styles["SendResponseByDateHeading"]}>
                     {t("Send-response-by")}
                   </span>
@@ -222,9 +223,9 @@ const ViewProposedMeetingModal = () => {
                 </div>
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={12} md={12} sm={12}>
-                <div className="d-flex flex-column flex-wrap">
+                <div className='d-flex flex-column flex-wrap'>
                   <span className={styles["SendResponseByDateHeading"]}>
                     {t("Participants")}
                   </span>
@@ -233,8 +234,7 @@ const ViewProposedMeetingModal = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["ScrollerParticipant"]}
-                    >
+                      className={styles["ScrollerParticipant"]}>
                       <Row>
                         {partcipatns.length > 0 && partcipatns !== null
                           ? partcipatns.map((data, index) => {
@@ -245,14 +245,12 @@ const ViewProposedMeetingModal = () => {
                                     md={6}
                                     sm={6}
                                     key={index}
-                                    className="mt-3"
-                                  >
+                                    className='mt-3'>
                                     <span
-                                      className={styles["BoxCardParticipant"]}
-                                    >
+                                      className={styles["BoxCardParticipant"]}>
                                       <img
                                         src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                        alt=""
+                                        alt=''
                                         width={25}
                                       />
                                       <span className={styles["UserName"]}>
@@ -272,8 +270,8 @@ const ViewProposedMeetingModal = () => {
             </Row>
           </Col>
         </Row>
-        <Row className="mt-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+        <Row className='mt-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
             <Button
               text={t("Cancel")}
               className={styles["CancelButtonViewProposedMeeting"]}

@@ -4,8 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import { Button, Modal } from "../../../../components/elements";
+import { useNavigate } from "react-router-dom";
 const ComplianceCloseConfirmationModal = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const {
     closeConfirmationModal,
@@ -14,6 +16,8 @@ const ComplianceCloseConfirmationModal = () => {
     setCreateEditComplaince,
     emptyComplianceState,
     checkListTabs,
+    pendingNavigation,
+    setPendingNavigation,
   } = useComplianceContext();
 
   const handleYesButton = () => {
@@ -22,10 +26,16 @@ const ComplianceCloseConfirmationModal = () => {
     setCreateEditComplaince(false);
     setMainComplianceTabs(2);
     emptyComplianceState();
+
+    if (pendingNavigation) {
+      navigate(pendingNavigation);
+      setPendingNavigation(null);
+    }
   };
 
   const handleNoButton = () => {
     setCloseConfirmationModal(false);
+    setPendingNavigation(null);
   };
 
   return (
@@ -42,7 +52,7 @@ const ComplianceCloseConfirmationModal = () => {
               <div className={styles["ConfirmationHeading"]}>
                 {checkListTabs === 1
                   ? t(
-                      "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes"
+                      "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes",
                     )
                   : "You have unsaved changes. Do you want to save before leaving, or discard and lose your changes?"}
               </div>

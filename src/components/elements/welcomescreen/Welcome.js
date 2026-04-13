@@ -1,3 +1,13 @@
+/**
+ * @component Loader
+ * @description The Diskus welcome / splash screen displayed to users when
+ * the application is initialising or navigating to the home view. It renders
+ * a full-screen overlay containing the Diskus logo and a localised tagline
+ * ("Your one-step solution to meeting management"). The root container carries
+ * the `data-tut="welcomescreen"` attribute used by the guided product tour.
+ *
+ * @returns {JSX.Element} A full-viewport welcome overlay with the Diskus branding.
+ */
 import React from "react";
 import Logo from "../../../assets/images/diskuslogo-forsigncard.svg";
 import { Container, Row, Col } from "react-bootstrap";

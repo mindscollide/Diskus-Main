@@ -25,6 +25,29 @@ const props = {
   },
 };
 
+/**
+ * @component VerificationInputField
+ * @description Renders a labelled multi-character code input field, typically used for
+ * OTP or verification code entry. Built on top of `react-code-input` with pre-configured
+ * styles for each individual character box (border, size, focus highlight) merged with any
+ * additional inline styles passed via the component's internal `props` object.
+ * Accepts uppercase alphanumeric input (`pattern="[A-Z0-9]"`).
+ *
+ * @param {string} label - Text label rendered above the code input.
+ * @param {Function} change - `onChange` handler called with the current combined input value.
+ * @param {string} value - The current value of the code input (controlled).
+ * @param {React.Ref} ref - Ref forwarded to the `ReactCodeInput` component.
+ * @param {number} fields - The number of individual character input boxes to render.
+ *
+ * @example
+ * <VerificationInputField
+ *   label="Enter verification code"
+ *   change={(val) => setCode(val)}
+ *   value={code}
+ *   ref={inputRef}
+ *   fields={6}
+ * />
+ */
 const VerificationInputField = ({ label, change, value, ref, fields }) => {
   return (
     <>
