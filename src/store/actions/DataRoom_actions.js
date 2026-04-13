@@ -30,6 +30,7 @@ import {
   leaveFileSharingRM,
   leaveFolderSharingRM,
   GetDataRoomFileSharedPersmission,
+  getAnnotationOfDataroomAttachment,
 } from "../../commen/apis/Api_config";
 import {
   DataRoomAllFilesDownloads,
@@ -46,6 +47,7 @@ import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import axios from "axios";
+import diskusLogo from "../../assets/images/diskus-logo.png";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -3090,6 +3092,240 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   };
 };
 
+// ─── PDFNet singleton ─────────────────────────────────────────────────────────
+// WebViewer is initialised once (no document loaded — purely for PDFNet access).
+// The instance is cached so every subsequent download reuses the same WASM
+// context without creating another hidden element.
+let _pdfNetCache = null;
+let _pdfNetContainerCache = null;
+
+const getPDFNet = async () => {
+  if (_pdfNetCache) return _pdfNetCache;
+
+  const container = document.createElement("div");
+  container.style.cssText =
+    "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;pointer-events:none;";
+  document.body.appendChild(container);
+  _pdfNetContainerCache = container;
+
+  const { default: WebViewer } = await import("@pdftron/webviewer");
+
+  // Initialise WebViewer with NO initialDoc — only PDFNet (WASM) is needed.
+  const instance = await WebViewer(
+    {
+      path: "/webviewer/lib",
+      licenseKey: process.env.REACT_APP_APRYSEKEY,
+      fullAPI: true, // required to access PDFNet
+    },
+    container
+  );
+
+  const { PDFNet } = instance.Core;
+  await PDFNet.initialize();
+  _pdfNetCache = PDFNet;
+  return PDFNet;
+};
+
+// ─── Helper: merge XFDF into PDF and flatten — all in memory via PDFNet ───────
+// No document is loaded into any viewer UI. PDFDoc.createFromBuffer() works
+// purely with raw bytes, and fdfMerge() + flattenAnnotations() operate on that
+// in-memory document before saveMemoryBuffer() hands back the final bytes.
+const flattenAnnotationsIntoPdf = async (pdfBase64, xfdfString) => {
+  const PDFNet = await getPDFNet();
+
+  // Decode base64 → Uint8Array → ArrayBuffer for PDFNet
+  const pdfBytes = Uint8Array.from(atob(pdfBase64), (c) => c.charCodeAt(0));
+
+  const pdfDoc = await PDFNet.PDFDoc.createFromBuffer(pdfBytes);
+
+  if (xfdfString) {
+    // Parse XFDF and merge annotations directly into the in-memory PDFDoc
+    const fdfDoc = await PDFNet.FDFDoc.createFromXFDF(xfdfString);
+    await pdfDoc.fdfMerge(fdfDoc);
+  }
+
+  // Flatten: burn annotation layer into page content (no more separate layer)
+  await pdfDoc.flattenAnnotations();
+
+  const savedBuffer = await pdfDoc.saveMemoryBuffer(
+    PDFNet.SDFDoc.SaveOptions.e_linearized
+  );
+  return new Uint8Array(savedBuffer);
+};
+
+// ─── Download File with footer (username + datetime stamped on each PDF page) ──
+const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
+  return async (dispatch) => {
+    dispatch(DownloadMessage(1));
+    dispatch(DownloadFileForDataRoomStart());
+
+    const form = new FormData();
+    form.append(
+      "RequestMethod",
+      getAnnotationOfDataroomAttachment.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(data));
+
+    try {
+      const response = await axiosInstance.post(dataRoomApi, form);
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, Name));
+        return;
+      }
+
+      if (
+        response.data.responseCode === 200 &&
+        response.data.responseResult.isExecuted &&
+        response.data.responseResult.responseMessage
+          .toLowerCase()
+          .includes(
+            "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase()
+          )
+      ) {
+        const attachmentBlob = response.data.responseResult.attachmentBlob;
+        // annotationString may be null/empty if no annotations were saved yet
+        const annotationString =
+          response.data.responseResult.annotationString || "";
+        const ext = Name.split(".").pop().toLowerCase();
+        const userName = localStorage.getItem("name") || "";
+        const dateTimeStr = new Date().toLocaleString();
+        const footerText = `Downloaded by: ${userName}  |  ${dateTimeStr}`;
+
+        let finalBlob;
+
+        if (ext === "pdf") {
+          const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+
+          let pdfBytes;
+
+          if (annotationString) {
+            // Step 1: flatten annotations (XFDF) into the PDF using Apryse
+            pdfBytes = await flattenAnnotationsIntoPdf(
+              attachmentBlob,
+              annotationString
+            );
+          } else {
+            // No annotations — decode base64 directly
+            pdfBytes = Uint8Array.from(atob(attachmentBlob), (c) =>
+              c.charCodeAt(0)
+            );
+          }
+
+          // Step 2: stamp footer (logo + text) on every page using pdf-lib
+          const pdfDoc = await PDFDocument.load(pdfBytes);
+          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+          // ── Embed logo ──────────────────────────────────────────────────────
+          // Fetch the PNG bytes from the webpack-resolved asset URL, embed
+          // once into the document, then reuse the same embedded image on
+          // every page (pdf-lib does not re-encode it for each page).
+          let embeddedLogo = null;
+          let logoPdfWidth = 0;
+          const logoPdfHeight = 18; // points — fits neatly in a 24pt footer bar
+
+          try {
+            const logoResponse = await fetch(diskusLogo);
+            const logoArrayBuffer = await logoResponse.arrayBuffer();
+            embeddedLogo = await pdfDoc.embedPng(new Uint8Array(logoArrayBuffer));
+            // Scale proportionally to the target height
+            const scaled = embeddedLogo.scaleToFit(9999, logoPdfHeight);
+            logoPdfWidth = scaled.width;
+          } catch (_) {
+            // Logo is not critical — footer still renders with text only
+          }
+
+          // Footer strip height in PDF points.
+          // This defines the area we fully own — anything that existed here
+          // (same footer from a previous download, document's own page-number
+          // footer, or any other content) is erased before we draw ours.
+          const FOOTER_HEIGHT = 38;
+
+          for (const page of pdfDoc.getPages()) {
+            const { width } = page.getSize();
+
+            // ── 1. Erase existing footer ──────────────────────────────────
+            // A solid white rectangle spanning the full page width and the
+            // reserved footer height wipes whatever was there — same or
+            // different — so our footer is always clean and never stacked.
+            page.drawRectangle({
+              x: 0,
+              y: 0,
+              width,
+              height: FOOTER_HEIGHT,
+              color: rgb(1, 1, 1),
+              opacity: 1,
+            });
+
+            // ── 2. Separator line ─────────────────────────────────────────
+            page.drawLine({
+              start: { x: 10, y: FOOTER_HEIGHT - 4 },
+              end: { x: width - 10, y: FOOTER_HEIGHT - 4 },
+              thickness: 0.5,
+              color: rgb(0.85, 0.85, 0.85),
+            });
+
+            // ── 3. Logo — bottom-left ─────────────────────────────────────
+            if (embeddedLogo) {
+              page.drawImage(embeddedLogo, {
+                x: 10,
+                y: 8,
+                width: logoPdfWidth,
+                height: logoPdfHeight,
+              });
+            }
+
+            // ── 4. Text — centred on full page width ──────────────────────
+            const textWidth = font.widthOfTextAtSize(footerText, 8);
+            page.drawText(footerText, {
+              x: (width - textWidth) / 2,
+              y: 14,
+              size: 8,
+              font,
+              color: rgb(0.4, 0.4, 0.4),
+            });
+          }
+
+          const modifiedBytes = await pdfDoc.save();
+          finalBlob = new Blob([modifiedBytes], { type: "application/pdf" });
+        } else {
+          // Non-PDF: decode base64 and download as-is (no annotation merging)
+          const binary = atob(attachmentBlob);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+          }
+          finalBlob = new Blob([bytes]);
+        }
+
+        const url = window.URL.createObjectURL(finalBlob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", Name);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        dispatch(DownloadFileForDataRoomEnded(false));
+        dispatch(DownloadMessage(0));
+      } else {
+        // Blob not available — fall back to direct download
+        dispatch(DownloadMessage(0));
+        dispatch(DownloadFileForDataRoomEnded(false));
+        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
+      }
+    } catch (err) {
+      // Server 500 or any processing error — fall back to direct download
+      console.error("Footer download failed, falling back to direct download:", err);
+      dispatch(DownloadMessage(0));
+      dispatch(DownloadFileForDataRoomEnded(false));
+      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
+    }
+  };
+};
+
 // const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
 //   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -3928,6 +4164,7 @@ export {
   IsFileisExist,
   getRecentDocumentsApi,
   DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
   DataRoomDownloadFolderApiFunc,
   showFileDetailsModal,
   validateUserAvailibilityEncryptedStringDataRoomApi,

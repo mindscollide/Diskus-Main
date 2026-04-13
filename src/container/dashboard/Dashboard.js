@@ -2367,14 +2367,13 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "USER_PROFILE_EDITED".toLowerCase()
         ) {
-          if(data.viewable) {
+          if (data.viewable) {
             setNotification({
               notificationShow: true,
               message: t("USER_PROFILE_EDITED"),
             });
             setNotificationID(id);
           }
-    
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_TODO_CREATION_RECENT_ACTIVITY".toLowerCase()
@@ -4723,7 +4722,12 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
         ) {
           dispatch(SignatureDocumentReceived(data.payload));
-          if (data.payload?.workFlowStatusID === 3) return;
+          if (
+            data.payload?.workFlowStatusID === 3 ||
+            data.payload?.workFlowStatusID === 4
+          )
+            return;
+            
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,
