@@ -1,0 +1,51 @@
+.DiscardBtn {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.DiscardBtn:is(:hover, :focus, :focus-visible, :active) {
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.ContinueBtn {
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.ContinueBtn:is(:hover, :focus, :focus-visible, :active) {
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.UnsavedHeading {
+  color: #5a5a5a !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.UnsanvedChangesMainHeading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}

@@ -1,0 +1,35 @@
+.DownloadBtn {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  background: #ffffff !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none;
+}
+.TranscibingLabel {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19.5px;
+  color: #6172d6;
+}
+.RecordingTable___title {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14.63px;
+  color: #5a5a5a;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.RecordingTable___size {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14.63px;
+  color: #a2a2a2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}

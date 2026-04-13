@@ -1,0 +1,45 @@
+.Participant-Ended-Videopanel {
+  position: fixed;
+  height: 89vh;
+  top: 70px;
+  background-color: #fff !important;
+  border: 1px solid #4adede !important;
+  border-radius: 4px !important;
+  z-index: 99 !important;
+  padding: 10px 40px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  left: 65px;
+}
+
+.max-Participant-Ended-Video {
+  margin-top: 10%;
+  height: auto !important;
+  border-radius: 16px;
+  background: transparent;
+}
+
+.max-Participant-End-Main-Heading {
+  font-size: 40px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 2px;
+  color: #6172d6 !important;
+}
+
+.Sub-max-Participant-Removed-Main-Heading {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  color: #5a5a5a !important;
+}
+
+.Participant-End-closeModal-Button-Class {
+  padding: 8px 24px !important;
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #e1e1e1;
+}

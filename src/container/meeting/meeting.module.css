@@ -643,3 +643,22 @@ body[dir="rtl"] .ResetOkBtn {
   position: absolute;
   bottom: 10px;
 }
+
+
+.publishedMeetingButton {
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.publishedMeetingButton-active {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+}

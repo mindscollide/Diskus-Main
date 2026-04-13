@@ -1,0 +1,66 @@
+.HeadingViewVoteModal {
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+.BargraphButton {
+  padding: 12px 30px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+}
+
+.BargraphButtonActive {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  border: 1px solid #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+.BargraphButton:is(
+    :active,
+    :hover,
+    :focus,
+    :target,
+    :visited,
+    :focus-visible,
+    :focus-within
+  ) {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  border: 1px solid #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+.YesPercentage {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.NoOfVotes {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+.Image {
+  border-radius: 50% !important;
+}
+
+.Title {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}

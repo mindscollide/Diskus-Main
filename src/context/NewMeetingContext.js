@@ -44,6 +44,7 @@ export const NewMeetingContext = createContext();
 
 // Provider component that wraps the parts of the app that need access to meeting states
 export const NewMeetingProvider = ({ children }) => {
+  const {t} = useTranslation()
   let userID = localStorage.getItem("userID");
   const [requestData, setRequestData] = useState({
     Date: "",
