@@ -98,7 +98,7 @@ import {
   BreadCrumbsList,
   clearDataResponseMessage,
   dataBehaviour,
-  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
   DataRoomDownloadFolderApiFunc,
   deleteFileDataroom,
   deleteFolder,
@@ -269,7 +269,6 @@ const DataRoom = () => {
   const threedotFile = useRef();
   /** Ref for the folder three-dot menu — used for outside-click detection. */
   const threedotFolder = useRef();
-
   // ─── Ant Design loading spinner ──────────────────────────────────────────
   const antIcon = (
     <LoadingOutlined
@@ -1143,7 +1142,9 @@ const DataRoom = () => {
       let data = {
         FileID: Number(record.id),
       };
-      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+      );
     }
   };
 
@@ -1380,7 +1381,9 @@ const DataRoom = () => {
         let data = {
           FileID: Number(record.id),
         };
-        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+        dispatch(
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+        );
       }
     } else if (data.value === 6) {
       // Delete File and Folder
