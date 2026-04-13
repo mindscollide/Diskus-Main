@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
-import ViewCompliance from "../../../CommonComponents/viewCompliance";
 import { useSelector } from "react-redux";
 
 const CreateEditCompliance = () => {
@@ -33,7 +32,6 @@ const CreateEditCompliance = () => {
     setIsComplianceCreateOrEdit,
   } = useComplianceContext();
   // Tracking all Loading States
-  const modeRef = useRef(complianceAddEditViewState);
   console.log(
     { checkListData, complianceDetailsState },
     "checkListTabscheckListTabs",
@@ -43,8 +41,6 @@ const CreateEditCompliance = () => {
     { complianceAddEditViewState, showViewCompliance },
     "complianceAddEditViewState",
   );
-
-  console.log(complianceInfo, "complianceInfo");
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
@@ -56,11 +52,6 @@ const CreateEditCompliance = () => {
       } catch (error) {}
     }
   }, []);
-
-  console.log(
-    complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState",
-  );
 
   const getTitle = () => {
     //  Default (including 0, undefined, initial state)
@@ -81,7 +72,6 @@ const CreateEditCompliance = () => {
     return "";
   };
 
-  console.log("createEditComplicance");
   return (
     <>
       <section

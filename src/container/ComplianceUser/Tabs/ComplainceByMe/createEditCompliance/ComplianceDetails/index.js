@@ -149,9 +149,10 @@ const ComplainceDetails = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
-  console.log(complianceDetailsState, "complianceDetailsState");
 
   console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+
+  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
 
   const [open, setOpen] = useState({
     open: false,

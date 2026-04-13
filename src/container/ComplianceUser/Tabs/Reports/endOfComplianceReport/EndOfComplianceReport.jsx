@@ -44,7 +44,7 @@ const EndOfComplianceReport = () => {
   } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
   );
 
   const count = GetEndOfComplianceReport?.complianceSummary?.reopenCount || 0;
@@ -107,7 +107,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [t]
+    [t],
   );
 
   /** Static donut chart data — values are fixed and do not depend on any state. */
@@ -233,7 +233,8 @@ const EndOfComplianceReport = () => {
     if (!Array.isArray(history) || history.length === 0) return false;
 
     return history.some(
-      (item) => item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7
+      (item) =>
+        item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
     );
   }, [GetEndOfComplianceReport?.complianceStatusChangeHistory]);
 
@@ -289,7 +290,7 @@ const EndOfComplianceReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetEndOfComplianceReport?.header?.generatedOn
+                        GetEndOfComplianceReport?.header?.generatedOn,
                       ) || "-"}
                     </p>
                   </div>
@@ -339,7 +340,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate
+                              ?.complianceCreatedDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -348,7 +349,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCompletionDate
+                              ?.complianceCompletionDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -357,7 +358,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceDueDate
+                              ?.complianceDueDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -578,7 +579,7 @@ const EndOfComplianceReport = () => {
                             <label>{t("Generated-date")}:</label>
                             <p>
                               {formatDateToYMDLong(
-                                GetEndOfComplianceReport?.header?.generatedOn
+                                GetEndOfComplianceReport?.header?.generatedOn,
                               )}
                             </p>
                           </div>
@@ -627,7 +628,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMDLong(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCreatedDate
+                            ?.complianceCreatedDate,
                         )}
                       </p>
                     </Col>
@@ -638,7 +639,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMDLong(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate
+                            ?.complianceCompletionDate,
                         )}
                       </p>
                     </Col>
@@ -649,7 +650,7 @@ const EndOfComplianceReport = () => {
                         {" "}
                         {formatDateToYMDLong(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate
+                            ?.complianceDueDate,
                         )}
                       </p>
                     </Col>
@@ -730,7 +731,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {index + 1}. {check.checklistTitle}
                         </p>
-                      )
+                      ),
                     )}
                   </p>
                 </Col>
@@ -782,7 +783,7 @@ const EndOfComplianceReport = () => {
                             </label>
                             <p className={styles.checklistDueDateInternal}>
                               {formatDateToYMDLong(
-                                checklist?.checklistDueDate
+                                checklist?.checklistDueDate,
                               ) || "-"}
                             </p>
                           </div>
@@ -866,7 +867,7 @@ const EndOfComplianceReport = () => {
                                     <label>{t("Completed-on")}:</label>
                                     <p>
                                       {formatDateToYMDLong(
-                                        task.taskCompletedOn
+                                        task.taskCompletedOn,
                                       ) || "-"}
                                     </p>
                                   </div>
@@ -910,7 +911,7 @@ const EndOfComplianceReport = () => {
                             <Row>
                               <Col sm={12} md={12} lg={12}>
                                 <div className={styles.reopenTextLabel}>{`${t(
-                                  "Reason"
+                                  "Reason",
                                 )}:`}</div>
                                 <div className={styles.reopenTextVaue}>
                                   {item.statusChangeReason || "-"}
@@ -945,7 +946,7 @@ const EndOfComplianceReport = () => {
                                   className="d-flex flex-column justify-content-end"
                                 >
                                   <div className={styles.reopenTextLabel}>{`${t(
-                                    "Due-date"
+                                    "Due-date",
                                   )}:`}</div>
                                   <div className={styles.reopenTextVaue}>
                                     {formatDateToYMDLong(item.updatedDueDate) ||
@@ -955,7 +956,7 @@ const EndOfComplianceReport = () => {
                               </Row>
                             </Row>
                           </div>
-                        )
+                        ),
                       )}
                     </Col>
                   </Row>

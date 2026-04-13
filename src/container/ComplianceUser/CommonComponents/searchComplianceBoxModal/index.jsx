@@ -13,6 +13,7 @@ import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./searchComplianceBoxModal.module.css";
 import { DatePicker, Select } from "antd";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import dayjs from "dayjs";
 
 const SearchComplianceBoxModal = () => {
   const { t } = useTranslation();
@@ -30,6 +31,11 @@ const SearchComplianceBoxModal = () => {
     searchCompliancePayload,
     searchbox,
     setsearchbox,
+    statusFilter,
+    allComplianceStatusForFilter,
+    setStatusFilter,
+    setCriticalityFilter,
+    setCriticalityFilterForMe,
   } = useComplianceContext();
   // Scroll
 
@@ -66,7 +72,11 @@ const SearchComplianceBoxModal = () => {
     if (e.key === "Enter")
       if (complianceViewMode === "byMe") {
         setEnterpressed(true);
-
+        setCriticalityFilter([1, 2, 3]);
+        setCriticalityFilterForMe([1, 2, 3]);
+        setStatusFilter(
+          allComplianceStatusForFilter?.map((s) => s.statusTitle) || [],
+        );
         const updatedPayload = {
           ...searchCompliancePayload,
           complianceTitle: searchCompliancePayload.complianceTitleOutside,
@@ -81,7 +91,11 @@ const SearchComplianceBoxModal = () => {
       } else if (complianceViewMode === "forMe") {
         console.log("here");
         setEnterpressed(true);
-
+        setCriticalityFilter([1, 2, 3]);
+        setCriticalityFilterForMe([1, 2, 3]);
+        setStatusFilter(
+          allComplianceStatusForFilter?.map((s) => s.statusTitle) || [],
+        );
         const updatedPayload = {
           ...searchCompliancePayload,
           complianceTitle: searchCompliancePayload.complianceTitleOutside,
@@ -131,7 +145,11 @@ const SearchComplianceBoxModal = () => {
   };
 
   const handleSearchCompliance = () => {
+    setStatusFilter(
+      allComplianceStatusForFilter?.map((s) => s.statusTitle) || [],
+    );
     if (complianceViewMode === "byMe") {
+      setCriticalityFilter([1, 2, 3]); // default (all selected)
       setComplianceByMeList([]);
       setSearchCompliancePayload({
         ...searchCompliancePayload,
@@ -139,6 +157,7 @@ const SearchComplianceBoxModal = () => {
         length: 10,
       });
     } else if (complianceViewMode === "forMe") {
+      setCriticalityFilterForMe([1, 2, 3]);
       setComplianceForMeList([]);
       setSearchCompliancePayload({
         ...searchCompliancePayload,
@@ -364,6 +383,31 @@ const SearchComplianceBoxModal = () => {
                           allowEmpty={[true, true]}
                           className="custom-range-picker"
                           separator="-"
+                          value={[
+                            searchCompliancePayload.dueDateFrom
+                              ? dayjs(
+                                  searchCompliancePayload.dueDateFrom,
+                                  "YYYYMMDD",
+                                ).isValid()
+                                ? dayjs(
+                                    searchCompliancePayload.dueDateFrom,
+                                    "YYYYMMDD",
+                                  )
+                                : null
+                              : null,
+
+                            searchCompliancePayload.dueDateTo
+                              ? dayjs(
+                                  searchCompliancePayload.dueDateTo,
+                                  "YYYYMMDD",
+                                ).isValid()
+                                ? dayjs(
+                                    searchCompliancePayload.dueDateTo,
+                                    "YYYYMMDD",
+                                  )
+                                : null
+                              : null,
+                          ]}
                           onChange={(dates) => {
                             setSearchCompliancePayload((prev) => ({
                               ...prev,

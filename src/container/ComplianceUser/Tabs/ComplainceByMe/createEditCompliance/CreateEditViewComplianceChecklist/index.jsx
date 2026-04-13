@@ -69,6 +69,9 @@ const CreateEditViewComplianceChecklist = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
+
+  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
+
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
     checklistTitle: "",
@@ -220,6 +223,25 @@ const CreateEditViewComplianceChecklist = () => {
       } catch (error) {}
   };
 
+  //To set the task count updated on checklist:
+  useEffect(() => {
+    if (
+      getAllComplianceChecklistTask &&
+      getAllComplianceChecklistTask !== null
+    ) {
+      const checklistList = getAllComplianceChecklistTask?.checklistList || [];
+
+      const totalTaskCount = checklistList.reduce(
+        (sum, checklist) => sum + (checklist.taskList?.length || 0),
+        0,
+      );
+
+      setTaskCount(totalTaskCount);
+    } else {
+      setTaskCount(0);
+    }
+  }, [getAllComplianceChecklistTask]);
+
   useEffect(() => {
     if (complianceAddEditViewState !== 3) {
       checklistTitleRef.current &&
@@ -262,14 +284,12 @@ const CreateEditViewComplianceChecklist = () => {
           };
         },
       );
-
-      console.log(updateTIme, "updateTIme");
       setGetCheckListData(updateTIme);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
+      //  COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
     } else {
       setChecklistCount(0);
-      setGetCheckListData([]); // ✅ IMPORTANT FIX
+      setGetCheckListData([]); //  IMPORTANT FIX
       setExpandedCheckListIds([]); // optional but clean
       setTaskCount(0);
     }

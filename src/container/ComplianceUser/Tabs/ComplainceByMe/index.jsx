@@ -68,6 +68,11 @@ const ComplianceByMe = () => {
     upcomingDeadlineFilterFlag,
     setUpcomingDeadlineFilterFlag,
     setIsComplianceCreateOrEdit,
+    statusFilter,
+    setStatusFilter,
+    criticalityFilter,
+    setCriticalityFilter,
+    mainComplianceTabs,
   } = useComplianceContext();
 
   // ── Local state ───────────────────────────────────────────────────────────
@@ -81,11 +86,12 @@ const ComplianceByMe = () => {
     order: "descend",
   });
 
-  /** Controlled filter values for the Criticality column (1=High, 2=Med, 3=Low). */
-  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-
-  /** Controlled filter values for the Status column (array of statusTitle strings). */
-  const [statusFilter, setStatusFilter] = useState([]);
+  const TAB = {
+    DASHBOARD: 1,
+    BY_ME: 2,
+    FOR_ME: 3,
+    REPORTS: 4,
+  };
 
   // ── Mount effect ──────────────────────────────────────────────────────────
 
@@ -109,19 +115,16 @@ const ComplianceByMe = () => {
 
       const upcomingPayload = {
         ...payload,
-        statusIds: [1, 2, 4, 6, 7], //  KEEP FILTERS
+        statusIds: [1, 2, 4, 6, 7],
         dueDateFrom: moment(startDate).format("YYYYMMDD"),
         dueDateTo: moment(endDate).format("YYYYMMDD"),
         pageNumber: 0,
       };
 
-      //  IMPORTANT: SAVE FILTERED PAYLOAD (DO NOT RESET)
       setSearchCompliancePayload(upcomingPayload);
 
-      //  API CALL
       dispatch(listOfComplianceByCreatorApi(navigate, upcomingPayload, t));
 
-      setUpcomingDeadlineFilterFlag(false);
       return;
     }
 
@@ -180,6 +183,13 @@ const ComplianceByMe = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCompliancesForCreator]);
 
+  useEffect(() => {
+    if (mainComplianceTabs === TAB.BY_ME) {
+      setCriticalityFilter([1, 2, 3]);
+      setStatusFilter([]);
+    }
+  }, [mainComplianceTabs]);
+
   /**
    * Initialise the status filter dropdown.
    * If upcomingDeadlineFilterFlag is true (user arrived from the Upcoming
@@ -187,8 +197,34 @@ const ComplianceByMe = () => {
    * the flag. Otherwise select all statuses (default behaviour).
    */
   useEffect(() => {
-    if (allComplianceStatusForFilter?.length > 0 && statusFilter.length === 0) {
-      setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
+    if (
+      allComplianceStatusForFilter?.length > 0 &&
+      upcomingDeadlineFilterFlag
+    ) {
+      const statusIds = [1, 2, 4, 6, 7];
+
+      const selectedStatuses = allComplianceStatusForFilter
+        .filter((s) => statusIds.includes(s.statusId))
+        .map((s) => s.statusTitle);
+
+      setStatusFilter(selectedStatuses);
+
+      //  Reset flag AFTER setting
+      setUpcomingDeadlineFilterFlag(false);
+    }
+  }, [allComplianceStatusForFilter, upcomingDeadlineFilterFlag]);
+
+  useEffect(() => {
+    if (
+      allComplianceStatusForFilter?.length > 0 &&
+      statusFilter.length === 0 &&
+      !upcomingDeadlineFilterFlag
+    ) {
+      const allStatuses = allComplianceStatusForFilter.map(
+        (s) => s.statusTitle,
+      );
+
+      setStatusFilter(allStatuses);
     }
   }, [allComplianceStatusForFilter]);
 

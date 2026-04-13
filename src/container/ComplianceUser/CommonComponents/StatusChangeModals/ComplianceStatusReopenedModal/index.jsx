@@ -204,7 +204,10 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   // Make it strictly greater than current due date by adding 1 day
   let minSelectableDate;
 
-  if (complianceDetailsState?.dueDate && complianceAddEditViewState === 2) {
+  if (
+    complianceDetailsState?.dueDate &&
+    (complianceAddEditViewState === 2 || complianceAddEditViewState === 1)
+  ) {
     const currentDueDate = new Date(complianceDetailsState.dueDate);
 
     // Validate the date
@@ -214,7 +217,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       minSelectableDate.setHours(0, 0, 0, 0); // start of the day
     }
   } else if (
-    complianceAddEditViewState === 3 &&
+    (complianceAddEditViewState === 3 || complianceAddEditViewState === 1) &&
     complianceDetailsState?.dueDate
   ) {
     const currentDueDateObj = parseYYYYMMDDToEndOfDay(
