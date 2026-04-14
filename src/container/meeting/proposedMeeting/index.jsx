@@ -26,8 +26,6 @@ import {
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 
-
-
 // Redux actions
 import {
   GetAllMeetingDetailsApiFunc,
@@ -59,9 +57,8 @@ import {
   validateStringUserMeetingProposedDatesPollsApi,
   ProposedMeetingViewFlagAction,
   meetingStatusProposedMqtt,
+  searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
-
-
 
 // Utils
 import {
@@ -69,10 +66,12 @@ import {
   truncateString,
 } from "../../../commen/functions/regex";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+
 import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
 } from "../../../hooks/meetingResponse/response";
+import CustomPagination from "@/commen/functions/customPagination/Paginations";
 
 // Icons
 import rspvGreenIcon from "../../../assets/images/rspvGreen.svg";
@@ -109,6 +108,9 @@ const ProposedMeetingList = ({
     meetingsRecords,
     setMeetingsRecords,
     totalMeetingRecords,
+    proposedMeetingDataRecord,
+    setProposedMeetingData,
+    setProposedMeetingDataRecord,
     isMeetingTypeFilter,
     proposedMeetingData,
   } = useNewMeetingContext();
@@ -169,6 +171,9 @@ const ProposedMeetingList = ({
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
+
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
   // ─── Handlers ───
   const viewProposeDatePollHandler = (
@@ -848,10 +853,31 @@ const ProposedMeetingList = ({
     }
   }, [UserMeetPropoDatPoll]);
 
+  const handelChangePagination = async (current, PageSize) => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: Number(current),
+      Length: Number(PageSize),
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    localStorage.setItem("MeetingPageRows", PageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+  };
+
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className="w-100">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className={styles["MainMeetingTablePublished"]}
+        >
           <Table
             onChange={handleChangeMeetingTable}
             className="MeetingTable"
@@ -864,10 +890,39 @@ const ProposedMeetingList = ({
               emptyText: <EmptyTableComponent />,
             }}
             scroll={{
-              y: 450,
+              y: 400,
             }}
           />
         </Col>
+        {proposedMeetingData.length > 0 && (
+          <Col className={styles["Meeting_Pagination"]}>
+            <div className="d-flex justify-content-center mt-2 ">
+              <Row className={styles["PaginationStyle-Meeting"]}>
+                <Col
+                  className={"pagination-groups-table"}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                >
+                  <CustomPagination
+                    current={
+                      meetingPageCurrent !== null
+                        ? Number(meetingPageCurrent)
+                        : 1
+                    }
+                    pageSize={
+                      meetingpageRow !== null ? Number(meetingpageRow) : 30
+                    }
+                    onChange={handelChangePagination}
+                    total={totalMeetingRecords}
+                    showSizer={true}
+                    pageSizeOptionsValues={["30", "50", "100", "200"]}
+                  />
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        )}
       </Row>
       {sceduleproposedMeeting && (
         <SceduleProposedmeeting

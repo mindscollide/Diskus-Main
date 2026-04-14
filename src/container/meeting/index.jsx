@@ -81,10 +81,8 @@ const MainMeeting = () => {
     setIsMeetingCreateOrEdit,
   } = useNewMeetingContext();
 
-  const {
-    viewAdvanceMeetingModal,
-    advanceMeetingModalID,
-  } = useMeetingContext();
+  const { viewAdvanceMeetingModal, advanceMeetingModalID } =
+    useMeetingContext();
 
   // Local state management
   const [searchText, setSearchText] = useState("");
@@ -479,15 +477,15 @@ const MainMeeting = () => {
                       />
                     ) : null}
                     {/* Advanced search filters toggle */}
-                    <Tooltip placement="bottomLeft" title={t("Search-filters")}>
-                      <img
-                        src={searchIcon}
-                        className={styles["Search_Bar_icon_class"]}
-                        onClick={HandleShowSearch} // Add click functionality here
-                        alt=""
-                        draggable="false"
-                      />
-                    </Tooltip>
+                    {/* <Tooltip placement='bottomLeft'  title={t("Search-filters")}> */}
+                    <img
+                      src={searchIcon}
+                      className={styles["Search_Bar_icon_class"]}
+                      onClick={HandleShowSearch} // Add click functionality here
+                      alt=""
+                      draggable="false"
+                    />
+                    {/* </Tooltip> */}
                   </Col>
                 </Row>
               }
@@ -603,83 +601,86 @@ const MainMeeting = () => {
       </Row>
 
       {/* Meeting Tabs and List Section */}
-      <Row>
-        <Col lg={12} md={12} sm={12}>
-          <span className={styles["PaperStylesMeetingTwoPage"]}>
-            {/* Tab navigation buttons */}
-            <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                <Button
-                  text={t("Published")}
-                  className={
-                    localStorage.getItem("MeetingCurrentView") !== null &&
-                    Number(localStorage.getItem("MeetingCurrentView")) === 1
-                      ? styles["publishedMeetingButton-active"]
-                      : styles["publishedMeetingButton"]
-                  }
-                  onClick={handlePublishedMeeting}
-                />
-                <Button
-                  text={t("Draft")}
-                  className={
-                    localStorage.getItem("MeetingCurrentView") !== null &&
-                    Number(localStorage.getItem("MeetingCurrentView")) === 3
-                      ? styles["UnpublishedMeetingButton-active"]
-                      : styles["UnpublishedMeetingButton"]
-                  }
-                  onClick={handleDraftMeeting}
-                />
-                <Button
-                  text={t("Proposed")}
-                  className={
-                    localStorage.getItem("MeetingCurrentView") !== null &&
-                    Number(localStorage.getItem("MeetingCurrentView")) === 2
-                      ? styles["UnpublishedMeetingButton-active"]
-                      : styles["UnpublishedMeetingButton"]
-                  }
-                  onClick={handleProposedMeeting}
-                />
-              </Col>
-            </Row>
+      <section className={styles.MeetingWrapper}>
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["PaperStylesMeetingTwoPage"]}>
+              {/* Tab navigation buttons */}
+              <Row>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Button
+                    text={t("Published")}
+                    className={
+                      localStorage.getItem("MeetingCurrentView") !== null &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 1
+                        ? styles["meetingTab-active"]
+                        : styles["meetingTab"]
+                    }
+                    onClick={handlePublishedMeeting}
+                  />
+                  <Button
+                    text={t("Draft")}
+                    className={
+                      localStorage.getItem("MeetingCurrentView") !== null &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 3
+                        ? styles["meetingTab-active"]
+                        : styles["meetingTab"]
+                    }
+                    onClick={handleDraftMeeting}
+                  />
+                  <Button
+                    text={t("Proposed")}
+                    className={
+                      localStorage.getItem("MeetingCurrentView") !== null &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 2
+                        ? styles["meetingTab-active"]
+                        : styles["meetingTab"]
+                    }
+                    onClick={handleProposedMeeting}
+                  />
+                </Col>
+              </Row>
 
-            {/* Conditional rendering of meeting lists based on selected tab */}
-            {localStorage.getItem("MeetingCurrentView") !== null &&
-            Number(localStorage.getItem("MeetingCurrentView")) === 2 ? (
-              <ProposedMeetingList />
-            ) : localStorage.getItem("MeetingCurrentView") !== null &&
-              Number(localStorage.getItem("MeetingCurrentView")) === 3 ? (
-              <DraftNeetingList />
-            ) : localStorage.getItem("MeetingCurrentView") !== null &&
-              Number(localStorage.getItem("MeetingCurrentView")) === 1 ? (
-              <PublishedMeetingList />
-            ) : null}
+              {/* Conditional rendering of meeting lists based on selected tab */}
+              {localStorage.getItem("MeetingCurrentView") !== null &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 2 ? (
+                <ProposedMeetingList />
+              ) : localStorage.getItem("MeetingCurrentView") !== null &&
+                Number(localStorage.getItem("MeetingCurrentView")) === 3 ? (
+                <DraftNeetingList />
+              ) : localStorage.getItem("MeetingCurrentView") !== null &&
+                Number(localStorage.getItem("MeetingCurrentView")) === 1 ? (
+                <PublishedMeetingList />
+              ) : null}
 
-            {/* Pagination section - Currently commented out */}
-          </span>
-        </Col>
-      </Row>
-      {isQuickMeetingCreate && (
-        <CreateQuickMeeting
-          show={isQuickMeetingCreate}
-          setShow={setIsQuickMeetingCreate}
-          checkFlag={5}
-        />
-      )}
-      {isQuickMeetingUpdate && (
-        <UpdateQuickMeeting
-          editFlag={isQuickMeetingUpdate}
-          setEditFlag={setIsQuickMeetingUpdate}
-        />
-      )}
-      {isQuickMeetingView && (
-        <ViewQuickMeeting
-          viewFlag={isQuickMeetingView}
-          setViewFlag={setIsQuickMeetingView}
-        />
-      )}
-      {viewAdvanceMeetingModal && advanceMeetingModalID !== 0 && (
-        <ViewAdvanceMeeting />
-      )}
+              {/* Pagination section - Currently commented out */}
+            </span>
+          </Col>
+        </Row>
+
+        {isQuickMeetingCreate && (
+          <CreateQuickMeeting
+            show={isQuickMeetingCreate}
+            setShow={setIsQuickMeetingCreate}
+            checkFlag={5}
+          />
+        )}
+        {isQuickMeetingUpdate && (
+          <UpdateQuickMeeting
+            editFlag={isQuickMeetingUpdate}
+            setEditFlag={setIsQuickMeetingUpdate}
+          />
+        )}
+        {isQuickMeetingView && (
+          <ViewQuickMeeting
+            viewFlag={isQuickMeetingView}
+            setViewFlag={setIsQuickMeetingView}
+          />
+        )}
+        {viewAdvanceMeetingModal && advanceMeetingModalID !== 0 && (
+          <ViewAdvanceMeeting />
+        )}
+      </section>
     </>
   );
 };

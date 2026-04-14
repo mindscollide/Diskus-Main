@@ -70,7 +70,9 @@ const Agenda = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const meetingId = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo.meetingID,
+  );
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state,
   );
@@ -120,13 +122,13 @@ const Agenda = ({
 
   useEffect(() => {
     let getAllData = {
-      MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
+      MeetingID: meetingId !== null ? meetingId : 0,
     };
     let getMeetingData = {
-      MeetingID: currentMeetingIDLS,
+      MeetingID: meetingId,
     };
     let Data = {
-      MeetingID: currentMeetingIDLS,
+      MeetingID: meetingId,
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
@@ -400,7 +402,7 @@ const Agenda = ({
 
     // Construct data object
     let Data = {
-      MeetingID: currentMeetingIDLS,
+      MeetingID: meetingId,
       AgendaList: updatedData,
     };
 
@@ -408,7 +410,7 @@ const Agenda = ({
     let capitalizedData = capitalizeKeys(Data);
 
     // Dispatch API call to update meeting agenda
-    let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
+    let publishMeetingData = { MeetingID: meetingId, StatusID: 1 };
     await dispatch(
       AddUpdateAdvanceMeetingAgenda(
         capitalizedData,
@@ -433,6 +435,7 @@ const Agenda = ({
     let shouldResetFileForSend = true;
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
       let row = rows[rowIndex];
+      console.log("row", row);
 
       if (row.files.length > 10) {
         showMessage(
@@ -458,7 +461,7 @@ const Agenda = ({
 
       if (row.startDate === "") {
         showMessage(
-          t("tart-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
+          t("start-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
           "error",
           setOpen,
         );
@@ -1055,11 +1058,10 @@ const Agenda = ({
       MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== null
     ) {
       if (
-        currentMeetingIDLS ===
-        MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
+        meetingId === MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
       ) {
         let getMeetingData = {
-          MeetingID: currentMeetingIDLS,
+          MeetingID: meetingId,
         };
         dispatch(
           GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t),
@@ -1334,7 +1336,7 @@ const Agenda = ({
                 editorRole.role !== "Agenda Contributor" ? (
                   <Button
                     disableBtn={
-                      Number(currentMeeting) === 0 || isPublishedState === false
+                      Number(meetingId) === 0 || isPublishedState === false
                         ? true
                         : false
                     }
@@ -1345,7 +1347,7 @@ const Agenda = ({
                 ) : isEditMeeting === true ? null : (
                   <Button
                     disableBtn={
-                      Number(currentMeeting) === 0 || isPublishedState === false
+                      Number(meetingId) === 0 || isPublishedState === false
                         ? true
                         : false
                     }

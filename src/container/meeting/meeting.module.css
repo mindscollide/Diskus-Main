@@ -618,21 +618,18 @@ body[dir="rtl"] .ResetOkBtn {
   font-weight: 600;
   cursor: pointer;
   font-size: 12px;
-  color:#505050;
-
+  color: #505050;
 }
 .columnValue {
-  font-size: 12px ;
+  font-size: 12px;
   font-weight: 400;
-  color:#505050;
-
+  color: #505050;
 }
-.columnValueStatus{
-  font-size: 12px ;
+.columnValueStatus {
+  font-size: 12px;
   font-weight: 400;
-  color:#505050;
+  color: #505050;
   text-align: left;
-  
 }
 
 .MainMeetingTablePublished {
@@ -643,7 +640,6 @@ body[dir="rtl"] .ResetOkBtn {
   position: absolute;
   bottom: 10px;
 }
-
 
 .publishedMeetingButton {
   border: 1px solid #e1e1e1 !important;
@@ -661,4 +657,48 @@ body[dir="rtl"] .ResetOkBtn {
   background: #6172d6 !important;
   border: none !important;
   color: #fff !important;
+}
+.MeetingWrapper {
+  --Paper-shadow:
+    0px 2px 1px -1px #0003, 0px 1px 1px 0px #00000024, 0px 1px 3px 0px #0000001f;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 8px !important;
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  height: auto !important;
+  min-height: calc(100vh - 135px);
+  padding: 20px 20px 0 !important;
+  position: relative;
+  width: 100% !important;
+}
+.meetingTab {
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+.meetingTab-active {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.PaginationStyle-Meeting {
+  padding: 12px 40px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+}
+.Meeting_Pagination {
+  position: absolute;
+  bottom: 10px;
+}
+.MainMeetingTablePublished {
+  min-height: 63vh !important;
+  margin-bottom: 70px;
 }

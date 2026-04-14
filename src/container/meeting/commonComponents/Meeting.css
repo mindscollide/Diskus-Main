@@ -522,6 +522,9 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   font-size: 10px !important;
   border: none !important;
 }
+.MoreButtons_overlay {
+  padding-top: 5px !important;
+}
 
 .MoreButtons_overlay .ant-popover-inner .ant-popover-inner-content {
   padding: 0 15px !important;

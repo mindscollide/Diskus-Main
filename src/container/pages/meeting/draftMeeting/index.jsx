@@ -438,6 +438,7 @@ const DraftMeeting = () => {
     localStorage.setItem("isMinutePublished", record.isMinutePublished);
     localStorage.setItem("meetingTitle", record.title);
   };
+
   const columns = useMemo(() => {
     return [
       {
@@ -675,6 +676,7 @@ const DraftMeeting = () => {
     isMeetingTypeFilter,
     selectedMeetingTypeValues,
   ]);
+
   const handelChangePagination = async (current, PageSize) => {
     let searchData = {
       Date: "",
@@ -691,6 +693,7 @@ const DraftMeeting = () => {
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
+  
   return (
     <Row>
       <Col sm={12} md={12} lg={12}>
