@@ -2763,5 +2763,7 @@
   "Mark-Checklist-only": "Mark Checklist only",
   "Mark-Checklist-with-associated-items": "Mark Checklist with associated items",
   "Cancel-checklist": "Cancel checklist?",
-  "Reopen-details": "Reopen Details"
+  "Reopen-details": "Reopen Details",
+  "All-participants-must-have-at-least-one-field-assigned": "All participants must have at least one field assigned",
+  "Document-save-successfully": "Document saved successfully"
 }
