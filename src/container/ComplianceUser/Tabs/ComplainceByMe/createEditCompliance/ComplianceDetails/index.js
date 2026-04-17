@@ -454,7 +454,13 @@ const ComplainceDetails = () => {
       } else {
         console.log("complianceByMeList");
         dispatch(
-          EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs),
+          EditComplianceAPI(
+            navigate,
+            editComplianceData,
+            t,
+            setChecklistTabs,
+            ViewComplianceDetailsByViewTypeAPI,
+          ),
         );
       }
 
@@ -584,7 +590,15 @@ const ComplainceDetails = () => {
         return;
       }
       console.log("complianceByMeList");
-      dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+      dispatch(
+        EditComplianceAPI(
+          navigate,
+          Data,
+          t,
+          setChecklistTabs,
+          ViewComplianceDetailsByViewTypeAPI,
+        ),
+      );
       console.log("complianceReopenDetailsState", complianceReopenDetailsState);
       console.log(Data, "complianceReopenDetailsState");
       // dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));

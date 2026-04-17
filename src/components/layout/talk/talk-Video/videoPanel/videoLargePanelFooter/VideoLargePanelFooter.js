@@ -16,6 +16,17 @@ import NonActiveScreenShare from '../../../../../../assets/images/newElements/No
 import NonActiveCall from '../../../../../../assets/images/newElements/NonActiveRedCall.svg'
 import './VideoLargePanelFooter.css'
 
+/**
+ * @component VideoLargePanelFooter
+ * @description Footer control bar rendered in the maximized/full-screen video
+ * panel view. Provides toggle buttons for video, microphone, and screen share
+ * using active/non-active icon pairs (hand-raise, whiteboard, and overflow
+ * dots buttons are currently commented out). Also renders a red end-call
+ * button that dispatches `normalizeVideoPanelFlag`, `maximizeVideoPanelFlag`,
+ * and `minimizeVideoPanelFlag` to collapse the video panel and clears the
+ * `activeCall` localStorage flag. Conditionally mounts `VideoMaxModal` when
+ * the maximized screen modal is triggered.
+ */
 const VideoLargePanelFooter = () => {
   const dispatch = useDispatch()
 

@@ -7,6 +7,14 @@ import { guestVideoNavigationScreen } from "../../../../../store/actions/Guest_V
 import { Button } from "../../../../elements";
 import "./GuestRemoveByHost.css";
 
+/**
+ * @component GuestRemoveByHost
+ * @description Informational screen shown to a guest participant after the
+ * meeting host has forcibly removed them from the active video call. Displays
+ * a removal illustration and an explanatory message, and provides a
+ * "Request to rejoin" button that navigates the guest back to the join lobby
+ * (navigation screen 1) via the `guestVideoNavigationScreen` Redux action.
+ */
 const GuestRemoveByHost = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

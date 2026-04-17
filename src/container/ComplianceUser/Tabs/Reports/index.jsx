@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import CustomTable from "../../../../components/elements/table/Table";
@@ -18,7 +18,6 @@ import { Checkbox } from "antd";
 import {
   formatDateToYMD,
   formatGeneratedOnDateTime,
-  getDueDateTimeNumber,
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 import {
@@ -28,13 +27,11 @@ import {
   GetEndOfComplianceReportAPI,
   GetQuarterReportAPI,
 } from "../../../../store/actions/ComplainSettingActions";
-import { useSelector } from "react-redux";
-import {
-  formatDateToYYYYMMDD,
-  newTimeFormaterAsPerUTCFullDate,
-  utcConvertintoGMT,
-} from "../../../../commen/functions/date_formater";
 
+/**
+ * Reports component — renders the compliance report listing for end users.
+ * Handles lazy-load scrolling, column sorting/filtering, and report fetch/download.
+ */
 const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -72,8 +69,6 @@ const Reports = () => {
     emptyComplianceState,
   } = useComplianceContext();
 
-  console.log(complianceReportList, "complianceReportList");
-
   //  Initial Load
   useEffect(() => {
     dispatch(
@@ -82,7 +77,7 @@ const Reports = () => {
   }, []);
 
   useEffect(() => {
-    return setSearchComplianceReportPayload({
+    setSearchComplianceReportPayload({
       reportTitle: "",
       reportTitleOutside: "",
       reportType: "",
@@ -117,8 +112,8 @@ const Reports = () => {
     setIsScroll(false);
   }, [GetReportListingData]);
 
-  // ✅ Lazy Load Scroll
-  useAntTableScrollBottomVirtual(() => {
+  // Lazy Load Scroll
+  const handleScrollBottom = useCallback(() => {
     if (complianceReportList.length < complianceReportTotal) {
       const nextPayload = {
         ...searchComplianceReportPayload,
@@ -130,18 +125,21 @@ const Reports = () => {
 
       dispatch(ComplianceReportListingAPI(navigate, nextPayload, t));
     }
-  }, 10);
+  }, [complianceReportList.length, complianceReportTotal, searchComplianceReportPayload]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Function
-  const resetAllSorts = () => {
+  useAntTableScrollBottomVirtual(handleScrollBottom, 10);
+
+  /**
+   * Handles Ant Design table change events for sorting and filtering.
+   * Resets all sort states before applying the new sort, and updates
+   * reportTypeFilter when a filter is applied.
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleChangeComplianceSorter = useCallback((pagination, filters, sorter) => {
     setReportTitleSort(null);
     setGeneratedOnSort(null);
     setStartDateSort(null);
     setEndDateSort(null);
-  };
-
-  const handleChangeComplianceSorter = (pagination, filters, sorter) => {
-    resetAllSorts();
 
     if (sorter.columnKey === "reportTitle") {
       setReportTitleSort(sorter.order);
@@ -156,9 +154,13 @@ const Reports = () => {
     if (filters?.type) {
       setReportTypeFilter(filters.type || [1, 2, 3]);
     }
-  };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getReportTypeColumnProps = () => ({
+  /**
+   * Returns the Ant Design column props for the report type filter column.
+   * Memoized to avoid unnecessary recomputation of the columns array.
+   */
+  const reportTypeColumnProps = useMemo(() => ({
     filteredValue: reportTypeFilter,
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
       <div style={{ padding: 8 }}>
@@ -200,10 +202,14 @@ const Reports = () => {
     ),
     onFilter: (value, record) => value === record.reportTypeId,
     filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
-  });
+  }), [reportTypeFilter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ✅ Report Click Handlers
-  const fetchReport = (record, isDownload = false) => {
+  /**
+   * Fetches or downloads a compliance report.
+   * @param {object} record - The report row record from the table.
+   * @param {boolean} isDownload - Whether to trigger a PDF download (true) or view (false).
+   */
+  const fetchReport = useCallback((record, isDownload = false) => {
     const data = {
       reportId: Number(record?.reportId),
       reportTypeId: record?.reportTypeId,
@@ -211,21 +217,17 @@ const Reports = () => {
 
     if (isDownload) {
       setAutoPdfDownload(true);
-      console.log("Check sRow");
 
       // Store old payload
       const oldPayload = { ...searchComplianceReportPayload };
-      console.log(oldPayload, "Check sRow");
 
       // Reset sRow temporarily
       setSearchComplianceReportPayload({ ...oldPayload, sRow: 0 });
 
       if (record?.reportTypeId === 1) {
-        console.log("Check sRow");
         setEndOfComplianceReport(true);
         dispatch(GetEndOfComplianceReportAPI(navigate, data, t, false));
       } else if (record?.reportTypeId === 2) {
-        console.log("Check sRow");
         setEndOfQuarterReport(true);
         dispatch(GetQuarterReportAPI(navigate, data, t, false));
       } else if (record?.reportTypeId === 3) {
@@ -238,7 +240,6 @@ const Reports = () => {
     } else {
       // Normal View Report
       setAutoPdfDownload(false);
-      console.log("Check sRow");
 
       if (record?.reportTypeId === 1) {
         setEndOfComplianceReport(true);
@@ -251,9 +252,12 @@ const Reports = () => {
         dispatch(GetAccumulativeReportAPI(navigate, data, t, true));
       }
     }
-  };
+  }, [searchComplianceReportPayload, setAutoPdfDownload, setEndOfComplianceReport, setEndOfQuarterReport, setAccumulativeReport, setSearchComplianceReportPayload]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onClickOfViewPort = () => {
+  /**
+   * Opens the organisation-wide compliance standing report view.
+   */
+  const onClickOfViewPort = useCallback(() => {
     setComplianceStandingReport(true);
     dispatch(
       GetComplianceStandingReportAPI(
@@ -262,7 +266,7 @@ const Reports = () => {
         t
       )
     );
-  };
+  }, [setComplianceStandingReport]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const columns = useMemo(
     () => [
@@ -273,7 +277,7 @@ const Reports = () => {
         width: "20%",
         ellipsis: true,
         align: "left",
-        ...getReportTypeColumnProps(),
+        ...reportTypeColumnProps,
         render: (_, record) => {
           return (
             <span>
@@ -476,29 +480,29 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t]
+    [reportTitleSort, reportTypeColumnProps, generatedOnSort, startDateSort, endDateSort, fetchReport, t]
   );
 
   return (
     <>
       <section className={styles["ComplianceStatusReport_Section"]}>
         <Row className={styles["ComplianceReport"]}>
-          <Col lg={2} ms={2} sm={2}>
+          <Col lg={2} md={2} sm={2}>
             <img className=" " src={ComplianceReportLiting} alt="" />
           </Col>
-          <Col lg={7} ms={6} sm={6}>
+          <Col lg={7} md={6} sm={6}>
             <h4 className={styles["ComplianceStatusReport_heading"]}>
               {t("Organizations-compliance-status-report-as-of-today.")}
 
-              <span
+              {/* <span
                 className={styles["ComplianceStatusReportGenerated_heading"]}
               >
                 {t("Generated")}
                 <img src={ComplianceStatusReportCheckedIcon} alt="" />
-              </span>
+              </span> */}
             </h4>
           </Col>
-          <Col lg={3} ms={4} sm={4}>
+          <Col lg={3} md={4} sm={4}>
             <div className="d-flex align-items-center justify-content-center  mt-3">
               <CustomButton
                 className={styles["actionButtons_complianceStatusReport"]}
@@ -510,16 +514,14 @@ const Reports = () => {
         </Row>
       </section>
       {complianceReportList?.length > 0 ? (
-        <>
-          <CustomTable
-            rows={complianceReportList}
-            column={columns}
-            className={"Compliance_Table Report_Table  mt-3"}
-            scroll={{ x: "max-content", y: 400 }}
-            pagination={false}
-            onChange={handleChangeComplianceSorter}
-          />
-        </>
+        <CustomTable
+          rows={complianceReportList}
+          column={columns}
+          className={"Compliance_Table Report_Table  mt-3"}
+          scroll={{ x: "max-content", y: 400 }}
+          pagination={false}
+          onChange={handleChangeComplianceSorter}
+        />
       ) : (
         <>
           <section
@@ -547,7 +549,6 @@ const Reports = () => {
               >
                 <span className={styles["EmptyComplianceState_heading"]}>
                   {t("No-reports-available")}
-                  {/* } */}
                 </span>
               </Col>
             </Row>
@@ -560,8 +561,6 @@ const Reports = () => {
               >
                 <span className={styles["EmptyAuthorityState_subHeading"]}>
                   {t("You-don't-have-any-report-at-the-moment")}
-
-                  {/* } */}
                 </span>
               </Col>
             </Row>

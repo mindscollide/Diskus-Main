@@ -6,6 +6,14 @@ import VideoEnd from "../../../../../assets/images/Recent Activity Icons/Video/V
 
 import "./GuestVideoEnded.css";
 
+/**
+ * @component GuestVideoEnded
+ * @description Static informational screen displayed to a guest participant
+ * when the meeting host ends the video call session. Shows a "meeting ended"
+ * illustration and localized messages confirming the meeting has concluded
+ * and thanking the guest for joining. No interactive actions are available
+ * on this screen.
+ */
 const GuestVideoEnded = () => {
   const { t } = useTranslation();
 

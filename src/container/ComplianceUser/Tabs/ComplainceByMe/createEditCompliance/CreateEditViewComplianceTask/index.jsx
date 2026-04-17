@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./createEditViewComplianceTask.module.css";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
 import { useSelector } from "react-redux";
@@ -30,12 +30,27 @@ const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const isFirstLoad = useRef(true);
+  const lastUpdatedChecklistId = useRef(null);
   const [show, setShow] = useState(false);
+
+  const {
+    complianceAddEditViewState,
+    complianceInfo,
+    setChecklistCount,
+    setChecklistTabs,
+    setTaskCount,
+    emptyComplianceState,
+    setCreateEditComplaince,
+    setCloseConfirmationModal,
+    complianceDetailsState,
+    newChecklistIds,
+  } = useComplianceContext();
 
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
   const [taskView, setTaskView] = useState(false);
-  console.log(expandedCheckListIds, "ComplianceChecklistData");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -50,6 +65,7 @@ const CreateEditViewComplianceTask = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
+
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
       if (prev.includes(data.checklistId)) {
@@ -61,19 +77,6 @@ const CreateEditViewComplianceTask = () => {
       }
     });
   };
-
-  const {
-    complianceAddEditViewState,
-    complianceInfo,
-    setChecklistCount,
-    setChecklistTabs,
-    setTaskCount,
-    emptyComplianceState,
-    setCreateEditComplaince,
-    setCloseConfirmationModal,
-    complianceDetailsState,
-    newChecklistIds,
-  } = useComplianceContext();
 
   console.log(newChecklistIds, "newChecklistIds");
   console.log(complianceAddEditViewState, "complianceAddEditViewState");
@@ -104,27 +107,6 @@ const CreateEditViewComplianceTask = () => {
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
-  // useEffect(() => {
-  //   if (
-  //     GetComplianceChecklistsByComplianceId !== null &&
-  //     GetComplianceChecklistsByComplianceId !== undefined
-  //   ) {
-  //     try {
-  //       let modifyData = [
-  //         ...GetComplianceChecklistsByComplianceId.checklistList,
-  //       ].map((data2, index) => {
-  //         return {
-  //           ...data2,
-  //           checkListTasks: [],
-  //         };
-  //       });
-  //       setComplianceCheckListData(modifyData);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // }, [GetComplianceChecklistsByComplianceId]);
-
   useEffect(() => {
     if (
       authorityRespnseMessage !== null &&
@@ -147,27 +129,45 @@ const CreateEditViewComplianceTask = () => {
       getAllComplianceChecklistTask !== null
     ) {
       try {
-        console.log(
-          getAllComplianceChecklistTask,
-          "getAllComplianceChecklistTask",
-        );
-
-        setComplianceCheckListData(getAllComplianceChecklistTask.checklistList);
-
         const checklistList = getAllComplianceChecklistTask.checklistList;
 
-        setExpandedCheckListIds(
-          getAllComplianceChecklistTask.checklistList.map(
-            (data, index) => data.checklistId,
-          ),
-        );
+        // ✅ set main data
+        setComplianceCheckListData(checklistList);
 
+        // ✅ FIRST LOAD → expand all
+        if (isFirstLoad.current) {
+          setExpandedCheckListIds(
+            checklistList.map((data) => data.checklistId),
+          );
+          isFirstLoad.current = false;
+        } else {
+          // ✅ AFTER FIRST LOAD → preserve + expand only updated checklist
+          setExpandedCheckListIds((prev) => {
+            let updated = [...prev];
+
+            // 👉 expand only the checklist where task was added
+            if (lastUpdatedChecklistId.current) {
+              if (!updated.includes(lastUpdatedChecklistId.current)) {
+                updated.push(lastUpdatedChecklistId.current);
+              }
+            }
+
+            return updated;
+          });
+
+          // ✅ reset after use (important)
+          lastUpdatedChecklistId.current = null;
+        }
+
+        // ✅ update task count
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
           0,
         );
         setTaskCount(totalTaskCount);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [getAllComplianceChecklistTask]);
 
@@ -202,8 +202,10 @@ const CreateEditViewComplianceTask = () => {
   };
 
   const handleAddTaskInCheckList = (checkListData) => {
+    //  store which checklist is being updated
+    lastUpdatedChecklistId.current = checkListData?.checklistId;
+
     setCheckListData(checkListData);
-    console.log(checkListData, "checklistIdchecklistId");
     setShow(true);
   };
 
@@ -307,12 +309,12 @@ const CreateEditViewComplianceTask = () => {
                           <Col sm={12} md={12} lg={12}>
                             <div
                               className={
-                                !isAddEnabled // 👈 Use the new condition
+                                !isAddEnabled //  Use the new condition
                                   ? styles["createNewTaskBtnStyleDisabled"]
                                   : styles["createNewTaskBtnStyle"]
                               }
                               onClick={
-                                !isAddEnabled // 👈 Use the new condition
+                                !isAddEnabled //  Use the new condition
                                   ? undefined
                                   : () => handleAddTaskInCheckList(data)
                               }

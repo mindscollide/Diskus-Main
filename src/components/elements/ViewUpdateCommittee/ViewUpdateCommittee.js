@@ -12,6 +12,26 @@ import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.j
 import { XLg } from "react-bootstrap-icons";
 import CommitteeMeetingTab from "../../../container/Committee/ViewMeeting/Meeting";
 import { useSelector } from "react-redux";
+/**
+ * @component ViewUpdateCommittee
+ * @description Renders a tabbed detail panel for viewing a committee's information.
+ * On mount it reads the `ViewCommitteeID` from localStorage and dispatches
+ * `getCommitteesbyCommitteeId` to fetch the committee's data. The panel exposes four
+ * tabs — Committee Details, Tasks, Polls, and Meetings — each rendering a dedicated
+ * container component. An XLg close icon removes `ViewCommitteeID` from localStorage
+ * and hides the panel via `setViewGroupPage`. The active committee status is tracked
+ * in local state and propagated to each tab component as `committeeStatus`.
+ *
+ * @param {Function} setViewGroupPage - Callback invoked with `false` to close/hide this panel.
+ * @param {number} [viewCommitteeTab] - Initial tab index to activate on render (1–4).
+ *   Defaults to `1` (Committee Details) when omitted or `0`.
+ *
+ * @example
+ * <ViewUpdateCommittee
+ *   setViewGroupPage={setShowPanel}
+ *   viewCommitteeTab={2}
+ * />
+ */
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();

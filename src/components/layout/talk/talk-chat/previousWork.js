@@ -103,6 +103,16 @@ import { useNavigate } from "react-router-dom";
 import { filesUrlTalk } from "../../../../commen/apis/Api_ends_points";
 import PrintPage from "./printScript";
 
+/**
+ * @component TalkChat
+ * @description Legacy version of the main Talk chat component, preserved as a
+ * reference snapshot of previous work. Contains the full chat interface
+ * implementation including the sidebar conversation list, active message
+ * thread, message composer with emoji picker and file upload, group
+ * management, shout-all broadcasts, flagged messages, and blocked users — all
+ * backed by Redux and Socket.io. This file is superseded by Talk-Chat.js and
+ * is not actively used in production routing.
+ */
 const TalkChat = () => {
   //Use Navigate
   const navigate = useNavigate();

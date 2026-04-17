@@ -2,6 +2,29 @@ import React from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./CircularProgressbar.css";
+
+/**
+ * @component CustomTextProgressbar
+ * @description An extended circular progress bar that supports arbitrary child content
+ * rendered inside and below the circle. Built on `CircularProgressbarWithChildren`,
+ * it uses a red path (#F16B6B) for the progress arc and a teal trail (#4ADEDE) for the
+ * background ring — the inverse color scheme from ListCountChart, making it visually
+ * distinct for pending/overdue metrics. An additional `props.children` slot is rendered
+ * in a div below the circle, useful for supplementary labels or sub-metrics on dashboard
+ * widgets.
+ *
+ * @param {number} props.value - The current progress value.
+ * @param {React.ReactNode} props.text - Content rendered inside the circle (passed as
+ *   children to CircularProgressbarWithChildren, so rich markup is supported).
+ * @param {number} props.maxValue - The maximum value representing 100% of the arc.
+ * @param {React.ReactNode} [props.children] - Additional content rendered in a div
+ *   below the circle (e.g. a legend or count breakdown).
+ *
+ * @example
+ * <CustomTextProgressbar value={3} text={<span>3</span>} maxValue={10}>
+ *   <p>Pending Items</p>
+ * </CustomTextProgressbar>
+ */
 const CustomTextProgressbar = (props) => {
   const { value, text, maxValue } = props;
 

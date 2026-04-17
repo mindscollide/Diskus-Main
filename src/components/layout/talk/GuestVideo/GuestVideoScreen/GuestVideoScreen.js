@@ -5,6 +5,19 @@ import { Button } from "../../../../elements";
 import GuestVideoHeader from "../GuestVideoHeader/GuestVideoHeader";
 import "./GuestVideoScreen.css";
 
+/**
+ * @component GuestVideoScreen
+ * @description Wrapper layout component for the active guest video call screen
+ * (navigation state 2). Retrieves the meeting title from
+ * `GuestVideoReducer.validateData` and renders `GuestVideoHeader` inside a
+ * fluid container, passing down the video iframe URL, meeting title, and room
+ * ID required for the in-call control bar and participant management.
+ *
+ * @param {string} videoUrlName - Fully resolved URL of the third-party video
+ *   provider iframe to embed in the call screen.
+ * @param {string} roomId - The video room identifier forwarded to
+ *   `GuestVideoHeader` for use in API calls such as mute-self and end-call.
+ */
 const GuestVideoScreen = ({ videoUrlName, roomId }) => {
   const frameRef = useRef(null);
   // let videoUrl = sessionStorage.getItem("videoUrl");

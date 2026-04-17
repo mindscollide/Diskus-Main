@@ -1,3 +1,22 @@
+/**
+ * @file App.js
+ * @description Root application component.
+ *
+ * Responsibilities:
+ *  - Renders the router via <RouterProvider>
+ *  - Session sync: on tab focus, syncs localStorage ↔ sessionStorage and
+ *    redirects to dashboard if a token exists but user is on the login page
+ *  - Cross-tab logout: listens on BroadcastChannel("auth") — a "logout" message
+ *    from another tab triggers signOut in this tab
+ *  - Version polling: polls /version.json every 60s and shows
+ *    <UpdateVersionNotifyModal> when the deployed version changes
+ *  - Mobile deep-link: on mobile devices, attempts to open the native app via
+ *    the `thediskus://` URI scheme; falls back to showing the app-install modal
+ *  - Payment modal: conditionally renders <OpenPaymentForm> iframe based on
+ *    Redux `paymentProcessModal` state
+ *  - Session expiry notification: watches `SessionExpireResponseMessage` in
+ *    Redux and shows an error snackbar when it is set
+ */
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
@@ -40,7 +59,6 @@ const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
   const { t } = useTranslation();
-  // Hello
   useEffect(() => {
     const syncSessionAndRedirect = async () => {
       const localToken = localStorage.getItem("token");
@@ -119,7 +137,6 @@ const App = () => {
     channel.onmessage = (event) => {
       if (event.data === "logout") {
         signOut(dispatch);
-        // signOut(navigate, "", dispatch);
       }
     };
 

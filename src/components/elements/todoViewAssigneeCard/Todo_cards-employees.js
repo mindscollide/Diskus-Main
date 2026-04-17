@@ -1,6 +1,34 @@
 import { Col, Row } from "react-bootstrap";
 import "./Todo_cards-employees.css";
 
+/**
+ * @component TodoAssgineeEmployeeCard
+ * @description Displays an assignee row card for a To-Do item. The left column shows
+ * the assignee's profile picture, name, and designation. The right column renders a
+ * contextual icon and label (e.g. status badge, due date, priority indicator) whose
+ * appearance is controlled by the caller via the cardTextIconStyle prop.
+ *
+ * @param {string} props.employeeName - Full name of the assignee.
+ * @param {string} props.employeeDesignation - Job designation of the assignee.
+ * @param {React.ReactNode} props.cardIcon - Icon element displayed before the card text
+ *   in the right column (e.g. a status or priority icon).
+ * @param {string} props.cardText - Text label displayed next to the cardIcon in the
+ *   right column (e.g. "High Priority", "Due Today").
+ * @param {string} props.cardTextIconStyle - CSS class name applied to the right column
+ *   container, used to control text alignment, color, or icon styling.
+ * @param {string} props.userImage - Base64-encoded JPEG string for the assignee's
+ *   profile picture. Rendered directly as a data URI.
+ *
+ * @example
+ * <TodoAssgineeEmployeeCard
+ *   employeeName="Omar Khan"
+ *   employeeDesignation="Developer"
+ *   cardIcon={<FlagIcon />}
+ *   cardText="High Priority"
+ *   cardTextIconStyle="priority-high"
+ *   userImage={base64ImageString}
+ * />
+ */
 const TodoAssgineeEmployeeCard = ({
   employeeName,
   employeeDesignation,

@@ -7,6 +7,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../elements";
 import AccessDeniedImage from "../../../../assets/images/Frame.png";
+/**
+ * @component AccessDeniedModal
+ * @description Displays a modal dialog informing the user that they do not
+ * have permission to access a specific resource (Poll, Resolution, Task,
+ * Committee, or Group). Visibility is driven by the global Redux state
+ * `PollsReducer.AccessDeniedPolls`. On close, the modal dispatches an action
+ * to hide itself and clears related localStorage flags such as
+ * `resolutionDeleted`, `AccessDeniedCommittee`, and `AccessDeniedGroups`.
+ */
 const AccessDeniedModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

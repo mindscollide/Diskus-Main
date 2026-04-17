@@ -2687,7 +2687,7 @@
   "You-dont-have-any-tasks-at-the-moment": "You don’t have any tasks at the moment.",
   "Contribute-agenda": "Contribute Agenda",
   "Generated-date": "Generated Date",
-  "This-compliance-was-Re-opened-1-times": "This compliance was Re-opened 1 times",
+  "This-compliance-was-Re-opened": "This compliance was re-opened {{count}} times",
   "Completion-date": "Completion date",
   "Total-checklists": "Total Checklists",
   "Total-tasks": "Total Tasks",
@@ -2755,6 +2755,7 @@
   "Mark-checklist-only": "Mark checklist only",
   "Mark-checklist-with-associated-items": "Mark Fchecklist with associated items",
   "generated-on": "Generated On",
+  "times": "times",
   "All-participants-must-have-at-least-one-field-assigned": "All participants must have at least one field assigned",
   "Document-save-successfully": "Document saved successfully"
 }
