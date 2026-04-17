@@ -1,52 +1,104 @@
+/**
+ * @file DataRoom.js
+ * @description Main DataRoom container component.
+ *
+ * Responsibilities:
+ *  - Renders the top-level Data Room UI (tabs, toolbar, table/grid views).
+ *  - Manages file & folder listing across five views:
+ *      1 = My Documents   2 = Shared With Me   3 = All
+ *      4 = Recently Added  5 = Send for Approval
+ *  - Handles file/folder upload (single file, multi-file, full folder tree).
+ *  - Handles MQTT real-time updates for shared/removed files & folders.
+ *  - Handles sorting, infinite-scroll pagination, breadcrumb navigation,
+ *    search, rename, delete, download, share, and signature-flow creation.
+ *  - Validates encrypted deep-link tokens for shared folder/file URLs.
+ */
+
+// ─── React & core ─────────────────────────────────────────────────────────────
 import React, { useEffect, useRef } from "react";
+import { useState } from "react";
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
 import "react-dropzone-uploader/dist/styles.css";
 import "./Dataroom.css";
-import { Spin, Tooltip, Dropdown, Menu, Breadcrumb, Popover } from "antd";
 import "react-circular-progressbar/dist/styles.css";
-import Cancellicon from "../../assets/images/cross_dataroom.svg";
-import hoverdelete from "../../assets/images/hover_delete.svg";
-import { LoadingOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import download from "../../assets/images/Icon feather-download.svg";
-import del from "../../assets/images/delete_dataroom.png";
-import dot from "../../assets/images/Group 2898.svg";
-import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
-import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
-import { ChevronDown, Dash, Plus } from "react-bootstrap-icons";
-import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
-import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
-import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
-import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
-import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png";
-import plus from "../../assets/images/Icon feather-folder.svg";
-import fileupload from "../../assets/images/Group 2891.svg";
 import styles from "./DataRoom.module.css";
+
+// ─── Ant Design ───────────────────────────────────────────────────────────────
+import { Spin, Tooltip, Dropdown, Menu, Breadcrumb, Popover } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+
+// ─── Redux ────────────────────────────────────────────────────────────────────
+import { useDispatch, useSelector } from "react-redux";
+
+// ─── Routing ──────────────────────────────────────────────────────────────────
+import { useLocation, useNavigate } from "react-router-dom";
+
+// ─── i18n ─────────────────────────────────────────────────────────────────────
+import { useTranslation } from "react-i18next";
+
+// ─── Bootstrap ────────────────────────────────────────────────────────────────
+import { Row, Col } from "react-bootstrap";
+import BootstrapDropdown from "react-bootstrap/Dropdown";
+
+// ─── Bootstrap icons ──────────────────────────────────────────────────────────
+import { ChevronDown, Dash, Plus } from "react-bootstrap-icons";
+
+// ─── Infinite scroll ──────────────────────────────────────────────────────────
+import InfiniteScroll from "react-infinite-scroll-component";
+
+// ─── HTTP client ──────────────────────────────────────────────────────────────
+import axios from "axios";
+
+// ─── Shared UI components ─────────────────────────────────────────────────────
 import {
   Button,
   TableToDo,
   Notification,
   UploadTextField,
 } from "../../components/elements";
-import { Row, Col } from "react-bootstrap";
-import BootstrapDropdown from "react-bootstrap/Dropdown";
-import { useState } from "react";
+import Dragger from "../../components/elements/Dragger/Dragger";
+import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
+import MenuPopover from "../../components/elements/popover";
+import SpinComponent from "../../components/elements/mainLoader/loader";
+
+// ─── Feature modals ───────────────────────────────────────────────────────────
 import ModalAddFolder from "./ModalAddFolder/ModalAddFolder";
 import ModalOptions from "./ModalUploadOptions/ModalOptions";
 import ModalCancelUpload from "./ModalCancelUpload/ModalCancelUpload";
 import ModalShareFolder from "./ModalShareFolder/ModalShareFolder";
 import ModalShareFile from "./ModalShareFile/ModalShareFile";
-import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
 import ModalOptionsFolder from "./ModalUploadOptions_Folder/ModalOptions_Folder";
-import ThreeDotsBreadCrumbs from "../../assets/images/sortingIcons/ThreeDots_Breadcrums.png";
-import RightArrowBreadCrumbs from "../../assets/images/sortingIcons/Right_Arrow.png";
+import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
+import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
+import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
+import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
+import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
 
+// ─── Notification / status overlay components ─────────────────────────────────
+import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
+import FileRemoveBox from "./FileRemoved/FileRemoveBox";
+import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
+import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotification";
+
+// ─── View components ──────────────────────────────────────────────────────────
+import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
+import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
+import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
+import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
+
+// ─── Search components ────────────────────────────────────────────────────────
+import SearchBarComponent from "./SearchFunctionality/searchBar";
+import SearchComponent from "./SearchFunctionality/searchComponent";
+import UploadindUiComponent from "./uploadindPopUp/uploadindUiComponent";
+
+// ─── Redux actions — DataRoom ─────────────────────────────────────────────────
 import {
   BreadCrumbsList,
   clearDataResponseMessage,
   dataBehaviour,
-  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
   DataRoomDownloadFolderApiFunc,
   deleteFileDataroom,
   deleteFolder,
@@ -63,30 +115,51 @@ import {
   getSharedFolderUsersApi,
   isFolder,
   validateUserAvailibilityEncryptedStringDataRoomApi,
+  getFolderDocumentsApiScrollBehaviour,
 } from "../../store/actions/DataRoom_actions";
-import sharedIcon from "../../assets/images/shared_icon.svg";
-import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
-import { _justShowDateformat } from "../../commen/functions/date_formater";
-import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
-import { useLocation, useNavigate } from "react-router-dom";
-import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
-import FileRemoveBox from "./FileRemoved/FileRemoveBox";
-import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
-import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotification";
+
+// ─── Redux actions — DataRoom2 (file/folder details & analytics) ──────────────
+import {
+  clearDataResponseMessageDataRoom2,
+  getDataAnalyticsCountApi,
+  getFilesandFolderDetailsApi,
+  validateEncryptedStringViewFileLinkApi,
+  validateEncryptedStringViewFolderLinkApi,
+} from "../../store/actions/DataRoom2_actions";
+
+// ─── Redux actions — Folder upload ───────────────────────────────────────────
 import {
   CheckFolderisExist,
   CreateFolderEmpty,
   createFolder,
   uploadFile,
 } from "../../store/actions/FolderUploadDataroom";
-import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
-import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
-import folderColor from "../../assets/images/folder_color.svg";
-import { getFolderDocumentsApiScrollBehaviour } from "../../store/actions/DataRoom_actions";
-import InfiniteScroll from "react-infinite-scroll-component";
-import UploadindUiComponent from "./uploadindPopUp/uploadindUiComponent";
-import SearchBarComponent from "./SearchFunctionality/searchBar";
-import SearchComponent from "./SearchFunctionality/searchComponent";
+
+// ─── Redux actions — Workflow / signature ────────────────────────────────────
+import {
+  clearWorkFlowResponseMessage,
+  createWorkflowApi,
+} from "../../store/actions/workflow_actions";
+
+// ─── Utility functions ────────────────────────────────────────────────────────
+import { _justShowDateformat } from "../../commen/functions/date_formater";
+import copyToClipboard from "../../hooks/useClipBoard";
+import {
+  checkFeatureIDAvailability,
+  fileFormatforSignatureFlow,
+  openDocumentViewer,
+} from "../../commen/functions/utils";
+import { showMessage } from "../../components/elements/snack_bar/utill";
+import { convertToArabicNumerals } from "../../commen/functions/regex";
+import {
+  formatFileSize,
+  formatKBtoMB,
+  formatMB,
+} from "../../commen/functions/convertFileSizeInMB";
+import { useTableScrollBottom } from "../../commen/functions/useTableScrollBottom";
+import { useScrollerAuditBottom } from "../../commen/functions/useScrollerAuditBottom";
+
+// ─── Context menu option sets (permission-based) ──────────────────────────────
 import {
   getFileExtension,
   getIconSource,
@@ -100,132 +173,103 @@ import {
   optionsforFolder,
   optionsforPDFandSignatureFlow,
 } from "./SearchFunctionality/option";
-import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
-import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
-import {
-  clearDataResponseMessageDataRoom2,
-  getDataAnalyticsCountApi,
-  getFilesandFolderDetailsApi,
-  validateEncryptedStringViewFileLinkApi,
-  validateEncryptedStringViewFolderLinkApi,
-} from "../../store/actions/DataRoom2_actions";
-import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
-import copyToClipboard from "../../hooks/useClipBoard";
-import {
-  clearWorkFlowResponseMessage,
-  createWorkflowApi,
-} from "../../store/actions/workflow_actions";
-import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
-import {
-  checkFeatureIDAvailability,
-  fileFormatforSignatureFlow,
-  openDocumentViewer,
-} from "../../commen/functions/utils";
-import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
-import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
-import { showMessage } from "../../components/elements/snack_bar/utill";
-import { convertToArabicNumerals } from "../../commen/functions/regex";
 
+// ─── Sorting icons ────────────────────────────────────────────────────────────
 import DescendIcon from "../../assets/images/sortingIcons/SorterIconDescend.png";
 import AscendIcon from "../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../assets/images/sortingIcons/Arrow-up.png";
 import Tick from "../../assets/images/Tick-Icon.png";
-import MenuPopover from "../../components/elements/popover";
-import SpinComponent from "../../components/elements/mainLoader/loader";
-import { useTableScrollBottom } from "../../commen/functions/useTableScrollBottom";
-import {
-  formatFileSize,
-  formatKBtoMB,
-  formatMB,
-} from "../../commen/functions/convertFileSizeInMB";
-import { useScrollerAuditBottom } from "../../commen/functions/useScrollerAuditBottom";
-import axios from "axios";
+import ThreeDotsBreadCrumbs from "../../assets/images/sortingIcons/ThreeDots_Breadcrums.png";
+import RightArrowBreadCrumbs from "../../assets/images/sortingIcons/Right_Arrow.png";
 
+// ─── Image assets ─────────────────────────────────────────────────────────────
+import Cancellicon from "../../assets/images/cross_dataroom.svg";
+import hoverdelete from "../../assets/images/hover_delete.svg";
+import download from "../../assets/images/Icon feather-download.svg";
+import del from "../../assets/images/delete_dataroom.png";
+import dot from "../../assets/images/Group 2898.svg";
+import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
+import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
+import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
+import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
+import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
+import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
+import Recentadded_emptyIcon from "../../assets/images/Recentadded_emptyIcon.png";
+import plus from "../../assets/images/Icon feather-folder.svg";
+import fileupload from "../../assets/images/Group 2891.svg";
+import sharedIcon from "../../assets/images/shared_icon.svg";
+import folderColor from "../../assets/images/folder_color.svg";
+
+/**
+ * DataRoom — main page component.
+ *
+ * View IDs stored in localStorage key "setTableView":
+ *   1 = My Documents
+ *   2 = Shared With Me
+ *   3 = All Documents
+ *   4 = Recently Added
+ *   5 = Send for Approval
+ */
 const DataRoom = () => {
+  // ─── Persistent user/session values read from localStorage ──────────────
+  /** Encrypted share-link token set by an external invite URL. */
   let DataRoomString = localStorage.getItem("DataRoomEmail");
+  /** Active UI language code (e.g. "en", "ar") — controls date formatting. */
   let CurrentLanguage = localStorage.getItem("i18nextLng");
-  // tooltip
+
+  // ─── Routing & i18n ─────────────────────────────────────────────────────
   const dispatch = useDispatch();
   const location = useLocation();
-  const [filteredInfo, setFilteredInfo] = useState({});
-  const [sortedInfo, setSortedInfo] = useState({});
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [showbarupload, setShowbarupload] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [optionsFileisShown, setOptionsFileisShown] = useState(false);
-  const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
-  const [dataRoomString, setDataRoomString] = useState("");
 
+  // ─── Redux selectors ─────────────────────────────────────────────────────
+  /** Full DataRoom reducer slice + webViewer attachment state. */
   const { DataRoomReducer, webViewer } = useSelector((state) => state);
+  /** Toast message from the signature workflow reducer. */
   const SignatureResponseMessage = useSelector(
     (state) => state.SignatureWorkFlowReducer.ResponseMessage,
   );
+  /** Breadcrumb path array for folder navigation. */
   const BreadCrumbsListArr = useSelector(
     (state) => state.DataRoomReducer.BreadCrumbsList,
   );
-  const searchBarRef = useRef();
-  const threedotFile = useRef();
-  const threedotFolder = useRef();
-  const [shareFileModal, setShareFileModal] = useState(false);
-  const [foldermodal, setFolderModal] = useState(false);
-  const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
-  const [searchbarshow, setSearchbarshow] = useState(false);
-  const [searchoptions, setSearchoptions] = useState(false);
-  const [sRowsData, setSRowsData] = useState(0);
-  const [RequestFile, setRequestFile] = useState(false);
-  const [gridbtnactive, setGridbtnactive] = useState(false);
-  const [listviewactive, setListviewactive] = useState(true);
-  const [actionundonenotification, setActionundonenotification] =
-    useState(false);
-  const [collapes, setCollapes] = useState(false);
-  const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
-  const [showrenamenotification, setShowrenamenotification] = useState(false);
-  const [showrenamemodal, setShowreanmemodal] = useState(false);
-  const [showrenameFile, setShowRenameFile] = useState(false);
-  const [fileremoved, setFileremoved] = useState(false);
-  const [deletenotification, setDeletenotification] = useState(false);
-  const [isExistFolder, setIsExistFolder] = useState(false);
-  const [isFolderExist, setIsFolderExist] = useState(false);
-  const [isRenameFolderData, setRenameFolderData] = useState(null);
-  const [isRenameFileData, setRenameFileData] = useState(null);
-  const [remainingTime, setRemainingTime] = useState(0);
-  const [folderId, setFolderId] = useState(0);
-  const [fileName, setFileName] = useState("");
-  const [folderName, setFolderName] = useState("");
-  const navigate = useNavigate();
-  const [filterValue, setFilterValue] = useState(0);
-  const [getAllData, setGetAllData] = useState([]);
+  /** Toast message from the file/folder details reducer. */
+  const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
+    (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage,
+  );
+  /** Severity level ("success" | "error" | "warning") for details reducer messages. */
+  const errorSeverityState2 = useSelector(
+    (state) => state.DataRoomFileAndFoldersDetailsReducer.errorSeverity,
+  );
+  /** Severity level for main DataRoom reducer messages. */
+  const errorSeverityState = useSelector(
+    (state) => state.DataRoomReducer.errorSeverity,
+  );
+
+  console.log(errorSeverityState2, errorSeverityState, "errorSeverityState2");
+
+  // ─── localStorage session values ─────────────────────────────────────────
+  /** Currently authenticated user's ID. */
+  let userID = localStorage.getItem("userID");
+  /** Currently authenticated user's organization ID. */
+  let organizationID = localStorage.getItem("organizationID");
+  /** Active tab/view ID (1–5). Read once per render from localStorage. */
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
-  const [sortValue, setSortValue] = useState(1);
-  const [isAscending, setIsAscending] = useState(true);
-  const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
+  /** ID of the folder currently being browsed; null when at root. */
   let viewFolderID = localStorage.getItem("folderID");
+  /** Non-null when the user arrived via a "document signed" notification link. */
   const docSignedCrAction = localStorage.getItem("docSignedCrAction");
-  // thi state contains current file name which is ude to creat new folder
-  const [directoryNames, setDirectoryNames] = useState("");
-  // this state contain UploadingFolders Data
-  const [detaUplodingForFOlder, setDetaUplodingForFOlder] = useState([]);
-  // this is the state of existing modal option select
-  const [folderUploadOptions, setFolderUploadOptions] = useState(1);
-  // we are setting search tab for all view in different tab
-  const [searchTabOpen, setSearchTabOpen] = useState(false);
-  // this is canseling modal of uploadin and stop uploading
 
-  const [isFileDelete, setIsFileDelete] = useState(false);
-  const [isFolderDelete, setIsFolderDelete] = useState(false);
-
-  const [isFileDeleteId, setIsFileDeleteId] = useState(0);
-  const [isFolderDeleteId, setIsFolderDeleteId] = useState(0);
-  const [allDocumentsTitleSorter, setAllDocumentsTitleSorter] = useState(null);
-  const [allOwnerSorter, setAllOwnerSorter] = useState(null);
-  const [allLastModifiedSorter, setAllLastModifiedSorter] = useState(null);
-  const [shareDateSorter, setShareDateSorter] = useState(null);
-
-  const [canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder] =
-    useState(false);
+  // ─── DOM refs ─────────────────────────────────────────────────────────────
+  /** Ref for the search bar container — used for outside-click detection. */
+  const searchBarRef = useRef();
+  /** Ref for the file three-dot menu — used for outside-click detection. */
+  const threedotFile = useRef();
+  /** Ref for the folder three-dot menu — used for outside-click detection. */
+  const threedotFolder = useRef();
+  // ─── Ant Design loading spinner ──────────────────────────────────────────
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -234,31 +278,161 @@ const DataRoom = () => {
       spin
     />
   );
-  // this is for only file upload states
-  const [tasksAttachments, setTasksAttachments] = useState([]);
-  const [tasksAttachmentsID, setTasksAttachmentsID] = useState(0);
-  const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage,
-  );
-  const errorSeverityState2 = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer.errorSeverity,
-  );
-  const errorSeverityState = useSelector(
-    (state) => state.DataRoomReducer.errorSeverity,
-  );
 
-  console.log(errorSeverityState2, errorSeverityState, "errorSeverityState2");
+  // ─── Table state ─────────────────────────────────────────────────────────
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
+
+  // ─── Network status ───────────────────────────────────────────────────────
+  /** True when the browser reports an active internet connection. */
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  // ─── Upload progress / bar state ─────────────────────────────────────────
+  /** Controls visibility of the floating upload-progress bar. */
+  const [showbarupload, setShowbarupload] = useState(false);
+  /** Overall upload progress percentage (0–100). */
+  const [progress, setProgress] = useState(0);
+  /** Whether the cancel-all-uploads confirmation modal is showing. */
+  const [canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder] =
+    useState(false);
+  /** Active file-upload tasks keyed by their random TaskId. */
+  const [tasksAttachments, setTasksAttachments] = useState([]);
+  /** TaskId of the most recently enqueued file upload. */
+  const [tasksAttachmentsID, setTasksAttachmentsID] = useState(0);
+  /** Current root directory name being uploaded (folder upload flow). */
+  const [directoryNames, setDirectoryNames] = useState("");
+  /** Array of folder-upload job objects tracking progress per folder. */
+  const [detaUplodingForFOlder, setDetaUplodingForFOlder] = useState([]);
+  /**
+   * Option selected when a duplicate folder is detected during upload:
+   *   1 = replace, 2 = keep both (default 1).
+   */
+  const [folderUploadOptions, setFolderUploadOptions] = useState(1);
+  /** Remaining estimated upload time in seconds. */
+  const [remainingTime, setRemainingTime] = useState(0);
+
+  // ─── Context-menu visibility ──────────────────────────────────────────────
+  const [optionsFileisShown, setOptionsFileisShown] = useState(false);
+  const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
+
+  // ─── Deep-link validation state ───────────────────────────────────────────
+  /** Local copy of the encrypted share-link string being validated. */
+  const [dataRoomString, setDataRoomString] = useState("");
+
+  // ─── Modal visibility flags ───────────────────────────────────────────────
+  /** Share-file modal open/closed. */
+  const [shareFileModal, setShareFileModal] = useState(false);
+  /** Add-new-folder modal open/closed. */
+  const [foldermodal, setFolderModal] = useState(false);
+  /** File-already-exists upload-options modal open/closed. */
+  const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
+  /** Share-folder modal open/closed. */
+  const [sharefoldermodal, setSharefoldermodal] = useState(false);
+  /** Rename-folder modal open/closed. */
+  const [showrenamemodal, setShowreanmemodal] = useState(false);
+  /** Rename-file modal open/closed. */
+  const [showrenameFile, setShowRenameFile] = useState(false);
+  /** "Folder already exists" upload-conflict modal open/closed. */
+  const [isExistFolder, setIsExistFolder] = useState(false);
+  /** Folder-exists check result modal open/closed (folder upload flow). */
+  const [isFolderExist, setIsFolderExist] = useState(false);
+  /** File-request access modal open/closed. */
+  const [RequestFile, setRequestFile] = useState(false);
+  /** Delete-file confirmation modal open/closed. */
+  const [isFileDelete, setIsFileDelete] = useState(false);
+  /** Delete-folder confirmation modal open/closed. */
+  const [isFolderDelete, setIsFolderDelete] = useState(false);
+
+  // ─── Pending delete IDs ───────────────────────────────────────────────────
+  /** ID of the file pending deletion (used when delete modal confirms). */
+  const [isFileDeleteId, setIsFileDeleteId] = useState(0);
+  /** ID of the folder pending deletion. */
+  const [isFolderDeleteId, setIsFolderDeleteId] = useState(0);
+
+  // ─── Rename data ──────────────────────────────────────────────────────────
+  /** Record object of the folder being renamed. */
+  const [isRenameFolderData, setRenameFolderData] = useState(null);
+  /** Record object of the file being renamed. */
+  const [isRenameFileData, setRenameFileData] = useState(null);
+
+  // ─── Sharing context ──────────────────────────────────────────────────────
+  /** ID of the folder/file currently being shared. */
+  const [folderId, setFolderId] = useState(0);
+  /** Display name of the file currently being shared. */
+  const [fileName, setFileName] = useState("");
+  /** Display name of the folder currently being shared. */
+  const [folderName, setFolderName] = useState("");
+
+  // ─── Notification overlays ────────────────────────────────────────────────
+  /** Shows the delete-success notification banner. */
+  const [deletenotification, setDeletenotification] = useState(false);
+  /** Shows the file-removed notification banner. */
+  const [fileremoved, setFileremoved] = useState(false);
+  /** Shows the rename-success notification banner. */
+  const [showrenamenotification, setShowrenamenotification] = useState(false);
+  /** Shows the action-undone notification banner. */
+  const [actionundonenotification, setActionundonenotification] =
+    useState(false);
+
+  // ─── View / layout state ──────────────────────────────────────────────────
+  /** True when the grid (card) view button is active. */
+  const [gridbtnactive, setGridbtnactive] = useState(false);
+  /** True when the list (table) view button is active (default). */
+  const [listviewactive, setListviewactive] = useState(true);
+  /** Controls whether the upload-progress bar is collapsed. */
+  const [collapes, setCollapes] = useState(false);
+  /** True when the "Shared with me" tab is the active view. */
+  const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
+  /** True when the detail side-panel is visible. */
+  const [detailView, setDetailView] = useState(false);
+
+  // ─── Search state ─────────────────────────────────────────────────────────
+  /** True when the search input dropdown is visible. */
+  const [searchbarshow, setSearchbarshow] = useState(false);
+  /** True when search filter options are expanded. */
+  const [searchoptions, setSearchoptions] = useState(false);
+  /** True when the full search-results panel is open (replaces the main table). */
+  const [searchTabOpen, setSearchTabOpen] = useState(false);
+
+  // ─── Data listing state ───────────────────────────────────────────────────
+  /** Flat array of file/folder records currently displayed in the table. */
+  const [getAllData, setGetAllData] = useState([]);
+  /** Number of rows already loaded (used as offset for pagination). */
+  const [sRowsData, setSRowsData] = useState(0);
+  /** Total record count returned by the API (used to determine hasMore). */
+  const [totalRecords, setTotalRecords] = useState(0);
+  /** Current sort field ID passed to the API. */
+  const [sortValue, setSortValue] = useState(1);
+  /** True = ascending sort order, false = descending. */
+  const [isAscending, setIsAscending] = useState(true);
+  /** Currently selected filter for the date column (default: Last-modified). */
+  const [filterValue, setFilterValue] = useState(0);
+
+  // ─── Column sort direction indicators ────────────────────────────────────
+  /** Sort direction ("ascend" | "descend" | null) for the Name column. */
+  const [allDocumentsTitleSorter, setAllDocumentsTitleSorter] = useState(null);
+  /** Sort direction for the Owner column. */
+  const [allOwnerSorter, setAllOwnerSorter] = useState(null);
+  /** Sort direction for the Last Modified / date column. */
+  const [allLastModifiedSorter, setAllLastModifiedSorter] = useState(null);
+  /** Sort direction for the Share Date column (Shared With Me tab). */
+  const [shareDateSorter, setShareDateSorter] = useState(null);
+
+  // ─── Analytics / details state ────────────────────────────────────────────
+  /** Analytics data for the file/folder whose "Analytics" option was selected. */
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
-  // this is for notification
+
+  // ─── Snack-bar notification state ────────────────────────────────────────
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
-
-  let userID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
+  /**
+   * Search query payload sent to the search API.
+   * Type/date/owner filters are toggled individually as boolean flags.
+   */
   const [searchDataFields, setSearchDataFields] = useState({
     UserID: userID ? parseInt(userID) : 0,
     OrganizationID: organizationID ? parseInt(organizationID) : organizationID,
@@ -284,8 +458,14 @@ const DataRoom = () => {
     SortBy: 1,
     isDescending: false,
   });
+
+  /** Controls visibility of the date-filter dropdown popover. */
   const [visible, setVisible] = useState(false);
 
+  /**
+   * Options shown in the date-column filter dropdown.
+   * value maps to the statusID used by the sorting API.
+   */
   const filters = [
     {
       text: "Last-modified",
@@ -300,26 +480,34 @@ const DataRoom = () => {
       value: "4",
     },
   ];
+
+  /** Active filter chips from the search results panel (Date / Type / Location / People). */
   const [searchResultsFields, setSearchResultFields] = useState({
     Date: null,
     Type: null,
     Location: null,
     People: null,
   });
-  //State For the Detail View Of File And Folder
-  const [detailView, setDetailView] = useState(false);
 
+  /** Currently selected date-filter option shown in the column header label. */
   const [selectedValue, setSelectValue] = useState({
     label: "Last-modified",
     value: 2,
   });
 
-  // State to manage popover visibility
+  /** Controls visibility of the breadcrumb overflow Popover (shows hidden ancestors). */
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
 
-  // Toggle the popover visibility
+  /** Toggles the breadcrumb overflow popover open/closed. */
   const togglePopover = () => setIsPopoverVisible(!isPopoverVisible);
 
+  // ─── Deep-link share validation ───────────────────────────────────────────
+  /**
+   * Runs when the component mounts with a DataRoomEmail token in localStorage.
+   * Validates the encrypted invite link. On success the API either opens the
+   * share-file modal or the file-request modal depending on the link type.
+   * Cleans up the localStorage key on unmount to prevent stale re-validation.
+   */
   useEffect(() => {
     try {
       if (DataRoomString !== undefined && DataRoomString !== null) {
@@ -350,6 +538,14 @@ const DataRoom = () => {
     };
   }, [DataRoomString]);
 
+  // ─── Initial data fetch helper ────────────────────────────────────────────
+  /**
+   * Dispatches the correct data-fetch action for the active view.
+   *   - View 4 (Recent): fetches recent documents for the current user.
+   *   - View 5 (Approval): clears the list and shows the approval component.
+   *   - All other views: fetches documents & folders for the given view ID.
+   * Also resets the breadcrumb trail to root.
+   */
   const apiCalling = async () => {
     if (currentView === 4) {
       let Data = {
@@ -377,12 +573,32 @@ const DataRoom = () => {
     dispatch(BreadCrumbsList([]));
   };
 
+  // ─── docSignedCrAction redirect ───────────────────────────────────────────
+  /**
+   * When the user arrives via a "document signed" notification link,
+   * force the active view to 5 (Send for Approval) so they land on the
+   * correct tab.
+   */
   useEffect(() => {
     if (docSignedCrAction !== null) {
       localStorage.setItem("setTableView", 5);
     }
   }, [docSignedCrAction]);
 
+  // ─── Mount: initial load + deep-link handling ─────────────────────────────
+  /**
+   * Runs once on mount (docSignedCrAction dependency is stable on first render).
+   *
+   * 1. Attaches a global click listener to auto-close the search bar when the
+   *    user clicks outside it (detected via CSS class name heuristic).
+   * 2. Loads the initial list based on the persisted currentView, unless a
+   *    BoardDeck folder redirect is pending.
+   * 3. If a "viewFolderLink" token is in localStorage, validates it and
+   *    navigates into that shared folder.
+   * 4. If a "documentViewer" token is in localStorage, validates it and
+   *    opens the Apryse document viewer for that file.
+   * Cleans up folderID, setTableView, and BoardDeckFolderID on unmount.
+   */
   useEffect(() => {
     try {
       window.addEventListener("click", async function (e) {
@@ -492,6 +708,11 @@ const DataRoom = () => {
     };
   }, [docSignedCrAction]);
 
+  // ─── Network status listener ──────────────────────────────────────────────
+  /**
+   * Keeps `isOnline` in sync with the browser's online/offline events.
+   * This drives the NetDisconnect flag on in-flight uploads.
+   */
   useEffect(() => {
     // Add an event listener to track changes in online status
     const handleOnlineStatusChange = () => {
@@ -508,6 +729,14 @@ const DataRoom = () => {
     };
   }, []);
 
+  // ─── HTML file viewer helpers ─────────────────────────────────────────────
+
+  /**
+   * Converts a base64-encoded string to a Blob of the given MIME type.
+   * @param {string} base64 - Base64 encoded file content.
+   * @param {string} mimeType - Target MIME type (e.g. "text/html").
+   * @returns {Blob}
+   */
   const base64ToBlob = (base64, mimeType) => {
     const byteChars = atob(base64);
     const byteNumbers = new Array(byteChars.length);
@@ -518,6 +747,11 @@ const DataRoom = () => {
     return new Blob([byteArray], { type: mimeType });
   };
 
+  /**
+   * Reads an HTML Blob via FileReader and renders its content in a new browser
+   * tab. Used when a file with isHTML=true is opened from the webViewer store.
+   * @param {Blob} blob - An HTML Blob to display.
+   */
   const displayBlobAsHtml = (blob) => {
     const reader = new FileReader();
 
@@ -557,6 +791,11 @@ const DataRoom = () => {
     reader.readAsText(blob);
   };
 
+  // ─── HTML file viewer trigger ─────────────────────────────────────────────
+  /**
+   * When the webViewer store receives an HTML attachment (isHTML=true),
+   * convert the base64 blob to a Blob object and render it in a new tab.
+   */
   useEffect(() => {
     if ((webViewer.attachmentBlob, webViewer.isHTML === true)) {
       try {
@@ -575,6 +814,13 @@ const DataRoom = () => {
     }
   }, [webViewer.attachmentBlob, webViewer.isHTML]);
 
+  // ─── All-documents / shared-folder response handler ───────────────────────
+  /**
+   * Syncs `getAllData` whenever the root-level document list API responds.
+   * - dataBehaviour=true  → append new page to existing list (infinite scroll).
+   * - dataBehaviour=false → replace list with fresh first page.
+   * Also keeps `sRowsData` (loaded row count) and `totalRecords` in sync.
+   */
   useEffect(() => {
     try {
       if (
@@ -620,6 +866,12 @@ const DataRoom = () => {
     } catch (error) {}
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
 
+  // ─── Folder-contents response handler ────────────────────────────────────
+  /**
+   * Syncs `getAllData` when the folder-drill-down API responds.
+   * isFolder=1 → load/append folder contents.
+   * isFolder=2 → clear the list (navigating up / resetting).
+   */
   useEffect(() => {
     try {
       if (
@@ -662,8 +914,11 @@ const DataRoom = () => {
       }
     } catch {}
   }, [DataRoomReducer.getFolderDocumentResponse]);
-  // for internet
 
+  // ─── Recent documents response handler ───────────────────────────────────
+  /**
+   * Populates `getAllData` when the Recent Documents API responds (view 4).
+   */
   useEffect(() => {
     try {
       if (
@@ -678,6 +933,11 @@ const DataRoom = () => {
     } catch {}
   }, [DataRoomReducer.RecentDocuments]);
 
+  // ─── Copy folder share-link to clipboard ──────────────────────────────────
+  /**
+   * Auto-copies a newly generated folder share link to the clipboard
+   * whenever the API returns one.
+   */
   useEffect(() => {
     if (
       DataRoomReducer.getCreateFolderLink !== null &&
@@ -687,6 +947,12 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.getCreateFolderLink]);
 
+  // ─── MQTT: file shared ────────────────────────────────────────────────────
+  /**
+   * Real-time handler for an incoming "file shared" MQTT push.
+   * Prepends the new file record to the top of `getAllData` for views 2 & 3.
+   * Resets the MQTT store slice to null after processing.
+   */
   // Share File MQTT
   useEffect(() => {
     if (DataRoomReducer.FileSharedMQTT !== null) {
@@ -747,6 +1013,11 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.FileSharedMQTT]);
 
+  // ─── MQTT: file removed ───────────────────────────────────────────────────
+  /**
+   * Real-time handler for an incoming "file removed" MQTT push.
+   * Removes the matching record from `getAllData` in views 2 & 3.
+   */
   // Remove File MQTT
   useEffect(() => {
     if (DataRoomReducer.FileRemoveMQTT !== null) {
@@ -764,6 +1035,11 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.FileRemoveMQTT]);
 
+  // ─── MQTT: folder removed ─────────────────────────────────────────────────
+  /**
+   * Real-time handler for an incoming "folder removed" MQTT push.
+   * Removes the matching folder record from `getAllData` in view 3.
+   */
   // Remove Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderRemoveMQTT !== null) {
@@ -782,6 +1058,12 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.FolderRemoveMQTT]);
 
+  // ─── MQTT: folder shared ──────────────────────────────────────────────────
+  /**
+   * Real-time handler for an incoming "folder shared" MQTT push.
+   * Prepends the new folder record to `getAllData` for views 2 & 3.
+   * Resets the MQTT store slice to null after processing.
+   */
   // Share Folder MQTT
   useEffect(() => {
     if (DataRoomReducer.FolderSharedMQTT !== null) {
@@ -837,10 +1119,19 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.FolderSharedMQTT]);
 
+  // ─── Notification helpers ─────────────────────────────────────────────────
+
+  /** Dismisses the rename-success notification banner. */
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
   };
 
+  // ─── Download handler ─────────────────────────────────────────────────────
+  /**
+   * Triggers the download API for the given record.
+   * Routes to the folder-download or file-download action based on isFolder.
+   * @param {object} record - Row record from the table (must have id, isFolder, name).
+   */
   const showRequestingAccessModal = (record) => {
     if (record.isFolder === true) {
       let data = {
@@ -851,10 +1142,19 @@ const DataRoom = () => {
       let data = {
         FileID: Number(record.id),
       };
-      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+      );
     }
   };
 
+  // ─── Share modal openers ──────────────────────────────────────────────────
+
+  /**
+   * Fetches current folder sharing users then opens the share-folder modal.
+   * @param {number} id - Folder ID.
+   * @param {string} name - Display name shown in the modal header.
+   */
   const showShareFolderModal = (id, name) => {
     // getSharedFolderUsersApi;
     let Data = { FolderID: id };
@@ -863,6 +1163,11 @@ const DataRoom = () => {
     setFolderName(name);
   };
 
+  /**
+   * Fetches current file sharing users then opens the share-file modal.
+   * @param {number} id - File ID.
+   * @param {string} name - Display name shown in the modal header.
+   */
   const showShareFileModal = (id, name) => {
     // getSharedFileUsersApi
     let Data = { FileID: id };
@@ -872,16 +1177,26 @@ const DataRoom = () => {
     setFileName(name);
   };
 
+  // ─── View toggle handlers ─────────────────────────────────────────────────
+
+  /** Switches the display to card/grid view. */
   const handleGridView = () => {
     setGridbtnactive(true);
     setListviewactive(false);
   };
 
+  /** Switches the display to list/table view. */
   const handlelistview = () => {
     setListviewactive(true);
     setGridbtnactive(false);
   };
 
+  // ─── Tab navigation handlers ──────────────────────────────────────────────
+
+  /**
+   * Activates the "Send for Approval" tab (view 5).
+   * Resets data, breadcrumbs, folderID and shows the ApprovalSend component.
+   */
   const SendForApprovalButton = async () => {
     setSRowsData(0);
     dispatch(BreadCrumbsList([]));
@@ -897,6 +1212,10 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Activates the "Shared With Me" tab (view 2).
+   * Resets data and fetches shared items for the current user.
+   */
   const SharewithmeButonShow = async () => {
     setSRowsData(0);
     dispatch(BreadCrumbsList([]));
@@ -911,6 +1230,10 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Activates the "My Documents" tab (view 1).
+   * Resets data and fetches documents owned by the current user.
+   */
   const MydocumentButtonShow = async () => {
     setSRowsData(0);
     dispatch(BreadCrumbsList([]));
@@ -925,6 +1248,10 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Activates the "All" tab (view 3).
+   * Resets data and fetches all accessible documents & folders.
+   */
   const AllDocuments = async () => {
     setSRowsData(0);
     dispatch(BreadCrumbsList([]));
@@ -960,10 +1287,17 @@ const DataRoom = () => {
     }
   };
 
+  /** Opens the Add New Folder modal. */
   const openFolderModal = () => {
     setFolderModal(true);
   };
 
+  /**
+   * Drills into a folder: persists the folderID, fetches its contents, and
+   * closes the search panel if it was open.
+   * @param {number} folderid - The folder to navigate into.
+   * @param {object} record - Full row record (used for breadcrumb construction).
+   */
   const getFolderDocuments = async (folderid, record) => {
     localStorage.setItem("folderID", folderid);
     await dispatch(
@@ -979,6 +1313,25 @@ const DataRoom = () => {
     setSearchTabOpen(false);
   };
 
+  // ─── Context-menu action dispatcher ──────────────────────────────────────
+  /**
+   * Handles all three-dot menu item clicks for both files and folders.
+   *
+   * Option value mapping:
+   *   1 = Open in document viewer (feature 20 required)
+   *   2 = Share
+   *   3 = Rename
+   *   4 = View details
+   *   5 = Download
+   *   6 = Delete
+   *   7 = Analytics / file details count
+   *   8 = Create signature workflow
+   *   9 = Remove shared file/folder from "Shared With Me"
+   *
+   * @param {object} data   - Selected menu option object with a `value` key.
+   * @param {object} record - Row record (id, name, isFolder, permissionID, etc.).
+   * @param {string} pdfDataJson - JSON-serialized viewer payload for option 1 & 8.
+   */
   const fileOptionsSelect = (data, record, pdfDataJson) => {
     if (data.value === 1) {
       if (checkFeatureIDAvailability(20)) {
@@ -1028,7 +1381,9 @@ const DataRoom = () => {
         let data = {
           FileID: Number(record.id),
         };
-        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+        dispatch(
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+        );
       }
     } else if (data.value === 6) {
       // Delete File and Folder
@@ -1091,7 +1446,13 @@ const DataRoom = () => {
     }
   };
 
-  // Menu click handler for selecting filters
+  // ─── Date-filter dropdown handlers ───────────────────────────────────────
+
+  /**
+   * Updates the selected date-filter option in local state (does not yet
+   * trigger an API call — that happens in handleApplyFilter).
+   * @param {object} filterValue - One entry from the `filters` array.
+   */
   const handleMenuClick = (filterValue) => {
     setSelectValue({
       label: filterValue.text,
@@ -1099,12 +1460,20 @@ const DataRoom = () => {
     });
   };
 
+  /**
+   * Applies the currently selected date filter by triggering a sort API call,
+   * then closes the filter dropdown.
+   */
   const handleApplyFilter = () => {
     handeClickSortingFunc(1, selectedValue.value);
 
     setVisible(false);
   };
 
+  /**
+   * Resets the date filter back to the default "Last-modified" option
+   * and closes the dropdown.
+   */
   const resetFilter = () => {
     setSelectValue({
       label: "Last-modified",
@@ -1114,10 +1483,16 @@ const DataRoom = () => {
     setVisible(false);
   };
 
+  /** Toggles the date-filter dropdown open/closed via the chevron icon. */
   const handleClickChevron = () => {
     setVisible((prevVisible) => !prevVisible);
   };
 
+  /**
+   * Ant Design Menu rendered inside the date-column filter dropdown.
+   * Displays the filter options with a checkmark on the selected one,
+   * plus Reset / OK action buttons.
+   */
   const menu = (
     <Menu>
       {filters.map((filter) => (
@@ -1157,6 +1532,20 @@ const DataRoom = () => {
   );
   //
 
+  // ─── Column sort handler ──────────────────────────────────────────────────
+  /**
+   * Toggles the sort direction for a given column and re-fetches the list.
+   *
+   * @param {number} viewValue - 1 or 3 = My Documents / All tab;
+   *                             other values = Shared With Me tab.
+   * @param {number} statusID  - Sort field:
+   *                             1 = Name, 2 = Last Modified, 3 = Modified by me,
+   *                             4 = Last opened by me, 5 = Owner.
+   *
+   * For folder-drill-down views (viewFolderID != null) the folder API is used;
+   * otherwise the root documents API is called.
+   * Each call toggles the corresponding sorter state between "ascend" and "descend".
+   */
   const handeClickSortingFunc = (viewValue, statusID) => {
     if (Number(viewValue) === 1 || Number(viewValue) === 3) {
       // this is for All Tab and My Document tab
@@ -1413,6 +1802,19 @@ const DataRoom = () => {
     }
   };
 
+  // ─── Table column definitions ─────────────────────────────────────────────
+
+  /**
+   * Column schema for the My Documents / All tabs (views 1 & 3).
+   * Columns: Name (sortable) | Owner (sortable) | Modified Date (sortable + filterable)
+   *          | File Size | Location | Actions (share/download/delete/three-dot menu)
+   *
+   * The Name cell distinguishes shared vs. own items and files vs. folders,
+   * showing the appropriate icon and click handler in each case.
+   * The Actions cell renders different icon sets based on permissionID:
+   *   1 = Viewer, 2 = Editor, 3 = Editable-non-shareable
+   * PDF/DOCX/DOC files additionally show the Signature Flow option.
+   */
   const MyDocumentsColumns = [
     {
       title: (
@@ -1854,6 +2256,12 @@ const DataRoom = () => {
     },
   ];
 
+  /**
+   * Ant Design Table `onChange` handler.
+   * Only acts on the "sharedDate" column sorter — re-fetches with the
+   * correct ascending/descending flag and keeps filteredInfo/sortedInfo
+   * in sync for controlled table state.
+   */
   const handleSortChange = (pagination, filters, sorter) => {
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
@@ -1874,6 +2282,11 @@ const DataRoom = () => {
     setSortedInfo(sorter);
   };
 
+  /**
+   * Column schema for the Recently Added tab (view 4).
+   * Columns: Name | Owner | Last Modified | File Size | Location | Actions
+   * No sortable headers — recent items are always ordered by recency.
+   */
   const MyRecentTab = [
     {
       title: (
@@ -2247,6 +2660,12 @@ const DataRoom = () => {
     },
   ];
 
+  /**
+   * Opens a file in the Apryse document viewer when the user clicks its name
+   * in the table. Requires feature flag 20 to be enabled.
+   * @param {React.SyntheticEvent} e - Click event (prevented to avoid navigation).
+   * @param {object} record - Row record containing id, name, permissionID.
+   */
   const handleLinkClick = (e, record) => {
     console.log(record, "preventDefault");
     e.preventDefault();
@@ -2265,6 +2684,12 @@ const DataRoom = () => {
     }
   };
 
+  // ─── Notification deep-link: folder viewer rights ─────────────────────────
+  /**
+   * On mount, checks if the user arrived via a notification that granted
+   * folder-viewer rights. If so, auto-navigates into that folder.
+   * Cleans up all notification-related localStorage keys on unmount.
+   */
   //Notification Redirection for Files and folder Read and Right
   useEffect(() => {
     //For Folder View Rights
@@ -2290,6 +2715,11 @@ const DataRoom = () => {
     };
   }, []);
 
+  /**
+   * Column schema for the Shared With Me tab (view 2).
+   * Columns: Name | Shared By | Share Date (sortable) | Actions
+   * Actions are permission-gated: viewers cannot share but can download.
+   */
   const shareWithmeColoumns = [
     {
       title: t("Name"),
@@ -2494,6 +2924,12 @@ const DataRoom = () => {
     },
   ];
 
+  // ─── Dashboard file-drop upload ───────────────────────────────────────────
+  /**
+   * When the user drags a file onto the Dashboard and is redirected here,
+   * the file object is passed via React Router `location.state`.
+   * This effect picks it up and triggers the upload flow.
+   */
   useEffect(() => {
     if (location.state !== null) {
       let fileObj = location.state;
@@ -2501,6 +2937,12 @@ const DataRoom = () => {
     }
   }, [location.state]);
 
+  /**
+   * Enqueues a file that arrived from the Dashboard drag-drop flow.
+   * Builds a task descriptor, adds it to `tasksAttachments`, then calls
+   * the FileisExist API to check for duplicates before uploading.
+   * @param {File} file - The File object passed via router state.
+   */
   const handleUploadFilefromDashbard = async (file) => {
     const taskId = Math.floor(Math.random() * 1000000);
     const axiosCancelSource = axios.CancelToken.source();
@@ -2548,6 +2990,13 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Handles a file selected via the toolbar "New → Upload file" control.
+   * Creates a task descriptor with a random TaskId, registers it in
+   * `tasksAttachments`, then dispatches `FileisExist` to check for
+   * server-side duplicates before the actual upload begins.
+   * @param {{ file: File }} param0 - Ant Design Upload onChange payload.
+   */
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
     const taskId = Math.floor(Math.random() * 1000000);
@@ -2596,6 +3045,10 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Watches `DataRoomReducer.isFileExsist`. When the FileisExist API responds
+   * `true` (duplicate found), opens the upload-options conflict modal.
+   */
   // this is for file check
   useEffect(() => {
     // its check that reducer state is not null
@@ -2605,6 +3058,11 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.isFileExsist]);
 
+  /**
+   * Cancels an in-progress single-file upload by setting its task state to
+   * cancelled and calling the Axios cancel token to abort the HTTP request.
+   * @param {{ TaskId: number, axiosCancelToken: import('axios').CancelTokenSource }} data - Task descriptor for the upload to cancel.
+   */
   // cancel file upload
   const cancelFileUpload = (data) => {
     setTasksAttachments((prevTasks) => ({
@@ -2625,6 +3083,14 @@ const DataRoom = () => {
   };
   // const isOnline = navigator.onLine;
 
+  /**
+   * Fires when the browser goes offline (`offline` window event).
+   * Marks any actively-uploading single-file tasks with `NetDisconnect: true`
+   * and does the same for any in-progress folder uploads tracked in
+   * `detaUplodingForFOlder`, halting further chunk dispatches.
+   * @param {Event} event - The native offline/online event (unused directly;
+   *   `navigator.onLine` is read instead for reliability).
+   */
   // Handle online status changes
   const handleOnlineStatusChange = (event) => {
     let isOnline = navigator.onLine;
@@ -2663,6 +3129,12 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Registers/re-registers the `offline` event listener whenever
+   * `tasksAttachments` or `detaUplodingForFOlder` change so
+   * `handleOnlineStatusChange` always closes over the latest state.
+   * Cleans up on unmount or before the next run.
+   */
   useEffect(() => {
     // Listen for online/offline events
     // window.addEventListener("online", handleOnlineStatusChange);
@@ -2675,6 +3147,14 @@ const DataRoom = () => {
     };
   }, [tasksAttachments, detaUplodingForFOlder]);
 
+  /**
+   * Handles a folder selected via the toolbar "New → Upload folder" control.
+   * Builds a folder-upload descriptor, appends it to `detaUplodingForFOlder`,
+   * and dispatches `CheckFolderisExist` to detect server-side name conflicts.
+   * @param {{ directoryName: string, fileList: File[] }} param0
+   *   - `directoryName`: root folder name chosen by the user.
+   *   - `fileList`: flat array of File objects inside that folder.
+   */
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
     const axiosCancelSource = axios.CancelToken.source();
@@ -2716,6 +3196,17 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Watches `DataRoomReducer.FolderisExistCheck` to drive the folder-upload
+   * conflict flow:
+   * - `true`  → folder name already exists on server; set `isFolderExist` to
+   *             show the conflict modal (user picks replace/rename/skip).
+   * - `null`  → API returned no match (name is free) after previously being
+   *             `true`; dispatch `createFolder` with `folderUploadOptions`
+   *             (the option chosen in the modal).
+   * - `false` → no duplicate found on the first check; dispatch `createFolder`
+   *             with option 0 (create new, no conflict resolution needed).
+   */
   useEffect(() => {
     // its check that reducer state is not null
     if (DataRoomReducer.FolderisExistCheck === true) {
@@ -2769,6 +3260,16 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.FolderisExistCheck]);
 
+  /**
+   * Sequentially uploads every file inside a folder descriptor.
+   * Iterates `folder.FileList` one-by-one, dispatching `uploadFile` for each.
+   * Stops early if the folder is cancelled (`UploadCancel`) or the network
+   * drops (`NetDisconnect` / `navigator.onLine`). A 1-second delay is
+   * inserted between uploads to avoid overwhelming the server.
+   * Marks the folder as `Uploaded: true` when all files finish.
+   * @param {Object} folder - Entry from `detaUplodingForFOlder` with a
+   *   populated `FolderID` (assigned after `createFolder` succeeds).
+   */
   // this function call for current files which is in the folder
   const processArraySequentially = async (folder) => {
     let isOnline = navigator.onLine;
@@ -2829,6 +3330,16 @@ const DataRoom = () => {
     } catch {}
   };
 
+  /**
+   * Fires whenever `DataRoomReducer.CreatedFoldersArray` updates (i.e. after
+   * `createFolder` succeeds and the reducer stores the new folder metadata).
+   * Finds the matching pending folder in `detaUplodingForFOlder` by name,
+   * patches its `FolderID` and marks it `Uploading: true`, then:
+   *   1. Refreshes the file listing for the current view so the new folder
+   *      appears in the UI immediately.
+   *   2. Calls `processArraySequentially` to start uploading the folder's files.
+   * Folders with an empty `FileList` are skipped (no files to upload).
+   */
   // this hokks triger when folder is created and its updaet its id of anew folder
   useEffect(() => {
     // this is checker of reducer if its not on its initial state
@@ -2894,12 +3405,24 @@ const DataRoom = () => {
     } catch (error) {}
   }, [DataRoomReducer.CreatedFoldersArray]);
 
+  /**
+   * Cancels a single folder upload by mutating its descriptor flags and
+   * triggering a state refresh so the progress bar reflects the cancellation.
+   * @param {Object} folder - The folder descriptor from `detaUplodingForFOlder`.
+   */
   const cancelUpload = (folder) => {
     folder.UploadCancel = true;
     folder.Uploading = false;
     setDetaUplodingForFOlder((prevFolders) => [...prevFolders]);
   };
 
+  /**
+   * Initiates the "cancel all uploads" flow.
+   * If any upload (file or folder) is still in progress, sets
+   * `canselingDetaUplodingForFOlder` to show a confirmation modal.
+   * If nothing is uploading, clears all upload state immediately and
+   * hides the progress bar.
+   */
   // this is used for canle all uploadind
   const CanceUpload = () => {
     const dataArray = Object.values(tasksAttachments);
@@ -2915,6 +3438,14 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Confirmed "cancel all" handler — called when the user clicks OK in the
+   * cancellation confirmation modal.
+   * Cancels every Axios token for single-file tasks, marks all folder uploads
+   * as cancelled, resets all upload state, hides the progress bar, and
+   * dismisses the confirmation modal.
+   * @param {*} data - Unused; kept for API consistency with the modal callback.
+   */
   const CanceUploadinFromModalTrue = async (data) => {
     const dataArray = Object.values(tasksAttachments);
     await dataArray.map((data, index) => {
@@ -2933,6 +3464,16 @@ const DataRoom = () => {
     setCanselingDetaUplodingForFOlder(false);
   };
 
+  /**
+   * Global document click handler that closes floating UI elements when the
+   * user clicks outside of them:
+   *   - `searchBarRef`   → hides the search bar if `searchbarshow` is true.
+   *   - `threedotFolder` → hides the folder context menu if
+   *                        `optionsFolderisShown` is true.
+   *   - `threedotFile`   → hides the file context menu if
+   *                        `optionsFileisShown` is true.
+   * @param {MouseEvent} event - The native click event.
+   */
   const handleOutsideClick = (event) => {
     if (
       searchBarRef.current &&
@@ -2957,6 +3498,12 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * Returns `true` if any upload (file or folder) is currently in progress.
+   * Used by the `beforeunload` guard to decide whether to warn the user
+   * before navigating away.
+   * @returns {boolean}
+   */
   // this is working perfect
   const checkCondition = () => {
     const dataArray = Object.values(tasksAttachments);
@@ -2971,6 +3518,12 @@ const DataRoom = () => {
     return hasUploadingTrue;
   };
 
+  /**
+   * Attaches a `beforeunload` listener that warns the user if they try to
+   * close the tab or navigate away while an upload is still running.
+   * Re-runs whenever upload state changes so `checkCondition` reflects
+   * the latest values. Cleans up on unmount.
+   */
   useEffect(() => {
     const unloadCallback = (event) => {
       if (checkCondition()) {
@@ -2994,6 +3547,15 @@ const DataRoom = () => {
     };
   }, [detaUplodingForFOlder, tasksAttachments]);
 
+  /**
+   * Infinite-scroll trigger registered via `useScrollerAuditBottom`.
+   * Fires when the user scrolls to the bottom of the page (50 px threshold).
+   * Loads the next page of results:
+   *   - If inside a folder (`viewFolderID` set) → `getFolderDocumentsApiScrollBehaviour`
+   *   - Otherwise → `getDocumentsAndFolderApiScrollbehaviour`
+   * Skips the dispatch if all records are already loaded
+   * (`getAllData.length === totalRecords`).
+   */
   // api call onscroll
 
   useScrollerAuditBottom(async () => {
@@ -3032,6 +3594,11 @@ const DataRoom = () => {
     }
   }, 50);
 
+  /**
+   * Mounts/re-mounts the global `click` listener for `handleOutsideClick`.
+   * Deps: `searchbarshow`, `optionsFileisShown`, `optionsFolderisShown` —
+   * ensures the handler always closes over the current visibility flags.
+   */
   // const handleUploadDocuemtuploadOptions = () => { }
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick);
@@ -3040,6 +3607,17 @@ const DataRoom = () => {
     };
   }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
+  /**
+   * Watches three DataRoom reducer message fields and surfaces them as
+   * snackbar notifications via `showMessage`:
+   *   - `ResponseMessage`       — generic API responses (errors, successes),
+   *                               excluding several known non-error strings.
+   *   - `FolderisExistMessage`  — folder duplicate check messages, excluding
+   *                               "Folder-already-exist" (handled by modal).
+   *   - `FileisExistMessage`    — file duplicate check messages, excluding
+   *                               "File-already-exist" (handled by modal).
+   * Dispatches `clearDataResponseMessage` after showing each message.
+   */
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
@@ -3083,6 +3661,11 @@ const DataRoom = () => {
     DataRoomReducer.ResponseMessage,
     errorSeverityState,
   ]);
+  /**
+   * Shows snackbar messages from the DataRoom2 slice
+   * (`DataRoomFileAndFoldersDetailsResponseMessage`) and clears them via
+   * `clearDataResponseMessageDataRoom2` after display.
+   */
   useEffect(() => {
     if (DataRoomFileAndFoldersDetailsResponseMessage !== "") {
       showMessage(
@@ -3094,6 +3677,12 @@ const DataRoom = () => {
     }
   }, [DataRoomFileAndFoldersDetailsResponseMessage, errorSeverityState2]);
 
+  /**
+   * Shows snackbar messages from the Signature workflow slice
+   * (`SignatureResponseMessage`), skipping blank/undefined/null values and
+   * "Created-successfully" (that state is handled elsewhere). Clears the
+   * message via `clearWorkFlowResponseMessage` after display.
+   */
   useEffect(() => {
     if (
       SignatureResponseMessage !== "" &&
@@ -3106,25 +3695,55 @@ const DataRoom = () => {
     }
   }, [SignatureResponseMessage]);
 
+  /**
+   * Confirms folder deletion — dispatches `deleteFolder` with the pending
+   * folder ID stored in `isFolderDeleteId`.
+   */
   const handleClickDeleteFolder = () => {
     dispatch(
       deleteFolder(navigate, Number(isFolderDeleteId), t, setIsFolderDelete),
     );
   };
+
+  /**
+   * Cancels the folder delete confirmation modal without deleting anything.
+   * Resets `isFolderDeleteId` and hides the modal.
+   */
   const handleCancelDeleteFolder = () => {
     setIsFolderDeleteId(0);
     setIsFolderDelete(false);
   };
+
+  /**
+   * Cancels the file delete confirmation modal without deleting anything.
+   * Resets `isFileDeleteId` and hides the modal.
+   */
   const handleCancelDeleteFile = () => {
     setIsFileDeleteId(0);
     setIsFileDelete(false);
   };
+  /**
+   * Confirms file deletion — dispatches `deleteFileDataroom` with the pending
+   * file ID stored in `isFileDeleteId`.
+   */
   const handleClickDeleteFile = () => {
     dispatch(
       deleteFileDataroom(navigate, Number(isFileDeleteId), t, setIsFileDelete),
     );
   };
 
+  /**
+   * Breadcrumb click handler. Navigates the listing to the clicked crumb:
+   *   - If `record.main` is truthy (root crumb) → reloads the root view for
+   *     the current tab (view 4 uses Recent, all others use
+   *     `getDocumentsAndFolderApi`) and clears the breadcrumb trail.
+   *   - Otherwise → drills into the sub-folder by dispatching
+   *     `getFolderDocumentsApi` with behaviour code 5 (breadcrumb navigation),
+   *     passing the existing `BreadCrumbsListArr` so the trail is updated.
+   * @param {number} id     - Folder ID to navigate into.
+   * @param {Object} record - Breadcrumb record; `record.main` flags the root.
+   * @param {number} index  - Position of the crumb in the breadcrumb array.
+   */
   const handleClickGetFolderData = async (id, record, index) => {
     if (record?.main !== undefined && record?.main !== null && record?.main) {
       let currentView = localStorage.getItem("setTableView");
@@ -3155,6 +3774,14 @@ const DataRoom = () => {
     }
   };
 
+  /**
+   * `next` callback passed to the `<InfiniteScroll>` component.
+   * Loads the next page of records when the user scrolls to the bottom:
+   *   - Inside a folder (`viewFolderID !== 0`) →
+   *     `getFolderDocumentsApiScrollBehaviour`
+   *   - Root view → `getDocumentsAndFolderApiScrollbehaviour`
+   * Returns early if the full dataset is already loaded.
+   */
   const handleScroll = () => {
     if (getAllData.length >= totalRecords) return; // No more data
 
@@ -3190,9 +3817,37 @@ const DataRoom = () => {
     }
   };
 
+  // ─── Render ──────────────────────────────────────────────────────────────────
+  //
+  // Layout overview:
+  //   1. Toast / notification overlays (delete, remove, rename, undo) — rendered
+  //      as floating fixed elements above the content.
+  //   2. Top toolbar row:
+  //        [Left]  "Data room" heading + "New" dropdown (folder / file / folder upload)
+  //        [Center] SearchBarComponent
+  //        [Right]  Grid/List view toggle (hidden on view 5 – Send for Approval)
+  //   3. View tabs row: All | My Documents | Shared With Me |
+  //                     Send for Approval (feature-gated) | Recently Added
+  //   4. Breadcrumbs (shown when inside a folder; overflow via Popover)
+  //   5. Content pane — switches on `currentView`:
+  //        2 → Shared With Me    (grid or table, no InfiniteScroll wrapper)
+  //        4 → Recently Added    (grid with InfiniteScroll, or table)
+  //        5 → <ApprovalSend />  (entirely delegated to sub-component)
+  //        default → My Docs / All  (grid with InfiniteScroll, or table,
+  //                                  or drag-drop empty state)
+  //      When `detailView` is true a side-panel <ViewDetailsModal> is shown.
+  //   6. Floating upload progress bar (<UploadindUiComponent>) — visible while
+  //      `showbarupload` is true.
+  //   7. Modal portal layer — all modal components rendered here (conditionally):
+  //        ModalAddFolder, ModalOptions (file conflict), ModalCancelUpload,
+  //        ModalShareFolder, ModalRenameFolder, ModalShareFile,
+  //        ModalOptionsFolder, ModalOptionsisExistFolder, ModalRenameFile,
+  //        ModalFileRequest, FileDetailsModal, ModalDeleteFile,
+  //        ModalDeleteFolder, Notification snackbar.
   return (
     <>
       <div className={styles["DataRoom_container"]}>
+        {/* ── Floating toast notifications ─────────────────────────────────── */}
         {deletenotification && <DeleteNotificationBox />}
         {fileremoved && <FileRemoveBox />}
         {showrenamenotification && (
@@ -3203,6 +3858,7 @@ const DataRoom = () => {
         {actionundonenotification && <ActionUndoNotification />}
         <Row>
           <Col sm={12} md={12} lg={12}>
+            {/* ── Top toolbar ───────────────────────────────────────────────── */}
             <Row>
               <Col
                 lg={4}
@@ -3213,6 +3869,7 @@ const DataRoom = () => {
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
+                {/* "New" dropdown: New Folder / File Upload / Folder Upload */}
                 <BootstrapDropdown className={styles["DataRoom_DropDown"]}>
                   <BootstrapDropdown.Toggle title={t("New")}>
                     <Row>
@@ -3310,6 +3967,7 @@ const DataRoom = () => {
               </Col>
 
               <Col sm={12} md={1} lg={1}></Col>
+              {/* ── Search bar ────────────────────────────────────────────── */}
               <Col
                 lg={6}
                 md={6}
@@ -3327,6 +3985,7 @@ const DataRoom = () => {
                   searchResultsFields={searchResultsFields}
                 />
               </Col>
+              {/* ── Grid / List view toggle (hidden on Send-for-Approval tab) ── */}
               <Col
                 lg={1}
                 md={1}
@@ -3381,13 +4040,16 @@ const DataRoom = () => {
                 )}
               </Col>
             </Row>
+            {/* ── View tabs + breadcrumbs + content area ─────────────────────── */}
             <Row>
+              {/* Content pane narrows to 8 cols when the detail side-panel is open */}
               <Col
                 lg={detailView ? 8 : 12}
                 md={detailView ? 8 : 12}
                 sm={detailView ? 8 : 12}
               >
                 <span className={styles["Data_room_paper"]}>
+                  {/* Search results overlay replaces normal listing */}
                   {searchTabOpen ? (
                     <SearchComponent
                       setSearchDataFields={setSearchDataFields}
@@ -3415,6 +4077,7 @@ const DataRoom = () => {
                     />
                   ) : (
                     <>
+                      {/* ── Tab buttons ─────────────────────────────────── */}
                       <Row>
                         <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                           <Button
@@ -3468,6 +4131,7 @@ const DataRoom = () => {
                             onClick={RecentTab}
                           />
                         </Col>
+                        {/* ── Breadcrumbs (visible when inside a folder) ── */}
                         {BreadCrumbsListArr.length > 0 && (
                           <>
                             <Col
@@ -3476,6 +4140,7 @@ const DataRoom = () => {
                               lg={12}
                               className="mt-3 d-flex align-items-center gap-2"
                             >
+                              {/* Ant Design Breadcrumb with right-arrow separator */}
                               <Breadcrumb
                                 prefixCls="dataroombreadCrumbs"
                                 separator={
@@ -3567,7 +4232,9 @@ const DataRoom = () => {
                           </>
                         )}
                       </Row>
+                      {/* ── Per-view content ────────────────────────────── */}
                       {currentView === 2 ? (
+                        // View 2: Shared With Me — no InfiniteScroll wrapper
                         <>
                           <Row className="mt-3">
                             <Col lg={12} sm={12} md={12}>
@@ -3668,6 +4335,7 @@ const DataRoom = () => {
                           </Row>
                         </>
                       ) : currentView === 4 ? (
+                        // View 4: Recently Added — grid has InfiniteScroll wrapper
                         <>
                           <Row className="mt-3">
                             <Col lg={12} sm={12} md={12}>
@@ -3775,8 +4443,12 @@ const DataRoom = () => {
                           </Row>
                         </>
                       ) : currentView === 5 ? (
+                        // View 5: Send for Approval — fully delegated
                         <ApprovalSend />
                       ) : (
+                        // Views 1 & 3: My Documents / All
+                        // Grid uses InfiniteScroll; list uses table;
+                        // empty state shows a drag-drop Dragger.
                         <>
                           <Row className="mt-3">
                             <Col lg={12} sm={12} md={12}>
@@ -3923,6 +4595,7 @@ const DataRoom = () => {
                   )}
                 </span>
               </Col>
+              {/* ── Detail side-panel (file/folder analytics) ──────────────── */}
               {detailView && (
                 <Col lg={4} md={4} sm={4}>
                   <ViewDetailsModal
@@ -3939,6 +4612,7 @@ const DataRoom = () => {
           </Col>
         </Row>
       </div>
+      {/* ── Floating upload progress bar ─────────────────────────────────── */}
       {showbarupload && (
         <UploadindUiComponent
           detaUplodingForFOlder={detaUplodingForFOlder}
@@ -3954,6 +4628,8 @@ const DataRoom = () => {
         />
       )}
 
+      {/* ── Modal portal layer ───────────────────────────────────────────── */}
+      {/* Create new folder */}
       {foldermodal && (
         <ModalAddFolder
           addfolder={foldermodal}
@@ -3962,6 +4638,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* File duplicate conflict resolution (replace / keep both / skip) */}
       {uploadOptionsmodal && (
         <ModalOptions
           setTasksAttachments={setTasksAttachments}
@@ -3975,6 +4652,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Confirm "cancel all uploads" */}
       {canselingDetaUplodingForFOlder && (
         <ModalCancelUpload
           canselingDetaUplodingForFOlder={canselingDetaUplodingForFOlder}
@@ -3983,6 +4661,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Share folder with other users */}
       {sharefoldermodal && (
         <ModalShareFolder
           sharefolder={sharefoldermodal}
@@ -3992,6 +4671,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Rename folder */}
       {showrenamemodal && (
         <>
           <ModalRenameFolder
@@ -4002,6 +4682,7 @@ const DataRoom = () => {
           />
         </>
       )}
+      {/* Share file with other users */}
       {shareFileModal && (
         <ModalShareFile
           folderId={folderId}
@@ -4011,6 +4692,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Folder name conflict during manual "New Folder" creation */}
       {isExistFolder && (
         <ModalOptionsFolder
           setAddfolder={setFolderModal}
@@ -4019,6 +4701,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Folder name conflict during folder upload */}
       {isFolderExist && (
         <ModalOptionsisExistFolder
           setFolderUploadOptions={setFolderUploadOptions}
@@ -4031,6 +4714,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Rename file */}
       {showrenameFile && (
         <ModalRenameFile
           isRenameFileData={isRenameFileData}
@@ -4039,6 +4723,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Request access to a file */}
       {RequestFile && (
         <ModalFileRequest
           RequestFile={RequestFile}
@@ -4046,12 +4731,14 @@ const DataRoom = () => {
         />
       )}
 
+      {/* File analytics / details panel (triggered by row click in list view) */}
       {DataRoomReducer.fileDetials && (
         <FileDetailsModal
           fileDataforAnalyticsCount={fileDataforAnalyticsCount}
         />
       )}
 
+      {/* Delete file confirmation */}
       {isFileDelete && (
         <ModalDeleteFile
           fileDelete={isFileDelete}
@@ -4061,6 +4748,7 @@ const DataRoom = () => {
         />
       )}
 
+      {/* Delete folder confirmation */}
       {isFolderDelete && (
         <ModalDeleteFolder
           isDeleteFolder={isFolderDelete}
@@ -4069,6 +4757,7 @@ const DataRoom = () => {
           handleCancelFoldereDelete={handleCancelDeleteFolder}
         />
       )}
+      {/* Global snackbar notification */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );
