@@ -1,3 +1,9 @@
+/**
+ * @file Admin_CancelSub.js
+ * @description Redux actions for cancelling and revoking organisation subscription packages.
+ * Wraps `cancelSubscription` and `revokeProcess` API configs.
+ * Dispatches: CANCELSUBCRIPTIONPACKAGE_INIT/SUCCESS/FAIL.
+ */
 // import { type } from "@testing-library/user-event/dist/types/utility";
 import {
   cancelSubscription,

@@ -1,3 +1,8 @@
+/**
+ * @file ConfirmationCancelPackage.js
+ * @description Subscription cancellation confirmation card with a reason checklist and Proceed/Cancel actions.
+ */
+
 import React from "react";
 import styles from "./ConfirmationCancelPackage.module.css";
 import { Container, Row, Col, Card, Form, ProgressBar } from "react-bootstrap";
@@ -6,6 +11,11 @@ import { useTranslation } from "react-i18next";
 import Button from "../../elements/button/Button";
 import { Link } from "react-router-dom";
 import WarningMessageBox from "../warning_message/WarningMessageBox";
+/**
+ * Renders a card showing subscription details, a cancellation reason form, and Proceed/Cancel buttons.
+ * @param {{ onClickCancelNowBtn: Function, onClickProceedBtn: Function, forrevokeCancel: boolean }} props
+ * @returns {JSX.Element}
+ */
 const ConfirmationCancelPackage = ({
   onClickCancelNowBtn,
   onClickProceedBtn,

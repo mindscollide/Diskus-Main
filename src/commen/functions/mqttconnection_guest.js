@@ -1,9 +1,32 @@
+/**
+ * @file mqttconnection_guest.js
+ * @description Establishes a Paho MQTT connection for **unauthenticated guest**
+ * participants (e.g. external attendees joining a video meeting via a link).
+ * Mirrors the authenticated-user flow in `mqttconnection.js` but dispatches to
+ * `setClientGuest` and uses a shorter 3-second reconnect interval.
+ */
 import Paho from "paho-mqtt";
 import { setClientGuest } from "../../store/actions/Guest_Video";
 import { decrypt } from "./utils";
 
+/** Module-level Paho client — replaced on every (re)connection attempt. */
 let newClient;
 
+/**
+ * Creates a Paho MQTT client for an unauthenticated guest, connects to the
+ * broker, and subscribes to `subscribeID`.  On connection loss or failure the
+ * function automatically retries:
+ *  - Connection loss → retry after **3 seconds**
+ *  - Connection failure → retry after **6 seconds**
+ *
+ * Broker selection:
+ *  - `dev`  environment → plain WebSocket at `192.168.18.241:8228`
+ *  - other environments → secure WSS at `REACT_APP_MQTT:REACT_APP_MQTT_PORT/mqtt`
+ *
+ * @param {string|number} subscribeID - MQTT topic to subscribe to.
+ * @param {Function} dispatch - Redux dispatch used to store the client via
+ *   `setClientGuest`.
+ */
 export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
   try {
     if (!subscribeID) {

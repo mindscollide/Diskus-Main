@@ -1,3 +1,8 @@
+/**
+ * @file GuestJoinRequest.js
+ * @description Floating card that shows guest/participant join requests and allows the host to admit or deny them.
+ */
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +22,10 @@ import {
   setAdmittedParticipant,
 } from "../../../store/actions/Guest_Video";
 
+/**
+ * Displays a waiting-room popup for incoming join requests; handles single and multiple participant scenarios.
+ * @returns {JSX.Element}
+ */
 const GuestJoinRequest = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

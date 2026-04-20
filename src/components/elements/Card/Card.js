@@ -1,3 +1,8 @@
+/**
+ * @file Card.js
+ * @description Committee/Group card component that displays status, members, associated tags, and context-menu actions.
+ */
+
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Card.module.css";
 import React, { useEffect, useState } from "react";
@@ -12,6 +17,11 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import { Tooltip } from "antd";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
+/**
+ * Committee or Group card with status badge, member avatars, associated tags, and edit/more dropdown menus.
+ * @param {{ CardHeading: string, profile: Array, StatusID: number, onClickFunction: Function, flag: boolean, changeHandleStatus: Function, CardID: number|string, assignGroupBtn: any, setUniqCardID: Function, uniqCardID: number|string, Icon: JSX.Element, groupState: boolean, associatedTags: Array, creatorId: number|string, titleOnCLick: Function, handleClickDiscussion: Function, discussionMenuClass: string, handleMeetingClickOption: Function, handlePollsClickOption: Function, handleTasksClickOption: Function, handleClickDocumentOption: Function }} props
+ * @returns {JSX.Element}
+ */
 const Card = ({
   CardHeading,
   profile,

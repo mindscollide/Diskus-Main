@@ -1,3 +1,10 @@
+/**
+ * @file Auth_Changes_Password.js
+ * @description Redux thunk action for changing a user's password.
+ * Wraps `authenticationApi` (changepassword request method).
+ * Dispatches: CHANGE_PASSWORD_INIT, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_FAIL.
+ */
+
 import * as actions from "../action_types";
 import { changepassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
@@ -25,6 +32,12 @@ const changepasswordfail = (message, response) => {
   };
 };
 
+/**
+ * Submits a password-change request using the user's current and new credentials.
+ * @param {Object} changePasswordData - Object with UserID, Email, Password, ConfirmPassword.
+ * @param {Function} navigate - React Router navigate function (redirects on success).
+ * @returns {Function} Redux thunk dispatching CHANGE_PASSWORD_INIT/SUCCESS/FAIL.
+ */
 const changePasswordFunc = (changePasswordData, navigate) => {
   let Data = {
     UserID: changePasswordData.UserID,

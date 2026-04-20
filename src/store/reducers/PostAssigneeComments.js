@@ -1,5 +1,20 @@
+/**
+ * @file PostAssigneeComments.js
+ * @description Redux reducer for the `postAssigneeComments` slice. Manages
+ * posting, displaying, and deleting assignee comments on tasks, including
+ * real-time MQTT comment delivery.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {string}      Response         - Raw response from the post-comment API.
+ * @property {string}      ResponseMessage  - Last response message.
+ * @property {boolean}     Loading          - Pending request flag.
+ * @property {object|null} Comments         - Current comment payload received via MQTT.
+ * @property {number}      createCommentID  - ID of the most recently created comment.
+ * @property {object|null} DeleteCommentsId - ID of the comment most recently deleted.
+ */
 const initialState = {
   Response: "",
   ResponseMessage: "",
@@ -9,6 +24,14 @@ const initialState = {
   DeleteCommentsId: null,
 };
 
+/**
+ * Reducer for the `postAssigneeComments` slice.
+ * Handles posting, MQTT delivery, and deletion of task comments.
+ *
+ * @param {object} state  - Current postAssigneeComments state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const postAssigneeComments = (state = initialState, action) => {
   switch (action.type) {
     case actions.HIDE: {

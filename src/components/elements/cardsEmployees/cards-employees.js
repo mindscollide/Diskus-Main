@@ -1,8 +1,18 @@
+/**
+ * @file cards-employees.js
+ * @description Employee card used in meeting attendee lists, showing profile picture, name, designation, and an optional remove button.
+ */
+
 import { Col, Row, Container } from "react-bootstrap";
 import { Check2 } from "react-bootstrap-icons";
 import "./cards-employees.css";
 import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
 
+/**
+ * Displays an employee's photo, name, designation, and a delete icon if the current user is the organizer and the card is not for themselves.
+ * @param {{ employeeName: string, employeeDesignation: string, organizer: boolean, IconOnClick: Function, UserProfilePic: string }} props
+ * @returns {JSX.Element}
+ */
 const EmployeeCard = ({
   employeeName,
   employeeDesignation,

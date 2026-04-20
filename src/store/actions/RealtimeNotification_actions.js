@@ -1,3 +1,9 @@
+/**
+ * @file RealtimeNotification_actions.js
+ * @description Lightweight Redux action for pushing real-time MQTT activity data
+ * into the notification store.
+ * Dispatches: RECENT_ACTIVITYDATA_MQTT.
+ */
 import * as actions from "../action_types";
 
 const realtimeNotificationRecent = (response) => {

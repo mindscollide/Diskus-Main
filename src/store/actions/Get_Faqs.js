@@ -1,3 +1,10 @@
+/**
+ * @file Get_Faqs.js
+ * @description Redux thunk action for fetching FAQ entries from the settings API.
+ * Wraps `settingApi` (getFaqs request method).
+ * Dispatches: GET_FAQS_INIT, GET_FAQS_SUCCESS, GET_FAQS_FAIL.
+ */
+
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "../actions/Auth_action";
@@ -30,6 +37,12 @@ const faqsFail = (message) => {
   };
 };
 
+/**
+ * Fetches the FAQ list for the current organization.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching GET_FAQS_INIT/SUCCESS/FAIL.
+ */
 const GetUserFAQs = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {

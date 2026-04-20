@@ -1,3 +1,11 @@
+/**
+ * @file Admin_AllMeeting.js
+ * @description Redux actions for the admin meetings view — list all organisation meetings,
+ * delete a meeting, and fetch meeting statuses.
+ * Wraps `AllMeetingOrganization`, `deleteOrganizationMeeting`, `getMeetingStatus`,
+ * `OrganizationMeetingStatus`.
+ * Dispatches: ADMIN_ALLMEETING_INIT/SUCCESS/FAIL.
+ */
 import {
   AllMeetingOrganization,
   deleteOrganizationMeeting,

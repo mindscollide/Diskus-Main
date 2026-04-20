@@ -1,3 +1,34 @@
+/**
+ * @file App.js
+ * @description Root application component.  Mounts the React Router
+ * `RouterProvider` and handles three cross-cutting application concerns:
+ *
+ *  1. **Session sync** – On every tab-visibility-change event, compares
+ *     `localStorage` and `sessionStorage` auth tokens.  If they differ (e.g.
+ *     another tab logged in as a different user), reloads the page to apply the
+ *     new session.  Also auto-redirects to `/Diskus/` if a token is present but
+ *     the user is on a public page.
+ *
+ *  2. **Cross-tab logout** – Listens on a `BroadcastChannel("auth")` for
+ *     `"logout"` messages emitted when any tab signs out, then calls `signOut`
+ *     to clear state in the current tab.
+ *
+ *  3. **Mobile deep-link** – On mobile devices (iOS / Android), attempts to
+ *     open the native Diskus app via a `thediskus://` URI scheme when an RSVP
+ *     deep-link is present in localStorage.  If the app is not installed, shows
+ *     `mobileAppPopModal` after a 2-second fallback delay.
+ *
+ *  4. **Version polling** – Fetches `/version.json` every 60 seconds.  When a
+ *     new version is detected, renders `UpdateVersionNotifyModal` prompting the
+ *     user to reload.
+ *
+ *  5. **Session-expiry notification** – Watches
+ *     `auth.SessionExpireResponseMessage` in Redux; when set, shows an error
+ *     snackbar via `showMessage`.
+ *
+ * Global CSS is imported here (App.css, fr.css, ar.css, font-icons, Montserrat
+ * and IBM Plex Sans Arabic font weights).
+ */
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
@@ -34,8 +65,20 @@ import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+/** Interval (ms) between version-check requests to `/version.json`. */
 const POLLING_INTERVAL = 60000; // 1 minute
 
+/**
+ * Root application component.
+ *
+ * Renders:
+ *  - `<RouterProvider>` with the pre-built `router` from `routes.js`.
+ *  - `<OpenPaymentForm>` (conditionally) when `paymentProcessModal` is `true`.
+ *  - `<UpdateVersionNotifyModal>` (conditionally) when a new deploy is detected.
+ *  - `<Notification>` snackbar for global error/success messages.
+ *
+ * @returns {JSX.Element}
+ */
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
@@ -102,8 +145,11 @@ const App = () => {
     (state) => state.UserManagementModals
   );
 
-  // Detect mobile device function
-
+  /**
+   * Detects whether the current browser is running on an Android or iOS device.
+   *
+   * @returns {boolean} `true` when running on a mobile device.
+   */
   const isMobileDevice = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     const isAndroid = /android/i.test(userAgent);

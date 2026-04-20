@@ -1,5 +1,20 @@
+/**
+ * @file VideoChat_Reducer.js
+ * @description Redux reducer for the `videoChat` slice. Manages in-meeting
+ * panel visibility flags (minutes, attachments), meeting agendas,
+ * meeting attachment metadata, and call-recording downloads.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} Loading                        - Pending request flag.
+ * @property {boolean} isAttachment                   - Whether the attachments panel is open.
+ * @property {boolean} isMeetingAttachmentModal        - Whether the meeting-attachment modal is open.
+ * @property {boolean} isMinutes                      - Whether the minutes panel is open.
+ * @property {Array}   MeetingAgendasResponse         - Fetched meeting agenda attachments.
+ * @property {Array}   MeetingAttachmentsResponse     - Fetched meeting-level attachments.
+ */
 const initialState = {
   Loading: false,
   isAttachment: false,
@@ -13,6 +28,15 @@ const initialState = {
   MeetingAgendaAttachmentMessage: "",
 };
 
+/**
+ * Reducer for the `videoChat` slice.
+ * Controls panel/modal visibility flags and manages meeting agenda
+ * attachments and call-recording download state.
+ *
+ * @param {object} state  - Current videoChat state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const VideoChatReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.SHOW_MINUTES_STATE: {

@@ -1,5 +1,21 @@
+/**
+ * @file Notes_reducer.js
+ * @description Redux reducer for the `notes` slice. Manages personal notes:
+ * create, retrieve, update, delete, attachment handling, data-room document
+ * mapping, and dashboard navigation flag.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                       - Global loading flag.
+ * @property {string}      ResponseMessage               - Last response message.
+ * @property {object|null} SaveNotesResponse             - Result of create-note API.
+ * @property {object|null} GetAllNotesResponse           - All notes list from API.
+ * @property {object|null} GetNotesByNotesId             - Single note detail by ID.
+ * @property {object|null} deleteNoteResponse            - Result of delete-note API.
+ * @property {number}      notesFromDashboard            - Flag indicating navigation from dashboard.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -17,6 +33,15 @@ const initialState = {
   deleteNotesDocument: null,
   notesFromDashboard: 0,
 };
+/**
+ * Reducer for the `notes` slice.
+ * Handles note CRUD, attachment retrieval, data-room document mapping,
+ * and dashboard-origin flag.
+ *
+ * @param {object} state  - Current notes state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.NOTES_FROM_DASHBOARD: {

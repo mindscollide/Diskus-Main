@@ -1,4 +1,11 @@
-
+/**
+ * @file Polls_actions.js
+ * @description Redux actions for polls management — save, search, cast votes, view votes,
+ * delete polls; supports meetings, groups, and committees. Also handles task management
+ * for groups and committees.
+ * Uses `pollApi` endpoint.
+ * Dispatches: POLLS_* action types.
+ */
 import {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,

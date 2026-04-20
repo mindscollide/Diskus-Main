@@ -1,3 +1,8 @@
+/**
+ * @file DismissWarningAlert.js
+ * @description Dismissable warning alert banner that notifies users of an upcoming subscription expiry.
+ */
+
 // import { render } from '@testing-library/react';
 import React, { useState } from "react";
 import styles from "./DissmissWarningAlert.module.css";
@@ -6,6 +11,10 @@ import img1 from "./../../../assets/images/limit-exceed.png";
 import img2 from "./../../../assets/images/newElements/Line.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Dismissable danger alert warning the user that their subscription will expire soon.
+ * @returns {JSX.Element|undefined}
+ */
 const DismissWarningAlert = () => {
   const [show, setShow] = useState(true);
   const { t } = useTranslation();

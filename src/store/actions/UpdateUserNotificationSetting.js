@@ -1,3 +1,11 @@
+/**
+ * @file UpdateUserNotificationSetting.js
+ * @description Redux thunk actions for user notification settings and web notification management.
+ * Wraps `settingApi` for updating notification preferences, fetching/acting on web notifications,
+ * and marking notifications as read.
+ * Dispatches: UPDATEUSERNOTIFICATION_INIT/SUCCESS/FAIL and related web notification action types.
+ */
+
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -30,6 +38,13 @@ const updateusernotificationfail = (message, response) => {
   };
 };
 
+/**
+ * Saves the user's notification preferences (email, sound, per-event toggles).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} userSettingData - Updated notification settings payload.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching UPDATEUSERNOTIFICATION_INIT/SUCCESS/FAIL.
+ */
 const getUserNotificationSetting = (navigate, userSettingData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
@@ -105,6 +120,13 @@ const DiskusWebNotificationActionMethodFail = (message) => {
   };
 };
 
+/**
+ * Performs a bulk action (e.g. dismiss/read) on Diskus web notifications.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} data - Payload describing the action and target notification IDs.
+ * @returns {Function} Redux thunk.
+ */
 const DiskusWebNotificationActionMethodAPI = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -200,6 +222,10 @@ const DiskusWebNotificationMarkAsReadFail = (message) => {
   };
 };
 
+/**
+ * Marks one or more web notifications as read.
+ * @returns {Function} Redux thunk.
+ */
 const DiskusWebNotificationMarkAsReadAPI = (
   navigate,
   t,

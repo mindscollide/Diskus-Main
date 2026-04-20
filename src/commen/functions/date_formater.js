@@ -1,26 +1,74 @@
+/**
+ * @file date_formater.js
+ * @description Comprehensive date/time conversion and formatting library for
+ * the Diskus application.
+ *
+ * All API timestamps are stored as compact UTC strings in `"YYYYMMDDHHmmss"`
+ * format (14-character strings without separators).  The functions in this
+ * file convert between that compact format and the various display formats
+ * required across the UI, handling both English and Arabic (Eastern numeral)
+ * locales.
+ *
+ * Naming conventions used throughout:
+ *  - `utcConvert*`   – takes a compact UTC string, returns a local `Date`.
+ *  - `newTimeFormater*` – formats a compact UTC string as a human-readable
+ *    localised string (12-hour time, day-month-year, etc.).
+ *  - `convert*`      – general-purpose conversion helpers.
+ *  - `format*`       – takes a `Date` object and returns a formatted string.
+ */
 import moment from "moment";
 import { formatDistanceToNow, format, parse, isSameDay } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
 import "moment/locale/ar"; // import Arabic locale (or other locales you support)
+
+/**
+ * Removes dashes from a `"YYYY-MM-DD"` string, returning `"YYYYMMDD"`.
+ * @param {string} data - Dash-separated date string.
+ * @returns {string}
+ */
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
   return `${value[0]}${value[1]}${value[2]}`;
 };
 
+/**
+ * Converts a compact `"YYYYMMDD"` date string to display format `"DD-MM-YYYY"`.
+ * @param {string} data
+ * @returns {string}
+ */
 export const DateDisplayFormat = (data) =>
   data.slice(6, 8) + "-" + data.slice(4, 6) + "-" + data.slice(0, 4);
 
-//Remove ":"
+/**
+ * Removes colons from an `"HH:MM:SS"` time string, returning `"HHMMSS"`.
+ * @param {string} data
+ * @returns {string}
+ */
 export const RemoveTimeDashes = (data) =>
   data.slice(0, 2) + data.slice(3, 5) + data.slice(6, 8);
 
-// Time Format
+/**
+ * Inserts colons into a compact `"HHmmss"` time string, returning `"HH:mm:ss"`.
+ * @param {string} data
+ * @returns {string}
+ */
 export const TimeDisplayFormat = (data) =>
   data.slice(0, 2) + ":" + data.slice(2, 4) + ":" + data.slice(4, 6);
 
+/**
+ * Inserts a colon into a compact `"HHmm"` string, returning `"HH:mm"`.
+ * @param {string} data
+ * @returns {string}
+ */
 export const TimeHHMMFormat = (data) =>
   data.slice(0, 2) + ":" + data.slice(2, 4);
 
+/**
+ * Converts a `"DD-MM-YYYY"` date string to the API-ready `"YYYYMMDD"` format.
+ * Returns `undefined` when `data` is empty.
+ * @param {string} data
+ * @returns {string|undefined}
+ */
 export const DateSendingFormat = (data) => {
   if (data.length > 0) {
     let value = data.split("-");
@@ -28,10 +76,22 @@ export const DateSendingFormat = (data) => {
   }
 };
 
+/**
+ * Formats a compact `"YYYYMMDD"` date string as a spaced calendar string
+ * `"YYYY ,MM , DD"`.  Used by calendar widget date display.
+ * @param {string} date
+ * @returns {string}
+ */
 export const dateforCalendar = (date) => {
   return date.slice(0, 4) + " ," + date.slice(4, 6) + " , " + date.slice(6, 8);
 };
 
+/**
+ * Converts a compact `"YYYYMMDDHHmmss"` string to an ISO-like display string
+ * `"YYYY-MM-DD HH:mm:ss"`.
+ * @param {string} data
+ * @returns {string}
+ */
 export const dateTime = (data) => {
   let newtime =
     data.slice(0, 4) +
@@ -48,6 +108,13 @@ export const dateTime = (data) => {
   return newtime;
 };
 
+/**
+ * Converts a compact `"YYYYMMDD"` string to a UTC-normalised `"YYYYMMDD"`
+ * string by parsing it through moment and then extracting the ISO date part.
+ * Useful when the local and UTC calendar dates may differ.
+ * @param {string} date - Compact date, e.g. `"20240501"`.
+ * @returns {string} UTC `"YYYYMMDD"`, e.g. `"20240430"`.
+ */
 export const newDateFormaterAsPerUTC = (date) => {
   let dateConvert = moment(date, "YYYYMMDD").format();
   let newDate = moment(dateConvert).toDate().toISOString();
@@ -55,6 +122,12 @@ export const newDateFormaterAsPerUTC = (date) => {
   return newDate.slice(0, 10).replace(/-/g, "");
 };
 
+/**
+ * Converts a compact `"YYYYMMDD"` string to a `Date` object set to local
+ * 18:10:36.  Used by the calendar component to anchor day events.
+ * @param {string} date
+ * @returns {string} `Date.toString()` representation.
+ */
 export const convertintoGMTCalender = (date) => {
   let year = parseInt(date.substr(0, 4));
   let month = parseInt(date.substr(4, 2)) - 1; // Month is zero-based in JavaScript's Date object
@@ -64,6 +137,12 @@ export const convertintoGMTCalender = (date) => {
   return formattedDate;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a 12-hour local
+ * time string (`"h:mm A"`), e.g. `"2:30 PM"`.
+ * @param {string} dateTime - Compact UTC datetime.
+ * @returns {string}
+ */
 export const newTimeFormaterAsPerUTC = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -82,6 +161,14 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
   return moment(_dateTime).format("h:mm A");
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a fully
+ * localised `"h:mm A, DD MMM YYYY"` string with Arabic numeral support.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime - Compact UTC datetime.
+ * @param {"en"|"ar"} locale - BCP 47 language tag.
+ * @returns {string}
+ */
 export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -156,6 +243,13 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
     : formattedDate;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a formatted
+ * `"h:mm A, D MMM, YYYY"` string (locale-independent English).
+ * Uses optional chaining so null/undefined `dateTime` returns `"Invalid Date"`.
+ * @param {string} [dateTime]
+ * @returns {string}
+ */
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   let fullDateyear =
     dateTime?.slice(0, 4) +
@@ -174,6 +268,14 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   return moment(_dateTime).format("h:mm A, D MMM, YYYY");
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns only the date
+ * part as `"D Month YYYY"` (e.g. `"1 May 2024"`) with Arabic numeral support.
+ * Reads locale from `localStorage["i18nextLng"]`.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const _justShowDateformat = (dateTime) => {
   let locale = localStorage.getItem("i18nextLng") || "en";
   if (!dateTime || dateTime.length < 14) {
@@ -244,6 +346,14 @@ export const _justShowDateformat = (dateTime) => {
     : `${formattedDay} ${formattedMonth}, ${formattedYear}`;
 };
 
+/**
+ * Formats a compact UTC `"YYYYMMDDHHmmss"` string as `"DD-MMM-YYYY"` using
+ * `moment` with locale awareness (reads locale from localStorage).
+ * Digits are converted to Arabic Eastern numerals when locale is `"ar"`.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const _justShowDateformatBilling = (dateTime) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -275,6 +385,12 @@ export const _justShowDateformatBilling = (dateTime) => {
     ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
     : formattedDate;
 };
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns the local day
+ * name (e.g. `"Monday"`).
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const _justShowDay = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -293,6 +409,12 @@ export const _justShowDay = (dateTime) => {
   return moment(_dateTime).format("dddd");
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string into a `Date` object.
+ * Used as the raw date value in recent-activity notification lists.
+ * @param {string} dateTime
+ * @returns {Date}
+ */
 export const forRecentActivity = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -311,6 +433,12 @@ export const forRecentActivity = (dateTime) => {
   return _dateTime;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `"YYYYMMDD"`
+ * string via moment.  Used to place meeting events on the calendar grid.
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const startDateTimeMeetingCalendar = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -334,6 +462,12 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
   return _dateTime;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `Date` object
+ * via moment.  Used to feed event dates to the home-screen calendar.
+ * @param {string} dateTime
+ * @returns {Date}
+ */
 export const forHomeCalendar = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -353,6 +487,12 @@ export const forHomeCalendar = (dateTime) => {
   return _dateTime;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `Date` string
+ * representation.  Used by the main full-calendar component.
+ * @param {string} dateTime
+ * @returns {string} `Date.toString()`.
+ */
 export const forMainCalendar = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -373,6 +513,12 @@ export const forMainCalendar = (dateTime) => {
   return _dateTime;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a `"YYYY-MM-DD"` string
+ * for pre-filling the resolution edit date picker.
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const editResolutionDate = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -392,6 +538,12 @@ export const editResolutionDate = (dateTime) => {
   return convertDate;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `"HH:mm"` string
+ * for pre-filling the resolution edit time picker.
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const editResolutionTime = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -410,6 +562,12 @@ export const editResolutionTime = (dateTime) => {
   let convertTime = moment(convertGMT).format("HH:mm");
   return convertTime;
 };
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `Date` object
+ * for use in a read-only resolution time display.
+ * @param {string} dateTime
+ * @returns {Date}
+ */
 export const editResolutionTimeView = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -428,6 +586,13 @@ export const editResolutionTimeView = (dateTime) => {
   return convertGMT;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `Date` object
+ * for displaying in the resolution-results table.
+ * Handles `null`/`undefined` gracefully and catches parse errors.
+ * @param {string|null|undefined} dateTime
+ * @returns {Date|"Invalid date"}
+ */
 export const resolutionResultTable = (dateTime) => {
   try {
     if(dateTime !== null && dateTime !== undefined) {
@@ -460,6 +625,14 @@ export const resolutionResultTable = (dateTime) => {
 
 };
 
+/**
+ * Converts a local `"YYYYMMDDHHmmss"` string to a compact UTC
+ * `"YYYYMMDDHHmmss"` string by parsing it as local time and extracting UTC
+ * components.  Used when sending newly-created meeting/resolution dates to
+ * the API.
+ * @param {string} dateTime - Local compact datetime.
+ * @returns {string} UTC compact datetime.
+ */
 export const createConvert = (dateTime) => {
   console.log(dateTime, "DatesDatesDatesDatesDates");
   let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
@@ -482,6 +655,13 @@ export const createConvert = (dateTime) => {
   return result;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local `Date` string
+ * for the meeting edit date picker.  Uses optional chaining so `undefined`
+ * input returns an invalid-date string rather than throwing.
+ * @param {string} [dateTime]
+ * @returns {string} `Date.toString()`.
+ */
 export const EditmeetingDateFormat = (dateTime) => {
   let fullDateyear =
     dateTime?.slice(0, 4) +
@@ -500,6 +680,14 @@ export const EditmeetingDateFormat = (dateTime) => {
   return _dateTime;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a locale-aware
+ * 12-hour time string (AM/PM converted to Arabic ص/م when `locale === "ar"`).
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const newTimeFormaterAsPerUTCTalkTime = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -538,6 +726,15 @@ export const newTimeFormaterAsPerUTCTalkTime = (dateTime, locale) => {
   return formattedTime;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a locale-aware
+ * `"DD-MMM-YYYY"` date string (abbreviated month names; Arabic numerals when
+ * `locale === "ar"`).
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -606,6 +803,14 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
     : formattedDate;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a combined
+ * `"h:mm A, D MMM, YYYY"` display string with full locale support.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -688,6 +893,15 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
     : formattedDateTime;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a
+ * `"DD-MMM-YYYY HH:mm:ss"` display string (includes seconds) with full locale
+ * support.  Used in the Meeting Information / minutes detail views.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -771,8 +985,12 @@ export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
     : formattedDateTime;
 };
 
-// h:mm:ss
-
+/**
+ * Converts a GMT/UTC `Date`-parseable string to a compact `"YYYYMMDDHHmmss"`
+ * UTC string.  Inverse of `utcConvertintoGMT`.
+ * @param {string} GMTdate - A string parseable by `new Date()`.
+ * @returns {string} Compact UTC datetime.
+ */
 export const convertGMTDateintoUTC = (GMTdate) => {
   const currentDate = new Date(GMTdate);
   // Extract the individual components of the date
@@ -788,7 +1006,13 @@ export const convertGMTDateintoUTC = (GMTdate) => {
   return result;
 };
 
-// this work is create by huzeifa please dont write any thing below thi line
+/**
+ * Extracts all UTC date/time components from a `Date` object and returns them
+ * as a compact `"YYYYMMDDHHmmss"` string.  Used to normalise dates selected
+ * via `react-multi-date-picker` before sending them to the API.
+ * @param {Date} date
+ * @returns {string} Compact UTC datetime.
+ */
 export const multiDatePickerDateChangIntoUTC = (date) => {
   // Extract the year, month, and day components from the UTC time
   const year = date.getUTCFullYear();
@@ -801,7 +1025,11 @@ export const multiDatePickerDateChangIntoUTC = (date) => {
   return utcFormatted;
 };
 
-// this is for return only MMDDYY
+/**
+ * Formats a `Date` object as `"MMDDYYYY"`.  Returns `""` for invalid dates.
+ * @param {Date} date
+ * @returns {string}
+ */
 export function formatDateToMMDDYY(date) {
   if (!date || isNaN(date.getTime())) {
     return ""; // Return an empty string for empty or invalid dates
@@ -811,7 +1039,11 @@ export function formatDateToMMDDYY(date) {
   const day = date.getDate().toString().padStart(2, "0");
   return `${month}${day}${year}`;
 }
-// this is for return only MMDDYY
+/**
+ * Formats a `Date` object as `"YYYYMMDD"`.  Returns `""` for invalid dates.
+ * @param {Date} date
+ * @returns {string}
+ */
 export function formatDateToYYYYMMDD(date) {
   if (!date || isNaN(date.getTime())) {
     return ""; // Return an empty string for empty or invalid dates
@@ -822,8 +1054,11 @@ export function formatDateToYYYYMMDD(date) {
   return `${year}${month}${day}`;
 }
 
-//Time formatter
-
+/**
+ * Formats a `Date` object as `"HHmmss"`.  Returns `""` for invalid dates.
+ * @param {Date} date
+ * @returns {string}
+ */
 export function formatTimeToHHMMSS(date) {
   if (!date || isNaN(date.getTime())) {
     return ""; // Return an empty string for empty or invalid dates
@@ -834,9 +1069,21 @@ export function formatTimeToHHMMSS(date) {
   return `${hours}${minutes}${seconds}`;
 }
 
-// Example usage: handling both type and convert it into utc using in data room search
-// "15 September, 2023";
-// "Sat Dec 31 2022 00:00:00 GMT+0500 (Pakistan Standard Time)";
+/**
+ * Converts a human-readable date string (e.g. `"15 September, 2023"` or a
+ * `Date.toString()` value) to a compact UTC `"YYYYMMDDHHmmss"` string with
+ * optional time boundaries:
+ *  - `value === 1` → appends `000000` (start of day)
+ *  - `value === 2` → appends `235959` (end of day)
+ *  - otherwise     → date only (`"YYYYMMDD"`)
+ *
+ * Used by the Data Room search filter to convert user-selected filter dates.
+ *
+ * @param {string} inputDate - A string parseable by `new Date()`.
+ * @param {1|2|undefined} value - Time-boundary selector.
+ * @returns {string} Compact UTC datetime.
+ * @throws {RangeError} When `inputDate` is invalid.
+ */
 export function formatDateToUTC(inputDate, value) {
   // Validate inputDate
   if (!inputDate || isNaN(new Date(inputDate).getTime())) {
@@ -885,6 +1132,14 @@ export function formatDateToUTC(inputDate, value) {
   return finalDateTime;
 }
 
+/**
+ * Core UTC→local converter.  Parses a compact UTC `"YYYYMMDDHHmmss"` string
+ * into a local `Date` object.  When `num === 1` the time is overridden to
+ * `23:59:00` (end-of-day), useful for range comparisons.
+ * @param {string} [date]  - Compact UTC datetime string; uses optional chaining.
+ * @param {number} [num]   - Pass `1` to override time to 23:59.
+ * @returns {Date}
+ */
 export const utcConvertintoGMT = (date, num) => {
   let fullDateyear =
     date?.slice(0, 4) +
@@ -906,10 +1161,22 @@ export const utcConvertintoGMT = (date, num) => {
 
   return _dateTime;
 };
+/**
+ * Formats a compact `"YYYYMMDD"` string as `"Do-MMM-YYYY"` (e.g. `"1st-May-2024"`).
+ * @param {string} date
+ * @returns {string}
+ */
 export const convertDateinGMT = (date) => {
   return moment(date, "YYYYMMDD").format("Do-MMM-YYYY");
 };
 
+/**
+ * Converts a compact `"HHmmss"` time string to a `Date` object anchored to
+ * the Unix epoch date (`1970-01-01`).  Used by time pickers that need a `Date`
+ * rather than a plain string.
+ * @param {string} time - e.g. `"143000"`.
+ * @returns {Date}
+ */
 export const timeFormatFunction = (time) => {
   let defaultDate = "1970-01-01T";
   let fullDateTime =
@@ -926,7 +1193,13 @@ export const timeFormatFunction = (time) => {
   return convertTime;
 };
 
-// this is time convertor of react multi date picker which i am getting in this formate "113046" this is using in meeting first time create
+/**
+ * Treats a compact `"HHmmss"` UTC time string as today's UTC time and returns
+ * the equivalent local `Date`.  Used when creating a meeting for the first time
+ * via `react-multi-date-picker`.
+ * @param {string} utcTime - e.g. `"113046"`.
+ * @returns {Date}
+ */
 export const convertUtcToGmt = (utcTime) => {
   const currentDateTime = new Date();
   const utcDateTime = `${utcTime.slice(0, 2)}:${utcTime.slice(
@@ -939,8 +1212,17 @@ export const convertUtcToGmt = (utcTime) => {
 
   return utcDate;
 };
-// this is time convertor of react multi date picker which i am converting  in this formate "113046" this is using in meeting first time create
-
+/**
+ * Iterates over an array of agenda rows and converts both the main-agenda and
+ * sub-agenda `startDate`/`endDate` fields from local `Date` strings to compact
+ * UTC `"HHmmss"` strings using `convertDateToUTC`.
+ * @param {Array<{
+ *   startDate: string,
+ *   endDate: string,
+ *   subAgenda: Array<{startDate: string, endDate: string}>
+ * }>} rows
+ * @returns {typeof rows} Mutated rows array with UTC times.
+ */
 export const convertDateFieldsToUTC = (rows) => {
   const convertedRows = rows.map((row) => {
     // Convert main agenda dates to UTC
@@ -960,6 +1242,13 @@ export const convertDateFieldsToUTC = (rows) => {
   return convertedRows;
 };
 
+/**
+ * Converts a `Date`-parseable date string to a compact UTC `"HHmmss"` time
+ * string.  Used to extract the UTC time component from local agenda date
+ * values.
+ * @param {string} dateString - A string parseable by `new Date()`.
+ * @returns {string} e.g. `"113046"`.
+ */
 export const convertDateToUTC = (dateString) => {
   const date = new Date(dateString);
   const utcDate = new Date(date.toUTCString());
@@ -972,6 +1261,12 @@ export const convertDateToUTC = (dateString) => {
   return hours + minutes + seconds;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and extracts the **local**
+ * time as a compact `"HHmmss"` string.
+ * @param {string} [dateString]
+ * @returns {string}
+ */
 export const convertTimetoGMT = (dateString) => {
   let fullDateyear =
     dateString?.slice(0, 4) +
@@ -995,6 +1290,13 @@ export const convertTimetoGMT = (dateString) => {
 
   return hours + minutes + seconds;
 };
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a compact **local**
+ * `"YYYYMMDDHHmmss"` string.  Used in the meeting-details page to convert API
+ * timestamps back to the user's local timezone for display.  Swallows errors.
+ * @param {string} [dateString]
+ * @returns {string|undefined}
+ */
 export const convertDateTimetoGMTMeetingDetail = (dateString) => {
   try {
     const fullDateYear =
@@ -1024,6 +1326,13 @@ export const convertDateTimetoGMTMeetingDetail = (dateString) => {
   } catch {}
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a
+ * `"h:mm A - D MMM, YYYY"` display string.  Used in the import-meeting-agenda
+ * flow where meeting timestamps are displayed inline with the agenda items.
+ * @param {string} [dateTime]
+ * @returns {string}
+ */
 export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
   let fullDateyear =
     dateTime?.slice(0, 4) +
@@ -1042,6 +1351,12 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
   return moment(_dateTime).format("h:mm A - D MMM, YYYY");
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a
+ * `"MMM dd, yyyy HH:mm"` string for the login-history admin report.
+ * @param {string} [dateTime]
+ * @returns {string}
+ */
 export const LoginHistoryReport = (dateTime) => {
   let fullDateyear =
     dateTime?.slice(0, 4) +
@@ -1060,7 +1375,13 @@ export const LoginHistoryReport = (dateTime) => {
   return moment(_dateTime).format("MMM dd, yyyy HH:mm");
 };
 
-//Converting to GMT Having Date Plus StartTime And End Time
+/**
+ * Converts two compact UTC `"YYYYMMDDHHmmss"` timestamps to a single
+ * `"Do MMM, YYYY h:mm A - h:mm A"` range string for display in meeting cards.
+ * @param {string} [startTime] - UTC start datetime.
+ * @param {string} [endTime]   - UTC end datetime.
+ * @returns {string} e.g. `"1st May, 2024 02:30 PM - 04:00 PM"`.
+ */
 export const convertDateTimeRangeToGMT = (startTime, endTime) => {
   let StartTimeFormat =
     startTime?.slice(0, 4) +
@@ -1097,6 +1418,12 @@ export const convertDateTimeRangeToGMT = (startTime, endTime) => {
   ).format("h:mm A")} - ${moment(convertIntoGMTEndTime).format("h:mm A")}`;
 };
 
+/**
+ * Parses a compact `"YYYYMMDDHHmmss"` string into a **local** `Date` object.
+ * Unlike `utcConvertintoGMT`, this uses local time components rather than UTC.
+ * @param {string} date
+ * @returns {Date}
+ */
 export const convertDateTimeObject = (date) => {
   const year = parseInt(date.substring(0, 4), 10);
   const month = parseInt(date.substring(4, 6), 10) - 1; // Months are zero-based
@@ -1108,6 +1435,15 @@ export const convertDateTimeObject = (date) => {
   return new Date(year, month, day, hour, minute, second);
 };
 
+/**
+ * Returns multiple representations of the current date/time:
+ *  - `currentTime`  – raw millisecond timestamps joined (not recommended; kept
+ *    for backward-compatibility).
+ *  - `current_Date` – today as `"YYYYMMDD"`.
+ *  - `dateObject`   – `Date` object set to `23:59:58` local time.
+ *  - `current_value`– today as `"DD/MM/YYYY"`.
+ * @returns {{ currentTime: string, current_Date: string, dateObject: Date, current_value: string }}
+ */
 export const get_CurrentDateTime = () => {
   let currentDate = new Date();
 
@@ -1125,6 +1461,14 @@ export const get_CurrentDateTime = () => {
   return { currentTime, current_Date, dateObject: currentDate, current_value };
 };
 
+/**
+ * Returns `true` when `currentDate` is strictly after `dataDateValue`
+ * (date-only comparison, time components are ignored).  Returns `false` for
+ * same-day or future `dataDateValue`, and for invalid `Date` inputs.
+ * @param {Date} currentDate
+ * @param {Date} dataDateValue
+ * @returns {boolean}
+ */
 export const getDifferentisDateisPassed = (currentDate, dataDateValue) => {
   if (
     currentDate instanceof Date &&
@@ -1154,8 +1498,12 @@ export const getDifferentisDateisPassed = (currentDate, dataDateValue) => {
   return false; // Invalid input dates
 };
 
-// this function made by Huj For proposed meeting date
-// Exported function to convert a date string "DD/MM/YYYY" into UTC format
+/**
+ * Converts a `"DD/MM/YYYY"` date string (as produced by proposed-meeting date
+ * pickers) to a compact UTC `"YYYYMMDDHHmmss"` string with time `000000`.
+ * @param {string} dateStr - e.g. `"25/12/2024"`.
+ * @returns {string} Compact UTC datetime with zero time.
+ */
 export function convertToUTC(dateStr) {
   // Parse the input string to get day, month, and year
   const parts = dateStr.split("/");
@@ -1177,7 +1525,13 @@ export function convertToUTC(dateStr) {
   return `${yearStr}${monthStr}${dayStr}${hourStr}${minuteStr}${secondStr}`;
 }
 
-//For Agenda Viewer Participant
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a `"D-M-YYYY | H:mm AM/PM"`
+ * display string.  Applies a timezone-offset correction to produce a GMT-based
+ * string for the agenda-viewer participant display.
+ * @param {string} dateTimeString
+ * @returns {string} e.g. `"1-5-2024 | 2:30 PM"`.
+ */
 export function convertAndFormatDateTimeGMT(dateTimeString) {
   const year = dateTimeString.substring(0, 4);
   const month = dateTimeString.substring(4, 6);
@@ -1204,6 +1558,10 @@ export function convertAndFormatDateTimeGMT(dateTimeString) {
   return `${formattedDate} | ${formattedTime}`;
 }
 
+/**
+ * Returns the current UTC date/time as a compact `"YYYYMMDDHHmmss"` string.
+ * @returns {string}
+ */
 export function getCurrentDateTimeUTC() {
   const now = new Date();
   const year = now.getUTCFullYear();
@@ -1215,7 +1573,14 @@ export function getCurrentDateTimeUTC() {
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 }
 
-//Huzaifa Sir Global Date Formatter Function Same As Global Admin
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a locale-aware short
+ * date string (`"MMM DD, YYYY"` / Arabic equivalent) using `Intl.DateTimeFormat`.
+ * Swallows errors; returns `undefined` on failure.
+ * @param {string} utcDateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string|undefined}
+ */
 export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
   try {
     const date = new Date(
@@ -1238,10 +1603,26 @@ export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
   } catch {}
 };
 
+/**
+ * Strips `"T"`, colons, and dashes from an ISO-like date string, returning a
+ * compact `"YYYYMMDDHHmmss"` string.  Useful for normalising datetime strings
+ * that arrive with separators.
+ * @param {string} dateString - e.g. `"2024-05-01T14:30:00"`.
+ * @returns {string} e.g. `"20240501143000"`.
+ */
 export const formattedString = (dateString) => {
   return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a
+ * `"DD - MMM - YYYY | h:mm A"` display string with full locale support.
+ * Used in the Minutes pending-approval list.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const newDateFormatterForMinutesPendingApproval = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -1318,6 +1699,15 @@ export const newDateFormatterForMinutesPendingApproval = (dateTime, locale) => {
     : formattedDate;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns a
+ * `"DD - MM - YYYY"` date string (numeric month, no time).
+ * Used in the signature viewer and pending-approval summary rows.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const SignatureandPendingApprovalDateTIme = (dateTime, locale) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -1386,6 +1776,13 @@ export const SignatureandPendingApprovalDateTIme = (dateTime, locale) => {
     : formattedDate;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string and returns separate
+ * `DateVal` (`"Do MMM YYYY"`) and `TimeVal` (`"HH:mm a"`) strings for the
+ * minutes detail view.
+ * @param {string} [dateTime]
+ * @returns {{ DateVal: string, TimeVal: string }}
+ */
 export const newDateFormatForMinutes = (dateTime) => {
   let DateVal;
   let TimeVal;
@@ -1408,7 +1805,14 @@ export const newDateFormatForMinutes = (dateTime) => {
   return { DateVal, TimeVal };
 };
 
-//Date formatter Subscription DownGrade for both english and arabic
+/**
+ * Formats a compact `"YYYYMMDD"` date string as `"D Month YYYY"` (full month
+ * name) with locale support.  Used in the downgrade-subscription flow.
+ * Returns `"Invalid date"` for inputs shorter than 8 characters.
+ * @param {string} dateString
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export function formatDateDownGradeSubscription(dateString, locale) {
   if (!dateString || dateString.length < 8) {
     return "Invalid date";
@@ -1469,6 +1873,13 @@ export function formatDateDownGradeSubscription(dateString, locale) {
     : `${formattedDay} ${formattedMonth} ${formattedYear}`;
 }
 
+/**
+ * Converts a compact `"YYYYMMDD"` string to `"YYYY-MM-DD"` format.
+ * Used to feed date values into HTML date inputs in the downgrade-subscription
+ * flow.  Returns `"Invalid date"` for inputs shorter than 8 characters.
+ * @param {string} dateString
+ * @returns {string}
+ */
 export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {
   if (!dateString || dateString.length < 8) {
     return "Invalid date";
@@ -1491,11 +1902,24 @@ export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {
   return `${formattedYear}-${formattedMonth}-${formattedDay}`;
 }
 
+/**
+ * Formats a `Date`-parseable `dateTime` value as `"h:mm A, Do MMM, YYYY"`.
+ * Used to display poll expiry / creation timestamps.
+ * @param {string|Date} dateTime
+ * @returns {string}
+ */
 export const newTimeFormaterViewPoll = (dateTime) => {
   let _dateTime = new Date(dateTime).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
 };
 
+/**
+ * Appends `"235900"` to a compact `"YYYYMMDD"` string (setting time to
+ * 23:59:00) and converts the result to a compact UTC `"YYYYMMDDHHmmss"` string.
+ * Used to set the end-of-day UTC expiry time when creating a poll.
+ * @param {string} date - Compact date `"YYYYMMDD"`.
+ * @returns {string} Compact UTC datetime.
+ */
 export const DateFormatForPolls = (date) => {
   let dateFormatted = `${date}235900`;
   const now = new Date(dateFormatted);
@@ -1528,6 +1952,16 @@ export const DateFormatForPolls = (date) => {
 //     return `${diffInSeconds} second(s) ago`;
 //   }
 // };
+
+/**
+ * Returns a human-readable relative time string (e.g. `"3 minutes ago"`) for
+ * a given date using `date-fns` `formatDistanceToNow`.  Supports `"en"` and
+ * `"ar"` locales; Arabic output has Western digits replaced with Arabic-Indic
+ * digits.
+ * @param {string|Date} dateString - Date to compare against now.
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ */
 export const timePassed = (dateString, locale) => {
   const givenDate = new Date(dateString);
 
@@ -1551,6 +1985,13 @@ export const timePassed = (dateString, locale) => {
   return formattedTime;
 };
 
+/**
+ * Parses a compact UTC `"YYYYMMDDHHmmss"` string into a `Date` object.
+ * Functionally equivalent to `utcConvertintoGMT` without the optional
+ * end-of-day override.
+ * @param {string} dateTime
+ * @returns {Date}
+ */
 export const convertIntoDateObject = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -1569,6 +2010,13 @@ export const convertIntoDateObject = (dateTime) => {
   return _dateTime;
 };
 
+/**
+ * Converts a compact UTC `"YYYYMMDDHHmmss"` string to a local-timezone
+ * `"dd MMMM, yyyy | EEEE"` string (e.g. `"01 May, 2024 | Wednesday"`) with
+ * locale support.  Reads locale from `localStorage["i18nextLng"]`.
+ * @param {string} dateString
+ * @returns {string}
+ */
 export const formatToLocalTimezone = (dateString) => {
   let currentLang = localStorage.getItem("i18nextLng") || "en";
   const selectedLocale = currentLang === "ar" ? arSA : enUS;
@@ -1597,6 +2045,13 @@ export const formatToLocalTimezone = (dateString) => {
   return formattedDate;
 };
 
+/**
+ * Checks whether a compact UTC `"YYYYMMDDHHmmss"` string falls on today's
+ * local date and returns both the flag and a human-readable formatted string.
+ * Reads locale from `localStorage["i18nextLng"]`.
+ * @param {string} utcDateString
+ * @returns {{ isSame: boolean, formattedDate: string }}
+ */
 export const isSameAsToday = (utcDateString) => {
   let locale = localStorage.getItem("i18nextLng") || "en";
   // Select locale: 'ar' for Arabic, default to English
@@ -1627,6 +2082,19 @@ export const isSameAsToday = (utcDateString) => {
   };
 };
 
+/**
+ * Converts a `Date` object to a compact UTC `"YYYYMMDDHHmmss"` string, with
+ * a configurable time boundary:
+ *  - `no === 1` → start of day (`00:00:00` local)
+ *  - otherwise  → near-end of day (`23:58:59` local)
+ *
+ * Returns `""` when `newDate` is not a `Date` instance.
+ * Used by the Data Room search filter date pickers.
+ *
+ * @param {Date} newDate
+ * @param {1|undefined} no - Pass `1` for start-of-day.
+ * @returns {string}
+ */
 export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   // Check if newDate is a Date instance, return empty string if true
   if (!(newDate instanceof Date)) {
@@ -1653,8 +2121,12 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   return formattedDate;
 };
 
-//Review Minutes Send Date Format
-
+/**
+ * Formats a `Date` object as a compact `"YYYYMMDD235959"` UTC string (always
+ * end-of-day).  Used when sending the review-minutes expiry date to the API.
+ * @param {Date} date
+ * @returns {string}
+ */
 export const formatDateToUTCWithEndOfDay = (date) => {
   // Extract the year, month, and day components from the UTC time
   const year = date.getUTCFullYear();
@@ -1666,7 +2138,12 @@ export const formatDateToUTCWithEndOfDay = (date) => {
   return utcFormatted;
 };
 
-// this is used for data rom search
+/**
+ * Formats a `Date` object as a compact `"YYYYMMDD"` UTC date string.
+ * Returns `""` for falsy input.  Used by the Data Room search filters.
+ * @param {Date|null|undefined} date
+ * @returns {string}
+ */
 export const formatToUTCDateString = (date) => {
   if (!date) return ""; // Handle empty date cases
   const year = date.getUTCFullYear();
@@ -1675,6 +2152,14 @@ export const formatToUTCDateString = (date) => {
   return `${year}${month}${day}`;
 };
 
+/**
+ * Converts a compact `"YYYYMMDD"` date string to a human-readable ordinal
+ * date string (e.g. `"1st May 2024"` in English or `"1 مايو 2024"` in Arabic).
+ * Returns a localised "Invalid Date" string for malformed input.
+ * @param {string|null|undefined} inputDate
+ * @param {"en"|"ar"} language
+ * @returns {string}
+ */
 export function ProposedMeetingDateViewFormat(inputDate, language) {
   // Trim and validate the input
   const sanitizedInput = inputDate?.trim() || "";
@@ -1740,6 +2225,19 @@ export function ProposedMeetingDateViewFormat(inputDate, language) {
 
   return formattedDate;
 }
+/**
+ * Builds a combined `"startTime - endTime | date"` display string from a
+ * proposed-meeting data object, converting UTC times to the user's local
+ * timezone using `Intl.DateTimeFormat`.
+ *
+ * @param {{
+ *   proposedDate: string,
+ *   startTime: string,
+ *   endTime: string
+ * }} dateData - Object with compact UTC date (`"YYYYMMDD"`) and times (`"HHmmss"`).
+ * @param {string} lang - BCP 47 locale tag.
+ * @returns {string} e.g. `"2:00 PM - 4:00 PM | 1 May 2024"` or `""` on error.
+ */
 export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
   if (
     !dateData ||
@@ -1816,8 +2314,19 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
   }
 }
 
-//Web Notification Date Formatter
-
+/**
+ * Formats a compact UTC `"YYYYMMDDHHmmss"` string for web push notification
+ * badges.  Adjusts to GMT+5, then:
+ *  - Today   → returns a 12-hour time string only (`"h:mm am/pm"`).
+ *  - Earlier → returns `"h:mm am/pm | DD-MMM-YY"`.
+ *
+ * Supports `"en"` and `"ar"` locales; throws on invalid input.
+ * @param {string} input   - Exactly 14 characters.
+ * @param {"en"|"ar"} locale
+ * @returns {string}
+ * @throws {Error} When `input` is not a valid 14-character string or produces
+ *   an invalid `Date`.
+ */
 export function WebNotificationDateFormatter(input, locale) {
   // Ensure the input is a string and has the expected length
   if (typeof input !== "string" || input.length !== 14) {
@@ -1919,7 +2428,14 @@ export function WebNotificationDateFormatter(input, locale) {
   }
 }
 
-//Audit trial function
+/**
+ * Formats a compact UTC `"YYYYMMDDHHmmss"` string as `"hh:mm A - Do MMMM, YYYY"`
+ * using `moment` with the given locale.  Used in audit-trail list rows.
+ * Returns `""` for inputs that don't have exactly 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} [locale="en"]
+ * @returns {string}
+ */
 export const AuditTrialDateTimeFunction = (dateTime, locale = "en") => {
   if (!dateTime || dateTime.length !== 14) return "";
 
@@ -1949,6 +2465,14 @@ export const AuditTrialDateTimeFunction = (dateTime, locale = "en") => {
   }
 };
 
+/**
+ * Formats a compact UTC `"YYYYMMDDHHmmss"` string as `"YYYY-MM-DD | hh:mm A"`.
+ * Used in the audit-trail action-details view panel.
+ * Returns `""` for inputs that don't have exactly 14 characters.
+ * @param {string} dateTime
+ * @param {"en"|"ar"} [locale="en"]
+ * @returns {string}
+ */
 export const AuditTrialDateTimeFunctionViewActionDetails = (
   dateTime,
   locale = "en"
@@ -1978,6 +2502,15 @@ export const AuditTrialDateTimeFunctionViewActionDetails = (
 
 
 
+/**
+ * Formats a compact UTC `"YYYYMMDDHHmmss"` string as
+ * `"HH:mm:ss on DD-MMM-YYYY"` (English) or the Arabic equivalent with Arabic
+ * month names, `"في"` preposition, and Arabic-Indic digits.
+ * Used to display the OTP resend cooldown expiry timestamp.
+ * Returns `"Invalid date"` for inputs shorter than 14 characters.
+ * @param {string} dateTime
+ * @returns {string}
+ */
 export const newDateTimeFormatterForOTPResend = (dateTime) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";

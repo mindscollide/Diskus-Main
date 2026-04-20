@@ -1,5 +1,24 @@
+/**
+ * @file VideoMain_reducer.js
+ * @description Redux reducer for the `videoMain` slice. Manages one-to-one
+ * and group video call state: user lists, call initiation/response, recent
+ * calls, missed call counts, MQTT incoming/accepted call events, and
+ * leave-call state.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}  Loading                          - Global loading flag.
+ * @property {boolean}  FullLoader                       - Full-page loader for call initiation.
+ * @property {Array}    VideoCallUsersData               - Available video call contacts.
+ * @property {Array}    InitiateVideoCallData            - Data returned after initiating a call.
+ * @property {object}   InitiateVideoCallDataMQTT        - Incoming call data received via MQTT.
+ * @property {Array}    RecentCallsData                  - Recent call history.
+ * @property {object}   MissedCallCountData              - Missed call count from API.
+ * @property {object}   MissedCallCountMqttData          - Real-time missed call count via MQTT.
+ * @property {Array}    GroupCallRecipientsData          - Recipients for a group video call.
+ */
 const initialState = {
   Loading: false,
   FullLoader: false,
@@ -21,6 +40,15 @@ const initialState = {
   LeaveVideoIntimationMessegeGlobalState: false,
 };
 
+/**
+ * Reducer for the `videoMain` slice.
+ * Handles call initiation, responses, recent/missed calls, MQTT call events,
+ * group call recipients, and leave-call state.
+ *
+ * @param {object} state  - Current videoMain state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const VideoMainReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_ALL_VIDEOCALL_USERS_INITIAL: {

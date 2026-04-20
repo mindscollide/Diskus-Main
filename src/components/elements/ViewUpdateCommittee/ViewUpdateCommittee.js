@@ -1,3 +1,8 @@
+/**
+ * @file ViewUpdateCommittee.js
+ * @description Tabbed view panel for a committee, showing Details, Tasks, Polls, and Meetings tabs.
+ */
+
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
@@ -12,6 +17,11 @@ import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.j
 import { XLg } from "react-bootstrap-icons";
 import CommitteeMeetingTab from "../../../container/Committee/ViewMeeting/Meeting";
 import { useSelector } from "react-redux";
+/**
+ * Tabbed container for viewing a committee's details, tasks, polls, and meetings.
+ * @param {{ setViewGroupPage: Function, viewCommitteeTab: number }} props
+ * @returns {JSX.Element}
+ */
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();

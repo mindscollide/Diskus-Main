@@ -1,5 +1,24 @@
+/**
+ * @file Auth2_reducer.js
+ * @description Redux reducer for the `auth2` slice. Manages the multi-step
+ * sign-up and login flow: email validation, password entry, OTP verification,
+ * password creation, organisation setup, subscription/package selection,
+ * two-factor authentication, profile picture updates, and user logout.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                        - Global pending-request flag.
+ * @property {string}      ResponseMessage                - Last response message.
+ * @property {object|null} EmailValidationResponse        - Result of email validation step.
+ * @property {object|null} GetSelectedPacakgeDetails      - Selected subscription package details.
+ * @property {object|null} AuthenticateAFAResponse        - Two-factor auth check result.
+ * @property {object|null} client                         - MQTT client reference.
+ * @property {object|null} getSubscriptiondetails         - Active subscription information.
+ * @property {object|null} UpdateProfilePicture           - Profile picture update result.
+ * @property {object|null} logoutUser                     - Logout API result.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -37,6 +56,15 @@ const initialState = {
   validatePassword: null,
 };
 
+/**
+ * Reducer for the `auth2` slice.
+ * Handles multi-step registration, two-factor auth, subscription management,
+ * profile picture updates, invoice download, and user logout.
+ *
+ * @param {object} state  - Current auth2 state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.VALIDATEPASSWORD_INIT: {

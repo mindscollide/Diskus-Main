@@ -1,3 +1,11 @@
+/**
+ * @file Admin_Organization.js
+ * @description Redux actions for admin organisation management — user audit listings,
+ * audit action details, and organisation/email existence checks.
+ * Wraps `GetUsersAuditActions`, `GetUsersAuditListing`, `IsOrganizationEmailExsists`,
+ * `IsOrganizationExsists`.
+ * Dispatches: ADMIN_ORGANIZATION_INIT/SUCCESS/FAIL.
+ */
 import {
   GetUsersAuditActions,
   GetUsersAuditListing,

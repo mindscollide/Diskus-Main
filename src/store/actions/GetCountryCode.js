@@ -1,3 +1,9 @@
+/**
+ * @file GetCountryCode.js
+ * @description Redux actions for fetching available country dial codes.
+ * Wraps `getCountryCode` API config (`settingApi`).
+ * Dispatches: GET_COUNTRYCODE_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { getCountryCode } from "../../commen/apis/Api_config";

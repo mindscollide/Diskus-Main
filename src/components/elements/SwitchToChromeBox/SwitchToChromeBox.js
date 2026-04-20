@@ -1,9 +1,19 @@
+/**
+ * @file SwitchToChromeBox.js
+ * @description Overlay box that prompts the user to switch to Google Chrome for the best Diskus experience.
+ */
+
 import React from "react";
 import styles from "./SwitchToChromeBox.module.css";
 import Chrome_Logo from "../../../assets/images/Chrome_Logo.png";
 import Cross_Icon from "../../../assets/images/Cross_Icon.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Displays a modal-style overlay with a Chrome logo and a message encouraging the user to use Chrome.
+ * @param {{ handleClickClose: Function }} props
+ * @returns {JSX.Element}
+ */
 const SwitchToChromeBox = ({ handleClickClose }) => {
   const { t } = useTranslation();
   return (

@@ -1,3 +1,11 @@
+/**
+ * @file Guest_Video.js
+ * @description Redux actions for guest video-call participation — validate encrypted guest link,
+ * join, admit/reject attendees, mute/unmute, hide/show video, host transfer,
+ * participant removal, and leave meeting.
+ * Uses `meetingApi` and `videoApi` endpoints.
+ * Also establishes the guest MQTT connection for real-time signalling.
+ */
 import * as actions from "../action_types";
 
 import { meetingApi, videoApi } from "../../commen/apis/Api_ends_points";

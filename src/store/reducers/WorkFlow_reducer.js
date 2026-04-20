@@ -1,5 +1,37 @@
+/**
+ * @file WorkFlow_reducer.js
+ * @description Redux reducer for the `SignatureWorkFlow` slice. Manages the
+ * entire e-signature / document workflow lifecycle: creating signature bundles,
+ * saving workflow configurations, field management (add/update/get), sending
+ * documents, data-room annotation, approval/decline flows, signatory status
+ * tracking, and MQTT-triggered minutes-review notifications.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                                      - Global loading flag.
+ * @property {string}      ResponseMessage                              - Last API response message.
+ * @property {object|null} createSignatureResponse                      - Newly created signature bundle.
+ * @property {object|null} saveWorkFlowResponse                         - Saved workflow configuration.
+ * @property {object|null} getWorkfFlowByFileId                         - Workflow data for a specific file.
+ * @property {object|null} addUpdateFieldValue                          - Add/update field-value result.
+ * @property {object|null} saveSignatureOocument                        - Saved signature document.
+ * @property {object|null} getAllFieldsByWorkflowID                     - All fields for a workflow.
+ * @property {object|null} sendDocumentResponse                         - Send-document API result.
+ * @property {object|null} getDataroomAnnotation                        - Data-room annotation data.
+ * @property {object|null} addAnnotationFilesAttachment                 - Added annotation attachment.
+ * @property {object|null} getAllSignatureDocumentsforCreator           - All signature docs created by user.
+ * @property {object|null} getAllPendingForApprovalStats                - Pending-approval statistics.
+ * @property {object|null} listOfPendingForApprovalSignatures           - List of pending-approval signatures.
+ * @property {object|null} getAllPendingApprovalStatuses                - All approval status records.
+ * @property {object|null} declineReason                                - Decline reason data.
+ * @property {object|null} deleteSignatureDocument                      - Delete-signature result.
+ * @property {object|null} getAllSignatoriesStatusWise                  - Signatories grouped by status.
+ * @property {object|null} updateActorBundleStatus                      - Actor bundle status update result.
+ * @property {object|null} getDashboardPendingApprovalData              - Dashboard pending-approval widget data.
+ * @property {object|null} addedAsMinuteReviwerMqttPayload              - MQTT payload for minute-reviewer events.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -33,6 +65,15 @@ const initialState = {
   addedAsMinuteReviwerMqttPayload: null,
 };
 
+/**
+ * Reducer for the `SignatureWorkFlow` slice.
+ * Handles e-signature document workflow lifecycle: creation, field management,
+ * send/approve/decline flows, annotation, and MQTT notifications.
+ *
+ * @param {object} state  - Current workflow state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const SignatureWorkflowReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES: {

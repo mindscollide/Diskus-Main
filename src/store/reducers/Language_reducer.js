@@ -1,5 +1,17 @@
+/**
+ * @file Language_reducer.js
+ * @description Redux reducer for the `language` slice. Manages fetching
+ * all supported languages and setting/getting the user's selected language.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} Loading          - Pending request flag.
+ * @property {string}  ResponseMessage  - Last response message.
+ * @property {Array}   AllLanguagesData - All supported language options.
+ * @property {Array}   SetLanguageData  - Currently selected language preference.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -7,6 +19,14 @@ const initialState = {
   SetLanguageData: [],
 };
 
+/**
+ * Reducer for the `language` slice.
+ * Handles fetching available languages and getting/setting the user's language preference.
+ *
+ * @param {object} state  - Current language state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const LanguageReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_ALL_LANGUAGES_INITIAL: {

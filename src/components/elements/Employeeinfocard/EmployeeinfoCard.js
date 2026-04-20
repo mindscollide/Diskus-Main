@@ -1,7 +1,17 @@
+/**
+ * @file EmployeeinfoCard.js
+ * @description Employee info card displaying a profile picture, name, email, and an optional action icon.
+ */
+
 import { Col, Row } from "react-bootstrap";
 import styles from "./EmployeeinfoCard.module.css";
 import { isBase64 } from "../../../commen/functions/validations";
 
+/**
+ * Displays an employee's profile picture (validated as base64), name, email, and an optional icon.
+ * @param {{ Employeename: string, Employeeemail: string, Icon: JSX.Element, EmployeePic: string }} props
+ * @returns {JSX.Element}
+ */
 const EmployeeinfoCard = ({
   Employeename,
   Employeeemail,

@@ -1,8 +1,18 @@
+/**
+ * @file Filter-Bar.js
+ * @description Reusable dropdown filter component built on Ant Design Select with searchable options.
+ */
+
 import React from "react";
 import { Select } from "antd";
 import styles from "./Filter-Bar.module.css";
 const { Option } = Select;
 
+/**
+ * Renders a searchable select dropdown for filtering data.
+ * @param {{ change: Function, Options: Array<{ value: any, title: string }>, placeholder: string, defaultValue: any }} props
+ * @returns {JSX.Element}
+ */
 const FilterBar = ({ change, Options, placeholder, defaultValue }) => {
   return (
     <>

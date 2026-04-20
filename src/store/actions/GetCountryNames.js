@@ -1,3 +1,9 @@
+/**
+ * @file GetCountryNames.js
+ * @description Redux actions for fetching the full list of country names.
+ * Wraps `getCountryNames` API config (`authenticationApi`).
+ * Dispatches: COUNTRYNAMES_INIT/SUCCESS/FAIL.
+ */
 import { getCountryNames } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";

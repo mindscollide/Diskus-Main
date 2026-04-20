@@ -1,5 +1,16 @@
+/**
+ * @file CustomDropdown.js
+ * @description Generic dropdown component wrapping React-Bootstrap's Dropdown with dynamic option items.
+ */
+
 import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+
+/**
+ * Renders a dropdown toggle with dynamically mapped option items.
+ * @param {{ Icon: JSX.Element, options: Array<{ label: string }>, onChange: Function, onClick: Function }} props
+ * @returns {JSX.Element}
+ */
 const CustomDropdown = ({ Icon, options, onChange, onClick }) => {
   return (
     <Dropdown className="d-inline mx-2" onChange={onChange}>

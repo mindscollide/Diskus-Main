@@ -1,3 +1,15 @@
+/**
+ * @file converthextorgb.js
+ * @description Colour conversion utilities used by the annotation signature
+ * viewer to map per-actor hex colours to RGB values for Apryse drawing calls.
+ */
+
+/**
+ * Converts a CSS hex colour string to an `{ r, g, b }` object.
+ * Accepts both `#RRGGBB` and `RRGGBB` forms.
+ * @param {string} hex - Hex colour string.
+ * @returns {{ r: number, g: number, b: number }}
+ */
 export const hexToRgb = (hex) => {
   // Remove the leading # if present
   if (hex.startsWith("#")) {
@@ -13,6 +25,12 @@ export const hexToRgb = (hex) => {
   return { r, g, b };
 };
 
+/**
+ * Converts individual R, G, B components (0–255) to a `#RRGGBB` hex string.
+ * Throws if any component is out of range.
+ * @param {number} r @param {number} g @param {number} b
+ * @returns {string} e.g. `"#1a2b3c"`
+ */
 export const rgbToHex = (r, g, b) => {
   // Ensure each component is within the valid range
   if (r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0) {
@@ -26,7 +44,14 @@ export const rgbToHex = (r, g, b) => {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 };
 
-// This will return the color of the currently selected user
+/**
+ * Looks up the annotation colour assigned to a specific user in the
+ * signature-viewer actor list and returns it as an RGB object.
+ * @param {number} userID - ID of the user whose colour to find.
+ * @param {React.MutableRefObject<Array>} userAnnotationsRef - Ref holding the
+ *   actor colour map `[{ userID, actorColor }]`.
+ * @returns {{ r: number, g: number, b: number } | null} null if not found.
+ */
 export const getActorColorByUserID = (userID, userAnnotationsRef) => {
   console.log(`Searching for userID: ${userID}`, userAnnotationsRef);
 

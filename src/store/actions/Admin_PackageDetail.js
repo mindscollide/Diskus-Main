@@ -1,3 +1,12 @@
+/**
+ * @file Admin_PackageDetail.js
+ * @description Redux actions for fetching the organisation's current subscription/package details
+ * and handling package payment completion and upgrade amounts.
+ * Wraps `GetOrganizationSeletedPackageByOrganizationID`, `paymentCompleteMethod`,
+ * `subscriptiondetailsRequestMethod`, `subscriptionPackageUpgradeAmount`,
+ * `subscriptionPackageUpgradePayment`.
+ * Dispatches: GETSUBSCRIBEORGANIZATIONPACKAGE_INIT/SUCCESS/FAIL.
+ */
 import {
   GetOrganizationSeletedPackageByOrganizationID,
   paymentCompleteMethod,

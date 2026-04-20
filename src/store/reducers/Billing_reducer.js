@@ -1,4 +1,19 @@
+/**
+ * @file Billing_reducer.js
+ * @description Redux reducer for the `billing` slice. Manages organisation
+ * billing information: current bill details, pay-outstanding operations,
+ * and invoice/payment history.
+ */
 import * as actions from "../action_types";
+
+/**
+ * @type {object}
+ * @property {boolean}     Loading                      - Global loading flag.
+ * @property {string}      ResponseMessage              - Last response message.
+ * @property {object|null} getBillInformation           - Current billing information.
+ * @property {object|null} getPayoutStanding            - Pay-outstanding result.
+ * @property {object|null} getInvoiceAndPaymentHistory  - Invoice and payment history data.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -7,6 +22,15 @@ const initialState = {
   getInvoiceAndPaymentHistory: null,
 };
 
+/**
+ * Reducer for the `billing` slice.
+ * Handles fetching billing info, processing pay-outstanding, and retrieving
+ * invoice and payment history.
+ *
+ * @param {object} state  - Current billing state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const OrganizationBillingReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_BLLINGINFORMATION_INIT: {

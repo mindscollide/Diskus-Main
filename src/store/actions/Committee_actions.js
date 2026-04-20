@@ -1,3 +1,10 @@
+/**
+ * @file Committee_actions.js
+ * @description Redux actions for committee management — create, update, fetch committees
+ * by user or ID, member roles and types, committee data-room mapping, and document attachment handling.
+ * Uses `getCommitteesApi` and `dataRoomApi` endpoints.
+ * Dispatches: COMMITTEE_* action types.
+ */
 import * as actions from "../action_types";
 
 import {

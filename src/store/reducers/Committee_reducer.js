@@ -1,5 +1,22 @@
+/**
+ * @file Committee_reducer.js
+ * @description Redux reducer for the `committee` slice. Manages committee
+ * data: create/update/view committees, member management, document uploads,
+ * data-room mapping, real-time MQTT status events, and page navigation flags.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                          - Global loading flag.
+ * @property {string}      ResponseMessage                  - Last response message.
+ * @property {object|null} GetAllCommitteesByUserIDResponse - All committees for the current user.
+ * @property {object|null} CreateCommitteeResponse          - Result of create-committee API.
+ * @property {object|null} getCommitteeByCommitteeID        - Single committee details.
+ * @property {object|null} realtimeCommitteeCreateResponse  - MQTT committee creation payload.
+ * @property {object|null} realtimeCommitteeStatus          - MQTT committee status change payload.
+ * @property {number}      committeeID                      - Currently active committee ID.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -27,6 +44,15 @@ const initialState = {
   viewCommitteeDetailLink: null,
 };
 
+/**
+ * Reducer for the `committee` slice.
+ * Handles committee CRUD, member management, document uploads, data-room
+ * mapping, MQTT real-time events, and page navigation flags.
+ *
+ * @param {object} state  - Current committee state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const ComitteeGroupsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_DETAILS_LINK_INIT: {

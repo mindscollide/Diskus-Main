@@ -1,9 +1,26 @@
+/**
+ * @file convertFileSizeInMB.js
+ * @description File-size conversion and formatting utilities used across
+ * DataRoom upload progress indicators and file listing displays.
+ */
+
+/**
+ * Converts bytes to megabytes, returned as a string with 2 decimal places.
+ * @param {number} fileSize - File size in bytes.
+ * @returns {string} Size in MB, e.g. "1.23".
+ */
 export const ConvertFileSizeInMB = (fileSize) => {
   const fileSizeInKB = fileSize / 1024;
   const fileSizeInMB = fileSizeInKB / 1024;
   return fileSizeInMB.toFixed(2);
 };
 
+/**
+ * Checks whether a file size is within the 1.5 GB upload limit.
+ * @param {number} fileSize - File size in bytes.
+ * @returns {{ fileSizeInGB: number, isMorethan: boolean }}
+ *   `isMorethan` is `true` when the file is ≤ 1.5 GB (i.e. allowed).
+ */
 export const isFileSizeValid = (fileSize) => {
   const fileSizeInGB = fileSize / (1024 * 1024 * 1024); // Convert bytes to GB
   const isMorethan = fileSizeInGB <= 1.5;

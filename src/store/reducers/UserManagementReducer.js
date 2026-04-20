@@ -1,5 +1,38 @@
+/**
+ * @file UserManagementReducer.js
+ * @description Redux reducer for the `UserMangement` slice. Central store for
+ * all admin user-management operations: organisation setup, subscription
+ * lifecycle (packages, upgrades, downgrades, cancellation, payment), user
+ * CRUD, trial management, wallet, board-deck email/PDF, video URL, and
+ * published minutes data.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                                       - Global loading flag.
+ * @property {string}      ResponseMessage                               - Last API response message.
+ * @property {object|null} saveOrganizationAndSelectedPakageData         - Result of saving org + package.
+ * @property {object|null} getOrganizationSubscriptionExpiryDetailsData  - Subscription expiry details.
+ * @property {object|null} extentOrganizationalTrialData                 - Trial extension result.
+ * @property {object|null} addOrganizationUsersData                      - Add-user API result.
+ * @property {object|null} editOrganizationUsersData                     - Edit-user API result.
+ * @property {object|null} allOrganizationUsersData                      - All users list.
+ * @property {object|null} organizationPakageDetailsUserStatsData        - Package + user statistics.
+ * @property {object|null} organizationSelectedPakagesByOrganizationIDData - Selected packages for org.
+ * @property {number}      defaultRoutingValue                           - Active admin routing tab (default 1).
+ * @property {number}      defaulSignUpRoute                             - Active sign-up routing step (default 1).
+ * @property {object|null} getAllSelectedPakagesData                     - All selectable packages list.
+ * @property {object|null} getOrganizationUserStatsGraph                 - Graph data for user stats.
+ * @property {Array}       getAllUserTypePackagesData                    - All user-type package options.
+ * @property {object|null} deleteOrganizationUsersData                  - Delete-user API result.
+ * @property {object|null} paymentInitiateData                          - Payment initiation response.
+ * @property {Array}       cancelSubReasonData                          - Cancel-subscription reason options.
+ * @property {object|null} cancelOrganizationSubsData                   - Cancel-subscription API result.
+ * @property {object|null} packageUpgradeDetail                         - Package upgrade details.
+ * @property {object|null} defaultRoutes                                - Default routing config.
+ * @property {object|null} getMinutesPublishedData                      - Published minutes data.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -35,6 +68,15 @@ const initialState = {
   getMinutesPublishedData: null,
 };
 
+/**
+ * Reducer for the `UserMangement` slice.
+ * Handles the full admin user-management lifecycle including payments,
+ * subscriptions, user CRUD, trial management, and board-deck operations.
+ *
+ * @param {object} state  - Current user-management state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const UserMangementReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.SAVE_ORGANIZATIONAND_SELECTEDPAKGE_USERMANAGEMENT_INIT: {

@@ -1,3 +1,17 @@
+/**
+ * @file CompareArrayObjectValues.js
+ * @description Utilities for deep structural comparison of objects and for
+ * validating that every property inside an array of objects has a non-empty value.
+ */
+
+/**
+ * Performs a deep structural equality check between two values.
+ * Primitives are compared with `===`; objects are compared recursively by
+ * key count and value. Returns `false` for `null` inputs of "object" type.
+ * @param {*} obj1
+ * @param {*} obj2
+ * @returns {boolean} `true` when both values are structurally identical.
+ */
 export const deepEqual = (obj1, obj2) => {
   if (obj1 === obj2) {
     return true;
@@ -28,6 +42,12 @@ export const deepEqual = (obj1, obj2) => {
   return true;
 };
 
+/**
+ * Checks that every own-property in every object inside an array has a
+ * non-empty value (i.e. not `undefined`, `null`, or `""`).
+ * @param {Array<Object>} arrayOfObjects
+ * @returns {boolean} `true` only when all values in all objects are non-empty.
+ */
 export const areAllValuesNotEmpty = (arrayOfObjects) => {
   for (let i = 0; i < arrayOfObjects.length; i++) {
     const currentObject = arrayOfObjects[i];

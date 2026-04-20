@@ -1,3 +1,20 @@
+/**
+ * @file responce_message.js
+ * @description Lowercase server-side response-code constants used to match
+ * error/status messages returned by the authentication and sign-up micro-services.
+ *
+ * Each key maps the readable constant name to the lowercase version of the
+ * service's internal response code string so string comparisons remain
+ * case-insensitive throughout the app.
+ */
+
+/**
+ * Response codes returned by
+ * `ERM_AuthService › AuthManager › UserPasswordVerification`.
+ * Codes 01–39 cover scenarios such as invalid credentials, locked accounts,
+ * expired passwords, MFA challenges, and token issues.
+ * @enum {string}
+ */
 export const USERPASSWORDVERIFICATION = {
   VERIFICATION_01:
     "ERM_AuthService_AuthManager_UserPasswordVerification_01".toLowerCase(),
@@ -72,6 +89,13 @@ export const USERPASSWORDVERIFICATION = {
   // Add more as needed
 };
 
+/**
+ * Response codes returned by
+ * `ERM_AuthService › SignUpManager › UsersPasswordCreation`.
+ * Codes 01–29 cover scenarios such as password policy violations, duplicate
+ * accounts, email verification failures, and terms acceptance.
+ * @enum {string}
+ */
 export const USERSPASSWORDCREATION = {
   CREATION_01:
     "ERM_AuthService_SignUpManager_UsersPasswordCreation_01".toLowerCase(),

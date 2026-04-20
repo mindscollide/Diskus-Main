@@ -1,5 +1,20 @@
+/**
+ * @file ActionMeeting_Reducer.js
+ * @description Redux reducer for the `actionMeeting` slice. Manages meeting
+ * task/action items: fetching the to-do task list, uploading action documents,
+ * mapping tasks to agenda items, and removing task-agenda mappings.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading               - Global loading flag.
+ * @property {string}      ResponseMessage       - Last API response message.
+ * @property {object|null} todoListMeetingTask   - Task list data for the active meeting.
+ * @property {object|null} uploadActionDocument  - Result of the action-document upload.
+ * @property {object|null} mapTaskMeetingAgenda  - Result of mapping a task to an agenda item.
+ * @property {object|null} removeTaskMapping     - Result of removing a task-agenda mapping.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -9,6 +24,14 @@ const initialState = {
   removeTaskMapping: null,
 };
 
+/**
+ * Reducer for the `actionMeeting` slice.
+ * Handles meeting action/task CRUD and document upload lifecycle.
+ *
+ * @param {object} state  - Current action-meeting state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const actionMeetingReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_MEETING_TASKS_ACTION_INIT: {

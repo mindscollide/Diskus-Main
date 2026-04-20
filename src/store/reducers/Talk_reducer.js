@@ -1,5 +1,25 @@
+/**
+ * @file Talk_reducer.js
+ * @description Redux reducer for the `talk` slice. Manages the in-app
+ * messaging (Talk) feature: one-to-one and group messages, broadcast
+ * (shout-all) chats, starred/flagged/archived messages, blocked users,
+ * real-time MQTT socket data, and file upload state.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}    Loading              - Global loading flag.
+ * @property {boolean}    ChatSpinner          - Chat-specific spinner flag.
+ * @property {object}     activeChatIdData     - Currently active chat id and type.
+ * @property {Array}      AllMessagesData      - All fetched messages for the active chat.
+ * @property {object}     AllUserChats         - All user chat threads with loading state.
+ * @property {object}     UserOTOMessages      - One-to-one message thread data.
+ * @property {object}     GroupMessages        - Group message thread data.
+ * @property {object}     talkSocketData       - Real-time socket OTO/group message payloads.
+ * @property {Array}      MqttMessageDeleteData - Messages deleted via MQTT.
+ * @property {string}     FileUploadData        - File upload result or progress data.
+ */
 const initialState = {
   isLoggedIn: false,
   ShowNotification: false,
@@ -310,6 +330,15 @@ const initialState = {
   imageData: null,
 };
 
+/**
+ * Reducer for the `talk` slice.
+ * Handles OTO/group/broadcast messaging, starred/flagged/archived messages,
+ * blocked users, MQTT real-time events, and file upload state.
+ *
+ * @param {object} state  - Current talk state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const talkReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.REFRESH_TOKEN_TALK_SUCCESS: {

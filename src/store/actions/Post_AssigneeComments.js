@@ -1,3 +1,11 @@
+/**
+ * @file Post_AssigneeComments.js
+ * @description Redux actions for posting and managing comments on to-do task assignees.
+ * Wraps `toDoListApi` (postComment request method).
+ * Dispatches: POST_ASSIGNEEECOMMENTS_SUCCESS/FAIL, POST_COMMENTS, DELETE_COMMENTS,
+ * EMPTYCOMMENTSFROMMQTT.
+ */
+
 import * as actions from "../action_types";
 import { postComment } from "../../commen/apis/Api_config";
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
@@ -31,6 +39,13 @@ const postCommentFail = (message) => {
     message: message,
   };
 };
+/**
+ * Posts a new comment on a to-do task assignee record.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Comment payload (TaskID, CommentText, etc.).
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching POST_ASSIGNEEECOMMENTS_SUCCESS/FAIL.
+ */
 const postAssgineeComment = (navigate, data, t) => {
   return (dispatch) => {
     let form = new FormData();

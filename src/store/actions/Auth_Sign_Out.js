@@ -1,3 +1,10 @@
+/**
+ * @file Auth_Sign_Out.js
+ * @description Redux actions for user logout and session teardown.
+ * Wraps `authenticationApi` (UserLogout request method).
+ * Dispatches: USER_LOGOUT_INIT, USER_LOGOUT_SUCCESS, USER_LOGOUT_FAILED, SIGN_OUT, SET_INITIAL_ALLSTATE.
+ */
+
 import * as actions from "../action_types";
 import { BroadcastChannel } from "broadcast-channel";
 import { UserLogout } from "../../commen/apis/Api_config";
@@ -31,6 +38,12 @@ const userlogOutFailed = (message) => {
   };
 };
 
+/**
+ * Calls the logout API and clears the session on success.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching USER_LOGOUT_INIT/SUCCESS/FAILED.
+ */
 const userLogOutApiFunc = (navigate, t) => {
   return (dispatch) => {
     try {
@@ -103,6 +116,13 @@ const userLogOutApiFunc = (navigate, t) => {
   };
 };
 
+/**
+ * Clears localStorage (preserving "remember me" data), resets all Redux state,
+ * and redirects the browser to the root route.
+ * @param {string} message - Optional message to include in the SIGN_OUT action.
+ * @param {Function} dispatch - Redux dispatch function.
+ * @returns {Promise<{ type: string, message?: string }>} SIGN_OUT action object.
+ */
 export const signOut = async (message, dispatch) => {
   // logoutChannel.postMessage("Logout");
   dispatch(initaialStateFun());

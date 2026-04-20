@@ -1,3 +1,8 @@
+/**
+ * @file chat-modal.js
+ * @description Chat action modal that allows users to save, print, or email messages with optional date range filtering.
+ */
+
 import React, { useState } from "react";
 import "./chat-modal.css";
 import { Modal, InputDatePicker, Button } from "./../../elements";
@@ -8,6 +13,11 @@ import {
   DateSendingFormat,
 } from "../../../commen/functions/date_formater";
 
+/**
+ * Modal for chat operations (save/print/email) with Today/All/Custom date range options.
+ * @param {{ setShow: Function, show: boolean, save: boolean, print: boolean, email: boolean }} props
+ * @returns {JSX.Element}
+ */
 const ChatModal = ({ setShow, show, save, print, email }) => {
   const [todayCheckState, setTodayCheckState] = useState(false);
   const [allCheckState, setAllCheckState] = useState(false);

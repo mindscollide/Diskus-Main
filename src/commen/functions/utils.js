@@ -1,3 +1,66 @@
+/**
+ * @file utils.js
+ * @description Central utility module for the Diskus application.
+ *
+ * Provides helpers covering the following concerns:
+ *
+ *  **Feature / Route Permissions**
+ *  - `savePackageFeatureIDs`      – Persists available feature IDs to localStorage.
+ *  - `checkFeatureID`             – Checks whether a feature ID is active.
+ *  - `checkFeatureIDAvailability` – Numeric-safe variant of checkFeatureID.
+ *  - `updateLocalUserRoutes`      – Builds the allowed user route list from API features.
+ *  - `updateAdminRoutes`          – Builds the allowed admin route list from API features.
+ *
+ *  **Authentication / Session**
+ *  - `handleLoginResponse`             – Full post-login setup: localStorage, routes, trial flags.
+ *  - `clearLocalStorageAtloginresponce`– Cleans up login/signup flow state on various error codes.
+ *  - `getLocalStorageItemNonActiveCheck` – Safe localStorage read (returns `false` when missing).
+ *  - `handleNavigation`                – Decides post-login redirect target based on deep-link keys.
+ *
+ *  **API Helpers**
+ *  - `getFormData` – Wraps request data in a `FormData` object for multipart API calls.
+ *
+ *  **URL / Browser**
+ *  - `clearPaymentActionFromUrl` – Strips query params and hash from the current URL.
+ *  - `extractActionFromUrl`      – Extracts the `validateguest_action` param from a URL string.
+ *  - `getActionValue`            – Splits a URL on a key and returns the trailing segment.
+ *
+ *  **Config**
+ *  - `findAndSetConfigValue` – Looks up an object in a config array by `configKey`.
+ *
+ *  **String / Text**
+ *  - `truncateText`               – Truncates a string at `maxLength` with an ellipsis.
+ *  - `removeHTMLTags`             – Strips all HTML tags from a string.
+ *  - `removeHTMLTagsAndTruncate`  – Strips HTML then truncates at `maxLength`.
+ *  - `getFileName`                – Returns the stem (no extension) of a filename.
+ *
+ *  **Encryption (XOR + Base64)**
+ *  - `xorEncryptDecrypt` – Symmetric XOR cipher over a repeating key.
+ *  - `encrypt`           – Serialises, XOR-encrypts, and Base64-encodes a value.
+ *  - `decrypt`           – Base64-decodes, XOR-decrypts, and deserialises a value.
+ *  - `setData`           – Saves encrypted data to localStorage.
+ *  - `getData`           – Retrieves and decrypts data from localStorage.
+ *
+ *  **File Helpers**
+ *  - `fileFormatforSignatureFlow`    – Supported file extensions for the Apryse signature viewer.
+ *  - `NewfileFormatforSignatureFlow` – Extended list (includes `.txt`).
+ *  - `maxFileSize`                   – Maximum upload size (1.5 GiB).
+ *  - `openDocumentViewer`            – Opens a document in the in-app viewer or data-room viewer.
+ *
+ *  **Miscellaneous**
+ *  - `isFunction`                – Checks whether a value is a function.
+ *  - `generateRandomNegativeAuto`– Returns a random integer in [-1000, -10].
+ *  - `generateRandomPositiveId`  – Returns a random integer in [1, 1000].
+ *
+ *  **Notification Routing**
+ *  - `WebNotificationExportRoutFunc` – Master dispatcher that handles `notificationActionID`
+ *    values 1–50+, routing the user to the correct page / modal when a real-time
+ *    notification is clicked.
+ *
+ *  **Sidebar Navigation**
+ *  - `SideBarGlobalNavigationFunction` – Guards sidebar navigation while an advance
+ *    meeting or schedule-meeting modal is open.
+ */
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
   createCommitteePageFlag,
@@ -56,7 +119,19 @@ import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
 import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 import { validateExtensionsforHTMLPage } from "./validations";
 
-// this is function save avalable feature for current user implementation its save all data in local storage
+// ─── Feature / Route Permissions ──────────────────────────────────────────────
+
+/**
+ * Persists available package feature IDs for the current user to localStorage.
+ *
+ * Reads any previously stored IDs, merges them with the IDs derived from the
+ * provided `userFeatures` array, de-duplicates via a `Set`, and writes the
+ * combined array back under the key `"packageFeatureIDs"`.
+ *
+ * @param {Array<{packageFeatureID: number}>} userFeatures - Feature objects
+ *   returned by the login / session API.
+ * @returns {void}
+ */
 export function savePackageFeatureIDs(userFeatures) {
   // Fetch existing data from local storage
   const storedData = localStorage.getItem("packageFeatureIDs");
@@ -72,7 +147,12 @@ export function savePackageFeatureIDs(userFeatures) {
   localStorage.setItem("packageFeatureIDs", JSON.stringify(combinedIDs));
 }
 
-// this is function match data if id is exsit in deatures
+/**
+ * Checks whether a given feature ID exists in the user's stored package features.
+ *
+ * @param {number} id - The `packageFeatureID` to look up.
+ * @returns {boolean} `true` if the feature is available for the current user.
+ */
 export function checkFeatureID(id) {
   // Retrieve the packageFeatureIDs string from local storage and parse it into an array
   const storedIDs = localStorage.getItem("packageFeatureIDs");
@@ -82,7 +162,18 @@ export function checkFeatureID(id) {
   return packageFeatureIDs.includes(id);
 }
 
-//Export function userFeatures from the Response
+/**
+ * Populates `LocalUserRoutes` by matching API-returned user features against a
+ * static feature-ID → route-name mapping table.
+ *
+ * Only routes whose `packageFeatureID` appears in `userFeatures` and that are
+ * not already present in `LocalUserRoutes` are appended, preventing duplicates.
+ *
+ * @param {Array<{packageFeatureID: number}>} userFeatures   - Features from the API.
+ * @param {Array<{name: string, id: number}>} LocalUserRoutes - Accumulator array
+ *   that is mutated in-place and returned.
+ * @returns {Array<{name: string, id: number}>} The updated `LocalUserRoutes` array.
+ */
 export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
   let user = [
     { id: 1, name: "Meeting" },
@@ -130,6 +221,18 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
   }
 }
 
+/**
+ * Populates `LocalAdminRoutes` by matching API-returned admin features against a
+ * static feature-ID → route-name mapping table.
+ *
+ * Mirrors `updateLocalUserRoutes` but operates on the admin feature set and
+ * admin-specific route names (e.g. `"ManageUsers"`, `"OrganizationlevelConfigUM"`).
+ *
+ * @param {Array<{packageFeatureID: number}>} adminFeatures   - Admin features from the API.
+ * @param {Array<{name: string, id: number}>} LocalAdminRoutes - Accumulator array
+ *   that is mutated in-place and returned.
+ * @returns {Array<{name: string, id: number}>} The updated `LocalAdminRoutes` array.
+ */
 export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
   let Admin = [
     { id: 26, name: "AddUsersUsermanagement" },
@@ -183,8 +286,30 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
   }
 }
 
-// for enter posword state management and routes management
-// Export the handleLoginResponse function
+// ─── Authentication / Session ──────────────────────────────────────────────────
+
+/**
+ * Processes a successful login API response and bootstraps the application
+ * session.
+ *
+ * Responsibilities:
+ *  1. Persists core identity fields (`organizationID`, `roleID`, `name`,
+ *     `userEmail`, auth tokens) to `localStorage` and `sessionStorage`.
+ *  2. Resets call-related flags (`activeCall`, `isMeeting`, etc.).
+ *  3. Conditionally fetches package-expiry details for trial organisations.
+ *  4. Constructs `LocalUserRoutes` and `LocalAdminRoutes` — either a full trial
+ *     set or a dynamically computed set from `userFeatures`/`adminFeatures`.
+ *  5. Writes the route arrays to `localStorage` so that `RouteWrapperUser` /
+ *     `RouteWrapperAdmin` can gate access to individual pages.
+ *  6. Sets `LoginFlowPageRoute` to `1` to advance the login flow state machine.
+ *
+ * @async
+ * @param {Object}   response          - The raw login API response object.
+ * @param {Function} dispatch          - Redux `dispatch` function.
+ * @param {Function} navigate          - React Router `navigate` function.
+ * @param {Function} t                 - i18next translation function.
+ * @returns {Promise<void>}
+ */
 export async function handleLoginResponse(response, dispatch, navigate, t) {
   try {
     if (response.organizationID) {
@@ -360,7 +485,16 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
   }
 }
 
-// Features IDs Check Fucntion
+/**
+ * Checks whether a feature ID is present in the stored package feature list.
+ *
+ * Unlike `checkFeatureID`, this variant coerces the provided ID to a `Number`
+ * before comparison, making it safe to call with string values (e.g. from DOM
+ * attributes or URL params).
+ *
+ * @param {number|string} id - The feature ID to check.
+ * @returns {boolean} `true` if the feature is licensed for the current user.
+ */
 export function checkFeatureIDAvailability(id) {
   let packageID = JSON.parse(localStorage.getItem("packageFeatureIDs"));
   if (Array.isArray(packageID)) {
@@ -371,7 +505,21 @@ export function checkFeatureIDAvailability(id) {
   }
 }
 
-// this is use for api request data
+// ─── API Helpers ───────────────────────────────────────────────────────────────
+
+/**
+ * Wraps request data and a request-method descriptor in a `FormData` object
+ * suitable for multipart API calls.
+ *
+ * The server expects:
+ *  - `RequestData`   – JSON-serialised payload.
+ *  - `RequestMethod` – String identifier that routes the call server-side.
+ *
+ * @param {Object} data              - The request payload (will be `JSON.stringify`-ed).
+ * @param {{RequestMethod: string}} RequestMethodData - Object containing the
+ *   `RequestMethod` routing key.
+ * @returns {FormData} A populated `FormData` instance.
+ */
 export function getFormData(data, RequestMethodData) {
   let form = new FormData();
   form.append("RequestData", JSON.stringify(data));
@@ -379,13 +527,39 @@ export function getFormData(data, RequestMethodData) {
   return form;
 }
 
-// this is for non active organisation check only
+/**
+ * Safely reads a value from `localStorage`, returning `false` when the key is
+ * absent (rather than `null`).
+ *
+ * Intended for non-active-organisation checks where `false` is the correct
+ * default sentinel rather than `null`.
+ *
+ * @param {string} key - The `localStorage` key to read.
+ * @returns {string|false} The stored string, or `false` if the key does not exist.
+ */
 export function getLocalStorageItemNonActiveCheck(key) {
   const item = localStorage.getItem(key);
   return item !== null ? item : false;
 }
 
-// this is for non active organisation check only
+/**
+ * Manages login-flow cleanup in response to various server error / status codes.
+ *
+ * `value` codes:
+ *  - `1` – Normal sign-out: removes both `SignupFlowPageRoute` and
+ *           `LoginFlowPageRoute`.
+ *  - `2` – Redirect to root: removes `SignupFlowPageRoute`, sets
+ *           `LoginFlowPageRoute` to `1`, and navigates to `"/"`.
+ *  - `3` – Wrong password: dispatches `LoginFlowRoutes(2)` and sets
+ *           `LoginFlowPageRoute` to `2`.
+ *  - `4` – Account blocked / inactive: dispatches `LoginFlowRoutes(1)`, sets
+ *           `LoginFlowPageRoute` to `1`, and navigates to `"/"`.
+ *
+ * @param {Function} dispatch  - Redux `dispatch`.
+ * @param {number}   value     - Status/error code from the server (1–4).
+ * @param {Function} navigate  - React Router `navigate`.
+ * @returns {void}
+ */
 export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
   if (value === 1) {
     localStorage.removeItem("SignupFlowPageRoute");
@@ -408,7 +582,17 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
   }
 }
 
-//Clearing URL function
+// ─── URL / Browser ─────────────────────────────────────────────────────────────
+
+/**
+ * Removes all query parameters and the URL fragment from the browser's current
+ * URL without triggering a page reload.
+ *
+ * Uses `window.history.replaceState` so the cleaned URL is reflected in the
+ * address bar and browser history, but no navigation occurs.
+ *
+ * @returns {void}
+ */
 export const clearPaymentActionFromUrl = () => {
   const currentUrl = new URL(window.location.href);
   console.log(currentUrl, "currentUrlcurrentUrl");
@@ -419,10 +603,33 @@ export const clearPaymentActionFromUrl = () => {
   window.history.replaceState({}, document.title, newUrl);
 };
 
+// ─── Config ────────────────────────────────────────────────────────────────────
+
+/**
+ * Finds a configuration object in an array by its `configKey` property.
+ *
+ * @param {Array<{configKey: string, [key: string]: any}>} data - Array of config objects.
+ * @param {string} key - The `configKey` value to search for.
+ * @returns {{configKey: string, [key: string]: any}|undefined} The matching
+ *   config object, or `undefined` if not found.
+ */
 export const findAndSetConfigValue = (data, key) => {
   const foundObject = data.find((obj) => obj.configKey === key);
   return foundObject;
 };
+// ─── String / Text ─────────────────────────────────────────────────────────────
+
+/**
+ * Truncates a string to `maxLength` characters, appending `"..."` if the
+ * original string exceeds the limit.
+ *
+ * @param {string} text      - The source string.
+ * @param {number} maxLength - Maximum number of characters to keep (the
+ *   ellipsis occupies the last three slots, so the visible content is
+ *   `maxLength - 3` characters).
+ * @returns {string} Truncated string with ellipsis, or the original string
+ *   when it fits within `maxLength`.
+ */
 export const truncateText = (text, maxLength) => {
   console.log(
     text.length,
@@ -436,10 +643,26 @@ export const truncateText = (text, maxLength) => {
   return text;
 };
 
+/**
+ * Strips all HTML tags from a string using a regex.
+ *
+ * @param {string} htmlString - A string that may contain HTML markup.
+ * @returns {string} Plain-text content with all tags removed.
+ */
 export const removeHTMLTags = (htmlString) => {
   return htmlString.replace(/<\/?[^>]+(>|$)/g, "");
 };
 
+/**
+ * Truncates a string to `maxLength` characters.
+ *
+ * Note: despite the name, this function does **not** strip HTML tags — it only
+ * truncates.  Use `removeHTMLTags` first if stripping is needed.
+ *
+ * @param {string} String        - The source string.
+ * @param {number} [maxLength=500] - Maximum character count before truncation.
+ * @returns {string} The (possibly truncated) string.
+ */
 export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
   // Truncate the content to the specified length
   if (String.length > maxLength) {
@@ -449,7 +672,18 @@ export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
   return String;
 };
 
-// utils/crypto.js
+// ─── Encryption (XOR + Base64) ─────────────────────────────────────────────────
+
+/**
+ * Applies a repeating-key XOR cipher to `input`.
+ *
+ * Because XOR is its own inverse, the same function is used for both
+ * encryption and decryption — call it twice with the same key to round-trip.
+ *
+ * @param {string} input - The plaintext or ciphertext string.
+ * @param {string} key   - The cipher key (repeated cyclically over `input`).
+ * @returns {string} The XOR-transformed string.
+ */
 export const xorEncryptDecrypt = (input, key) => {
   let out = "";
   for (let i = 0; i < input.length; i++) {
@@ -460,6 +694,15 @@ export const xorEncryptDecrypt = (input, key) => {
   return out;
 };
 
+/**
+ * Encrypts an arbitrary value for safe storage.
+ *
+ * Steps: `JSON.stringify` → XOR cipher → Base64 encode.
+ *
+ * @param {*}      data - Any JSON-serialisable value.
+ * @param {string} key  - The XOR cipher key (typically `REACT_APP_SECERETKEY`).
+ * @returns {string|null} Base64-encoded ciphertext, or `null` on error.
+ */
 export const encrypt = (data, key) => {
   try {
     const encrypted = xorEncryptDecrypt(JSON.stringify(data), key);
@@ -470,6 +713,15 @@ export const encrypt = (data, key) => {
   }
 };
 
+/**
+ * Decrypts a value produced by `encrypt`.
+ *
+ * Steps: Base64 decode → XOR cipher → `JSON.parse`.
+ *
+ * @param {string} data - Base64-encoded ciphertext.
+ * @param {string} key  - The XOR cipher key (typically `REACT_APP_SECERETKEY`).
+ * @returns {*|null} The original value, or `null` on error.
+ */
 export const decrypt = (data, key) => {
   try {
     const decoded = atob(data); // base64 decode
@@ -480,16 +732,41 @@ export const decrypt = (data, key) => {
   }
 };
 
-// Save Encrypted Data to localStorage
+/**
+ * Encrypts `data` using the application secret key and saves the result to
+ * `localStorage` under `key`.
+ *
+ * @param {string} key  - The `localStorage` key to write.
+ * @param {*}      data - Any JSON-serialisable value.
+ * @returns {void}
+ */
 export const setData = (key, data) =>
   localStorage.setItem(key, encrypt(data, process.env.REACT_APP_SECERETKEY));
 
-// Retrieve and Decrypt Data from localStorage
+/**
+ * Reads a ciphertext value from `localStorage` and decrypts it using the
+ * application secret key.
+ *
+ * @param {string} key - The `localStorage` key to read.
+ * @returns {*|null} The decrypted value, or `null` when the key is absent or
+ *   decryption fails.
+ */
 export const getData = (key) => {
   const data = localStorage.getItem(key);
   return data ? decrypt(data, process.env.REACT_APP_SECERETKEY) : null;
 };
 
+// ─── File Helpers ──────────────────────────────────────────────────────────────
+
+/**
+ * File extensions supported by the Apryse WebViewer signature flow.
+ *
+ * Covers PDF, major Microsoft Office formats, CAD drawings, common document
+ * formats, raster images, and SVG.  Used to decide whether a file can be
+ * opened in the in-app PDF/annotation viewer.
+ *
+ * @type {string[]}
+ */
 export const fileFormatforSignatureFlow = [
   // PDF Formats
   "pdf",
@@ -537,6 +814,16 @@ export const fileFormatforSignatureFlow = [
   "svg",
 ];
 
+/**
+ * Extracts the `validateguest_action` query parameter value from a URL string.
+ *
+ * Handles the common issue where URL decoding turns `+` into a space by
+ * first replacing spaces back to `+` before calling `decodeURIComponent`.
+ *
+ * @param {string} url - The full URL (or query string portion) to parse.
+ * @returns {string} The decoded action string, or `""` when the parameter is
+ *   absent.
+ */
 export const extractActionFromUrl = (url) => {
   const params = new URLSearchParams(url.split("?")[1]); // Extract query params
   let actionString = params.get("validateguest_action"); // Get 'validateguest_action' param
@@ -550,6 +837,14 @@ export const extractActionFromUrl = (url) => {
   return ""; // Return empty if no valid 'validateguest_action' is found
 };
 
+/**
+ * Extended list of file extensions supported by the document viewer.
+ *
+ * Same as `fileFormatforSignatureFlow` but additionally includes plain-text
+ * files (`"txt"`).  Used internally by `openDocumentViewer`.
+ *
+ * @type {string[]}
+ */
 const NewfileFormatforSignatureFlow = [
   // PDF Formats
   "pdf",
@@ -598,6 +893,23 @@ const NewfileFormatforSignatureFlow = [
   "svg",
 ];
 
+/**
+ * Opens a document in the appropriate in-app viewer based on file extension.
+ *
+ * - If `ext` is in `NewfileFormatforSignatureFlow` (PDF, Office, images, etc.),
+ *   the document is opened in a new tab at `/Diskus/documentViewer` with the
+ *   encoded JSON payload as a query parameter.
+ * - If `ext` passes `validateExtensionsforHTMLPage`, the Data Room annotation
+ *   API is called so the file can be displayed as an HTML page.
+ *
+ * @param {string}   ext      - Lowercase file extension (without the dot).
+ * @param {string}   jsonData - URL-encoded JSON string describing the document.
+ * @param {Function} dispatch - Redux `dispatch`.
+ * @param {Function} navigate - React Router `navigate`.
+ * @param {Function} t        - i18next translation function.
+ * @param {{id: number}} record - The data-room file record (used for HTML page viewer).
+ * @returns {void}
+ */
 export const openDocumentViewer = (
   ext,
   jsonData,
@@ -622,17 +934,115 @@ export const openDocumentViewer = (
   }
 };
 
+/**
+ * Maximum allowed file upload size: **1.5 GiB** (1 610 612 736 bytes).
+ *
+ * @type {number}
+ */
 export const maxFileSize = 1.5 * 1024 * 1024 * 1024;
 
+/**
+ * Checks whether a value is a function.
+ *
+ * @param {*} value - Any value.
+ * @returns {boolean} `true` if `typeof value === "function"`.
+ */
 export const isFunction = (value) => {
   return typeof value === "function";
 };
 
+/**
+ * Extracts the substring that follows a known `key` within a URL string.
+ *
+ * @example
+ * getActionValue("https://example.com/path?token=abc123", "token=")
+ * // Returns "abc123"
+ *
+ * @param {string} url - The URL or any string to parse.
+ * @param {string} key - The delimiter to split on.
+ * @returns {string|undefined} Everything after the first occurrence of `key`,
+ *   or `undefined` if `key` is not found.
+ */
 export const getActionValue = (url, key) => {
   return url.split(key)[1];
 };
 
-// Web Notification Export function
+// ─── Notification Routing ──────────────────────────────────────────────────────
+
+/**
+ * Master notification-click handler.  Reads `NotificationData.notificationActionID`
+ * and routes the user to the appropriate page / modal.
+ *
+ * Supported action IDs and their meanings:
+ *  | ID | Event |
+ *  |----|-------|
+ *  | 1  | Meeting published / created |
+ *  | 2  | Meeting updated |
+ *  | 3  | Meeting started |
+ *  | 4  | Meeting ended |
+ *  | 5  | Meeting cancelled (quick meetings only) |
+ *  | 6  | Removed from meeting |
+ *  | 7  | Added as minutes reviewer |
+ *  | 8  | Removed as minutes reviewer |
+ *  | 9  | Added as participant |
+ *  | 10 | Added as organizer |
+ *  | 11 | Added as agenda contributor |
+ *  | 12 | Poll created inside meeting |
+ *  | 13 | Proposed meeting request |
+ *  | 14 | Proposed meeting slot selected by participant |
+ *  | 15 | Organizer: all date responses received |
+ *  | 16 | Added to group |
+ *  | 17 | Removed from group |
+ *  | 18 | Group archived |
+ *  | 19 | Group inactivated |
+ *  | 20 | Group activated |
+ *  | 21 | Added to committee |
+ *  | 22 | Removed from committee |
+ *  | 23 | Committee archived |
+ *  | 24 | Committee inactivated |
+ *  | 25 | Committee activated |
+ *  | 26 | Added as resolution voter |
+ *  | 27 | Added as resolution non-voter |
+ *  | 28 | Resolution decision announced |
+ *  | 29 | Poll created (standalone) |
+ *  | 30 | Poll updated |
+ *  | 33 | Data room file shared as viewer |
+ *  | 34 | Data room file shared as editor |
+ *  | 35 | Data room folder shared as viewer |
+ *  | 36 | Data room folder shared as editor |
+ *  | 37–40 | Data room folder/file deleted |
+ *  | 41 | Minutes workflow update |
+ *  | 42 | Group role changed |
+ *  | 43 | Committee role changed |
+ *  | 44 | Resolution deleted |
+ *  | 45 | Poll deleted |
+ *  | 46–47 | Voter voted on meeting poll |
+ *  | 48 | Proposed meeting send-response date passed |
+ *  | 49 | Task assigned in meeting |
+ *  | 50 | Resolution voter changes vote |
+ *
+ * @param {string}   currentURL                  - `window.location.href` of the current tab.
+ * @param {Function} dispatch                    - Redux `dispatch`.
+ * @param {Function} t                           - i18next translation function.
+ * @param {Object}   location                    - React Router `location` object.
+ * @param {Function} navigate                    - React Router `navigate`.
+ * @param {Object}   NotificationData            - The notification object from the server.
+ * @param {number}   NotificationData.notificationActionID - Determines the routing branch.
+ * @param {string}   NotificationData.payloadData          - JSON string with entity IDs.
+ * @param {Function} setViewFlag                 - Sets meeting view flag state.
+ * @param {Function} setEditorRole               - Sets editor role state.
+ * @param {Function} setViewAdvanceMeetingModal  - Opens/closes advance-meeting modal.
+ * @param {Function} setViewProposeDatePoll      - Toggles propose-date poll view.
+ * @param {Function} setViewGroupPage            - Toggles group page view.
+ * @param {Function} setShowModal                - Shows/hides an archive/generic modal.
+ * @param {Function} setVideoTalk                - Toggles video talk overlay.
+ * @param {Function} setAdvanceMeetingModalID    - Sets the advance meeting modal ID.
+ * @param {Function} setResultresolution         - Sets resolution result state.
+ * @param {boolean}  isMeeting                   - Whether a meeting is currently active.
+ * @param {Function} setPolls                    - Polls state setter (used to guard
+ *   certain poll notifications when inside a live meeting).
+ * @returns {void}
+ */
 export const WebNotificationExportRoutFunc = (
   currentURL,
   dispatch,
@@ -1871,6 +2281,16 @@ export const WebNotificationExportRoutFunc = (
   }
 };
 
+// ─── Miscellaneous Helpers ─────────────────────────────────────────────────────
+
+/**
+ * Generates a random integer in the range **[-1000, -10]** (inclusive).
+ *
+ * Used to create temporary negative IDs for optimistically-created UI items
+ * (e.g. new agenda entries) before the server assigns a real ID.
+ *
+ * @returns {number} A random negative integer.
+ */
 export const generateRandomNegativeAuto = () => {
   // Define default range for negative numbers
   const min = -1000; // More negative
@@ -1880,6 +2300,11 @@ export const generateRandomNegativeAuto = () => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+/**
+ * Generates a random integer in the range **[1, 1000]** (inclusive).
+ *
+ * @returns {number} A random positive integer.
+ */
 export const generateRandomPositiveId = () => {
   // Define the range for positive IDs
   const min = 1; // Smallest positive ID
@@ -1889,6 +2314,30 @@ export const generateRandomPositiveId = () => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+/**
+ * Determines and performs the post-login navigation based on deep-link keys
+ * stored in `localStorage`.
+ *
+ * Priority order (highest → lowest):
+ *  1. **First login** → `/onboard`
+ *  2. **RSVP** → `/Diskus/Meeting/Useravailabilityformeeting`
+ *  3. **Data room / document / folder / signature** → `/Diskus/dataroom`
+ *  4. **Meeting-related** (start, update, minutes, proposed, agenda, etc.) → `/Diskus/Meeting`
+ *  5. **Polls** → `/Diskus/polling`
+ *  6. **Committee** → `/Diskus/committee`
+ *  7. **Groups** → `/Diskus/groups`
+ *  8. **Tasks** → `/Diskus/todolist`
+ *  9. **Minutes / signatures** → `/Diskus/Minutes`
+ * 10. **Default** → `/Diskus/`
+ *
+ * If `isFirstLogin` is neither truthy nor falsy (undefined / null),
+ * `clearLocalStorageAtloginresponce` is called with code `2` to reset the flow.
+ *
+ * @param {Function} navigate      - React Router `navigate`.
+ * @param {boolean}  isFirstLogin  - Whether this is the user's first login.
+ * @param {Function} dispatch      - Redux `dispatch`.
+ * @returns {void}
+ */
 export const handleNavigation = (
   navigate,
   isFirstLogin,
@@ -1990,11 +2439,53 @@ export const handleNavigation = (
   }
 };
 
+/**
+ * Returns the stem of a filename (the portion before the first `.`).
+ *
+ * @example
+ * getFileName("report.pdf") // → "report"
+ *
+ * @param {string} fileName - A filename string that may or may not include an extension.
+ * @returns {string} The filename without its extension.
+ */
 export const getFileName = (fileName) => {
   return fileName.split(".")[0];
 };
 
-//Side Bar Functions Clicks Global Function
+// ─── Sidebar Navigation ────────────────────────────────────────────────────────
+
+/**
+ * Guards sidebar link clicks when an advance meeting modal or schedule-meeting
+ * form is currently open.
+ *
+ * When the user clicks a sidebar item while an unsaved advance-meeting flow is
+ * active, this function intercepts the navigation and either:
+ *  - Shows a cancel-confirmation modal, or
+ *  - Shows a go-back modal (for schedule-meeting in progress), or
+ *  - Allows navigation directly when the flow state is safe to leave.
+ *
+ * `navigateValue` carries the target route so the confirmation modals can
+ * trigger the actual `navigate()` call on user confirmation.
+ *
+ * @async
+ * @param {boolean}  viewAdvanceMeetingModal         - Whether the advance-meeting modal is open.
+ * @param {Object}   editorRole                      - Current editor role / status for the meeting.
+ * @param {boolean}  minutes                         - Whether the minutes tab is active.
+ * @param {boolean}  actionsPage                     - Whether the actions tab is active.
+ * @param {boolean}  polls                           - Whether the polls tab is active.
+ * @param {Function} navigate                        - React Router `navigate`.
+ * @param {Function} dispatch                        - Redux `dispatch`.
+ * @param {Function} setCancelConfirmationModal      - Opens cancel-confirmation modal.
+ * @param {Function} setViewAdvanceMeetingModal      - Closes the advance-meeting modal.
+ * @param {string}   navigateValue                   - The route path to navigate to.
+ * @param {Function} t                               - i18next translation function.
+ * @param {boolean}  sceduleMeeting                  - Whether a schedule-meeting form is open.
+ * @param {Function} setSceduleMeeting               - Closes the schedule-meeting form.
+ * @param {Function} setGoBackCancelModal            - Opens go-back cancel modal.
+ * @param {boolean}  viewAdvanceMeetingModalUnpublish  - Whether the unpublish variant is shown.
+ * @param {Function} setViewAdvanceMeetingModalUnpublish - Closes the unpublish variant.
+ * @returns {Promise<void>}
+ */
 export const SideBarGlobalNavigationFunction = async (
   viewAdvanceMeetingModal,
   editorRole,

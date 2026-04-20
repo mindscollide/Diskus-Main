@@ -1,6 +1,26 @@
-//For Authentication api's
+/**
+ * @file action_types.js
+ * @description Centralised string constants for every Redux action type in the
+ * application.  Importing from this file instead of using raw strings prevents
+ * typos and makes refactoring easier.
+ *
+ * Naming convention: `<VERB>_<NOUN>_<STATE>`
+ *  - `*_INIT`    – action dispatched at the start of an async operation.
+ *  - `*_SUCCESS` – action dispatched when the async operation succeeds.
+ *  - `*_FAIL`    – action dispatched when the async operation fails.
+ *  - `SET_*`     – synchronous state mutations.
+ *  - `GET_*`     – fetch initiation or result storage.
+ *
+ * Groups (in file order):
+ *  Authentication → To-Do List → Upload → Settings → Meetings →
+ *  Admin / Organisation → Talk / Chat → Committees → Groups →
+ *  Resolution → Notes → Calendar → Polls → Video Calls → Data Room →
+ *  Minutes → Workflow / Signature → Guest Video → Compliance
+ */
 
-//  For LOADER
+// ─── Global ──────────────────────────────────────────────────────────────────
+
+/** Global loading flag used by the root loader component. */
 export const LOADER = "LOADER";
 
 //for signup
@@ -39,7 +59,7 @@ export const CHANGE_PASSWORD_INIT = "CHANGE_PASSWORD_INIT";
 export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
 export const CHANGE_PASSWORD_FAIL = "CHANGE_PASSWORD_FAIL";
 
-//for signout
+/** Clears the entire authentication state on explicit sign-out. */
 export const SIGN_OUT = "SIGN_OUT";
 
 //Refresh token
@@ -49,7 +69,8 @@ export const REFRESH_TOKEN_FAIL = "REFRESH_TOKEN_FAIL";
 //Clear State Back Button
 export const CLEAR_STATE_BACK = "CLEAR_STATE_BACK";
 
-//TodoList
+// ─── To-Do List ──────────────────────────────────────────────────────────────
+
 export const SHOW = "SHOW";
 export const SET_LOADER_FALSE = "SET_LOADER_FALSE";
 export const GET_TODOLIST_LOADER_START = "GET_TODOLIST_LOADER_START";
@@ -57,7 +78,8 @@ export const GET_TODO_FAIL = "GET_TODO_FAIL";
 export const GET_MAIN_LOADER_START = "GET_MAIN_LOADER_START";
 export const GET_MAIN_LOADER_FAIL = "GET_MAIN_LOADER_FAIL";
 
-//Upload
+// ─── Upload ──────────────────────────────────────────────────────────────────
+
 export const GET_UPLOAD_FAIL = "GET_UPLOAD_FAIL";
 export const GET_UPLOAD_LOADER_START = "GET_UPLOAD_LOADER_START";
 export const SET_LOADER_FALSE_UPLOAD = "SET_LOADER_FALSE_UPLOAD";
@@ -66,8 +88,8 @@ export const UPLOAD_DOCUMNET_FILE_FAIL = "UPLOAD_DOCUMNET_FILE_FAIL";
 export const GET_ALL_ASSIGNEES_SUCCESS = "GET_ALL_ASSIGNEES_SUCCESS";
 export const GET_ALL_ASSIGNEES_FAIL = "GET_ALL_ASSIGNEES_FAIL";
 
-// ali
-//for Gell All Settings
+// ─── Settings ────────────────────────────────────────────────────────────────
+
 export const GETSETTING_INIT = "SETTINGS_INIT";
 export const GETSETTING_SUCCESS = "SETTING_SUCCESS";
 export const GETSETTING_FAIL = "SETTING_FAIL";
@@ -108,8 +130,8 @@ export const GET_TIMEZONE_INIT = "GET_TIMEZONE_INIT";
 export const GET_TIMEZONE_SUCCESS = "GET_TIMEZONE_SUCCESS";
 export const GET_TIMEZONE_FAIL = "GET_TIMEZONE_FAIL";
 
-//aun
-//For GetMeetingByUserID
+// ─── Meetings ────────────────────────────────────────────────────────────────
+
 export const GET_MEETINGUSERID_INIT = "GET_MEETINGUSERID_INIT";
 export const GET_MEETINGUSERID_SUCCESS = "GET_MEETINGUSERID_SUCCESS";
 export const GET_MEETINGUSERID_FAIL = "GET_MEETINGUSERID_FAIL";
@@ -290,7 +312,9 @@ export const MEETING_STATUS_ENDED = "MEETING_STATUS_ENDED";
 export const POST_COMMENTS = "POST_COMMENTS";
 export const EMPTYCOMMENTSFROMMQTT = "EMPTYCOMMENTSFROMMQTT";
 export const DELETE_COMMENTS = "DELETE_COMMENTS";
-// Aun work on admin action types (START) //
+// ─── Admin (Organisation Management) ────────────────────────────────────────
+// Action types for all admin-panel operations: user management, meetings,
+// subscriptions, billing, organisation settings, and customer information.
 
 //For Admin AddUser
 export const ADMIN_ADDUSER_INIT = "ADMIN_ADDUSER_INIT";
@@ -368,6 +392,11 @@ export const ADMIN_SUMMARY_SUCCESS = "ADMIN_SUMMARY_SUCCESS";
 export const ADMIN_SUMMARY_FAIL = "ADMIN_SUMMARY_FAIL";
 
 // Aun work on admin action types (END) //
+
+// ─── Organisation Sign-up ────────────────────────────────────────────────────
+// Action types for the multi-step organisation registration flow: country list,
+// subscription packages, email/password validation, OTP verification, and
+// password creation.
 
 // for organization Sign up
 export const COUNTRYNAMES_INIT = "COUNTRYNAMES_INIT";
@@ -520,6 +549,10 @@ export const ADMIN_MEETINGSTATUS_INIT = "ADMIN_MEETINGSTATUS_INIT";
 export const ADMIN_MEETINGSTATUS_SUCCESS = "ADMIN_MEETINGSTATUS_SUCCESS";
 export const ADMIN_MEETINGSTATUS_FAIL = "ADMIN_MEETINGSTATUS_FAIL";
 
+// ─── User Settings & Password ────────────────────────────────────────────────
+// Action types for user-level settings: profile update, password change,
+// 2-FA (two-factor authentication) enable/verify, and forgot-password flow.
+
 // FOR AUTH2 REDUCERS CLEARE MESSAGE
 export const CLEARE_MESSAGE = "CLEARE_MESSAGE";
 
@@ -594,6 +627,10 @@ export const UPDATE_USER_PROFILE_FAIL = "UPDATE_USER_PROFILE_FAIL";
 
 export const AUTH2_REDUCER_LOADER = "AUTH2_REDUCER_LOADER";
 
+// ─── Video Call UI State ──────────────────────────────────────────────────────
+// Action types for the floating video-call widget state machine
+// (open / close / minimise / normalise / maximise / incoming call).
+
 export const VIDEO_BOX_OPEN = "VIDEO_BOX_OPEN";
 export const VIDEO_BOX_CLOSE = "VIDEO_BOX_CLOSE";
 export const VIDEO_BOX_MINIMIZE = "VIDEO_BOX_MINIMIZE";
@@ -602,6 +639,10 @@ export const VIDEO_BOX_MAXIMIZE = "VIDEO_BOX_MAXIMIZE";
 export const OPENING_GROUP_CALL = "OPENING_GROUP_CALL";
 
 export const INCOMING_CALL_OPEN = "INCOMING_CALL_OPEN";
+
+// ─── Notes ───────────────────────────────────────────────────────────────────
+// Action types for the personal Notes feature: add, update, fetch, delete,
+// attachments, and clearing response messages.
 
 export const ADD_NOTES_INIT = "ADD_NOTES_INIT";
 export const ADD_NOTES_SUCCESS = "ADD_NOTES_SUCCESS";
@@ -630,6 +671,11 @@ export const DELETE_ORGANIZATION_SUCCESS = "DELETE_ORGANIZATION_SUCCESS";
 export const DELETE_ORGANIZATION_FAIL = "DELETE_ORGANIZATION_FAIL";
 
 export const CLEAR_NOTES_RESPONSEMESSAGE = "CLEAR_NOTES_RESPONSEMESSAGE";
+
+// ─── Talk / Chat (Rocket.Chat) ───────────────────────────────────────────────
+// Action types for the in-app messaging module: OTO messages, group/broadcast
+// messages, flag/follow/tag/archive operations, blocked users, active users by
+// room/group/broadcast, real-time MQTT message insertion, and message deletion.
 
 export const REFRESH_TOKEN_TALK_SUCCESS = "REFRESH_TOKEN_TALK_SUCCESS";
 export const REFRESH_TOKEN_TALK_FAIL = "REFRESH_TOKEN_TALK_FAIL";
@@ -741,6 +787,10 @@ export const GET_ACTIVEUSERSBYBROADCASTID_SUCCESS =
 export const GET_ACTIVEUSERSBYBROADCASTID_FAIL =
   "GET_ACTIVEUSERSBYBROADCASTID_FAIL";
 
+// ─── Committees ──────────────────────────────────────────────────────────────
+// Action types for committee management: create, update, status toggle,
+// members/roles, committee-type lookup, and committee-group mapping.
+
 export const GET_COMMITTEE_BYUSERID_INIT = "GET_COMMITTEE_BYUSERID_INIT";
 export const GET_COMMITTEE_BYUSERID_SUCCESS = "GET_COMMITTEE_BYUSERID_INIT";
 export const GET_COMMITTEE_BYUSERID_FAIL = "GET_COMMITTEE_BYUSERID_INIT";
@@ -758,6 +808,10 @@ export const GET_COMMITTEE_BYCOMMITTEEID_SUCCESS =
   "GET_COMMITTEE_BYCOMMITTEEID_SUCCESS";
 export const GET_COMMITTEE_BYCOMMITTEEID_FAIL =
   "GET_COMMITTEE_BYCOMMITTEEID_FAIL";
+
+// ─── Groups ───────────────────────────────────────────────────────────────────
+// Action types for group management: create, update, status toggle, members,
+// organisation-type lookup, and real-time MQTT group updates.
 
 export const GET_GROUPS_BYUSERID_INIT = "GET_GROUPS_BYUSERID_INIT";
 export const GET_GROUPS_BYUSERID_SUCCESS = "GET_GROUPS_BYUSERID_SUCCESS";
@@ -853,6 +907,10 @@ export const BROADCAST_MESSAGESEND_NOTIFICATION =
 export const REALTIME_COMMITTEES_RESPONSE = "REALTIME_COMMITTEES_RESPONSE";
 export const REALTIME_COMMITTEES_STATUS_RESPONSE =
   "REALTIME_COMMITTEES_STATUS_RESPONSE";
+
+// ─── Resolutions ─────────────────────────────────────────────────────────────
+// Action types for the resolutions feature: schedule, add/update details,
+// fetch by ID, voting methods, resolution status, vote results, and cancellation.
 
 export const GET_ALL_VOTING_METHOD_INIT = "GET_ALL_VOTING_METHOD_INIT";
 export const GET_ALL_VOTING_METHOD_SUCCESS = "GET_ALL_VOTING_METHOD_SUCCESS";
@@ -959,6 +1017,10 @@ export const RECENT_TODOCOUNTER = "RECENT_TODOCOUNTER";
 export const RECENT_MEETINGCOUNTER = "RECENT_MEETINGCOUNTER";
 export const UPCOMINGEVENTS_MQTT = "UPCOMINGEVENTS_MQTT";
 
+// ─── Organisation Billing ────────────────────────────────────────────────────
+// Action types for billing: get billing info, pay outstanding invoices,
+// invoice/payment history, and real-time dashboard counters via MQTT.
+
 export const GET_BLLINGINFORMATION_INIT = "GET_BLLINGINFORMATION_INIT";
 export const GET_BLLINGINFORMATION_SUCCESS = "GET_BLLINGINFORMATION_SUCCESS";
 export const GET_BLLINGINFORMATION_FAIL = "GET_BLLINGINFORMATION_FAIL";
@@ -977,6 +1039,10 @@ export const GET_ACTIVEMESSAGEID = "GET_ACTIVEMESSAGEID";
 
 export const CLEAR_RESPONSEMESSAGE_RESOLUTION =
   "CLEAR_RESPONSEMESSAGE_RESOLUTION";
+
+// ─── Data Room ───────────────────────────────────────────────────────────────
+// Action types for the Data Room feature: file/folder CRUD, upload, share,
+// exist-checks, rename, download chat, and signature-related operations.
 
 export const SAVEFILES_DATAROOM_INIT = "SAVEFILES_DATAROOM_INIT";
 export const SAVEFILES_DATAROOM_SUCCESS = "SAVEFILES_DATAROOM_SUCCESS";
@@ -1133,6 +1199,10 @@ export const SEARCH_PAYMENT_HISTORY_INIT = "SEARCH_PAYMENT_HISTORY_INIT";
 export const SEARCH_PAYMENT_HISTORY_SUCCESS = "SEARCH_PAYMENT_HISTORY_SUCCESS";
 export const SEARCH_PAYMENT_HISTORY_FAIL = "SEARCH_PAYMENT_HISTORY_FAIL";
 
+// ─── Polls ───────────────────────────────────────────────────────────────────
+// Action types for the Polls feature: save/search polls, cast vote,
+// committees/groups lookup for poll recipients, and poll modal UI flags.
+
 export const SEARCH_POLLS_INIT = "SEARCH_POLLS_INIT";
 export const SEARCH_POLLS_SUCCESS = "SEARCH_POLLS_SUCCESS";
 export const SEARCH_POLLS_FAIL = "SEARCH_POLLS_FAIL";
@@ -1213,6 +1283,10 @@ export const VIEW_VOTES_FAILED = "VIEW_VOTES_FAILED";
 
 export const DELETE_POLL_MODAL = "DELETE_POLL_MODAL";
 
+// ─── New Meeting UI States ────────────────────────────────────────────────────
+// Action types for the new-meeting creation modal state machine: attendee
+// modals, agenda contributor notifications, and permission dialogs.
+
 //NEW MEETING STATES
 export const NEW_MEETING_ADDUSER_MODAL = "NEW_MEETING_ADDUSER_MODAL";
 export const CROSS_CONFIRMATION_MODAL = "CROSS_CONFIRMATION_MODAL ";
@@ -1237,6 +1311,11 @@ export const UPDATE_MESSAGE_ACKNOWLEDGEMENT_FAIL =
   "UPDATE_MESSAGE_ACKNOWLEDGEMENT_FAIL";
 
 export const GROUP_LOADER_STATE = "GROUP_LOADER_STATE";
+
+// ─── Chat UI Flags & Feature States ─────────────────────────────────────────
+// Action types for the Talk/Chat panel UI: tab filters (recent, private,
+// starred, blocked, shoutall), header/footer visibility, encryption status,
+// chat screen creation flags, active chat, message search, and push/pull data.
 
 //CHAT FILTER ACTION TYPES
 export const RECENT_CHAT_FLAG = "RECENT_CHAT_FLAG";
@@ -1305,6 +1384,11 @@ export const CREATE_RESOLUTION_MODAL = "CREATE_RESOLUTION_MODAL";
 export const UPDATE_RESOLUTION_MODAL = "UPDATE_RESOLUTION_MODAL";
 export const VIEW_RESOLUTION_MODAL = "VIEW_RESOLUTION_MODAL";
 
+// ─── Video Call (OTO / Group / In-Meeting) ───────────────────────────────────
+// Action types for the video-call feature UI state: call window
+// normal/min/max, OTO vs group call flags, incoming/outgoing call screens,
+// in-meeting panel (chat/agenda/minutes), and MQTT call events.
+
 //Video Action Types
 export const CONTACT_VIDEO_FLAG = "CONTACT_VIDEO_FLAG";
 export const RECENT_VIDEO_FLAG = "RECENT_VIDEO_FLAG";
@@ -1369,6 +1453,9 @@ export const GET_ALL_LANGUAGES_FAIL = "GET_ALL_LANGUAGES_FAIL";
 export const SET_SELECTED_LANGUAGE_INITIAL = "SET_SELECTED_LANGUAGE_INITIAL";
 export const SET_SELECTED_LANGUAGE_SUCCESS = "SET_SELECTED_LANGUAGE_SUCCESS";
 export const SET_SELECTED_LANGUAGE_FAIL = "SET_SELECTED_LANGUAGE_FAIL";
+
+// ─── Language Localisation ───────────────────────────────────────────────────
+// Action types for fetching/setting the active UI language.
 
 //Video Call Action Types
 export const GET_ALL_VIDEOCALL_USERS_INITIAL =
@@ -1469,6 +1556,11 @@ export const UNSAVED_EDIT_POLL_MEETING = "UNSAVED_EDIT_POLL_MEETING";
 
 export const PARTICIPANT_POPUP_FLAG = "PARTICIPANT_POPUP_FLAG";
 
+// ─── Annotations (Apryse WebViewer) ──────────────────────────────────────────
+// Action types for PDF annotation operations across all document contexts:
+// To-Do attachments, Notes attachments, Resolution attachments, and Data Room
+// documents.  Each context has GET and ADD pairs.
+
 // for annotations
 export const GETANNOTATIONSOFTODOATTACHEMENT_FAIL =
   "GETANNOTATIONSOFTODOATTACHEMENT_FAIL";
@@ -1567,6 +1659,11 @@ export const GETALLCOMMITTEESUSERSANDGROUPS_SUCCESS =
   "GETALLCOMMITTEESUSERSANDGROUPS_SUCCESS";
 export const GETALLCOMMITTEESUSERSANDGROUPS_FAIL =
   "GETALLCOMMITTEESUSERSANDGROUPS_FAIL";
+
+// ─── Meeting Organisers & Agenda (New Meeting Flow) ───────────────────────────
+// Action types for the multi-step new-meeting wizard: organiser save/update,
+// agenda contributors, participants, meeting types, reminder frequency,
+// recurring settings, URL generation, and cancel-step signals.
 
 export const SAVE_MEETINGORGANIZERS_INIT = "SAVE_MEETINGORGANIZERS_INIT";
 export const SAVE_MEETINGORGANIZERS_SUCCESS = "SAVE_MEETINGORGANIZERS_SUCCESS";
@@ -1767,6 +1864,10 @@ export const SET_MEETING_PROPOSED_DATE_SUCCESS =
 export const SET_MEETING_PROPOSED_DATE_FAILED =
   "SET_MEETING_PROPOSED_DATE_FAILED";
 
+// ─── Meeting Attendance ───────────────────────────────────────────────────────
+// Action types for meeting attendance tracking: get all attendance records,
+// save attendance, and download the attendance report.
+
 //Aun get All Attendace meeting
 export const GET_ALL_ATTENDANCE_MEETING_INIT =
   "GET_ALL_ATTENDANCE_MEETING_INIT";
@@ -1918,6 +2019,10 @@ export const SET_GROUP_POLLS_FAIL = "SET_GROUP_POLLS_FAIL";
 export const SETCOMMITTEEPOLL_INIT = "SETCOMMITTEEPOLL_INIT";
 export const SETCOMMITTEEPOLL_SUCCESS = "SETCOMMITTEEPOLL_SUCCESS";
 export const SETCOMMITTEEPOLL_FAIL = "SETCOMMITTEEPOLL_FAIL";
+
+// ─── Minutes ─────────────────────────────────────────────────────────────────
+// Action types for the Minutes feature: general minutes CRUD, agenda-wise
+// minutes CRUD, document save/retrieve, and polls within minutes.
 
 export const GET_GENERAL_MINTES_INIT = "GET_GENERAL_MINTES_INIT";
 export const GET_GENERAL_MINTES_SUCCESS = "GET_GENERAL_MINTES_SUCCESS";
@@ -2432,6 +2537,11 @@ export const USER_LOGOUT_INIT = "USER_LOGOUT_INIT";
 export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS";
 export const USER_LOGOUT_FAILED = "USER_LOGOUT_FAILED";
 
+// ─── Signature / Workflow ────────────────────────────────────────────────────
+// Action types for the document signature flow (Apryse-based): create flow,
+// save workflow, get/add annotations, field values, and send document for
+// signing.
+
 export const CREATESIGNATUREFLOW_INIT = "CREATESIGNATUREFLOW_INIT";
 export const CREATESIGNATUREFLOW_SUCCESS = "CREATESIGNATUREFLOW_SUCCESS";
 export const CREATESIGNATUREFLOW_FAIL = "CREATESIGNATUREFLOW_FAIL";
@@ -2473,6 +2583,10 @@ export const GET_ALL_FIELDS_BY_WORKDFLOW_ID_FAIL =
 export const SEND_DOCUMENT_INIT = "SEND_DOCUMENT_INIT";
 export const SEND_DOCUMENT_SUCCESS = "SEND_DOCUMENT_SUCCESS";
 export const SEND_DOCUMENT_FAIL = "SEND_DOCUMENT_FAIL";
+
+// ─── User Management Modals ──────────────────────────────────────────────────
+// Action types for the admin User Management page modal states: upgrade,
+// extension request, additional seats, delete user, edit user, etc.
 
 // User Management
 export const UPGRADE_NOW_MODAL = "UPGRADE_NOW_MODAL";
@@ -2526,6 +2640,11 @@ export const MQTT_MEETING_ORG_ADDED = "MQTT_MEETING_ORG_ADDED";
 export const MQTT_MEETING_ORG_REMOVED = "MQTT_MEETING_ORG_REMOVED";
 export const MQTT_MEETING_PAR_ADDED = "MQTT_MEETING_PAR_ADDED";
 export const MQTT_MEETING_PAR_REMOVED = "MQTT_MEETING_PAR_REMOVED";
+
+// ─── Organisation / User Management (Admin) ──────────────────────────────────
+// Action types for the admin user-management flow: add/edit/list org users,
+// package details and user stats, trial extension, join/leave meeting, and
+// routing state for the multi-step sign-up flow.
 
 export const SAVE_ORGANIZATIONAND_SELECTEDPAKGE_USERMANAGEMENT_INIT =
   "SAVE_ORGANIZATIONAND_SELECTEDPAKGE_USERMANAGEMENT_INIT";
@@ -2782,6 +2901,11 @@ export const EXPORT_USERLOGINHISTORY_SUCCESS =
 export const EXPORT_USERLOGINHISTORY_FAIL = "EXPORT_USERLOGINHISTORY_FAIL";
 
 export const PENDING_APPROVAL_GRAPH_DATA = "PENDING_APPROVAL_GRAPH_DATA";
+// ─── Minutes Review & Approval Workflow ──────────────────────────────────────
+// Action types for the minutes review flow: pending approvals (stats,
+// signatures, counts), reviewer data, minute version history with comments,
+// review flow save, and organiser review details.
+
 export const GETALLPENDINGAPPROVALSTATS_INIT =
   "GETALLPENDINGAPPROVALSTATS_INIT";
 export const GETALLPENDINGAPPROVALSTATS_SUCCESS =
@@ -3068,6 +3192,11 @@ export const GETGROUPSANDCOMMITTEESFORRESOLUTION_SUCCESS =
 export const GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL =
   "GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL";
 
+// ─── Guest Video Call ────────────────────────────────────────────────────────
+// Action types for the unauthenticated guest video-call flow: validate link,
+// join, leave, admit/reject guests, mute/unmute/raise hand, hide video, and
+// transfer host.
+
 // for get Meeting guest video URL
 export const GET_MEETING_GUEST_URL_INIT = "GET_MEETING_GUEST_URL_INIT";
 export const GET_MEETING_GUEST_URL_SUCCESS = "GET_MEETING_GUEST_URL_SUCCESS";
@@ -3335,6 +3464,10 @@ export const LEAVE_MODAL_SIDEBAR = "LEAVE_MODAL_SIDEBAR";
 
 export const TOGGLE_PARTICIPANTS_VISIBILITY = "TOGGLE_PARTICIPANTS_VISIBILITY";
 
+// ─── Real-time Notifications ──────────────────────────────────────────────────
+// Action types for the in-app web notification bell: fetch, mark-as-read, and
+// real-time unread count updates.
+
 //Diskus Web Notificaiton
 export const DISKUS_WEB_NOTIFICATION_INIT = "DISKUS_WEB_NOTIFICATION_INIT";
 export const DISKUS_WEB_NOTIFICATION_SUCCESS =
@@ -3400,6 +3533,11 @@ export const MINUTES_WORKFLOW_ACTOR_STATUS_FAIL =
 //Voting Agenda Started
 export const VOTING_POLL_STARTED_AGENDA_MODAL =
   "VOTING_POLL_STARTED_AGENDA_MODAL";
+
+// ─── Email-link Deep-link Validation ─────────────────────────────────────────
+// Action types for validating encrypted tokens embedded in email notification
+// deep links: committees, groups, data-room files/folders, meeting actions,
+// tasks, polls, RSVP proposed dates, and resolution links.
 
 // Committes
 export const VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_INIT =
@@ -3577,6 +3715,10 @@ export const ACCESS_DENIED_NOTIFCATION = "ACCESS_DENIED_NOTIFCATION";
 //For Presenter View Global State
 export const SET_MQTT_PRESENTER_RESPONSE = "SET_MQTT_PRESENTER_RESPONSE";
 
+// ─── Presenter View (Board Deck / Screen Share) ───────────────────────────────
+// Action types for the presenter-view feature in video meetings: open/start/
+// stop/join/leave presenter view, MQTT events, and participant list management.
+
 //For Open Presenter View
 export const OPEN_PRESENTER_VIEW_INIT = "OPEN_PRESENTER_VIEW_INIT";
 export const OPEN_PRESENTER_VIEW_SUCCESS = "OPEN_PRESENTER_VIEW_SUCCESS";
@@ -3719,6 +3861,10 @@ export const IS_SCREEN_SHARED_TRIGGERED_FAIL =
 // Global state of screen share trigger
 export const GLOBAL_SCREEN_SHARE_TRIGGERED = "GLOBAL_SCREEN_SHARE_TRIGGERED";
 
+// ─── Audit Trail ─────────────────────────────────────────────────────────────
+// Action types for the admin audit trail feature: view action modal, user
+// audit listings, available actions, save log entries, and export report.
+
 //export const Audit Trial Modal
 export const AUDITTRIAL_VIEW_ACTION_MODAL = "AUDITTRIAL_VIEW_ACTION_MODAL";
 
@@ -3756,6 +3902,10 @@ export const CLEAR_MINUTE_REVIEWER_MQTT = "CLEAR_MINUTE_REVIEWER_MQTT";
 
 export const TASK_FROM_DASHBOARD = "TASK_FROM_DASHBOARD";
 export const NOTES_FROM_DASHBOARD = "NOTES_FROM_DASHBOARD";
+
+// ─── Authority Management ────────────────────────────────────────────────────
+// Action types for the "Manage Authority" admin page: CRUD for authority
+// records and modal state management.
 
 //Manage Authority
 // export const DELETE_USER_MODAL = "DELETE_USER_MODAL";
@@ -3817,6 +3967,11 @@ export const AUTHORITY_DELETED = "AUTHORITY_DELETED";
 export const AUTHORITY_CREATED = "AUTHORITY_CREATED";
 export const AUTHORITY_UPDATED = "AUTHORITY_UPDATED";
 export const ORGANIZATION_SETTINGS_UPDATED = "ORGANIZATION_SETTINGS_UPDATED";
+
+// ─── Compliance ──────────────────────────────────────────────────────────────
+// Action types for the Compliance module: authorities dropdown, tags,
+// compliance CRUD, checklists, task mapping, reopen flow, status lookups,
+// dashboard data, quarterly stats, and report listing.
 
 // Compliance
 export const GET_ALL_AUTHORITIES_DROPDOWN_INIT =

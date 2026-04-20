@@ -1,3 +1,11 @@
+/**
+ * @file Auth_Forgot_Password.js
+ * @description Redux thunk actions for the forgot-password flow.
+ * Wraps `authenticationApi` (forgetpassword request method).
+ * Dispatches: FORGOT_PASSWORD_INIT, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAIL,
+ * CLEARE_CHANGE_PASSWORD_MESSAGE.
+ */
+
 import * as actions from "../action_types";
 import { forgetpassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
@@ -26,6 +34,13 @@ const forgotPasswordFail = (message) => {
   };
 };
 
+/**
+ * Sends a forgot-password request; on success an OTP is emailed to the user.
+ * @param {string} email - User's registered email address.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} navigate - React Router navigate function.
+ * @returns {Function} Redux thunk dispatching FORGOT_PASSWORD_INIT/SUCCESS/FAIL.
+ */
 const changePasswordRequest = (email, t, navigate) => {
   let Data = {
     Email: email,
@@ -131,6 +146,10 @@ const changePasswordRequest = (email, t, navigate) => {
       });
   };
 };
+/**
+ * Clears any existing forgot/change-password notification messages from state.
+ * @returns {{ type: string }} Plain Redux action.
+ */
 const cleareChangePasswordMessage = () => {
   return {
     type: actions.CLEARE_CHANGE_PASSWORD_MESSAGE,

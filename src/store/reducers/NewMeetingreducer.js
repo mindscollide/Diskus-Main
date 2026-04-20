@@ -1,5 +1,23 @@
+/**
+ * @file NewMeetingreducer.js
+ * @description Redux reducer for the `newMeeting` slice. Manages the full
+ * meeting-creation and management workflow: participants, agenda contributors,
+ * organisers, meeting materials, minutes, polls, proposed dates, modal/page
+ * flags, MQTT real-time events, and board-deck operations.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                        - Global loading flag.
+ * @property {string}      ResponseMessage                - Last response message.
+ * @property {Array}       getALlMeetingTypes             - Available meeting type options.
+ * @property {object|null} getAllMeetingDetails            - Detailed data for the current meeting.
+ * @property {Array}       generalMinutes                 - General meeting minutes entries.
+ * @property {number}      meetingDataRoomMapFolderID     - Data-room folder ID for meeting docs.
+ * @property {object|null} endMeetingStatus               - MQTT payload for meeting ended.
+ * @property {object}      currentMeetingInfo             - Active meeting ID, title, and folder ID.
+ */
 const initialState = {
   LoadingParticipants: false,
   LoadingViewModal: false,
@@ -174,6 +192,16 @@ const initialState = {
   },
 };
 
+/**
+ * Reducer for the `newMeeting` slice.
+ * Handles the full meeting lifecycle: creation, organiser/participant/
+ * agenda-contributor management, minutes, polls, proposed dates, MQTT
+ * events, board-deck operations, and all associated modal/page flags.
+ *
+ * @param {object} state  - Current newMeeting state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const NewMeetingreducer = (state = initialState, action) => {
   try {
     switch (action.type) {

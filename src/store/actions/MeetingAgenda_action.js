@@ -1,3 +1,11 @@
+/**
+ * @file MeetingAgenda_action.js
+ * @description Redux actions for meeting agenda management — agenda voting (save, cast, view results),
+ * advanced agendas, data-room meeting mapping, participant info, agenda import,
+ * and meeting document attachment.
+ * Uses `meetingApi` endpoint.
+ * Dispatches: MEETINGAGENDA_* and AGENDA_VOTING_* action types.
+ */
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { UpdateOrganizersMeeting } from "./MeetingOrganizers_action";

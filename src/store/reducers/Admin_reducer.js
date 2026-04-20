@@ -1,5 +1,25 @@
+/**
+ * @file Admin_reducer.js
+ * @description Redux reducer for the `admin` slice. Manages organisation
+ * administration: user add/edit/delete, all-meetings list, customer
+ * information, payment methods, revoke access, audit logs, and
+ * real-time MQTT meeting updates.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                          - Global loading flag.
+ * @property {object|null} AddUserResponse                  - Result of adding a user.
+ * @property {object|null} EditUserResponse                 - Result of editing a user.
+ * @property {object|null} AllOrganizationMeeting           - All meetings for the organisation.
+ * @property {object|null} CustomerInformationData          - Organisation customer info.
+ * @property {Array}       TotalUserListsData               - User listing statistics.
+ * @property {Array}       AllOrganizationUserList          - Full organisation user list.
+ * @property {object|null} PaymentMethods                   - Available payment methods.
+ * @property {object|null} getAuditListingData              - Audit trial listing.
+ * @property {object|null} AllOrganizationMeetingMQTT       - Real-time meeting update via MQTT.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -39,6 +59,15 @@ const initialState = {
   SaveAuditLog: null,
 };
 
+/**
+ * Reducer for the `admin` slice.
+ * Handles organisation user management, meetings, customer info, payment
+ * methods, access revocation, audit logs, and MQTT meeting updates.
+ *
+ * @param {object} state  - Current admin state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     //action Case For Admin-AddUser

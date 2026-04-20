@@ -1,3 +1,11 @@
+/**
+ * @file OrganizationBillings_actions.js
+ * @description Redux actions for organisation billing — fetch billing information,
+ * invoice and payment history, and pay outstanding balances.
+ * Wraps `getBillingInformationRequestMethod`, `invoiceandPaymentHistoryRequestMethod`,
+ * `payOutStandingRequestMethod` API configs.
+ * Dispatches: GET_BLLINGINFORMATION_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import {
   invoiceandPaymentHistoryRequestMethod,

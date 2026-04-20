@@ -1,3 +1,8 @@
+/**
+ * @file ComplianceCard.js
+ * @description Compliance item card displaying title, due date, criticality tag, authority tag, description, and an optional progress bar.
+ */
+
 import React, { memo, useState } from "react";
 import { Row, Col, Tag, Progress } from "antd";
 import styles from "./ComplianceCard.module.css";
@@ -28,6 +33,11 @@ const authorityTagStyle = {
   fontFamily: "Montserrat",
 };
 
+/**
+ * Memoised card for a compliance item with hover-reveal navigation icon and optional progress indicator.
+ * @param {{ title: string, dueDate: string, description: string, progress: number, criticalityId: number, authority: string, showHoverIcon: boolean, onIconClick: Function, showAttachement: boolean }} props
+ * @returns {JSX.Element}
+ */
 const ComplianceCard = ({
   title,
   dueDate,

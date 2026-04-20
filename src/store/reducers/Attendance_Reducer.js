@@ -1,5 +1,18 @@
+/**
+ * @file Attendance_Reducer.js
+ * @description Redux reducer for the `attendanceMeeting` slice. Manages
+ * meeting attendance: fetching attendance records and saving attendee
+ * confirmations for a given meeting.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} Loading                 - Pending request flag.
+ * @property {string}  ResponseMessage         - Last response message.
+ * @property {Array}   saveAttendanceMeeting   - Result of save-attendance API.
+ * @property {Array}   attendanceMeetings      - Fetched attendance records for meetings.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -7,6 +20,14 @@ const initialState = {
   attendanceMeetings: [],
 };
 
+/**
+ * Reducer for the `attendanceMeeting` slice.
+ * Handles fetching meeting attendance records and saving attendee confirmations.
+ *
+ * @param {object} state  - Current attendanceMeeting state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const attendanceMeetingReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.CLEAR_ATTENDANCE_RESPONSEMESSAGE: {

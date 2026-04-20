@@ -1,3 +1,9 @@
+/**
+ * @file GetSubscriptionPackages.js
+ * @description Redux actions for fetching available subscription packages.
+ * Wraps `getSubscriptionDetailRequestMethod` API config (`authenticationApi`).
+ * Dispatches: GETSUBSCRIPTIONPACAKGES_INIT/SUCCESS/FAIL.
+ */
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 

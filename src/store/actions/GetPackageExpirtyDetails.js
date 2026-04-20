@@ -1,4 +1,9 @@
-
+/**
+ * @file GetPackageExpirtyDetails.js
+ * @description Redux actions for fetching subscription package expiry details for an organisation.
+ * Wraps `IsPackageExpiryDetail` API config.
+ * Dispatches: GETPACKAGEEXPIRYDETAILS_INIT/SUCCESS/FAIL.
+ */
 import { IsPackageExpiryDetail } from "../../commen/apis/Api_config";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";

@@ -1,6 +1,21 @@
+/**
+ * @file privateadminNonactive_routes.js
+ * @description Route guard for **admin** pages when the account is in a
+ * "non-active" (blurred/restricted) state.
+ *
+ * Accepts users with `roleID === "4"` (organisation admin) or `"1"`
+ * (super-admin) whose `blur` value is defined (non-null).  Identical 2-FA gate
+ * logic to `PrivateNonActive`.
+ */
 import React, { useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
+/**
+ * Route guard for non-active admin accounts (roleID 1 or 4).
+ *
+ * @returns {JSX.Element} `<Outlet />` when conditions pass, or
+ *   `<Navigate to="*" />`.
+ */
 const PrivateAdminRouteNonActive = () => {
   let Blur = localStorage.getItem("blur");
 

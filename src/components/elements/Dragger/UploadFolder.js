@@ -1,7 +1,17 @@
+/**
+ * @file UploadFolder.js
+ * @description Directory upload component that batches all selected folder files and emits them via an onChange callback.
+ */
+
 import React, { useState, useEffect } from "react";
 import { Upload } from "antd";
 import styles from "./Dragger.module.css";
 
+/**
+ * Allows uploading an entire folder; collects files and calls onChange with the directory name and file list.
+ * @param {{ setProgress: Function, title: string, onChange: Function }} props
+ * @returns {JSX.Element}
+ */
 const UploadDataFolder = ({ setProgress, title, onChange }) => {
   const [fileList, setFileList] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false); // Flag to prevent multiple triggers

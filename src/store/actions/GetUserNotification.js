@@ -1,3 +1,9 @@
+/**
+ * @file GetUserNotification.js
+ * @description Redux actions for fetching user notification preference settings.
+ * Wraps `getUserNotifcations` API config (`settingApi`).
+ * Dispatches: GETUSERNOTIFICATION_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import { getUserNotifcations } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";

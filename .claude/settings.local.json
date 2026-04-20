@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk -F/ '{:*)",
+      "Bash(awk '{print $2 \": \" $1 \" files\"}')"
+    ]
+  }
+}

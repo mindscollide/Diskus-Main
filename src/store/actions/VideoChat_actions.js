@@ -1,3 +1,14 @@
+/**
+ * @file VideoChat_actions.js
+ * @description Redux thunk actions for video-meeting chat, agenda, attachments, and recordings.
+ * Handles fetching meeting agendas, fetching/updating agenda attachments,
+ * and downloading call/meeting recordings as blob files.
+ * Dispatches: SHOW_MINUTES_STATE / SHOW_ATTACHMENTS_STATE / MEETINGATTACHMENT_MODAL /
+ * GET_MEETINGAGENDAS_INIT / GET_MEETINGAGENDAS_SUCCESS / GET_MEETINGAGENDAS_FAIL /
+ * GET_ATTACHMENTSBYMEETINGID_INIT / GET_ATTACHMENTSBYMEETINGID_SUCCESS / GET_ATTACHMENTSBYMEETINGID_FAIL /
+ * AGENDA_ATTACHMENTUPDATE_INIT / AGENDA_ATTACHMENTUPDATE_SUCCESS / AGENDA_ATTACHMENTUPDATE_FAIL /
+ * DOWNLOAD_CALL_RECORDING_INIT / DOWNLOAD_CALL_RECORDING_SUCCESS action types.
+ */
 import * as actions from "../action_types";
 
 import {
@@ -14,6 +25,11 @@ import {
 import { RefreshToken } from "./Auth_action";
 import axiosInstance from "../../commen/functions/axiosInstance";
 
+/**
+ * Toggles the minutes panel visibility.
+ * @param {boolean} response - Visibility state.
+ * @returns {{ type: string, response: boolean }}
+ */
 const showMinutes = (response) => {
   return {
     type: actions.SHOW_MINUTES_STATE,
@@ -21,12 +37,23 @@ const showMinutes = (response) => {
   };
 };
 
+/**
+ * Toggles the attachments panel visibility.
+ * @param {boolean} response - Visibility state.
+ * @returns {{ type: string, response: boolean }}
+ */
 const showAttachments = (response) => {
   return {
     type: actions.SHOW_ATTACHMENTS_STATE,
     response: response,
   };
 };
+
+/**
+ * Opens or closes the meeting-attachment modal.
+ * @param {boolean} response - Modal visibility state.
+ * @returns {{ type: string, response: boolean }}
+ */
 const meetingModalAttachment = (response) => {
   return {
     type: actions.MEETINGATTACHMENT_MODAL,
@@ -34,11 +61,14 @@ const meetingModalAttachment = (response) => {
   };
 };
 
+/** @returns {{ type: string }} */
 const getMeetingAgendasInit = () => {
   return {
     type: actions.GET_MEETINGAGENDAS_INIT,
   };
 };
+
+/** @returns {{ type: string, response: *, message: string }} */
 const getMeetingAgendasSuccess = (response, message) => {
   return {
     type: actions.GET_MEETINGAGENDAS_SUCCESS,
@@ -47,6 +77,7 @@ const getMeetingAgendasSuccess = (response, message) => {
   };
 };
 
+/** @returns {{ type: string, message: string }} */
 const getMeetingAgendasFail = (message) => {
   return {
     type: actions.GET_MEETINGAGENDAS_FAIL,
@@ -54,6 +85,13 @@ const getMeetingAgendasFail = (message) => {
   };
 };
 
+/**
+ * Fetches all agendas for a specific meeting.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Request payload containing the meeting ID.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const getMeetingAgendas = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -92,11 +130,14 @@ const getMeetingAgendas = (navigate, data, t) => {
   };
 };
 
+/** @returns {{ type: string }} */
 const getMeetingAttachmentsInit = () => {
   return {
     type: actions.GET_ATTACHMENTSBYMEETINGID_INIT,
   };
 };
+
+/** @returns {{ type: string, response: *, message: string }} */
 const getMeetingAttachmentsSuccess = (response, message) => {
   return {
     type: actions.GET_ATTACHMENTSBYMEETINGID_SUCCESS,
@@ -104,12 +145,22 @@ const getMeetingAttachmentsSuccess = (response, message) => {
     message: message,
   };
 };
+
+/** @returns {{ type: string, message: string }} */
 const getMeetingAttachmentsFail = (message) => {
   return {
     type: actions.GET_ATTACHMENTSBYMEETINGID_FAIL,
     message: message,
   };
 };
+
+/**
+ * Fetches all attachments for a specific meeting.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Request payload containing the meeting ID.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const getMeetingAttachments = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -150,11 +201,14 @@ const getMeetingAttachments = (navigate, data, t) => {
   };
 };
 
+/** @returns {{ type: string }} */
 const updateAgendaAttahmentsInit = () => {
   return {
     type: actions.AGENDA_ATTACHMENTUPDATE_INIT,
   };
 };
+
+/** @returns {{ type: string, response: *, message: string }} */
 const updateAgendaAttahmentsSuccess = (response, message) => {
   return {
     type: actions.AGENDA_ATTACHMENTUPDATE_SUCCESS,
@@ -162,12 +216,22 @@ const updateAgendaAttahmentsSuccess = (response, message) => {
     message: message,
   };
 };
+
+/** @returns {{ type: string, message: string }} */
 const updateAgendaAttahmentsFail = (message) => {
   return {
     type: actions.AGENDA_ATTACHMENTUPDATE_FAIL,
     message: message,
   };
 };
+
+/**
+ * Updates the attachments list for a meeting agenda.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Array} data - Array of agenda attachment objects to update.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const updateAgendaAttachment = (navigate, data, t) => {
   let AgendaAttachments = { AgendaAttachments: [...data] };
   console.log(
@@ -212,21 +276,30 @@ const updateAgendaAttachment = (navigate, data, t) => {
   };
 };
 
+/** @returns {{ type: string }} */
 const downloadCallRecording_init = () => {
   return {
     type: actions.DOWNLOAD_CALL_RECORDING_INIT,
   };
 };
 
+/** @returns {{ type: string }} */
 const downloadCallRecording_success = () => {
   return {
     type: actions.DOWNLOAD_CALL_RECORDING_SUCCESS,
   };
 };
 
-// For Meeting TItle -> MeetingTitle-ddMMyyyy-starttime-Recording.mp4
-// For Video Call Title ->  VideoCall-ddMMyyyy-starttime-Recording.mp4
-
+/**
+ * Downloads a video-call recording as an MP4 blob.
+ * Filename format: VideoCall-ddMMyyyy-starttime-Recording.mp4
+ * @param {Object} Data - Request payload containing the recording reference.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18next translation function.
+ * @param {string} utcDate - UTC date string used in the downloaded filename.
+ * @param {string} utcTime - UTC time string used in the downloaded filename.
+ * @returns {Function} Redux thunk.
+ */
 const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
@@ -264,6 +337,17 @@ const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
   };
 };
 
+/**
+ * Downloads a meeting recording as an MP4 blob.
+ * Filename format: MeetingTitle-ddMMyyyy-starttime-Recording.mp4
+ * @param {Object} Data - Request payload containing the recording reference.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18next translation function.
+ * @param {string} meetingTitle - Meeting title used in the downloaded filename.
+ * @param {string} utcDate - UTC date string used in the downloaded filename.
+ * @param {string} utcTime - UTC time string used in the downloaded filename.
+ * @returns {Function} Redux thunk.
+ */
 const DownloadMeetingRecording = (
   Data,
   navigate,

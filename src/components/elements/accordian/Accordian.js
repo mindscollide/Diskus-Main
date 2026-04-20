@@ -1,6 +1,16 @@
+/**
+ * @file Accordian.js
+ * @description Simple single-item accordion wrapper around React-Bootstrap's Accordion component.
+ */
+
 import React from "react";
 import { Accordion } from "react-bootstrap";
 
+/**
+ * Renders a single accordion item with a header and body supplied as props.
+ * @param {{ AccordioonHeader: JSX.Element, AccordioonBody: JSX.Element, AccordioonItem: JSX.Element, defaultActiveKey: string, className: string }} props
+ * @returns {JSX.Element}
+ */
 const Accordian = ({
   AccordioonHeader,
   AccordioonBody,

@@ -1,3 +1,14 @@
+/**
+ * @file Auth2_actions.js
+ * @description Redux thunk actions for the sign-up / login flow.
+ * Wraps `authenticationApi` for organization creation, email validation,
+ * password creation/verification, OTP email verification, package selection,
+ * invoice retrieval, and miscellaneous auth helpers.
+ * Dispatches: SIGNUPORGANIZATION_INIT/SUCCESS/FAIL, EMAILVALIDATION_INIT/SUCCESS/FAIL,
+ * PASSWORDVERIFICATION_INIT/SUCCESS/FAIL, EMAILVERIFICATION_INIT/SUCCESS/FAIL,
+ * PASSWORDCREATION_INIT/SUCCESS/FAIL, and related action types.
+ */
+
 import {
   authenticationApi,
   getAdminURLs,
@@ -60,6 +71,13 @@ const createOrganizationFail = (message) => {
   };
 };
 
+/**
+ * Registers a new organization along with its selected subscription package.
+ * @param {Object} data - Organization and package payload.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching SIGNUPORGANIZATION_INIT/SUCCESS/FAIL.
+ */
 const createOrganization = (data, navigate, t) => {
   return (dispatch) => {
     dispatch(createOrganizationInit());
@@ -261,6 +279,13 @@ const validationEmailFail = (message) => {
   };
 };
 
+/**
+ * Validates an email address during the sign-up / login flow.
+ * @param {string} email - Email address to validate.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching EMAILVALIDATION_INIT/SUCCESS/FAIL.
+ */
 const validationEmailAction = (email, navigate, t) => {
   let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
@@ -453,6 +478,14 @@ const enterPasswordFail = (message, response) => {
   };
 };
 
+/**
+ * Verifies an existing user password during the login flow.
+ * @param {string} value - Password entered by the user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} setPasswordFieldDisabled - Callback to disable the password field on success.
+ * @returns {Function} Redux thunk dispatching PASSWORDVALIDATION_INIT/SUCCESS/FAIL.
+ */
 const enterPasswordvalidation = (
   value,
   navigate,
@@ -1561,6 +1594,16 @@ const verifyOTPFail = (message) => {
   };
 };
 
+/**
+ * Verifies the email OTP entered during sign-up email confirmation.
+ * @param {string} OTPValue - The OTP code entered by the user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {boolean} updateFlag - Whether this is an update-email flow.
+ * @param {Function} setSeconds - Countdown seconds setter.
+ * @param {Function} setMinutes - Countdown minutes setter.
+ * @returns {Function} Redux thunk dispatching VERIFYOTPFOREMAIL_INIT/SUCCESS/FAIL.
+ */
 const verificationEmailOTP = (
   OTPValue,
   navigate,
@@ -1715,6 +1758,13 @@ const createPasswordFail = (message) => {
   };
 };
 
+/**
+ * Creates a new password for the user during the sign-up flow.
+ * @param {string} value - New password chosen by the user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching PASSWORDCREATION_INIT/SUCCESS/FAIL.
+ */
 const createPasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = { UserID: JSON.parse(userID), Password: value };
@@ -2778,6 +2828,12 @@ const getSelectedPackageandDetailsFail = (message) => {
   };
 };
 
+/**
+ * Fetches details for the package selected during sign-up.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const getSelectedPacakgeDetail = (navigate, t) => {
   let value = localStorage.getItem("organizatioName");
   let data = { OrganizationName: value };
@@ -2868,6 +2924,14 @@ const changePasswordFail = (message) => {
   };
 };
 
+/**
+ * Submits a change-password request (old → new) from the user settings flow.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {string} oldPassword - Current password.
+ * @param {string} newPassword - Desired new password.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -2972,6 +3036,10 @@ const organizationPackageReselectionFail = (message) => {
   };
 };
 
+/**
+ * Reselects or switches the subscription package for an existing organization.
+ * @returns {Function} Redux thunk.
+ */
 const organizationPackageReselection = (
   ID,
   TenureOfSuscriptionID,
@@ -3143,6 +3211,13 @@ const passwordupdatefail = (message) => {
   };
 };
 
+/**
+ * Updates the user's password after a forgot-password OTP flow.
+ * @param {string} value - New password value.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const updatePasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = {
@@ -3234,6 +3309,14 @@ const getInvoiceHTML_Fail = (message) => {
   };
 };
 
+/**
+ * Retrieves an invoice HTML preview for a given organization.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} Data - Request payload containing OrganizationID.
+ * @param {Function} setInvoiceModal - Callback to open/close the invoice modal.
+ * @returns {Function} Redux thunk.
+ */
 const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -3315,6 +3398,13 @@ const DownlaodInvoice_Fail = (message) => {
   };
 };
 
+/**
+ * Downloads the invoice PDF for a given organization.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} Data - Request payload containing OrganizationID.
+ * @returns {Function} Redux thunk.
+ */
 const DownlaodInvoiceLApi = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -3377,6 +3467,13 @@ const validateStringOTPEmail_fail = (message) => {
     message: message,
   };
 };
+/**
+ * Validates an encrypted OTP string received via email link.
+ * @param {Object} Data - Payload containing the encrypted OTP string.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const validateStringOTPEmail_Api = (Data, navigate, t) => {
   return (dispatch) => {
     dispatch(validateStringOTPEmail_init());
@@ -3487,6 +3584,10 @@ const validatePassword_fail = (message) => {
   };
 };
 
+/**
+ * Validates the user password for a sensitive in-app action.
+ * @returns {Function} Redux thunk.
+ */
 const validatePasswordActionApi = (
   Data,
   navigate,

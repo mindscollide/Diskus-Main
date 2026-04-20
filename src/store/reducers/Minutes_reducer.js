@@ -1,5 +1,24 @@
+/**
+ * @file Minutes_reducer.js
+ * @description Redux reducer for the `minutes` slice. Manages the full
+ * minutes review workflow: pending approvals, reviewer and organiser views,
+ * accept/reject actions, version history, published minutes, and
+ * workflow-actor status tracking.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                                              - Global loading flag.
+ * @property {object|null} PendingApprovalCountData                            - Pending approval count.
+ * @property {object|null} GetMinuteReviewFlowByMeetingIdData                  - Review flow for a meeting.
+ * @property {object|null} GetMinutesForReviewerByMeetingIdData                - Minutes list for reviewers.
+ * @property {object|null} SaveMinutesReviewFlowData                           - Saved review flow result.
+ * @property {object|null} PublishedMinutes                                    - Published minutes payload.
+ * @property {object|null} GetPublishedMinutes                                 - Retrieved published minutes.
+ * @property {object|null} WorkFlowActorStatusData                             - Workflow actor status.
+ * @property {string}      ResponseMessage                                     - Last response message.
+ */
 const initialState = {
   Loading: false,
   showPendingApprovalsPage: true,
@@ -41,6 +60,15 @@ const initialState = {
   ResponseMessage: "",
 };
 
+/**
+ * Reducer for the `minutes` slice.
+ * Handles the full minutes review lifecycle: pending approvals, reviewer/organiser
+ * data, accept/reject, version history, publishing, and workflow-actor status.
+ *
+ * @param {object} state  - Current minutes state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const MinutesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_INIT: {

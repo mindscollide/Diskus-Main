@@ -1,3 +1,11 @@
+/**
+ * @file GetMeetingUserId.js
+ * @description Redux thunk actions for meeting dashboard data (meetings by user, weekly counts,
+ * upcoming events, and meeting search).
+ * Wraps `meetingApi` (getMeetingId, getWeekMeetings, upcomingEvents, searchUserMeetings).
+ * Dispatches: GET_MEETING_*, GET_WEEKLYMEETING_*, GET_UPCOMINGEVENTS_*, SEARCH_MEETINGS_* types.
+ */
+
 import * as actions from "../action_types";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "../actions/Auth_action";
@@ -87,6 +95,13 @@ const setMQTTRequestUpcomingEvents = (response) => {
     response: response,
   };
 };
+/**
+ * Fetches meetings for a given user ID.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Payload containing UserID.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const getMeetingUserId = (navigate, data, t) => {
   return (dispatch) => {
     dispatch(getMeetingIdInit());
@@ -164,6 +179,14 @@ const getWeeklyMeetingsCountFail = (message) => {
 };
 
 //Get Week meetings
+/**
+ * Fetches the weekly meeting count for a user (used in dashboard widgets).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {number} id - UserID.
+ * @param {Function} t - i18n translation function.
+ * @param {boolean} loader - Whether to show a loading indicator.
+ * @returns {Function} Redux thunk.
+ */
 const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
   let Data = {
     UserId: parseInt(id),
@@ -271,6 +294,15 @@ const getShowMoreUpcomingEvent_fail = (message) => {
 };
 
 //Get Week meetings
+/**
+ * Fetches the upcoming calendar events for the current user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Payload with UserID and date range.
+ * @param {Function} t - i18n translation function.
+ * @param {boolean} loader - Whether to show a loading indicator.
+ * @param {Function} setShowMoreEventModal - Callback to open the "more events" modal.
+ * @returns {Function} Redux thunk.
+ */
 const GetUpcomingEvents = (navigate, data, t, loader, setShowMoreEventModal) => {
   return (dispatch) => {
     if (data.IsShowMore) {
@@ -457,6 +489,13 @@ const SearchMeeting_Fail = (message) => {
   };
 };
 
+/**
+ * Searches meetings for the current user with optional filters.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} searchData - Search filters (Title, Date, HostName, UserID, pagination).
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const searchUserMeeting = (navigate, searchData, t) => {
   let userID = JSON.parse(localStorage.getItem("userID"));
   let meetingpageRow = localStorage.getItem("MeetingPageRows");

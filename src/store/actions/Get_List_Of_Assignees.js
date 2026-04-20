@@ -1,3 +1,13 @@
+/**
+ * @file Get_List_Of_Assignees.js
+ * @description Redux thunk actions for meeting assignees and meeting lifecycle management.
+ * Wraps `meetingApi` for retrieving assignees, scheduling, viewing, updating,
+ * cancelling, starting, ending meetings, and fetching reminders.
+ * Dispatches: ASSIGNESS_LIST_INIT/SUCCESS/FAIL, SCHEDULE_NEW_MEETING_INIT/FAIL,
+ * VIEW_MEETING_INIT/SUCESS/FAIL, CANCEL_MEETING_INIT/SUCCESS/FAIL,
+ * START_MEETING_INIT/SUCCESS/FAIL, GET_REMINDERS_INIT/SUCCESS/FAIL.
+ */
+
 import * as actions from "../action_types";
 
 import { meetingApi } from "../../commen/apis/Api_ends_points";
@@ -73,6 +83,13 @@ const clearResponseMessage = () => {
   };
 };
 
+/**
+ * Fetches all assignees in the current organization for meeting / task assignment.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {boolean} loader - Whether to show the loading spinner.
+ * @returns {Function} Redux thunk dispatching ASSIGNESS_LIST_INIT/SUCCESS/FAIL.
+ */
 const allAssignessList = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -156,6 +173,15 @@ const ScheduleMeetingFail = (message) => {
   };
 };
 
+/**
+ * Schedules a new meeting and maps agenda attachments to Data Room entries.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {number} checkFlag - Context flag used to refresh the correct list after save.
+ * @param {Object} object - Full meeting creation payload.
+ * @param {Function} setShow - Callback to close the schedule modal.
+ * @returns {Function} Redux thunk dispatching SCHEDULE_NEW_MEETING_INIT/SUCCESS/FAIL.
+ */
 //SaveNONAPIDisputes
 const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -277,6 +303,15 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
   };
 };
 
+/**
+ * Updates an existing meeting and remaps agenda attachments to Data Room entries.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {number} checkFlag - Context flag for post-update list refresh.
+ * @param {Object} object - Updated meeting payload including MeetingID.
+ * @param {Function} setEditFlag - Callback to close the edit modal.
+ * @returns {Function} Redux thunk.
+ */
 // update meeting
 const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -486,6 +521,19 @@ const ViewMeetingFail = (message) => {
   };
 };
 
+/**
+ * Fetches a meeting by ID and triggers the appropriate view/edit modal.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Payload containing MeetingID.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} setViewFlag - Callback to show the view panel.
+ * @param {Function} setEditFlag - Callback to show the edit panel.
+ * @param {Function} setCalendarViewModal - Callback for calendar modal.
+ * @param {number} no - Mode flag determining which modal opens.
+ * @param {Function} setViewMeetingModal - Callback for view meeting modal.
+ * @param {Function} setEditMeetingModal - Callback for edit meeting modal.
+ * @returns {Function} Redux thunk dispatching VIEW_MEETING_INIT/SUCESS/FAIL.
+ */
 // View Meeting
 const ViewMeeting = (
   navigate,
@@ -618,6 +666,14 @@ const CancelMeetingFail = (message) => {
   };
 };
 
+/**
+ * Cancels a meeting and refreshes the relevant meeting list.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Payload containing MeetingID.
+ * @param {Function} t - i18n translation function.
+ * @param {number} value - Context flag for which list to refresh after cancellation.
+ * @returns {Function} Redux thunk dispatching CANCEL_MEETING_INIT/SUCCESS/FAIL.
+ */
 //Cancel Meeting
 const CancelMeeting = (navigate, object, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -754,6 +810,14 @@ const StartMeetingFail = (message) => {
   };
 };
 
+/**
+ * Marks a meeting as started.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Payload containing MeetingID.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} searchData - Search params to refresh the list after starting.
+ * @returns {Function} Redux thunk dispatching START_MEETING_INIT/SUCCESS/FAIL.
+ */
 //START Meeting
 const StartMeeting = (navigate, object, t, searchData) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -856,6 +920,14 @@ const EndMeetingFail = (message) => {
   };
 };
 
+/**
+ * Marks a meeting as ended and refreshes the meeting list.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Payload containing MeetingID.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} searchData - Search params to refresh the list after ending.
+ * @returns {Function} Redux thunk dispatching START_MEETING_INIT/SUCCESS/FAIL.
+ */
 //START Meeting
 const EndMeeting = (navigate, object, t, searchData) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -940,6 +1012,12 @@ const getAllRemindersFail = (message) => {
   };
 };
 
+/**
+ * Fetches all available meeting reminder intervals.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching GET_REMINDERS_INIT/SUCCESS/FAIL.
+ */
 const GetAllReminders = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {

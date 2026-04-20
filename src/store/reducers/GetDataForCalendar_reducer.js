@@ -1,5 +1,21 @@
+/**
+ * @file GetDataForCalendar_reducer.js
+ * @description Redux reducer for the `calendar` slice. Manages calendar
+ * event data, event types, and Google/Microsoft calendar integration
+ * (create, update, delete events). Includes errorSeverity for toast feedback.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {Array}       CalenderData           - List of calendar events for the current view.
+ * @property {boolean}     Loading                - Global loading flag.
+ * @property {Array}       getEventTypeIds        - Available event type identifiers.
+ * @property {object|null} eventsDetails          - Details of a specific calendar event.
+ * @property {object|null} googleEventCreate      - Google Calendar event creation result.
+ * @property {object|null} microsoftEventCreate   - Microsoft Calendar event creation result.
+ * @property {string|null} errorSeverity          - Feedback severity ("success" | "error" | null).
+ */
 const initialState = {
   CalenderData: [],
   Loading: false,
@@ -16,6 +32,15 @@ const initialState = {
   errorSeverity: null, // Added errorSeverity to initialState
 };
 
+/**
+ * Reducer for the `calendar` slice.
+ * Handles fetching calendar events and event types, Google/Microsoft
+ * calendar CRUD operations, and state clearing.
+ *
+ * @param {object} state  - Current calendar state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const calendarReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GETEVENTSDETAILS_INIT: {

@@ -1,3 +1,8 @@
+/**
+ * @file ComplianceEmptyState.js
+ * @description Empty-state illustration component for compliance sections, supporting multiple layout variants and image types.
+ */
+
 import React, { memo } from "react";
 import styles from "./ComplianceEmptyState.module.css"; //  CSS MODULE
 
@@ -18,6 +23,11 @@ const imageMap = {
   noComplianceReopenDashboard: ComplianceReopenDashboard,
 };
 
+/**
+ * Memoised empty state display with a keyed illustration, title, and optional description in a configurable layout.
+ * @param {{ type: string, title: string, description: string, layout: string, imgWidth: string, imgMarginTop: string|number, className: string }} props
+ * @returns {JSX.Element}
+ */
 const ComplianceEmptyState = ({
   type = "noQuarterlySubmittedCompliance",
   title = "No Data Found",

@@ -1,3 +1,28 @@
+/**
+ * @file routes.js
+ * @description Defines the complete client-side route tree for the application
+ * using React Router v6's `createBrowserRouter` + `createRoutesFromElements`.
+ *
+ * Route hierarchy:
+ *  - `/Diskus/video`            – Video meeting (guarded by `PrivateVideoMeeting`)
+ *  - `/GuestVideoCall`          – Unauthenticated guest video call
+ *  - `/AlreadyInGroupAndOtoCall`– Already-in-call screen
+ *  - `/`                        – Login / user-management process
+ *  - `/Signup`                  – Organisation sign-up flow
+ *  - `/forgotpasswordVerification`, `/updatepassword`, etc. – Auth utilities
+ *  - `/Diskus/*` (nested)       – All authenticated user pages (guarded by
+ *                                 `PrivateRoutes`; each child wrapped in
+ *                                 `RouteWrapperUser` for permission checking)
+ *  - `/Admin/*` (nested)        – All admin pages (guarded by
+ *                                 `PrivateAdminRoute`; each child wrapped in
+ *                                 `RouteWrapperAdmin`)
+ *
+ * Every `<Route element>` is additionally wrapped in an `<ErrorBoundary>` that
+ * renders `ErrorFallback` and calls `logErrors` on uncaught render errors.
+ *
+ * `roleRoute` is read from localStorage at module load time to decide whether
+ * the default `/Admin/` index renders `PayOutstanding` or `ManageUsers`.
+ */
 import {
   Route,
   createRoutesFromElements,

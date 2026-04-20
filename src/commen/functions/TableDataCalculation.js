@@ -1,4 +1,25 @@
-//Calculating the totals
+/**
+ * @file TableDataCalculation.js
+ * @description Aggregation helpers that compute licence counts and charge
+ * totals for subscription plan tables.  Each function reduces a row array
+ * down to a single "Total" summary object suitable for appending as the last
+ * row of an Ant Design (or similar) table.
+ */
+
+/**
+ * Computes total licence count plus monthly, quarterly, and yearly charges
+ * from a subscription plan row array.  Used by the main billing / upgrade
+ * subscription table.
+ *
+ * @param {Array<{licenseCount: number|string, price: number}>} data
+ * @returns {{
+ *   name: "Total",
+ *   Numberoflicenses: number,
+ *   MonthCharges: number,
+ *   Quarterlycharges: number,
+ *   YearlychargesTotal: number
+ * }}
+ */
 export const calculateTotals = (data) => {
   console.log(data, "datadatadatadata");
   const totalLicenses = data.reduce(
@@ -35,6 +56,19 @@ export const calculateTotals = (data) => {
   };
 };
 
+/**
+ * Computes totals for the billing stepper's plan selection table.
+ * Uses `headCount` (instead of `licenseCount`) and handles errors gracefully.
+ *
+ * @param {Array<{headCount: number|string, price: number}>} data
+ * @returns {{
+ *   name: "Total",
+ *   headCount: number,
+ *   Yearlycharges: number,
+ *   Quaterlycharges: number,
+ *   Monthlycharges: number
+ * }|undefined} Returns `undefined` on error.
+ */
 export const calculateTotalsBillingStepper = (data) => {
   try {
     const totalLicenses = data.reduce((acc, cur) => {
@@ -71,19 +105,41 @@ export const calculateTotalsBillingStepper = (data) => {
   }
 };
 
-//Totals Downgrade Subscription Table
+// ─── Downgrade Subscription Table Aggregators ───────────────────────────────
+
+/**
+ * Sums the `price` field across all downgrade-subscription package rows.
+ * @param {Array<{price: number}>} packages
+ * @returns {number}
+ */
 export const calculateTotalChargesDowngradeSubscription = (packages) => {
   return packages.reduce((acc, pkg) => acc + pkg.price, 0);
 };
 
+/**
+ * Sums the `headCount` field across all downgrade-subscription package rows.
+ * @param {Array<{headCount: number}>} packages
+ * @returns {number}
+ */
 export const calculateTotalHeadCountDowngradeSubscription = (packages) => {
   return packages.reduce((acc, pkg) => acc + pkg.headCount, 0);
 };
 
+/**
+ * Sums the `allotedUsers` field across all downgrade-subscription package rows.
+ * @param {Array<{allotedUsers: number}>} packages
+ * @returns {number}
+ */
 export const calculateTotalAllotedUsersDowngradeSubscription = (packages) => {
   return packages.reduce((acc, pkg) => acc + pkg.allotedUsers, 0);
 };
 
+/**
+ * Sums the "not-utilised" slots (`headCount - allotedUsers`) for each package
+ * row in the downgrade-subscription table.
+ * @param {Array<{headCount: number, allotedUsers: number}>} packages
+ * @returns {number}
+ */
 export const calculateTotalNotUtilizedDowngradeSubscription = (packages) => {
   return packages.reduce(
     (acc, pkg) => acc + (pkg.headCount - pkg.allotedUsers),
@@ -91,6 +147,13 @@ export const calculateTotalNotUtilizedDowngradeSubscription = (packages) => {
   );
 };
 
+/**
+ * Sums all integer values stored in the text-field map that tracks how many
+ * licences the user wants to remove from each package during a downgrade.
+ * Non-numeric strings are treated as 0.
+ * @param {Object.<string, string|number>} textFieldValues - Key → raw input value.
+ * @returns {number}
+ */
 export const calculateTotalReductionDowngradeSubscription = (
   textFieldValues
 ) => {

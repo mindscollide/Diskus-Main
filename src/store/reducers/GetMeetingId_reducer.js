@@ -1,5 +1,22 @@
+/**
+ * @file GetMeetingId_reducer.js
+ * @description Redux reducer for the `meetingId` slice. Manages the user's
+ * meeting list, meeting counts, upcoming events, and real-time MQTT updates
+ * for meeting status changes (start/end/cancel, group and committee meetings).
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                               - Global loading flag.
+ * @property {Array}       AllMeetingIdData                      - Fetched meeting records.
+ * @property {number}      TotalMeetingCountThisWeek             - Total meetings this week.
+ * @property {number}      TotalNumberOfUpcommingMeetingsInWeek  - Upcoming meetings count.
+ * @property {Array}       UpcomingEventsData                    - Upcoming calendar events.
+ * @property {object|null} allMeetingsSocketData                 - Real-time all-meetings MQTT payload.
+ * @property {object|null} MeetingStatusSocket                   - Real-time meeting status MQTT payload.
+ * @property {object|null} MQTTUpcomingEvents                    - Upcoming events received via MQTT.
+ */
 const initialState = {
   Loading: false,
   ShowNotification: false,
@@ -22,8 +39,15 @@ const initialState = {
   moreEventsLoader: false
 };
 
-//Get meetingreducer
-
+/**
+ * Reducer for the `meetingId` slice.
+ * Handles fetching the user's meetings and counts, upcoming events,
+ * MQTT real-time status updates, and search.
+ *
+ * @param {object} state  - Current meetingId state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const meetingIdReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.SET_LOADER_TRUE:

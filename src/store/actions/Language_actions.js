@@ -1,3 +1,10 @@
+/**
+ * @file Language_actions.js
+ * @description Redux actions for language preference management — fetch all system-supported
+ * languages and get/set the user's last selected language.
+ * Wraps `getSystemSupportedLanguage`, `getLastSelectedLanguage`, `setLastSelectedLanguage`.
+ * Dispatches: GET_ALL_LANGUAGES_INITIAL/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 
 import { RefreshToken } from "./Auth_action";

@@ -1,3 +1,9 @@
+/**
+ * @file AgendaWiseAgendaAction.js
+ * @description Redux actions for fetching all agendas in the agenda-wise minutes view.
+ * Wraps `getAllAgendaForAgendaWise` API config.
+ * Dispatches: GET_ALL_AGENDAWISE_AGENDA_INIT/SUCCESS/FAILED.
+ */
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { GetAllAgendaWiseMinutesApiFunc } from "./NewMeetingActions";

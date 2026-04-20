@@ -1,3 +1,11 @@
+/**
+ * @file UpdateUserGeneralSetting.js
+ * @description Redux thunk actions for updating user general settings and calendar integrations.
+ * Wraps `settingApi` and `getCalender` for updating org/user settings, validating and revoking
+ * Google and Microsoft OAuth calendar tokens.
+ * Dispatches: UDPATEUSERSETTING_INIT/SUCCESS/FAIL and related Google/Microsoft token action types.
+ */
+
 import * as actions from "../action_types";
 import { settingApi, getCalender } from "../../commen/apis/Api_ends_points";
 import {
@@ -31,6 +39,15 @@ const updateUserSettingFail = (message) => {
   };
 };
 
+/**
+ * Updates the user's general settings (e.g. calendar options, notification preferences).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} userOptionsSettings - Updated settings payload.
+ * @param {Function} t - i18n translation function.
+ * @param {number} flag - Context flag controlling which settings block is being updated.
+ * @param {boolean} AllowMicrosoftCalenderSyncCall - Whether to trigger a Microsoft calendar sync.
+ * @returns {Function} Redux thunk dispatching UDPATEUSERSETTING_INIT/SUCCESS/FAIL.
+ */
 const updateUserSettingFunc = (
   navigate,
   userOptionsSettings,
@@ -237,6 +254,10 @@ const googleValidTokenFail = (message) => {
   };
 };
 
+/**
+ * Validates the stored Google OAuth token and refreshes calendar sync state.
+ * @returns {Function} Redux thunk.
+ */
 const getGoogleValidToken = (
   navigate,
   data,
@@ -467,6 +488,10 @@ const revokeTokenFail = (message) => {
   };
 };
 
+/**
+ * Revokes the user's Google OAuth token and disconnects calendar sync.
+ * @returns {Function} Redux thunk.
+ */
 const revokeToken = (
   navigate,
   userOptionsSettings,
@@ -916,6 +941,10 @@ const revokeMicrosoftToken_fail = (message) => {
   };
 };
 
+/**
+ * Revokes the user's Microsoft OAuth token and disconnects calendar sync.
+ * @returns {Function} Redux thunk.
+ */
 const revokeMicrosoftTokenApi = (
   navigate,
   data,

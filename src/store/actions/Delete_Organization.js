@@ -1,3 +1,9 @@
+/**
+ * @file Delete_Organization.js
+ * @description Redux actions for deleting an organisation record.
+ * Wraps `deleteOrganizationAPI` API config.
+ * Dispatches: DELETE_ORGANIZATION_INIT/SUCCESS/FAIL.
+ */
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 

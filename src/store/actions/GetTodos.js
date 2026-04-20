@@ -1,3 +1,11 @@
+/**
+ * @file GetTodos.js
+ * @description Redux thunk actions for to-do status lookup and task status updates.
+ * Wraps `toDoListApi` (todosStatus, updateTodoStatus request methods).
+ * Dispatches: GET_TODOSSTATUS_INIT/SUCCESS/FAIL, UPDATE_TODOSTATUS_INIT/SUCCESS/FAIL,
+ * GET_CLEAREMESSAGE_GETTODO.
+ */
+
 import * as actions from "../action_types";
 
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
@@ -46,6 +54,12 @@ const updateTodoStatusFail = (message) => {
     message: message,
   };
 };
+/**
+ * Fetches all available to-do task statuses (e.g. Open, In Progress, Done).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching GET_TODOSSTATUS_INIT/SUCCESS/FAIL.
+ */
 const getTodoStatus = (navigate, t) => {
   return (dispatch) => {
     dispatch(getTodoStatusInit());
@@ -101,6 +115,17 @@ const getTodoStatus = (navigate, t) => {
   };
 };
 
+/**
+ * Updates the status of a to-do task and refreshes the relevant list.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {number} statusID - New status ID to assign.
+ * @param {number} data - TaskID to update.
+ * @param {Function} t - i18n translation function.
+ * @param {boolean} flag - Controls post-update list refresh behavior.
+ * @param {number} value - Context flag (1=committee, 2=group, 3=meeting, else=todo list).
+ * @param {number} currentMeetingID - Meeting ID, used when value===3.
+ * @returns {Function} Redux thunk dispatching UPDATE_TODOSTATUS_INIT/SUCCESS/FAIL.
+ */
 const updateTodoStatusFunc = (
   navigate,
   statusID,

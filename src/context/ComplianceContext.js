@@ -1,3 +1,28 @@
+/**
+ * @file ComplianceContext.js
+ * @description Manages the full lifecycle state for the Compliance feature, including
+ * compliance record creation/editing/viewing, checklist and task tracking, status
+ * transition modals, dashboard filters, report generation flags, and real-time MQTT
+ * updates for compliance records, checklists, and status changes.
+ *
+ * Exposed values (selected highlights):
+ * - `createEditCompliance` / `setCreateEditComplaince` - Whether the create/edit form is open.
+ * - `complianceAddEditViewState` {number} - Current form mode (0=list, 1=add, 2=edit, 3=view).
+ * - `complianceInfo` {object} - Basic identity ({complianceId, complianceName}) of the active record.
+ * - `complianceDetailsState` / `complianceDetailsViewState` - Full detail objects for the active compliance.
+ * - `complianceByMeList`, `complianceForMeList` - Paginated compliance lists by ownership.
+ * - `allCheckListByComplianceId` - Checklists belonging to the currently viewed compliance.
+ * - `submitForApprovalModal`, `complianceOnHoldModal`, `complianceCancelModal` - Status-change modals.
+ * - `complianceDashboardFilter`, `complianceTaskDashboardFilter` - Active dashboard dropdown filters.
+ * - `complianceStatndingReport`, `endOfComplianceReport`, `endOfQuarterReport`, `accumulativeReport` - Report open flags.
+ * - `emptyComplianceState` {Function} - Resets all compliance-related context state.
+ * - `resetModalStates` {Function} - Closes all status-transition modals at once.
+ * - `criticalityOptions` {Array} - Translated criticality level options for select inputs.
+ *
+ * Consumed by compliance listing pages, compliance detail/edit forms, checklist panels,
+ * task views, the compliance dashboard, and report components.
+ */
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { clearComplianceDetailsData } from "../store/actions/ComplainSettingActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +35,14 @@ import {
 
 const ComplianceContext = createContext();
 
+/**
+ * ComlianceProvider component that supplies the complete compliance lifecycle state,
+ * MQTT-driven list updates, and report/modal control to the component tree via ComplianceContext.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - Child components that will have access to the context.
+ * @returns {JSX.Element}
+ */
 export const ComlianceProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -1054,6 +1087,13 @@ export const ComlianceProvider = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to consume ComplianceContext.
+ * Must be used within a {@link ComlianceProvider}.
+ *
+ * @returns {object} The full compliance context state and helper functions.
+ * @throws {Error} If used outside of a ComlianceProvider.
+ */
 export const useComplianceContext = () => {
   const context = useContext(ComplianceContext);
 

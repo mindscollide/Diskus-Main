@@ -1,3 +1,11 @@
+/**
+ * @file GuestVideo_Reducer.js
+ * @description Redux reducer for the `GuestVideo` slice. Manages the complete
+ * guest video-call session state: join/validate flow, admit/reject controls,
+ * raise-hand, participant list, host transfer, mute/unmute and
+ * hide/unhide for self and by host, stream type navigation, and camera/voice
+ * toggle state.
+ */
 import * as actions from "../action_types";
 import { removeParticipantByGuid } from "../../commen/functions/regex";
 
@@ -38,6 +46,15 @@ const initialState = {
   errorSeverity: null, // Added errorSeverity to initialState
 };
 
+/**
+ * Reducer for the `GuestVideo` slice.
+ * Handles guest video-call session: join/validate, admit/reject, participant
+ * list management, raise-hand, host transfer, audio/video toggles.
+ *
+ * @param {object} state  - Current guest-video state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const GuestVideoReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_MEETING_GUEST_URL_INIT: {

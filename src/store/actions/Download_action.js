@@ -1,3 +1,11 @@
+/**
+ * @file Download_action.js
+ * @description Redux actions for document downloads — general documents, attendance reports,
+ * login history reports, and audit-trial Excel exports.
+ * Wraps `downloadDocument`, `downloadAttendanceReport`, `LoginHistoryReportExporttoExcel`,
+ * `AuditTrialReportExporttoExcel`.
+ * Dispatches: GET_DOWNLOAD_LOADER_START/END.
+ */
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import {

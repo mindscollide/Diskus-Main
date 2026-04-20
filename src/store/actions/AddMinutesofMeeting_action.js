@@ -1,3 +1,9 @@
+/**
+ * @file AddMinutesofMeeting_action.js
+ * @description Redux actions for adding a minutes-of-meeting record.
+ * Wraps the `addMinuteofMeetings` API (`meetingApi`).
+ * Dispatches: ADD_MINUTESOFMEETING_INIT/SUCCESS/FAIL, HIDEMINUTEMESSAGE.
+ */
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { addMinuteofMeetings } from "../../commen/apis/Api_config";

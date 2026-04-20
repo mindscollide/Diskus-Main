@@ -1,3 +1,10 @@
+/**
+ * @file ExpandedMenu.js
+ * @description Expanded sidebar navigation menu that renders secondary navigation items
+ * (Calendar, Groups, Tasks, Notes, Polls). Handles routing guards for users currently
+ * in a meeting or active video call, showing confirmation modals when navigation away
+ * would discard unsaved changes.
+ */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./ExpandedMenu.css";
@@ -28,11 +35,22 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 
+/**
+ * ExpandedMenu component.
+ *
+ * Renders an icon-grid of secondary sidebar navigation links. Each link performs
+ * a guarded navigation: if the user is inside an active meeting or video call the
+ * appropriate confirmation / leave-meeting modal is triggered instead of navigating
+ * immediately.
+ *
+ * @returns {JSX.Element} The expanded sidebar navigation menu.
+ */
 const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  // Read user context values from localStorage
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -110,6 +128,11 @@ const ExpandedMenu = () => {
     (state) => state.NewMeetingreducer.endMeetingModal,
   );
 
+  /**
+   * Handles sidebar navigation to the Groups page while the user is in an active
+   * video call. Triggers the leave-meeting intimation action and minimises the
+   * video panel.
+   */
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
     localStorage.setItem("navigateLocation", "groups");
@@ -121,6 +144,10 @@ const ExpandedMenu = () => {
     }
   };
 
+  /**
+   * Handles sidebar navigation to Groups when the user is in a meeting but NOT in
+   * a video call. Shows end-meeting modal and delegates to SideBarGlobalNavigationFunction.
+   */
   const handleMeetingSidebarGroupsNoCall = () => {
     dispatch(showEndMeetingModal(true));
     dispatch(maximizeVideoPanelFlag(false));
@@ -148,6 +175,9 @@ const ExpandedMenu = () => {
     );
   };
 
+  /**
+   * Handles sidebar navigation to the Polls page while in an active video call.
+   */
   //Polls Sidebar Click
   const handleMeetingSidebarPolls = () => {
     localStorage.setItem("navigateLocation", "polling");
@@ -159,6 +189,9 @@ const ExpandedMenu = () => {
     }
   };
 
+  /**
+   * Handles sidebar navigation to Polls when in a meeting without an active call.
+   */
   const handleMeetingSidebarPollsNoCall = () => {
     dispatch(showEndMeetingModal(true));
     dispatch(maximizeVideoPanelFlag(false));
@@ -185,6 +218,9 @@ const ExpandedMenu = () => {
     );
   };
 
+  /**
+   * Handles sidebar navigation to the Calendar page while in an active video call.
+   */
   //Calendar Sidebar Click
   const handleMeetingSidebarCalendar = () => {
     localStorage.setItem("navigateLocation", "calendar");
@@ -196,6 +232,9 @@ const ExpandedMenu = () => {
     }
   };
 
+  /**
+   * Handles sidebar navigation to Calendar when in a meeting without an active call.
+   */
   const handleMeetingSidebarCalendarNoCall = () => {
     dispatch(showEndMeetingModal(true));
     dispatch(maximizeVideoPanelFlag(false));
@@ -223,6 +262,9 @@ const ExpandedMenu = () => {
     );
   };
 
+  /**
+   * Handles sidebar navigation to the Todo list page while in an active video call.
+   */
   // Todo Sidebar Click
   const handleMeetingSidebarTodo = () => {
     localStorage.setItem("navigateLocation", "todolist");
@@ -234,6 +276,9 @@ const ExpandedMenu = () => {
     }
   };
 
+  /**
+   * Handles sidebar navigation to Todo list when in a meeting without an active call.
+   */
   const handleMeetingSidebarTodoNoCall = async () => {
     dispatch(showEndMeetingModal(true));
     dispatch(maximizeVideoPanelFlag(false));
@@ -260,6 +305,9 @@ const ExpandedMenu = () => {
     );
   };
 
+  /**
+   * Handles sidebar navigation to the Notes page while in an active video call.
+   */
   const handleMeetingSidebarNotes = () => {
     localStorage.setItem("navigateLocation", "Notes");
     if (CurrentMeetingStatus === 10) {
@@ -270,6 +318,9 @@ const ExpandedMenu = () => {
     }
   };
 
+  /**
+   * Handles sidebar navigation to Notes when in a meeting without an active call.
+   */
   const handleMeetingSidebarNotesNoCall = async () => {
     dispatch(showEndMeetingModal(true));
     dispatch(maximizeVideoPanelFlag(false));
@@ -296,6 +347,18 @@ const ExpandedMenu = () => {
     );
   };
 
+  /**
+   * Central guard function called by every nav-link click inside the expanded menu.
+   * Decides whether to navigate directly, show a meeting-leave modal, or block
+   * navigation entirely based on the current meeting/call state and compliance status.
+   *
+   * @param {object} params - Navigation parameters.
+   * @param {string} params.targetPath - The route path to navigate to.
+   * @param {string} params.navigateLocationKey - Key stored in localStorage to track intended destination.
+   * @param {Function} params.handleWithCall - Handler invoked when an active video call exists.
+   * @param {Function} params.handleNoCall - Handler invoked when in a meeting but no active call.
+   * @returns {boolean|string} Returns `true` to stop further processing, `false` to allow default flow, or `""` after navigating.
+   */
   const handleSidebarClickForExpand = ({
     targetPath,
     navigateLocationKey,
@@ -307,6 +370,7 @@ const ExpandedMenu = () => {
     console.log("Check Route scenario's");
     console.log(createEditCompliance, "Check Route scenario's");
     console.log(targetPath, "Check Route scenario's");
+    // If user is editing a compliance record, show confirmation before leaving
     if (createEditCompliance) {
       console.log("createEditComplaince");
       setPendingNavigation(targetPath);
@@ -316,6 +380,7 @@ const ExpandedMenu = () => {
 
     if (isMeeting) {
       console.log("Check Route scenario's");
+      // If already on the target path and not in an advance meeting modal, navigate directly
       if (location.pathname !== targetPath && !viewAdvanceMeetingModal) {
         console.log("Check Route scenario's");
         navigate(targetPath);
@@ -363,6 +428,7 @@ const ExpandedMenu = () => {
       return true;
     }
 
+    // If any meeting sub-page flag is active (but not viewing a meeting), redirect to meeting list
     const shouldRedirectToMeeting =
       (scheduleMeetingPageFlagReducer ||
         viewProposeDateMeetingPageFlagReducer ||

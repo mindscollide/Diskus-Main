@@ -1,5 +1,24 @@
+/**
+ * @file MeetingAgenda_reducer.js
+ * @description Redux reducer for the `meetingAgenda` slice. Manages meeting
+ * agenda items: CRUD operations, voting (save/cast/view results), document
+ * uploads, MQTT real-time voting/update events, print/export flags, and
+ * agenda import from other meetings.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                                         - Global loading flag.
+ * @property {Array}       GetAdvanceMeetingAgendabyMeetingIDData          - Full agenda list for a meeting.
+ * @property {Array}       MeetingAgendaVotingDetailsData                  - Voting details per agenda item.
+ * @property {object|null} ViewAgendaVotingResultData                      - Results of an agenda vote.
+ * @property {number}      MeetingAgendaFolderID                           - Data room folder ID for agenda docs.
+ * @property {object|null} MeetingAgendaStartedData                        - MQTT payload for voting started.
+ * @property {object|null} MeetingAgendaUpdatedMqtt                        - MQTT payload for agenda update.
+ * @property {boolean}     PrintAgendaFlag                                  - Trigger flag for printing agenda.
+ * @property {boolean}     ExportAgendaFlag                                 - Trigger flag for exporting agenda.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -33,6 +52,15 @@ const initialState = {
   GetAdvanceMeetingAgendabyMeetingIDForViewData: null,
 };
 
+/**
+ * Reducer for the `meetingAgenda` slice.
+ * Handles agenda CRUD, voting lifecycle, document upload/save, MQTT events,
+ * print/export flags, and agenda import from other meetings.
+ *
+ * @param {object} state  - Current meetingAgenda state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const MeetingAgendaReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_AGENDAVOTINGDETAILS_INIT: {

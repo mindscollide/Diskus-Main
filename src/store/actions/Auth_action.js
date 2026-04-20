@@ -1,3 +1,10 @@
+/**
+ * @file Auth_action.js
+ * @description Redux actions for the Authentication feature (token refresh and UI state helpers).
+ * Wraps the authentication API (`authenticationApi`) for token refresh.
+ * Dispatches: REFRESH_TOKEN_SUCCESS, REFRESH_TOKEN_FAIL, CLEAR_STATE_BACK, HIDE.
+ */
+
 import * as actions from "../action_types";
 import { authenticationRefreshToken } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
@@ -20,6 +27,13 @@ const refreshtokenSuccess = (response, message) => {
   };
 };
 
+/**
+ * Calls the refresh-token API to obtain a new JWT. Signs the user out if the
+ * token is expired or the server returns a non-200 response.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const RefreshToken = (navigate, t) => {
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshToken = JSON.parse(localStorage.getItem("refreshToken"));
@@ -78,6 +92,10 @@ const RefreshToken = (navigate, t) => {
   };
 };
 
+/**
+ * Dispatches CLEAR_STATE_BACK to reset auth-related UI state.
+ * @returns {{ type: string }} Plain Redux action.
+ */
 // Clearing states on click of Button
 const clearState = (history) => {
   return {
@@ -85,6 +103,10 @@ const clearState = (history) => {
   };
 };
 
+/**
+ * Dispatches HIDE to dismiss auth notification banners.
+ * @returns {{ type: string }} Plain Redux action.
+ */
 const HideNotificationAuth = () => {
   return {
     type: actions.HIDE,

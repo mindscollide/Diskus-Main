@@ -1,3 +1,10 @@
+/**
+ * @file Auth_Verify_Opt.js
+ * @description Redux thunk action for resending an OTP during email verification.
+ * Wraps `authenticationApi` (resendOTP request method).
+ * Dispatches: RESEND_OTP_INIT, RESEND_OTP_SUCCESS, RESEND_OTP_FAIL.
+ */
+
 import * as actions from "../action_types";
 import { resendOTP } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
@@ -24,6 +31,14 @@ const resendOTPFail = (message) => {
   };
 };
 
+/**
+ * Resends the OTP email to the user and resets the countdown timer on success.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} verificationData - Payload with UserID and related verification info.
+ * @param {Function} setSeconds - Countdown seconds setter.
+ * @param {Function} setMinutes - Countdown minutes setter.
+ * @returns {Function} Redux thunk dispatching RESEND_OTP_INIT/SUCCESS/FAIL.
+ */
 const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
   return (dispatch) => {
     dispatch(resendOTPInit());

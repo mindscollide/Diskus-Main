@@ -1,3 +1,9 @@
+/**
+ * @file Attendance_Meeting.js
+ * @description Redux actions for fetching and saving meeting attendance records.
+ * Wraps `getAllAttendanceMeeting` and `saveMeetingAttendance` API configs.
+ * Dispatches: GET_ALL_ATTENDANCE_MEETING_INIT/SUCCESS/FAIL, SAVE_MEETING_ATTENDANCE_*.
+ */
 import * as actions from "../action_types";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import {

@@ -1,3 +1,11 @@
+/**
+ * @file GetUserSetting.js
+ * @description Redux thunk actions for user settings, profile details, and profile updates.
+ * Wraps `settingApi` (getUserSettings, getuserdetails, updateProfileData request methods).
+ * Dispatches: GETSETTING_INIT/SUCCESS/FAIL, GET_USERS_DETAILS_INIT/SUCCESS/FAIL,
+ * UPDATE_USER_PROFILE_INIT/SUCCESS/FAIL.
+ */
+
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -53,6 +61,14 @@ const setRecentActivityDataNotification = (response) => {
   };
 };
 
+/**
+ * Fetches all user settings (notifications, calendar sync, video config, etc.)
+ * and stores key config values in localStorage.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {boolean} [loader] - Whether to display a loading indicator.
+ * @returns {Function} Redux thunk dispatching GETSETTING_INIT/SUCCESS/FAIL.
+ */
 const getUserSetting = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
@@ -317,6 +333,15 @@ const getuserdetailsfail = (message) => {
   };
 };
 
+/**
+ * Fetches profile details for a specific user within an organization.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {string|number} userID - ID of the user to fetch.
+ * @param {Function} t - i18n translation function.
+ * @param {string|number} OrganizationID - Organization context for the lookup.
+ * @param {Function} [setUserProfileModal] - Optional callback to open/close the profile modal.
+ * @returns {Function} Redux thunk dispatching GET_USERS_DETAILS_INIT/SUCCESS/FAIL.
+ */
 const getUserDetails = (
   navigate,
   userID,
@@ -432,6 +457,17 @@ const updateprofilefail = (message) => {
   };
 };
 
+/**
+ * Submits profile field updates (name, mobile, designation) for the current user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} updateData - Updated profile payload.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} setMobileEnable - Re-locks the mobile field after save.
+ * @param {Function} setDesignationEnable - Re-locks the designation field after save.
+ * @param {Function} setNameEanble - Re-locks the name field after save.
+ * @param {Function} setUser - Resets local edit state.
+ * @returns {Function} Redux thunk dispatching UPDATE_USER_PROFILE_INIT/SUCCESS/FAIL.
+ */
 const updateuserprofile = (
   navigate,
   updateData,

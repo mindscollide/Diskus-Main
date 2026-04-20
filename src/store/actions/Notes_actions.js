@@ -1,3 +1,10 @@
+/**
+ * @file Notes_actions.js
+ * @description Redux actions for the Notes feature — save, update, delete, search notes,
+ * data-room mapping, and document attachment (save/retrieve/delete).
+ * Uses `getNotesApi` and `dataRoomApi` endpoints.
+ * Dispatches: NOTES_* action types.
+ */
 import * as actions from "../action_types";
 
 import { dataRoomApi, getNotesApi } from "../../commen/apis/Api_ends_points";

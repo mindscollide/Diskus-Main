@@ -1,3 +1,11 @@
+/**
+ * @file MeetingOrganizers_action.js
+ * @description Redux actions for meeting organiser management — fetch all organizers,
+ * save organizers, send notifications, and update meeting status.
+ * Wraps `getAllGroupsUsersAndCommitteesByOrganizaitonID`, `saveMeetingOrganizers`,
+ * `meetingStatusUpdate`, `getAllMeetingOrganizers`, `sendNotification`.
+ * Dispatches: MEETINGORGANIZERS_* action types.
+ */
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import {

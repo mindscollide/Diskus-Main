@@ -1,9 +1,19 @@
+/**
+ * @file CustomAccordian.js
+ * @description Accordion table component that renders hierarchical task data with expandable child rows.
+ */
+
 import Accordion from "react-bootstrap/Accordion";
 import { Col, Row, Container } from "react-bootstrap";
 import { PlusLg } from "react-bootstrap-icons";
 import Card from "react-bootstrap/Card";
 import "./CustomAccordion.css";
 
+/**
+ * Renders an accordion-style table with column headers and expandable child rows for each data entry.
+ * @param {{ data: Array, columns: Array<{ col: number, title: string }>, ToggleButton: React.ElementType }} props
+ * @returns {JSX.Element}
+ */
 const CustomAccordion = ({ data, columns, ToggleButton }) => {
   let index;
   for (index = 0; index < data.length; index++) {}

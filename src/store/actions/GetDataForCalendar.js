@@ -1,3 +1,11 @@
+/**
+ * @file GetDataForCalendar.js
+ * @description Redux thunk actions for the calendar feature.
+ * Wraps `getCalender` API for fetching calendar data, event types, and event details.
+ * Also exposes helpers for MQTT-based calendar event updates.
+ * Dispatches: GET_CALENDARDATA_INIT/SUCCESS/FAIL, GET_EVENTTYPES_*, GET_EVENTDETAILS_*.
+ */
+
 import * as actions from "../action_types";
 import {
   calendarDataRequest,
@@ -43,6 +51,14 @@ const calendarLoader = (loader) => {
     payload: loader,
   };
 };
+/**
+ * Fetches calendar events for the current user within a date range.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} data - Request payload (UserID, start/end dates, etc.).
+ * @param {number} flag - Context flag distinguishing calendar view types.
+ * @returns {Function} Redux thunk dispatching GET_CALENDARDATA_INIT/SUCCESS/FAIL.
+ */
 const getCalendarDataResponse = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -256,6 +272,12 @@ const getEventsType_fail = (message) => {
     message: message,
   };
 };
+/**
+ * Fetches all calendar event type definitions (Diskus, Google, Microsoft, etc.).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const getEventsTypes = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -335,6 +357,14 @@ const getEventsDetails_fail = (message) => {
     message: message,
   };
 };
+/**
+ * Fetches detailed info for a specific calendar event (Diskus meetings).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} Data - Payload with event/meeting ID.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} setCalendarViewModal - Callback to open the event detail modal.
+ * @returns {Function} Redux thunk.
+ */
 const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
   return (dispatch) => {
     dispatch(getEventsDetails_init());

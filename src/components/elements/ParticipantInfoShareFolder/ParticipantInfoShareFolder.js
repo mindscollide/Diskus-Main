@@ -1,6 +1,17 @@
+/**
+ * @file ParticipantInfoShareFolder.js
+ * @description Card component that displays a participant's profile picture, name, designation, and an icon within the share-folder modal.
+ */
+
 import React from "react";
 import styles from "./ParticpantInfoShareFolder.module.css";
 import { Col, Row } from "react-bootstrap";
+
+/**
+ * Shows a participant's avatar, name, designation, and an optional icon (e.g., permission level indicator).
+ * @param {{ participantname: string, particiapantdesignation: string, icon: JSX.Element, userPic: string, You: boolean }} props
+ * @returns {JSX.Element}
+ */
 const ParticipantInfoShareFolder = ({
   participantname,
   particiapantdesignation,

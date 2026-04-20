@@ -1,5 +1,24 @@
+/**
+ * @file VideoFeature_reducer.js
+ * @description Redux reducer for the `videoFeature` slice. Manages all
+ * UI-level video-call feature flags: panel visibility (chat, agenda,
+ * minutes, participants), screen sharing, presenter view, host controls,
+ * mute/unmute, raise-hand, and waiting-room participant lists.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} VideoChatPanel              - Whether the video chat panel is open.
+ * @property {Array}   participantWaitingList      - Participants waiting to join the meeting.
+ * @property {Array}   participantNameDataAccept   - Accepted participant name payloads.
+ * @property {boolean} isScreenShare               - Whether screen sharing is active.
+ * @property {boolean} globallyScreenShare         - Global screen-share broadcast flag.
+ * @property {boolean} presenterViewFlag           - Whether presenter view is active.
+ * @property {boolean} isMicEnabled                - Whether local microphone is enabled.
+ * @property {boolean} isWebCamEnabled             - Whether local webcam is enabled.
+ * @property {string|null} errorSeverity           - Feedback severity ("success" | "error" | null).
+ */
 const initialState = {
   VideoChatPanel: false,
   ContactVideoFlag: false,
@@ -108,6 +127,15 @@ const initialState = {
   // startOrStopPresenter: false,
 };
 
+/**
+ * Reducer for the `videoFeature` slice.
+ * Manages video-call UI flags: panel/modal visibility, host/participant
+ * controls, screen share, presenter view, and waiting-room state.
+ *
+ * @param {object} state  - Current videoFeature state.
+ * @param {{ type: string, response?: *, payload?: * }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.ACCEPT_AND_REMOVE_PARTICIPANTS: {

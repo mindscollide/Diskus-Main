@@ -1,11 +1,31 @@
+/**
+ * @file locallStorageManage.js
+ * @description Handles localStorage preservation during the login flow.
+ * When a user signs in, certain deep-link tokens and notification flags that
+ * were stored before authentication must survive the `localStorage.clear()`
+ * call so the app can redirect to the correct screen after login.
+ */
 import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
 
+/**
+ * Writes a key/value pair to localStorage only when `value` is truthy,
+ * preventing accidental overwrites with null or empty strings.
+ * @param {string} key
+ * @param {*} value
+ */
 const setLocalStorage = (key, value) => {
   if (value) {
     localStorage.setItem(key, value);
   }
 };
 
+/**
+ * Clears localStorage, restores the LoginFlowPageRoute, dispatches it to
+ * Redux, then re-writes every key in `dataMap` that has a truthy value.
+ * @param {number} loginFlowPageRoute - Current login-flow step.
+ * @param {Function} dispatch
+ * @param {Object} dataMap - Key/value pairs to restore after the clear.
+ */
 const manageCommonLocalStorage = (loginFlowPageRoute, dispatch, dataMap) => {
   localStorage.clear();
   localStorage.setItem(
@@ -19,6 +39,19 @@ const manageCommonLocalStorage = (loginFlowPageRoute, dispatch, dataMap) => {
   );
 };
 
+/**
+ * Entry point called by the Sign-In form on mount. Focuses the email input,
+ * then preserves all relevant deep-link tokens across a localStorage.clear()
+ * so they are still available after login. Also restores "Remember Me"
+ * credentials when applicable.
+ *
+ * @param {React.RefObject<HTMLInputElement>} emailRef - Ref to the email field.
+ * @param {Function} dispatch - Redux dispatch.
+ * @param {Function} setErrorMessage - Clears any existing error message.
+ * @param {Function} setErrorBar - Hides the error bar.
+ * @param {Function} setRememberEmail - Restores "remember email" checkbox state.
+ * @param {Function} setEmail - Pre-fills the email field if "remember" was set.
+ */
 export const localStorageManage = (
   emailRef,
   dispatch,

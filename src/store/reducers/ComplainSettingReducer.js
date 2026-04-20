@@ -1,3 +1,10 @@
+/**
+ * @file ComplainSettingReducer.js
+ * @description Redux reducer for the `CompliaceSetting` slice. Manages the
+ * full compliance module: authority management (CRUD), compliance lifecycle
+ * (create, view, edit, reopen), checklist/task management, data-room mapping,
+ * file uploads, and real-time MQTT authority/compliance events.
+ */
 import { formatDateToYMD } from "../../container/ComplianceUser/CommonComponents/commonFunctions";
 import * as actions from "../action_types";
 
@@ -66,6 +73,15 @@ const initialState = {
   ComplianceListData: null,
 };
 
+/**
+ * Reducer for the `CompliaceSetting` slice.
+ * Handles authority CRUD, compliance lifecycle, checklist management,
+ * data-room mapping, and MQTT real-time authority/compliance events.
+ *
+ * @param {object} state  - Current compliance-setting state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
   switch (action.type) {
     // ================= GET ALL AUTHORITY =================

@@ -1,109 +1,150 @@
+/**
+ * @file Api_config.js
+ * @description JSON-RPC `RequestMethod` name constants for every back-end
+ * service call in the application.  Each exported object contains a single
+ * `RequestMethod` string that is sent as the method name in the request body.
+ *
+ * Objects are grouped by domain (authentication, meetings, to-do list,
+ * settings, data room, committees, groups, resolutions, minutes, polls,
+ * video/talk, admin, etc.).
+ *
+ * Usage:
+ * ```js
+ * import { scheduleNewMeeting } from "../apis/Api_config";
+ * axios.post(meetingApi, { ...scheduleNewMeeting, Data: payload });
+ * ```
+ */
+
+// ─── Authentication ──────────────────────────────────────────────────────────
+
+/** Sign-up (create new user account). */
 export const signuprequest = {
   RequestMethod: "ServiceManager.SignUp",
 };
 
+/** Sign-in / login with email + password. */
 export const signinauthenication = {
   RequestMethod: "ServiceManager.Login",
 };
 
+/** Initiate the forgot-password flow (sends reset email/OTP). */
 export const forgetpassword = {
   RequestMethod: "ServiceManager.ForgotPassword",
 };
 
+/** Verify the OTP code entered during sign-up. */
 export const verifyOTPSignUp = {
   RequestMethod: "ServiceManager.OTPVerification",
 };
 
+/** Re-generate and resend the OTP for sign-up verification. */
 export const resendOTP = {
   RequestMethod: "ServiceManager.GenerateOTP",
 };
 
+/** Resend the OTP confirmation code for the forgot-password flow. */
 export const resendOTPForgotPassword = {
   RequestMethod: "ServiceManager.ResendPassConfirmationOTP",
 };
 
+/** Change the authenticated user's password. */
 export const changepassword = {
   RequestMethod: "ServiceManager.ChangePassword",
 };
 
+/** Exchange a refresh token for a new access token. */
 export const authenticationRefreshToken = {
   RequestMethod: "ServiceManager.RefreshToken",
 };
 
-// schedule new metings
+// ─── Meetings ────────────────────────────────────────────────────────────────
+
+/** Schedule / create a new meeting. */
 export const scheduleNewMeeting = {
   RequestMethod: "ServiceManager.ScheduleNewMeeting",
 };
-// update metings
+/** Update an existing meeting's details. */
 export const updateMeeting = {
   RequestMethod: "ServiceManager.UpdateMeeting",
 };
-//To-Do List APIs
-//Get List By ID
+// ─── To-Do List ──────────────────────────────────────────────────────────────
+
+/** Retrieve all to-do items belonging to the authenticated user. */
 export const getToDoListByUserID = {
   RequestMethod: "ServiceManager.GetToDoListByUserID",
 };
 
-//Create To-Do List
+/** Create a new to-do list item. */
 export const createToDoList = {
   RequestMethod: "ServiceManager.CreateToDoList",
 };
 
-//Create To-Do List
+/** Upload an attachment document (used across multiple features). */
 export const uploadDocument = {
   RequestMethod: "ServiceManager.UploadDocument",
 };
 
-//Get All Assignees for To-Do List
+/** Get all possible assignees for a to-do list item. */
 export const getAllAssigneesToDoList = {
   RequestMethod: "ServiceManager.GetAllAssignees",
 };
 
-// ali work
+// ─── User Settings ───────────────────────────────────────────────────────────
+
+/** Retrieve all settings (general, notification, profile) for the current user. */
 export const getUserSettings = {
   RequestMethod: "ServiceManager.GetUserSettings",
 };
+/** Save the user's notification preferences. */
 export const updateUserNotificationSetting = {
   RequestMethod: "ServiceManager.UpdateUserNotificationSettings",
 };
+/** Save the user's general preferences (language, theme, etc.). */
 export const updateUserGeneralSetting = {
   RequestMethod: "ServiceManager.UpdateUserGeneralSettings",
 };
+/** Save the user's profile information (name, avatar, etc.). */
 export const updateUserProfileSetting = {
   RequestMethod: "ServiceManager.UpdateUserProfileSettings",
 };
+/** Fetch the current user's notification list. */
 export const getUserNotifcations = {
   RequestMethod: "ServiceManager.GetUserNotifications",
 };
+/** Get the full list of country dial codes for phone-number inputs. */
 export const getCountryCode = {
   RequestMethod: "ServiceManager.GetAllCountryCodes",
 };
+/** Get all IANA time zones for the timezone picker. */
 export const getTimeZOne = {
   RequestMethod: "ServiceManager.GetAllTimeZones",
 };
-// aun
-//Get FAQ's
+
+// ─── FAQs / Help ─────────────────────────────────────────────────────────────
+
+/** Retrieve the full FAQ list. */
 export const getFaqs = {
   RequestMethod: "ServiceManager.GetFAQs",
 };
 
-//aun
-// Get Meeting Id By User id
+// ─── Meetings (continued) ────────────────────────────────────────────────────
+
+/** Get all meetings for the current user. */
 export const getMeetingId = {
   RequestMethod: "ServiceManager.GetMeetingsByUserID",
 };
 
-//startMeeting
+/** Mark a meeting as started (updates status + notifies participants). */
 export const startMeeting = {
   RequestMethod: "ServiceManager.StartMeeting",
 };
 
-//endMeeting
+/** Mark a meeting as ended. */
 export const endMeeting = {
   RequestMethod: "ServiceManager.EndMeeting",
 };
 
-// schedule View metings
+/** Get full meeting details by meeting ID. */
 export const getMeetingByMeetingID = {
   RequestMethod: "ServiceManager.GetMeetingByMeetingID",
 };
@@ -189,12 +230,18 @@ export const addMinuteofMeetings = {
 export const updateMinuteofMeetings = {
   RequestMethod: "ServiceManager.UpdateRecordMinutesofMeeting",
 };
+/** Get the list of all world countries (used in organisation profile). */
 export const getCountryNames = {
   RequestMethod: "ServiceManager.GetWorldCountries",
 };
+
+// ─── Subscription / Organisation Setup ──────────────────────────────────────
+
+/** Retrieve all available subscription packages for the sign-up wizard. */
 export const getSubscriptionDetailRequestMethod = {
   RequestMethod: "ServiceManager.GetSubscriptionPackages",
 };
+/** Create the organisation and assign the selected subscription package. */
 export const createOrganizationRequestMethod = {
   RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage",
 };
@@ -223,7 +270,9 @@ export const IsOrganizationEmailExsists = {
   RequestMethod: "ServiceManager.IsUserEmailExsists",
 };
 
-// schedule View metings
+// ─── Organisation / User Management (Admin) ──────────────────────────────────
+
+/** Get user counts and usage statistics for an organisation. */
 export const OrganizationUserListStatistics = {
   RequestMethod: "ServiceManager.OrganizationUserListStatistics",
 };
@@ -302,15 +351,21 @@ export const updateOrganizationUserSetting = {
 export const OrganizationPackageReselection = {
   RequestMethod: "ServiceManager.OrganizationPackageReselection",
 };
+// ─── Two-Factor Authentication ────────────────────────────────────────────────
+
+/** Begin a 2FA authentication challenge. */
 export const TwoFaAuthenticateRequestMethod = {
   RequestMethod: "ServiceManager.Authenticate2FA",
 };
+/** Send the 2FA OTP to the user's registered device. */
 export const sendTwoFacOTP = {
   RequestMethod: "ServiceManager.Send2FAOTP",
 };
+/** Verify the OTP submitted during a 2FA challenge. */
 export const verifyTwoFacOTP = {
   RequestMethod: "ServiceManager.Verify2FAOTP",
 };
+/** Resend the 2FA OTP when the previous one expired. */
 export const resendTwoFacOTP = {
   RequestMethod: "ServiceManager.Resend2FAOTP",
 };
@@ -341,20 +396,28 @@ export const updateProfileData = {
 export const deleteOrganizationAPI = {
   RequestMethod: "ServiceManager.DeleteOrganization",
 };
+// ─── Notes ───────────────────────────────────────────────────────────────────
+
+/** Create a new note. */
 export const SavesNotesRequestMethod = {
   RequestMethod: "ServiceManager.SaveNotes",
 };
+/** Get all notes for the current user within their organisation. */
 export const GetNotesByUserIDAndOrganizationID = {
   RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID",
 };
+/** Update an existing note. */
 export const UpdateNotesRequestMethod = {
   RequestMethod: "ServiceManager.UpdateNotes",
 };
+/** Get a specific note by its ID. */
 export const GetNotesByNotesIDRequestMethod = {
   RequestMethod: "ServiceManager.GetNotesByNotesID",
 };
 
-//Refresh Token Talk
+// ─── Talk / Chat ─────────────────────────────────────────────────────────────
+
+/** @deprecated Placeholder for a future Talk refresh-token endpoint. */
 export const refreshTokenTalk = {
   // RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
 };
@@ -474,9 +537,13 @@ export const insertOTOMessages = {
   RequestMethod: "ServiceManager.InsertOTOMessages",
 };
 
+// ─── Committees & Groups ─────────────────────────────────────────────────────
+
+/** Get a committee's details by its ID. */
 export const getCommitteeByIdRequestMethod = {
   RequestMethod: "ServiceManager.GetCommitteeByCommitteeID",
 };
+/** Search / list groups visible to the current user. */
 export const getGroupsByUserIdRequestMethod = {
   RequestMethod: "ServiceManager.SearchGroups",
 };
@@ -526,6 +593,9 @@ export const blockUnblockUser = {
   RequestMethod: "ServiceManager.BlockUnBlockUser",
 };
 
+// ─── Resolutions ─────────────────────────────────────────────────────────────
+
+/** Create or update the schedule for a resolution. */
 export const scheduleResolutionRequestMethod = {
   RequestMethod: "ServiceManager.AddUpdateScheduleResolution",
 };
@@ -615,14 +685,19 @@ export const markStarredMessage = {
   RequestMethod: "ServiceManager.SetMessageFlag",
 };
 
+// ─── Data Room ───────────────────────────────────────────────────────────────
+
+/** Save / register one or more files to the Data Room. */
 export const saveFilesRequestMethod = {
   RequestMethod: "ServiceManager.SaveFiles",
 };
 
+/** Upload binary document payloads. */
 export const uploadDocumentsRequestMethod = {
   RequestMethod: "ServiceManager.UploadDocuments",
 };
 
+/** Save a new folder to the Data Room. */
 export const saveFolderRequestMethod = {
   RequestMethod: "ServiceManager.SaveFolder",
 };
@@ -709,10 +784,14 @@ export const searchPaymentHistoryRequestMethod = {
   RequestMethod: "ServiceManager.InvoicesAndPaymentHistory",
 };
 
+// ─── Polls ───────────────────────────────────────────────────────────────────
+
+/** Search polls with filter criteria. */
 export const searcPollsRequestMethod = {
   RequestMethod: "ServiceManager.SearchPolls",
 };
 
+/** Create a new poll. */
 export const savePollsRequestMethod = {
   RequestMethod: "ServiceManager.SavePoll",
 };
@@ -801,10 +880,14 @@ export const setLastSelectedLanguage = {
   RequestMethod: "ServiceManager.SetLastSelectedLanguage",
 };
 
+// ─── Video Calls ─────────────────────────────────────────────────────────────
+
+/** Get all users available to invite to a video call. */
 export const getAllVideoCallUsers = {
   RequestMethod: "ServiceManager.GetAllUsers",
 };
 
+/** Initiate an outgoing video call. */
 export const initiateVideoCall = {
   RequestMethod: "ServiceManager.InitiateVideoCall",
 };
@@ -837,9 +920,13 @@ export const leaveCall = {
   RequestMethod: "ServiceManager.LeaveCall",
 };
 
+// ─── Annotations (WebViewer) ─────────────────────────────────────────────────
+
+/** Get XFDF annotations saved for a to-do list attachment. */
 export const getAnnotationOfToDoAttachement = {
   RequestMethod: "ServiceManager.GetAnnotationOfToDoAttachement",
 };
+/** Save XFDF annotations on a to-do list attachment. */
 export const addAnnotationOnToDoAttachement = {
   RequestMethod: "ServiceManager.AddAnnotationOnToDoAttachement",
 };
@@ -1109,6 +1196,9 @@ export const setGroupPollsApi = {
   RequestMethod: "ServiceManager.SetGroupPolls",
 };
 
+// ─── Minutes ─────────────────────────────────────────────────────────────────
+
+/** Get general (non-agenda-specific) minutes for a meeting. */
 export const getGeneralMinutes = {
   RequestMethod: "ServiceManager.GetMeetingGeneralMinutes",
 };
@@ -1247,7 +1337,9 @@ export const addUpdateAdvanceMeetingAgenda = {
   RequestMethod: "ServiceManager.AddUpdateAdvanceMeetingAgenda",
 };
 
-// report download Attendance in Excel
+// ─── Reports / Downloads ─────────────────────────────────────────────────────
+
+/** Download the meeting attendance report as a PDF. */
 export const downloadAttendanceReport = {
   RequestMethod: "ServiceManager.DownloadAttendenceReportPDF",
 };
@@ -1354,6 +1446,9 @@ export const UserLogout = {
   RequestMethod: "ServiceManager.LogOut",
 };
 
+// ─── Signature / Workflow ────────────────────────────────────────────────────
+
+/** Create a new signature workflow (defines actors, form fields, etc.). */
 export const createWorkFlowRM = {
   RequestMethod: "ServiceManager.CreateSignatureFlow",
 };
@@ -1609,8 +1704,9 @@ export const LoginHistoryReportExporttoExcel = {
 export const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
-//Minutes APIs
+// ─── Minutes Review / Approval Workflow ──────────────────────────────────────
 
+/** Get the list of pre-defined rejection comments for minutes approval. */
 export const listOfDefaultRejectionComments = {
   RequestMethod: "ServiceManager.ListOfDefaultRejectionComments",
 };
@@ -2001,7 +2097,9 @@ export const SaveAuditLog = {
   RequestMethod: "ServiceManager.SaveAuditLog",
 };
 
-// Audit listing
+// ─── Audit Trail ─────────────────────────────────────────────────────────────
+
+/** Get the paginated audit-trail listing for admin review. */
 export const GetUsersAuditListing = {
   RequestMethod: "ServiceManager.GetUsersAuditListing",
 };
@@ -2015,7 +2113,9 @@ export const AuditTrialReportExporttoExcel = {
   RequestMethod: "ServiceManager.DownloadAuditReportForOA",
 };
 
-// Authority Work
+// ─── Authority Management ────────────────────────────────────────────────────
+
+/** Get all authority records (paginated). */
 export const GetAllAuthority = {
   RequestMethod: "ServiceManager.GetAllAuthority",
 };
@@ -2050,6 +2150,9 @@ export const GetAllTagsByOrganizationID = {
   RequestMethod: "ServiceManager.GetAllTagsByOrganizationID",
 };
 
+// ─── Compliance ──────────────────────────────────────────────────────────────
+
+/** Create a new compliance record. */
 export const AddCompliance = {
   RequestMethod: "ServiceManager.AddCompliance",
 };

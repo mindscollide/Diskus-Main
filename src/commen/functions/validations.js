@@ -1,10 +1,25 @@
+/**
+ * @file validations.js
+ * @description Collection of input-validation and extension-checking helpers
+ * used across forms, file uploads, and annotation workflows.
+ */
 import XRegExp from "xregexp";
 
+/**
+ * Basic email format validator (ASCII only).
+ * @param {string} email
+ * @returns {boolean}
+ */
 export const validateEmail = (email) => {
   const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   return re.test(String(email).toLowerCase());
 };
 
+/**
+ * Extended email validator that also logs the result (used in sign-up forms).
+ * @param {string} value
+ * @returns {boolean}
+ */
 export const validationEmail = (value) => {
   var mailformat = /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -18,6 +33,13 @@ export const validationEmail = (value) => {
   }
 };
 
+/**
+ * Recursively removes `presenterName`, `subAgendarequestContributorUrlName`,
+ * and `requestContributorURlName` from any nested object.
+ * Used to strip presenter metadata before sending agenda payloads to the API.
+ * @param {Object} obj - Object to mutate in place.
+ * @returns {Object} The same object with the specified keys removed.
+ */
 export function removePropertiesFromObject(obj) {
   for (var key in obj) {
     if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
@@ -37,8 +59,12 @@ export function removePropertiesFromObject(obj) {
   return obj;
 }
 
-//Email supports arabic and english langugae both emails formats
-
+/**
+ * Unicode-aware email validator that accepts both Arabic and English characters
+ * in the local and domain parts.
+ * @param {string} email
+ * @returns {boolean}
+ */
 export const validateEmailEnglishAndArabicFormat = (email) => {
   const emailRegex = XRegExp(
     `
@@ -50,6 +76,12 @@ export const validateEmailEnglishAndArabicFormat = (email) => {
   return emailRegex.test(email);
 };
 
+/**
+ * Checks whether a file extension is supported by the Apryse WebViewer
+ * (covers PDF, Office, CAD, image formats).
+ * @param {string} ext - Lowercase file extension without the leading dot.
+ * @returns {boolean}
+ */
 export const validationExtension = (ext) => {
   let arrExtension = [
     "pdf",
@@ -87,11 +119,24 @@ export const validationExtension = (ext) => {
   return arrExtension.includes(ext);
 };
 
+/**
+ * Returns true if the extension should be rendered as an HTML page
+ * (html, htm, mht) rather than loaded into the PDF viewer.
+ * @param {string} ext - Lowercase file extension without the leading dot.
+ * @returns {boolean}
+ */
 export const validateExtensionsforHTMLPage = (ext) => {
   let newArrExtensions = ["html", "htm", "mht"];
   return newArrExtensions.includes(ext);
 };
 
+/**
+ * Detects whether a string is a valid base64-encoded value.
+ * Strips a leading `data:image/(png|jpeg);base64,` prefix if present before
+ * validating, so both raw base64 and data-URL strings are handled correctly.
+ * @param {string} str
+ * @returns {boolean}
+ */
 export const isBase64 = (str) => {
   if (typeof str !== "string") {
     return false;

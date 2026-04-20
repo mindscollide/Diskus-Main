@@ -1,5 +1,23 @@
+/**
+ * @file Talk_Features_Reducer.js
+ * @description Redux reducer for the `talkFeature` slice. Manages chat UI
+ * feature flags: active chat type filters (recent, private, group, starred,
+ * blocked), header/footer visibility, modal states (save, print, email),
+ * file-upload type, and global search state.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} RecentChatsFlag         - Whether the Recent Chats filter is active.
+ * @property {boolean} PrivateChatsFlag        - Whether the Private Chats filter is active.
+ * @property {boolean} PrivateGroupChatsFlag   - Whether the Private Group Chats filter is active.
+ * @property {boolean} StarredMessageFlag      - Whether the Starred Messages filter is active.
+ * @property {boolean} BlockedUsersFlag        - Whether the Blocked Users view is active.
+ * @property {boolean} ChatBoxActiveFlag       - Whether a chat box is currently active.
+ * @property {string}  FileUploadType          - Type of file being uploaded in chat.
+ * @property {boolean} GlobalChatsSearchFlag   - Whether global chat search is active.
+ */
 const initialState = {
   RecentChatsFlag: false,
   PrivateChatsFlag: false,
@@ -27,6 +45,15 @@ const initialState = {
   RetryFlagState: false,
 };
 
+/**
+ * Reducer for the `talkFeature` slice.
+ * Controls chat filter flags, panel/modal visibility, file-upload type,
+ * and global search state.
+ *
+ * @param {object} state  - Current talkFeature state.
+ * @param {{ type: string, response?: * }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const talkFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
     //CHAT FILTER GLOBAL STATES

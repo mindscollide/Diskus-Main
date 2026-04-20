@@ -1,3 +1,10 @@
+/**
+ * @file UpdateUserProfile.js
+ * @description Redux thunk actions for updating the user's profile settings and profile picture.
+ * Wraps `settingApi` (updateUserProfileSetting) and `authenticationApi` (updateProfilePictureRM).
+ * Dispatches: UPDATEUSERPROFILE_INIT/SUCCESS/FAIL.
+ */
+
 import * as actions from "../action_types";
 import {
   settingApi,
@@ -32,6 +39,13 @@ const updateuserprofilefail = (message, response) => {
   };
 };
 
+/**
+ * Updates user profile settings (e.g. display preferences, account fields).
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} userProfileData - Profile update payload.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching UPDATEUSERPROFILE_INIT/SUCCESS/FAIL.
+ */
 const updateUserProfile = (navigate, userProfileData, t) => {
   let currentUserID = localStorage.getItem("userID");
 
@@ -105,6 +119,14 @@ const updateUserPicture_fail = (message) => {
   };
 };
 
+/**
+ * Uploads a new profile picture for the current user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18n translation function.
+ * @param {string} fileName - Name of the image file.
+ * @param {string} base64 - Base64-encoded image data.
+ * @returns {Function} Redux thunk dispatching UPDATEUSERPROFILE_INIT/SUCCESS/FAIL.
+ */
 const updateUserProfilePicture = (navigate, t, fileName, base64) => {
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");

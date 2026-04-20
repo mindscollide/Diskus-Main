@@ -1,3 +1,9 @@
+/**
+ * @file Admin_PaymentMethod.js
+ * @description Redux actions for fetching available payment methods for the admin billing view.
+ * Wraps `paymentMethodsRequestMethod` API config.
+ * Dispatches: GET_PAYMENT_METHODS_INIT/SUCCESS/FAIL.
+ */
 import { paymentMethodsRequestMethod } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";

@@ -1,3 +1,8 @@
+/**
+ * @file AlreadyInMeeting.js
+ * @description Overlay warning shown when a user tries to access a feature while already in a meeting or video call.
+ */
+
 import React from "react";
 import styles from "./AlreadyInMeeting.module.css";
 import Cross_Icon from "../../../assets/images/Cross_Icon.png";
@@ -5,6 +10,11 @@ import { useTranslation } from "react-i18next";
 import WarningIcon from "../../../assets/images/Exlimatry Icon.svg";
 import CustomButton from "../button/Button";
 
+/**
+ * Displays a centered warning overlay informing the user they are already in a meeting or video call.
+ * @param {{ handleClickClose: Function }} props
+ * @returns {JSX.Element}
+ */
 const AlreadyInMeeting = ({ handleClickClose }) => {
   const { t } = useTranslation();
 

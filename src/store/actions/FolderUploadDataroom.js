@@ -1,4 +1,11 @@
-
+/**
+ * @file FolderUploadDataroom.js
+ * @description Redux actions for uploading entire folder trees to the DataRoom,
+ * including folder existence checks, recursive file saving, and folder creation.
+ * Wraps `FolderisExistRequestMethod`, `createFolderRequestMethod`,
+ * `saveFilesRequestMethod`, `saveFilesandFolderRM`, `uploadDocumentsRequestMethod`.
+ * Uses `dataRoomApi` endpoint.
+ */
 import {
   FolderisExistRequestMethod,
   createFolderRequestMethod,

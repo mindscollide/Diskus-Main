@@ -1,7 +1,27 @@
+/**
+ * @file customPagination/Paginations.js
+ * @description Ant Design `<Pagination>` wrapper that renders page numbers as
+ * Arabic Eastern numerals when the active locale is `"ar"`.  Exposes the same
+ * props as Ant's Pagination plus a `pageSizeOptionsValues` convenience prop.
+ */
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pagination } from "antd";
 
+/**
+ * Locale-aware pagination component.
+ *
+ * @param {object}   props
+ * @param {number}   props.current               - Currently active page (1-based).
+ * @param {number}   props.pageSize              - Number of items per page.
+ * @param {number}   props.total                 - Total number of items.
+ * @param {Function} props.onChange              - `(page, pageSize) => void` callback.
+ * @param {number[]} props.pageSizeOptionsValues - Available page-size options.
+ * @param {string}   [props.className]           - Additional CSS class names.
+ * @param {boolean}  [props.showSizer]           - Whether to show the page-size
+ *   changer (`showSizeChanger`).
+ * @returns {JSX.Element}
+ */
 const CustomPagination = ({
   current,
   pageSize,

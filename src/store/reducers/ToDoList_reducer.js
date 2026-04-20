@@ -1,5 +1,22 @@
+/**
+ * @file ToDoList_reducer.js
+ * @description Redux reducer for the `toDoList` slice. Manages task/to-do
+ * state: listing, searching, creating, deleting tasks; document uploads;
+ * assignee data; real-time MQTT updates; and dashboard task counts.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}    Loading                          - Global loading flag.
+ * @property {Array}      AllTodolistData                  - Paginated list of to-do items.
+ * @property {Array}      AllAssigneesData                 - Available assignees for tasks.
+ * @property {object}     ToDoDetails                      - Details of the currently viewed task.
+ * @property {number}     TotalTodoCountThisWeek           - Total tasks scheduled this week.
+ * @property {number}     TotalNumberOfUpcommingTodoInWeek - Upcoming tasks count this week.
+ * @property {object|null} SocketTodoActivityData          - Real-time activity update via MQTT.
+ * @property {number}     todoDocumentsMapping             - Current document-folder mapping ID.
+ */
 const initialState = {
   Loading: false,
   ShowNotification: false,
@@ -35,6 +52,15 @@ const initialState = {
   taskFromDashboard: 0,
 };
 
+/**
+ * Reducer for the `toDoList` slice.
+ * Handles task CRUD, document mapping/upload, MQTT real-time updates,
+ * dashboard task counts, and search.
+ *
+ * @param {object} state  - Current toDoList state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const toDoListReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.TASK_FROM_DASHBOARD: {

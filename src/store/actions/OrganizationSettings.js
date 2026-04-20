@@ -1,3 +1,9 @@
+/**
+ * @file OrganizationSettings.js
+ * @description Redux actions for fetching and updating organisation-level settings.
+ * Wraps `getOrganizationLevelSettings` and `updateOrganizationLevelSettings` API configs.
+ * Dispatches: GETORGANIZATIONLEVELSETTING_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import {

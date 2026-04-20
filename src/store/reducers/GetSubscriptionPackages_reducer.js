@@ -1,5 +1,21 @@
+/**
+ * @file GetSubscriptionPackages_reducer.js
+ * @description Redux reducer for the `getPackageDetail` slice. Manages
+ * subscription package data: available packages, the active subscription,
+ * upgradable packages, subscription cancellation, and expiry details.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                                    - Global loading flag.
+ * @property {Array}       PackageDetails                             - All available subscription packages.
+ * @property {object|null} getCurrentActiveSubscriptionPackage        - Currently active package for the org.
+ * @property {Array}       getSubscriptionPackageforUpgradeResponse   - Packages eligible for upgrade.
+ * @property {object|null} getCancelSubscriptionResponse              - Result of subscription cancellation.
+ * @property {object|null} upgradeSubscriptionPackageResponse         - Result of subscription upgrade.
+ * @property {object|null} getPackageExpiryDetailResponse             - Package expiry details.
+ */
 const initialState = {
   Loading: false,
   PackageDetails: [],
@@ -15,6 +31,15 @@ const initialState = {
   getPackageExpiryDetailResponse: null,
 };
 
+/**
+ * Reducer for the `getPackageDetail` slice.
+ * Handles listing, subscribing to, upgrading, and cancelling subscription
+ * packages, plus fetching expiry details.
+ *
+ * @param {object} state  - Current getPackageDetail state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const getPackageDetailReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GETSUBSCRIPTIONPACAKGES_INIT:

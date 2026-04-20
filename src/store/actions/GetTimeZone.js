@@ -1,3 +1,9 @@
+/**
+ * @file GetTimeZone.js
+ * @description Redux actions for fetching the list of available time zones.
+ * Wraps `getTimeZOne` API config (`settingApi`).
+ * Dispatches: GET_TIMEZONE_SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 
 import { settingApi } from "../../commen/apis/Api_ends_points";

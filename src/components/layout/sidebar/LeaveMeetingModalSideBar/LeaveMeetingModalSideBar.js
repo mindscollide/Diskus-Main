@@ -1,3 +1,9 @@
+/**
+ * @file LeaveMeetingModalSideBar.js
+ * @description Confirmation modal shown when a user attempts to navigate away from a
+ * meeting sub-page via the sidebar while unsaved changes exist. Provides "Yes" / "No"
+ * buttons to confirm or cancel the navigation.
+ */
 import React from "react";
 import styles from "./LeaveMeetingModalSideBar.module.css";
 import { Button, Modal } from "../../../elements";
@@ -17,10 +23,21 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+/**
+ * LeaveMeetingModalSideBar component.
+ *
+ * Reads `LeaveMeetingSidebarModal` from the Redux store to control visibility.
+ * On confirmation ("Yes") it resets all meeting page-flags and triggers a fresh
+ * meeting-search so the user lands on the meeting list.
+ *
+ * @returns {JSX.Element} A modal dialog warning about unsaved changes.
+ */
 const LeaveMeetingModalSideBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // Pagination context for re-fetching the meeting list after leaving
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -28,18 +45,25 @@ const LeaveMeetingModalSideBar = () => {
     (state) => state.NewMeetingreducer.LeaveMeetingSidebarModal,
   );
 
+  /** Closes the modal without performing any navigation. */
   const handleNOFunctionality = () => {
     dispatch(LeaveMeetingSideBarModalAction(false));
   };
 
+  /**
+   * Confirms leaving: resets all meeting page flags, hides the modal, and
+   * re-fetches the user's meeting list so the list view is current.
+   */
   const handleYesFunctionality = () => {
     let searchData = {
       Date: "",
       Title: "",
       HostName: "",
       UserID: Number(userID),
+      // Use stored pagination values or fall back to sensible defaults
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+      // Determine which meeting view tab was active (Published vs Proposed)
       PublishedMeetings:
         localStorage.getItem("MeetingCurrentView") &&
         Number(localStorage.getItem("MeetingCurrentView")) === 1
@@ -53,6 +77,7 @@ const LeaveMeetingModalSideBar = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     dispatch(LeaveMeetingSideBarModalAction(false));
+    // Reset all meeting sub-page visibility flags
     dispatch(scheduleMeetingPageFlag(false));
     dispatch(viewProposeDateMeetingPageFlag(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));

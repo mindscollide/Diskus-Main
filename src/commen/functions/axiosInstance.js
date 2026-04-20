@@ -1,25 +1,41 @@
+/**
+ * @file axiosInstance.js
+ * @description Configures a shared Axios instance used by all API calls in the app.
+ *
+ * Responsibilities:
+ *  - Attaches the JWT `_token` header automatically on every outgoing request.
+ *  - Intercepts every response and forces a sign-out when the server returns a
+ *    400 "Token is required" or 401 "tokens does not match / Invalid Agent" error,
+ *    so stale/invalid sessions are always cleaned up globally without each action
+ *    needing to handle it individually.
+ */
 // src/api/axiosInstance.js
 import axios from "axios";
 import { signOut } from "../../store/actions/Auth_Sign_Out";
 import store from "../../store/store";
 
+// Single Axios instance shared across the whole app — baseURL comes from .env
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
 
-// ------------------- REQUEST -------------------
+// ─── Request interceptor ─────────────────────────────────────────────────────
+// Reads the JWT from localStorage and injects it as the `_token` header so
+// every request is authenticated without callers having to add it manually.
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers._token = JSON.parse(token);
+      config.headers._token = JSON.parse(token); // token stored as JSON string
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// ------------------- RESPONSE -------------------
+// ─── Response interceptor ────────────────────────────────────────────────────
+// Checks every successful response AND every error response for auth-failure
+// codes and forces a global sign-out so the user is redirected to login.
 axiosInstance.interceptors.response.use(
   (response) => {
     console.log("SUCCESS:", response.data);

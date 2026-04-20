@@ -1,3 +1,8 @@
+/**
+ * @file CommitteeStatusModal.js
+ * @description Confirmation modal for changing a committee's status (Active, In-active, or Archive).
+ */
+
 import React from "react";
 import Modal from "../modal/Modal";
 import styles from "./CommitteeStatusModa..module.css";
@@ -8,6 +13,11 @@ import { committeeStatusUpdate } from "../../../store/actions/Committee_actions"
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+/**
+ * Displays a confirmation prompt before dispatching a committee status change.
+ * @param {{ isActive: boolean, setIsActive: Function, statusUpdateData: { CommitteeStatusId: number } }} props
+ * @returns {JSX.Element}
+ */
 const CommitteeStatusModal = ({ isActive, setIsActive, statusUpdateData }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();

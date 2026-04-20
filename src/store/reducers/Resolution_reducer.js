@@ -1,5 +1,23 @@
+/**
+ * @file Resolution_reducer.js
+ * @description Redux reducer for the `resolution` slice. Manages resolution
+ * lifecycle: scheduling, updating, cancelling, closing, casting votes,
+ * viewing results, MQTT real-time events, document uploads, and modal flags.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                      - Global loading flag.
+ * @property {string}      ResponseMessage              - Last response message.
+ * @property {object|null} GetResolutions               - Fetched resolutions list.
+ * @property {object|null} ScheduleResolution           - Result of schedule-resolution API.
+ * @property {object|null} getResolutionResult          - Voting result for a resolution.
+ * @property {object|null} mqttResolutionCreated        - MQTT payload for new resolution.
+ * @property {object|null} mqttResolutionClosed         - MQTT payload for closed resolution.
+ * @property {number}      updateResolutionDataroom     - Data-room folder ID for resolution docs.
+ * @property {boolean}     createResolutionModal        - Whether the create-resolution modal is open.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -35,6 +53,15 @@ const initialState = {
   getAllCommitteesAndGroups: null,
   resolutionVoteCounter: null
 };
+/**
+ * Reducer for the `resolution` slice.
+ * Handles resolution scheduling, updates, cancellation, closure, vote
+ * casting, result viewing, MQTT events, and modal/flag state.
+ *
+ * @param {object} state  - Current resolution state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.UPLOAD_RESOLUTION_DOCUMENTS_INIT: {

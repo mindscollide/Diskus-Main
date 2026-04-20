@@ -1,6 +1,16 @@
+/**
+ * @file AddtionalUsersCard.js
+ * @description Reusable card component that displays an additional user's name, email, and an action icon.
+ */
+
 import { Col, Row } from "react-bootstrap";
 import styles from "./AddtionalUsersCard.module.css";
 
+/**
+ * Displays a single additional user's name, email, and an optional icon.
+ * @param {{ Employeename: string, Employeeemail: string, Icon: JSX.Element, EmployeePic: string }} props
+ * @returns {JSX.Element}
+ */
 const AddtionalUserCard = ({
   Employeename,
   Employeeemail,

@@ -1,6 +1,34 @@
+/**
+ * @file private_routes.js
+ * @description Route guard for authenticated user pages (`/Diskus/*`).
+ *
+ * On mount, inspects the current URL for well-known deep-link query patterns
+ * sent inside email notification links (e.g. RSVP, poll expiry, data-room
+ * share, minute review, signature actions).  When a matching pattern is found,
+ * the relevant token/payload is extracted with `getActionValue` and persisted
+ * to `localStorage` so the target page can read it on load.
+ *
+ * Auth logic:
+ *  - Reads `roleID` (must be 3 or 4) and `token` from localStorage.
+ *  - Reads `blur` to determine whether the account is in a "non-active" state;
+ *    only a *null / undefined* blur value is accepted here (non-active users are
+ *    handled by `PrivateNonActive`).
+ *  - If authed → renders `<Outlet />` (nested route content).
+ *  - If not authed but the URL looks like a deep-link → redirects to `/` (login).
+ *  - Otherwise → redirects to the 404 wildcard `*`.
+ */
 import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { getActionValue } from "../commen/functions/utils";
+
+/**
+ * Route guard component for authenticated regular-user routes.
+ *
+ * Handles deep-link action routing (RSVP, poll, resolution, data-room, minutes,
+ * signature etc.) then either renders the protected outlet or redirects.
+ *
+ * @returns {JSX.Element} `<Outlet />` when authorised, or `<Navigate />`.
+ */
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
 

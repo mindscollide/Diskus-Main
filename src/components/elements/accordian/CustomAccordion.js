@@ -1,6 +1,16 @@
+/**
+ * @file CustomAccordion.js
+ * @description Custom CSS-driven accordion row used in notes, compliance checklist, and task views; expands an attachments section on click.
+ */
+
 import React from "react";
 import "./Accordian.css";
 
+/**
+ * Expandable row component that shows a start, center, and end field; toggles an attachment row on click.
+ * @param {{ StartField: JSX.Element, centerField: JSX.Element, endField: JSX.Element, attachmentsRow: JSX.Element, isExpand: any, notesID: any, handleClickTitleNotes: Function, isCompliance: boolean, isComplianceTask: boolean, isComplianceTaskView: boolean }} props
+ * @returns {JSX.Element}
+ */
 const CustomAccordion = ({
   StartField,
   centerField,

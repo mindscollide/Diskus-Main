@@ -1,3 +1,10 @@
+/**
+ * @file UpdateMinutesofMeeting_action.js
+ * @description Redux thunk actions for updating minutes of a meeting.
+ * Handles posting updated meeting-minutes data to the meeting API.
+ * Dispatches: UPDATE_MINUTESOFMEETING_INIT / UPDATE_MINUTESOFMEETING_SUCCESS /
+ * UPDATE_MINUTESOFMEETING_FAIL action types.
+ */
 import * as actions from "../action_types";
 
 import { RefreshToken } from "./Auth_action";
@@ -5,11 +12,14 @@ import { updateMinuteofMeetings } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import axiosInstance from "../../commen/functions/axiosInstance";
 
+/** @returns {{ type: string }} */
 const meetinOfMeetingInit = () => {
   return {
     type: actions.UPDATE_MINUTESOFMEETING_INIT,
   };
 };
+
+/** @returns {{ type: string, response: *, message: string }} */
 const meetinOfMeetingSuccess = (response, message) => {
   return {
     type: actions.UPDATE_MINUTESOFMEETING_SUCCESS,
@@ -17,6 +27,8 @@ const meetinOfMeetingSuccess = (response, message) => {
     message: message,
   };
 };
+
+/** @returns {{ type: string, response: *, message: string }} */
 const meetinOfMeetingFail = (response, message) => {
   return {
     type: actions.UPDATE_MINUTESOFMEETING_FAIL,
@@ -25,6 +37,13 @@ const meetinOfMeetingFail = (response, message) => {
   };
 };
 
+/**
+ * Submits updated minutes-of-meeting data to the meeting API.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Minutes of meeting payload.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const updateMeetingOfMinutes = (navigate, data, t) => {
   return (dispatch) => {
     dispatch(meetinOfMeetingInit());

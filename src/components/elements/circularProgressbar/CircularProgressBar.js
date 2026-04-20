@@ -1,7 +1,17 @@
+/**
+ * @file CircularProgressBar.js
+ * @description Simple circular progress bar chart component used for displaying list counts or ratios.
+ */
+
 import React from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
+/**
+ * Renders a circular progress bar with a text label and configurable max value.
+ * @param {{ value: number, text: string, maxValue: number }} props
+ * @returns {JSX.Element}
+ */
 const ListCountChart = ({ value, text, maxValue }) => {
   return (
     <>

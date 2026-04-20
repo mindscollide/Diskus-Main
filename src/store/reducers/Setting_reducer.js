@@ -1,5 +1,25 @@
+/**
+ * @file Setting_reducer.js
+ * @description Redux reducer for the `setting` slice. Manages user and
+ * organisation-level settings: profile data, notifications, time zones,
+ * country codes, recent activity, MQTT-based real-time notifications,
+ * Google/Microsoft calendar token integration, and web notification state.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {object|null} UserProfileData                        - Logged-in user's profile data.
+ * @property {boolean}     Loading                               - Global loading flag.
+ * @property {Array}       NotificationData                      - In-app notification list.
+ * @property {Array}       RecentActivityData                    - Recent-activity entries.
+ * @property {object|null} CountryCodes                          - Available country dialing codes.
+ * @property {object|null} TimeZone                              - Available time zones.
+ * @property {object|null} diskusWebNotificationData             - Web push notification payload.
+ * @property {Array}       realTimeNotificationCountGlobalData   - Accumulated unread notification objects.
+ * @property {object|null} googleClientID                        - Google OAuth client ID.
+ * @property {object|null} microsoftClientID                     - Microsoft OAuth client ID.
+ */
 const initialState = {
   UserProfileData: null,
   ResponseMessage: "",
@@ -40,6 +60,15 @@ const initialState = {
   microsoftClientID: null,
 };
 
+/**
+ * Reducer for the `setting` slice.
+ * Handles user/org profile updates, notifications, time zones, country codes,
+ * Google/Microsoft token management, and real-time web notification state.
+ *
+ * @param {object} state  - Current setting state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const settingReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GETSETTING_INIT: {

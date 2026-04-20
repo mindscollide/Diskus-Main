@@ -1,5 +1,23 @@
+/**
+ * @file Get_List_Of_Assignees_reducers.js
+ * @description Redux reducer for the `assignees` slice. Manages the list of
+ * assignees/participants, meeting scheduling, viewing meeting details,
+ * cancelling/starting/ending meetings, reminders, and meeting search.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {Array}       user                       - Available assignees/participants.
+ * @property {boolean}     Loading                    - Global loading flag.
+ * @property {string}      ResponseMessage            - Last response message.
+ * @property {object|null} ViewMeetingDetails         - Details of the currently viewed meeting.
+ * @property {Array}       CancelMeetingData          - Result of cancel-meeting API.
+ * @property {Array}       StartMeetingData           - Result of start-meeting API.
+ * @property {Array}       EndMeetingData             - Result of end-meeting API.
+ * @property {Array}       RemindersData              - Meeting reminders list.
+ * @property {object|null} SearchMeetingData          - Search results for meetings.
+ */
 const initialState = {
   user: [],
   ResponseMessage: "",
@@ -16,6 +34,15 @@ const initialState = {
   meetingcreatedashboardLoader: false,
 };
 
+/**
+ * Reducer for the `assignees` slice.
+ * Handles assignee listing, meeting scheduling, view/cancel/start/end
+ * meeting operations, reminders, and meeting search.
+ *
+ * @param {object} state  - Current assignees state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const assigneesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.LOADER_CREATEMEETING_DASHBOARD: {

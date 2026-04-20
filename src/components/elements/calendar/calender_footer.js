@@ -1,9 +1,18 @@
+/**
+ * @file calender_footer.js
+ * @description Calendar legend footer that displays colour-coded dots for Diskus, Google, and Microsoft event sources.
+ */
+
 // CalendarFooter.js
 import React from "react";
 import styles from "./Calendar.module.css";
 import { Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Renders the calendar legend showing event source colours stored in localStorage.
+ * @returns {JSX.Element}
+ */
 const CalendarFooter = () => {
   const { t } = useTranslation();
   let diskusEventColor = localStorage.getItem("diskusEventColor");

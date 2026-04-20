@@ -1,3 +1,27 @@
+/**
+ * @file MeetingContext.js
+ * @description Manages the full lifecycle state for active and scheduled meetings.
+ * Covers meeting video/call controls, tab navigation within the meeting detail view,
+ * organizer/editor roles, polls, recording state, presenter view, group/one-to-one
+ * call transitions, board-deck downloads, notification counts, and pending approval
+ * workflow tracking.
+ *
+ * Exposed values (selected highlights):
+ * - `isMeeting` / `setIsMeeting` - Whether the user is currently in a meeting session.
+ * - `isMeetingVideo` / `setIsMeetingVideo` - Whether the meeting video is active.
+ * - `editorRole` / `setEditorRole` - Current user's editor role and organizer status.
+ * - `currentMeetingStatus` / `setCurrentMeetingStatus` - Live status of the meeting.
+ * - `mic`, `camera`, `handRaise` - Media and interaction control flags.
+ * - `startRecordingState`, `pauseRecordingState`, `stopRecordingState` - Recording states.
+ * - `presenterViewFlag`, `presenterMeetingId` - Presenter view control.
+ * - `unReadCountNotification` - Unread notification count for the web notification icon.
+ * - `pendingApprovalCount` - Workflow pending-approval badge count.
+ * - `startMeetingFunction`, `joinMeetingFunction`, `leaveMeetingFunction` - Meeting action callbacks.
+ *
+ * Consumed by meeting detail pages, the meeting video overlay, the navigation bar
+ * (for notification counts), and any component that participates in a live meeting session.
+ */
+
 import React, {
   createContext,
   useContext,
@@ -14,7 +38,14 @@ import { UpdateMeetingStatus } from "../store/actions/MeetingOrganizers_action";
 // Create the Context
 export const MeetingContext = createContext();
 
-// Create a Provider component
+/**
+ * MeetingProvider component that supplies the complete meeting session state
+ * and control functions to the component tree via MeetingContext.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - Child components that will have access to the context.
+ * @returns {JSX.Element}
+ */
 export const MeetingProvider = ({ children }) => {
   // Fetch user profile data from the Redux store
   const UserProfileData = useSelector(
@@ -490,7 +521,13 @@ export const MeetingProvider = ({ children }) => {
   );
 };
 
-// Custom Hook to consume the context
+/**
+ * Custom hook to consume MeetingContext.
+ * Must be used within a {@link MeetingProvider}.
+ *
+ * @returns {object} The full meeting context state and setter functions.
+ * @throws {Error} If used outside of a MeetingProvider.
+ */
 export const useMeetingContext = () => {
   // Access the context
   const context = useContext(MeetingContext);

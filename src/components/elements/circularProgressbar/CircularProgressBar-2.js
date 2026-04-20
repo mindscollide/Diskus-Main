@@ -1,7 +1,18 @@
+/**
+ * @file CircularProgressBar-2.js
+ * @description Circular progress bar component with children content rendered inside the circle, used for dashboard counters.
+ */
+
 import React from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./CircularProgressbar.css";
+
+/**
+ * Renders a circular progress bar that can embed child elements (e.g., counts) in its center.
+ * @param {{ value: number, text: JSX.Element, maxValue: number, children: React.ReactNode }} props
+ * @returns {JSX.Element}
+ */
 const CustomTextProgressbar = (props) => {
   const { value, text, maxValue } = props;
 

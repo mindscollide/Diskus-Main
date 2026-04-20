@@ -1,3 +1,9 @@
+/**
+ * @file index.js
+ * @description Barrel re-export file for all Redux reducers.
+ * Centralises reducer imports so `store.js` and other consumers can import
+ * every named reducer from `"./reducers"` rather than from individual files.
+ */
 export { default as authReducer } from "./Auth_reducer";
 export { default as toDoListReducer } from "./ToDoList_reducer";
 export { default as settingReducer } from "./Setting_reducer";

@@ -1,3 +1,8 @@
+/**
+ * @file ConfirmationModal.js
+ * @description Generic confirmation modal that warns users data will be reset if they close without saving.
+ */
+
 import React from "react";
 import styles from "./ConfirmationModal.module.css";
 import CustomModal from "../modal/Modal";
@@ -5,6 +10,11 @@ import { Row, Col } from "react-bootstrap";
 import Button from "../../elements/button/Button";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Displays a modal asking the user to confirm closing, with Cancel and Close action buttons.
+ * @param {{ showModal: boolean, setShowModal: Function, onHide: Function, closeBtnClick: Function, cancelBtnClick: Function }} props
+ * @returns {JSX.Element}
+ */
 const ConfirmationModal = ({
   showModal,
   setShowModal,

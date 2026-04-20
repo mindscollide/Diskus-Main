@@ -1,5 +1,30 @@
+/**
+ * @file UserManagementModals.js
+ * @description Redux reducer for the `UserManagementModals` slice. Controls the
+ * visibility of all modals in the User Management section: subscription upgrade,
+ * seat extension, payment, cancellation, user CRUD, and system modals
+ * (internet disconnect, mobile app pop-up).
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} Loading                  - Global loading flag.
+ * @property {string}  ResponseMessage          - Last API response message.
+ * @property {boolean} UpgradeNowModal          - Upgrade-now modal visibility.
+ * @property {boolean} requestExtentionModal    - Request seat-extension modal visibility.
+ * @property {boolean} createAdditionalModals   - Create additional users modal visibility.
+ * @property {boolean} deleteUsersModal         - Delete users modal visibility.
+ * @property {boolean} editUserModal            - Edit user modal visibility.
+ * @property {boolean} successfullyUpdated      - Success confirmation modal visibility.
+ * @property {boolean} thanksForPaymentModal    - Thank-you after payment modal visibility.
+ * @property {boolean} paymentProceedFailed     - Payment failure modal visibility.
+ * @property {boolean} cancelSubscriptionModal  - Cancel subscription modal visibility.
+ * @property {boolean} reasonForleavingModal    - Reason-for-leaving modal visibility.
+ * @property {boolean} paymentProcessModal      - Payment processing iframe modal visibility.
+ * @property {boolean} internetDisconnectModal  - Internet disconnect warning modal visibility.
+ * @property {boolean} mobileAppPopUp           - Mobile app download pop-up visibility.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -18,6 +43,14 @@ const initialState = {
   mobileAppPopUp: false,
 };
 
+/**
+ * Reducer for the `UserManagementModals` slice.
+ * Each action toggles a specific modal's open/close state.
+ *
+ * @param {object} state  - Current modal flags state.
+ * @param {{ type: string, response?: boolean }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const UserManagementModals = (state = initialState, action) => {
   switch (action.type) {
     case actions.UPGRADE_NOW_MODAL: {

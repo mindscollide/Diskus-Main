@@ -1,5 +1,32 @@
+/**
+ * @file hooks/meetingResponse/response.js
+ * @description Data-transformation helpers that normalise raw meeting API
+ * responses and MQTT push payloads into a consistent flat object shape consumed
+ * by the meetings list and calendar components.
+ *
+ * The module also determines the current user's role in each meeting
+ * (organiser / participant / agenda-contributor / primary organiser) by
+ * scanning the `meetingAttendees` array or the MQTT delta payload.
+ */
+
 // import { isArray } from "lodash"
 
+/**
+ * Derives the current user's role flags and profile data from a meeting record.
+ *
+ * @param {Object} data           - Meeting object from the API or MQTT.
+ * @param {number} currentUserId  - ID of the authenticated user.
+ * @param {1|2}    currentSource  - Data source:
+ *   - `1` = full meeting list from REST API (uses `meetingAttendees`)
+ *   - `2` = MQTT delta update (uses top-level `attendeeRoleID`)
+ * @returns {{
+ *   isAgendaContributor: boolean,
+ *   isOrganiser: boolean,
+ *   isParticipant: boolean,
+ *   isPrimaryOrganizer: boolean,
+ *   userData: Object|null
+ * }}
+ */
 const getUserInfo = (data, currentUserId, currentSource) => {
   // current Source 1 = get All meetings
   // current Source 2 = mqtt aad and update organizers
@@ -56,6 +83,17 @@ const getUserInfo = (data, currentUserId, currentSource) => {
   return userInfo;
 };
 
+/**
+ * Transforms an array of raw meeting records (from the REST API) into a
+ * normalised flat shape expected by the meetings list component.
+ *
+ * Resolves each meeting's role info with `getUserInfo` (source = 1) and builds
+ * a clean object with safe defaults for all optional fields.
+ *
+ * @param {Array<Object>} meetingData    - Raw meeting array from the API.
+ * @param {1|2}           currentSourceID - Source identifier forwarded to `getUserInfo`.
+ * @returns {Promise<Array<Object>>} Normalised meeting records.
+ */
 export const getAllUnpublishedMeetingData = async (
   meetingData,
   currentSourceID
@@ -115,6 +153,17 @@ export const getAllUnpublishedMeetingData = async (
   return newMeetingData;
 };
 
+/**
+ * Normalises a **single** meeting payload received via MQTT (add / update
+ * notification) into the same flat shape used by the meetings list.
+ *
+ * Uses `getUserInfo` with source = `currentSourceID` (typically `2`) to derive
+ * role flags from the MQTT-delta fields rather than a full attendees array.
+ *
+ * @param {Object} meetingData      - Raw meeting payload from MQTT.
+ * @param {1|2}    currentSourceID  - Source identifier forwarded to `getUserInfo`.
+ * @returns {Promise<Object>} Normalised meeting record.
+ */
 export const mqttMeetingData = async (meetingData, currentSourceID) => {
   let currentUserId = Number(localStorage.getItem("userID"));
   let usersData = await getUserInfo(

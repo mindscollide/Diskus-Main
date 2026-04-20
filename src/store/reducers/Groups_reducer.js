@@ -1,5 +1,22 @@
+/**
+ * @file Groups_reducer.js
+ * @description Redux reducer for the `groups` slice. Manages group data:
+ * create/update/view groups, member management, document uploads, data-room
+ * mapping, real-time MQTT status events, and page navigation flags.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                      - Global loading flag.
+ * @property {string}      ResponseMessage              - Last response message.
+ * @property {Array}       getAllGroupsResponse         - All groups for the current user.
+ * @property {object|null} createGroupResponse          - Result of create-group API.
+ * @property {object|null} getGroupByGroupIdResponse    - Single group detail by ID.
+ * @property {object|null} realtimeGroupCreateResponse  - MQTT group creation payload.
+ * @property {object|null} realtimeGroupStatus          - MQTT group status-change payload.
+ * @property {number}      FolderID                     - Data-room folder ID for group documents.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -27,6 +44,15 @@ const initialState = {
   viewGroupDetailLink: null,
 };
 
+/**
+ * Reducer for the `groups` slice.
+ * Handles group CRUD, member management, document uploads, data-room
+ * mapping, MQTT real-time events, and page navigation flags.
+ *
+ * @param {object} state  - Current groups state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const GroupsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_INIT: {

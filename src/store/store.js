@@ -1,3 +1,18 @@
+/**
+ * @file store.js
+ * @description Configures and exports the application's single Redux store.
+ *
+ * Architecture:
+ *  - All feature reducers are combined with `combineReducers` into `AppReducer`.
+ *  - A `rootReducer` wrapper intercepts the `SET_INITIAL_ALLSTATE` action and
+ *    resets the entire state tree to `undefined` (effectively logging the user
+ *    out and clearing all cached data).
+ *  - The store is created with `@reduxjs/toolkit`'s `configureStore` with
+ *    `immutableCheck` disabled for performance (the codebase mutates state in
+ *    some legacy reducers that pre-date the RTK migration).
+ *  - `redux-thunk` middleware is included explicitly to support async action
+ *    creators throughout the codebase.
+ */
 import { applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -112,6 +127,16 @@ const AppReducer = combineReducers({
   ComplainceSettingReducerReducer: ComplainceSettingReducerReducer,
 });
 
+/**
+ * Root reducer that wraps `AppReducer`.
+ * When the `SET_INITIAL_ALLSTATE` action is dispatched (e.g. on logout) the
+ * entire Redux state is reset to `undefined`, causing every slice reducer to
+ * reinitialise with its default state.
+ *
+ * @param {Object|undefined} state  - Current Redux state.
+ * @param {{ type: string }} action - Dispatched action.
+ * @returns {Object} Next state.
+ */
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === actions.SET_INITIAL_ALLSTATE) {

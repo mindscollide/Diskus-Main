@@ -1,3 +1,27 @@
+/**
+ * @file NewMeetingContext.js
+ * @description Manages UI and data state for the Meetings listing/dashboard page.
+ * Handles the meetings list (published, draft, proposed), search filters, meeting
+ * type filter options, pagination, loading state, and real-time meeting reminder
+ * notifications received via Redux/MQTT.
+ *
+ * Exposed values (selected highlights):
+ * - `meetingsRecords` {Array} - The current page of meeting records to display.
+ * - `totalMeetingRecords` {number} - Total count of meetings matching current filters.
+ * - `searchFilters` {object} - Active search criteria (Date, Title, HostName, PageNumber, Length).
+ * - `selectedStatusFilters` {string[]} - Active meeting status filter IDs.
+ * - `selectedMeetingTypeFilters` {string[]} - Active meeting type filter IDs.
+ * - `isMeetingTypeFilter` {Array} - Meeting type options for the filter dropdown.
+ * - `isPublishedMeeting`, `isDraftMeetings`, `isProposedMeeting` - Active tab flags.
+ * - `quickMeeting`, `isAdvanceMeetingCreate`, `isProposedMeetingCreate` - Create-flow flags.
+ * - `createdMeetingInfo` {object} - Identity ({meetingId, meetingTitle}) of the newly created meeting.
+ * - `meetingMapFolderId` {number} - Folder ID associated with the meeting's document mapping.
+ * - `isLoading` {boolean} - Whether a data fetch is in progress.
+ *
+ * Consumed by the meetings listing page, meeting search/filter controls, meeting
+ * creation flows, and components that respond to live meeting status changes.
+ */
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { mqttMeetingData } from "../hooks/meetingResponse/response";
@@ -6,7 +30,14 @@ import { useTranslation } from "react-i18next";
 // Create the Context
 export const NewMeetingContext = createContext();
 
-// Create a Provider component
+/**
+ * NewMeetingProvider component that supplies meetings list state, search/filter controls,
+ * and real-time meeting reminder updates to the component tree via NewMeetingContext.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - Child components that will have access to the context.
+ * @returns {JSX.Element}
+ */
 export const NewMeetingProvider = ({ children }) => {
   const {t} = useTranslation()
   const [createdMeetingInfo, setCreatedMeetingInfo] = useState({
@@ -228,7 +259,13 @@ export const NewMeetingProvider = ({ children }) => {
   );
 };
 
-// Custom Hook to consume the context
+/**
+ * Custom hook to consume NewMeetingContext.
+ * Must be used within a {@link NewMeetingProvider}.
+ *
+ * @returns {object} The meetings listing context state and setter functions.
+ * @throws {Error} If used outside of a NewMeetingProvider.
+ */
 export const useNewMeetingContext = () => {
   // Access the context
   const context = useContext(NewMeetingContext);

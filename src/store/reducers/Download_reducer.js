@@ -1,5 +1,21 @@
+/**
+ * @file Download_reducer.js
+ * @description Redux reducer for the `download` slice. Manages document and
+ * report download requests: data-room files, user login-history reports, and
+ * audit-trail exports.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                  - `true` while a download request is in progress.
+ * @property {boolean}     ShowNotification         - `true` when the download success notification should show.
+ * @property {boolean}     Fail                     - `true` when the download failed.
+ * @property {string}      ResponseMessage          - Last API response or error message.
+ * @property {Array}       downloadDocumentsList    - List of document download records.
+ * @property {object|null} userLoginHistoryDownload - User login-history report download data.
+ * @property {object|null} auditTrialDownload       - Audit-trail report download data.
+ */
 const initialState = {
   Loading: false,
   ShowNotification: false,
@@ -10,6 +26,14 @@ const initialState = {
   auditTrialDownload: null,
 };
 
+/**
+ * Reducer for the `download` slice.
+ * Handles document and report download request lifecycle.
+ *
+ * @param {object} state  - Current download state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const downloadReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_DOWNLOAD_LOADER_START:

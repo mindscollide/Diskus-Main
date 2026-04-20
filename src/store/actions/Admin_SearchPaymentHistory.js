@@ -1,3 +1,9 @@
+/**
+ * @file Admin_SearchPaymentHistory.js
+ * @description Redux actions for searching the organisation's payment history records.
+ * Wraps `searchPaymentHistoryRequestMethod` API config.
+ * Dispatches: SEARCH_PAYMENT_HISTORY_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import { searchPaymentHistoryRequestMethod } from "../../commen/apis/Api_config";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";

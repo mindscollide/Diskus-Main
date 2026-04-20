@@ -1,3 +1,11 @@
+/**
+ * @file ToDoList_action.js
+ * @description Redux thunk actions for the To-Do List feature.
+ * Wraps `toDoListApi` for CRUD operations on tasks, comments, assignees, and documents.
+ * Dispatches action types prefixed with: GET_TODOLIST, CREATE_TODOLIST, UPDATE_TODOLIST,
+ * VIEW_TODOLIST, DELETE_*, UPLOAD_DOCUMENT, and related helpers.
+ */
+
 import * as actions from "../action_types";
 
 import { RefreshToken } from "../actions/Auth_action";
@@ -127,6 +135,13 @@ const getTodoListFail = (message) => {
 };
 
 //get todolist api
+/**
+ * Fetches the to-do list for the current user.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} data - Filter/pagination payload.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching GET_TODOLIST_INIT/SUCCESS/FAIL.
+ */
 const GetTodoListByUser = (navigate, data, t) => {
   return (dispatch) => {
     dispatch(getTodoListInit());
@@ -208,6 +223,15 @@ const setTodoStatusDataFormSocket = (response) => {
 };
 //Creating A ToDoList
 
+/**
+ * Creates a new to-do task.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Task creation payload.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} setCreateTaskID - Callback to receive the new task ID.
+ * @param {number} value - Context flag (1=committee, 2=group, etc.).
+ * @returns {Function} Redux thunk dispatching CREATE_TODOLIST_INIT/SUCCESS/FAIL.
+ */
 const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
@@ -337,6 +361,14 @@ const GetAllAssigneesFail = (message) => {
 
 //  pending for deletion for qm
 
+/**
+ * Retrieves all assignees available for to-do tasks in the organization.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Payload (OrganizationID etc.).
+ * @param {Function} t - i18n translation function.
+ * @param {*} check - Optional flag passed through to the success action.
+ * @returns {Function} Redux thunk.
+ */
 const GetAllAssigneesToDoList = (navigate, object, t, check) => {
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
@@ -424,6 +456,14 @@ const ViewToDoFail = (message) => {
 
 //View To-Do
 
+/**
+ * Fetches full details for a single to-do task by ID.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Payload containing TaskID.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} setViewFlagToDo - Callback to show the view modal.
+ * @returns {Function} Redux thunk.
+ */
 const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
@@ -501,6 +541,13 @@ const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
 };
 
 //Update To-Do List
+/**
+ * Updates an existing to-do task.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Update payload including TaskID.
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk dispatching UPDATE_TODOLIST_INIT/SUCCESS/FAIL.
+ */
 const UpdateToDoList = (navigate, object, t) => {
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
@@ -721,6 +768,15 @@ const searchTodoList_fail = (message) => {
   };
 };
 
+/**
+ * Searches and paginates the to-do list.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} searchData - Search filters (Date, Title, AssignedToName).
+ * @param {number|string} page - Current page number.
+ * @param {number|string} size - Page size (rows per page).
+ * @param {Function} t - i18n translation function.
+ * @returns {Function} Redux thunk.
+ */
 const SearchTodoListApi = (navigate, searchData, page, size, t) => {
   let createrID = localStorage.getItem("userID");
   let Data = {

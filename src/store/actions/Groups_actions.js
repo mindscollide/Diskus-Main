@@ -1,3 +1,11 @@
+/**
+ * @file Groups_actions.js
+ * @description Redux actions for group management — create, update, fetch groups by user or ID,
+ * member roles and types, group data-room mapping, document handling, and encrypted
+ * deep-link validation for group list/details share links.
+ * Uses `getGroupsApi` and `dataRoomApi` endpoints.
+ * Dispatches: GROUPS_* action types.
+ */
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 

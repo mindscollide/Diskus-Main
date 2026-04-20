@@ -1,3 +1,11 @@
+/**
+ * @file Minutes_action.js
+ * @description Redux actions for the meeting minutes review flow — review stats,
+ * pending approvals, reviewer management, accept/reject, resend, publish,
+ * version history, and minute-review flow details.
+ * Uses `meetingApi` endpoint.
+ * Dispatches: MINUTES_* action types.
+ */
 import * as actions from "../action_types";
 
 import { RefreshToken } from "./Auth_action";

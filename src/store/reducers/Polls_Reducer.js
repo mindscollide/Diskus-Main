@@ -1,5 +1,22 @@
+/**
+ * @file Polls_Reducer.js
+ * @description Redux reducer for the `polls` slice. Manages polls lifecycle:
+ * create, update, delete, cast votes, view results, modal visibility flags,
+ * MQTT real-time poll updates, and committee/group/meeting poll assignments.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading               - Global loading flag.
+ * @property {string}      ResponseMessage       - Last response message.
+ * @property {object|null} Allpolls              - All polls for the current context.
+ * @property {object|null} SavePoll              - Result of create/update poll API.
+ * @property {object|null} realtimePollsUpdate   - MQTT real-time poll update payload.
+ * @property {boolean}     createPollmodal       - Whether the create-poll modal is open.
+ * @property {Array}       pollOptions           - Options for the currently active poll.
+ * @property {object|null} UpdateCastVoteData    - Result of cast-vote update.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -44,6 +61,15 @@ const initialState = {
   AccessDeniedPolls: false,
 };
 
+/**
+ * Reducer for the `polls` slice.
+ * Handles poll CRUD, vote casting, result retrieval, MQTT events, modal
+ * flags, and committee/group/meeting poll management.
+ *
+ * @param {object} state  - Current polls state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const PollsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.CLEAR_POLLS_MESSAGES: {

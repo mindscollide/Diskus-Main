@@ -1,6 +1,17 @@
+/**
+ * @file Api_ends_points.js
+ * @description Assembles fully-qualified micro-service base URLs by combining
+ * the shared `REACT_APP_BASE_URL` environment variable with each service's
+ * individual path env var.  All consumers import from this file rather than
+ * constructing URLs inline.
+ *
+ * All exported constants are plain strings (no trailing slashes except where
+ * the env var provides one).  Individual API method paths are appended in
+ * `Api_config.js`.
+ */
 const baseURL = process.env.REACT_APP_BASE_URL;
 
-// API Endpoints from Environment Variables
+// ─── Micro-service base URLs ─────────────────────────────────────────────────
 const authenticationApi = baseURL + process.env.REACT_APP_AUTH_API;
 const toDoListApi = baseURL + process.env.REACT_APP_TODO_LIST_API;
 const settingApi = baseURL + process.env.REACT_APP_SETTING_API;

@@ -1,6 +1,17 @@
+/**
+ * @file datepicker.js
+ * @description Ant Design date picker input with optional label, date range restriction (no future dates), and DD-MM-YYYY display format.
+ */
+
 import React from "react";
 import { DatePicker, Typography } from "antd";
 import moment from "moment";
+
+/**
+ * Renders an Ant Design DatePicker with an optional required indicator and label.
+ * @param {{ label: string, width: string, size: string, placeholder: string, change: Function, name: string, disable: boolean, value: string, DateRange: boolean, required: boolean, locale: object, height: string }} props
+ * @returns {JSX.Element}
+ */
 const InputDatePicker = ({
   label,
   width,

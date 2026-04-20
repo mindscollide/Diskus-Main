@@ -1,3 +1,8 @@
+/**
+ * @file attachment.js
+ * @description File attachment viewer card showing the file name, icon, download button, optional eye/preview button, and a remove icon.
+ */
+
 import React from "react";
 import styles from "./attachment.module.css";
 import "./attachment.css";
@@ -12,6 +17,11 @@ import {
 } from "../../../container/DataRoom/SearchFunctionality/option";
 import { Tooltip } from "antd";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
+/**
+ * Renders an attachment row with file type icon, name tooltip, download/view actions, and a conditional delete cross.
+ * @param {{ handleClickDownload: Function, handleEyeIcon: Function, name: string, handleClickRemove: Function, id: number, data: object, fk_UID: number, canDelete: boolean, isQuickMeeting: boolean, isMeetingActive: boolean }} props
+ * @returns {JSX.Element}
+ */
 const AttachmentViewer = ({
   handleClickDownload,
   handleEyeIcon,

@@ -1,3 +1,17 @@
+/**
+ * @file AuthContext.js
+ * @description Manages authentication-related functionality for the application.
+ * Handles the sign-out flow including Redux state reset, localStorage/sessionStorage
+ * cleanup, and preservation of "remember me" preferences across sessions.
+ *
+ * Exposed values:
+ * - `signOut` {Function} - Clears session data and redirects the user to the login page
+ *   while preserving any "remember email/password" settings if applicable.
+ *
+ * Consumed by components that need to trigger a sign-out action, such as the
+ * navigation bar, user profile menu, and session-timeout handlers.
+ */
+
 import React, { createContext, useContext } from "react";
 import { initaialStateFun } from "../store/actions/Auth_Sign_Out";
 import { useDispatch } from "react-redux";
@@ -6,7 +20,14 @@ import { LoginFlowRoutes } from "../store/actions/UserManagementActions";
 // Create the Context
 export const AuthContext = createContext();
 
-// Create a Provider component
+/**
+ * AuthProvider component that supplies authentication utilities (e.g. signOut)
+ * to the component tree via AuthContext.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - Child components that will have access to the context.
+ * @returns {JSX.Element}
+ */
 export const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
   const signOut = () => {
@@ -74,7 +95,13 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom Hook to consume the context
+/**
+ * Custom hook to consume AuthContext.
+ * Must be used within an {@link AuthProvider}.
+ *
+ * @returns {{ signOut: Function }} The authentication context value.
+ * @throws {Error} If used outside of an AuthProvider.
+ */
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
 

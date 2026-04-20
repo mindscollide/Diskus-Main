@@ -1,3 +1,9 @@
+/**
+ * @file Admin_PackageUpgrade.js
+ * @description Redux actions for fetching upgradable subscription packages and applying a package upgrade.
+ * Wraps `GetSubscriptionPackagesByOrganizationID` and `updateSubscriptionPackage`.
+ * Dispatches: GETUPGRADABLESUBSCRIPTIONPACAKGE_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import {
   GetSubscriptionPackagesByOrganizationID,

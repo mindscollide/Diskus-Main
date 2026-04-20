@@ -1,3 +1,11 @@
+/**
+ * @file Action_Meeting.js
+ * @description Redux actions for meeting task management — fetching tasks by meeting/group,
+ * uploading task documents, mapping tasks to agenda items, and saving task assignees.
+ * Wraps `getMeetingTasksAction`, `uploadDocumentsRequestMethod`, `mapTaskWithMeetingAgenda`,
+ * `saveTaskDocuments`, and related API configs.
+ * Dispatches: GET_MEETING_TASKS_ACTION_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import { toDoListApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 

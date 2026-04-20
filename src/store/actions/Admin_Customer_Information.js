@@ -1,3 +1,9 @@
+/**
+ * @file Admin_Customer_Information.js
+ * @description Redux actions for fetching and updating the organisation's customer profile information.
+ * Wraps `CustomerInfoOrganization` and `updateCustomerOrganizationProfile` API configs.
+ * Dispatches: ADMIN_CUSTOMERINFORMATION_INIT/SUCCESS/FAIL, SET_LOADER_FALSE.
+ */
 import {
   CustomerInfoOrganization,
   updateCustomerOrganizationProfile,

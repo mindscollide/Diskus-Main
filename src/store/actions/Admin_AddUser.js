@@ -1,3 +1,11 @@
+/**
+ * @file Admin_AddUser.js
+ * @description Redux actions for admin user management — add, list, edit, and delete
+ * organisation users, plus user-statistics fetching.
+ * Wraps `AddOrganizationUser`, `allOrganizationUsers`, `deleteOrganizationUser`,
+ * `editOrganizationUser`, `OrganizationUserListStatistics`.
+ * Dispatches: ADMIN_ADDUSER_INIT/SUCCESS/FAIL, ADMIN_ALLUSERS_INIT/SUCCESS/FAIL.
+ */
 import * as actions from "../action_types";
 import {
   AddOrganizationUser,

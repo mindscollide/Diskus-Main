@@ -1,5 +1,19 @@
+/**
+ * @file webVieverApi_reducer.js
+ * @description Redux reducer for the `webViewer` slice. Manages document
+ * annotation data (XFDF) and attachment blobs used by the in-app PDF/document
+ * viewer, supporting both retrieval and saving of annotations.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean} Loading          - Pending request flag.
+ * @property {string}  ResponseMessage  - Last response message.
+ * @property {string}  xfdfData         - XFDF annotation string for the viewed document.
+ * @property {string}  attachmentBlob   - Binary blob URL for the attachment.
+ * @property {boolean} isHTML           - Whether the document is rendered as HTML.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -8,6 +22,14 @@ const initialState = {
   isHTML: false
 };
 
+/**
+ * Reducer for the `webViewer` slice.
+ * Handles fetching and saving document annotations (XFDF) and attachment blobs.
+ *
+ * @param {object} state  - Current webViewer state.
+ * @param {{ type: string, xfdfData?: string, attachmentBlob?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const webViewerReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GETANNOTATIONSOFTODOATTACHEMENT_MESSAGE_CLEARE: {

@@ -1,3 +1,9 @@
+/**
+ * @file OnBoardStates.js
+ * @description Lightweight Redux UI-state actions for controlling the onboarding modal
+ * step, overall visibility, and detail-view flag. No API calls.
+ * Dispatches: STEPS_MODAL_STATE, SHOW_MODAL_STATE, ISDETAIL_MODAL_STATE.
+ */
 import * as actions from "../action_types";
 
 const showModalStepsOnboard = (response) => {

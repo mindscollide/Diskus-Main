@@ -1,3 +1,10 @@
+/**
+ * @file ComplainSettingActions.js
+ * @description Redux actions for compliance and authority management — add/edit/delete/view
+ * authorities, compliance records, checklists, tags, and short-code validation.
+ * Uses `complainceApi` and `dataRoomApi` endpoints.
+ * Dispatches: AUTHORITY_*, COMPLIANCE_* action types.
+ */
 import * as actions from "../action_types";
 
 import { complainceApi, dataRoomApi } from "../../commen/apis/Api_ends_points";

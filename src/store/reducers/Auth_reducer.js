@@ -1,5 +1,23 @@
+/**
+ * @file Auth_reducer.js
+ * @description Redux reducer for the `auth` slice. Manages authentication
+ * state: sign-in, sign-up, forgot-password, OTP verification, token refresh,
+ * change-password, and session-expiry notifications.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {object|null} UserDetails                   - Authenticated user data from the API.
+ * @property {boolean}     isLoggedIn                   - Whether the user is currently logged in.
+ * @property {boolean}     Loading                      - Pending request flag.
+ * @property {string}      ResponseMessage              - Last generic response message.
+ * @property {string}      SessionExpireResponseMessage - Message shown when the session expires.
+ * @property {string}      Token                        - Current access token.
+ * @property {string}      Refresh                      - Current refresh token.
+ * @property {Array}       VerifyOTPData                - OTP verification result.
+ * @property {Array}       ForgotPasswordData           - Forgot-password flow result.
+ */
 const initialState = {
   UserDetails: null,
   isLoggedIn: false,
@@ -24,6 +42,15 @@ const initialState = {
   ConfirmPasswordData: [],
 };
 
+/**
+ * Reducer for the `auth` slice.
+ * Handles sign-in, sign-up, forgot-password, OTP verification, token
+ * refresh, change-password, and sign-out flows.
+ *
+ * @param {object} state  - Current auth state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.REFRESH_TOKEN_SUCCESS:

@@ -1,9 +1,19 @@
+/**
+ * @file Date_picker.js
+ * @description Custom date picker component using react-datepicker with locale support, minimum date enforcement, and YYYYMMDD output format.
+ */
+
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { CalendarFill } from "react-bootstrap-icons";
 import "react-datepicker/dist/react-datepicker.css";
 
+/**
+ * Date picker that syncs a controlled value and emits a formatted YYYYMMDD string on change.
+ * @param {{ name: string, value: string, newValue: any, disabled: boolean, change: Function, locale: object, className: string, selected: any, flag: boolean }} props
+ * @returns {JSX.Element}
+ */
 const CustomDatePicker = ({
   name,
   value,

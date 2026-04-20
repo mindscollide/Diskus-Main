@@ -1,5 +1,22 @@
+/**
+ * @file MeetingOrganizers_reducer.js
+ * @description Redux reducer for the `meetingOrganizers` slice. Manages
+ * meeting organiser data: fetching committees/users/groups, saving and
+ * updating organiser assignments, notification dispatch, and UI flags
+ * for save/edit modes.
+ */
 import * as actions from '../action_types'
 
+/**
+ * @type {object}
+ * @property {boolean} Loading                      - Global loading flag.
+ * @property {Array}   AllUserCommitteesGroupsData  - Combined users, committees, and groups list.
+ * @property {Array}   MeetingOrganizersData        - Organiser objects for the current meeting.
+ * @property {Array}   SelectedMeetingOrganizersData - Currently selected organiser entries.
+ * @property {Array}   SaveMeetingOrganizersData    - Result of the save-organizers API.
+ * @property {boolean} SaveMeetingFlag              - Flag indicating a save operation is in progress.
+ * @property {boolean} EditMeetingFlag              - Flag indicating an edit operation is in progress.
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: '',
@@ -16,6 +33,15 @@ const initialState = {
   NotificationUpdateData: [],
 }
 
+/**
+ * Reducer for the `meetingOrganizers` slice.
+ * Handles fetching committees/users/groups, saving/updating organiser
+ * assignments, sending notifications, and managing save/edit flags.
+ *
+ * @param {object} state  - Current meetingOrganizers state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const MeetingOrganizersReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GETALLCOMMITTEESUSERSANDGROUPS_INIT: {

@@ -1,3 +1,11 @@
+/**
+ * @file TwoFactorsAuthenticate_actions.js
+ * @description Redux thunk actions for two-factor authentication (2FA).
+ * Wraps `authenticationApi` for checking 2FA status, sending OTP, re-sending OTP,
+ * and verifying the 2FA OTP.
+ * Dispatches: CHECKINGAUTHENTICATEAFA_INIT/SUCCESS/FAIL, SENDTWOFACOTP_INIT/SUCCESS/FAIL.
+ */
+
 import * as actions from "../action_types";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 
@@ -32,6 +40,14 @@ const TwoFaAuthenticateFail = (message) => {
   };
 };
 
+/**
+ * Checks whether 2FA is enabled for a user and determines the available device options.
+ * @param {Function} t - i18n translation function.
+ * @param {string|number} OrganiztionID - Organization identifier.
+ * @param {string|number} userID - User identifier.
+ * @param {Function} navigate - React Router navigate function.
+ * @returns {Function} Redux thunk dispatching CHECKINGAUTHENTICATEAFA_INIT/SUCCESS/FAIL.
+ */
 const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
   let Data = {
     UserID: JSON.parse(userID),
@@ -178,6 +194,15 @@ const sendTwoFacOtpFail = (message) => {
   };
 };
 
+/**
+ * Sends a 2FA OTP to the user's registered device(s) and navigates to the OTP entry step.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} Data - Payload including UserID, OrganizationID, and selected device.
+ * @param {Function} setSeconds - Countdown seconds setter.
+ * @param {Function} setMinutes - Countdown minutes setter.
+ * @returns {Function} Redux thunk dispatching SENDTWOFACOTP_INIT/SUCCESS/FAIL.
+ */
 // t, navigate, Data, selectDevice, setCurrentStep; Previous Props
 const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
   return (dispatch) => {
@@ -381,6 +406,15 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
   };
 };
 
+/**
+ * Resends the 2FA OTP and resets the countdown timer.
+ * @param {Function} t - i18n translation function.
+ * @param {Object} Data - Payload including UserID and OrganizationID.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} setSeconds - Countdown seconds setter.
+ * @param {Function} setMinutes - Countdown minutes setter.
+ * @returns {Function} Redux thunk dispatching SENDTWOFACOTP_INIT/SUCCESS/FAIL.
+ */
 const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
@@ -605,6 +639,14 @@ const verifyOtpFacFail = (message) => {
   };
 };
 
+/**
+ * Verifies the 2FA OTP submitted by the user and completes the login on success.
+ * @param {Object} Data - Payload including UserID, OrganizationID, and OTP code.
+ * @param {Function} t - i18n translation function.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} setOtpCode - Callback to clear the OTP input on failure.
+ * @returns {Function} Redux thunk dispatching SENDTWOFACOTP_INIT/SUCCESS/FAIL.
+ */
 const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
   return (dispatch) => {
     dispatch(verifyOtpFacInit());

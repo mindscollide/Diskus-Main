@@ -1,5 +1,23 @@
+/**
+ * @file DataRoom_reducer.js
+ * @description Redux reducer for the `dataRoom` slice. Manages data-room
+ * file and folder operations: create, rename, delete, share, upload,
+ * search, breadcrumb navigation, MQTT real-time share/remove events,
+ * and meeting video recording access.
+ */
 import * as actions from "../action_types";
 
+/**
+ * @type {object}
+ * @property {boolean}     Loading                              - Global loading flag.
+ * @property {object|null} SaveFilesResponse                   - Result of save-files API.
+ * @property {Array}       UploadDocumentsResponse             - Accumulated upload results.
+ * @property {object|null} getAllDocumentandShareFolderResponse - Root folder/document listing.
+ * @property {Array}       BreadCrumbsList                     - Current folder breadcrumb trail.
+ * @property {object|null} FileSharedMQTT                      - MQTT payload for file shared.
+ * @property {object|null} FolderSharedMQTT                    - MQTT payload for folder shared.
+ * @property {string|null} errorSeverity                       - Feedback severity ("success"|"error"|null).
+ */
 const initialState = {
   Loading: false,
   ResponseMessage: "",
@@ -58,6 +76,15 @@ const initialState = {
   errorSeverity: null, // Added errorSeverity to initialState
 };
 
+/**
+ * Reducer for the `dataRoom` slice.
+ * Handles file/folder CRUD, sharing, uploads, search, breadcrumb state,
+ * MQTT real-time share/remove events, and meeting video recording.
+ *
+ * @param {object} state  - Current dataRoom state.
+ * @param {{ type: string, response?: *, message?: string }} action - Dispatched action.
+ * @returns {object} Next state.
+ */
 const DataRoomReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.MEETING_VIDEO_RECORDING_RECEIVED: {

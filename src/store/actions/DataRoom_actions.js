@@ -1,4 +1,12 @@
-
+/**
+ * @file DataRoom_actions.js
+ * @description Redux actions for the full DataRoom module — file/folder CRUD, upload, download
+ * (with footer stamping), share, rename, search, recent documents, annotation management,
+ * MQTT real-time share/remove notifications, and encrypted deep-link validation.
+ * Primary endpoint: `dataRoomApi`.
+ * Dispatches: DATAROOM_*, DOWNLOAD_MESSAGE, DOWNLOAD_FILE_FOR_DATAROOM_*,
+ * IS_FILE_EXIST, and related action types.
+ */
 import {
   FileisExistRequestMethod,
   deleteFolderRequestMethod,

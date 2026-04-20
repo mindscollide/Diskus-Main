@@ -1,4 +1,16 @@
-// this is for get index of the url
+/**
+ * @file urlVideoCalls.js
+ * @description Helpers for constructing video-call iFrame URLs that are passed
+ * to the embedded meeting widget.  Supports both the custom WebRTC solution and
+ * the Zoom SDK integration (`isZoomEnabled` flag in localStorage).
+ */
+
+/**
+ * Returns the index immediately after the `.html` extension in a dynamic URL.
+ * Used to trim any trailing query parameters inherited from a previous session.
+ * @param {string} dynamicUrl - Full URL that contains `.html`.
+ * @returns {number} End index of `.html` within the string.
+ */
 export const endIndexUrl = (dynamicUrl) => {
   console.log("iframeiframe", dynamicUrl);
   const endIndex = dynamicUrl.indexOf(".html") + ".html".length;
@@ -7,13 +19,32 @@ export const endIndexUrl = (dynamicUrl) => {
   return endIndex;
 };
 
-// this is for to get extracted url
+/**
+ * Returns the substring of `dynamicUrl` up to (and including) `endIndex`.
+ * Typically used together with `endIndexUrl` to strip trailing path segments.
+ * @param {string} dynamicUrl
+ * @param {number} endIndex - Result of `endIndexUrl`.
+ * @returns {string}
+ */
 export const extractedUrl = (dynamicUrl, endIndex) => {
   const urlExtracted = dynamicUrl.substring(0, endIndex);
   return urlExtracted;
 };
 
-// this is for caller url generator
+/**
+ * Builds the iFrame URL for the **caller** (the person who initiates the call).
+ *
+ * - Zoom SDK enabled → inline query string with `userName`, `sessionKey`,
+ *   `userGuid`, `isHideCamera`, and `isMute`.
+ * - Custom WebRTC → `URLSearchParams` with `UserName`, `Type: "Call"`,
+ *   and `RoomID`.
+ *
+ * @param {string} baseURL         - Base `.html` URL of the video widget.
+ * @param {string} callerFullName  - Display name of the caller.
+ * @param {string} roomID          - Unique meeting room identifier.
+ * @param {string} UserGuid        - GUID of the calling user.
+ * @returns {string} Complete iFrame URL with query parameters.
+ */
 export const generateURLCaller = (
   baseURL,
   callerFullName,
@@ -38,7 +69,20 @@ export const generateURLCaller = (
   return `${baseURL}?${queryParams.toString()}`;
 };
 
-// this is for Participant url generator
+/**
+ * Builds the iFrame URL for a **participant** (someone who joins an existing call).
+ *
+ * - Zoom SDK enabled → returns `presenterViewvideoURL` from localStorage when
+ *   present (presenter-view override), otherwise builds inline query string.
+ * - Custom WebRTC → `URLSearchParams` with `UserName`, `Type: "Join"`,
+ *   and `RoomID`.
+ *
+ * @param {string} baseURL              - Base `.html` URL of the video widget.
+ * @param {string} participantFullName  - Display name of the participant.
+ * @param {string} roomID               - Unique meeting room identifier.
+ * @param {string} UserGuid             - GUID of the joining user.
+ * @returns {string} Complete iFrame URL with query parameters.
+ */
 export const generateURLParticipant = (
   baseURL,
   participantFullName,
@@ -75,6 +119,11 @@ export const generateURLParticipant = (
   return `${baseURL}?${queryParams.toString()}`;
 };
 
+/**
+ * Generates a random guest display name in the form `"Guest####"` where
+ * `####` is a random 4-digit number between 1000 and 9999.
+ * @returns {string} e.g. `"Guest4271"`.
+ */
 export const generateRandomGuest = () => {
   // Generate a random 4-digit number
   const randomNum = Math.floor(Math.random() * 9000) + 1000;

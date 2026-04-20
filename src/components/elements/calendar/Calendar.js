@@ -1,3 +1,8 @@
+/**
+ * @file Calendar.js
+ * @description Full-featured calendar component built on react-big-calendar with multi-language support, custom toolbar, and lazy data loading on navigation.
+ */
+
 import { DatePicker } from "antd";
 import { Row, Col } from "react-bootstrap";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
@@ -72,6 +77,11 @@ const lang = {
   },
 };
 
+/**
+ * Renders a big-calendar view with a custom toolbar for navigation and month jumping, fetching new event data when the displayed range changes.
+ * @param {{ events: Array, startDataUpdate: string, setStartDataUpdate: Function, endDataUpdate: string, setEndDataUpdate: Function, handleEventSelect: Function, className: string, onChange: Function, handleAddEvent: Function, setCalendarView: Function, calendarView: boolean, defaultValue: any, setDefaultValue: Function }} props
+ * @returns {JSX.Element}
+ */
 function CustomCalendar({
   events,
   startDataUpdate,

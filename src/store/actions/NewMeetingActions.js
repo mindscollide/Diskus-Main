@@ -1,3 +1,11 @@
+/**
+ * @file NewMeetingActions.js
+ * @description Redux actions for the complete meeting lifecycle — create, schedule, search,
+ * cancel, join/leave, fetch meeting details, recurring meetings, proposed dates,
+ * participant roles, video URL, MQTT meeting signalling, and committee/group meeting views.
+ * Uses `meetingApi`, `dataRoomApi`, and `pollApi` endpoints.
+ * Dispatches: NEWMEETING_* and related action types.
+ */
 import * as actions from "../action_types";
 
 import {

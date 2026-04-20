@@ -1,9 +1,38 @@
+/**
+ * @file AuthorityContext.js
+ * @description Manages state for the Authority (regulatory authority) management feature.
+ * Handles listing, searching, sorting, filtering, and add/edit/view modal state for
+ * regulatory authorities. Country name data is sourced from the Redux store and
+ * transformed into select-compatible options.
+ *
+ * Exposed values (selected highlights):
+ * - `addEditViewAuthoriyModal` {boolean} - Whether the add/edit/view authority modal is open.
+ * - `authorityViewState` {number} - Current view mode (0 = list, 1 = add, 2 = edit, 3 = view).
+ * - `searchPayload` {object} - Current search/filter criteria for the authority list.
+ * - `authorityNameSort`, `shortCodeSort`, `countrySort`, `sectorSort` - Active sort directions.
+ * - `statusFilter` {string[]} - Active status filters (e.g. ["Active", "Inactive"]).
+ * - `countryNames` {Array} - Country options mapped for use in select inputs.
+ * - `authorityId` {string} - ID of the authority currently being edited or viewed.
+ * - `closeConfirmationModal` {boolean} - Whether the unsaved-changes confirmation modal is open.
+ *
+ * Consumed by authority listing tables, the add/edit/view authority form, and
+ * search/filter controls within the compliance settings area.
+ */
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 // Create the Context
 const AuthorityContext = createContext();
-// Create a Provider component
+
+/**
+ * AuthorityProvider component that supplies authority management state and
+ * search/filter controls to the component tree via AuthorityContext.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - Child components that will have access to the context.
+ * @returns {JSX.Element}
+ */
 export const AuthorityProvider = ({ children }) => {
   const countryNamesReducerCountryNamesData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData
@@ -110,7 +139,13 @@ export const AuthorityProvider = ({ children }) => {
   );
 };
 
-// Custom Hook to consume the context
+/**
+ * Custom hook to consume AuthorityContext.
+ * Must be used within an {@link AuthorityProvider}.
+ *
+ * @returns {object} The authority management context value.
+ * @throws {Error} If used outside of an AuthorityProvider.
+ */
 export const useAuthorityContext = () => {
   const context = useContext(AuthorityContext);
 

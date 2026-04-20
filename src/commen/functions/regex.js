@@ -1,14 +1,34 @@
-// its allow only character  space and number and also didnt allow space as a first character
+/**
+ * @file regex.js
+ * @description String sanitisation, formatting, and regex-validation helpers
+ * used across forms, table displays, and localisation (Arabic numeral support).
+ */
+
+/**
+ * Strips leading whitespace and any character that is not an Arabic letter
+ * (`\u0600-\u06FF`), ASCII letter, digit, or space.
+ * @param {string} data
+ * @returns {string}
+ */
 export const regexOnlyForNumberNCharacters = (data) => {
   return data.replace(/^\s/, "").replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, "");
 };
 
-// its allow only character  space and also didnt allow space as a first character
+/**
+ * Strips leading whitespace and any non-ASCII-letter, non-space character.
+ * @param {string} data
+ * @returns {string}
+ */
 export const regexOnlyCharacters = (data) => {
   return data.replace(/^\s/, "").replace(/[^a-zA-Z\s]/g, "");
 };
 
-// not  allow first charector as an space
+/**
+ * Trims a leading space character from a string if present.
+ * Prevents inputs from starting with whitespace without blocking mid-word spaces.
+ * @param {string} data
+ * @returns {string}
+ */
 export const validateInput = (data) => {
   if (data.charAt(0) === " ") {
     return data.slice(1);
@@ -16,13 +36,22 @@ export const validateInput = (data) => {
   return data;
 };
 
-// replace slash / with \\
+/**
+ * Replaces every forward-slash `/` with a backslash `\\` in the string.
+ * Used when building file-path strings that require Windows-style separators.
+ * @param {string} inputString
+ * @returns {string}
+ */
 export const replaceSlashWithBackslash = (inputString) => {
   // Use the global "g" flag in the regular expression to replace all occurrences
   return inputString.replace(/\//g, "\\");
 };
 
-// Validae URL regex
+/**
+ * Tests whether a string looks like a valid URL (http/https optional).
+ * @param {string} URL
+ * @returns {boolean}
+ */
 export const urlPatternValidation = (URL) => {
   const regex = new RegExp(
     "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
@@ -30,6 +59,12 @@ export const urlPatternValidation = (URL) => {
   return regex.test(URL);
 };
 
+/**
+ * Removes any character that is not an Arabic letter, ASCII letter, digit,
+ * or space from the input string.
+ * @param {string} value
+ * @returns {string}
+ */
 export const containsStringandNumericCharacters = (value) => {
   // Use the replace method with the regular expression to remove non-alphanumeric characters
   let cleanedValue = value.replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, "");
@@ -38,16 +73,32 @@ export const containsStringandNumericCharacters = (value) => {
   return cleanedValue;
 };
 
+/**
+ * Truncates a string to `length` characters, appending `"..."` when truncated.
+ * @param {string} string
+ * @param {number} length - Max character count including the ellipsis.
+ * @returns {string}
+ */
 export const truncateString = (string, length) => {
   return string.length < length ? string : `${string.slice(0, length - 3)}...`;
 };
 
-// For Only Number Regex
+/**
+ * Strips all non-digit characters (and leading whitespace) from a string.
+ * @param {string} data
+ * @returns {string} Digits only.
+ */
 export const regexOnlyNumbers = (data) => {
   return data.replace(/^\s/, "").replace(/\D/g, "");
 };
 
-// export const formatValue = (value) => (value < 10 ? `0${value}` : value);
+/**
+ * Zero-pads a number below 10 (`3` → `"03"`) and converts digits to Arabic
+ * Eastern numerals when `locale === "ar"`.
+ * @param {number} value
+ * @param {string} locale - BCP 47 language tag, e.g. `"ar"` or `"en"`.
+ * @returns {string}
+ */
 export const formatValue = (value, locale) => {
   const formattedValue = value < 10 ? `0${value}` : value;
 
@@ -61,6 +112,13 @@ export const formatValue = (value, locale) => {
   return formattedValue;
 };
 
+/**
+ * Parses `input` as an integer, zero-pads it below 10, and converts each
+ * digit to its Arabic Eastern numeral equivalent when the app language is `"ar"`.
+ * Returns an empty string for null, undefined, or non-numeric input.
+ * @param {number|string} input
+ * @returns {string}
+ */
 export const convertToArabicNumerals = (input) => {
   console.log(input, "convertToArabicNumerals");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -92,7 +150,14 @@ export const convertToArabicNumerals = (input) => {
   return paddedNumber;
 };
 
-// this take alpha numeric values and convert only numeric value into arabic or english
+/**
+ * Converts only the digit characters within a mixed alphanumeric string
+ * to the target locale's numeral system (Arabic Eastern or ASCII).
+ * Non-digit characters are left untouched.
+ * @param {string|number} inputString
+ * @param {"ar"|"en"} locale
+ * @returns {string}
+ */
 export const convertNumbersInString = (inputString, locale) => {
   const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
   const englishDigits = "0123456789";
@@ -127,6 +192,14 @@ export const convertNumbersInString = (inputString, locale) => {
   return safeString.replace(/\d/g, (match) => convertDigit(match, locale));
 };
 
+/**
+ * Ensures the entry matching `guid` appears last in the array and that no
+ * other entry with the same `userID` exists. Used to de-duplicate video-call
+ * participant lists while keeping the host's own entry at the end.
+ * @param {Array<{guid: string, userID: number}>} data
+ * @param {string} guid - GUID of the entry to promote.
+ * @returns {Array}
+ */
 export function filterHostData(data, guid) {
   // Find the data entry where the guid matches the provided guid
   const matchData = data.find((item) => item.guid === guid);
@@ -148,6 +221,13 @@ export function filterHostData(data, guid) {
   return filteredData;
 }
 
+/**
+ * Filters out the participant whose `guid` matches `guidToRemove`.
+ * Used when a participant leaves a video call.
+ * @param {Array<{guid: string}>} data
+ * @param {string} guidToRemove
+ * @returns {Array}
+ */
 export const removeParticipantByGuid = (data, guidToRemove) => {
   // Filter the data to exclude the object with the matching guid
   const updatedData = data.filter(

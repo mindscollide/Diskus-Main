@@ -1,4 +1,13 @@
-
+/**
+ * @file DataRoom2_actions.js
+ * @description Redux actions for extended DataRoom features — file/folder detail retrieval,
+ * view/download analytics, encrypted deep-link validation for file and folder share links,
+ * and updating file descriptions.
+ * Wraps `getFileFolderDetailsRM`, `getDataAnalyticsRM`, `getDataAnalyticsCountRM`,
+ * `ValidateEncryptedStringViewFileLinkRM`, `ValidateEncryptedStringViewFolderLinkRM`,
+ * `updateAndOpenByAndDescriptionRM`.
+ * Dispatches: GETFILESANDFOLDERS_DETAILS_* action types.
+ */
 import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";

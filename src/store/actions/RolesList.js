@@ -1,3 +1,14 @@
+/**
+ * @file RolesList.js
+ * @description Redux thunk actions for fetching admin roles and organization data.
+ * Handles retrieving all organization roles, user roles, organization details by ID,
+ * and all user statuses via the admin API.
+ * Dispatches: ADMIN_ALLORGANAIZATIONROLES_INIT / ADMIN_ALLORGANAIZATIONROLES_SUCCESS /
+ * ADMIN_ALLORGANAIZATIONROLES_FAIL / ADMIN_USERROLELIST_INIT / ADMIN_USERROLELIST_SUCCESS /
+ * ADMIN_USERROLELIST_FAIL / ADMIN_GETORGANAIZATIONID_INIT / ADMIN_GETORGANAIZATIONID_INIT_SUCCESS /
+ * ADMIN_GETORGANAIZATIONID_INIT_FAIL / ADMIN_USERSTATUSLIST_INIT /
+ * ADMIN_USERSTATUSLIST_SUCCESS / ADMIN_USERSTATUSLIST_FAIL action types.
+ */
 import {
   getAllOrganizationRoles,
   getAllUserRoles,
@@ -9,6 +20,9 @@ import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 import axiosInstance from "../../commen/functions/axiosInstance";
 
+/**
+ * @returns {{ type: string, response: * }}
+ */
 const getAllOrganizationRolesinit = (response) => {
   return {
     type: actions.ADMIN_ALLORGANAIZATIONROLES_INIT,
@@ -16,6 +30,9 @@ const getAllOrganizationRolesinit = (response) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getAllOrganizationRolesSuccess = (response, message) => {
   return {
     type: actions.ADMIN_ALLORGANAIZATIONROLES_SUCCESS,
@@ -24,6 +41,9 @@ const getAllOrganizationRolesSuccess = (response, message) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getAllOrganizationRolesFail = (response, message) => {
   return {
     type: actions.ADMIN_ALLORGANAIZATIONROLES_FAIL,
@@ -32,6 +52,12 @@ const getAllOrganizationRolesFail = (response, message) => {
   };
 };
 
+/**
+ * Fetches all organization roles from the admin API.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const GetAllOrganizationRoles = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -83,6 +109,9 @@ const GetAllOrganizationRoles = (navigate, t) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: * }}
+ */
 const getAllUserRolesInit = (response) => {
   return {
     type: actions.ADMIN_USERROLELIST_INIT,
@@ -90,6 +119,9 @@ const getAllUserRolesInit = (response) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getAllUserRolesSuccess = (response, message) => {
   return {
     type: actions.ADMIN_USERROLELIST_SUCCESS,
@@ -98,6 +130,9 @@ const getAllUserRolesSuccess = (response, message) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getAllUserRolesFail = (response, message) => {
   return {
     type: actions.ADMIN_USERROLELIST_FAIL,
@@ -106,6 +141,12 @@ const getAllUserRolesFail = (response, message) => {
   };
 };
 
+/**
+ * Fetches all user roles and then triggers GetAllOrganizationRoles on success.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const GetAllUserRoles = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -157,6 +198,9 @@ const GetAllUserRoles = (navigate, t) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: * }}
+ */
 const getOrganizationByIDInit = (response) => {
   return {
     type: actions.ADMIN_GETORGANAIZATIONID_INIT,
@@ -164,6 +208,9 @@ const getOrganizationByIDInit = (response) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getOrganizationByIDSuccess = (response, message) => {
   return {
     type: actions.ADMIN_GETORGANAIZATIONID_INIT_SUCCESS,
@@ -172,6 +219,9 @@ const getOrganizationByIDSuccess = (response, message) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getOrganizationByIDFail = (response, message) => {
   return {
     type: actions.ADMIN_GETORGANAIZATIONID_INIT_FAIL,
@@ -180,6 +230,13 @@ const getOrganizationByIDFail = (response, message) => {
   };
 };
 
+/**
+ * Fetches organization details by ID, then cascades to GetAllUserRoles on success.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Object} object - Request payload containing the organization ID.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const GetOrganizationByID = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -232,6 +289,10 @@ const GetOrganizationByID = (navigate, object, t) => {
       });
   };
 };
+
+/**
+ * @returns {{ type: string, response: * }}
+ */
 const getAllUserStatusInit = (response) => {
   return {
     type: actions.ADMIN_USERSTATUSLIST_INIT,
@@ -239,6 +300,9 @@ const getAllUserStatusInit = (response) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getAllUserStatusSuccess = (response, message) => {
   return {
     type: actions.ADMIN_USERSTATUSLIST_SUCCESS,
@@ -247,6 +311,9 @@ const getAllUserStatusSuccess = (response, message) => {
   };
 };
 
+/**
+ * @returns {{ type: string, response: *, message: string }}
+ */
 const getAllUserStatusFail = (response, message) => {
   return {
     type: actions.ADMIN_USERSTATUSLIST_FAIL,
@@ -255,6 +322,12 @@ const getAllUserStatusFail = (response, message) => {
   };
 };
 
+/**
+ * Fetches all user status types from the admin API.
+ * @param {Function} navigate - React Router navigate function.
+ * @param {Function} t - i18next translation function.
+ * @returns {Function} Redux thunk.
+ */
 const GetAllUserStatus = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
