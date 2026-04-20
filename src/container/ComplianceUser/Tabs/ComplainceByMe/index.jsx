@@ -83,7 +83,7 @@ const ComplianceByMe = () => {
   /** Active sort column and direction. Null key/order means unsorted. */
   const [sortConfig, setSortConfig] = useState({
     key: "dueDate",
-    order: "descend",
+    order: null,
   });
 
   const TAB = {
@@ -368,9 +368,9 @@ const ComplianceByMe = () => {
       const isActive = sortConfig.key === columnKey;
       const order = isActive ? sortConfig.order : null;
       const icon =
-        order === "ascend"
+        order === "descend"
           ? ArrowUpIcon
-          : order === "descend"
+          : order === "ascend"
             ? ArrowDownIcon
             : DefaultSortIcon;
 

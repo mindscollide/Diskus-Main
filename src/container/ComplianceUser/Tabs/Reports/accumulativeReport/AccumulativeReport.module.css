@@ -77,7 +77,6 @@
   display: grid;
   grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   align-items: center;
-
   font-size: 16px;
   font-weight: 600;
   font-family: "Montserrat";
@@ -123,7 +122,7 @@
 
 /* Whole collapse container */
 .collapseWrapper :global(.ant-collapse) {
-  background: #fff; /* your normal bg */
+  background: #fff;
   border: none;
 }
 
@@ -135,11 +134,14 @@
 .panelContentDownload {
   padding: 14px 0px;
 }
+
 .MainAccordianTable {
   max-height: 300px;
   overflow: hidden;
   overflow-y: auto;
+  background-color: #f6f9fc;
 }
+
 .insideAccordianTable {
   height: 140px;
   padding: 10px 20px;
@@ -156,12 +158,19 @@
   font-family: "Montserrat";
 }
 
+.insideAccordianTableDownload {
+  padding: 10px 20px 0 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-top: 10px;
+}
+
 .insideAccordianMainHeading p {
   color: #5a5a5a;
   font-size: 20px;
   font-weight: 600;
   font-family: "Montserrat";
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -223,6 +232,7 @@
   background: #f6f9fc;
   border-radius: 8px;
 }
+
 .ComplianceMainHeading P.complianceTitleListDownload {
   font-family: "Montserrat";
   font-weight: 600;
@@ -231,15 +241,16 @@
   letter-spacing: 2%;
   color: #5a5a5a !important;
 }
+
 .titleSection label {
   font-size: 10px;
-  /* font-size: 8px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #5a5a5a;
   line-height: 20px;
   letter-spacing: 0%;
 }
+
 .titleSection p {
   font-size: 24px;
   font-weight: 700;
@@ -248,18 +259,21 @@
   line-height: 20px;
   letter-spacing: 0%;
 }
+
 .titleSection label.ChecklistTitle {
   font-size: 10px;
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
 }
+
 .titleSectionDownload label {
   font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
   color: #5a5a5a;
 }
+
 .titleSectionDownload p {
   font-size: 16px;
   font-weight: 700;
@@ -268,6 +282,7 @@
   line-height: 20px;
   letter-spacing: 0%;
 }
+
 .titleSectionDownload label.ChecklistTitleDownload {
   font-size: 8px;
   font-weight: 700;
@@ -278,16 +293,14 @@
 .titleSectionDownload p.longTitleHeadingDownload {
   color: #5a5a5a;
   margin-bottom: 15px;
-
-  /* 🔥 Important */
   word-break: break-word;
   max-width: 95%;
-
   font-weight: 600;
   font-size: 16px;
   line-height: 100%;
   letter-spacing: 0%;
 }
+
 .longTitle {
   font-size: 16px;
   font-weight: 500;
@@ -295,8 +308,6 @@
   font-family: "Montserrat";
   line-height: 1.4;
   margin-bottom: 15px;
-
-  /* 🔥 Important */
   word-break: break-word;
   max-width: 95%;
 }
@@ -339,9 +350,9 @@
 .centerLabel {
   position: absolute;
   top: 50%;
-  left: 32%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center; /* 🔥 prevents full width stretch */
+  text-align: center;
   pointer-events: none;
 }
 
@@ -358,15 +369,43 @@
   color: #6b7280;
 }
 
-.chartWrapper {
-  width: 100%;
+.chartFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
-.chartFlex {
+.chartFlexDownloadedPdf {
   display: flex;
   align-items: center; /* 🔥 vertical center */
   justify-content: center;
   gap: 20px;
+  padding: 30px 10px;
+  background: #ecefff;
+  border-radius: 6.21px;
+}
+
+/* Prevent chart from breaking */
+.chartFlexDownloadedPdf,
+.chartBoxDownloadedPdf {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.chartBoxDownloadedPdf {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure the donut chart stays intact */
+.chartFlexDownloadedPdf {
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .chartBox {
@@ -375,24 +414,15 @@
   height: 200px;
 }
 
-.centerLabel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
-}
-
 .customLegend {
   display: flex;
   flex-direction: column;
   gap: 10px;
   font-size: 13px;
 }
+
 .legendItem {
   display: flex;
-
   align-items: center;
   gap: 8px;
   font-family: "Montserrat";
@@ -402,6 +432,7 @@
   letter-spacing: 2%;
   color: #5a5a5a;
 }
+
 .legendText {
   font-weight: 500;
 }
@@ -419,16 +450,19 @@
 .legendDotBlue {
   background: #5b6bff;
 }
+
 .legendDotYellow {
   background: #f2c94c;
 }
+
 .legendOrange {
   background: #f16b6b;
 }
+
 .ComplianceMainHeading {
   display: flex;
-  flex-direction: column; /* ✅ IMPORTANT */
-  align-items: flex-start; /* align left */
+  flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
   padding: 0px 30px;
 }
@@ -456,7 +490,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  white-space: nowrap;
+  white-space: normal;
   background: #ecefff;
   border-radius: 8px;
   padding: 20px 18px;
@@ -469,6 +503,16 @@
   font-family: "Montserrat";
   font-weight: 700;
 }
+.dateText {
+  white-space: normal;
+  letter-spacing: normal;
+  font-family: "helvetica" !important;
+  font-weight: 600;
+}
+
+.dateText span {
+  margin-right: 4px;
+}
 
 .iconTextWrapperDownload p,
 .ComplianceReportHeadings {
@@ -477,10 +521,13 @@
   font-family: "Montserrat";
   margin: 0;
   font-weight: 600;
+  white-space: normal;
 }
+
 .ComplianceSection {
   padding: 0px 16px;
 }
+
 .checklist_report {
   padding: 0px 30px;
   font-size: 12px;
@@ -500,6 +547,7 @@
   text-align: center;
   color: #e1e1e1;
 }
+
 .NoDataFoundTable {
   height: 140px;
   padding: 10px 20px;
@@ -511,9 +559,11 @@
   justify-content: center;
   align-items: center;
 }
+
 .goBackButton {
   cursor: pointer;
 }
+
 /* Download Report */
 .TextDownload p {
   font-size: 30px;
@@ -521,10 +571,10 @@
   font-family: "Montserrat";
   font-weight: 700;
   margin: 0;
-  /* line-height: 140%; */
   letter-spacing: 2%;
   text-align: center;
 }
+
 .longTitleHeading {
   color: #5a5a5a;
   font-size: 16px;
@@ -532,15 +582,11 @@
   font-family: "Montserrat";
   line-height: 1.4;
   margin-bottom: 15px;
-
-  /* 🔥 Important */
   word-break: break-word;
   max-width: 95%;
 }
-/* Download Report */
 
 /* Header and footer */
-/* HEADER */
 .reportHeader {
   display: flex;
   justify-content: space-between;
@@ -564,7 +610,6 @@
   margin-bottom: 10px;
 }
 
-/* FOOTER */
 .reportFooter {
   width: 100%;
   background: #6172d6;
@@ -583,26 +628,6 @@
   letter-spacing: 0%;
 }
 
-/* #content-id {
-  padding-bottom: 60px; 
-} */
-
-@media print {
-  .reportFooter {
-    position: fixed;
-    bottom: 0;
-  }
-
-  .reportHeader {
-    position: fixed;
-    top: 0;
-  }
-
-  #content-id {
-    margin-top: 80px;
-    margin-bottom: 60px;
-  }
-}
 .dueDate {
   display: flex;
   gap: 4px;
@@ -614,16 +639,17 @@ p {
   line-height: 100%;
   letter-spacing: 0%;
   vertical-align: middle;
-
   color: #5a5a5a;
   font-family: "Montserrat";
   font-weight: 600;
 }
+
 .TextDownloadWrapper {
   display: flex;
   gap: 30px;
   margin: 1px 0;
 }
+
 .TextDownload {
   display: flex;
   text-align: center;
@@ -641,8 +667,245 @@ p {
   color: #5a5a5a;
   font-family: "Montserrat";
   font-weight: 700;
-  /* line-height: 140%; */
-  /* letter-spacing: 2%; */
   text-align: center;
   margin-top: 5px;
+}
+
+/* ========== PDF PAGE BREAK FIXES - PREVENT CUTTING ========== */
+
+/* PDF Container */
+.pdfContainer {
+  padding: 30px 20px 80px 20px !important;
+  margin: 0 !important;
+  position: relative;
+  background: white;
+}
+
+/* Target the PDF container */
+#content-id {
+  padding: 30px 20px 80px 20px !important;
+  margin: 0 !important;
+  position: relative;
+  background: white;
+}
+
+/* Prevent header from being cut */
+#content-id > div:first-child,
+#content-id .ComplianceMainHeading:first-child {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+  page-break-before: avoid !important;
+  page-break-after: avoid !important;
+}
+
+/* Prevent footer from being cut */
+#content-id > div:last-child,
+#content-id .checklist_report:last-child {
+  margin-bottom: 100px !important;
+  padding-bottom: 50px !important;
+}
+
+/* Prevent content from being cut at page breaks */
+.checklist_report,
+.panelContentDownload,
+.insideAccordianTable,
+.TextDownloadWrapper,
+.iconTextWrapperDownload,
+.ComplianceSection,
+.ComplianceMainHeading {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure each compliance section stays together */
+.checklist_report {
+  page-break-after: auto;
+  page-break-before: auto;
+  margin-bottom: 50px !important;
+  padding-bottom: 30px !important;
+}
+
+/* Prevent individual task items from breaking */
+.insideAccordianTable {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 20px;
+  max-height: none !important;
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* Prevent the TextDownload boxes from breaking */
+.TextDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure metadata row stays together */
+.iconTextWrapperDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Add extra bottom margin to last elements */
+.checklist_report:last-child {
+  margin-bottom: 100px !important;
+  padding-bottom: 60px !important;
+}
+
+/* Report header and footer fixes for PDF */
+#content-id .reportHeader {
+  page-break-after: avoid;
+  break-inside: avoid;
+}
+
+#content-id .reportFooter {
+  margin-top: 30px !important;
+  padding: 15px 20px !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative !important;
+  bottom: auto !important;
+}
+
+/* Ensure proper spacing at bottom of each page */
+#content-id {
+  position: relative;
+}
+
+/* Print-specific styles */
+@media print {
+  /* Ensure proper margins on printed page */
+  @page {
+    margin: 1.5cm !important;
+    size: landscape;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #content-id {
+    padding: 20px 15px 70px 15px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+
+  /* Prevent header cutoff */
+  #content-id > div:first-child {
+    margin-top: 0 !important;
+    padding-top: 10px !important;
+  }
+
+  /* Prevent footer cutoff */
+  #content-id > div:last-child {
+    margin-bottom: 80px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* Ensure content doesn't break badly */
+  .checklist_report {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 60px !important;
+  }
+
+  .insideAccordianTable {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-height: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .TextDownload {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Remove fixed heights that might cause cutting */
+  .insideAccordianTable,
+  .MainAccordianTable {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure all content is visible */
+  * {
+    overflow: visible !important;
+  }
+
+  /* Fix header and footer positioning in print */
+  .reportHeader {
+    position: static !important;
+    margin-bottom: 20px !important;
+  }
+
+  .reportFooter {
+    position: static !important;
+    margin-top: 40px !important;
+    bottom: auto !important;
+  }
+}
+
+/* Additional fixes for better PDF rendering */
+.pdfContainer {
+  width: 100%;
+  max-width: 100%;
+  overflow: visible !important;
+}
+
+/* Remove fixed heights for PDF content */
+#content-id .insideAccordianTable,
+#content-id .MainAccordianTable {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure long text wraps properly */
+#content-id .longTitleHeading,
+#content-id .complainceTitle,
+#content-id p {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* Fix donut chart centering in PDF */
+#content-id .chartBox {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#content-id .centerLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  z-index: 10;
+}
+
+#content-id .centerLabel h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+  line-height: 1.2;
+}
+
+#content-id .centerLabel p {
+  margin: 0;
+  font-size: 10px;
+  color: #6b7280;
+  line-height: 1.3;
 }

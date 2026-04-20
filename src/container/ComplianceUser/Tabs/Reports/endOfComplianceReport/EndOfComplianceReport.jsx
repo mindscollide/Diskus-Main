@@ -10,11 +10,11 @@ import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined } from "@ant-design/icons";
 import { Chart } from "react-google-charts";
 import CustomTable from "../../../../../components/elements/table/Table";
-import generatePDF, { Resolution, Margin } from "react-to-pdf";
 import { useSelector } from "react-redux";
 import {
   formatDateToYMD,
   formatDateToYMDLong,
+  generatePdfHtml,
   getDynamicFileName,
 } from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
@@ -54,7 +54,7 @@ const EndOfComplianceReport = () => {
 
   useEffect(() => {
     if (autoPdfDownload && GetEndOfComplianceReport) {
-      handleAutoDownload();
+      handleDownloadPDF();
     }
   }, [autoPdfDownload, GetEndOfComplianceReport]);
 
@@ -145,31 +145,6 @@ const EndOfComplianceReport = () => {
     },
   };
 
-  /** Static PDF generation options hoisted to module level. */
-  const pdfOptions = {
-    method: "save",
-    filename: getDynamicFileName("End Of Compliance"),
-
-    resolution: Resolution.HIGH,
-    page: {
-      margin: Margin.SMALL,
-      format: "A4",
-      orientation: "landscape",
-    },
-    canvas: {
-      mimeType: "image/png",
-      qualityRatio: 1,
-    },
-    overrides: {
-      pdf: {
-        compress: true,
-      },
-      canvas: {
-        useCORS: true,
-      },
-    },
-  };
-
   /**
    * Maps raw task objects from the API into table row shape.
    * @param {Array} tasks - Array of task objects from the compliance report.
@@ -185,21 +160,29 @@ const EndOfComplianceReport = () => {
     }));
   }, []);
 
-  const handleAutoDownload = async () => {
+  const handleDownloadPDF = async () => {
     try {
       setIsGenerating(true);
       setShowPdfLayout(true);
 
-      await new Promise((r) => setTimeout(r, 300));
-      await document.fonts.ready;
+      await new Promise((r) => setTimeout(r, 500));
 
-      await generatePDF(getTargetElement, pdfOptions);
+      window.reportTitle = GetEndOfComplianceReport?.header?.reportType || "";
 
-      // After Download Close Report
-      setEndOfComplianceReport(false);
-      setAutoPdfDownload(false);
-    } catch (error) {
-      console.error(error);
+      const element = document.getElementById("content-id");
+
+      // Add a class to the PDF container for better print control
+      element.classList.add("pdf-print-mode");
+
+      await generatePdfHtml({
+        element,
+        fileName: getDynamicFileName("End Of Compliance"),
+      });
+
+      // Remove the class after generation
+      element.classList.remove("pdf-print-mode");
+    } catch (err) {
+      console.error(err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -210,21 +193,21 @@ const EndOfComplianceReport = () => {
    * Triggers PDF generation and download when the user clicks the Download button.
    */
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleClickGenerateODF = useCallback(async () => {
-    try {
-      setIsGenerating(true); // spinner ON
-      setShowPdfLayout(true); // show PDF layout
-      await new Promise((r) => setTimeout(r, 100)); // allow DOM render
+  // const handleClickGenerateODF = useCallback(async () => {
+  //   try {
+  //     setIsGenerating(true); // spinner ON
+  //     setShowPdfLayout(true); // show PDF layout
+  //     await new Promise((r) => setTimeout(r, 100)); // allow DOM render
 
-      await document.fonts.ready;
-      await generatePDF(getTargetElement, pdfOptions);
-    } catch (err) {
-      console.error("PDF generation failed:", err);
-    } finally {
-      setShowPdfLayout(false); // hide PDF layout
-      setIsGenerating(false); // spinner OFF
-    }
-  }, []);
+  //     await document.fonts.ready;
+  //     await generatePDF(getTargetElement, pdfOptions);
+  //   } catch (err) {
+  //     console.error("PDF generation failed:", err);
+  //   } finally {
+  //     setShowPdfLayout(false); // hide PDF layout
+  //     setIsGenerating(false); // spinner OFF
+  //   }
+  // }, []);
 
   // To Show Reopen View Detail Bar when Reopen or Hold status coming
   const shouldShowReopenSection = useMemo(() => {
@@ -247,7 +230,7 @@ const EndOfComplianceReport = () => {
 
   return (
     <>
-      <div className={styles.mainDivComplianceStanding}>
+      <div>
         <Spin
           spinning={isGenerating}
           size="large"
@@ -255,7 +238,7 @@ const EndOfComplianceReport = () => {
           className="d-flex justify-content-center align-items-center"
         >
           {!showPdfLayout && (
-            <div>
+            <div className={styles.mainDivComplianceStanding}>
               <Row className="align-items-center">
                 {/* Back Button */}
                 <Col xs="auto">
@@ -317,7 +300,7 @@ const EndOfComplianceReport = () => {
                   <CustomButton
                     text="Download"
                     loading={isGenerating}
-                    onClick={handleClickGenerateODF}
+                    onClick={handleDownloadPDF}
                     className={styles.complianceDownloadBtn}
                   />
                 </Col>
@@ -578,9 +561,11 @@ const EndOfComplianceReport = () => {
                           <div className="d-flex flex-column align-items-start justify-content-center">
                             <label>{t("Generated-date")}:</label>
                             <p>
-                              {formatDateToYMDLong(
-                                GetEndOfComplianceReport?.header?.generatedOn,
-                              )}
+                              <span className={styles.dateText}>
+                                {formatDateToYMDLong(
+                                  GetEndOfComplianceReport?.header?.generatedOn,
+                                )}
+                              </span>
                             </p>
                           </div>
                         </div>
@@ -626,10 +611,12 @@ const EndOfComplianceReport = () => {
                     <Col lg={3} xs="auto" className={` `}>
                       <label>{t("Created-on")}:</label>
                       <p>
-                        {formatDateToYMDLong(
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCreatedDate,
-                        )}
+                        <span className={styles.dateText}>
+                          {formatDateToYMDLong(
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.complianceCreatedDate,
+                          )}
+                        </span>
                       </p>
                     </Col>
 
@@ -637,21 +624,24 @@ const EndOfComplianceReport = () => {
                     <Col lg={3}>
                       <label>{t("Completion-date")}:</label>
                       <p>
-                        {formatDateToYMDLong(
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate,
-                        )}
+                        <span className={styles.dateText}>
+                          {formatDateToYMDLong(
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.complianceCompletionDate,
+                          )}
+                        </span>
                       </p>
                     </Col>
                     {/* Dua Date */}
                     <Col lg={3}>
                       <label>{t("Due-date")}:</label>
                       <p>
-                        {" "}
-                        {formatDateToYMDLong(
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate,
-                        )}
+                        <span className={styles.dateText}>
+                          {formatDateToYMDLong(
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.complianceDueDate,
+                          )}
+                        </span>
                       </p>
                     </Col>
                   </Row>
@@ -662,13 +652,13 @@ const EndOfComplianceReport = () => {
                     <div className={styles.chartBoxDownloadedPdf}>
                       <Chart
                         chartType="PieChart"
-                        width="100%"
-                        height="200px"
+                        width="93%"
+                        height="187px"
                         data={donutData}
                         options={{ ...donutOptions, legend: "none" }}
                       />
 
-                      <div className={styles.centerLabel}>
+                      <div className={styles.centerLabeldownloaded}>
                         <h2>
                           {
                             GetEndOfComplianceReport?.complianceSummary
@@ -725,15 +715,11 @@ const EndOfComplianceReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <p className={styles.checklistTitleList}>
-                    {GetEndOfComplianceReport?.checklists.map(
-                      (check, index) => (
-                        <p>
-                          {index + 1}. {check.checklistTitle}
-                        </p>
-                      ),
-                    )}
-                  </p>
+                  {GetEndOfComplianceReport?.checklists.map((check, index) => (
+                    <p className={styles.complianceTitleListDownload}>
+                      {index + 1}. {check.checklistTitle}
+                    </p>
+                  ))}
                 </Col>
 
                 {/* <Col
@@ -835,7 +821,7 @@ const EndOfComplianceReport = () => {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row>
+                              <Row className="mb-1">
                                 <Col lg={3} xs="auto">
                                   <div
                                     className={
@@ -845,7 +831,7 @@ const EndOfComplianceReport = () => {
                                     <label>{t("Assignee")}:</label>
                                     <p>{task.assigneeName || "-"}</p>
                                   </div>
-                                </Col>{" "}
+                                </Col>
                                 <Col lg={3} xs="auto">
                                   <div
                                     className={
@@ -910,9 +896,9 @@ const EndOfComplianceReport = () => {
                           >
                             <Row>
                               <Col sm={12} md={12} lg={12}>
-                                <div className={styles.reopenTextLabel}>{`${t(
-                                  "Reason",
-                                )}:`}</div>
+                                <div
+                                  className={styles.reopenTextLabel}
+                                >{`${t("Reason")}:`}</div>
                                 <div className={styles.reopenTextVaue}>
                                   {item.statusChangeReason || "-"}
                                 </div>
@@ -945,9 +931,9 @@ const EndOfComplianceReport = () => {
                                   lg={2}
                                   className="d-flex flex-column justify-content-end"
                                 >
-                                  <div className={styles.reopenTextLabel}>{`${t(
-                                    "Due-date",
-                                  )}:`}</div>
+                                  <div
+                                    className={styles.reopenTextLabel}
+                                  >{`${t("Due-date")}:`}</div>
                                   <div className={styles.reopenTextVaue}>
                                     {formatDateToYMDLong(item.updatedDueDate) ||
                                       "-"}
