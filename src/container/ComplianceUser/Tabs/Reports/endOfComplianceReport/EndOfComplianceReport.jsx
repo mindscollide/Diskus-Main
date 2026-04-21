@@ -177,6 +177,7 @@ const EndOfComplianceReport = () => {
       await generatePdfHtml({
         element,
         fileName: getDynamicFileName("End Of Compliance"),
+        reportTitle: "End Of Compliance",
       });
 
       // Remove the class after generation

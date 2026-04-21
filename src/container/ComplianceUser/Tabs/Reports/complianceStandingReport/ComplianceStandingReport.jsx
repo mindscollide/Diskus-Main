@@ -386,7 +386,8 @@ const ComplianceStandingReport = () => {
         if (element) {
           await generatePdfHtml({
             element,
-            fileName: `ComplianceStandingReport_${i + 1}.pdf`,
+            fileName: getDynamicFileName("Compliance Standing Report"),
+            reportTitle: "Compliance Standing Report",
           });
         }
 

@@ -432,7 +432,7 @@ const EndOfQuarterReport = () => {
           const pageNumber = i + 1;
           await generatePdfHtml({
             element,
-            fileName: `EndOfQuarterReport_Part_${pageNumber}.pdf`,
+            fileName: getDynamicFileName("End Of Quarter Report"),
             reportTitle: "End Of Quarter",
           });
         }
