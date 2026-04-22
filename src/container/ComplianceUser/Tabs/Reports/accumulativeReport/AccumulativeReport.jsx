@@ -125,7 +125,7 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
           </Row>
         </Col>
 
-        <Col lg={4} >
+        <Col lg={4}>
           <div className={styles.chartFlexDownloadedPdf}>
             <div className={styles.chartBoxDownloadedPdf}>
               <Chart
@@ -204,9 +204,13 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
               </p>
             </div>
 
-            <div className={`${styles.dueDate}`}>
-              <label>{t("Due-date")}:</label>
-              <p>{formatDateToYMD(compliance?.complianceDueDate) || "-"}</p>
+            <div className={`${styles.dueDateScenario}`}>
+              <label className={`${styles.dueDateScenariolabel}`}>
+                {t("Due-date")}:
+              </label>
+              <p className={`${styles.dueDateScenariolabel}`}>
+                {formatDateToYMD(compliance?.complianceDueDate) || "-"}
+              </p>
             </div>
 
             <Row className={styles.TextDownloadWrapper}>

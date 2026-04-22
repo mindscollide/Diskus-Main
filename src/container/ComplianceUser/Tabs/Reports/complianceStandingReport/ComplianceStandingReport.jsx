@@ -162,9 +162,13 @@ const PdfLayout = ({ data, reportData, dateRange, t }) => {
 
             <Row>
               <Col lg={12} xs="auto" className={`${styles.titleAboveBoxRow}`}>
-                <div className={styles.dueDate}>
-                  <label>{t("Due-date")}:</label>
-                  <p>{formatDateToYMD(compliance?.dueDate) || "-"}</p>
+                <div className={styles.dueDateComStanding}>
+                  <label className={styles.dueDateComStandinglabel}>
+                    {t("Due-date")}:
+                  </label>
+                  <p className={styles.dueDateComStandinglabel}>
+                    {formatDateToYMD(compliance?.dueDate) || "-"}
+                  </p>
                 </div>
                 <div className={styles.dueDate}>
                   <label>{t("Criticalityy")}:</label>

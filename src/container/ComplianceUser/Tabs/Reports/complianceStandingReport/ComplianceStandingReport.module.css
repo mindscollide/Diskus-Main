@@ -410,13 +410,12 @@
   letter-spacing: 0%;
 }
 /* Download report */
-.dueDate {
+.dueDateComStanding {
   display: flex;
   gap: 4px;
 }
 
-.dueDate label,
-p {
+.dueDateComStandinglabel {
   font-size: 14px;
   color: #5a5a5a;
   font-family: "Montserrat";

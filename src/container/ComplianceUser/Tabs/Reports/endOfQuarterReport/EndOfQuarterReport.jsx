@@ -202,9 +202,13 @@ const QuarterlyPdfLayout = ({ data, reportData, t }) => {
               </p>
             </div>
 
-            <div className={`${styles.dueDate}`}>
-              <label>{t("Due-date")}:</label>
-              <p>{formatDateToYMD(compliance?.complianceDueDate) || "-"}</p>
+            <div className={`${styles.dueDateQuarterly}`}>
+              <label className={`${styles.dueDateQuarterlylabel}`}>
+                {t("Due-date")}:
+              </label>
+              <p className={`${styles.dueDateQuarterlylabel}`}>
+                {formatDateToYMD(compliance?.complianceDueDate) || "-"}
+              </p>
             </div>
 
             <Row className={styles.TextDownloadWrapper}>

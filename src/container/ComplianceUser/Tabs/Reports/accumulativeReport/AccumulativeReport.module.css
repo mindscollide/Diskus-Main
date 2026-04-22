@@ -628,13 +628,12 @@
   letter-spacing: 0%;
 }
 
-.dueDate {
+.dueDateScenario {
   display: flex;
   gap: 4px;
 }
 
-.dueDate label,
-p {
+.dueDateScenariolabel {
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 0%;
