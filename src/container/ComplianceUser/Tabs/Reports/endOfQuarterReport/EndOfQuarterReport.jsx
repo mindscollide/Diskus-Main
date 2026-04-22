@@ -367,6 +367,7 @@ const EndOfQuarterReport = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
   const [pdfKey, setPdfKey] = useState(0);
+  const [hasDownloaded, setHasDownloaded] = useState(false);
 
   // Chunk array function for handling large data
   const chunkArray = (array, size) => {
@@ -463,6 +464,7 @@ const EndOfQuarterReport = () => {
       await handleDownloadPDF();
       setEndOfQuarterReport(false);
       setAutoPdfDownload(false);
+      setHasDownloaded(false);
     } catch (error) {
       console.error(error);
     } finally {
@@ -471,10 +473,10 @@ const EndOfQuarterReport = () => {
   };
 
   useEffect(() => {
-    if (autoPdfDownload && GetQuarterReport) {
+    if (autoPdfDownload && GetQuarterReport && !hasDownloaded) {
       handleAutoDownload();
     }
-  }, [autoPdfDownload, GetQuarterReport]);
+  }, [hasDownloaded && GetQuarterReport]);
 
   // Get current PDF data
   const currentPdfData =
@@ -664,7 +666,7 @@ const EndOfQuarterReport = () => {
                             </div>
                             <div className="text-center">{item.totalTasks}</div>
                             <div className="text-center">
-                              {item.tasksCompletedOnTime}
+                              {item.completedTasks}
                             </div>
                             <div className="text-center">
                               {item.tasksOverdue}

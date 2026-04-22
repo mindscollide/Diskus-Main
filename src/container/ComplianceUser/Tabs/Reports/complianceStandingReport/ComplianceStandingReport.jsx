@@ -184,7 +184,7 @@ const PdfLayout = ({ data, reportData, dateRange, t }) => {
             <Row className={styles.TextDownloadWrapper}>
               <Col className={styles.TextDownload}>
                 <div>
-                  <p>{compliance?.progressPercent || "0"}%</p>
+                  <p>{compliance?.progressPercentage}%</p>
                   <label>{t("Completed")}</label>
                 </div>
               </Col>

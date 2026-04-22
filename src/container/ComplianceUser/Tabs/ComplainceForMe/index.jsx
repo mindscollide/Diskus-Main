@@ -499,7 +499,7 @@ const ComplianceForMe = () => {
           rows={sortedComplianceList}
           column={columns}
           className={"Compliance_Table mt-3"}
-          scroll={{ x: "scroll", y: 550 }}
+          scroll={{ x: "scroll", y: 520 }}
           pagination={false}
           onChange={(pagination, filters) => {
             if (filters?.criticality) {

@@ -130,8 +130,8 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
             <div className={styles.chartBoxDownloadedPdf}>
               <Chart
                 chartType="PieChart"
-                width="100%"
-                height="200px"
+                width="91%"
+                height="185px"
                 data={donutData}
                 options={{ ...donutOptions, legend: "none" }}
               />
@@ -371,6 +371,7 @@ const AccumulativeReport = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
   const [pdfKey, setPdfKey] = useState(0);
+  const [hasdownloaded, setHasDownloaded] = useState(false);
 
   // Chunk array function for handling large data
   const chunkArray = (array, size) => {
@@ -470,6 +471,7 @@ const AccumulativeReport = () => {
       await handleDownloadPDF();
       setAccumulativeReport(false);
       setAutoPdfDownload(false);
+      setHasDownloaded(false);
     } catch (error) {
       console.error(error);
     } finally {
@@ -478,10 +480,10 @@ const AccumulativeReport = () => {
   };
 
   useEffect(() => {
-    if (autoPdfDownload && GetAccumulativeReport) {
+    if (autoPdfDownload && GetAccumulativeReport && !hasdownloaded) {
       handleAutoDownload();
     }
-  }, [autoPdfDownload, GetAccumulativeReport]);
+  }, [GetAccumulativeReport && hasdownloaded]);
 
   // Get current PDF data
   const currentPdfData =
@@ -676,7 +678,7 @@ const AccumulativeReport = () => {
                             </div>
                             <div className="text-center">{item.totalTasks}</div>
                             <div className="text-center">
-                              {item.tasksCompletedOnTime}
+                              {item.completedTasks}
                             </div>
                             <div className="text-center">
                               {item.tasksOverdue}

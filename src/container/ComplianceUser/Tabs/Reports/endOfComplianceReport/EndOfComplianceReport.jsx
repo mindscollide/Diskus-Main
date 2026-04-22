@@ -51,12 +51,7 @@ const EndOfComplianceReport = () => {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
-
-  useEffect(() => {
-    if (autoPdfDownload && GetEndOfComplianceReport) {
-      handleDownloadPDF();
-    }
-  }, [autoPdfDownload, GetEndOfComplianceReport]);
+  const [hasDownloaded, setHasDownloaded] = useState(false);
 
   const columns = useMemo(
     () => [
@@ -161,6 +156,7 @@ const EndOfComplianceReport = () => {
   }, []);
 
   const handleDownloadPDF = async () => {
+    console.log("Is Coming report");
     try {
       setIsGenerating(true);
       setShowPdfLayout(true);
@@ -189,6 +185,30 @@ const EndOfComplianceReport = () => {
       setIsGenerating(false);
     }
   };
+
+  const handleAutoDownload = async () => {
+    console.log("Is Coming report");
+    try {
+      console.log("Is Coming report");
+      setIsGenerating(true);
+      await handleDownloadPDF();
+      setEndOfComplianceReport(false);
+      setAutoPdfDownload(false);
+      setHasDownloaded(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  useEffect(() => {
+    if (autoPdfDownload && GetEndOfComplianceReport && !hasDownloaded) {
+      console.log("Is Coming report");
+      setHasDownloaded(true);
+      handleAutoDownload();
+    }
+  }, [hasDownloaded && GetEndOfComplianceReport]);
 
   /**
    * Triggers PDF generation and download when the user clicks the Download button.
@@ -653,8 +673,8 @@ const EndOfComplianceReport = () => {
                     <div className={styles.chartBoxDownloadedPdf}>
                       <Chart
                         chartType="PieChart"
-                        width="93%"
-                        height="187px"
+                        width="91%"
+                        height="185px"
                         data={donutData}
                         options={{ ...donutOptions, legend: "none" }}
                       />
