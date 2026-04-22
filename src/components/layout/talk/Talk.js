@@ -540,7 +540,7 @@ const Talk = () => {
 
         <div className={subIcons ? "talk-nav-icons" : "border-0"}>
           {/* {checkFeatureID(77) && ( */}
-          {process.env.REACT_APP_COMPLIANCE_MODULE === "TRUE" && (
+          {/* {process.env.REACT_APP_COMPLIANCE_MODULE === "TRUE" && (
             <Tooltip placement='leftTop' title={t("Compliance")}>
               <div
                 className={
@@ -573,7 +573,7 @@ const Talk = () => {
                 <span className='TalkIconPannelLabels'>{t("Compliance")}</span>
               </div>
             </Tooltip>
-          )}
+          )} */}
 
           <Tooltip placement='leftTop' title={t("Pending-approvals")}>
             <div

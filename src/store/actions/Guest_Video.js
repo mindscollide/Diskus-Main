@@ -88,22 +88,22 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getMeetingGuestVideoSuccess(
                   response.data.responseResult.guestVideoURL,
                   // t("Meeting-link-copied")
-                  t("")
-                )
+                  t(""),
+                ),
               );
               copyToClipboard(response.data.responseResult.guestVideoURL);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_02".toLowerCase(),
                 )
             ) {
               await dispatch(getMeetingGuestVideoFail(t("Meeting-not-found")));
@@ -111,11 +111,11 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingGuestVideoURL_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getMeetingGuestVideoFail(t("Something-went-wrong"))
+                getMeetingGuestVideoFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -158,7 +158,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      ValidateEncryptedStringGuestVideoLink.RequestMethod
+      ValidateEncryptedStringGuestVideoLink.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
 
@@ -174,18 +174,18 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase(),
                 )
             ) {
               sessionStorage.setItem("isLeftCheck", false);
               sessionStorage.setItem(
                 "roomID",
-                response.data.responseResult.roomID
+                response.data.responseResult.roomID,
               );
 
               sessionStorage.setItem(
                 "MeetingId",
-                response.data.responseResult.meetingId
+                response.data.responseResult.meetingId,
               );
               dispatch(getValidateString(response.data.responseResult));
               console.log("reponsepreodjfdfds", response.data.responseResult);
@@ -193,52 +193,52 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
               await dispatch(
                 validateEncryptGuestVideoSuccess(
                   response.data.responseResult,
-                  t("Active-meeting")
-                )
+                  t("Active-meeting"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                validateEncryptGuestVideoFail(t("Meeting-not-active"))
-              );
-              dispatch(guestVideoNavigationScreen(4));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_03".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                validateEncryptGuestVideoFail(t("Invalid-meeting"))
+                validateEncryptGuestVideoFail(t("Meeting-not-active")),
               );
               dispatch(guestVideoNavigationScreen(4));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                validateEncryptGuestVideoFail(t("Something-went-wrong"))
+                validateEncryptGuestVideoFail(t("Invalid-meeting")),
+              );
+              dispatch(guestVideoNavigationScreen(4));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                validateEncryptGuestVideoFail(t("Something-went-wrong")),
               );
               dispatch(guestVideoNavigationScreen(4));
             }
           } else {
             await dispatch(
-              validateEncryptGuestVideoFail(t("Something-went-wrong"))
+              validateEncryptGuestVideoFail(t("Something-went-wrong")),
             );
             dispatch(guestVideoNavigationScreen(4));
           }
         } else {
           await dispatch(
-            validateEncryptGuestVideoFail(t("Something-went-wrong"))
+            validateEncryptGuestVideoFail(t("Something-went-wrong")),
           );
           dispatch(guestVideoNavigationScreen(4));
         }
@@ -290,7 +290,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase(),
                 )
             ) {
               try {
@@ -299,46 +299,46 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
               // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(
                 response.data.responseResult.guestGuid,
-                dispatch
+                dispatch,
                 // response.data.responseResult.email
               );
               sessionStorage.setItem(
                 "GuestEmail",
-                response.data.responseResult.email
+                response.data.responseResult.email,
               );
               sessionStorage.setItem(
                 "GuestUserID",
-                response.data.responseResult.guestGuid
+                response.data.responseResult.guestGuid,
               );
               sessionStorage.setItem(
                 "isZoomEnabled",
-                response.data.responseResult.isZoomEnabled
+                response.data.responseResult.isZoomEnabled,
               );
               await dispatch(
                 joinGuestVideoSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
               sessionStorage.setItem("hasJoined", true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinGuestVideo_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinGuestVideo_02".toLowerCase(),
                 )
             ) {
               try {
                 setJoinButton(false);
               } catch {}
               await dispatch(
-                joinGuestVideoFail(t("meeting-organizers-not-found"))
+                joinGuestVideoFail(t("meeting-organizers-not-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinGuestVideo_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinGuestVideo_03".toLowerCase(),
                 )
             ) {
               try {
@@ -403,10 +403,10 @@ const admitRejectAttendeeMainApi = (
   flag,
   filteredParticipants,
   setLoadingAdmit,
-  setLoadingDeny
+  setLoadingDeny,
 ) => {
   let filterGuids = Data.AttendeeResponseList.map(
-    (guidMap, index) => guidMap.UID
+    (guidMap, index) => guidMap.UID,
   );
   console.log(filterGuids, "filterGuids");
 
@@ -429,8 +429,8 @@ const admitRejectAttendeeMainApi = (
               flag,
               filteredParticipants,
               setLoadingAdmit,
-              setLoadingDeny
-            )
+              setLoadingDeny,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -438,7 +438,7 @@ const admitRejectAttendeeMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_01".toLowerCase(),
                 )
             ) {
               //this will neglect where setLoadingAdmit is not define i other api dispatch
@@ -447,7 +447,7 @@ const admitRejectAttendeeMainApi = (
                 setLoadingDeny(false);
               }
               await dispatch(
-                admitRejectSuccess(response.data.responseResult, t(""))
+                admitRejectSuccess(response.data.responseResult, t("")),
               );
 
               // when flag is true then after click on accept all participantWaitinglistbox closed
@@ -489,7 +489,7 @@ const admitRejectAttendeeMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_02".toLowerCase(),
                 )
             ) {
               await dispatch(admitRejectFail(t("Video-call-not-found")));
@@ -498,7 +498,7 @@ const admitRejectAttendeeMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_03".toLowerCase(),
                 )
             ) {
               if (typeof setLoadingAdmit === "function") {
@@ -579,7 +579,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_01".toLowerCase(),
                 )
             ) {
               console.log("handStatus", data.IsHandRaised);
@@ -589,14 +589,14 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
                 raiseUnRaisedSuccess(
                   response.data.responseResult,
                   // t("Successful")
-                  t("")
-                )
+                  t(""),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_02".toLowerCase(),
                 )
             ) {
               await dispatch(raiseUnRaisedFail(t("Video-call-not-found")));
@@ -604,7 +604,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_03".toLowerCase(),
                 )
             ) {
               await dispatch(raiseUnRaisedFail(t("Something-went-wrong")));
@@ -612,7 +612,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_RaiseUnRaiseHand_04".toLowerCase(),
                 )
             ) {
               await dispatch(raiseUnRaisedFail(t("Invalid-data")));
@@ -670,7 +670,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_TransferMeetingHost_01".toLowerCase(),
                 )
             ) {
               const meetingHost = {
@@ -683,7 +683,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
               let isGuid = localStorage.getItem("isGuid");
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
               localStorage.setItem("hostUrl", refinedVideoUrl);
@@ -699,7 +699,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
                 RoomID: String(newRoomId),
               };
               await dispatch(
-                getVideoCallParticipantsMainApi(Data, navigate, t)
+                getVideoCallParticipantsMainApi(Data, navigate, t),
               );
 
               await dispatch(transferMeetingHostSuccess(true));
@@ -707,17 +707,17 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_TransferMeetingHost_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                transferMeetingHostFail(t("Invalid-request-data-2"))
+                transferMeetingHostFail(t("Invalid-request-data-2")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_TransferMeetingHost_03".toLowerCase(),
                 )
             ) {
               await dispatch(transferMeetingHostFail(t("UnSuccessful")));
@@ -725,11 +725,11 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_TransferMeetingHost_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_TransferMeetingHost_04".toLowerCase(),
                 )
             ) {
               await dispatch(
-                transferMeetingHostFail(t("Something-went-wrong"))
+                transferMeetingHostFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -786,14 +786,14 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 removeParticipantMeetingSuccess(
                   response.data.responseResult,
-                  t("")
-                )
+                  t(""),
+                ),
               );
               dispatch(guestLeaveVideoMeeting(data.UID));
               dispatch(removeParticipantFromVideo(data.UID));
@@ -802,17 +802,17 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                removeParticipantMeetingFail(t("Invalid-request-data-2"))
+                removeParticipantMeetingFail(t("Invalid-request-data-2")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_03".toLowerCase(),
                 )
             ) {
               await dispatch(removeParticipantMeetingFail(t("UnSuccessful")));
@@ -820,21 +820,21 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_RemoveParticipantFromMeeting_04".toLowerCase(),
                 )
             ) {
               await dispatch(
-                removeParticipantMeetingFail(t("Something-went-wrong"))
+                removeParticipantMeetingFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              removeParticipantMeetingFail(t("Something-went-wrong"))
+              removeParticipantMeetingFail(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            removeParticipantMeetingFail(t("Something-went-wrong"))
+            removeParticipantMeetingFail(t("Something-went-wrong")),
           );
         }
       })
@@ -893,14 +893,14 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 guestLeaveMeetingVideoSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
               sessionStorage.setItem("isRejoining", "true");
               sessionStorage.removeItem("isZoomEnabled");
@@ -917,18 +917,18 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_02".toLowerCase(),
                 )
             ) {
               sessionStorage.setItem("hasJoined", false);
               await dispatch(
-                guestLeaveMeetingVideoFail(t("Invalid-request-data-2"))
+                guestLeaveMeetingVideoFail(t("Invalid-request-data-2")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_03".toLowerCase(),
                 )
             ) {
               await dispatch(guestLeaveMeetingVideoFail(t("UnSuccessful")));
@@ -936,16 +936,16 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_04".toLowerCase(),
                 )
             ) {
               await dispatch(
-                guestLeaveMeetingVideoFail(t("Something-went-wrong"))
+                guestLeaveMeetingVideoFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              guestLeaveMeetingVideoFail(t("Something-went-wrong"))
+              guestLeaveMeetingVideoFail(t("Something-went-wrong")),
             );
           }
         } else {
@@ -1005,7 +1005,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase(),
                 )
             ) {
               // await dispatch(setAudioControlHost(data.IsMuted));
@@ -1015,14 +1015,14 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
                 muteUnmuteSelfSuccess(
                   response.data.responseResult,
                   // t("Successful")
-                  t("")
-                )
+                  t(""),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_02".toLowerCase(),
                 )
             ) {
               await dispatch(muteUnmuteSelfFail(t("Invalid-request-data-2")));
@@ -1030,7 +1030,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_03".toLowerCase(),
                 )
             ) {
               await dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
@@ -1038,10 +1038,10 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteSelf_04".toLowerCase(),
                 )
             ) {
-              await dispatch(muteUnmuteSelfFail(t("UnSuccessful")));
+              await dispatch(muteUnmuteSelfFail(t("")));
             }
           } else {
             await dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
@@ -1096,7 +1096,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideVideo_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_01".toLowerCase(),
                 )
             ) {
               localStorage.setItem("isWebCamEnabled", data.HideVideo);
@@ -1107,14 +1107,14 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
                 hideUnhideSelfSuccess(
                   response.data.responseResult,
                   // t("Successful")
-                  t("")
-                )
+                  t(""),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideVideo_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_02".toLowerCase(),
                 )
             ) {
               await dispatch(hideUnhideSelfFail(t("Invalid-request-data-2")));
@@ -1122,7 +1122,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideVideo_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_03".toLowerCase(),
                 )
             ) {
               localStorage.setItem("isWebCamEnabled", false);
@@ -1133,7 +1133,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideVideo_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideVideo_04".toLowerCase(),
                 )
             ) {
               await dispatch(setVideoControlHost(false));
@@ -1214,7 +1214,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getVideoCallParticipantsForGuest.RequestMethod
+      getVideoCallParticipantsForGuest.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -1229,7 +1229,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase(),
                 )
             ) {
               function saveCurrentMeetingHost(data) {
@@ -1241,58 +1241,58 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
                 // Save the result in session storage with the key 'currentmeetingHost'
                 sessionStorage.setItem(
                   "currentmeetingHost",
-                  JSON.stringify(hosts)
+                  JSON.stringify(hosts),
                 );
               }
               saveCurrentMeetingHost(
-                response.data.responseResult.participantList
+                response.data.responseResult.participantList,
               );
               await dispatch(
                 getVideoCallParticipantGuestSuccess(
                   response.data.responseResult.participantList,
                   t("Successful"),
-                  1
-                )
+                  1,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_02".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getVideoCallParticipantGuestFail(t("No-record-found"))
+                getVideoCallParticipantGuestFail(t("No-record-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_03".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getVideoCallParticipantGuestFail(t("UnSuccessful"))
+                getVideoCallParticipantGuestFail(t("UnSuccessful")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_04".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_04".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getVideoCallParticipantGuestFail(t("Something-went-wrong"))
+                getVideoCallParticipantGuestFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              getVideoCallParticipantGuestFail(t("Something-went-wrong"))
+              getVideoCallParticipantGuestFail(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            getVideoCallParticipantGuestFail(t("Something-went-wrong"))
+            getVideoCallParticipantGuestFail(t("Something-went-wrong")),
           );
         }
       })

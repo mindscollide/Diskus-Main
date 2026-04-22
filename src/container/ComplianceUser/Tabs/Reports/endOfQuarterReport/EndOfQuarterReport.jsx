@@ -76,7 +76,7 @@ const EndOfQuarterReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
   );
 
   console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
@@ -110,7 +110,7 @@ const EndOfQuarterReport = () => {
       GetQuarterReport?.header?.tasksCompletedOnTime,
       GetQuarterReport?.header?.tasksCompletedLate,
       GetQuarterReport?.header?.tasksPending,
-    ]
+    ],
   );
 
   const handleAutoDownload = async () => {
@@ -229,7 +229,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -237,7 +237,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -432,7 +432,7 @@ const EndOfQuarterReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate
+                                                    task.taskDueDate,
                                                   )}
                                                 </p>
                                               </div>
@@ -448,7 +448,7 @@ const EndOfQuarterReport = () => {
                                                 </label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskCompletedOn
+                                                    task.taskCompletedOn,
                                                   ) || "-"}
                                                 </p>
                                               </div>
@@ -534,7 +534,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Generated-date")}: </label>
                         <p>
                           {formatDateToYMDLong(
-                            GetQuarterReport?.header?.generatedOn
+                            GetQuarterReport?.header?.generatedOn,
                           )}
                         </p>
                       </div>
@@ -553,7 +553,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Start-dates")}:</label>
                         <p>
                           {formatDateToYMDLong(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -563,7 +563,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("End-dates")}:</label>
                         <p>
                           {formatDateToYMDLong(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -657,9 +657,11 @@ const EndOfQuarterReport = () => {
                       </p>
                     </div>
 
-                    <div className={`${styles.dueDate} `}>
-                      <label>{t("Due-date")}:</label>
-                      <p>
+                    <div className={`${styles.dueDateQuarterly} `}>
+                      <label className={`${styles.dueDateQuarterlylabel} `}>
+                        {t("Due-date")}:
+                      </label>
+                      <p className={`${styles.dueDateQuarterlylabel} `}>
                         {formatDateToYMD(compliance?.complianceDueDate) || "-"}
                       </p>
                     </div>
@@ -764,7 +766,7 @@ const EndOfQuarterReport = () => {
                                             <label>{t("Due-date")}:</label>
                                             <p>
                                               {formatDateToYMD(
-                                                task.taskDueDate
+                                                task.taskDueDate,
                                               )}
                                             </p>
                                           </div>
@@ -778,7 +780,7 @@ const EndOfQuarterReport = () => {
                                             <label>{t("Completed-on")}:</label>
                                             <p>
                                               {formatDateToYMD(
-                                                task.taskCompletedOn
+                                                task.taskCompletedOn,
                                               ) || "-"}
                                             </p>
                                           </div>

@@ -10,6 +10,8 @@ import PollImage from "../../../../assets/images/sidebar_icons/Polls.png";
 import CalenderImage from "../../../../assets/images/sidebar_icons/NewCalenderSideBar.png";
 import NotesImage from "../../../../assets/images/sidebar_icons/NewNotesSideBar.png";
 import TaskImage from "../../../../assets/images/sidebar_icons/NewTaskSideBar.png";
+import ResolutionImage from "../../../../assets/images/sidebar_icons/Resolution.png";
+
 import styles from "./ExpandMenu.module.css";
 import {
   checkFeatureIDAvailability,
@@ -28,7 +30,11 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 
-const ExpandedMenu = () => {
+const ExpandedMenu = ({
+  handleSidebarNavigation,
+  handleMeetingSidebarResolutions,
+  handleMeetingSidebarResolutionsNoCall,
+}) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -561,6 +567,55 @@ const ExpandedMenu = () => {
           >
             <img src={PollImage} alt="" />
             <p>{t("Polls")}</p>
+          </div>
+        </Nav.Link>
+      ) : null}
+
+      {/* Resolution */}
+      {checkFeatureIDAvailability(18) ? (
+        <Nav.Link
+          as={Link}
+          to={
+            (scheduleMeetingsPageFlag === true ||
+              viewProposeDateMeetingsPageFlag === true ||
+              viewAdvanceMeetingsPublishPageFlag === true ||
+              viewAdvanceMeetingsUnpublishPageFlag === true ||
+              viewProposeOrganizerMeetingsPageFlag === true ||
+              proposeNewMeetingsPageFlag === true) &&
+            viewMeetingsFlag === false
+              ? "/Diskus/Meeting"
+              : "/Diskus/resolution"
+          }
+          disabled={false}
+          draggable="false"
+          className={
+            location.pathname === "/Diskus/resolution" ||
+            location.pathname === "/Diskus/resolution"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
+          }
+          onClick={(e) => {
+            // Prevent default behavior
+            const handled = handleSidebarNavigation({
+              targetPath: "/Diskus/resolution",
+              navigateLocationKey: "resolution",
+              handleWithCall: handleMeetingSidebarResolutions,
+              handleNoCall: handleMeetingSidebarResolutionsNoCall,
+            });
+
+            if (handled) {
+              e.preventDefault();
+              return;
+            }
+          }}
+        >
+          {/* Resolution Icon */}
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={ResolutionImage} alt="ResolutionImage" />
+            <p>{t("Resolutions")}</p>
           </div>
         </Nav.Link>
       ) : null}

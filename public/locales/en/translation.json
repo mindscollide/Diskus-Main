@@ -2763,5 +2763,8 @@
   "Mark-Checklist-only": "Mark Checklist only",
   "Mark-Checklist-with-associated-items": "Mark Checklist with associated items",
   "Cancel-checklist": "Cancel checklist?",
-  "Reopen-details": "Reopen Details"
+  "Reopen-details": "Reopen Details",
+  "Maximum-attempts-reached-Please-try-again-after": "Maximum attempts reached. Please try again after",
+  "File-deleted": "File Deleted",
+  "Folder-deleted": "Folder Deleted"
 }

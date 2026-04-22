@@ -85,7 +85,7 @@ const AccumulativeReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetAccumulativeReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport,
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -120,7 +120,7 @@ const AccumulativeReport = () => {
       GetAccumulativeReport?.header?.tasksCompletedOnTime,
       GetAccumulativeReport?.header?.tasksCompletedLate,
       GetAccumulativeReport?.header?.tasksPending,
-    ]
+    ],
   );
 
   const handleAutoDownload = async () => {
@@ -209,7 +209,7 @@ const AccumulativeReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetAccumulativeReport?.header?.generatedOn
+                        GetAccumulativeReport?.header?.generatedOn,
                       ) || "-"}
                     </p>
                   </div>
@@ -240,7 +240,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}:</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate
+                            GetAccumulativeReport?.header?.quarterStartDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -248,7 +248,7 @@ const AccumulativeReport = () => {
                         <span>{t("End-dates")}:</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate
+                            GetAccumulativeReport?.header?.quarterEndDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -449,7 +449,7 @@ const AccumulativeReport = () => {
                                             <p>
                                               {" "}
                                               {formatDateToYMD(
-                                                taskItem.taskDueDate
+                                                taskItem.taskDueDate,
                                               ) || "-"}
                                             </p>
                                           </div>
@@ -464,7 +464,7 @@ const AccumulativeReport = () => {
                                             <p>
                                               {" "}
                                               {formatDateToYMD(
-                                                taskItem.taskCompletedOn
+                                                taskItem.taskCompletedOn,
                                               ) || "-"}
                                             </p>
                                           </div>
@@ -568,7 +568,7 @@ const AccumulativeReport = () => {
                           <label>{t("Generated-date")}:</label>
                           <p>
                             {formatDateToYMD(
-                              GetAccumulativeReport?.header?.generatedOn
+                              GetAccumulativeReport?.header?.generatedOn,
                             )}
                           </p>
                         </div>
@@ -590,7 +590,7 @@ const AccumulativeReport = () => {
                           <label>{t("Start-dates")}:</label>
                           <p>
                             {formatDateToYMD(
-                              GetAccumulativeReport?.header?.quarterStartDate
+                              GetAccumulativeReport?.header?.quarterStartDate,
                             )}
                           </p>
                         </div>
@@ -600,7 +600,7 @@ const AccumulativeReport = () => {
                           <label>{t("End-dates")}:</label>
                           <p>
                             {formatDateToYMD(
-                              GetAccumulativeReport?.header?.quarterEndDate
+                              GetAccumulativeReport?.header?.quarterEndDate,
                             )}
                           </p>
                         </div>
@@ -700,9 +700,15 @@ const AccumulativeReport = () => {
                             }`}
                           </p>
                         </div>
-                        <div className={`${styles.dueDate} `}>
-                          <label>{t("Due-date")}:</label>
-                          <p>
+                        <div className={`${styles.dueDateAccumalative} `}>
+                          <label
+                            className={`${styles.dueDatedueDateAccumalativelabel} `}
+                          >
+                            {t("Due-date")}:
+                          </label>
+                          <p
+                            className={`${styles.dueDatedueDateAccumalativelabel} `}
+                          >
                             {formatDateToYMD(compliance?.complianceDueDate) ||
                               "-"}
                           </p>
@@ -820,7 +826,7 @@ const AccumulativeReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate
+                                                    task.taskDueDate,
                                                   )}
                                                 </p>
                                               </div>
@@ -836,7 +842,7 @@ const AccumulativeReport = () => {
                                                 </label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskCompletedOn
+                                                    task.taskCompletedOn,
                                                   ) || "-"}
                                                 </p>
                                               </div>
@@ -872,7 +878,7 @@ const AccumulativeReport = () => {
                           )}
                         </div>
                       </Col>
-                    )
+                    ),
                   )}
                 </Row>
                 <div className={styles.reportFooter}>
