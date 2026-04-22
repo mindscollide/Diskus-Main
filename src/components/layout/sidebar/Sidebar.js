@@ -1085,7 +1085,7 @@ const Sidebar = () => {
                   </Nav.Link>
                 ) : null}
 
-                {/* Resolution */}
+                {/* Compliance */}
                 {checkFeatureIDAvailability(77) ? (
                   <Nav.Link
                     as={Link}
