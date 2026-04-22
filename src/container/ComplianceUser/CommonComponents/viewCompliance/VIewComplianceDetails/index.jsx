@@ -185,7 +185,7 @@ const ViewComplianceDetails = () => {
     try {
       let saveFiles = [];
       let uploadedFiles;
-      // 1️⃣ Upload individual documents
+      //  Upload individual documents
       if (complianceReopenDetailsState.attachments.length > 0) {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
@@ -194,12 +194,12 @@ const ViewComplianceDetails = () => {
             ),
           ),
         );
-        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        //  Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
           SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
-        // 3️⃣ Build payload AFTER data exists
+        //  Build payload AFTER data exists
         const Data2 = {
           complianceId: editComplianceData.complianceId,
           complianceStatusChangeHistoryID: complianceReopenedDetail,
@@ -210,7 +210,7 @@ const ViewComplianceDetails = () => {
             : [],
         };
 
-        // 4️⃣ Final mapping API
+        //  Final mapping API
         dispatch(
           SaveComplianceDocumentsAndMappingsAPI(
             navigate,
@@ -229,13 +229,13 @@ const ViewComplianceDetails = () => {
             editComplianceData,
             t,
             ViewComplianceDetailsByViewTypeAPI,
-            3
+            3,
             // setChecklistTabs
           ),
         );
       }
 
-      console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
+      console.log("uploadedFiles:", uploadedFiles); //  DATA HERE
     } catch (error) {
       console.error(error);
     }

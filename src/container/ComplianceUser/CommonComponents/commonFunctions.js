@@ -1,3 +1,6 @@
+import html2pdf from "html2pdf.js";
+import dairaStudioLogo from "./../../../assets/images/Daira-Logo.png";
+
 export const parseUTCDateString = (dateStr) => {
   if (!dateStr || dateStr.length !== 14) return "";
 
@@ -50,12 +53,9 @@ export const formatDateToYMDLong = (value) => {
 
   let date;
 
-  // ✅ If it's already a Date instance
   if (value instanceof Date && !isNaN(value)) {
     date = value;
-  }
-  // ✅ If it's a yyyymmdd string
-  else if (typeof value === "string" && value.length >= 8) {
+  } else if (typeof value === "string" && value.length >= 8) {
     const year = value.substring(0, 4);
     const month = value.substring(4, 6);
     const day = value.substring(6, 8);
@@ -65,11 +65,14 @@ export const formatDateToYMDLong = (value) => {
     return "";
   }
 
-  return date.toLocaleDateString("en-GB", {
-    day: "2-digit",
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  const monthName = date.toLocaleString("en-GB", {
     month: "long",
-    year: "numeric",
   });
+
+  return `${day} ${monthName} ${year}`;
 };
 
 export const parseYYYYMMDDToEndOfDay = (dateString) => {
@@ -225,4 +228,120 @@ export const getDynamicFileName = (name) => {
   const time = `${hours}${minutes}${seconds}`;
 
   return `${name}_${date}_${time}.pdf`;
+};
+
+export const generatePdfHtml = async ({
+  element,
+  fileName = "report.pdf",
+  reportTitle = "",
+}) => {
+  const opt = {
+    margin: [21, 0, 0, 0],
+    filename: fileName,
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: {
+      scale: 2, // Increased for better quality
+      useCORS: true,
+      logging: false,
+      letterRendering: true,
+    },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "landscape",
+    },
+    pagebreak: {
+      mode: ["css", "legacy"],
+    },
+  };
+
+  const worker = html2pdf().set(opt).from(element).toPdf();
+  const pdf = await worker.get("pdf");
+
+  const totalPages = pdf.internal.getNumberOfPages();
+
+  // Register Montserrat font in jsPDF
+  // Note: You'll need to include the font file or use standard fonts
+  // For now, we'll use helvetica as fallback with proper styling
+
+  for (let i = 1; i <= totalPages; i++) {
+    pdf.setPage(i);
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const headerHeight = 19;
+    const footerHeight = 12;
+
+    // =========================
+    //  HEADER BACKGROUND
+    // =========================
+    pdf.setFillColor(246, 249, 252);
+    pdf.rect(0, 0, pageWidth, headerHeight, "F");
+
+    // =========================
+    // LOGO (LEFT SIDE)
+    // =========================
+    pdf.addImage(dairaStudioLogo, "PNG", 5, 4, 35, 10);
+
+    // =========================
+    //  RIGHT SIDE TEXT - WITH MONTSERRAT STYLING
+    // =========================
+    // Use helvetica as it's standard, style it to look like Montserrat
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10); // Slightly smaller for better fit
+    pdf.setTextColor(90, 90, 90);
+
+    const rightX = pageWidth - 5;
+
+    const addressLines = [
+      "123 Elm Street",
+      "Springfield, Anytown 98765",
+      "United States",
+    ];
+
+    let startY = 8; // Adjusted for better alignment
+
+    addressLines.forEach((line, index) => {
+      pdf.text(line, rightX, startY + index * 4, {
+        align: "right",
+      });
+    });
+
+    // Gradient border
+    const start = { r: 97, g: 114, b: 214 };
+    const end = { r: 74, g: 222, b: 222 };
+    const steps = 50;
+
+    for (let i = 0; i < steps; i++) {
+      const ratio = i / steps;
+      const r = Math.round(start.r + (end.r - start.r) * ratio);
+      const g = Math.round(start.g + (end.g - start.g) * ratio);
+      const b = Math.round(start.b + (end.b - start.b) * ratio);
+      pdf.setFillColor(r, g, b);
+      pdf.rect(
+        (pageWidth / steps) * i,
+        headerHeight,
+        pageWidth / steps,
+        1, // Slightly thicker border
+        "F",
+      );
+    }
+
+    // =========================
+    //  FOOTER
+    // =========================
+    pdf.setFillColor(97, 114, 214);
+    pdf.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, "F");
+
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(10);
+    pdf.setFont("helvetica", "bold");
+
+    const formattedPage = String(i).padStart(2, "0");
+    pdf.text(formattedPage, pageWidth - 15, pageHeight - 4);
+    pdf.text(reportTitle, 10, pageHeight - 4);
+  }
+
+  await worker.save();
 };

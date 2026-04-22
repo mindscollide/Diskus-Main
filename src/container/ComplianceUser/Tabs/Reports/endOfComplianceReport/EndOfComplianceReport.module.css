@@ -452,19 +452,10 @@
 }
 .ComplianceMainHeading {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   padding: 0px 30px;
-}
-
-.ComplianceMainHeading div label {
-  font-family: "Montserrat";
-  font-weight: 700;
-  font-size: 8px;
-  line-height: 8px;
-  letter-spacing: 0%;
-  color: #5a5a5a;
 }
 
 .ComplianceReportHeadings Label {
@@ -473,16 +464,6 @@
   font-size: 12px;
   color: #5a5a5a;
   letter-spacing: 2%;
-}
-
-.ComplianceMainHeading div p {
-  font-size: 16px;
-  color: #6172d6;
-  font-family: "Montserrat";
-  line-height: 100%;
-  letter-spacing: 0%;
-  margin: 0;
-  font-weight: 600;
 }
 
 .chartFlexDownloadedPdf {
@@ -497,8 +478,11 @@
 
 .chartBoxDownloadedPdf {
   position: relative;
-  width: 200px;
+  width: 175px;
   height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .checklist_report {
@@ -540,13 +524,31 @@
   display: flex;
   align-items: flex-start;
 }
-/* Download Report */
-.ComplianceMainHeading {
-  display: flex;
-  flex-direction: column; /* ✅ IMPORTANT */
-  align-items: flex-start; /* align left */
-  gap: 4px;
-  padding: 0px 30px;
+
+.centerLabeldownloaded {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  z-index: 10;
+}
+
+.centerLabeldownloaded h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+  line-height: 1.2;
+}
+
+.centerLabeldownloaded p {
+  margin: 0;
+  font-size: 10px;
+  color: #6b7280;
+  line-height: 1.3;
 }
 
 .ComplianceMainHeading label {
@@ -713,4 +715,226 @@
   margin-top: 10px;
   overflow: hidden;
   overflow-y: auto;
+}
+
+.mainDivHeader {
+  background-color: #f6f9fc;
+  margin: 0;
+  padding: 10px;
+}
+
+/* Add these CSS rules to prevent PDF content from being cut off */
+
+/* Target the PDF content container */
+#content-id {
+  padding-bottom: 30px;
+  padding-top: 20px;
+}
+
+/* Prevent elements from breaking across pages */
+.checklist_report,
+.panelContent,
+.insideAccordianTableDownload,
+.reopneDetailsBlock,
+.TextDownloadWrapper {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Allow breaks only at major sections */
+.checklist_report {
+  page-break-after: auto;
+  page-break-before: auto;
+  margin-bottom: 30px;
+}
+
+/* Ensure task items stay together */
+.insideAccordianTableDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 15px;
+}
+
+/* Prevent chart from breaking */
+.chartFlexDownloadedPdf,
+.chartBoxDownloadedPdf {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Prevent reopen details section from breaking */
+.reopenComplianceDetails {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-top: 30px;
+}
+
+/* Add bottom margin to the last element to prevent footer cutoff */
+#content-id > div:last-child,
+#content-id > .checklist_report:last-child,
+#content-id > .reopenComplianceDetails:last-child {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+}
+
+/* Prevent header from being cut */
+#content-id > div:first-child,
+#content-id .ComplianceMainHeading:first-child {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+  page-break-before: avoid !important;
+  page-break-after: avoid !important;
+}
+
+/* Ensure proper spacing at page bottom */
+.ComplianceMainHeading,
+.ComplianceSection {
+  page-break-after: avoid;
+}
+
+/* Prevent TextDownload boxes from breaking */
+.TextDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure the donut chart stays intact */
+.chartFlexDownloadedPdf {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* For the metadata rows */
+.iconTextWrapperPDFDownload,
+.iconTextWrapperPDFDownloadRowTwo {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure long content doesn't overflow */
+.longTitleHeading,
+.longTitle {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Add page break before reopen section if needed */
+.reopenComplianceDetails {
+  page-break-before: avoid;
+}
+
+/* Global print/PDF styles */
+.pdf-print-mode * {
+  page-break-after: avoid;
+  page-break-before: avoid;
+}
+
+.pdf-print-mode .checklist_report {
+  page-break-after: auto;
+  margin-bottom: 30px;
+}
+
+.pdf-print-mode .insideAccordianTableDownload {
+  page-break-inside: avoid;
+}
+
+/* Ensure no content is cut at page bottom */
+/* @media print {
+  #content-id {
+    padding-bottom: 30px !important;
+  }
+
+  .checklist_report {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .insideAccordianTableDownload {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+} */
+/* Prevent PDF footer cutting - CRITICAL FIXES */
+#content-id {
+  padding-bottom: 50px !important;
+  padding-top: 20px !important;
+  position: relative;
+}
+
+/* Force page breaks to happen properly */
+.checklist_report {
+  page-break-after: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 40px !important;
+  padding-bottom: 20px !important;
+}
+
+/* Ensure the last element has enough bottom margin */
+.checklist_report:last-child,
+#content-id > div:last-child {
+  margin-bottom: 60px !important;
+  padding-bottom: 30px !important;
+}
+
+/* Prevent any element from being cut at page bottom */
+.panelContent,
+.insideAccordianTableDownload,
+.reopneDetailsBlock {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 25px !important;
+}
+
+/* Ensure TextDownload boxes are not cut */
+.TextDownloadWrapper {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 20px !important;
+}
+
+/* Add extra bottom padding to the main container */
+#content-id > div:first-child {
+  padding-bottom: 40px;
+}
+
+/* For the reopen section at the end */
+.reopenComplianceDetails {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 50px !important;
+  padding-bottom: 30px !important;
+}
+
+/* Print-specific styles */
+@media print {
+  #content-id {
+    padding-bottom: 60px !important;
+  }
+
+  .checklist_report {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 50px !important;
+  }
+
+  .insideAccordianTableDownload {
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
+.dateText {
+  white-space: normal;
+  letter-spacing: normal;
+  font-family: "helvetica" !important;
+  font-weight: 600;
+}
+
+.dateText span {
+  margin-right: 4px;
 }

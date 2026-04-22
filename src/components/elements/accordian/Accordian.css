@@ -54,6 +54,8 @@
 }
 .accordion-customForTasks.expanded {
   max-height: 500px; /* must be greater than content */
+  overflow: hidden;
+  overflow-y: auto;
 }
 .FirstRow {
   display: flex;
