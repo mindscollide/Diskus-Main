@@ -661,7 +661,7 @@ const saveSignatureDocumentApi = (
                 dispatch(
                   saveSignatureDocument_success(
                     response.data.responseResult,
-                    "",
+                    t("Document-save-successfully"),
                   ),
                 );
               }

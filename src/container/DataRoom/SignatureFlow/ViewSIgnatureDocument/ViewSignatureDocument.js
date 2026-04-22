@@ -158,7 +158,7 @@ const ViewSignatureDocument = () => {
                 actorEmail: fieldsData.actorEmail,
                 actorColor: fieldsData.actorColor,
               });
-            }
+            },
           );
           setHiddenUsers([]);
           setReadOnlyUsers(AllUserIDs);
@@ -166,18 +166,18 @@ const ViewSignatureDocument = () => {
             return data.map((item) => {
               const xmlField = item.xmlField
                 ? item.xmlField.split("_#_").map((str) => {
-                  try {
-                    return JSON.parse(str);
-                  } catch (error) {
-                    console.error(
-                      "Error parsing JSON:",
-                      error,
-                      "Input:",
-                      str
-                    );
-                    return null; // or handle the error as needed
-                  }
-                })
+                    try {
+                      return JSON.parse(str);
+                    } catch (error) {
+                      console.error(
+                        "Error parsing JSON:",
+                        error,
+                        "Input:",
+                        str,
+                      );
+                      return null; // or handle the error as needed
+                    }
+                  })
                 : [];
               return {
                 actorID: item.actorID,
@@ -191,7 +191,7 @@ const ViewSignatureDocument = () => {
           if (
             containsNull(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
+                .listOfFields,
             )
           ) {
             let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
@@ -213,14 +213,14 @@ const ViewSignatureDocument = () => {
           } else {
             revertedData = revert(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
+                .listOfFields,
             );
             setUserAnnotations(revertedData);
             setUserAnnotationsCopy(revertedData);
           }
           setFieldsData(newFieldsData);
         }
-      } catch { }
+      } catch {}
     }
   }, [getAllFieldsByWorkflowID]);
   // === End === //
@@ -255,7 +255,7 @@ const ViewSignatureDocument = () => {
             if (
               containsNull(
                 getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                  .listOfFields
+                  .listOfFields,
               )
             ) {
               let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
@@ -297,7 +297,7 @@ const ViewSignatureDocument = () => {
           creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
           isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
         }));
-      } catch (error) { }
+      } catch (error) {}
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
@@ -340,12 +340,12 @@ const ViewSignatureDocument = () => {
         });
         let newProcessXmlForReadOnly = processXmlForReadOnly(
           getSignatureFileAnnotationResponse.annotationString,
-          ReadArray
+          ReadArray,
         );
 
         const readonlyFreetextXmlString = readOnlyFreetextElements(
           newProcessXmlForReadOnly,
-          readOnlyUsersRef.current
+          readOnlyUsersRef.current,
         );
 
         setPdfResponceData((prevData) => ({
@@ -368,10 +368,9 @@ const ViewSignatureDocument = () => {
           path: "/webviewer/lib",
           showLocalFilePicker: true,
           fullAPI: true,
-          licenseKey:
-            process.env.REACT_APP_APRYSEKEY,// sign up to get a free trial key at https://dev.apryse.com
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // sign up to get a free trial key at https://dev.apryse.com
         },
-        viewer.current
+        viewer.current,
       ).then(async (instance) => {
         setInstance(instance);
         const UI = instance.UI;
@@ -398,19 +397,6 @@ const ViewSignatureDocument = () => {
             fontWeight: "600",
           },
         });
-
-        const closeButtonGroup = new UI.Components.GroupedItems({
-          dataElement: "closeButtonGroup",
-          grow: 0,
-          gap: 8,
-          position: "end",
-          alwaysVisible: true,
-          items: [closeButton],
-        });
-
-        // Replace entire header with only the close button
-        const topHeader = UI.getModularHeader("default-top-header");
-        topHeader.setItems([closeButtonGroup]);
 
         // ── Hide all toolbar groups and UI panels ─────────────────────────
         UI.disableElements([
@@ -447,7 +433,7 @@ const ViewSignatureDocument = () => {
           if (pdfResponceDataRef.current && annotationManager) {
             try {
               await annotationManager.importAnnotations(
-                pdfResponceDataRef.current
+                pdfResponceDataRef.current,
               );
 
               // Lock every annotation object
@@ -464,7 +450,6 @@ const ViewSignatureDocument = () => {
               annotationManager.getFieldManager().forEachField((field) => {
                 field.flags.set("ReadOnly", true);
               });
-
             } catch (error) {
               console.error("Error importing annotations:", error);
             }
@@ -490,7 +475,7 @@ const ViewSignatureDocument = () => {
         console.log(
           annot,
           annot instanceof Annotations.FreeHandAnnotation,
-          "annotannotannot"
+          "annotannotannot",
         );
         if (annot.ToolName === "AnnotationCreateRubberStamp") {
           annot.NoMove = true; // Prevent dragging
@@ -504,7 +489,7 @@ const ViewSignatureDocument = () => {
 
     annotationManager.addEventListener(
       "annotationChanged",
-      handleAnnotationChange
+      handleAnnotationChange,
     );
 
     // Prevent signature deletion
@@ -542,7 +527,7 @@ const ViewSignatureDocument = () => {
       let userID = localStorage.getItem("userID");
 
       let findActorID = userAnnotationsRef.current.find(
-        (data, index) => Number(data.userID) === Number(userID)
+        (data, index) => Number(data.userID) === Number(userID),
       );
       if (findActorID !== undefined) {
         let Data = {
@@ -556,8 +541,8 @@ const ViewSignatureDocument = () => {
             t,
             Data,
             setReasonModal,
-            setDeclineConfirmationModal
-          )
+            setDeclineConfirmationModal,
+          ),
         );
       }
 
@@ -568,8 +553,8 @@ const ViewSignatureDocument = () => {
   };
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
 
       {reasonModal && (

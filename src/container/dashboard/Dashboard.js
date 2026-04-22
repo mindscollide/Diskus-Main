@@ -4723,7 +4723,12 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
         ) {
           dispatch(SignatureDocumentReceived(data.payload));
-          if (data.payload?.workFlowStatusID === 3) return;
+          if (
+            data.payload?.workFlowStatusID === 3 ||
+            data.payload?.workFlowStatusID === 4
+          )
+            return;
+            
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,
