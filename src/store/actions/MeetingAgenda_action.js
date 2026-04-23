@@ -45,17 +45,21 @@ import {
   showCastVoteAgendaModal,
   AgendaPollVotingStartedAction,
   moveFilesAndFoldersApi,
-  getMeetingByCommitteeIDApi,
-  getMeetingbyGroupApi,
   searchNewUserMeeting,
-  setMeetingByGroupIDApi,
-  setMeetingbyCommitteeIDApi,
 } from "./NewMeetingActions";
 import {
   SetLoaderFalse,
   meetingLoaderDashboard,
 } from "./Get_List_Of_Assignees";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import {
+  getMeetingByCommitteeIdApi,
+  setMeetingbyCommitteeIdApi,
+} from "./Committee_actions";
+import {
+  getMeetingbyGroupIdApi,
+  setMeetingByGroupIdApi,
+} from "./Groups_actions";
 
 const clearAgendaReducerState = () => {
   return {
@@ -871,7 +875,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     MeetingID: Number(data.MeetingID),
                     CommitteeID: Number(ViewCommitteeID),
                   };
-                  dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+                  dispatch(setMeetingbyCommitteeIdApi(navigate, t, Data));
                 } else if (checkFlag === 6) {
                   // Update Committee Meeting 6
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -886,7 +890,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     Length: 50,
                     PublishedMeetings: true,
                   };
-                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                  dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
                 } else if (checkFlag === 7) {
                   // Create Group Meeting 7
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -894,7 +898,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     MeetingID: Number(data.MeetingID),
                     GroupID: Number(ViewGroupID),
                   };
-                  dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+                  dispatch(setMeetingByGroupIdApi(navigate, t, Data));
                 } else if (checkFlag === 8) {
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
                   let Data = {
@@ -907,7 +911,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     Length: 50,
                     PublishedMeetings: true,
                   };
-                  dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                  dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
                 }
               }
 
@@ -1456,7 +1460,7 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                     MeetingID: Number(data.MeetingID),
                     CommitteeID: Number(ViewCommitteeID),
                   };
-                  dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+                  dispatch(setMeetingbyCommitteeIdApi(navigate, t, Data));
                 } else if (checkFlag === 6) {
                   // Update Committee Meeting 6
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -1471,7 +1475,7 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                     Length: 50,
                     PublishedMeetings: true,
                   };
-                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                  dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
                 } else if (checkFlag === 7) {
                   // Create Group Meeting 7
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -1479,7 +1483,7 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                     MeetingID: Number(data.MeetingID),
                     GroupID: Number(ViewGroupID),
                   };
-                  dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+                  dispatch(setMeetingByGroupIdApi(navigate, t, Data));
                 } else if (checkFlag === 8) {
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
                   let Data = {
@@ -1492,7 +1496,7 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                     Length: 50,
                     PublishedMeetings: true,
                   };
-                  dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                  dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
                 }
                 // await dispatch(meetingLoaderDashboard(false));
               }
@@ -1515,257 +1519,6 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
       })
       .catch((error) => {
         dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
-      });
-  };
-};
-
-const addUpdateAdvanceMeetingAgenda_init = () => {
-  return {
-    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_INIT,
-  };
-};
-const addUpdateAdvanceMeetingAgenda_success = (response, message) => {
-  return {
-    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-const addUpdateAdvanceMeetingAgenda_fail = (message) => {
-  return {
-    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_FAIL,
-    message: message,
-  };
-};
-const AddUpdateAdvanceMeetingAgenda = (
-  Data,
-  navigate,
-  t,
-  currentMeeting,
-  flag,
-  publishMeetingData,
-  setEditorRole,
-  setAdvanceMeetingModalID,
-  setDataroomMapFolderId,
-  setSceduleMeeting,
-  setPublishState,
-  setCalendarViewModal,
-  setMeetingMaterial,
-  setAgenda
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let getMeetingData = {
-    MeetingID: currentMeeting,
-  };
-  return (dispatch) => {
-    dispatch(addUpdateAdvanceMeetingAgenda_init());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", addUpdateAdvanceMeetingAgenda.RequestMethod);
-    axiosInstance
-      .post(meetingApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            AddUpdateAdvanceMeetingAgenda(
-              Data,
-              navigate,
-              t,
-              currentMeeting,
-              flag,
-              publishMeetingData,
-              setEditorRole,
-              setAdvanceMeetingModalID,
-              setDataroomMapFolderId,
-              setSceduleMeeting,
-              setPublishState,
-              setCalendarViewModal,
-              setMeetingMaterial,
-              setAgenda
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_success(
-                  response.data.responseResult,
-                  t("Record-saved")
-                )
-              );
-              const saveDocumentsData = Data;
-              const agendaList = response.data.responseResult.agendaIds;
-
-              // Function to replace IDs in the saveDocumentsData
-              function replaceIDs(documents) {
-                documents.forEach((doc) => {
-                  const mainMatch = agendaList.find(
-                    (item) => item.frontendid === doc.ID
-                  );
-                  if (mainMatch) {
-                    doc.ID = mainMatch.databaseID;
-                  }
-                  doc.SubAgenda.forEach((subAgenda) => {
-                    const subMatch = agendaList.find(
-                      (item) => item.frontendid === subAgenda.SubAgendaID
-                    );
-                    if (subMatch) {
-                      subAgenda.SubAgendaID = subMatch.databaseID;
-                    }
-                  });
-                });
-              }
-
-              // Replace IDs in the main AgendaList
-              replaceIDs(saveDocumentsData.AgendaList);
-
-              const newUpdateFileList = {
-                MeetingID: saveDocumentsData.MeetingID,
-                UpdateFileList: [],
-              };
-
-              saveDocumentsData.AgendaList.forEach((agendas) => {
-                const agendaID = agendas.ID;
-                const subAgendaID =
-                  agendas.SubAgenda.length > 0
-                    ? agendas.SubAgenda[0].SubAgendaID
-                    : null;
-
-                const agendaFiles = agendas.Files.map((file) => {
-                  return { PK_FileID: parseInt(file.OriginalAttachmentName) };
-                });
-
-                const subAgendaFiles =
-                  agendas.SubAgenda.length > 0
-                    ? agendas.SubAgenda[0].Subfiles.map((file) => {
-                        return {
-                          PK_FileID: parseInt(file.OriginalAttachmentName),
-                        };
-                      })
-                    : [];
-
-                if (agendaFiles.length > 0) {
-                  newUpdateFileList.UpdateFileList.push({
-                    AgendaID: agendaID,
-                    FileIds: agendaFiles,
-                  });
-                }
-
-                if (subAgendaID && subAgendaFiles.length > 0) {
-                  newUpdateFileList.UpdateFileList.push({
-                    AgendaID: subAgendaID,
-                    FileIds: subAgendaFiles,
-                  });
-                }
-              });
-
-              console.log(
-                "saveDocumentsData newUpdateFileList ",
-                newUpdateFileList
-              );
-              await dispatch(
-                SaveMeetingDocuments(newUpdateFileList, navigate, t)
-              );
-              if (flag === 1) {
-                await dispatch(
-                  GetAdvanceMeetingAgendabyMeetingID(
-                    getMeetingData,
-                    navigate,
-                    t
-                  )
-                );
-                setMeetingMaterial(true);
-                setAgenda(false);
-                dispatch(meetingDetailsGlobalFlag(false));
-                dispatch(organizersGlobalFlag(false));
-                dispatch(agendaContributorsGlobalFlag(false));
-                dispatch(participantsGlobalFlag(false));
-                dispatch(agendaGlobalFlag(false));
-                dispatch(meetingMaterialGlobalFlag(true));
-                dispatch(minutesGlobalFlag(false));
-                dispatch(proposedMeetingDatesGlobalFlag(false));
-                dispatch(actionsGlobalFlag(false));
-                dispatch(pollsGlobalFlag(false));
-                dispatch(attendanceGlobalFlag(false));
-                dispatch(uploadGlobalFlag(false));
-              } else if (flag === 2) {
-                console.log("end meeting chaek");
-                dispatch(
-                  UpdateOrganizersMeeting(
-                    false,
-                    navigate,
-                    t,
-                    5,
-                    publishMeetingData,
-                    setEditorRole,
-                    setAdvanceMeetingModalID,
-                    setDataroomMapFolderId,
-                    setSceduleMeeting,
-                    setPublishState,
-                    setCalendarViewModal
-                  )
-                );
-                setSceduleMeeting(false);
-                setMeetingMaterial(false);
-                setAgenda(false);
-                dispatch(meetingDetailsGlobalFlag(false));
-                dispatch(organizersGlobalFlag(false));
-                dispatch(agendaContributorsGlobalFlag(false));
-                dispatch(participantsGlobalFlag(false));
-                dispatch(agendaGlobalFlag(false));
-                dispatch(meetingMaterialGlobalFlag(false));
-                dispatch(minutesGlobalFlag(false));
-                dispatch(proposedMeetingDatesGlobalFlag(false));
-                dispatch(actionsGlobalFlag(false));
-                dispatch(pollsGlobalFlag(false));
-                dispatch(attendanceGlobalFlag(false));
-                dispatch(uploadGlobalFlag(false));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_fail(t("No-records-found"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
-              );
-            } else {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
-              );
-            }
-          } else {
-            dispatch(
-              addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
-            );
-          }
-        } else {
-          dispatch(
-            addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
-          );
-        }
-      })
-      .catch((response) => {
-        dispatch(addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")));
       });
   };
 };
@@ -2585,14 +2338,12 @@ export {
   CreateUpdateMeetingDataRoomMap,
   SaveFilesAgendaApi,
   UploadDocumentsAgendaApi,
-  AddUpdateAdvanceMeetingAgenda,
   GetCurrentAgendaDetails,
   AgendaVotingStatusUpdate,
   getAgendaAndVotingInfo_success,
   getAgendaVotingDetails_success,
   saveFiles_success, //null emptystring
   saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
   uploadDocument_success,
   getAllVotingResultDisplay_success,
   getAdvanceMeetingAgendabyMeetingID_fail,

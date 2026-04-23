@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 import {
   dataRoomApi,
   getCommitteesApi,
+  meetingApi,
 } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -22,11 +23,14 @@ import {
   reteriveCommitteeDocumentsRM,
   ValidateEncryptedStringViewCommitteeListLinkRM,
   ValidateEncryptedStringViewCommitteeDetailLinkRM,
+  setMeetingbyCommitteeIDRM,
+  getMeetingbyCommitteeIDRM,
 } from "../../commen/apis/Api_config";
 import { GetAllUserChats } from "./Talk_action";
 import { isFunction } from "../../commen/functions/utils";
 import { AccessDeniedPolls } from "./Polls_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { setCreateEditTab } from "./ModalStates_actions";
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -59,7 +63,7 @@ const uploadDocumentsCommitteesApi = (
   data,
   folderID,
   // newFolder,
-  newfile
+  newfile,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
@@ -82,8 +86,8 @@ const uploadDocumentsCommitteesApi = (
               data,
               folderID,
               // newFolder,
-              newfile
-            )
+              newfile,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -91,7 +95,7 @@ const uploadDocumentsCommitteesApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase(),
                 )
             ) {
               newfile.push({
@@ -106,13 +110,13 @@ const uploadDocumentsCommitteesApi = (
               });
 
               dispatch(
-                uploadDocument_success(response.data.responseResult, "")
+                uploadDocument_success(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(uploadDocument_fail(t("Failed-to-update-document")));
@@ -120,7 +124,7 @@ const uploadDocumentsCommitteesApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(uploadDocument_fail(t("Something-went-wrong")));
@@ -181,7 +185,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            saveFilesCommitteesApi(navigate, t, data, folderID, newFolder)
+            saveFilesCommitteesApi(navigate, t, data, folderID, newFolder),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -189,7 +193,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase(),
                 )
             ) {
               try {
@@ -206,21 +210,21 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
               } catch (error) {
                 console.log(
                   error,
-                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds"
+                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds",
                 );
               }
 
               await dispatch(
                 saveFiles_success(
                   response.data.responseResult,
-                  t("File-successfully-uploaded")
-                )
+                  t("File-successfully-uploaded"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase(),
                 )
             ) {
               dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
@@ -228,7 +232,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase(),
                 )
             ) {
               dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -297,20 +301,20 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getallcommitteesbyuserid_success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase(),
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(""));
@@ -318,7 +322,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase(),
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(""));
@@ -326,7 +330,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase(),
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(""));
@@ -334,7 +338,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase(),
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(""));
@@ -342,7 +346,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_06".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_06".toLowerCase(),
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(t("Something-went-wrong")));
@@ -411,17 +415,20 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getArcheivedCommittees_success(response.data.responseResult, "")
+                getArcheivedCommittees_success(
+                  response.data.responseResult,
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase(),
                 )
             ) {
               dispatch(getArcheivedCommittees_fail(""));
@@ -429,7 +436,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase(),
                 )
             ) {
               dispatch(getArcheivedCommittees_fail(""));
@@ -437,7 +444,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase(),
                 )
             ) {
               dispatch(getArcheivedCommittees_fail(""));
@@ -445,7 +452,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase(),
                 )
             ) {
               dispatch(getArcheivedCommittees_fail(""));
@@ -453,7 +460,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_SearchCommittees_06".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_06".toLowerCase(),
                 )
             ) {
               dispatch(getArcheivedCommittees_fail(t("Something-went-wrong")));
@@ -506,7 +513,7 @@ const getCommitteesbyCommitteeId = (
   setUpdateComponentpage,
   CommitteeStatusID,
   setArchivedCommittee,
-  flag
+  flag,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -520,7 +527,7 @@ const getCommitteesbyCommitteeId = (
       .then(async (response) => {
         console.log(
           "getAllCommitteesByUserIdActionsgetAllCommitteesByUserIdActions",
-          response
+          response,
         );
 
         if (response.data.responseCode === 417) {
@@ -534,8 +541,8 @@ const getCommitteesbyCommitteeId = (
               setUpdateComponentpage,
               CommitteeStatusID,
               setArchivedCommittee,
-              flag
-            )
+              flag,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -543,21 +550,21 @@ const getCommitteesbyCommitteeId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getCommitteByCommitteeID_Success(
                   response.data.responseResult.committee,
-                  ""
-                )
+                  "",
+                ),
               );
               try {
                 let newData = {
                   CommitteeID: Number(Data.CommitteeID),
                 };
                 await dispatch(
-                  reteriveCommitteeDocumentsApi(navigate, t, newData)
+                  reteriveCommitteeDocumentsApi(navigate, t, newData),
                 );
                 if (CommitteeStatusID === 1) {
                   setViewGroupPage(true);
@@ -589,7 +596,7 @@ const getCommitteesbyCommitteeId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_02".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteByCommitteeID_Fail(""));
@@ -597,7 +604,7 @@ const getCommitteesbyCommitteeId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_03".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteByCommitteeID_Fail(""));
@@ -605,7 +612,7 @@ const getCommitteesbyCommitteeId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_04".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_04".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteByCommitteeID_Fail(""));
@@ -613,7 +620,7 @@ const getCommitteesbyCommitteeId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_05".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_05".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteByCommitteeID_Fail(""));
@@ -621,7 +628,7 @@ const getCommitteesbyCommitteeId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_06".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_06".toLowerCase(),
                 )
             ) {
               dispatch(AccessDeniedPolls(true));
@@ -686,22 +693,22 @@ const createcommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_CreateNewcommittee_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_CreateNewcommittee_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 createcommittee_success(
                   response.data.responseResult,
                   response.data.responseResult.committeeID,
-                  ""
-                )
+                  "",
+                ),
               );
               let newData = {
                 CommitteeID: response.data.responseResult.committeeID,
                 CommitteeTitle: Data.CommitteeDetails.CommitteesTitle,
                 IsUpdateFlow: false,
                 CommitteeMembers: Data.CommitteeMembers.map(
-                  (data) => data.FK_UID
+                  (data) => data.FK_UID,
                 ),
               };
               dispatch(createUpdateCommitteeApi(navigate, t, newData));
@@ -710,7 +717,7 @@ const createcommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_CreateNewcommittee_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_CreateNewcommittee_02".toLowerCase(),
                 )
             ) {
               dispatch(createcommittee_fail(""));
@@ -718,7 +725,7 @@ const createcommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_CreateNewcommittee_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_CreateNewcommittee_03".toLowerCase(),
                 )
             ) {
               dispatch(createcommittee_fail(""));
@@ -726,7 +733,7 @@ const createcommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_CreateNewcommittee_04".toLowerCase()
+                  "Committees_CommitteeServiceManager_CreateNewcommittee_04".toLowerCase(),
                 )
             ) {
               dispatch(createcommittee_fail(""));
@@ -734,7 +741,7 @@ const createcommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_CreateNewcommittee_05".toLowerCase()
+                  "Committees_CommitteeServiceManager_CreateNewcommittee_05".toLowerCase(),
                 )
             ) {
               dispatch(createcommittee_fail(""));
@@ -742,7 +749,7 @@ const createcommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_CreateNewcommittee_06".toLowerCase()
+                  "Committees_CommitteeServiceManager_CreateNewcommittee_06".toLowerCase(),
                 )
             ) {
               dispatch(createcommittee_fail(t("Something-went-wrong")));
@@ -801,20 +808,20 @@ const getCommitteeTypes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getCommitteeTypes_Success(
                   response.data.responseResult.committeeTypes,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_02".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteeTypes_Fail(""));
@@ -822,7 +829,7 @@ const getCommitteeTypes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteType_03".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteeTypes_Fail(""));
@@ -869,7 +876,7 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      getallOrganizationCommitteMemberRole.RequestMethod
+      getallOrganizationCommitteMemberRole.RequestMethod,
     );
     axiosInstance
       .post(getCommitteesApi, form)
@@ -884,20 +891,20 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getCommitteeMembersRole_Success(
                   response.data.responseResult.committeeMemberRoles,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_02".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteeMembersRole_Fail(""));
@@ -905,7 +912,7 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetallOrganizationCommitteMemberRole_03".toLowerCase(),
                 )
             ) {
               dispatch(getCommitteeMembersRole_Fail(""));
@@ -954,7 +961,7 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      updateCommitteeStatusRequestMethod.RequestMethod
+      updateCommitteeStatusRequestMethod.RequestMethod,
     );
     axiosInstance
       .post(getCommitteesApi, form)
@@ -969,21 +976,21 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                updateCommitteeStatus_Success(response.data.responseResult, "")
+                updateCommitteeStatus_Success(response.data.responseResult, ""),
               );
               setIsActive(false);
               dispatch(
-                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+                getAllCommitteesByUserIdActions(navigate, t, currentPage),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_02".toLowerCase(),
                 )
             ) {
               dispatch(updateCommitteeStatus_Fail(t("No-record-updated")));
@@ -1043,21 +1050,21 @@ const updateCommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommittee_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommittee_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updateCommittee_Success(
                   response.data.responseResult,
-                  t("Committee-update")
-                )
+                  t("Committee-update"),
+                ),
               );
               let newData = {
                 CommitteeID: Data.CommitteeDetails.PK_CMID,
                 CommitteeTitle: Data.CommitteeDetails.CommitteesTitle,
                 IsUpdateFlow: true,
                 CommitteeMembers: Data.CommitteeMembers.map(
-                  (data) => data.FK_UID
+                  (data) => data.FK_UID,
                 ),
               };
               dispatch(createUpdateCommitteeApi(navigate, t, newData));
@@ -1069,7 +1076,7 @@ const updateCommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommittee_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommittee_02".toLowerCase(),
                 )
             ) {
               dispatch(updateCommittee_Fail(t("No-committee-update")));
@@ -1077,7 +1084,7 @@ const updateCommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommittee_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommittee_03".toLowerCase(),
                 )
             ) {
               dispatch(updateCommittee_Fail(t("No-committee-update")));
@@ -1085,7 +1092,7 @@ const updateCommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommittee_04".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommittee_04".toLowerCase(),
                 )
             ) {
               dispatch(updateCommittee_Fail(t("No-committee-update")));
@@ -1093,7 +1100,7 @@ const updateCommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommittee_05".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommittee_05".toLowerCase(),
                 )
             ) {
               dispatch(updateCommittee_Fail(t("No-committee-update")));
@@ -1101,7 +1108,7 @@ const updateCommittee = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommittee_06".toLowerCase()
+                  "Committees_CommitteeServiceManager_UpdateCommittee_06".toLowerCase(),
                 )
             ) {
               dispatch(updateCommittee_Fail(t("No-committee-update")));
@@ -1162,7 +1169,7 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      CommitteeAndGroupMappingRequestMethod.RequestMethod
+      CommitteeAndGroupMappingRequestMethod.RequestMethod,
     );
     axiosInstance
       .post(getCommitteesApi, form)
@@ -1179,7 +1186,7 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
             ) {
               await dispatch(assignGroup_Success(t("Record-save")));
               dispatch(
-                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+                getAllCommitteesByUserIdActions(navigate, t, currentPage),
               );
               setMarketingTeam(false);
             } else if (
@@ -1237,7 +1244,7 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
-      CreateUpdateCommitteeDatarRoomRM.RequestMethod
+      CreateUpdateCommitteeDatarRoomRM.RequestMethod,
     );
     axiosInstance
       .post(dataRoomApi, form)
@@ -1257,8 +1264,8 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
             dispatch(
               createUpdateCommitteeDocuments_success(
                 response.data.responseResult.folderID,
-                ""
-              )
+                "",
+              ),
             );
             localStorage.setItem("CommitteeID", data.CommitteeID);
           } else if (
@@ -1267,8 +1274,8 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
           ) {
             dispatch(
               createUpdateCommitteeDocuments_fail(
-                t("Failed-to-save-or-map-folder")
-              )
+                t("Failed-to-save-or-map-folder"),
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1277,15 +1284,15 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
             dispatch(
               createUpdateCommitteeDocuments_success(
                 response.data.responseResult.folderID,
-                ""
-              )
+                "",
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomServiceManager_CreateUpdateCommiteeDataRoomMap_04".toLowerCase()
           ) {
             dispatch(
-              createUpdateCommitteeDocuments_fail(t("Unable-to-update-folder"))
+              createUpdateCommitteeDocuments_fail(t("Unable-to-update-folder")),
             );
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1294,8 +1301,8 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
             dispatch(
               createUpdateCommitteeDocuments_success(
                 response.data.responseResult.folderID,
-                ""
-              )
+                "",
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1303,30 +1310,30 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
           ) {
             dispatch(
               createUpdateCommitteeDocuments_fail(
-                t("Failed-to-created-new-mapping")
-              )
+                t("Failed-to-created-new-mapping"),
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomServiceManager_CreateUpdateCommiteeDataRoomMap_07".toLowerCase()
           ) {
             dispatch(
-              createUpdateCommitteeDocuments_fail(t("Something-went-wrong"))
+              createUpdateCommitteeDocuments_fail(t("Something-went-wrong")),
             );
           } else {
             dispatch(
-              createUpdateCommitteeDocuments_fail(t("Something-went-wrong"))
+              createUpdateCommitteeDocuments_fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            createUpdateCommitteeDocuments_fail(t("Something-went-wrong"))
+            createUpdateCommitteeDocuments_fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          createUpdateCommitteeDocuments_fail(t("Something-went-wrong"))
+          createUpdateCommitteeDocuments_fail(t("Something-went-wrong")),
         );
       });
   };
@@ -1380,14 +1387,14 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
             dispatch(
               saveCommitteeDocuments_success(
                 response.data.responseResult,
-                t("Update-successfully")
-              )
+                t("Update-successfully"),
+              ),
             );
             dispatch(createUpdateCommitteeDocuments_fail(""));
             if (typeof setCreategrouppage === "function") {
               await setCreategrouppage(false);
               await dispatch(
-                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+                getAllCommitteesByUserIdActions(navigate, t, currentPage),
               );
             }
             if (typeof setCreategrouppage === "number") {
@@ -1463,8 +1470,8 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
             dispatch(
               reteriveCommitteeDocuments_success(
                 response.data.responseResult,
-                ""
-              )
+                "",
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1476,11 +1483,11 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
             "DataRoom_DataRoomManager_ReteriveCommitteeDocuments_03".toLowerCase()
           ) {
             dispatch(
-              reteriveCommitteeDocuments_fail(t("Something-went-wrong"))
+              reteriveCommitteeDocuments_fail(t("Something-went-wrong")),
             );
           } else {
             dispatch(
-              reteriveCommitteeDocuments_fail(t("Something-went-wrong"))
+              reteriveCommitteeDocuments_fail(t("Something-went-wrong")),
             );
           }
         } else {
@@ -1538,7 +1545,7 @@ const validateEncryptedStringViewCommitteeListLink_Init = () => ({
 
 const validateEncryptedStringViewCommitteeListLink_Success = (
   response,
-  message
+  message,
 ) => ({
   type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_SUCCESS,
   response,
@@ -1552,7 +1559,7 @@ const validateEncryptedStringViewCommitteeListLink_Fail = (message) => ({
 const validateEncryptedStringViewCommitteeListLinkApi = (
   encryptedString,
   navigate,
-  t
+  t,
 ) => {
   return async (dispatch) => {
     try {
@@ -1563,7 +1570,7 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
       let form = new FormData();
       form.append(
         "RequestMethod",
-        ValidateEncryptedStringViewCommitteeListLinkRM.RequestMethod
+        ValidateEncryptedStringViewCommitteeListLinkRM.RequestMethod,
       );
       form.append("RequestData", JSON.stringify(data));
 
@@ -1575,8 +1582,8 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
           validateEncryptedStringViewCommitteeListLinkApi(
             encryptedString,
             navigate,
-            t
-          )
+            t,
+          ),
         );
       }
 
@@ -1588,14 +1595,14 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
 
           if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_01".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_01".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeListLink_Success(
                 responseResult.data,
-                t("Successfully")
-              )
+                t("Successfully"),
+              ),
             );
             return {
               response: responseResult.data,
@@ -1604,13 +1611,13 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
             };
           } else if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_02".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_02".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeListLink_Fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1618,13 +1625,13 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
             };
           } else if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_03".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_03".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeListLink_Fail(
-                t("Invalid-request-data")
-              )
+                t("Invalid-request-data"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1632,13 +1639,13 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
             };
           } else if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_04".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_04".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeListLink_Fail(
-                t("Someting-went-wrong")
-              )
+                t("Someting-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1647,8 +1654,8 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
           } else {
             dispatch(
               validateEncryptedStringViewCommitteeListLink_Fail(
-                t("Unsuccessful")
-              )
+                t("Unsuccessful"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1658,8 +1665,8 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
         } else {
           dispatch(
             validateEncryptedStringViewCommitteeListLink_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
           return {
             isExecuted: false,
@@ -1669,8 +1676,8 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
       } else {
         dispatch(
           validateEncryptedStringViewCommitteeListLink_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
         return {
           isExecuted: false,
@@ -1680,8 +1687,8 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
     } catch (error) {
       dispatch(
         validateEncryptedStringViewCommitteeListLink_Fail(
-          t("Something-went-wrong")
-        )
+          t("Something-went-wrong"),
+        ),
       );
       return {
         isExecuted: false,
@@ -1698,7 +1705,7 @@ const validateEncryptedStringViewCommitteeDetailLink_Init = () => ({
 
 const validateEncryptedStringViewCommitteeDetailLink_Success = (
   response,
-  message
+  message,
 ) => ({
   type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_SUCCESS,
   response,
@@ -1712,7 +1719,7 @@ const validateEncryptedStringViewCommitteeDetailLink_Fail = (message) => ({
 const validateEncryptedStringViewCommitteeDetailLinkApi = (
   encryptedString,
   navigate,
-  t
+  t,
 ) => {
   return async (dispatch) => {
     try {
@@ -1724,7 +1731,7 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
       let form = new FormData();
       form.append(
         "RequestMethod",
-        ValidateEncryptedStringViewCommitteeDetailLinkRM.RequestMethod
+        ValidateEncryptedStringViewCommitteeDetailLinkRM.RequestMethod,
       );
       form.append("RequestData", JSON.stringify(data));
 
@@ -1736,8 +1743,8 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
           validateEncryptedStringViewCommitteeDetailLinkApi(
             encryptedString,
             navigate,
-            t
-          )
+            t,
+          ),
         );
       }
 
@@ -1749,14 +1756,14 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
 
           if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_01".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_01".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeDetailLink_Success(
                 responseResult.data,
-                t("Successfully")
-              )
+                t("Successfully"),
+              ),
             );
             return {
               response: responseResult.data,
@@ -1765,7 +1772,7 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
             };
           } else if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_02".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_02".toLowerCase(),
             )
           ) {
             dispatch(validateEncryptedStringViewCommitteeDetailLink_Fail(""));
@@ -1775,13 +1782,13 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
             };
           } else if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_03".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_03".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeDetailLink_Fail(
-                t("Invalid-request-data")
-              )
+                t("Invalid-request-data"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1789,13 +1796,13 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
             };
           } else if (
             message.includes(
-              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_04".toLowerCase()
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_04".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewCommitteeDetailLink_Fail(
-                t("Someting-went-wrong")
-              )
+                t("Someting-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1804,8 +1811,8 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
           } else {
             dispatch(
               validateEncryptedStringViewCommitteeDetailLink_Fail(
-                t("Someting-went-wrong")
-              )
+                t("Someting-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1815,8 +1822,8 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
         } else {
           dispatch(
             validateEncryptedStringViewCommitteeDetailLink_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
           return {
             isExecuted: false,
@@ -1826,8 +1833,8 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
       } else {
         dispatch(
           validateEncryptedStringViewCommitteeDetailLink_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
         return {
           isExecuted: false,
@@ -1837,8 +1844,8 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
     } catch (error) {
       dispatch(
         validateEncryptedStringViewCommitteeDetailLink_Fail(
-          t("Something-went-wrong")
-        )
+          t("Something-went-wrong"),
+        ),
       );
       return {
         isExecuted: false,
@@ -1848,7 +1855,236 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
   };
 };
 
+// Set Meeting by Group ID
+
+const getMeetingByCommitteeID_init = () => {
+  return {
+    type: actions.GETMEETINGBYCOMMITTEEID_INIT,
+  };
+};
+const getMeetingByCommitteeID_success = (response, message) => {
+  return {
+    type: actions.GETMEETINGBYCOMMITTEEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getMeetingByCommitteeID_fail = (message) => {
+  return {
+    type: actions.GETMEETINGBYCOMMITTEEID_FAIL,
+    message: message,
+  };
+};
+const getMeetingByCommitteeIdApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMeetingByCommitteeID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getMeetingbyCommitteeIDRM.RequestMethod);
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_01".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                getMeetingByCommitteeID_success(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_02".toLowerCase(),
+                )
+            ) {
+              dispatch(getMeetingByCommitteeID_fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_03".toLowerCase(),
+                )
+            ) {
+              dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+            }
+          } else {
+          }
+        } else {
+          dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// set Meeting by Committee ID
+const setMeetingbyCommitteeID_init = () => {
+  return {
+    type: actions.SETMEETINGBYCOMMITTEEID_INIT,
+  };
+};
+const setMeetingbyCommitteeID_success = (response, message) => {
+  return {
+    type: actions.SETMEETINGBYCOMMITTEEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setMeetingbyCommitteeID_fail = (message) => {
+  return {
+    type: actions.SETMEETINGBYCOMMITTEEID_FAIL,
+    message: message,
+  };
+};
+const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
+  return (dispatch) => {
+    dispatch(setMeetingbyCommitteeID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", setMeetingbyCommitteeIDRM.RequestMethod);
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            setMeetingbyCommitteeIdApi(navigate, t, Data, routePath, object),
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetCommitteeMeetings_01".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                setMeetingbyCommitteeID_success(
+                  response.data.responseResult,
+                  t("Record-save"),
+                ),
+              );
+              switch (routePath) {
+                case "fromCommitteeAdvanceMeeting":
+                  dispatch(setCreateEditTab("organizers"));
+                  break;
+
+                default:
+                  dispatch(
+                    getMeetingByCommitteeIdApi(navigate, t, {
+                      CommitteeID: Number(
+                        localStorage.getItem("ViewCommitteeID"),
+                      ),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(localStorage.getItem("userID")),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 1
+                          ? true
+                          : false,
+                      ProposedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 2
+                          ? true
+                          : false,
+                    }),
+                  );
+                  break;
+              }
+              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              // let currentUserId = localStorage.getItem("userID");
+
+              // let searchData = {
+              //   CommitteeID: Number(ViewCommitteeID),
+              //   Date: "",
+              //   Title: "",
+              //   HostName: "",
+              //   UserID: Number(currentUserId),
+              //   PageNumber: 1,
+              //   Length: 30,
+              //   PublishedMeetings:
+              //     localStorage.getItem("MeetingCurrentView") &&
+              //     Number(localStorage.getItem("MeetingCurrentView")) === 1
+              //       ? true
+              //       : false,
+              //   ProposedMeetings:
+              //     localStorage.getItem("MeetingCurrentView") &&
+              //     Number(localStorage.getItem("MeetingCurrentView")) === 2
+              //       ? true
+              //       : false,
+              // };
+              // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetCommitteeMeetings_02".toLowerCase(),
+                )
+            ) {
+              dispatch(setMeetingbyCommitteeID_fail(t("No-record-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetCommitteeMeetings_03".toLowerCase(),
+                )
+            ) {
+              dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// View Committee Details
+export const viewCommitteeDetails = (data) => {
+  return {
+    type: actions.VIEW_COMMITTEE_DETAILS,
+    payload: data,
+  };
+};
+
+export const resetViewCommitteeDetails = () => {
+  return {
+    type: actions.RESET_VIEW_COMMITTEE_DETAILS,
+  };
+};
+
 export {
+  setMeetingbyCommitteeIdApi,
+  getMeetingByCommitteeIdApi,
   validateEncryptedStringViewCommitteeDetailLinkApi,
   validateEncryptedStringViewCommitteeListLinkApi,
   removeCommitteeMemberMQTT,

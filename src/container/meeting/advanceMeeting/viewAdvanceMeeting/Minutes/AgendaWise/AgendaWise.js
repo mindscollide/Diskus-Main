@@ -740,9 +740,9 @@ const AgendaWise = ({
     dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-        Data2,
         navigate,
         t,
+        Data2,
         advanceMeetingModalID,
         false,
         false,

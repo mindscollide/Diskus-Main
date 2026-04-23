@@ -36,7 +36,7 @@ const ResendMinuteReviewModal = ({
 }) => {
   console.log(
     editMinuteData,
-    "minuteDateminuteDateminuteDateminuteDateminuteDate"
+    "minuteDateminuteDateminuteDateminuteDateminuteDate",
   );
   const { t } = useTranslation(); // Translation hook
 
@@ -84,8 +84,27 @@ const ResendMinuteReviewModal = ({
       dispatch(
         UpdateMinutesGeneralApiFunc(
           navigate,
-          updateMinuteData,
           t,
+          updateMinuteData,
+          "resendMinutesReviewModal",
+          {
+            flag: true,
+            resendReviewData,
+            setEditMinute,
+            setConfirmationEdit,
+            setResendMinuteForReview,
+            setShowRevisionHistory,
+            isAgenda,
+            fileUploadFlag: false,
+          },
+        ),
+      );
+    } else {
+      dispatch(
+        UpdateAgendaWiseMinutesApiFunc(
+          navigate,
+          t,
+          updateMinuteData,
           true,
           resendReviewData,
           setEditMinute,
@@ -93,31 +112,9 @@ const ResendMinuteReviewModal = ({
           setResendMinuteForReview,
           setShowRevisionHistory,
           isAgenda,
-          false
-        )
-      );
-    } else {
-      dispatch(
-        UpdateAgendaWiseMinutesApiFunc(
-          navigate,
-          updateMinuteData,
-          t,
-          true,
-          resendReviewData,
-          setEditMinute,
-          setConfirmationEdit,
-          setResendMinuteForReview,
-          setShowRevisionHistory,
-          isAgenda
-        )
+        ),
       );
     }
-
-    console.log(
-      "resendForReviewresendForReview",
-      updateMinuteData,
-      resendReviewData
-    );
 
     setResendMinuteForReview(false);
   };
@@ -148,7 +145,7 @@ const ResendMinuteReviewModal = ({
           <div className="d-flex justify-content-center align-items-center">
             <p className={styles["delete-comment-message"]}>
               {t(
-                "Deadline will be revised for all minutes. Do you want to proceed?"
+                "Deadline will be revised for all minutes. Do you want to proceed?",
               )}
               {/* Translation for delete comment message */}
             </p>

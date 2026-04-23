@@ -16,6 +16,7 @@ import {
   viewGroupPageFlag,
 } from "../../store/actions/Groups_actions";
 import { MinutesWorkFlowActorStatusNotificationAPI } from "../../store/actions/Minutes_action";
+import { resetCreateEditTabs } from "../../store/actions/ModalStates_actions";
 import {
   actionsGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -2392,19 +2393,13 @@ const handleMeetingCase = (
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   }
   console.log("Check Route Meeting");
+  dispatch(resetCreateEditTabs())
 
   setViewAdvanceMeetingModal(false);
   dispatch(viewMeetingFlag(false));
-  dispatch(meetingDetailsGlobalFlag(false));
-  dispatch(organizersGlobalFlag(false));
-  dispatch(agendaContributorsGlobalFlag(false));
-  dispatch(participantsGlobalFlag(false));
-  dispatch(agendaGlobalFlag(false));
-  dispatch(meetingMaterialGlobalFlag(false));
-  dispatch(minutesGlobalFlag(false));
+
   dispatch(proposedMeetingDatesGlobalFlag(false));
-  dispatch(actionsGlobalFlag(false));
-  dispatch(pollsGlobalFlag(false));
+
   dispatch(viewAdvanceMeetingPublishPageFlag(false));
 
   dispatch(attendanceGlobalFlag(false));
@@ -2474,4 +2469,16 @@ export const checklistStatusErrorMap = {
 
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_50:
     "Something-went-wrong",
+};
+
+// ─── Response Message Switch Helper ─────────────────────────────────────────
+// switchOnMessage replaces if-else chains for responseMessage code matching.
+// It finds the first key that is included in responseMessage (case-insensitive)
+// and calls its handler. Falls back to `default` if no match found.
+export const switchOnMessage = (responseMessage, cases) => {
+  const matchedKey = Object.keys(cases).find(
+    (key) => key !== "default" && responseMessage.includes(key.toLowerCase())
+  );
+  const handler = matchedKey ? cases[matchedKey] : cases.default;
+  if (handler) handler();
 };

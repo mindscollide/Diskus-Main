@@ -25,13 +25,28 @@ const ModalOrganizor = () => {
   const animatedComponents = makeAnimated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const getCommitteeByCommitteeID = useSelector(
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID,
+  );
+
+  const getGroupByGroupIdResponse = useSelector(
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse,
+  );
 
   const currentMeetingInfo = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
   );
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const [membersOrganizers, setMembersOrganizers] = useState([]);
@@ -46,29 +61,137 @@ const ModalOrganizor = () => {
   };
 
   const handleAddUsers = () => {
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
     let tem = [...membersOrganizers];
     let tem2 = [...organizersSave];
+    if (committeeInfo !== null) {
+      let committeeUsers = [...getCommitteeByCommitteeID?.committeMembers];
+      console.log({ committeeUsers, tem2, tem }, "committeeUsers");
+      if (committeeUsers.length > 0) {
+        committeeUsers.forEach((cUser, index) => {
+          let check2 = membersOrganizers.find(
+            (data, index) => data.UserID === cUser.pK_UID,
+          );
+          let check2Save = organizersSave.find(
+            (data, index) => data.UserID === cUser.pK_UID,
+          );
+          if (check2 === undefined && check2Save === undefined) {
+            let newUser = {
+              userName: cUser.userName,
+              userID: cUser.pK_UID,
+              displayPicture:
+                cUser.userProfilePicture.displayProfilePictureName,
+              email: cUser.emailAddress,
+              isPrimaryOrganizer: false,
+              isOrganizerNotified: false,
+              organizerTitle: "",
+              rsvp: false,
+              isDeletable: true,
+              disabledTitle: false,
+              disabledRSVP: true,
+              disabledNotification: true,
+              disabledSwitch: true,
+              NotificationMessage: "",
+              isEdit: false,
+              attendeeAvailability: 1,
+            };
+            let newUserSave = {
+              isPrimaryOrganizer: false,
+              isOrganizerNotified: false,
+              organizerTitle: "",
+              UserID: cUser.userID,
+            };
+            tem.push(newUser);
+            tem2.push(newUserSave);
+          }
+        });
+        const uniqueData = new Set(tem.map(JSON.stringify));
+
+        const uniqueDataSave = new Set(tem2.map(JSON.stringify));
+
+        // Convert the Set back to an array of objects
+        const result = Array.from(uniqueData).map(JSON.parse);
+        const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
+        setMembersOrganizers(result);
+        setOrganizersSave(resultSave);
+
+        setSelectedsearch([]);
+        return;
+      }
+    }
+    if (groupInfo !== null) {
+      let groupUsers = [...getGroupByGroupIdResponse?.groupMembers];
+      if (groupUsers.length > 0) {
+        groupUsers.forEach((gUser, index) => {
+          let check2 = membersOrganizers.find(
+            (data, index) => data.UserID === gUser.userID,
+          );
+          let check2Save = organizersSave.find(
+            (data, index) => data.UserID === gUser.userID,
+          );
+          if (check2 === undefined && check2Save === undefined) {
+            let newUser = {
+              userName: gUser.userName,
+              userID: gUser.userID,
+              displayPicture: gUser.profilePicture.displayProfilePictureName,
+              email: gUser.emailAddress,
+              isPrimaryOrganizer: false,
+              isOrganizerNotified: false,
+              organizerTitle: "",
+              rsvp: false,
+              isDeletable: true,
+              disabledTitle: false,
+              disabledRSVP: true,
+              disabledNotification: true,
+              disabledSwitch: true,
+              NotificationMessage: "",
+              isEdit: false,
+              attendeeAvailability: 1,
+            };
+            let newUserSave = {
+              isPrimaryOrganizer: false,
+              isOrganizerNotified: false,
+              organizerTitle: "",
+              UserID: gUser.userID,
+            };
+            tem.push(newUser);
+            tem2.push(newUserSave);
+          }
+        });
+        const uniqueData = new Set(tem.map(JSON.stringify));
+
+        const uniqueDataSave = new Set(tem2.map(JSON.stringify));
+
+        // Convert the Set back to an array of objects
+        const result = Array.from(uniqueData).map(JSON.parse);
+        const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
+        setMembersOrganizers(result);
+        setOrganizersSave(resultSave);
+        setSelectedsearch([]);
+        return;
+      }
+    }
+
+    let newOrganizersData =
+      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+
     if (Object.keys(selectedsearch).length > 0) {
       try {
         selectedsearch.forEach((seledtedData, index) => {
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+              (data, index) => data.groupID === seledtedData.value,
             );
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
                 groupUsers.forEach((gUser, index) => {
                   let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data, index) => data.UserID === gUser.userID,
                   );
                   let check2Save = organizersSave.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data, index) => data.UserID === gUser.userID,
                   );
-                  if (check2 !== undefined && check2Save !== undefined) {
-                  } else {
+                  if (check2 === undefined && check2Save === undefined) {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
@@ -102,20 +225,19 @@ const ModalOrganizor = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = newOrganizersData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data, index) => data.committeeID === seledtedData.value,
             );
             if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
                 committeesUsers.forEach((cUser, index) => {
                   let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data, index) => data.UserID === cUser.userID,
                   );
                   let check2Save = organizersSave.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data, index) => data.UserID === cUser.userID,
                   );
-                  if (check2 !== undefined && check2Save !== undefined) {
-                  } else {
+                  if (check2 === undefined && check2Save === undefined) {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
@@ -149,12 +271,12 @@ const ModalOrganizor = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = membersOrganizers.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data, index) => data.UserID === seledtedData.value,
             );
             if (check1 !== undefined) {
             } else {
               let check2 = newOrganizersData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data, index) => data.userID === seledtedData.value,
               );
               if (check2 !== undefined) {
                 let newUser = {
@@ -189,32 +311,35 @@ const ModalOrganizor = () => {
           } else {
           }
         });
+        const uniqueData = new Set(tem.map(JSON.stringify));
+
+        const uniqueDataSave = new Set(tem2.map(JSON.stringify));
+
+        // Convert the Set back to an array of objects
+        const result = Array.from(uniqueData).map(JSON.parse);
+        const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
+        setMembersOrganizers(result);
+        setOrganizersSave(resultSave);
+
+        setSelectedsearch([]);
       } catch {}
-
-      const uniqueData = new Set(tem.map(JSON.stringify));
-
-      const uniqueDataSave = new Set(tem2.map(JSON.stringify));
-
-      // Convert the Set back to an array of objects
-      const result = Array.from(uniqueData).map(JSON.parse);
-      const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
-      setMembersOrganizers(result);
-      setOrganizersSave(resultSave);
-      setSelectedsearch([]);
     } else {
       // setopen notionation work here
     }
   };
+
   const handleCrossIcon = () => {
     dispatch(showAddUserModal(false));
   };
 
   useEffect(() => {
-    let Data = {
-      MeetingID: currentMeetingInfo.meetingID,
-    };
-    dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
-  }, []);
+    if (committeeInfo === null && groupInfo === null) {
+      let Data = {
+        MeetingID: currentMeetingInfo.meetingID,
+      };
+      dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
+    }
+  }, [committeeInfo, groupInfo]);
 
   const [dropdowndata, setDropdowndata] = useState([]);
 
@@ -228,7 +353,7 @@ const ModalOrganizor = () => {
   };
 
   useEffect(() => {
-    dispatch(meetingOrganizers([]));
+    return () => dispatch(meetingOrganizers([]));
   }, []);
 
   useEffect(() => {
@@ -345,198 +470,100 @@ const ModalOrganizor = () => {
     }
   }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
 
-  // const onSearch = (name, id, type, item) => {
-  //   let newOrganizersData =
-  //     MeetingOrganizersReducer.AllUserCommitteesGroupsData;
-  //   let tem = [...membersOrganizers];
-  //   let tem2 = [...organizersSave];
-  //   try {
-  //     if (type === 1) {
-  //       let check1 = newOrganizersData.groups.find(
-  //         (data, index) => data.groupID === id
-  //       );
-  //       if (check1 !== undefined) {
-  //         let groupUsers = check1.groupUsers;
-  //         if (Object.keys(groupUsers).length > 0) {
-  //           groupUsers.forEach((gUser, index) => {
-  //             let check2 = membersOrganizers.find(
-  //               (data, index) => data.UserID === gUser.userID
-  //             );
-  //             let check2Save = organizersSave.find(
-  //               (data, index) => data.UserID === gUser.userID
-  //             );
-  //             if (check2 !== undefined && check2Save !== undefined) {
-  //             } else {
-  //               let newUser = {
-  //                 userName: gUser.userName,
-  //                 userID: gUser.userID,
-  //                 displayPicture:
-  //                   gUser.profilePicture.displayProfilePictureName,
-  //                 email: gUser.emailAddress,
-  //                 isPrimaryOrganizer: false,
-  //                 isOrganizerNotified: false,
-  //                 organizerTitle: "",
-  //                 rsvp: false,
-  //                 isDeletable: true,
-  //                 disabledTitle: false,
-  //                 disabledRSVP: true,
-  //                 disabledNotification: true,
-  //                 disabledSwitch: true,
-  //                 NotificationMessage: "",
-  //                 isEdit: false,
-  //                 attendeeAvailability: 1,
-  //               };
-  //               let newUserSave = {
-  //                 isPrimaryOrganizer: false,
-  //                 isOrganizerNotified: false,
-  //                 organizerTitle: "",
-  //                 UserID: gUser.userID,
-  //               };
-  //               tem.push(newUser);
-  //               tem2.push(newUserSave);
-  //             }
-  //           });
-  //         }
-  //       }
-  //     } else if (type === 2) {
-  //       let check1 = newOrganizersData.committees.find(
-  //         (data, index) => data.committeeID === id
-  //       );
-  //       if (check1 !== undefined) {
-  //         let committeesUsers = check1.committeeUsers;
-  //         if (Object.keys(committeesUsers).length > 0) {
-  //           committeesUsers.forEach((cUser, index) => {
-  //             let check2 = membersOrganizers.find(
-  //               (data, index) => data.UserID === cUser.userID
-  //             );
-  //             let check2Save = organizersSave.find(
-  //               (data, index) => data.UserID === cUser.userID
-  //             );
-  //             if (check2 !== undefined && check2Save !== undefined) {
-  //             } else {
-  //               let newUser = {
-  //                 userName: cUser.userName,
-  //                 userID: cUser.userID,
-  //                 displayPicture:
-  //                   cUser.profilePicture.displayProfilePictureName,
-  //                 email: cUser.emailAddress,
-  //                 isPrimaryOrganizer: false,
-  //                 isOrganizerNotified: false,
-  //                 organizerTitle: "",
-  //                 rsvp: false,
-  //                 isDeletable: true,
-  //                 disabledTitle: false,
-  //                 disabledRSVP: true,
-  //                 disabledNotification: true,
-  //                 disabledSwitch: true,
-  //                 NotificationMessage: "",
-  //                 isEdit: false,
-  //                 attendeeAvailability: 1,
-  //               };
-  //               let newUserSave = {
-  //                 isPrimaryOrganizer: false,
-  //                 isOrganizerNotified: false,
-  //                 organizerTitle: "",
-  //                 UserID: cUser.userID,
-  //               };
-  //               tem.push(newUser);
-  //               tem2.push(newUserSave);
-  //             }
-  //           });
-  //         }
-  //       }
-  //     } else if (type === 3) {
-  //       let check1 = membersOrganizers.find(
-  //         (data, index) => data.UserID === id
-  //       );
-  //       if (check1 !== undefined) {
-  //       } else {
-  //         let check2 = newOrganizersData.organizationUsers.find(
-  //           (data, index) => data.userID === id
-  //         );
-  //         if (check2 !== undefined) {
-  //           let newUser = {
-  //             userName: check2.userName,
-  //             userID: check2.userID,
-  //             displayPicture: check2.profilePicture.displayProfilePictureName,
-  //             email: check2.emailAddress,
-  //             isPrimaryOrganizer: false,
-  //             isOrganizerNotified: false,
-  //             organizerTitle: "",
-  //             rsvp: false,
-  //             isDeletable: true,
-  //             disabledTitle: false,
-  //             disabledRSVP: true,
-  //             disabledNotification: true,
-  //             disabledSwitch: true,
-  //             NotificationMessage: "",
-  //             isEdit: false,
-  //             attendeeAvailability: 1,
-  //           };
-  //           let newUserSave = {
-  //             isPrimaryOrganizer: false,
-  //             isOrganizerNotified: false,
-  //             organizerTitle: "",
-  //             UserID: check2.userID,
-  //           };
-  //           tem.push(newUser);
-  //           tem2.push(newUserSave);
-  //         }
-  //       }
-  //     } else {
-  //     }
-  //     const uniqueData = new Set(tem.map(JSON.stringify));
+  useEffect(() => {
+    if (
+      getCommitteeByCommitteeID !== null &&
+      getCommitteeByCommitteeID !== undefined
+    ) {
+      let newArr = [];
+      let getUserDetails = getCommitteeByCommitteeID.committeMembers;
+      getUserDetails.forEach((data, index) => {
+        newArr.push({
+          value: data.pK_UID,
+          name: data.userName,
+          label: (
+            <>
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span className={styles["NameDropDown"]}>
+                      {data.userName}
+                    </span>
+                  </Col>
+                </Row>
+              </>
+            </>
+          ),
+          type: 1,
+        });
+      });
+      let sortAssginersArr = newArr.sort((a, b) =>
+        a.name.localeCompare(b.name),
+      );
+      setDropdowndata(sortAssginersArr);
+    }
+  }, [getCommitteeByCommitteeID]);
 
-  //     const uniqueDataSave = new Set(tem2.map(JSON.stringify));
+  useEffect(() => {
+    if (
+      getGroupByGroupIdResponse !== null &&
+      getGroupByGroupIdResponse !== undefined
+    ) {
+      try {
+        let newArr = [];
+        let getUserDetails = getGroupByGroupIdResponse.groupMembers;
+        getUserDetails.forEach((data, index) => {
+          newArr.push({
+            value: data.pK_UID,
+            name: data.userName,
+            label: (
+              <>
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {data.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              </>
+            ),
+            type: 1,
+          });
+        });
+        let sortAssginersArr = newArr.sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+        setDropdowndata(sortAssginersArr);
+      } catch (error) {}
+    }
+  }, [getGroupByGroupIdResponse]);
 
-  //     // Convert the Set back to an array of objects
-  //     const result = Array.from(uniqueData).map(JSON.parse);
-  //     const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
-  //     setMembersOrganizers(result);
-  //     setOrganizersSave(resultSave);
-  //   } catch {}
-  // };
-
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = dropdowndata;
-  //   try {
-  //     if (
-  //       allAssignees !== undefined &&
-  //       allAssignees !== null &&
-  //       allAssignees.length !== 0
-  //     ) {
-  //       return allAssignees
-  //         .filter((item) => {
-  //           const searchValue = value.toLowerCase();
-  //           const agendaContributorValue = item.label.toLowerCase();
-  //           return (
-  //             searchValue && agendaContributorValue.startsWith(searchValue)
-  //           );
-  //         })
-  //         .slice(0, 10)
-  //         .map((item) => (
-  //           <div
-  //             onClick={() => onSearch(item.label, item.value, item.type, item)}
-  //             className="dropdown-row-assignee d-flex align-items-center flex-row"
-  //             key={item.pK_UID}
-  //           >
-  //             <img
-  //               draggable="false"
-  //               src={
-  //                 item.type === 3
-  //                   ? `data:image/jpeg;base64,${item?.profilePic}`
-  //                   : item.profilePic
-  //               }
-  //               alt=""
-  //               className="user-img"
-  //             />
-  //             <p className="p-0 m-0">{item.label}</p>
-  //           </div>
-  //         ));
-  //     } else {
-  //     }
-  //   } catch (error) {}
-  // };
   const saveOrganizers = () => {
     dispatch(showAddUserModal(false));
     dispatch(showNotifyOrganizors(true));
@@ -603,12 +630,7 @@ const ModalOrganizor = () => {
                   >
                     <Select
                       onChange={handleSelectValue}
-                      isDisabled={
-                        MeetingOrganizersReducer.AllUserCommitteesGroupsData
-                          .length === 0
-                          ? true
-                          : false
-                      }
+                      isDisabled={dropdowndata.length === 0 ? true : false}
                       value={selectedsearch}
                       classNamePrefix={"selectMember"}
                       closeMenuOnSelect={false}

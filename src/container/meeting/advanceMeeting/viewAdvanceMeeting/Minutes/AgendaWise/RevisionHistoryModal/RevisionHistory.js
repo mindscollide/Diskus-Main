@@ -38,59 +38,6 @@ const RevisionHistory = ({
 
   const dispatch = useDispatch();
 
-  const [reviewHistory, setReviewHistory] = useState([
-    {
-      versionNumber: 1,
-      minuteID: 129,
-      minutesDetails: "<p>Agenda Wise minutes 1</p>",
-      actionableBundleID: 218,
-      lastUpdatedDate: "20240620",
-      lastUpdatedTime: "140754",
-      declinedReviews: [],
-      reviewStats: {
-        minuteVersionID: 1,
-        totalReviews: 0,
-        rejected: 0,
-        accepted: 0,
-        pending: 2,
-        acceptedByUsers: [],
-        rejectedByUsers: [],
-        pendingUsers: ["Test User Diskus", "Stagging user test "],
-      },
-    },
-    {
-      versionNumber: 2,
-      minuteID: 129,
-      minutesDetails: "<p>Agenda Wise minutes 1 updated</p>",
-      actionableBundleID: 256,
-      lastUpdatedDate: "20240624",
-      lastUpdatedTime: "095740",
-      declinedReviews: [
-        {
-          fK_ActorBundlesStatus_ID: 260,
-          fK_UID: 1270,
-          fK_WorkFlowActor_ID: 105,
-          fK_WorkFlowActionableBundle_ID: 256,
-          fK_ActorBundlesStatusState_ID: 4,
-          actorName: "Stagging user test ",
-          reason: "Not Enough Info",
-          modifiedOn: "20240624105753",
-        },
-      ],
-      reviewStats: {
-        minuteVersionID: 2,
-        totalReviews: 0,
-        rejected: 1,
-        accepted: 0,
-        pending: 1,
-        acceptedByUsers: [],
-        rejectedByUsers: ["Stagging user test "],
-        pendingUsers: ["Test User Diskus"],
-      },
-    },
-  ]);
-  console.log(reviewHistory, "reviewHistoryreviewHistoryreviewHistory");
-
   const [editMinute, setEditMinute] = useState(false);
   const [confirmationEdit, setConfirmationEdit] = useState(false);
   const [resendMinuteForReview, setResendMinuteForReview] = useState(false);
@@ -109,7 +56,6 @@ const RevisionHistory = ({
 
   const [minuteDate, setMinuteDate] = useState("");
 
-  console.log(revisionHistoryData, "revisionHistoryDatarevisionHistoryData");
   const editMinuteFunction = (Editdata) => {
     console.log("editMinuteFunctioneditMinuteFunction", Editdata);
     let Data = {

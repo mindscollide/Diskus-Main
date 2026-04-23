@@ -94,6 +94,8 @@ const ParentAgenda = ({
   const { isAgendaUpdateWhenMeetingActive, editorRole } =
     useContext(MeetingContext);
 
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
+
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();

@@ -2765,5 +2765,7 @@
   "Cancel-checklist": "Cancel checklist?",
   "Reopen-details": "Reopen Details",
   "All-participants-must-have-at-least-one-field-assigned": "All participants must have at least one field assigned",
-  "Document-save-successfully": "Document saved successfully"
+  "Document-save-successfully": "Document saved successfully",
+  "Schedule-new-committee-meeting": "Schedule New Committee Meeting",
+  "Schedule-new-group-meeting": "Schedule New Group Meeting"
 }

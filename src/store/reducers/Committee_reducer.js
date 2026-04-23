@@ -25,6 +25,7 @@ const initialState = {
   removeCommitteeMember: null,
   viewCommitteesList: null,
   viewCommitteeDetailLink: null,
+  viewCommitteeDetails: null,
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -450,6 +451,19 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         removeCommitteeMember: action.response,
+      };
+    }
+
+    case actions.VIEW_COMMITTEE_DETAILS: {
+      return {
+        ...state,
+        viewCommitteeDetails: action.payload,
+      };
+    }
+    case actions.RESET_VIEW_COMMITTEE_DETAILS: {
+      return {
+        ...state,
+        viewCommitteeDetails: null,
       };
     }
 

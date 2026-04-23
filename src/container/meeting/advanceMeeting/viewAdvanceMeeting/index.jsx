@@ -17,7 +17,6 @@ import {
   presenterViewGlobalState,
   setAudioControlHost,
   setVideoControlHost,
-  updatedParticipantListForPresenter,
   isSharedScreenTriggeredApi,
   screenShareTriggeredGlobally,
 } from "../../../../store/actions/VideoFeature_actions";
@@ -39,8 +38,7 @@ import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   checkFeatureIDAvailability,
@@ -59,6 +57,13 @@ import { useResolutionContext } from "@/context/ResolutionContext";
 import { clearResponseMessage } from "@/store/actions/MeetingOrganizers_action";
 import { showMessage } from "@/components/elements/snack_bar/utill";
 import Recording from "./recording/Recording";
+
+// Fix: import Redux tab actions
+import {
+  setViewTab,
+  resetViewTabs,
+} from "../../../../store/actions/ModalStates_actions";
+
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
@@ -72,83 +77,94 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
+
+  // Fix: read all tab states from Redux instead of context
+  const viewTabs = useSelector((state) => state.ModalStatesReducer.viewTabs);
+
+  const {
+    meetingDetails,
+    organizers,
+    agendaContributors,
+    participants,
+    agenda,
+    agendaViewer,
+    minutes,
+    actionsPage,
+    polls,
+    attendance,
+    attendees,
+    isRecording,
+  } = viewTabs;
+
+  console.log(agendaViewer, viewTabs, "agendaVieweragendaViewer");
+
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
+
   const {
     setViewFlag,
     setViewProposeDatePoll,
-    startRecordingState,
-    pauseRecordingState,
-    resumeRecordingState,
-    stopRecordingState,
     setStartRecordingState,
-    setViewAdvanceMeetingModal,
     setPauseRecordingState,
     setResumeRecordingState,
     setStopRecordingState,
+    setViewAdvanceMeetingModal,
     iframeRef,
   } = useContext(MeetingContext);
+
+  const { editorRole, setEditorRole } = useMeetingContext();
+
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
   const ViewAdvanceMeetingPolls =
     JSON.parse(localStorage.getItem("viewadvanceMeetingPolls")) === true;
   const ViewAdvanceMeetingTask =
     JSON.parse(localStorage.getItem("viewadvanceMeetingTask")) === true;
+
   const { setViewGroupPage, setShowModal } = useGroupsContext();
   const { setResultresolution } = useResolutionContext();
-  //Voting Poll Started in Agenda Intimination Modal
+
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData,
   );
-  //Agenda Voting Started PayLoad Data Fetching
   const AgendaVotingModalStartedData = useSelector(
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData,
   );
-
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag,
   );
-
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
-
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
-  console.log(typeof advanceMeetingOperations);
-  const {
-    editorRole,
-    setEditorRole,
-    meetingDetails,
-    setmeetingDetails,
-    organizers,
-    setorganizers,
-    agendaContributors,
-    setAgendaContributors,
-    participants,
-    setParticipants,
-    agenda,
-    setAgenda,
-    meetingMaterial,
-    setMeetingMaterial,
-    minutes,
-    setMinutes,
-    actionsPage,
-    setactionsPage,
-    polls,
-    setPolls,
-    attendance,
-    setAttendance,
-    attendees,
-    setAttendees,
-    isRecording,
-    setRecording,
-  } = useMeetingContext();
+  const { meetingIdReducer, NewMeetingreducer, MeetingAgendaReducer } =
+    useSelector((state) => state);
+  const leaveMeetingOnLogoutResponse = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
+  );
+  const leaveMeetingOnEndStatusMqttFlag = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag,
+  );
+  const globalFunctionWebnotificationFlag = useSelector(
+    (state) => state.settingReducer.globalFunctionWebnotificationFlag,
+  );
+  const webNotifactionDataRoutecheckFlag = JSON.parse(
+    localStorage.getItem("webNotifactionDataRoutecheckFlag"),
+  );
+  const webNotificationData = useSelector(
+    (state) => state.settingReducer.webNotificationDataVideoIntimination,
+  );
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare,
+  );
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -165,57 +181,26 @@ const ViewMeetingModal = ({
     localStorage.getItem("isMeetingVideoHostCheck"),
   );
 
-  console.log(iframeRef, "iframeRefiframeRef");
+  // ─── Tab Switchers ────────────────────────────────────────────────────────
+  // Fix: each handler replaced with single dispatch instead of 12 setter calls
 
-  const dispatch = useDispatch();
+  const showMeetingDeitals = () => dispatch(setViewTab("meetingDetails"));
+  const showOrganizers = () => dispatch(setViewTab("organizers"));
+  const showAgendaContributers = () =>
+    dispatch(setViewTab("agendaContributors"));
+  const showParticipants = () => dispatch(setViewTab("participants"));
+  const showAgenda = () => dispatch(setViewTab("agenda"));
+  const showMeetingMaterial = () => dispatch(setViewTab("agendaViewer"));
+  const showMinutes = () => dispatch(setViewTab("minutes"));
+  const showActions = () => dispatch(setViewTab("actionsPage"));
+  const ShowPolls = () => dispatch(setViewTab("polls"));
+  const showAttendance = () => dispatch(setViewTab("attendance"));
+  const showAttendees = () => dispatch(setViewTab("attendees"));
+  const showRecording = () => dispatch(setViewTab("isRecording"));
 
-  const { meetingIdReducer, NewMeetingreducer, MeetingAgendaReducer } =
-    useSelector((state) => state);
-
-  const leaveMeetingOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
-  );
-
-  const leaveMeetingOnEndStatusMqttFlag = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag,
-  );
-
-  const globalFunctionWebnotificationFlag = useSelector(
-    (state) => state.settingReducer.globalFunctionWebnotificationFlag,
-  );
-
-  const webNotifactionDataRoutecheckFlag = JSON.parse(
-    localStorage.getItem("webNotifactionDataRoutecheckFlag"),
-  );
-
-  const webNotificationData = useSelector(
-    (state) => state.settingReducer.webNotificationDataVideoIntimination,
-  );
-
-  const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
-  );
-
-  const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare,
-  );
-
-  console.log(
-    {
-      agendaContributors,
-      meetingDetails,
-      organizers,
-      participants,
-      agenda,
-      minutes,
-      attendance,
-      polls,
-      actionsPage,
-      meetingDetails,
-      meetingMaterial,
-    },
-    "routeIDrouteID",
-  );
+  // ─── Route-based Tab Selection ────────────────────────────────────────────
+  // Fix: Note this file has a slightly different condition:
+  // (status === 10 || status === 9) vs the other file which also included status === 1
 
   useEffect(() => {
     if (
@@ -224,102 +209,20 @@ const ViewMeetingModal = ({
     ) {
       if (routeID !== null && routeID !== 0) {
         if (Number(routeID) === 1) {
-          setMeetingMaterial(false);
-          setAgendaContributors(true);
-          setorganizers(false);
-          setmeetingDetails(false);
-          setMinutes(false);
-          setAttendance(false);
-          setAgenda(false);
-          setParticipants(false);
-          setPolls(false);
-          setAttendees(false);
-          setRecording(false);
-
-          setactionsPage(false);
+          dispatch(setViewTab("agendaContributors"));
         } else if (Number(routeID) === 2) {
-          setMeetingMaterial(false);
-          setAgendaContributors(false);
-          setorganizers(true);
-          setmeetingDetails(false);
-          setMinutes(false);
-          setAttendance(false);
-          setAgenda(false);
-          setRecording(false);
-
-          setParticipants(false);
-          setPolls(false);
-          setAttendees(false);
-          setactionsPage(false);
+          dispatch(setViewTab("organizers"));
         } else if (Number(routeID) === 3) {
-          setMeetingMaterial(true);
-          setAgendaContributors(false);
-          setorganizers(false);
-          setmeetingDetails(false);
-          setMinutes(false);
-          setAttendance(false);
-          setAgenda(false);
-          setParticipants(false);
-          setPolls(false);
-          setRecording(false);
-
-          setAttendees(false);
-          setactionsPage(false);
+          dispatch(setViewTab("agendaViewer"));
         } else if (Number(routeID) === 5) {
-          setMeetingMaterial(false);
-          setAgendaContributors(false);
-          setorganizers(false);
-          setmeetingDetails(false);
-          setMinutes(true);
-          setAttendance(false);
-          setAgenda(false);
-          setParticipants(false);
-          setPolls(false);
-          setRecording(false);
-          setAttendees(false);
-          setactionsPage(false);
+          dispatch(setViewTab("minutes"));
         }
       } else if (ViewAdvanceMeetingPolls) {
-        setMeetingMaterial(false);
-        setAgendaContributors(false);
-        setorganizers(false);
-        setmeetingDetails(false);
-        setMinutes(false);
-        setAttendance(false);
-        setAgenda(false);
-        setParticipants(false);
-        setPolls(true);
-        setRecording(false);
-
-        setAttendees(false);
-        setactionsPage(false);
+        dispatch(setViewTab("polls"));
       } else if (ViewAdvanceMeetingTask) {
-        setMeetingMaterial(false);
-        setAgendaContributors(false);
-        setorganizers(false);
-        setmeetingDetails(false);
-        setMinutes(false);
-        setAttendance(false);
-        setAgenda(false);
-        setParticipants(false);
-        setPolls(false);
-        setAttendees(false);
-        setRecording(false);
-
-        setactionsPage(true);
+        dispatch(setViewTab("actionsPage"));
       } else if (advanceMeetingOperations) {
-        setMeetingMaterial(true);
-        setAgendaContributors(false);
-        setorganizers(false);
-        setmeetingDetails(false);
-        setMinutes(false);
-        setAttendance(false);
-        setAgenda(false);
-        setParticipants(false);
-        setPolls(false);
-        setAttendees(false);
-        setactionsPage(false);
-        setRecording(false);
+        dispatch(setViewTab("agendaViewer"));
       } else {
         if (Number(editorRole.status) === 10) {
           if (
@@ -327,59 +230,24 @@ const ViewMeetingModal = ({
             editorRole.role === "Agenda Contributor" ||
             editorRole.role === "Participant"
           ) {
-            setMeetingMaterial(true);
-            setAgendaContributors(false);
-            setorganizers(false);
-            setmeetingDetails(false);
-            setMinutes(false);
-            setAttendance(false);
-            setAgenda(false);
-            setParticipants(false);
-            setPolls(false);
-            setAttendees(false);
-            setactionsPage(false);
-            setRecording(false);
+            dispatch(setViewTab("agendaViewer"));
           }
         } else {
-          setMeetingMaterial(false);
-          setAgendaContributors(false);
-          setorganizers(false);
-          setmeetingDetails(true);
-          setMinutes(false);
-          setAttendance(false);
-          setAgenda(false);
-          setParticipants(false);
-          setPolls(false);
-          setAttendees(false);
-          setactionsPage(false);
-          setRecording(false);
+          dispatch(setViewTab("agendaViewer"));
         }
       }
-    } else {
-      // setMeetingMaterial(false);
-      // setAgendaContributors(false);
-      // setorganizers(false);
-      // setmeetingDetails(false);
-      // setMinutes(false);
-      // setAttendance(false);
-      // setAgenda(false);
-      // setParticipants(false);
-      // setPolls(false);
-      // setAttendees(false);
-      // setactionsPage(false);
-      // setRecording(false);
     }
+    // Fix: removed the empty else block with all commented-out setters
 
     return () => {
       dispatch(emailRouteID(0));
     };
   }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
 
-  //When Host Stop Recording
+  // ─── Recording Stop Handler ───────────────────────────────────────────────
+
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
-
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -387,20 +255,13 @@ const ViewMeetingModal = ({
 
       if (isZoomEnabled) {
         const iframe = iframeRef.current;
-
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
           }
-
-          // Slight delay to allow iframe to process the message
-          setTimeout(() => {
-            resolve();
-          }, 100);
+          setTimeout(() => resolve(), 100);
         };
 
-        // Host-specific path
         if (
           isMeeting &&
           isMeetingVideo &&
@@ -408,19 +269,21 @@ const ViewMeetingModal = ({
           !presenterViewJoinFlag &&
           !presenterViewHostFlag
         ) {
-          setTimeout(sendMessage, 1000); // 1s delay for host
+          setTimeout(sendMessage, 1000);
         } else {
           if (isCaller && (CallType === 1 || CallType === 2)) {
-            sendMessage(); // Immediate for caller
+            sendMessage();
           } else {
-            resolve(); // If none of the conditions matched, resolve immediately
+            resolve();
           }
         }
       } else {
-        resolve(); // Zoom not enabled, no message needed
+        resolve();
       }
     });
   };
+
+  // ─── Leave Meeting ────────────────────────────────────────────────────────
 
   const callBeforeLeave = async () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -433,69 +296,65 @@ const ViewMeetingModal = ({
         localStorage.getItem("currentMeetingID"),
       );
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
-      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
 
       if (meetHostFlag) {
-        const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
-        console.log(parsedHostFlag, "parsedHostFlag");
+        const parsedHostFlag = JSON.parse(meetHostFlag);
         if (parsedHostFlag.isHost) {
-          console.log("busyCall");
-
-          //When Recording is On and Host Leave Meeting Video
           await onHandleClickForStopRecording();
           await new Promise((resolve) => setTimeout(resolve, 100));
 
-          // For Stop Screen Share If Host Stop in Meeting Video
-          let isSharedSceenEnable = JSON.parse(
-            localStorage.getItem("isSharedSceenEnable"),
-          );
           if (isZoomEnabled) {
+            let isSharedSceenEnable = JSON.parse(
+              localStorage.getItem("isSharedSceenEnable"),
+            );
             if (isSharedSceenEnable && !globallyScreenShare) {
-              console.log("busyCall");
               let isMeetingVideoHostCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck"),
               );
               let newRoomID = localStorage.getItem("newRoomId");
               let isGuid = localStorage.getItem("isGuid");
-              let RoomID =
-                isMeetingVideo && isMeetingVideoHostCheck ? newRoomID : null;
-
-              let UID =
-                isMeetingVideo && isMeetingVideoHostCheck ? isGuid : null;
-              let data = {
-                RoomID: RoomID,
-                ShareScreen: false,
-                UID: UID,
-              };
               dispatch(screenShareTriggeredGlobally(false));
-              dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              dispatch(
+                isSharedScreenTriggeredApi(navigate, t, {
+                  RoomID:
+                    isMeetingVideo && isMeetingVideoHostCheck
+                      ? newRoomID
+                      : null,
+                  ShareScreen: false,
+                  UID:
+                    isMeetingVideo && isMeetingVideoHostCheck ? isGuid : null,
+                }),
+              );
             }
           }
 
           let newRoomID = localStorage.getItem("newRoomId");
           let newUserGUID = localStorage.getItem("isGuid");
-          console.log("busyCall");
+          dispatch(
+            LeaveMeetingVideo(
+              {
+                RoomID: String(newRoomID),
+                UserGUID: String(newUserGUID),
+                Name: String(newName),
+                IsHost: parsedHostFlag?.isHost ? true : false,
+                MeetingID: Number(currentMeetingID),
+              },
+              navigate,
+              t,
+            ),
+          );
 
-          let Data = {
-            RoomID: String(newRoomID),
-            UserGUID: String(newUserGUID),
-            Name: String(newName),
-            IsHost: parsedHostFlag?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
           localStorage.setItem("isMeeting", false);
           sessionStorage.removeItem("isMeeting");
           let currentMeeting = localStorage.getItem("currentMeetingID");
-          let leaveMeetingData = {
-            FK_MDID: Number(currentMeeting),
-            DateTime: getCurrentDateTimeUTC(),
-          };
           dispatch(
             LeaveCurrentMeeting(
               navigate,
               t,
-              leaveMeetingData,
+              {
+                FK_MDID: Number(currentMeeting),
+                DateTime: getCurrentDateTimeUTC(),
+              },
               false,
               false,
               setEditorRole,
@@ -504,53 +363,53 @@ const ViewMeetingModal = ({
             ),
           );
         } else {
-          // For Stop Screen Share If Non Host Stop in Meeting Video
-          let isSharedSceenEnable = JSON.parse(
-            localStorage.getItem("isSharedSceenEnable"),
-          );
           if (isZoomEnabled) {
+            let isSharedSceenEnable = JSON.parse(
+              localStorage.getItem("isSharedSceenEnable"),
+            );
             if (isSharedSceenEnable && !globallyScreenShare) {
-              console.log("busyCall");
               let participantUID = localStorage.getItem("participantUID");
               let participantRoomIds =
                 localStorage.getItem("participantRoomId");
-              let RoomID = participantRoomIds;
-
-              let UID = participantUID;
-              let data = {
-                RoomID: RoomID,
-                ShareScreen: false,
-                UID: UID,
-              };
               dispatch(screenShareTriggeredGlobally(false));
-              dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              dispatch(
+                isSharedScreenTriggeredApi(navigate, t, {
+                  RoomID: participantRoomIds,
+                  ShareScreen: false,
+                  UID: participantUID,
+                }),
+              );
             }
           }
 
           let participantUID = localStorage.getItem("participantUID");
           let participantRoomIds = localStorage.getItem("participantRoomId");
-          console.log("busyCall");
-          let Data = {
-            RoomID: String(participantRoomIds),
-            UserGUID: String(participantUID),
-            Name: String(newName),
-            IsHost: parsedHostFlag?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
           dispatch(setRaisedUnRaisedParticiant(false));
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          dispatch(
+            LeaveMeetingVideo(
+              {
+                RoomID: String(participantRoomIds),
+                UserGUID: String(participantUID),
+                Name: String(newName),
+                IsHost: parsedHostFlag?.isHost ? true : false,
+                MeetingID: Number(currentMeetingID),
+              },
+              navigate,
+              t,
+            ),
+          );
+
           localStorage.setItem("isMeeting", false);
           sessionStorage.removeItem("isMeeting");
           let currentMeeting = localStorage.getItem("currentMeetingID");
-          let leaveMeetingData = {
-            FK_MDID: Number(currentMeeting),
-            DateTime: getCurrentDateTimeUTC(),
-          };
           dispatch(
             LeaveCurrentMeeting(
               navigate,
               t,
-              leaveMeetingData,
+              {
+                FK_MDID: Number(currentMeeting),
+                DateTime: getCurrentDateTimeUTC(),
+              },
               false,
               false,
               setEditorRole,
@@ -560,17 +419,12 @@ const ViewMeetingModal = ({
           );
         }
       }
-      //       console.log("Check LeaveCall new");dispatch(LeaveCall
-      // (Data, navigate, t));
-      console.log("cehek location");
-      localStorage.setItem("isCaller", false);
-      localStorage.setItem("isMeetingVideo", false);
-      const emptyArray = [];
-      localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-      localStorage.setItem("activeCall", false);
-      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
       localStorage.setItem("isCaller", false);
+      localStorage.setItem("isMeetingVideo", false);
+      localStorage.setItem("callerStatusObject", JSON.stringify([]));
+      localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
       localStorage.removeItem("navigateLocation");
@@ -582,21 +436,18 @@ const ViewMeetingModal = ({
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
     } else {
-      console.log("cehek location");
       localStorage.removeItem("navigateLocation");
-
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       let currentMeeting = localStorage.getItem("currentMeetingID");
-      let leaveMeetingData = {
-        FK_MDID: Number(currentMeeting),
-        DateTime: getCurrentDateTimeUTC(),
-      };
       dispatch(
         LeaveCurrentMeeting(
           navigate,
           t,
-          leaveMeetingData,
+          {
+            FK_MDID: Number(currentMeeting),
+            DateTime: getCurrentDateTimeUTC(),
+          },
           false,
           false,
           setEditorRole,
@@ -607,9 +458,10 @@ const ViewMeetingModal = ({
     }
   };
 
+  // ─── Before Unload ────────────────────────────────────────────────────────
+
   useEffect(() => {
-    // Handler for beforeunload event
-    const handleBeforeUnload = async (event) => {
+    const handleBeforeUnload = async () => {
       let newName = localStorage.getItem("newName");
       let newRoomId = localStorage.getItem("newRoomId");
       let participantRoomId = localStorage.getItem("participantRoomId");
@@ -620,32 +472,36 @@ const ViewMeetingModal = ({
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck"),
       );
+
       if (isMeeting) {
-        console.log("cacacacacacacacacc");
         let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
         let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
         if (isWaiting || isMeetingVideo) {
-          let Data = {
-            RoomID: String(
-              isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+          await dispatch(
+            LeaveMeetingVideo(
+              {
+                RoomID: String(
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+                ),
+                UserGUID: String(
+                  isMeetingVideoHostCheck ? isGuid : participantUID,
+                ),
+                Name: String(newName),
+                IsHost: isMeetingVideoHostCheck ? true : false,
+                MeetingID: Number(meetingVideoID),
+              },
+              navigate,
+              t,
             ),
-            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-            Name: String(newName),
-            IsHost: isMeetingVideoHostCheck ? true : false,
-            MeetingID: Number(meetingVideoID),
-          };
-          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+          );
 
           localStorage.removeItem("currentHostUserID");
           localStorage.removeItem("isHost");
           localStorage.removeItem("isNewHost");
           localStorage.setItem("isCaller", false);
           localStorage.setItem("isMeetingVideo", false);
-          const emptyArray = [];
-          localStorage.setItem(
-            "callerStatusObject",
-            JSON.stringify(emptyArray),
-          );
+          localStorage.setItem("callerStatusObject", JSON.stringify([]));
           sessionStorage.removeItem("StopPresenterViewAwait");
           sessionStorage.removeItem("participantUID");
           sessionStorage.removeItem("participantRoomId");
@@ -664,223 +520,29 @@ const ViewMeetingModal = ({
           dispatch(participantPopup(false));
           localStorage.setItem("MicOff", true);
           localStorage.setItem("VidOff", true);
-        } else {
         }
+
         dispatch(presenterViewGlobalState(0, false, false, false));
         dispatch(setAudioControlHost(false));
-        console.log("videoHideUnHideForHost");
         dispatch(setVideoControlHost(false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
         localStorage.setItem("isMeeting", false);
         sessionStorage.removeItem("isMeeting");
-        setMeetingMaterial(false);
-        setAgendaContributors(false);
-        setorganizers(false);
-        setmeetingDetails(false);
-        setMinutes(false);
-        setAttendance(false);
-        setAgenda(false);
-        setParticipants(false);
-        setPolls(false);
-        setAttendees(false);
-        setactionsPage(false);
-        setRecording(false);
-        localStorage.setItem("isMeeting", false);
-        sessionStorage.removeItem("isMeeting");
+
+        // Fix: single reset instead of 12 individual setter calls
+        dispatch(resetViewTabs());
+
         callBeforeLeave();
       }
     };
 
-    // Add event listener for beforeunload
     window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      console.log("cacacacacacacacacc");
-    };
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [dispatch]);
 
-  const showMeetingDeitals = () => {
-    setmeetingDetails(true);
-    setorganizers(false);
-    setAgendaContributors(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setAttendees(false);
-    setRecording(false);
-  };
-
-  const showOrganizers = () => {
-    setorganizers(true);
-    setmeetingDetails(false);
-    setAgendaContributors(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setAttendees(false);
-    setRecording(false);
-  };
-
-  const showAgendaContributers = () => {
-    setAgendaContributors(true);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setAttendees(false);
-    setRecording(false);
-  };
-
-  const showParticipants = () => {
-    setParticipants(true);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setAttendees(false);
-    setRecording(false);
-  };
-
-  const showAgenda = () => {
-    setAgenda(true);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setAttendees(false);
-    setRecording(false);
-  };
-
-  const showAttendees = () => {
-    setAttendees(true);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setRecording(false);
-  };
-
-  const showRecording = () => {
-    setAttendees(false);
-    setRecording(true);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-  };
-
-  const showMeetingMaterial = () => {
-    setMeetingMaterial(true);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setmeetingDetails(false);
-    setAttendees(false);
-    setRecording(false);
-  };
-
-  const showMinutes = () => {
-    setMinutes(true);
-    setMeetingMaterial(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setAgenda(false);
-    setAttendance(false);
-    setPolls(false);
-    setAttendees(false);
-    setactionsPage(false);
-    setRecording(false);
-  };
-
-  const showActions = () => {
-    setactionsPage(true);
-    setMinutes(false);
-    setMeetingMaterial(false);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setAttendance(false);
-    setAttendees(false);
-    setPolls(false);
-    setRecording(false);
-
-    setmeetingDetails(false);
-  };
-
-  const ShowPolls = () => {
-    setPolls(true);
-    setactionsPage(false);
-    setMinutes(false);
-    setMeetingMaterial(false);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setAttendance(false);
-    setAttendees(false);
-    setmeetingDetails(false);
-    setRecording(false);
-  };
-
-  const showAttendance = () => {
-    setAttendance(true);
-    setactionsPage(false);
-    setMinutes(false);
-    setMeetingMaterial(false);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setAttendees(false);
-    setPolls(false);
-    setRecording(false);
-  };
+  // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 
   useEffect(() => {
     if (
@@ -894,23 +556,25 @@ const ViewMeetingModal = ({
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-          ProposedMeetings:
-            currentView && Number(currentView) === 2 ? true : false,
-        };
-        console.log("chek search meeting");
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(
+          searchNewUserMeeting(
+            navigate,
+            {
+              Date: "",
+              Title: "",
+              HostName: "",
+              UserID: Number(userID),
+              PageNumber:
+                meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+              Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+              PublishedMeetings: currentView && Number(currentView) === 1,
+              ProposedMeetings: currentView && Number(currentView) === 2,
+            },
+            t,
+          ),
+        );
       } catch (error) {
-        console.error(error, "error");
+        console.error(error);
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
@@ -927,26 +591,30 @@ const ViewMeetingModal = ({
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-          ProposedMeetings:
-            currentView && Number(currentView) === 2 ? true : false,
-        };
-        console.log("chek search meeting");
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(
+          searchNewUserMeeting(
+            navigate,
+            {
+              Date: "",
+              Title: "",
+              HostName: "",
+              UserID: Number(userID),
+              PageNumber:
+                meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+              Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+              PublishedMeetings: currentView && Number(currentView) === 1,
+              ProposedMeetings: currentView && Number(currentView) === 2,
+            },
+            t,
+          ),
+        );
       } catch (error) {
-        console.error(error, "error");
+        console.error(error);
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
+
+  // ─── MQTT: Meeting Status Ended ───────────────────────────────────────────
 
   useEffect(() => {
     if (
@@ -954,33 +622,22 @@ const ViewMeetingModal = ({
       meetingIdReducer.MeetingStatusEnded !== undefined &&
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
-      console.log("Checking");
-
+      const endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
       if (
         advanceMeetingModalID === endMeetingData?.pK_MDID &&
         endMeetingData.status === "9" &&
         editorRole.status !== "9"
       ) {
-        console.log("Checking");
         setEditorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
         if (isMeetingVideo === true) {
-          console.log("Checking");
-
           localStorage.setItem("isCaller", false);
           localStorage.setItem("isMeetingVideo", false);
-          const emptyArray = [];
-          localStorage.setItem(
-            "callerStatusObject",
-            JSON.stringify(emptyArray),
-          );
+          localStorage.setItem("callerStatusObject", JSON.stringify([]));
           localStorage.setItem("activeCall", false);
           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
-
-          localStorage.setItem("isCaller", false);
           localStorage.setItem("acceptedRoomID", 0);
           localStorage.setItem("activeRoomID", 0);
           dispatch(normalizeVideoPanelFlag(false));
@@ -997,93 +654,23 @@ const ViewMeetingModal = ({
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
+  // ─── Leave Meeting Handler ────────────────────────────────────────────────
+
   const leaveMeeting = async (flag, flag2) => {
-    console.log(flag, flag2, "mqtt mqmqmqmqmqmq");
+    const currentMeeting = localStorage.getItem("currentMeetingID");
+    const isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
-    let currentMeeting = localStorage.getItem("currentMeetingID");
-    let newName = localStorage.getItem("newName");
-    let newRoomId = localStorage.getItem("newRoomId");
-    let participantRoomId = localStorage.getItem("participantRoomId");
-    let isGuid = localStorage.getItem("isGuid");
-    let participantUID = localStorage.getItem("participantUID");
-    let meetingVideoID = localStorage.getItem("currentMeetingID");
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck"),
-    );
     if (isMeeting) {
-      console.log("cacacacacacacacacc");
-      let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
-      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-      // if (isWaiting || isMeetingVideo) {
-      //   let Data = {
-      //     RoomID: String(
-      //       isMeetingVideoHostCheck ? newRoomId : participantRoomId
-      //     ),
-      //     UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-      //     Name: String(newName),
-      //     IsHost: isMeetingVideoHostCheck ? true : false,
-      //     MeetingID: Number(meetingVideoID),
-      //   };
-      //   await dispatch(LeaveMeetingVideo(Data, navigate, t));
-
-      //   localStorage.removeItem("currentHostUserID");
-      //   localStorage.removeItem("isHost");
-      //   localStorage.removeItem("isNewHost");
-      //   localStorage.setItem("isCaller", false);
-      //   localStorage.setItem("isMeetingVideo", false);
-      //   const emptyArray = [];
-      //   localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-      //   sessionStorage.removeItem("StopPresenterViewAwait");
-      //   sessionStorage.removeItem("participantUID");
-      //   sessionStorage.removeItem("participantRoomId");
-      //   sessionStorage.removeItem("isGuid");
-      //   sessionStorage.removeItem("newRoomId");
-      //   sessionStorage.removeItem("alreadyInMeetingVideo");
-      //   localStorage.setItem("activeCall", false);
-      //   localStorage.setItem("isCaller", false);
-      //   localStorage.setItem("acceptedRoomID", 0);
-      //   localStorage.setItem("activeRoomID", 0);
-      //   dispatch(normalizeVideoPanelFlag(false));
-      //   dispatch(maximizeVideoPanelFlag(false));
-      //   dispatch(minimizeVideoPanelFlag(false));
-      //   dispatch(leaveCallModal(false));
-      //   dispatch(participantPopup(false));
-      //   localStorage.setItem("MicOff", true);
-      //   localStorage.setItem("VidOff", true);
-      // } else {
-      // }
-      // dispatch(presenterViewGlobalState(0, false, false, false));
-      // dispatch(setAudioControlHost(false));
-      // dispatch(setVideoControlHost(false));
-      // dispatch(cleareAllState());
-      // setEditorRole({ status: null, role: null });
-      // setAdvanceMeetingModalID(null);
-      // localStorage.setItem("isMeeting", false);
-      // setMeetingMaterial(false);
-      // setAgendaContributors(false);
-      // setorganizers(false);
-      // setmeetingDetails(false);
-      // setMinutes(false);
-      // setAttendance(false);
-      // setAgenda(false);
-      // setParticipants(false);
-      // setPolls(false);
-      // setAttendees(false);
-      // setactionsPage(false);
-      // setRecording(false);
-      // localStorage.setItem("isMeeting", false);
       callBeforeLeave();
     } else {
-      let leaveMeetingData = {
-        FK_MDID: Number(currentMeeting),
-        DateTime: getCurrentDateTimeUTC(),
-      };
       await dispatch(
         LeaveCurrentMeeting(
           navigate,
           t,
-          leaveMeetingData,
+          {
+            FK_MDID: Number(currentMeeting),
+            DateTime: getCurrentDateTimeUTC(),
+          },
           false,
           false,
           setEditorRole,
@@ -1092,52 +679,30 @@ const ViewMeetingModal = ({
         ),
       );
     }
-    // let leaveMeetingData = {
-    //   FK_MDID: Number(currentMeeting),
-    //   DateTime: getCurrentDateTimeUTC(),
-    // };
-    // await dispatch(
-    //   LeaveCurrentMeeting(
-    //     navigate,
-    //     t,
-    //     leaveMeetingData,
-    //     false,
-    //     false,
-    //     setEditorRole,
-    //     setAdvanceMeetingModalID,
-    //     setViewAdvanceMeetingModal
-    //   )
-    // );
+
     if (flag === true) {
-      console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingOnlogout(false));
       dispatch(userLogOutApiFunc(navigate, t));
     }
     if (flag2 === true) {
-      console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingOnEndStatusMqtt(false));
     }
   };
 
   useEffect(() => {
     try {
-      if (leaveMeetingOnLogoutResponse) {
-        console.log("mqtt mqmqmqmqmqmq");
-        leaveMeeting(true, false);
-      }
+      if (leaveMeetingOnLogoutResponse) leaveMeeting(true, false);
     } catch {}
   }, [leaveMeetingOnLogoutResponse]);
 
   useEffect(() => {
     try {
-      if (leaveMeetingOnEndStatusMqttFlag) {
-        console.log("mqtt mqmqmqmqmqmq");
-        leaveMeeting(false, true);
-      }
+      if (leaveMeetingOnEndStatusMqttFlag) leaveMeeting(false, true);
     } catch {}
   }, [leaveMeetingOnEndStatusMqttFlag]);
 
-  //Agenda Voting Modal MQTT Data Extracting
+  // ─── Agenda Voting MQTT ───────────────────────────────────────────────────
+
   useEffect(() => {
     try {
       if (
@@ -1149,52 +714,51 @@ const ViewMeetingModal = ({
             AgendaVotingModalStartedData.meetingID &&
           !editorRole.isPrimaryOrganizer
         ) {
-          console.log(
-            AgendaVotingModalStartedData,
-            "AgendaVotingModalStartedDataAgendaVotingModalStartedData",
-          );
           dispatch(AgendaPollVotingStartedAction(true));
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [AgendaVotingModalStartedData]);
 
+  // ─── Web Notification Routing ─────────────────────────────────────────────
+
   useEffect(() => {
     try {
-      if (globalFunctionWebnotificationFlag) {
-        if (webNotifactionDataRoutecheckFlag) {
-          console.log("webNotifactionDataRoutecheckFlag");
-          let currentURL = window.location.href;
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          WebNotificationExportRoutFunc(
-            currentURL,
-            dispatch,
-            t,
-            location,
-            navigate,
-            webNotificationData,
-            setViewFlag,
-            setEditorRole,
-            setViewAdvanceMeetingModal,
-            setViewProposeDatePoll,
-            setViewGroupPage,
-            setShowModal,
-            setVideoTalk,
-            setAdvanceMeetingModalID,
-            setResultresolution,
-            isMeeting,
-            setPolls,
-          );
-          dispatch(webnotificationGlobalFlag(false));
-        }
+      if (
+        globalFunctionWebnotificationFlag &&
+        webNotifactionDataRoutecheckFlag
+      ) {
+        const currentURL = window.location.href;
+        const isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+        WebNotificationExportRoutFunc(
+          currentURL,
+          dispatch,
+          t,
+          location,
+          navigate,
+          webNotificationData,
+          setViewFlag,
+          setEditorRole,
+          setViewAdvanceMeetingModal,
+          setViewProposeDatePoll,
+          setViewGroupPage,
+          setShowModal,
+          setVideoTalk,
+          setAdvanceMeetingModalID,
+          setResultresolution,
+          isMeeting,
+          ShowPolls,
+        );
+        dispatch(webnotificationGlobalFlag(false));
       }
-      console.log("webNotifactionDataRoutecheckFlag");
-    } catch (error) {}
-
-    return () => {};
+    } catch (error) {
+      console.error(error);
+    }
   }, [globalFunctionWebnotificationFlag]);
+
+  // ─── Vote Cast Success Message ────────────────────────────────────────────
 
   useEffect(() => {
     if (
@@ -1208,6 +772,8 @@ const ViewMeetingModal = ({
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
+
+  // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <>
@@ -1250,53 +816,57 @@ const ViewMeetingModal = ({
                   <Button
                     text={t("Meeting-details")}
                     className={
-                      meetingDetails === true
+                      meetingDetails
                         ? styles["Schedule_meetings_options_active"]
                         : styles["Schedule_meetings_options"]
                     }
                     onClick={showMeetingDeitals}
                   />
-                  {editorRole.role === "Participant" ||
-                  editorRole.role === "Agenda Contributor" ? null : (
-                    <Button
-                      text={t("Organizers")}
-                      className={
-                        organizers === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showOrganizers}
-                    />
-                  )}
-                  {editorRole.role === "Participant" ||
-                  editorRole.role === "Agenda Contributor" ? null : (
-                    <Button
-                      text={t("Agenda-contributors")}
-                      className={
-                        agendaContributors === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showAgendaContributers}
-                    />
-                  )}
-                  {editorRole.role === "Participant" ||
-                  editorRole.role === "Agenda Contributor" ? null : (
-                    <Button
-                      text={t("Participants")}
-                      className={
-                        participants === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showParticipants}
-                    />
-                  )}
-                  {editorRole.role === "Participant" ? null : (
+
+                  {editorRole.role !== "Participant" &&
+                    editorRole.role !== "Agenda Contributor" && (
+                      <Button
+                        text={t("Organizers")}
+                        className={
+                          organizers
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showOrganizers}
+                      />
+                    )}
+
+                  {editorRole.role !== "Participant" &&
+                    editorRole.role !== "Agenda Contributor" && (
+                      <Button
+                        text={t("Agenda-contributors")}
+                        className={
+                          agendaContributors
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showAgendaContributers}
+                      />
+                    )}
+
+                  {editorRole.role !== "Participant" &&
+                    editorRole.role !== "Agenda Contributor" && (
+                      <Button
+                        text={t("Participants")}
+                        className={
+                          participants
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showParticipants}
+                      />
+                    )}
+
+                  {editorRole.role !== "Participant" && (
                     <Button
                       text={t("Agenda-builder")}
                       className={
-                        agenda === true
+                        agenda
                           ? styles["Schedule_meetings_options_active"]
                           : styles["Schedule_meetings_options"]
                       }
@@ -1307,91 +877,85 @@ const ViewMeetingModal = ({
                   <Button
                     text={t("Agenda-viewer")}
                     className={
-                      meetingMaterial === true
+                      agendaViewer
                         ? styles["Schedule_meetings_options_active"]
                         : styles["Schedule_meetings_options"]
                     }
                     onClick={showMeetingMaterial}
                   />
-                  <>
-                    {isMinutePublished === "true" &&
-                    Number(editorRole.status) === 9 ? (
-                      <Button
-                        text={t("Minutes")}
-                        className={
-                          minutes === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showMinutes}
-                        // disableBtn={
-                        //   Number(editorRole.status) === 10 ||
-                        //   Number(editorRole.status) === 9
-                        //     ? false
-                        //     : true
-                        // }
-                      />
-                    ) : editorRole.role === "Participant" ||
-                      editorRole.role === "Agenda Contributor" ? null : (
-                      <Button
-                        text={t("Minutes")}
-                        className={
-                          minutes === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showMinutes}
-                        disableBtn={
-                          Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
-                            ? false
-                            : true
-                        }
-                      />
-                    )}
-                    {checkFeatureIDAvailability(14) ? (
-                      <>
-                        <Button
-                          text={t("Task")}
-                          className={
-                            actionsPage === true
-                              ? styles["Schedule_meetings_options_active"]
-                              : styles["Schedule_meetings_options"]
-                          }
-                          onClick={showActions}
-                          disableBtn={
-                            Number(editorRole.status) === 10 ||
-                            Number(editorRole.status) === 9
-                              ? false
-                              : true
-                          }
-                        />
-                      </>
-                    ) : null}
-                    {checkFeatureIDAvailability(15) ? (
-                      <Button
-                        text={t("Polls")}
-                        className={
-                          polls === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={ShowPolls}
-                        disableBtn={
-                          Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
-                            ? false
-                            : true
-                        }
-                      />
-                    ) : null}
-                    {/* editorRole.isPrimaryOrganizer Commented Due to CR 0011183 */}
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Organizer" ? (
+
+                  {isMinutePublished === "true" &&
+                  Number(editorRole.status) === 9 ? (
+                    <Button
+                      text={t("Minutes")}
+                      className={
+                        minutes
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showMinutes}
+                    />
+                  ) : editorRole.role !== "Participant" &&
+                    editorRole.role !== "Agenda Contributor" ? (
+                    <Button
+                      text={t("Minutes")}
+                      className={
+                        minutes
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showMinutes}
+                      disableBtn={
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
+                          ? false
+                          : true
+                      }
+                    />
+                  ) : null}
+
+                  {checkFeatureIDAvailability(14) && (
+                    <Button
+                      text={t("Task")}
+                      className={
+                        actionsPage
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showActions}
+                      disableBtn={
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
+                          ? false
+                          : true
+                      }
+                    />
+                  )}
+
+                  {checkFeatureIDAvailability(15) && (
+                    <Button
+                      text={t("Polls")}
+                      className={
+                        polls
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={ShowPolls}
+                      disableBtn={
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
+                          ? false
+                          : true
+                      }
+                    />
+                  )}
+
+                  {Number(editorRole.status) === 10 &&
+                    editorRole.role === "Organizer" && (
                       <Button
                         text={t("Attendence")}
                         className={
-                          attendance === true
+                          attendance
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
@@ -1405,43 +969,45 @@ const ViewMeetingModal = ({
                               : true
                         }
                       />
-                    ) : null}
-                    {editorRole.role !== "Organizer" && (
+                    )}
+
+                  {editorRole.role !== "Organizer" && (
+                    <Button
+                      text={t("Attendees")}
+                      className={
+                        attendees
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showAttendees}
+                    />
+                  )}
+
+                  {editorRole.role === "Organizer" &&
+                    Number(editorRole.status) === 9 &&
+                    editorRole?.isPrimaryOrganizer === true && (
                       <Button
-                        text={t("Attendees")}
+                        text={t("Recording")}
                         className={
-                          attendees === true
+                          isRecording
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
-                        onClick={showAttendees}
+                        onClick={showRecording}
                       />
                     )}
-                    {editorRole.role === "Organizer" &&
-                      Number(editorRole.status) === 9 &&
-                      editorRole?.isPrimaryOrganizer === true && (
-                        <Button
-                          text={t("Recording")}
-                          className={
-                            isRecording === true
-                              ? styles["Schedule_meetings_options_active"]
-                              : styles["Schedule_meetings_options"]
-                          }
-                          onClick={showRecording}
-                        />
-                      )}
-                  </>
                 </Col>
               </Row>
+
               {meetingDetails && <ViewMeetingDetails />}
               {attendees && <Attendees />}
               {organizers && <Organizers />}
               {agendaContributors && <AgendaContributers />}
               {participants && <Participants />}
               {agenda && <Agenda />}
-              {meetingMaterial && <AgendaViewer />}
+              {agendaViewer && <AgendaViewer />}
 
-              {unPublish ? null : (
+              {!unPublish && (
                 <>
                   {minutes && <Minutes />}
                   {actionsPage && <Actions />}
@@ -1454,6 +1020,7 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
       </section>
+
       {votingStartedAgendaIntiminationModalState && (
         <VotingPollAgendaIntiminationModal
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}

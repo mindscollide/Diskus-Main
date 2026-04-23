@@ -39,6 +39,7 @@ import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrg
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -55,9 +56,11 @@ const MeetingMaterial = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer?.currentMeetingInfo
+  );
 
-
-  const {editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole } = useContext(MeetingContext);
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
@@ -68,9 +71,7 @@ const MeetingMaterial = ({
   const cancelMeetingMaterial = useSelector(
     (state) => state.NewMeetingreducer.cancelMeetingMaterial
   );
-  const nextConfirmModal = useSelector(
-    (state) => state.NewMeetingreducer.nextConfirmModal
-  );
+
   const ShowPreviousModal = useSelector(
     (state) => state.NewMeetingreducer.ShowPreviousModal
   );
@@ -89,7 +90,7 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
@@ -249,14 +250,13 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={() => handleDoubeClick(record)}
-            >
+              onClick={() => handleDoubeClick(record)}>
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
-                alt=""
+                alt=''
                 width={"25px"}
                 height={"25px"}
-                className="me-2"
+                className='me-2'
               />
               <abbr title={`${text}`}>
                 <span className={styles["docx-name-title"]}>{text}</span>
@@ -286,8 +286,7 @@ const MeetingMaterial = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex gap-3 align-items-center justify-content-center"
-              >
+                className='d-flex gap-3 align-items-center justify-content-center'>
                 <Eye
                   fontSize={22}
                   cursor={
@@ -363,36 +362,44 @@ const MeetingMaterial = ({
     dispatch(uploadGlobalFlag(false));
   };
   const handlePublish = () => {
-    let Data = { MeetingID: currentMeeting, StatusID: 1 };
     console.log("end meeting chaek");
     dispatch(
-      UpdateOrganizersMeeting(
-        false,
+      UpdateMeetingStatusApi(
         navigate,
         t,
-        5,
-        Data,
-      setEditorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setSceduleMeeting,
-        setPublishState,
-        setCalendarViewModal
+        { MeetingID: meetingID, StatusID: 1 },
+        "PublishMeetingFromMeetingMaterial",
+        {}
       )
     );
+    // dispatch(
+    //   UpdateOrganizersMeeting(
+    //     false,
+    //     navigate,
+    //     t,
+    //     5,
+    //     Data,
+    //     setEditorRole,
+    //     setAdvanceMeetingModalID,
+    //     setDataroomMapFolderId,
+    //     setSceduleMeeting,
+    //     setPublishState,
+    //     setCalendarViewModal
+    //   )
+    // );
   };
 
   return (
     <section>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col lg={12} md={12} sm={12}>
           {rows.length === 0 && !Loading ? (
             <>
               <ResultMessage
                 icon={
                   <img
-                    alt="NonMeeting"
-                    draggable="false"
+                    alt='NonMeeting'
+                    draggable='false'
                     src={NoMeetingsIcon}
                   />
                 }
@@ -402,8 +409,7 @@ const MeetingMaterial = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["No-meeting-material-title"]}>
                     {t("No-meeting-material")}
                   </span>
@@ -416,7 +422,7 @@ const MeetingMaterial = ({
                 column={materialColoumn}
                 scroll={{ y: "46vh" }}
                 pagination={false}
-                className="Polling_table"
+                className='Polling_table'
                 rows={rows}
               />
             </>
@@ -428,8 +434,7 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-3"
-        >
+          className='d-flex justify-content-end gap-2 mt-3'>
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}
@@ -456,31 +461,13 @@ const MeetingMaterial = ({
               className={styles["Save_Classname"]}
               onClick={handlePublish}
             />
-          ) : isEditMeeting === true ? null : (
-            <Button
-              disableBtn={
-                Number(currentMeeting) === 0 || isPublishedState === false
-                  ? true
-                  : false
-              }
-              text={t("Publish")}
-              className={styles["Save_Classname"]}
-              onClick={handlePublish}
-            />
-          )}
+          ) : null}
         </Col>
       </Row>
       {cancelMeetingMaterial && (
         <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
       )}
 
-      {nextConfirmModal && (
-        <NextModal
-          setMinutes={setMinutes}
-          setMeetingMaterial={setMeetingMaterial}
-          flag={flag}
-        />
-      )}
 
       {ShowPreviousModal && (
         <PreviousModal

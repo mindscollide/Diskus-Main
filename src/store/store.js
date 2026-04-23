@@ -72,6 +72,7 @@ import UserManagementModals from "./reducers/UserManagementModals";
 import UserMangementReducer from "./reducers/UserManagementReducer";
 import ManageAuthorityReducer from "./reducers/ManageAuthorityReducer";
 import ComplainceSettingReducerReducer from "./reducers/ComplainSettingReducer";
+import ModalStatesReducer from "./reducers/ModalState_reducer";
 const AppReducer = combineReducers({
   auth: authReducer,
   toDoListReducer: toDoListReducer,
@@ -126,6 +127,7 @@ const AppReducer = combineReducers({
   GuestVideoReducer: GuestVideoReducer,
   ManageAuthorityReducer: ManageAuthorityReducer,
   ComplainceSettingReducerReducer: ComplainceSettingReducerReducer,
+  ModalStatesReducer: ModalStatesReducer,
 });
 
 const rootReducer = (state, action) => {

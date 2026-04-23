@@ -16,18 +16,6 @@ import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
   showCancelActions,
   showUnsavedActionsModal,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
-  uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -54,10 +42,10 @@ import AscendIcon from "../../../../../assets/images/sortingIcons/SorterIconAsce
 import ArrowDownIcon from "../../../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 const Actions = ({
   setSceduleMeeting,
   setactionsPage,
-  setPolls,
   currentMeeting,
 
   isEditMeeting,
@@ -691,20 +679,21 @@ const Actions = ({
 
   // to move in next to polls handler
   const nextTabToPolls = () => {
-    setactionsPage(false);
-    setPolls(true);
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(true));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
+    dispatch(setCreateEditTab("polls"))
+    // setactionsPage(false);
+    // setPolls(true);
+    // dispatch(meetingDetailsGlobalFlag(false));
+    // dispatch(organizersGlobalFlag(false));
+    // dispatch(agendaContributorsGlobalFlag(false));
+    // dispatch(participantsGlobalFlag(false));
+    // dispatch(agendaGlobalFlag(false));
+    // dispatch(meetingMaterialGlobalFlag(false));
+    // dispatch(minutesGlobalFlag(false));
+    // dispatch(proposedMeetingDatesGlobalFlag(false));
+    // dispatch(actionsGlobalFlag(false));
+    // dispatch(pollsGlobalFlag(true));
+    // dispatch(attendanceGlobalFlag(false));
+    // dispatch(uploadGlobalFlag(false));
   };
 
   const scroll = {

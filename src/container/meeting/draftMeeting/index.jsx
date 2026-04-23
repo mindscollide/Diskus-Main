@@ -50,7 +50,6 @@ import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 // Styles (reuse DraftMeeting styles from existing component)
 import styles from "./draftMeeting.module.css";
-import { GetAllMeetingDetailsApi } from "../../../store/actions/MeetingActions";
 
 const DraftMeetingList = () => {
   const { t } = useTranslation();
@@ -270,65 +269,44 @@ const DraftMeetingList = () => {
         );
       } else if (record.isQuickMeeting === false) {
         if (record.isAgendaContributor) {
-          // dispatch(scheduleMeetingPageFlag(true));
-          // dispatch(viewMeetingFlag(false));
-          // dispatch(meetingDetailsGlobalFlag(false));
-          // dispatch(organizersGlobalFlag(false));
-          // dispatch(agendaContributorsGlobalFlag(false));
-          // dispatch(participantsGlobalFlag(false));
-          // dispatch(agendaGlobalFlag(true));
-          // dispatch(meetingMaterialGlobalFlag(false));
-          // dispatch(minutesGlobalFlag(false));
-          // dispatch(proposedMeetingDatesGlobalFlag(false));
-          // dispatch(actionsGlobalFlag(false));
-          // dispatch(pollsGlobalFlag(false));
-          // dispatch(attendanceGlobalFlag(false));
-          // dispatch(uploadGlobalFlag(false));
           let AgData = { MeetingID: Number(record.pK_MDID) };
-          await dispatch(
-            GetAllMeetingDetailsApi(
-              navigate,
-              t,
-              AgData,
-              "editMeeting",
-              {
-                setEditorRole,
-                setIsCreateEditMeeting,
-                setIsMeetingCreateOrEdit,
-                userRole,
-              },
-              // true,
-              // setCurrentMeetingID,
-              // setSceduleMeeting,
-              // setDataroomMapFolderId,
-              // 0,
-              // 1,
-              // "Agenda Contributor",
-            ),
-          );
+          // await dispatch(
+          //   GetAllMeetingDetailsApi(
+          //     navigate,
+          //     t,
+          //     AgData,
+          //     "editMeeting",
+          //     {
+          //       setEditorRole,
+          //       setIsCreateEditMeeting,
+          //       setIsMeetingCreateOrEdit,
+          //       userRole,
+          //     },
+          //   ),
+          // );
         } else {
           let OrgData = { MeetingID: Number(record.pK_MDID) };
-          await dispatch(
-            GetAllMeetingDetailsApi(
-              navigate,
-              t,
-              OrgData,
-              "editMeeting",
-              {
-                setEditorRole,
-                setIsCreateEditMeeting,
-                setIsMeetingCreateOrEdit,
-                userRole,
-              },
-              // true,
-              // setCurrentMeetingID,
-              // setSceduleMeeting,
-              // setDataroomMapFolderId,
-              // 0,
-              // 1,
-              // "Agenda Contributor",
-            ),
-          );
+          // await dispatch(
+          //   GetAllMeetingDetailsApi(
+          //     navigate,
+          //     t,
+          //     OrgData,
+          //     "editMeeting",
+          //     {
+          //       setEditorRole,
+          //       setIsCreateEditMeeting,
+          //       setIsMeetingCreateOrEdit,
+          //       userRole,
+          //     },
+          //     // true,
+          //     // setCurrentMeetingID,
+          //     // setSceduleMeeting,
+          //     // setDataroomMapFolderId,
+          //     // 0,
+          //     // 1,
+          //     // "Agenda Contributor",
+          //   ),
+          // );
           // dispatch(scheduleMeetingPageFlag(true));
           // dispatch(viewMeetingFlag(false));
           // dispatch(meetingDetailsGlobalFlag(true));

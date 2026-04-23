@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import {
   JoinCurrentMeeting,
-  getMeetingbyGroupApi,
   meetingNotConductedMQTT,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
@@ -59,6 +58,7 @@ import {
   GetGroupMessages,
   activeChat,
 } from "../../../store/actions/Talk_action";
+import { getMeetingbyGroupIdApi } from "../../../store/actions/Groups_actions";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -185,7 +185,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         Length: 50,
         PublishedMeetings: true,
       };
-      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+      dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
     } else {
       let searchData = {
         GroupID: Number(ViewGroupID),
@@ -197,7 +197,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         Length: 50,
         PublishedMeetings: true,
       };
-      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+      dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
     }
   }, []);
 
@@ -214,7 +214,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       Length: Number(pageSize),
       PublishedMeetings: true,
     };
-    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
   };
   useEffect(() => {
     try {

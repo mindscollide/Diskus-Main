@@ -25,7 +25,6 @@ import {
 import {
   UploadDocumentsAgendaApi,
   SaveFilesAgendaApi,
-  AddUpdateAdvanceMeetingAgenda,
   clearResponseMessage,
   GetAdvanceMeetingAgendabyMeetingID,
 } from "../../../../../store/actions/MeetingAgenda_action";
@@ -50,7 +49,14 @@ import {
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-// import NewCancelAgendaBuilderModal from "../../viewMeetings/Agenda/NewCancelAgendaBuilderModal/NewCancelAgendaBuilderModal";
+import {
+  AddUpdateAdvanceMeetingAgendaApi,
+  GetAdvanceMeetingAgendabyMeetingIdApi,
+  SaveMeetingAgendaFilesApi,
+  UploadDocumentsMeetingAgendaApi,
+  getAllAgendaContributorsApi,
+  getMeetingDetailsByMeetingIdApi,
+} from "../../../../../store/actions/NewMeeting2.actions";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -84,8 +90,12 @@ const Agenda = ({
   const MeetingAgendaData =
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData;
 
-  const { isAgendaUpdateWhenMeetingActive, editorRole, setEditorRole } =
-    useContext(MeetingContext);
+  const {
+    isAgendaUpdateWhenMeetingActive,
+    editorRole,
+    setEditorRole,
+    setGoBackCancelModal,
+  } = useContext(MeetingContext);
 
   // const ShowCancelAgendaBuilderModal = useSelector(
   //   (state) => state.NewMeetingreducer.cancelAgendaSavedModal
@@ -104,7 +114,6 @@ const Agenda = ({
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
-  console.log(allSavedPresenters, "allSavedPresentersallSavedPresenters");
   const [allUsersRC, setAllUsersRC] = useState([]);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
@@ -130,13 +139,33 @@ const Agenda = ({
     let Data = {
       MeetingID: meetingId,
     };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
-    dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIdApi(navigate, t, {
+        MeetingID: meetingId,
+      }),
+    );
+    dispatch(
+      getAllAgendaContributorsApi(navigate, t, {
+        MeetingID: meetingId,
+      }),
+    );
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
 
   useEffect(() => {
     try {
+      if (getAllMeetingDetails === null) {
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: meetingId },
+            "getMeetingDetailsFromAgendaTab",
+            {},
+          ),
+        );
+        return;
+      }
       if (
         getAllMeetingDetails !== null &&
         getAllMeetingDetails?.advanceMeetingDetails !== null
@@ -156,7 +185,9 @@ const Agenda = ({
           meetingEndTime: resolutionResultTable(meetingEndTime),
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [getAllMeetingDetails]);
 
   useEffect(() => {
@@ -245,7 +276,7 @@ const Agenda = ({
   };
 
   const handleCancelClick = async () => {
-    dispatch(showCancelModalAgendaBuilder(true));
+    setGoBackCancelModal(true);
   };
 
   // // Function to capitalize the first letter of a string
@@ -306,13 +337,12 @@ const Agenda = ({
       const uploadPromises = fileForSend.map(async (newData) => {
         console.log("newDatanewData", newData);
         await dispatch(
-          UploadDocumentsAgendaApi(
+          UploadDocumentsMeetingAgendaApi(
             navigate,
             t,
             newData,
-            folderDataRoomMeeting,
-            newFolder,
-            newfile,
+            "uploadDocumentsFromAgenda",
+            { newfile },
           ),
         );
       });
@@ -320,13 +350,9 @@ const Agenda = ({
       // Wait for all promises to resolve
       await Promise.all(uploadPromises); //till here the files get upload
       await dispatch(
-        SaveFilesAgendaApi(
-          navigate,
-          t,
-          newfile,
-          folderDataRoomMeeting,
+        SaveMeetingAgendaFilesApi(navigate, t, newfile, "saveFilesFromAgenda", {
           newFolder,
-        ),
+        }),
       );
     }
     // await Promise.all(
@@ -410,23 +436,24 @@ const Agenda = ({
     let capitalizedData = capitalizeKeys(Data);
 
     // Dispatch API call to update meeting agenda
-    let publishMeetingData = { MeetingID: meetingId, StatusID: 1 };
+    let routeValue =
+      flag === 1 ? "saveMeetingAgenda" : "saveAgendaAndPublishMeeting";
     await dispatch(
-      AddUpdateAdvanceMeetingAgenda(
-        capitalizedData,
+      AddUpdateAdvanceMeetingAgendaApi(
         navigate,
         t,
-        currentMeetingIDLS,
-        flag,
-        publishMeetingData,
-        setEditorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setSceduleMeeting,
-        setPublishState,
-        setCalendarViewModal,
-        setMeetingMaterial,
-        setAgenda,
+        capitalizedData,
+        routeValue,
+        {
+          setEditorRole,
+          setAdvanceMeetingModalID,
+          setDataroomMapFolderId,
+          setSceduleMeeting,
+          setPublishState,
+          setCalendarViewModal,
+          setMeetingMaterial,
+          setAgenda,
+        },
       ),
     );
   };
@@ -1344,24 +1371,7 @@ const Agenda = ({
                     className={styles["Save_Agenda_btn"]}
                     onClick={() => saveAgendaData(2)}
                   />
-                ) : isEditMeeting === true ? null : (
-                  <Button
-                    disableBtn={
-                      Number(meetingId) === 0 || isPublishedState === false
-                        ? true
-                        : false
-                    }
-                    text={t("Publish")}
-                    className={styles["Save_Agenda_btn"]}
-                    onClick={() => saveAgendaData(2)}
-                  />
-                )}
-
-                {/* <Button
-                  text={t("Publish")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handlePublishClick}
-                /> */}
+                ) : null}
               </Col>
             </Row>
           </section>

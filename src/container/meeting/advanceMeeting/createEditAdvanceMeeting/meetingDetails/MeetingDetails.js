@@ -42,7 +42,6 @@ import {
   getAgendaVotingDetails_success,
   saveFiles_success,
   saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
   uploadDocument_success,
   getAllVotingResultDisplay_success,
   getAgendaWithMeetingIDForImport_success,
@@ -56,13 +55,16 @@ import {
 } from "../../../../../commen/functions/time_formatter";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
-import { SaveMeetingDetialsApi } from "../../../../../store/actions/MeetingActions";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
 
 const MeetingDetails = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
+  );
   const {
     setGoBackCancelModal,
     setCurrentMeetingStatus,
@@ -70,18 +72,21 @@ const MeetingDetails = () => {
     editorRole,
     setEditorRole,
   } = useContext(MeetingContext);
-  const { isMeetingCreateOrEdit, setIsMeetingCreateOrEdit } =
-    useNewMeetingContext();
+
+  // const { isAdvanceMeetingRoute, setIsMeetingCreateOrEdit } =
+  //   useNewMeetingContext();
 
   const currentMeetingInfo = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
-
-  console.log(currentMeetingInfo, "currentMeetingInfocurrentMeetingInfo");
-
-  const nextConfirmModal = useSelector(
-    (state) => state.NewMeetingreducer.nextConfirmModal,
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
+
   // const cancelModalMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
   // );
@@ -112,11 +117,8 @@ const MeetingDetails = () => {
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      // selectedOption: getCurrentDateforMeeting.dateFormat,
       dateForView: getCurrentDateforMeeting.DateGMT,
-      // startDate: getStartTime?.formattedTime,
       startTime: getStartTime?.newFormatTime,
-      // endDate: getEndTime?.formattedTime,
       endTime: getEndTime?.newFormatTime,
     },
   ]);
@@ -342,33 +344,30 @@ const MeetingDetails = () => {
     }
   };
 
-  const addRow = () => {
-    const lastRow = rows[rows.length - 1];
+  // const addRow = () => {
+  //   const lastRow = rows[rows.length - 1];
 
-    if (isValidRow(lastRow)) {
-      let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-        lastRow.dateForView,
-      );
-      setRows([
-        ...rows,
-        {
-          // selectedOption: dateFormat,
-          dateForView: DateGMT,
-          // startDate: getStartTime?.formattedTime,
-          startTime: getStartTime?.newFormatTime,
-          // endDate: getEndTime?.formattedTime,
-          endTime: getEndTime?.newFormatTime,
-        },
-      ]);
-    }
-  };
+  //   if (isValidRow(lastRow)) {
+  //     let { DateGMT} = incrementDateforPropsedMeeting(
+  //       lastRow.dateForView
+  //     );
+  //     setRows([
+  //       ...rows,
+  //       {
+  //         dateForView: DateGMT,
+  //         startTime: getStartTime?.newFormatTime,
+  //         endTime: getEndTime?.newFormatTime,
+  //       },
+  //     ]);
+  //   }
+  // };
 
-  //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
-  const isValidRow = (row) => {
-    return (
-      row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
-    );
-  };
+  // //Validation For Checking that the Row Should Not Be Empty Before Inserting the Another
+  // const isValidRow = (row) => {
+  //   return (
+  //     row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
+  //   );
+  // };
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...rows];
@@ -380,6 +379,12 @@ const MeetingDetails = () => {
     //Enable the Error Handling From here
     let newArr = [];
     let newReminderData = [];
+    let context =
+      committeeInfo !== null
+        ? "committeePublishedMeeting"
+        : groupInfo !== null
+          ? "groupPublishedMeeting"
+          : "publishedMeeting";
     if (meetingDetails.ReminderFrequency.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
@@ -394,10 +399,7 @@ const MeetingDetails = () => {
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      console.log(
-        { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime",
-      );
+
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -437,25 +439,8 @@ const MeetingDetails = () => {
           MeetingStatusID: 1,
         },
       };
-      console.log({ data }, "meetingEndTime");
 
-      dispatch(
-        SaveMeetingDetialsApi(
-          navigate,
-          t,
-          data,
-          "published",
-          {},
-          // setSceduleMeeting,
-          // setorganizers,
-          // setmeetingDetails,
-          // 2,
-          // setCurrentMeetingID,
-          // currentMeeting,
-          // meetingDetails,
-          // setDataroomMapFolderId,
-        ),
-      );
+      dispatch(SaveMeetingDetailsApi(navigate, t, data, context, {}));
     } else {
       seterror(true);
     }
@@ -465,6 +450,12 @@ const MeetingDetails = () => {
   const SaveMeeting = () => {
     let newArr = [];
     let newReminderData = [];
+    let context =
+      committeeInfo !== null
+        ? "committeeSaveMeeting"
+        : groupInfo !== null
+          ? "groupSaveMeeting"
+          : "saveMeeting";
     if (meetingDetails.ReminderFrequency.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
@@ -533,25 +524,7 @@ const MeetingDetails = () => {
           MeetingStatusID: currentMeetingStatus,
         },
       };
-      console.log(data, "newArrnewArrnewArrnewArr");
-      dispatch(
-        SaveMeetingDetialsApi(
-          navigate,
-          t,
-          data,
-          "save",
-          {}
-
-          // setSceduleMeeting,
-          // setorganizers,
-          // setmeetingDetails,
-          // 2,
-          // setCurrentMeetingID,
-          // currentMeeting,
-          // meetingDetails,
-          // setDataroomMapFolderId,
-        ),
-      );
+      dispatch(SaveMeetingDetailsApi(navigate, t, data, context, {}));
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
       seterror(true);
@@ -563,7 +536,12 @@ const MeetingDetails = () => {
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
-
+    let context =
+      committeeInfo !== null
+        ? "committeeUpdateMeeting"
+        : groupInfo !== null
+          ? "groupUpdateMeeting"
+          : "updateMeeting";
     // Push reminder frequencies if they are not zero
     if (meetingDetails.ReminderFrequency.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequency.value);
@@ -641,24 +619,7 @@ const MeetingDetails = () => {
           MeetingStatusID: currentMeetingStatus,
         },
       };
-      dispatch(
-        SaveMeetingDetialsApi(
-          navigate,
-          t,
-          data,
-          "update",
-          {}
-          // setSceduleMeeting,
-          // setorganizers,
-          // setmeetingDetails,
-          // 4,
-          // setCurrentMeetingID,
-          // currentMeeting,
-          // meetingDetails,
-          // setDataroomMapFolderId,
-        ),
-      );
-      console.log("newArrnewArrnewArrnewArr", data);
+      dispatch(SaveMeetingDetailsApi(navigate, t, data, context, {}));
     } else {
       seterror(true);
     }
@@ -802,15 +763,6 @@ const MeetingDetails = () => {
     }
   }, [getmeetingURL]);
 
-  //funciton cancel button
-  // const handleCancelMeetingButton = () => {
-  //   dispatch(showCancelModalmeetingDeitals(true));
-  // };
-  console.log(
-    getALlMeetingTypes?.meetingTypes,
-    "getALlMeetingTypes?.meetingTypes",
-  );
-
   //Reminder Frequency Drop Down Data
   useEffect(() => {
     try {
@@ -878,17 +830,28 @@ const MeetingDetails = () => {
       const meetingTypes = getALlMeetingTypes?.meetingTypes ?? [];
 
       if (meetingTypes.length > 0) {
-        const Newdata = [];
         let typeData = {};
 
         meetingTypes.forEach((data) => {
-          console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+          if (committeeInfo !== null) {
+            if (data.description?.toLowerCase().includes("committee")) {
+              // Save the last matching type
+              typeData = {
+                PK_MTID: data.pK_MTID,
+                Type: data.type,
+              };
+            }
+          }
+          if (groupInfo !== null) {
+            if (data.description?.toLowerCase().includes("group")) {
+              // Save the last matching type
+              typeData = {
+                PK_MTID: data.pK_MTID,
+                Type: data.type,
+              };
+            }
+          }
           if (data.description?.toLowerCase().includes("board")) {
-            Newdata.push({
-              value: data.pK_MTID,
-              label: data.type,
-            });
-
             // Save the last matching type
             typeData = {
               PK_MTID: data.pK_MTID,
@@ -896,8 +859,6 @@ const MeetingDetails = () => {
             };
           }
         });
-
-        setmeetingTypeDropdown(Newdata);
 
         setMeetingDetails((prev) => ({
           ...prev,
@@ -907,7 +868,7 @@ const MeetingDetails = () => {
     } catch (error) {
       console.error("Error setting meeting types:", error);
     }
-  }, [getALlMeetingTypes]);
+  }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   // Showing The reposnse messege
   useEffect(() => {
@@ -1034,14 +995,11 @@ const MeetingDetails = () => {
     dispatch(getAgendaVotingDetails_success([], ""));
     dispatch(saveFiles_success(null, ""));
     dispatch(saveAgendaVoting_success([], ""));
-    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
     dispatch(uploadDocument_success(null, ""));
     dispatch(getAllVotingResultDisplay_success([], ""));
     dispatch(getAgendaWithMeetingIDForImport_success(null, ""));
     dispatch(getAllMeetingForAgendaImport_success([], ""));
   }, []);
-
-  console.log("MeetingDetailsMeetingDetails", meetingDetails);
 
   return (
     <section>
@@ -1075,10 +1033,10 @@ const MeetingDetails = () => {
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isMeetingCreateOrEdit === 2
+                      isAdvanceMeetingRoute === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                            isMeetingCreateOrEdit === 2
+                            isAdvanceMeetingRoute === 2
                           ? true
                           : false
                     }
@@ -1098,58 +1056,50 @@ const MeetingDetails = () => {
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className="my-3">
                 <Col lg={6} md={6} sm={12}>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
+                  <span className={styles["Meeting_type_heading"]}>
+                    {t("Meeting-type")}
+                    <span className={styles["steric"]}>*</span>
+                  </span>
+                  <div className={styles["meetingType_Value"]}>
+                    {" "}
+                    {meetingDetails.MeetingType.Type}
+                  </div>
+                </Col>
+                {committeeInfo !== null ? (
+                  <>
+                    {" "}
+                    <Col lg={6} md={6} sm={6}>
                       <span className={styles["Meeting_type_heading"]}>
-                        {t("Meeting-type")}
+                        {t("Committee-title")}
                         <span className={styles["steric"]}>*</span>
                       </span>
+                      <div className={styles["meetingType_Value"]}>
+                        {committeeInfo.committeeTitle}
+                      </div>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <Select
-                        options={meetingTypeDropdown}
-                        placeholder={t("Meeting-type")}
-                        value={{
-                          value: meetingDetails.MeetingType?.PK_MTID,
-                          label: meetingDetails.MeetingType?.Type,
-                        }}
-                        onChange={handleMeetingSelectChange}
-                        isSearchable={false}
-                        isDisabled={
-                          (Number(editorRole.status) === 9 ||
-                            Number(editorRole.status) === 8 ||
-                            Number(editorRole.status) === 10) &&
-                          editorRole.role === "Organizer" &&
-                          isMeetingCreateOrEdit === 2
-                            ? true
-                            : editorRole.role === "Agenda Contributor" &&
-                                isMeetingCreateOrEdit === 2
-                              ? true
-                              : false
-                        }
-                      />
+                  </>
+                ) : groupInfo !== null ? (
+                  <>
+                    <Col lg={6} md={6} sm={6}>
+                      <span className={styles["Meeting_type_heading"]}>
+                        {t("Group-title")}
+                        <span className={styles["steric"]}>*</span>
+                      </span>
 
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && meetingDetails.MeetingType === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-select-meeting-type")}
-                          </p>
-                        </Col>
-                      </Row>
+                      <div className={styles["meetingType_Value"]}>
+                        {groupInfo.groupTitle}
+                      </div>
                     </Col>
-                  </Row>
-                </Col>
-                <Col lg={6} md={6} sm={12}>
+                  </>
+                ) : null}
+
+                <Col
+                  lg={committeeInfo === null && groupInfo === null ? 6 : 12}
+                  md={committeeInfo === null && groupInfo === null ? 6 : 12}
+                  sm={committeeInfo === null && groupInfo === null ? 6 : 12}
+                >
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
@@ -1171,10 +1121,10 @@ const MeetingDetails = () => {
                             Number(editorRole.status) === 8 ||
                             Number(editorRole.status) === 10) &&
                           editorRole.role === "Organizer" &&
-                          isMeetingCreateOrEdit === 2
+                          isAdvanceMeetingRoute === 2
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isMeetingCreateOrEdit === 2
+                                isAdvanceMeetingRoute === 2
                               ? true
                               : false
                         }
@@ -1213,10 +1163,10 @@ const MeetingDetails = () => {
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isMeetingCreateOrEdit === 2
+                      isAdvanceMeetingRoute === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                            isMeetingCreateOrEdit === 2
+                            isAdvanceMeetingRoute === 2
                           ? true
                           : false
                     }
@@ -1289,7 +1239,7 @@ const MeetingDetails = () => {
                                           Number(editorRole.status) === 8 ||
                                           Number(editorRole.status) === 10) &&
                                         editorRole.role === "Organizer" &&
-                                        isMeetingCreateOrEdit === 2
+                                        isAdvanceMeetingRoute === 2
                                           ? true
                                           : (Number(editorRole.status) === 11 ||
                                                 Number(editorRole.status) ===
@@ -1302,7 +1252,7 @@ const MeetingDetails = () => {
                                                   10) &&
                                               editorRole.role ===
                                                 "Agenda Contributor" &&
-                                              isMeetingCreateOrEdit === 2
+                                              isAdvanceMeetingRoute === 2
                                             ? true
                                             : false
                                       }
@@ -1344,7 +1294,7 @@ const MeetingDetails = () => {
                                           Number(editorRole.status) === 8 ||
                                           Number(editorRole.status) === 10) &&
                                         editorRole.role === "Organizer" &&
-                                        isMeetingCreateOrEdit === 2
+                                        isAdvanceMeetingRoute === 2
                                           ? true
                                           : (Number(editorRole.status) === 11 ||
                                                 Number(editorRole.status) ===
@@ -1357,7 +1307,7 @@ const MeetingDetails = () => {
                                                   10) &&
                                               editorRole.role ===
                                                 "Agenda Contributor" &&
-                                              isMeetingCreateOrEdit === 2
+                                              isAdvanceMeetingRoute === 2
                                             ? true
                                             : false
                                       }
@@ -1406,7 +1356,7 @@ const MeetingDetails = () => {
                                           Number(editorRole.status) === 8 ||
                                           Number(editorRole.status) === 10) &&
                                         editorRole.role === "Organizer" &&
-                                        isMeetingCreateOrEdit === 2
+                                        isAdvanceMeetingRoute === 2
                                           ? true
                                           : (Number(editorRole.status) === 11 ||
                                                 Number(editorRole.status) ===
@@ -1419,7 +1369,7 @@ const MeetingDetails = () => {
                                                   10) &&
                                               editorRole.role ===
                                                 "Agenda Contributor" &&
-                                              isMeetingCreateOrEdit === 2
+                                              isAdvanceMeetingRoute === 2
                                             ? true
                                             : false
                                       }
@@ -1443,10 +1393,10 @@ const MeetingDetails = () => {
                                     {index === 0 ? null : Number(
                                         editorRole.status,
                                       ) === 9 &&
-                                      isMeetingCreateOrEdit ===
+                                      isAdvanceMeetingRoute ===
                                         2 ? null : editorRole.role ===
                                         "Agenda Contributor" &&
-                                      isMeetingCreateOrEdit === 2 ? null : (
+                                      isAdvanceMeetingRoute === 2 ? null : (
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
@@ -1474,10 +1424,10 @@ const MeetingDetails = () => {
                 Number(editorRole.status) === 8 ||
                 Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-                 isMeetingCreateOrEdit === 2 ? (
+                 isAdvanceMeetingRoute === 2 ? (
                 <></>
               ) : editorRole.role === "Agenda Contributor" &&
-                   isMeetingCreateOrEdit === 2 ? null : (
+                   isAdvanceMeetingRoute === 2 ? null : (
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     {/* <Button
@@ -1548,7 +1498,7 @@ const MeetingDetails = () => {
                         Number(editorRole.status) === 10) &&
                       (editorRole.role === "Organizer" ||
                         editorRole.role === "Agenda Contributor") &&
-                      isMeetingCreateOrEdit === 2
+                      isAdvanceMeetingRoute === 2
                         ? true
                         : false
                     }
@@ -1579,10 +1529,10 @@ const MeetingDetails = () => {
                               Number(editorRole.status) === 8 ||
                               Number(editorRole.status) === 10) &&
                             editorRole.role === "Organizer" &&
-                            isMeetingCreateOrEdit === 2
+                            isAdvanceMeetingRoute === 2
                           ? true
                           : editorRole.role === "Agenda Contributor" &&
-                              isMeetingCreateOrEdit === 2
+                              isAdvanceMeetingRoute === 2
                             ? true
                             : false
                     }
@@ -1613,10 +1563,10 @@ const MeetingDetails = () => {
                               Number(editorRole.status) === 8 ||
                               Number(editorRole.status) === 10) &&
                             editorRole.role === "Organizer" &&
-                            isMeetingCreateOrEdit === 2
+                            isAdvanceMeetingRoute === 2
                           ? true
                           : editorRole.role === "Agenda Contributor" &&
-                              isMeetingCreateOrEdit === 2
+                              isAdvanceMeetingRoute === 2
                             ? true
                             : false
                     }
@@ -1660,10 +1610,10 @@ const MeetingDetails = () => {
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isMeetingCreateOrEdit === 2
+                      isAdvanceMeetingRoute === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                            isMeetingCreateOrEdit === 2
+                            isAdvanceMeetingRoute === 2
                           ? true
                           : false
                     }
@@ -1683,10 +1633,10 @@ const MeetingDetails = () => {
                             Number(editorRole.status) === 8 ||
                             Number(editorRole.status) === 10) &&
                           editorRole.role === "Organizer" &&
-                          isMeetingCreateOrEdit === 2
+                          isAdvanceMeetingRoute === 2
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isMeetingCreateOrEdit === 2
+                                isAdvanceMeetingRoute === 2
                               ? true
                               : false
                         }
@@ -1713,10 +1663,10 @@ const MeetingDetails = () => {
                             Number(editorRole.status) === 8 ||
                             Number(editorRole.status) === 10) &&
                           editorRole.role === "Organizer" &&
-                          isMeetingCreateOrEdit === 2
+                          isAdvanceMeetingRoute === 2
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isMeetingCreateOrEdit === 2
+                                isAdvanceMeetingRoute === 2
                               ? true
                               : false
                         }
@@ -1740,10 +1690,10 @@ const MeetingDetails = () => {
                             Number(editorRole.status) === 8 ||
                             Number(editorRole.status) === 10) &&
                           editorRole.role === "Organizer" &&
-                          isMeetingCreateOrEdit === 2
+                          isAdvanceMeetingRoute === 2
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isMeetingCreateOrEdit === 2
+                                isAdvanceMeetingRoute === 2
                               ? true
                               : false
                         }
@@ -1765,10 +1715,10 @@ const MeetingDetails = () => {
                             Number(editorRole.status) === 8 ||
                             Number(editorRole.status) === 10) &&
                           editorRole.role === "Organizer" &&
-                          isMeetingCreateOrEdit === 2
+                          isAdvanceMeetingRoute === 2
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isMeetingCreateOrEdit === 2
+                                isAdvanceMeetingRoute === 2
                               ? true
                               : false
                         }
@@ -1819,10 +1769,10 @@ const MeetingDetails = () => {
                             Number(editorRole.status) === 8 ||
                             Number(editorRole.status) === 10) &&
                           editorRole.role === "Organizer" &&
-                             isMeetingCreateOrEdit === 2
+                             isAdvanceMeetingRoute === 2
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                 isMeetingCreateOrEdit === 2
+                                 isAdvanceMeetingRoute === 2
                             ? true
                             : false
                         }
@@ -1870,10 +1820,10 @@ const MeetingDetails = () => {
                               Number(editorRole.status) === 8 ||
                               Number(editorRole.status) === 10) &&
                             editorRole.role === "Organizer" &&
-                            isMeetingCreateOrEdit === 2
+                            isAdvanceMeetingRoute === 2
                           ? true
                           : editorRole.role === "Agenda Contributor" &&
-                              isMeetingCreateOrEdit === 2
+                              isAdvanceMeetingRoute === 2
                             ? true
                             : false
                     }
@@ -1912,18 +1862,17 @@ const MeetingDetails = () => {
           ) : (
             currentMeetingInfo.meetingID !== 0 &&
             editorRole.role === "Organizer" &&
-            (
-              editorRole.status === "11" ||
-              editorRole.status === "08" ||
-              editorRole.status === "12"
-            )(
+            (Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 1 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 12) && (
               <>
                 <Button
                   text={t("Next")}
                   className={styles["Update_Next"]}
                   onClick={UpdateMeetings}
                 />
-              </>,
+              </>
             )
           )}
 
@@ -1943,13 +1892,7 @@ const MeetingDetails = () => {
       </Row>
 
       <CancelButtonModal setRows={setRows} />
-      {nextConfirmModal && (
-        <NextModal
-          // setmeetingDetails={setmeetingDetails}
-          // setorganizers={setorganizers}
-          flag={1}
-        />
-      )}
+
       <Notification open={open} setOpen={setOpen} />
     </section>
   );

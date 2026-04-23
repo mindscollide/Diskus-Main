@@ -25,6 +25,7 @@ const initialState = {
   removeGroupMember: null,
   viewGroupsList: null,
   viewGroupDetailLink: null,
+  viewGroupDetails: null,
 };
 
 const GroupsReducer = (state = initialState, action) => {
@@ -445,6 +446,19 @@ const GroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         removeGroupMember: action.response,
+      };
+    }
+
+    case actions.VIEW_GROUP_DETAILS: {
+      return {
+        ...state,
+        viewGroupDetails: action.payload,
+      };
+    }
+    case actions.RESET_VIEW_GROUP_DETAILS: {
+      return {
+        ...state,
+        viewGroupDetails: null,
       };
     }
     default:

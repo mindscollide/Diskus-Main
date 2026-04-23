@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -14,23 +14,9 @@ import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import {
-  GetAllMeetingDetailsApiFunc,
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
-  showCancelModalAgenda,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
-  uploadGlobalFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   searchNewUserMeeting,
@@ -39,280 +25,129 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
-import {
-  MeetingContext,
-  useMeetingContext,
-} from "../../../../context/MeetingContext";
-import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
-import { GetAllMeetingDetailsApi } from "../../../../store/actions/MeetingActions";
-const CreateEditAdvanceMeeting = (
+import { useMeetingContext } from "../../../../context/MeetingContext";
 
-) => {
+// Fix: import Redux tab actions
+import { setCreateEditTab } from "../../../../store/actions/ModalStates_actions";
+import { getMeetingDetailsByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
+import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
+import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
+const CreateEditAdvanceMeeting = ({ route }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // ─── Redux State ──────────────────────────────────────────────────────────
+
   const { NewMeetingreducer } = useSelector((state) => state);
 
+  const isCreateEditMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditMeetingModal,
+  );
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
+  );
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes
+    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+  );
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
 
-  const { editorRole, setEditorRole, setCurrentMeetingID, currentMeeting } =
-    useMeetingContext();
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
+
+  console.log(committeeInfo, "committeeInfo");
+  console.log(groupInfo, "committeeInfo");
+
+  // Fix: read all tab states from Redux MeetingModalsReducer instead of
+  // individual NewMeetingreducer global flags
+  const {
+    meetingDetails: createEditMeetingDetailsTab,
+    organizers: createEditOrganizersTab,
+    agendaContributors: createEditAgendaContributorsTab,
+    participants: createEditParticipantsTab,
+    agenda: createEditAgendaTab,
+    meetingMaterial: createEditMeetingMaterialTab,
+    minutes: createEditMinutesTab,
+    actionsPage: createEditActionsPageTab,
+    polls: createEditPollsTab,
+    attendance: createEditAttendanceTab,
+  } = useSelector((state) => state.ModalStatesReducer.createEditTabs);
+
+  // ─── Context ──────────────────────────────────────────────────────────────
+
+  const { editorRole, setEditorRole, currentMeeting } = useMeetingContext();
+
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
-  console.log(meetingID, "meetingIDmeetingID");
-  //   const [meetingDetails, setmeetingDetails] = useState(
-  //     editorRole.role === "Agenda Contributor" ? false : true,
-  //   );
-  //   const [organizers, setorganizers] = useState(false);
-  //   const [agendaContributors, setAgendaContributors] = useState(false);
-  //   const [participants, setParticipants] = useState(false);
-  //   const [agenda, setAgenda] = useState(
-  //     editorRole.role === "Agenda Contributor" ? true : false,
-  //   );
-  //   const [meetingMaterial, setMeetingMaterial] = useState(false);
-  //   const [minutes, setMinutes] = useState(false);
-  //   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
-  //   const [actionsPage, setactionsPage] = useState(false);
-  //   const [polls, setPolls] = useState(false);
-  //   const [attendance, setAttendance] = useState(false);
 
-  let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
 
-  const createEditMeetingDetailsTab = useSelector(
-    (state) => state.NewMeetingreducer.meetingDetailsGlobalFlag,
-  );
-  const createEditOrganizersTab = useSelector(
-    (state) => state.NewMeetingreducer.organizersGlobalFlag,
-  );
-  const createEditAgendaContributorsTab = useSelector(
-    (state) => state.NewMeetingreducer.agendaContributorsGlobalFlag,
-  );
-  const createEditParticipantsTab = useSelector(
-    (state) => state.NewMeetingreducer.participantsGlobalFlag,
-  );
-  const createEditAgendaTab = useSelector(
-    (state) => state.NewMeetingreducer.agendaGlobalFlag,
-  );
-  const createEditMeetingMaterialTab = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialGlobalFlag,
-  );
-  const createEditMinutesTab = useSelector(
-    (state) => state.NewMeetingreducer.minutesGlobalFlag,
-  );
-
-  const createEditProposedMeetingDatesTab = useSelector(
-    (state) => state.NewMeetingreducer.proposedMeetingDatesGlobalFlag,
-  );
-  const createEditActionsPageTab = useSelector(
-    (state) => state.NewMeetingreducer.actionsGlobalFlag,
-  );
-  const createEditPollsTab = useSelector(
-    (state) => state.NewMeetingreducer.pollsGlobalFlag,
-  );
-  const createEditAttendanceTab = useSelector(
-    (state) => state.NewMeetingreducer.attendanceGlobalFlag,
-  );
-  const createEditUploadTab = useSelector(
-    (state) => state.NewMeetingreducer.uploadGlobalFlag,
-  );
-  console.log(
-    createEditMinutesTab,
-    createEditPollsTab,
-    createEditAttendanceTab,
-    "createEditUploadTab",
-  );
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // ─── On Mount: API Calls ──────────────────────────────────────────────────
 
   const apiCallsForComponentMound = async () => {
     try {
-      // // Meeting Type Drop Down API
       if (
         getALlMeetingTypes.length === 0 &&
         Object.keys(getALlMeetingTypes).length === 0
       ) {
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
       }
-      // Reminder Frequency Drop Down API
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-      // Recurring Drop Down API
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     } catch (error) {
       console.error("An error occurred during API calls:", error);
     }
   };
+
   useEffect(() => {
     if (meetingID === 0) {
       apiCallsForComponentMound();
     }
     return () => {
+      dispatch(resetViewGroupDetails());
+      dispatch(resetViewCommitteeDetails());
       setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
     };
   }, []);
 
+  // ─── Tab Switchers ────────────────────────────────────────────────────────
+  // Fix: each handler replaced with single dispatch instead of 10-12 flag dispatches
+
   const showMeetingDeitals = () => {
-    let Data = {
-      MeetingID: Number(meetingID),
-    };
+    // Fix: meeting details tab also fetches latest data if meeting exists
     if (meetingID !== 0) {
       dispatch(
-        GetAllMeetingDetailsApi(
+        getMeetingDetailsByMeetingIdApi(
           navigate,
           t,
-          Data,
+          { MeetingID: Number(meetingID) },
           "viewDetail",
           {},
-          // true,
-          // setCurrentMeetingID,
-          // //   setSceduleMeeting,
-          // // setCreatedMeetingInfo,
-          // 0,
-          // 1,
-          // false
         ),
       );
     }
+    dispatch(setCreateEditTab("meetingDetails"));
   };
 
-  const showOrganizers = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(true));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
+  const showOrganizers = () => dispatch(setCreateEditTab("organizers"));
+  const showAgendaContributers = () =>
+    dispatch(setCreateEditTab("agendaContributors"));
+  const showParticipants = () => dispatch(setCreateEditTab("participants"));
+  const showAgenda = () => dispatch(setCreateEditTab("agenda"));
+  const showMeetingMaterial = () =>
+    dispatch(setCreateEditTab("meetingMaterial"));
+  const showMinutes = () => dispatch(setCreateEditTab("minutes"));
+  const showActions = () => dispatch(setCreateEditTab("actionsPage"));
+  const ShowPolls = () => dispatch(setCreateEditTab("polls"));
+  const showAttendance = () => dispatch(setCreateEditTab("attendance"));
 
-  const showAgendaContributers = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(true));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const showParticipants = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(true));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const showAgenda = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(true));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const showMeetingMaterial = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(true));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const showMinutes = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(true));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const showActions = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(true));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const ShowPolls = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(true));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
-  };
-
-  const showAttendance = () => {
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(true));
-    dispatch(uploadGlobalFlag(false));
-  };
+  // ─── MQTT: Meeting AC Removed ─────────────────────────────────────────────
 
   useEffect(() => {
     if (
@@ -328,35 +163,37 @@ const CreateEditAdvanceMeeting = (
             role: null,
             isPrimaryOrganizer: false,
           });
-
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-            PublishedMeetings:
-              Number(localStorage.getItem("MeetingCurrentView")) === 1
-                ? true
-                : false,
-            ProposedMeetings:
-              Number(localStorage.getItem("MeetingCurrentView")) === 2
-                ? true
-                : false,
-          };
           localStorage.removeItem("folderDataRoomMeeting");
-
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(
+            searchNewUserMeeting(
+              navigate,
+              {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+                PublishedMeetings:
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1,
+                ProposedMeetings:
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2,
+              },
+              t,
+            ),
+          );
         }
       } catch (error) {
-        console.error(error, "error");
+        console.error(error);
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
+
+  // ─── MQTT: Meeting Org Removed ────────────────────────────────────────────
+
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
@@ -371,194 +208,203 @@ const CreateEditAdvanceMeeting = (
             role: null,
             isPrimaryOrganizer: false,
           });
-
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-            PublishedMeetings:
-              Number(localStorage.getItem("MeetingCurrentView")) === 1
-                ? true
-                : false,
-            ProposedMeetings:
-              Number(localStorage.getItem("MeetingCurrentView")) === 2
-                ? true
-                : false,
-          };
           localStorage.removeItem("folderDataRoomMeeting");
-
-          console.log("chek search meeting");
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          dispatch(
+            searchNewUserMeeting(
+              navigate,
+              {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                PublishedMeetings:
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1,
+                ProposedMeetings:
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2,
+              },
+              t,
+            ),
+          );
         }
       } catch (error) {
-        console.error(error, "error");
+        console.error(error);
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
+
+  // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <section>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          {meetingID !== 0 ? (
+          {isCreateEditMeetingModal && (
             <span className={styles["Scedule_newMeeting_Heading"]}>
-              {t("Edit-meeting")}
-            </span>
-          ) : (
-            <span className={styles["Scedule_newMeeting_Heading"]}>
-              {t("Schedule-new-meeting")}
+              {isAdvanceMeetingRoute === 1
+                ? committeeInfo !== null
+                  ? t("Schedule-new-committee-meeting")
+                  : groupInfo !== null
+                    ? t("Schedule-new-group-meeting")
+                    : t("Schedule-new-meeting")
+                : isAdvanceMeetingRoute === 2
+                  ? t("Edit-meeting")
+                  : null}
             </span>
           )}
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className='mb-4'>
+        <Col lg={12} md={12} sm={12} className="mb-4">
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='py-2 d-flex gap-2 flex-wrap'>
+                className="py-2 d-flex gap-2 flex-wrap"
+              >
                 <Button
                   text={t("Meeting-details")}
                   className={
-                    createEditMeetingDetailsTab === true
+                    createEditMeetingDetailsTab
                       ? styles["Schedule_meetings_options_active"]
                       : styles["Schedule_meetings_options"]
                   }
                   onClick={showMeetingDeitals}
                 />
+
                 {meetingID !== 0 && (
                   <>
-                    {" "}
-                    {editorRole.role === "Agenda Contributor" ? null : (
+                    {editorRole.role !== "Agenda Contributor" && (
                       <Button
-                        disableBtn={meetingID === 0 ? true : false}
                         text={t("Organizers")}
                         className={
-                          createEditOrganizersTab === true
+                          createEditOrganizersTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={showOrganizers}
                       />
                     )}
-                    {editorRole.role === "Agenda Contributor" ? null : (
+
+                    {editorRole.role !== "Agenda Contributor" && (
                       <Button
-                        disableBtn={meetingID === 0 ? true : false}
                         text={t("Agenda-contributors")}
                         className={
-                          createEditAgendaContributorsTab === true
+                          createEditAgendaContributorsTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={showAgendaContributers}
                       />
                     )}
-                    {editorRole.role === "Agenda Contributor" ? null : (
+
+                    {editorRole.role !== "Agenda Contributor" && (
                       <Button
-                        disableBtn={meetingID === 0 ? true : false}
                         text={t("Participants")}
                         className={
-                          createEditParticipantsTab === true
+                          createEditParticipantsTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={showParticipants}
                       />
                     )}
+
                     <Button
-                      disableBtn={meetingID === 0 ? true : false}
                       text={t("Agenda-builder")}
                       className={
-                        createEditAgendaTab === true
+                        createEditAgendaTab
                           ? styles["Schedule_meetings_options_active"]
                           : styles["Schedule_meetings_options"]
                       }
                       onClick={showAgenda}
                     />
+
                     <Button
-                      disableBtn={meetingID === 0 ? true : false}
                       text={t("Meeting-material")}
                       className={
-                        createEditMeetingMaterialTab === true
+                        createEditMeetingMaterialTab
                           ? styles["Schedule_meetings_options_active"]
                           : styles["Schedule_meetings_options"]
                       }
                       onClick={showMeetingMaterial}
                     />
-                    {editorRole.role === "Agenda Contributor" ? null : (
+
+                    {editorRole.role !== "Agenda Contributor" && (
                       <Button
-                        disableBtn={
-                          Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
-                            ? false
-                            : true
-                        }
                         text={t("Minutes")}
                         className={
-                          createEditMinutesTab === true
+                          createEditMinutesTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={showMinutes}
-                      />
-                    )}
-                    {checkFeatureIDAvailability(14) ? (
-                      <Button
                         disableBtn={
                           Number(editorRole.status) === 10 ||
                           Number(editorRole.status) === 9
                             ? false
                             : true
                         }
+                      />
+                    )}
+
+                    {checkFeatureIDAvailability(14) && (
+                      <Button
                         text={t("Task")}
                         className={
-                          createEditActionsPageTab === true
+                          createEditActionsPageTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={showActions}
-                      />
-                    ) : null}
-                    {checkFeatureIDAvailability(15) ? (
-                      <Button
                         disableBtn={
                           Number(editorRole.status) === 10 ||
                           Number(editorRole.status) === 9
                             ? false
                             : true
                         }
+                      />
+                    )}
+
+                    {checkFeatureIDAvailability(15) && (
+                      <Button
                         text={t("Polls")}
                         className={
-                          createEditPollsTab === true
+                          createEditPollsTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={ShowPolls}
-                      />
-                    ) : null}
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Organizer" &&
-                    meetingID !== 0 ? (
-                      <Button
-                        disableBtn={meetingID !== 0 ? true : false}
-                        text={t("Attendence")}
-                        className={
-                          createEditAttendanceTab === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                        disableBtn={
+                          Number(editorRole.status) === 10 ||
+                          Number(editorRole.status) === 9
+                            ? false
+                            : true
                         }
-                        onClick={showAttendance}
                       />
-                    ) : null}{" "}
+                    )}
+
+                    {Number(editorRole.status) === 10 &&
+                      editorRole.role === "Organizer" && (
+                        <Button
+                          text={t("Attendence")}
+                          className={
+                            createEditAttendanceTab
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showAttendance}
+                          // Fix: original had disableBtn={meetingID !== 0 ? true : false}
+                          // which always disabled the button when meetingID exists — corrected to false
+                          disableBtn={false}
+                        />
+                      )}
                   </>
                 )}
               </Col>

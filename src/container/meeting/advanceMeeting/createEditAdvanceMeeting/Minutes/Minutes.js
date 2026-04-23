@@ -50,6 +50,8 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
+import { meetingIdReducer } from "../../../../../store/reducers";
 
 const Minutes = ({
   setMinutes,
@@ -65,12 +67,14 @@ const Minutes = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let userID = localStorage.getItem("userID");
-  let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const generalMinutes = useSelector(
     (state) => state.NewMeetingreducer.generalMinutes,
+  );
+  const { meetingID = 0, mapFolderId } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
   const generalminutesDocumentForMeeting = useSelector(
     (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting,
@@ -158,9 +162,17 @@ const Minutes = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
     };
-    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(
+      GetAllGeneralMinutesApiFunc(
+        navigate,
+        t,
+        { MeetingID: Number(meetingID) },
+        "getallGeneralMinutes",
+        {},
+      ),
+    );
     return () => {
       setMessages([]);
       setFileAttachments([]);
@@ -371,10 +383,15 @@ const Minutes = ({
   };
 
   const handleGeneralButtonClick = () => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(
+      GetAllGeneralMinutesApiFunc(
+        navigate,
+        t,
+        { MeetingID: Number(meetingID) },
+        "getallGeneralMinutes",
+        {},
+      ),
+    );
     setAgenda(false);
     setGeneral(true);
   };
@@ -386,10 +403,10 @@ const Minutes = ({
   const handleAddClick = async () => {
     if (addNoteFields.Description.value !== "") {
       let Data = {
-        MeetingID: currentMeeting,
+        MeetingID: Number(meetingID),
         MinuteText: addNoteFields.Description.value,
       };
-      dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+      dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
     } else {
       setAddNoteFields({
         ...addNoteFields,
@@ -420,7 +437,7 @@ const Minutes = ({
             navigate,
             t,
             newData,
-            folderID,
+            mapFolderId,
             // newFolder,
             newfile,
           ),
@@ -431,24 +448,31 @@ const Minutes = ({
       await Promise.all(uploadPromises);
 
       await dispatch(
-        saveFilesMeetingMinutesApi(navigate, t, newfile, folderID, newFolder),
+        saveFilesMeetingMinutesApi(
+          navigate,
+          t,
+          newfile,
+          mapFolderId,
+          newFolder,
+        ),
       );
       let docsData = {
         FK_MeetingGeneralMinutesID: minuteID,
-        FK_MDID: currentMeeting,
+        FK_MDID: Number(meetingID),
         UpdateFileList: newFolder.map((data, index) => {
           return { PK_FileID: Number(data.pK_FileID) };
         }),
       };
-      dispatch(
-        SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting),
-      );
+      dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
     } else {
-      let Meet = {
-        MeetingID: Number(currentMeeting),
-      };
       await dispatch(
-        GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting),
+        GetAllGeneralMinutesApiFunc(
+          navigate,
+          t,
+          { MeetingID: Number(meetingID) },
+          "getallGeneralMinutes",
+          currentMeeting,
+        ),
       );
     }
     setFileAttachments([]);
@@ -524,11 +548,18 @@ const Minutes = ({
   };
   //Updating the text of min
   const handleUpdateFunc = async () => {
-    let Data = {
-      MinuteID: updateData.minuteID,
-      MinuteText: addNoteFields.Description.value,
-    };
-    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t, false));
+    dispatch(
+      UpdateMinutesGeneralApiFunc(
+        navigate,
+        t,
+        {
+          MinuteID: updateData.minuteID,
+          MinuteText: addNoteFields.Description.value,
+        },
+        "updateGeneralMinutes",
+        { flag: false },
+      ),
+    );
 
     let newfile = [...previousFileIDs];
     let fileObj = [];
@@ -539,7 +570,7 @@ const Minutes = ({
             navigate,
             t,
             newData,
-            folderID,
+            mapFolderId,
             fileObj,
           ),
         );
@@ -548,7 +579,7 @@ const Minutes = ({
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
       await dispatch(
-        saveFilesMeetingMinutesApi(navigate, t, fileObj, folderID, newfile),
+        saveFilesMeetingMinutesApi(navigate, t, fileObj, mapFolderId, newfile),
       );
       let docsData = {
         FK_MeetingGeneralMinutesID: updateData.minuteID,
@@ -557,9 +588,7 @@ const Minutes = ({
           return { PK_FileID: Number(data.pK_FileID) };
         }),
       };
-      await dispatch(
-        SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting),
-      );
+      await dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
     } else if (newfile.length > 0) {
       let docsData = {
         FK_MeetingGeneralMinutesID: updateData.minuteID,
@@ -568,16 +597,7 @@ const Minutes = ({
           return { PK_FileID: Number(data.pK_FileID) };
         }),
       };
-      await dispatch(
-        SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting),
-      );
-    } else {
-      let Meet = {
-        MeetingID: Number(currentMeeting),
-      };
-      await dispatch(
-        GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting),
-      );
+      await dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
     }
 
     setFileAttachments([]);
@@ -607,10 +627,13 @@ const Minutes = ({
 
   //handle Invite to Collaborate
   const handleInvitetoCollaborate = () => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(InviteToCollaborateMinutesApiFunc(navigate, Data, t));
+    dispatch(
+      InviteToCollaborateMinutesApiFunc(
+        navigate,
+        { MeetingID: Number(meetingID) },
+        t,
+      ),
+    );
   };
 
   // Cancel Button
@@ -630,8 +653,8 @@ const Minutes = ({
         setUseCase(3);
       } else {
         setFileAttachments([]);
-        setMinutes(false);
-        setSceduleMeeting(false);
+        // setMinutes(false);
+        // setSceduleMeeting(false);
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
           Date: "",
@@ -690,20 +713,21 @@ const Minutes = ({
         dispatch(showUnsaveMinutesFileUpload(true));
         setUseCase(2);
       } else {
-        setactionsPage(true);
-        setMinutes(false);
-        dispatch(meetingDetailsGlobalFlag(false));
-        dispatch(organizersGlobalFlag(false));
-        dispatch(agendaContributorsGlobalFlag(false));
-        dispatch(participantsGlobalFlag(false));
-        dispatch(agendaGlobalFlag(false));
-        dispatch(meetingMaterialGlobalFlag(false));
-        dispatch(minutesGlobalFlag(false));
-        dispatch(proposedMeetingDatesGlobalFlag(false));
-        dispatch(actionsGlobalFlag(true));
-        dispatch(pollsGlobalFlag(false));
-        dispatch(attendanceGlobalFlag(false));
-        dispatch(uploadGlobalFlag(false));
+        dispatch(setCreateEditTab("actions"));
+        // setactionsPage(true);
+        // setMinutes(false);
+        // dispatch(meetingDetailsGlobalFlag(false));
+        // dispatch(organizersGlobalFlag(false));
+        // dispatch(agendaContributorsGlobalFlag(false));
+        // dispatch(participantsGlobalFlag(false));
+        // dispatch(agendaGlobalFlag(false));
+        // dispatch(meetingMaterialGlobalFlag(false));
+        // dispatch(minutesGlobalFlag(false));
+        // dispatch(proposedMeetingDatesGlobalFlag(false));
+        // dispatch(actionsGlobalFlag(true));
+        // dispatch(pollsGlobalFlag(false));
+        // dispatch(attendanceGlobalFlag(false));
+        // dispatch(uploadGlobalFlag(false));
       }
     } else if (general) {
       if (
@@ -713,20 +737,7 @@ const Minutes = ({
         dispatch(showUnsaveMinutesFileUpload(true));
         setUseCase(2);
       } else {
-        setactionsPage(true);
-        setMinutes(false);
-        dispatch(meetingDetailsGlobalFlag(false));
-        dispatch(organizersGlobalFlag(false));
-        dispatch(agendaContributorsGlobalFlag(false));
-        dispatch(participantsGlobalFlag(false));
-        dispatch(agendaGlobalFlag(false));
-        dispatch(meetingMaterialGlobalFlag(false));
-        dispatch(minutesGlobalFlag(false));
-        dispatch(proposedMeetingDatesGlobalFlag(false));
-        dispatch(actionsGlobalFlag(true));
-        dispatch(pollsGlobalFlag(false));
-        dispatch(attendanceGlobalFlag(false));
-        dispatch(uploadGlobalFlag(false));
+        dispatch(setCreateEditTab("actions"));
       }
     }
 
@@ -1249,15 +1260,15 @@ const Minutes = ({
           setSceduleMeeting={setSceduleMeeting}
           setFileAttachments={setFileAttachments}
           useCase={useCase}
-          setactionsPage={setactionsPage}
-          setMeetingMaterial={setMeetingMaterial}
+          // setactionsPage={setactionsPage}
+          // setMeetingMaterial={setMeetingMaterial}
         />
       )}
 
       {ShowPreviousModal && (
         <PreviousModal
           setMinutes={setMinutes}
-          setMeetingMaterial={setMeetingMaterial}
+          // setMeetingMaterial={setMeetingMaterial}
           prevFlag={prevFlag}
         />
       )}

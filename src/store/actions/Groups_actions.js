@@ -1,7 +1,11 @@
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
-import { dataRoomApi, getGroupsApi } from "../../commen/apis/Api_ends_points";
+import {
+  dataRoomApi,
+  getGroupsApi,
+  meetingApi,
+} from "../../commen/apis/Api_ends_points";
 import {
   getGroupsByUserIdRequestMethod,
   getAllOrganizationGroups,
@@ -18,11 +22,14 @@ import {
   RetrieveGroupDocuments,
   ValidateEncryptedStringViewGroupListLinkRM,
   ValidateEncryptedStringViewGroupDetailsLinkRM,
+  setMeetingbyGroupIDRM,
+  getMeetingbyGroupIDRM,
 } from "../../commen/apis/Api_config";
 import { GetAllUserChats } from "./Talk_action";
 import { isFunction } from "../../commen/functions/utils";
 import { AccessDeniedPolls } from "./Polls_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { setCreateEditTab } from "./ModalStates_actions";
 
 const clearMessagesGroup = () => {
   return {
@@ -77,7 +84,7 @@ const getGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_01".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_01".toLowerCase(),
                 )
             ) {
               dispatch(groupLoader(false));
@@ -88,7 +95,7 @@ const getGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_02".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_02".toLowerCase(),
                 )
             ) {
               dispatch(getGroup_Fail(""));
@@ -97,7 +104,7 @@ const getGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_03".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_03".toLowerCase(),
                 )
             ) {
               dispatch(getGroup_Fail(""));
@@ -106,7 +113,7 @@ const getGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_04".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_04".toLowerCase(),
                 )
             ) {
               dispatch(getGroup_Fail(""));
@@ -115,7 +122,7 @@ const getGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_05".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_05".toLowerCase(),
                 )
             ) {
               dispatch(getGroup_Fail(""));
@@ -124,7 +131,7 @@ const getGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_06".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_06".toLowerCase(),
                 )
             ) {
               dispatch(getGroup_Fail(t("Something-went-wrong")));
@@ -202,17 +209,17 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_01".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getArchivedGroups_success(response.data.responseResult, "")
+                getArchivedGroups_success(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_02".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_02".toLowerCase(),
                 )
             ) {
               dispatch(getArchivedGroups_fail(""));
@@ -221,7 +228,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_03".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_03".toLowerCase(),
                 )
             ) {
               dispatch(getArchivedGroups_fail(""));
@@ -230,7 +237,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_04".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_04".toLowerCase(),
                 )
             ) {
               dispatch(getArchivedGroups_fail(""));
@@ -238,7 +245,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_05".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_05".toLowerCase(),
                 )
             ) {
               dispatch(getArchivedGroups_fail(""));
@@ -246,7 +253,7 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_SearchGroups_06".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_06".toLowerCase(),
                 )
             ) {
               dispatch(getArchivedGroups_fail(t("Something-went-wrong")));
@@ -289,7 +296,7 @@ const getbyGroupID = (
   setViewGroupPage,
   setUpdateComponentpage,
   no,
-  setArchivedGroups
+  setArchivedGroups,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
@@ -316,8 +323,8 @@ const getbyGroupID = (
               setViewGroupPage,
               setUpdateComponentpage,
               no,
-              setArchivedGroups
-            )
+              setArchivedGroups,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -325,11 +332,11 @@ const getbyGroupID = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByGroupID_01".toLowerCase()
+                  "Groups_GroupServiceManager_GetGroupByGroupID_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getbyGroupID_Success(response.data.responseResult.group, "")
+                getbyGroupID_Success(response.data.responseResult.group, ""),
               );
               try {
                 let newData = {
@@ -359,7 +366,7 @@ const getbyGroupID = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByGroupID_02".toLowerCase()
+                  "Groups_GroupServiceManager_GetGroupByGroupID_02".toLowerCase(),
                 )
             ) {
               dispatch(getbyGroupID_Fail(""));
@@ -367,7 +374,7 @@ const getbyGroupID = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByGroupID_03".toLowerCase()
+                  "Groups_GroupServiceManager_GetGroupByGroupID_03".toLowerCase(),
                 )
             ) {
               dispatch(getbyGroupID_Fail(""));
@@ -375,7 +382,7 @@ const getbyGroupID = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByGroupID_04".toLowerCase()
+                  "Groups_GroupServiceManager_GetGroupByGroupID_04".toLowerCase(),
                 )
             ) {
               dispatch(getbyGroupID_Fail(""));
@@ -383,7 +390,7 @@ const getbyGroupID = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByGroupID_05".toLowerCase()
+                  "Groups_GroupServiceManager_GetGroupByGroupID_05".toLowerCase(),
                 )
             ) {
               dispatch(getbyGroupID_Fail(""));
@@ -391,7 +398,7 @@ const getbyGroupID = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByGroupID_06".toLowerCase()
+                  "Groups_GroupServiceManager_GetGroupByGroupID_06".toLowerCase(),
                 )
             ) {
               dispatch(getbyGroupID_Fail(""));
@@ -450,22 +457,22 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_CreateNewGroup_01".toLowerCase()
+                  "Groups_GroupServiceManager_CreateNewGroup_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                createGroup_Success(response.data.responseResult, "")
+                createGroup_Success(response.data.responseResult, ""),
               );
               localStorage.setItem(
                 "groupID",
-                response.data.responseResult.groupID
+                response.data.responseResult.groupID,
               );
               let newData = {
                 GroupID: response.data.responseResult.groupID,
                 GroupTitle: Data.GroupDetails.title,
                 IsUpdateFlow: false,
                 GroupMembers: Data.GroupMembers.map(
-                  (data, index) => data.FK_UID
+                  (data, index) => data.FK_UID,
                 ),
               };
 
@@ -475,7 +482,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_CreateNewGroup_02".toLowerCase()
+                  "Groups_GroupServiceManager_CreateNewGroup_02".toLowerCase(),
                 )
             ) {
               dispatch(createGroup_Fail(""));
@@ -483,7 +490,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_CreateNewGroup_03".toLowerCase()
+                  "Groups_GroupServiceManager_CreateNewGroup_03".toLowerCase(),
                 )
             ) {
               dispatch(createGroup_Fail(""));
@@ -491,7 +498,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_CreateNewGroup_04".toLowerCase()
+                  "Groups_GroupServiceManager_CreateNewGroup_04".toLowerCase(),
                 )
             ) {
               dispatch(createGroup_Fail(""));
@@ -499,7 +506,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_CreateNewGroup_05".toLowerCase()
+                  "Groups_GroupServiceManager_CreateNewGroup_05".toLowerCase(),
                 )
             ) {
               dispatch(createGroup_Fail(""));
@@ -507,7 +514,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_CreateNewGroup_06".toLowerCase()
+                  "Groups_GroupServiceManager_CreateNewGroup_06".toLowerCase(),
                 )
             ) {
               dispatch(createGroup_Fail(t("Something-went-wrong")));
@@ -564,20 +571,20 @@ const getGroupMembersRoles = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_01".toLowerCase()
+                  "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getOrganiationGroupRoles_Success(
                   response.data.responseResult.groupRoles,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_02".toLowerCase()
+                  "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_02".toLowerCase(),
                 )
             ) {
               dispatch(getOrganiationGroupRoles_Fail(""));
@@ -585,13 +592,13 @@ const getGroupMembersRoles = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_03".toLowerCase()
+                  "Groups_GroupServiceManager_GetAllOrganizationGroupRoles_03".toLowerCase(),
                 )
             ) {
               dispatch(getOrganiationGroupRoles_Fail(""));
             } else {
               dispatch(
-                getOrganiationGroupRoles_Fail(t("Something-went-wrong"))
+                getOrganiationGroupRoles_Fail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -643,20 +650,20 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_01".toLowerCase()
+                  "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getOrganizationGroupTypes_Success(
                   response.data.responseResult.groupTypes,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_02".toLowerCase()
+                  "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_02".toLowerCase(),
                 )
             ) {
               dispatch(getOrganizationGroupTypes_Fail(""));
@@ -664,13 +671,13 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_03".toLowerCase()
+                  "Groups_GroupServiceManager_GetAllOrgainzationGroupTypes_03".toLowerCase(),
                 )
             ) {
               dispatch(getOrganizationGroupTypes_Fail(""));
             } else {
               dispatch(
-                getOrganizationGroupTypes_Fail(t("Something-went-wrong"))
+                getOrganizationGroupTypes_Fail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -722,14 +729,14 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_UpdateGroup_01".toLowerCase()
+                  "Groups_GroupServiceManager_UpdateGroup_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updateGroup_Succes(
                   response.data.responseResult,
-                  t("Updated-successfully")
-                )
+                  t("Updated-successfully"),
+                ),
               );
 
               let newData = {
@@ -737,7 +744,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                 GroupTitle: Data.GroupDetails.title,
                 IsUpdateFlow: true,
                 GroupMembers: Data.GroupMembers.map(
-                  (data, index) => data.FK_UID
+                  (data, index) => data.FK_UID,
                 ),
               };
 
@@ -746,7 +753,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_UpdateGroup_02".toLowerCase()
+                  "Groups_GroupServiceManager_UpdateGroup_02".toLowerCase(),
                 )
             ) {
               dispatch(updateGroup_Fail(""));
@@ -754,7 +761,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_UpdateGroup_03".toLowerCase()
+                  "Groups_GroupServiceManager_UpdateGroup_03".toLowerCase(),
                 )
             ) {
               dispatch(updateGroup_Fail(""));
@@ -762,7 +769,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_UpdateGroup_04".toLowerCase()
+                  "Groups_GroupServiceManager_UpdateGroup_04".toLowerCase(),
                 )
             ) {
               dispatch(updateGroup_Fail(""));
@@ -770,7 +777,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_UpdateGroup_05".toLowerCase()
+                  "Groups_GroupServiceManager_UpdateGroup_05".toLowerCase(),
                 )
             ) {
               dispatch(updateGroup_Fail(""));
@@ -778,7 +785,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_UpdateGroup_06".toLowerCase()
+                  "Groups_GroupServiceManager_UpdateGroup_06".toLowerCase(),
                 )
             ) {
               dispatch(updateGroup_Fail(t("Something-went-wrong")));
@@ -835,11 +842,11 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GroupStatusUpdate_01".toLowerCase()
+                  "Groups_GroupServiceManager_GroupStatusUpdate_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                updateGroupStatus_Success(response.data.responseResult, "")
+                updateGroupStatus_Success(response.data.responseResult, ""),
               );
               dispatch(getGroups(navigate, t, currentPage));
               setModalStatusChange(false);
@@ -847,7 +854,7 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GroupStatusUpdate_02".toLowerCase()
+                  "Groups_GroupServiceManager_GroupStatusUpdate_02".toLowerCase(),
                 )
             ) {
               dispatch(updateGroupStatus_Fail(t("Group-status-not-update")));
@@ -855,7 +862,7 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GroupStatusUpdate_03".toLowerCase()
+                  "Groups_GroupServiceManager_GroupStatusUpdate_03".toLowerCase(),
                 )
             ) {
               dispatch(updateGroupStatus_Fail(t("Group-status-not-update")));
@@ -926,7 +933,7 @@ const getAllGroups = (navigate, t) => {
               "Groups_GroupServiceManager_GetAllOrganizationGroups_01".toLowerCase()
             ) {
               dispatch(
-                getAllGroups_Success(response.data.responseResult.groups, "")
+                getAllGroups_Success(response.data.responseResult.groups, ""),
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -977,7 +984,7 @@ const methodCreateUpdateDataRoadMapFailed = (message) => {
 const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
   console.log(
     { Data },
-    "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
+    "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc",
   );
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -997,102 +1004,102 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
                   response.data.responseResult.folderID,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 methodCreateUpdateDataRoadMapFailed(
-                  t("Failed-to-save-or-map-folder")
-                )
+                  t("Failed-to-save-or-map-folder"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_03".toLowerCase(),
                 )
             ) {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
                   response.data.responseResult.folderID,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_04".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 methodCreateUpdateDataRoadMapFailed(
-                  t("Unable-to-update-folder")
-                )
+                  t("Unable-to-update-folder"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_05".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_05".toLowerCase(),
                 )
             ) {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
                   response.data.responseResult.folderID,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_06".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 methodCreateUpdateDataRoadMapFailed(
-                  t("Failed-to-create-new-mapping")
-                )
+                  t("Failed-to-create-new-mapping"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_07".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_07".toLowerCase(),
                 )
             ) {
               dispatch(
-                methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+                methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+              methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+            methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+          methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong")),
         );
       });
   };
@@ -1129,7 +1136,7 @@ const uploadDocumentsGroupsApi = (
   data,
   folderID,
   // newFolder,
-  newfile
+  newfile,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
@@ -1151,8 +1158,8 @@ const uploadDocumentsGroupsApi = (
               data,
               folderID,
               // newFolder,
-              newfile
-            )
+              newfile,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1160,7 +1167,7 @@ const uploadDocumentsGroupsApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase(),
                 )
             ) {
               newfile.push({
@@ -1174,13 +1181,13 @@ const uploadDocumentsGroupsApi = (
                 FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
               await dispatch(
-                uploadDocument_success(response.data.responseResult, "")
+                uploadDocument_success(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(uploadDocument_fail(t("Failed-to-update-document")));
@@ -1188,7 +1195,7 @@ const uploadDocumentsGroupsApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(uploadDocument_fail(t("Something-went-wrong")));
@@ -1257,7 +1264,7 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase(),
                 )
             ) {
               console.log(response.data.responseResult, "consoleconsole");
@@ -1276,13 +1283,13 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                 console.log(error, "newFileID");
               }
               await dispatch(
-                saveFiles_success(response.data.responseResult, "")
+                saveFiles_success(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase(),
                 )
             ) {
               dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
@@ -1290,7 +1297,7 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase(),
                 )
             ) {
               dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -1338,7 +1345,7 @@ const SaveGroupsDocumentsApiFunc = (
   Data,
   t,
   setCreategrouppage,
-  setViewGroupPage
+  setViewGroupPage,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage =
@@ -1361,8 +1368,8 @@ const SaveGroupsDocumentsApiFunc = (
               Data,
               t,
               setCreategrouppage,
-              setViewGroupPage
-            )
+              setViewGroupPage,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1370,11 +1377,11 @@ const SaveGroupsDocumentsApiFunc = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SaveGroupsDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveGroupsDocuments_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                showSaveGroupDocsSuccess(response.data.responseResult, "")
+                showSaveGroupDocsSuccess(response.data.responseResult, ""),
               );
               localStorage.removeItem("groupID");
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
@@ -1387,7 +1394,7 @@ const SaveGroupsDocumentsApiFunc = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SaveGroupsDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveGroupsDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
@@ -1457,17 +1464,17 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                showRetriveDocumentsSuccess(response.data.responseResult, "")
+                showRetriveDocumentsSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(showRetriveDocumentsFailed(""));
@@ -1475,7 +1482,7 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
@@ -1531,7 +1538,7 @@ const validateEncryptedStringViewGroupListLink_Init = () => ({
 
 const validateEncryptedStringViewGroupListLink_Success = (
   response,
-  message
+  message,
 ) => ({
   type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_SUCCESS,
   response,
@@ -1545,7 +1552,7 @@ const validateEncryptedStringViewGroupListLink_Fail = (message) => ({
 const validateEncryptedStringViewGroupsListLinkApi = (
   encryptedString,
   navigate,
-  t
+  t,
 ) => {
   return async (dispatch) => {
     try {
@@ -1557,7 +1564,7 @@ const validateEncryptedStringViewGroupsListLinkApi = (
       let form = new FormData();
       form.append(
         "RequestMethod",
-        ValidateEncryptedStringViewGroupListLinkRM.RequestMethod
+        ValidateEncryptedStringViewGroupListLinkRM.RequestMethod,
       );
       form.append("RequestData", JSON.stringify(data));
 
@@ -1569,8 +1576,8 @@ const validateEncryptedStringViewGroupsListLinkApi = (
           validateEncryptedStringViewGroupsListLinkApi(
             encryptedString,
             navigate,
-            t
-          )
+            t,
+          ),
         );
       }
 
@@ -1582,14 +1589,14 @@ const validateEncryptedStringViewGroupsListLinkApi = (
 
           if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_01".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_01".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupListLink_Success(
                 responseResult.data,
-                t("Successfully")
-              )
+                t("Successfully"),
+              ),
             );
             return {
               response: responseResult.data,
@@ -1598,13 +1605,13 @@ const validateEncryptedStringViewGroupsListLinkApi = (
             };
           } else if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_02".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_02".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupListLink_Fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
             return {
               isExecuted: true,
@@ -1612,13 +1619,13 @@ const validateEncryptedStringViewGroupsListLinkApi = (
             };
           } else if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_03".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_03".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupListLink_Fail(
-                t("Invalid-request-data")
-              )
+                t("Invalid-request-data"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1626,13 +1633,13 @@ const validateEncryptedStringViewGroupsListLinkApi = (
             };
           } else if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_04".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_04".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupListLink_Fail(
-                t("Someting-went-wrong")
-              )
+                t("Someting-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1640,7 +1647,7 @@ const validateEncryptedStringViewGroupsListLinkApi = (
             };
           } else {
             dispatch(
-              validateEncryptedStringViewGroupListLink_Fail(t("Unsuccessful"))
+              validateEncryptedStringViewGroupListLink_Fail(t("Unsuccessful")),
             );
             return {
               isExecuted: false,
@@ -1650,8 +1657,8 @@ const validateEncryptedStringViewGroupsListLinkApi = (
         } else {
           dispatch(
             validateEncryptedStringViewGroupListLink_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
           return {
             isExecuted: false,
@@ -1661,8 +1668,8 @@ const validateEncryptedStringViewGroupsListLinkApi = (
       } else {
         dispatch(
           validateEncryptedStringViewGroupListLink_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
         return {
           isExecuted: false,
@@ -1671,7 +1678,9 @@ const validateEncryptedStringViewGroupsListLinkApi = (
       }
     } catch (error) {
       dispatch(
-        validateEncryptedStringViewGroupListLink_Fail(t("Something-went-wrong"))
+        validateEncryptedStringViewGroupListLink_Fail(
+          t("Something-went-wrong"),
+        ),
       );
       return {
         isExecuted: false,
@@ -1688,7 +1697,7 @@ const validateEncryptedStringViewGroupDetailLink_Init = () => ({
 
 const validateEncryptedStringViewGroupDetailLink_Success = (
   response,
-  message
+  message,
 ) => ({
   type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_SUCCESS,
   response,
@@ -1702,19 +1711,18 @@ const validateEncryptedStringViewGroupDetailLink_Fail = (message) => ({
 const validateEncryptedStringViewGroupDetailLinkApi = (
   encryptedString,
   navigate,
-  t
+  t,
 ) => {
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
 
       dispatch(validateEncryptedStringViewGroupDetailLink_Init());
 
       let form = new FormData();
       form.append(
         "RequestMethod",
-        ValidateEncryptedStringViewGroupDetailsLinkRM.RequestMethod
+        ValidateEncryptedStringViewGroupDetailsLinkRM.RequestMethod,
       );
       form.append("RequestData", JSON.stringify(data));
 
@@ -1726,8 +1734,8 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
           validateEncryptedStringViewGroupDetailLinkApi(
             encryptedString,
             navigate,
-            t
-          )
+            t,
+          ),
         );
       }
 
@@ -1739,14 +1747,14 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
 
           if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_01".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_01".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupDetailLink_Success(
                 responseResult.data,
-                t("Successfully")
-              )
+                t("Successfully"),
+              ),
             );
             return {
               response: responseResult.data,
@@ -1755,7 +1763,7 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
             };
           } else if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_02".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_02".toLowerCase(),
             )
           ) {
             dispatch(validateEncryptedStringViewGroupDetailLink_Fail(""));
@@ -1765,13 +1773,13 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
             };
           } else if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_03".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_03".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupDetailLink_Fail(
-                t("Invalid-request-data")
-              )
+                t("Invalid-request-data"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1779,13 +1787,13 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
             };
           } else if (
             message.includes(
-              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_04".toLowerCase()
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_04".toLowerCase(),
             )
           ) {
             dispatch(
               validateEncryptedStringViewGroupDetailLink_Fail(
-                t("Someting-went-wrong")
-              )
+                t("Someting-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1794,8 +1802,8 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
           } else {
             dispatch(
               validateEncryptedStringViewGroupDetailLink_Fail(
-                t("Someting-went-wrong")
-              )
+                t("Someting-went-wrong"),
+              ),
             );
             return {
               isExecuted: false,
@@ -1805,8 +1813,8 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
         } else {
           dispatch(
             validateEncryptedStringViewGroupDetailLink_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
           return {
             isExecuted: false,
@@ -1816,8 +1824,8 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
       } else {
         dispatch(
           validateEncryptedStringViewGroupDetailLink_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
         return {
           isExecuted: false,
@@ -1827,8 +1835,8 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
     } catch (error) {
       dispatch(
         validateEncryptedStringViewGroupDetailLink_Fail(
-          t("Something-went-wrong")
-        )
+          t("Something-went-wrong"),
+        ),
       );
       return {
         isExecuted: false,
@@ -1838,7 +1846,235 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
   };
 };
 
+// get Meeting By Group ID Init
+const getMeetingbyGroup_init = () => {
+  return {
+    type: actions.GETMEETINGBYGROUPID_INIT,
+  };
+};
+// get Meeting by Group ID Success
+const getMeetingbyGroup_success = (response, message) => {
+  return {
+    type: actions.GETMEETINGBYGROUPID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+// get Meeting by Group ID Failed
+const getMeetingbyGroup_fail = (message) => {
+  return {
+    type: actions.GETMEETINGBYGROUPID_FAIL,
+    message: message,
+  };
+};
+
+// Get Meeting by Group ID
+const getMeetingbyGroupIdApi = (navigate, t, Data) => {
+  return (dispatch) => {
+    dispatch(getMeetingbyGroup_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getMeetingbyGroupIDRM.RequestMethod);
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByGroupID_01".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                getMeetingbyGroup_success(response.data.responseResult, ""),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByGroupID_02".toLowerCase(),
+                )
+            ) {
+              dispatch(getMeetingbyGroup_fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByGroupID_03".toLowerCase(),
+                )
+            ) {
+              dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// get Committee by Meeting ID
+const setMeetingByGroupID_init = () => {
+  return {
+    type: actions.SETMEETINGBYGROUPID_INIT,
+  };
+};
+const setMeetingByGroupID_success = (response, message) => {
+  return {
+    type: actions.SETMEETINGBYGROUPID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setMeetingByGroupID_fail = (message) => {
+  return {
+    type: actions.SETMEETINGBYGROUPID_FAIL,
+    message: message,
+  };
+};
+const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
+  return (dispatch) => {
+    dispatch(setMeetingByGroupID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", setMeetingbyGroupIDRM.RequestMethod);
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            setMeetingByGroupIdApi(navigate, t, Data, routePath, object),
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetGroupMeeting_01".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                setMeetingByGroupID_success(
+                  response.data.responseResult,
+                  t("Record-save"),
+                ),
+              );
+              switch (routePath) {
+                case "fromGroupAdvanceMeeting":
+                  dispatch(setCreateEditTab("organizers"));
+                  break;
+
+                default:
+                  dispatch(
+                    getMeetingbyGroupIdApi(navigate, t, {
+                      GroupID: Number(localStorage.getItem("ViewGroupID")),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(localStorage.getItem("userID")),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 1
+                          ? true
+                          : false,
+                      ProposedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 2
+                          ? true
+                          : false,
+                    }),
+                  );
+
+                  break;
+              }
+              // let ViewGroupID = localStorage.getItem("ViewGroupID");
+              // let currentUserId = localStorage.getItem("userID");
+
+              // let searchData = {
+              //   GroupID: Number(ViewGroupID),
+              //   Date: "",
+              //   Title: "",
+              //   HostName: "",
+              //   UserID: Number(currentUserId),
+              //   PageNumber: 1,
+              //   Length: 50,
+              //   PublishedMeetings:
+              //     localStorage.getItem("MeetingCurrentView") &&
+              //     Number(localStorage.getItem("MeetingCurrentView")) === 1
+              //       ? true
+              //       : false,
+              //   ProposedMeetings:
+              //     localStorage.getItem("MeetingCurrentView") &&
+              //     Number(localStorage.getItem("MeetingCurrentView")) === 2
+              //       ? true
+              //       : false,
+              // };
+              // dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetGroupMeeting_02".toLowerCase(),
+                )
+            ) {
+              dispatch(setMeetingByGroupID_fail(t("No-record-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetGroupMeeting_03".toLowerCase(),
+                )
+            ) {
+              dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// View Group Details
+export const viewGroupDetails = (data) => {
+  return {
+    type: actions.VIEW_GROUP_DETAILS,
+    payload: data,
+  };
+};
+
+export const resetViewGroupDetails = () => {
+  return {
+    type: actions.RESET_VIEW_GROUP_DETAILS,
+  };
+};
+
 export {
+  setMeetingByGroupIdApi,
+  getMeetingbyGroupIdApi,
   validateEncryptedStringViewGroupDetailLinkApi,
   validateEncryptedStringViewGroupsListLinkApi,
   removeGroupMemberMQTT,

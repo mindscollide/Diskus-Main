@@ -30,9 +30,9 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
 import { useMeetingContext } from "../../../context/MeetingContext";
-import CancelButtonModal from "../../../container/pages/meeting/closeMeetingTab/CancelModal";
+// import CancelButtonModal from "../../../container/meeting/";
 import { useComplianceContext } from "../../../context/ComplianceContext";
-
+import CancelButtonModal from "../../../container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/CancelButtonModal/CancelButtonModal";
 const Sidebar = () => {
   const location = useLocation();
   const { t } = useTranslation();

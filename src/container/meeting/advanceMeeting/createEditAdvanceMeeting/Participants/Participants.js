@@ -23,22 +23,8 @@ import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
-  UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
-  showCrossConfirmationModal,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
-  uploadGlobalFlag,
   ParticipantsData,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
@@ -46,13 +32,16 @@ import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import { useEffect } from "react";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { Tooltip } from "antd";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
-import { meetingStatusUpdateApi } from "../../../../../store/actions/MeetingActions";
 import store from "../../../../../store/store";
+import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
+import {
+  UpdateMeetingStatusApi,
+  UpdateMeetingUserApi,
+} from "../../../../../store/actions/NewMeeting2.actions";
 
 const Participants = ({
   setParticipants,
@@ -74,7 +63,9 @@ const Participants = ({
   );
   let meetingData = store.getState().NewMeetingreducer.currentMeetingInfo;
   console.log(meetingData, "meetingDatameetingDatameetingData");
-
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
+  );
   const {
     isMeetingCreateOrEdit,
     setIsMeetingCreateOrEdit,
@@ -85,7 +76,8 @@ const Participants = ({
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [editableSave, setEditableSave] = useState(0);
   const [isPublishedState, setIsPublishedState] = useState(false);
-  const { editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole, setGoBackCancelModal } =
+    useContext(MeetingContext);
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
   const [open, setOpen] = useState({
@@ -122,11 +114,17 @@ const Participants = ({
     let Data = { MeetingID: meetingID, StatusID: 1 };
     console.log("end meeting chaek");
     dispatch(
-      meetingStatusUpdateApi(navigate, t, Data, "publishMeeting", {
-        setEditorRole, // shorthand if variable name matches key
-        setIsMeetingCreateOrEdit, // For update create and update view
-        setIsCreateEditMeeting,
-      }),
+      UpdateMeetingStatusApi(
+        navigate,
+        t,
+        Data,
+        "publishMeetingFromParticipant",
+        {
+          setEditorRole, // shorthand if variable name matches key
+          setIsMeetingCreateOrEdit, // For update create and update view
+          setIsCreateEditMeeting,
+        },
+      ),
     );
     // setParticipants(false);
     // setAgenda(true);
@@ -211,7 +209,7 @@ const Participants = ({
     });
   };
   const handleCancelingRow = (record) => {
-    if (isMeetingCreateOrEdit === 2) {
+    if (isAdvanceMeetingRoute === 2) {
       if (rspvRows.length === 1) {
         showMessage(
           t("Please-at-least-one-partcipant-required"),
@@ -276,9 +274,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2)
+              isAdvanceMeetingRoute === 2)
           ) {
             return <p>{record.Title}</p>;
           } else {
@@ -320,9 +318,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2)
+              isAdvanceMeetingRoute === 2)
           ) {
             return <p>{record?.participantRole?.participantRole}</p>;
           } else {
@@ -425,9 +423,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2)
+              isAdvanceMeetingRoute === 2)
           ) {
           } else {
             return (
@@ -499,9 +497,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2)
+              isAdvanceMeetingRoute === 2)
           ) {
             return <p>{record.Title}</p>;
           } else {
@@ -545,9 +543,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2)
+              isAdvanceMeetingRoute === 2)
           ) {
             return <p>{record?.participantRole?.participantRole}</p>;
           } else {
@@ -595,9 +593,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2)
+              isAdvanceMeetingRoute === 2)
           ) {
           } else {
             return (
@@ -633,26 +631,13 @@ const Participants = ({
     ];
   }
 
-  const nextTabOrganizer = () => {
-    setAgenda(true);
-    setParticipants(false);
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(true));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
-    dispatch(uploadGlobalFlag(false));
+  const nextTabAgenda = () => {
+    dispatch(setCreateEditTab("agenda"));
   };
 
   //canceling the participants page
   const handleCancelParticipants = () => {
-    dispatch(showCancelModalPartipants(true));
+    setGoBackCancelModal(true);
   };
 
   //Clearing the non saved  participant
@@ -705,19 +690,23 @@ const Participants = ({
       newarry.push(data.userID);
     });
     //Upadte Meeting Organizer
-    let Data = {
-      MeetingID: meetingID,
-      MeetingAttendeRoleID: 2,
-      UpdatedUsers: newarry,
-    };
 
     if (findshouldnotempty) {
       dispatch(
-        UpdateMeetingUserApiFunc(navigate, Data, t, "saveMeetingParticipants", {
-          rspvRows,
-          editableSave,
-          currentMeeting,
-        }),
+        UpdateMeetingUserApi(
+          navigate,
+          t,
+          {
+            MeetingID: meetingID,
+            MeetingAttendeRoleID: 2,
+            UpdatedUsers: newarry,
+          },
+          "saveMeetingParticipants",
+          {
+            rspvRows,
+            editableSave,
+          },
+        ),
       );
     } else {
       showMessage(t("Role-is-required"), "error", setOpen);
@@ -750,9 +739,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isMeetingCreateOrEdit === 2) ||
+              isAdvanceMeetingRoute === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isMeetingCreateOrEdit === 2) ? null : isEditable ||
+              isAdvanceMeetingRoute === 2) ? null : isEditable ||
               isEditClicked ? (
               <>
                 <Row>
@@ -879,9 +868,9 @@ const Participants = ({
                     Number(editorRole.status) === 8 ||
                     Number(editorRole.status) === 10) &&
                     editorRole.role === "Organizer" &&
-                    isMeetingCreateOrEdit === 2) ||
+                    isAdvanceMeetingRoute === 2) ||
                   (editorRole.role === "Agenda Contributor" &&
-                    isMeetingCreateOrEdit === 2) ? (
+                    isAdvanceMeetingRoute === 2) ? (
                     <>
                       <Button
                         text={t("Cancel")}
@@ -892,7 +881,7 @@ const Participants = ({
                       <Button
                         text={t("Next")}
                         className={styles["publish_button_participant"]}
-                        onClick={nextTabOrganizer}
+                        onClick={nextTabAgenda}
                       />
                     </>
                   ) : Number(editorRole.status) === 1 ? (
@@ -906,7 +895,7 @@ const Participants = ({
                       <Button
                         text={t("Next")}
                         className={styles["publish_button_participant"]}
-                        onClick={nextTabOrganizer}
+                        onClick={nextTabAgenda}
                       />{" "}
                     </>
                   ) : isEditClicked ? null : (
@@ -920,7 +909,7 @@ const Participants = ({
                       <Button
                         text={t("Next")}
                         className={styles["publish_button_participant"]}
-                        onClick={nextTabOrganizer}
+                        onClick={nextTabAgenda}
                       />
                     </>
                   )}
@@ -938,19 +927,7 @@ const Participants = ({
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
                     />
-                  ) : isMeetingCreateOrEdit === 2 || isEditClicked ? null : (
-                    <Button
-                      disableBtn={
-                        Number(currentMeeting) === 0 ||
-                        isPublishedState === false
-                          ? true
-                          : false
-                      }
-                      text={t("Publish")}
-                      className={styles["Next_Organization"]}
-                      onClick={handleNextButton}
-                    />
-                  )}
+                  ) : null}
                 </>
               )}
             </Col>
@@ -969,13 +946,6 @@ const Participants = ({
           <CancelParticipants
             setSceduleMeeting={setSceduleMeeting}
             setrspvRows={setrspvRows}
-          />
-        )}
-        {NewMeetingreducer.nextConfirmModal && (
-          <NextModal
-            setAgenda={setAgenda}
-            setParticipants={setParticipants}
-            flag={flag}
           />
         )}
 

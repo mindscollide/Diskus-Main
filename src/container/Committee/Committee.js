@@ -22,6 +22,7 @@ import {
   realtimeCommitteeResponse,
   validateEncryptedStringViewCommitteeDetailLinkApi,
   validateEncryptedStringViewCommitteeListLinkApi,
+  viewCommitteeDetails,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -49,6 +50,8 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
+import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -102,6 +105,12 @@ const Committee = () => {
   const AccessDeniedGlobalState = useSelector(
     (state) => state.PollsReducer.AccessDeniedPolls,
   );
+  const createEditMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditMeetingModal,
+  );
+  const isViewMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewMeetingModal,
+  );
 
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
@@ -127,7 +136,6 @@ const Committee = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const committeeList = localStorage.getItem("committeeList");
   const committeeViewId = localStorage.getItem("committeeView_Id");
-  console.log(committeeViewId, committeeList, "committeeListcommitteeList");
   useEffect(() => {
     try {
       // Handle the current page logic
@@ -201,7 +209,6 @@ const Committee = () => {
               t,
             ),
           );
-          console.log(getResponse, "getResponse");
           if (
             getResponse.isExecuted === true &&
             getResponse.responseCode === 1
@@ -559,6 +566,12 @@ const Committee = () => {
 
   // Click on Documents Tab
   const handleDocumentsClickTab = (data) => {
+    dispatch(
+      viewCommitteeDetails({
+        committeeID: data.committeeID,
+        committeeTitle: data.committeesTitle,
+      }),
+    );
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewGroupPage(true);
@@ -567,14 +580,26 @@ const Committee = () => {
 
   // Click on title
   const viewTitleModal = (data) => {
+    dispatch(
+      viewCommitteeDetails({
+        committeeID: data.committeeID,
+        committeeTitle: data.committeesTitle,
+      }),
+    );
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewGroupPage(true);
     dispatch(viewCommitteePageFlag(true));
   };
 
-  const viewUpdateModal = (committeeID, CommitteeStatusID) => {
+  const viewUpdateModal = (committeeID, CommitteeStatusID, data) => {
     if (CommitteeStatusID === 1) {
+      dispatch(
+        viewCommitteeDetails({
+          committeeID: committeeID,
+          committeeTitle: data.committeesTitle,
+        }),
+      );
       setViewCommitteeViewTab(1);
       localStorage.setItem("ViewCommitteeID", CommitteeStatusID);
       setViewGroupPage(true);
@@ -667,18 +692,36 @@ const Committee = () => {
   };
 
   const handleClickMeetingTab = (data) => {
+    dispatch(
+      viewCommitteeDetails({
+        committeeID: data.committeeID,
+        committeeTitle: data.committeesTitle,
+      }),
+    );
     setViewCommitteeViewTab(4);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewGroupPage(true);
     dispatch(viewCommitteePageFlag(true));
   };
   const handlePollsClickTab = (data) => {
+    dispatch(
+      viewCommitteeDetails({
+        committeeID: data.committeeID,
+        committeeTitle: data.committeesTitle,
+      }),
+    );
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewCommitteeViewTab(3);
     setViewGroupPage(true);
     dispatch(viewCommitteePageFlag(true));
   };
   const handleTasksClickTab = (data) => {
+    dispatch(
+      viewCommitteeDetails({
+        committeeID: data.committeeID,
+        committeeTitle: data.committeesTitle,
+      }),
+    );
     setViewCommitteeViewTab(2);
     setViewGroupPage(true);
     dispatch(viewCommitteePageFlag(true));
@@ -718,6 +761,14 @@ const Committee = () => {
   const openNotification = () => {
     showMessage(t("Not-a-member-of-talk-group"), "error", setOpen);
   };
+
+  if (createEditMeetingModal) {
+    return <CreateEditAdvanceMeeting route="Committee" />;
+  }
+
+  if (isViewMeetingModal) {
+    return <ViewMeetingModal />;
+  }
 
   return (
     <>
@@ -835,6 +886,7 @@ const Committee = () => {
                                   viewUpdateModal(
                                     data.committeeID,
                                     data.committeeStatusID,
+                                    data,
                                   )
                                 }
                                 handleClickDiscussion={

@@ -268,3 +268,11 @@ body[dir="rtl"] .White_Icon_class {
   /* right: 0 !important; */
   text-align: center !important;
 }
+.meetingType_Value {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  max-height: 75px;
+  overflow-y: auto;
+  word-break: break-all;
+}

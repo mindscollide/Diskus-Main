@@ -11,8 +11,6 @@ import { setLoaderFalse } from "./MeetingAgenda_action";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllMeetingDetailsApiFunc,
-  getMeetingByCommitteeIDApi,
-  getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
   searchNewUserMeeting,
   LeaveCurrentMeeting,
@@ -22,6 +20,8 @@ import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { videoIconOrButtonState } from "./VideoFeature_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { isFunction } from "../../commen/functions/utils";
+import { getMeetingByCommitteeIdApi } from "./Committee_actions";
+import { getMeetingbyGroupIdApi } from "./Groups_actions";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -488,7 +488,7 @@ const UpdateOrganizersMeeting = (
                       PublishedMeetings: true,
                     };
                     dispatch(
-                      getMeetingByCommitteeIDApi(navigate, t, searchData),
+                      getMeetingByCommitteeIdApi(navigate, t, searchData),
                     );
                   }
 
@@ -525,7 +525,7 @@ const UpdateOrganizersMeeting = (
                       PublishedMeetings: true,
                     };
                     console.log("end meeting chaek", leaveMeetingData);
-                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
                   }
                 } else if (route === 11) {
                   if (Data.StatusID === 10) {
@@ -1075,7 +1075,7 @@ const UpdateMeetingStatus = (
                       PublishedMeetings: true,
                     };
                     dispatch(
-                      getMeetingByCommitteeIDApi(navigate, t, searchData),
+                      getMeetingByCommitteeIdApi(navigate, t, searchData),
                     );
                   }
 
@@ -1112,7 +1112,7 @@ const UpdateMeetingStatus = (
                       PublishedMeetings: true,
                     };
                     console.log("end meeting chaek", leaveMeetingData);
-                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
                   }
                 }
               } catch (error) {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { mqttMeetingData } from "../hooks/meetingResponse/response";
 import { useTranslation } from "react-i18next";
 
@@ -10,42 +10,18 @@ import { useTranslation } from "react-i18next";
  * real-time MQTT reminder notifications), filter state (status, meeting type,
  * date, title, host), loading indicators, and creation-mode flags for quick,
  * advanced, and proposed meetings.
- *
- * @provides {Array}    meetingsRecords               - Paginated list of meeting records currently displayed
- * @provides {number}   totalMeetingRecords           - Total count of meetings matching the current filters
- * @provides {Object}   searchFilters                 - Active search payload ({ Date, Title, HostName, PageNumber, Length })
- * @provides {Array<string>} selectedStatusFilters    - Array of active meeting status IDs for filtering
- * @provides {Array<string>} selectedMeetingTypeFilters - Array of active meeting type IDs for filtering
- * @provides {Array}    isMeetingTypeFilter           - Formatted meeting-type options for the filter dropdown
- * @provides {boolean}  isPublishedMeeting            - Whether the "published" meetings tab is active
- * @provides {boolean}  isDraftMeetings               - Whether the "draft" meetings tab is active
- * @provides {boolean}  isProposedMeeting             - Whether the "proposed" meetings tab is active
- * @provides {boolean}  isLoading                     - Whether a meeting list API call is in progress
- * @provides {number}   minutesAgo                    - Minutes since the earliest active meeting started
- * @provides {Array}    startMeetingButton            - Per-meeting start-button visibility flags
- * @provides {boolean}  quickMeeting                  - Whether the quick-meeting creation form is open
- * @provides {boolean}  proposedNewMeeting            - Whether the proposed-meeting creation form is open
- * @provides {boolean}  isAdvanceMeetingCreate        - Whether the advanced meeting creation flow is active
- * @provides {boolean}  isProposedMeetingCreate       - Whether the proposed meeting creation flow is active
- * @provides {number}   meetingMapFolderId            - Dataroom folder ID mapped to the current meeting
- * @provides {Object}   createdMeetingInfo            - ID and title of the most recently created meeting
- * @provides {Array}    duplicatedMeetingData         - Meeting data staged for duplication
- *
- * Usage:
- *   import { useNewMeetingContext } from '../context/NewMeetingContext';
- *   const { meetingsRecords, searchFilters, setSearchFilters } = useNewMeetingContext();
- */
-
-/**
- * Context for managing meeting-related states across the application.
- * This context handles meeting creation, editing, viewing, and status synchronization.
  */
 export const NewMeetingContext = createContext();
 
-// Provider component that wraps the parts of the app that need access to meeting states
 export const NewMeetingProvider = ({ children }) => {
-  const {t} = useTranslation()
-  let userID = localStorage.getItem("userID");
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const userID = localStorage.getItem("userID");
+
+  // ============================================================
+  // ---------------------- STATE ---------------------------------
+  // ============================================================
+
   const [requestData, setRequestData] = useState({
     Date: "",
     Title: "",
@@ -55,15 +31,12 @@ export const NewMeetingProvider = ({ children }) => {
     Length: 30,
     PublishedMeetings:
       localStorage.getItem("MeetingCurrentView") &&
-      Number(localStorage.getItem("MeetingCurrentView")) === 1
-        ? true
-        : false,
+      Number(localStorage.getItem("MeetingCurrentView")) === 1,
     ProposedMeetings:
       localStorage.getItem("MeetingCurrentView") &&
-      Number(localStorage.getItem("MeetingCurrentView")) === 2
-        ? true
-        : false,
+      Number(localStorage.getItem("MeetingCurrentView")) === 2,
   });
+
   // --- Basic Meeting Information ---
   const [createdMeetingInfo, setCreatedMeetingInfo] = useState({
     meetingId: 0,
@@ -83,36 +56,19 @@ export const NewMeetingProvider = ({ children }) => {
   const [isQuickMeetingUpdate, setIsQuickMeetingUpdate] = useState(false);
   const [isQuickMeetingView, setIsQuickMeetingView] = useState(false);
 
-  // --- Published Meeting Tracking ---
+  // --- Categorized Meeting Data ---
   const [publishedMeetingData, setPublishedMeetingData] = useState([]);
   const [publishedMeetingDataRecord, setPublishedMeetingDataRecord] =
     useState(0);
 
-  // --- Categorized Meeting Data ---
   const [proposedMeetingData, setProposedMeetingData] = useState([]);
   const [proposedMeetingDataRecord, setProposedMeetingDataRecord] = useState(0);
 
-  // --- Draft Meeting Data ---
   const [draftMeetingData, setDraftMeetingData] = useState([]);
   const [draftMeetingDataRecord, setDraftMeetingDataRecord] = useState(0);
 
-  // --- Redux Selectors for Global State ---
-  const meetingReminderNotification = useSelector(
-    (state) => state.NewMeetingreducer.meetingReminderNotification,
-  );
-  const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
-  );
-  const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings,
-  );
-  const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
-  );
-
   // --- Local Filtering and Data Management ---
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
-
   const [minutesAgo, setMinutesAgo] = useState(0);
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
@@ -140,237 +96,539 @@ export const NewMeetingProvider = ({ children }) => {
   // --- UI State ---
   const [isLoading, setIsLoading] = useState(false);
 
+  // ============================================================
+  // ---------------------- REDUX SELECTORS -----------------------
+  // ============================================================
+
+  const meetingReminderNotification = useSelector(
+    (state) => state.NewMeetingreducer.meetingReminderNotification,
+  );
+  const meetingStatusPublishedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
+  );
+  const MeetingStatusSocket = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusSocket,
+  );
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded,
+  );
+  const allMeetingsSocketData = useSelector(
+    (state) => state.meetingIdReducer.allMeetingsSocketData,
+  );
+  const CommitteeMeetingMQTT = useSelector(
+    (state) => state.meetingIdReducer.CommitteeMeetingMQTT,
+  );
+  const GroupMeetingMQTT = useSelector(
+    (state) => state.meetingIdReducer.GroupMeetingMQTT,
+  );
+  const mqtMeetingPrRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqtMeetingPrRemoved,
+  );
+  const mqttMeetingPrAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingPrAdded,
+  );
+  const searchMeetings = useSelector(
+    (state) => state.NewMeetingreducer.searchMeetings,
+  );
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+  );
+
+  // ============================================================
+  // ---------------------- HELPERS -------------------------------
+  // ============================================================
+
   /**
-   * Effect to handle real-time meeting status updates coming from Redux (notifications).
-   * It finds the meeting in the current list and updates its status.
+   * Returns the active list + its setter based on the currently selected
+   * MeetingCurrentView in localStorage. Falls back to published.
+   */
+  const getActiveMeetingListAndSetter = () => {
+    const view = Number(localStorage.getItem("MeetingCurrentView"));
+    switch (view) {
+      case 2:
+        return {
+          list: proposedMeetingData,
+          setList: setProposedMeetingData,
+        };
+      case 3:
+        return {
+          list: draftMeetingData,
+          setList: setDraftMeetingData,
+        };
+      case 1:
+      default:
+        return {
+          list: publishedMeetingData,
+          setList: setPublishedMeetingData,
+        };
+    }
+  };
+
+  /**
+   * Generic updater that updates a meeting in ALL three lists if it exists
+   * in any of them. Useful when an MQTT/socket payload doesn't tell us which
+   * tab/list the meeting belongs to.
+   *
+   * @param {number|string} meetingID
+   * @param {Function} updateFn  (existingMeeting) => updatedMeeting
+   */
+  const updateMeetingInAllLists = (meetingID, updateFn) => {
+    const id = Number(meetingID);
+
+    const mapper = (item) =>
+      Number(item.pK_MDID) === id ? updateFn(item) : item;
+
+    setPublishedMeetingData((prev) => prev.map(mapper));
+    setProposedMeetingData((prev) => prev.map(mapper));
+    setDraftMeetingData((prev) => prev.map(mapper));
+  };
+
+  /**
+   * Removes a meeting from all three lists.
+   */
+  const removeMeetingFromAllLists = (meetingID) => {
+    const id = Number(meetingID);
+    const filterFn = (item) => Number(item.pK_MDID) !== id;
+
+    setPublishedMeetingData((prev) => prev.filter(filterFn));
+    setProposedMeetingData((prev) => prev.filter(filterFn));
+    setDraftMeetingData((prev) => prev.filter(filterFn));
+  };
+
+  // ============================================================
+  // ---------------------- EFFECTS -------------------------------
+  // ============================================================
+
+  /**
+   * Real-time meeting status updates coming from Redux notifications.
+   * Updates the matching meeting's status across all lists and tracks
+   * "Start Meeting" button visibility when the meeting becomes active.
    */
   useEffect(() => {
-    if (meetingReminderNotification !== null) {
-      try {
-        const meetingData = meetingReminderNotification.meetingDetails;
-        console.log(meetingData, "meetingDetailsmeetingDetails");
-        setPublishedMeetingData((rowsData) => {
-          // Find the index of the row that matches the ID
-          const rowIndex = rowsData.findIndex(
-            (rowData) => rowData.pK_MDID === meetingData.pK_MDID,
+    if (meetingReminderNotification == null) return;
+
+    try {
+      const meetingData = meetingReminderNotification.meetingDetails;
+      if (!meetingData?.pK_MDID) return;
+
+      updateMeetingInAllLists(meetingData.pK_MDID, (item) => ({
+        ...item,
+        status: String(meetingData.statusID),
+      }));
+
+      // If meeting has started (status 1), enable the "Start Meeting" button for it
+      if (meetingData.statusID === 1) {
+        setStartMeetingButton((prev) => {
+          // Avoid duplicates
+          const exists = prev.some(
+            (b) => Number(b.meetingID) === Number(meetingData.pK_MDID),
           );
-          console.log(rowIndex, "rowIndexrowIndex");
-          // If a matching row is found, create a new array with the updated row
-          if (rowIndex !== -1) {
-            const updatedRowsData = [...rowsData];
-
-            // Update status string
-            updatedRowsData[rowIndex] = {
-              ...updatedRowsData[rowIndex],
-              status: String(meetingData.statusID),
-            };
-            // If meeting has started (status 1), track it for showing the 'Start Meeting' button
-            if (meetingData.statusID === 1) {
-              setStartMeetingButton([
-                ...startMeetingButton,
-                { meetingID: Number(meetingData.pK_MDID), showButton: true },
-              ]);
-              // setStartMeetingData({
-              //   ...startMeetingData,
-              //   meetingID: Number(meetingData.pK_MDID),
-              //   showButton: true,
-              // });
-            } else {
-              // setStartMeetingData({
-              //   ...startMeetingData,
-              //   meetingID: null,
-              //   showButton: false,
-              // });
-            }
-
-            return updatedRowsData;
-          }
-
-          // Return the original rowsData if no matching row is found
-          return rowsData;
+          if (exists) return prev;
+          return [
+            ...prev,
+            { meetingID: Number(meetingData.pK_MDID), showButton: true },
+          ];
         });
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log(error, "meetingReminderNotification effect");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingReminderNotification]);
 
   /**
-   * Effect to synchronize meeting searches and types from Redux.
-   * Also handles filtering of agenda items based on user visibility permissions.
+   * Handles MQTT payloads for newly published meetings. If the meeting
+   * already exists in the active list, replace it; otherwise prepend it.
+   */
+  useEffect(() => {
+    if (meetingStatusPublishedMqttData == null) return;
+
+    const callMQTT = async () => {
+      try {
+        const meetingData = meetingStatusPublishedMqttData;
+        const newMeetingData = await mqttMeetingData(meetingData, 1);
+        const { list, setList } = getActiveMeetingListAndSetter();
+
+        const indexToUpdate = list.findIndex(
+          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+        );
+
+        if (indexToUpdate !== -1) {
+          const updated = [...list];
+          updated[indexToUpdate] = newMeetingData;
+          setList(updated);
+        } else {
+          setList([newMeetingData, ...list]);
+        }
+      } catch (error) {
+        console.log(error, "Meeting Created and Published");
+      }
+    };
+
+    callMQTT();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meetingStatusPublishedMqttData]);
+
+  /**
+   * Listens for status-edit socket messages: "started" or "cancelled" variants.
+   * Updates the meeting status across all lists and clears the start-button
+   * tracking entry for that meeting.
+   */
+  useEffect(() => {
+    if (MeetingStatusSocket == null) return;
+
+    try {
+      const messageLower = (MeetingStatusSocket.message || "").toLowerCase();
+      const isStartedEdit = messageLower.includes(
+        "meeting_status_edited_started",
+      );
+      const isCancelledEdit = messageLower.includes(
+        "meeting_status_edited_cancelled",
+      );
+
+      if (!isStartedEdit && !isCancelledEdit) return;
+
+      // Resolve status + ID — schema differs by event variant
+      let meetingStatusID;
+      let meetingID;
+
+      if (
+        Object.prototype.hasOwnProperty.call(MeetingStatusSocket, "meeting")
+      ) {
+        meetingStatusID = MeetingStatusSocket.meeting.status;
+        meetingID = MeetingStatusSocket.meeting.pK_MDID;
+      } else {
+        meetingStatusID = MeetingStatusSocket.meetingStatusID;
+        meetingID = MeetingStatusSocket.meetingID;
+      }
+
+      if (meetingID == null) return;
+
+      updateMeetingInAllLists(meetingID, (item) => ({
+        ...item,
+        status: String(meetingStatusID),
+      }));
+
+      setStartMeetingButton((prev) =>
+        prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
+      );
+    } catch (error) {
+      console.log(error, "MeetingStatusSocket effect");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [MeetingStatusSocket]);
+
+  /**
+   * Handles "meeting ended" MQTT events. Replaces the meeting in all lists
+   * with the latest payload and clears any start-button entry.
+   */
+  useEffect(() => {
+    if (MeetingStatusEnded == null) return;
+
+    try {
+      const endMeetingData = MeetingStatusEnded.meeting;
+      if (!endMeetingData?.pK_MDID) return;
+
+      updateMeetingInAllLists(
+        endMeetingData.pK_MDID,
+        () => endMeetingData, // full replacement
+      );
+
+      setStartMeetingButton((prev) =>
+        prev.filter(
+          (btn) => Number(btn.meetingID) !== Number(endMeetingData.pK_MDID),
+        ),
+      );
+    } catch (error) {
+      console.log(error, "MeetingStatusEnded effect");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [MeetingStatusEnded]);
+
+  /**
+   * Generic "all meetings" socket stream. Replaces or prepends in the active
+   * list depending on whether the meeting already exists.
+   */
+  useEffect(() => {
+    if (allMeetingsSocketData == null) return;
+
+    const updateMeeting = async () => {
+      try {
+        const meetingID = allMeetingsSocketData.pK_MDID;
+        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
+        const { list, setList } = getActiveMeetingListAndSetter();
+
+        const exists = list.some(
+          (m) => Number(m.pK_MDID) === Number(meetingID),
+        );
+
+        if (exists) {
+          setList(
+            list.map((item) =>
+              Number(item.pK_MDID) === Number(meetingID)
+                ? newMeetingData
+                : item,
+            ),
+          );
+        } else {
+          setList([newMeetingData, ...list]);
+        }
+      } catch (error) {
+        console.log(error, "allMeetingsSocketData effect");
+      }
+    };
+
+    updateMeeting();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allMeetingsSocketData]);
+
+  /**
+   * Committee meeting MQTT updates — replaces the matching meeting across
+   * all lists with the freshly received payload.
+   */
+  useEffect(() => {
+    if (CommitteeMeetingMQTT == null) return;
+
+    try {
+      const meetingData = CommitteeMeetingMQTT.meeting;
+      if (!meetingData?.pK_MDID) return;
+
+      updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
+    } catch (error) {
+      console.log(error, "CommitteeMeetingMQTT effect");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [CommitteeMeetingMQTT]);
+
+  /**
+   * Group meeting MQTT updates — same shape as committee, replaces across
+   * all lists.
+   */
+  useEffect(() => {
+    if (GroupMeetingMQTT == null) return;
+
+    try {
+      const meetingData = GroupMeetingMQTT.meeting;
+      if (!meetingData?.pK_MDID) return;
+
+      updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
+    } catch (error) {
+      console.log(error, "GroupMeetingMQTT effect");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [GroupMeetingMQTT]);
+
+  /**
+   * When navigated here from the Calendar with `CalendaradvanceMeeting`
+   * state, locate the corresponding meeting in the published list using
+   * the cached currentMeetingID.
+   */
+
+  /**
+   * Handles participant added / removed MQTT events. On "added", builds a
+   * normalized meeting object and prepends it to the active list. On
+   * "removed", filters the meeting out of all lists.
+   */
+  useEffect(() => {
+    // ---- Participant ADDED ----
+    if (mqttMeetingPrAdded != null) {
+      try {
+        const meetingData = mqttMeetingPrAdded;
+        const newData = {
+          dateOfMeeting: meetingData?.dateOfMeeting,
+          host: meetingData?.host,
+          isAttachment: false,
+          isChat: false,
+          isVideoCall: false,
+          videoCallURL: meetingData?.videoCallURL,
+          isQuickMeeting: meetingData?.isQuickMeeting,
+          meetingAgenda: [],
+          isOrganizer: meetingData?.attendeeRoleID === 1,
+          isAgendaContributor: meetingData?.attendeeRoleID === 4,
+          isParticipant: meetingData?.attendeeRoleID === 2,
+          talkGroupID: 0,
+          meetingType: meetingData?.meetingTypeID,
+          meetingEndTime: meetingData?.meetingEndTime,
+          meetingStartTime: meetingData?.meetingStartTime,
+          pK_MDID: meetingData?.meetingID,
+          meetingPoll: {
+            totalNoOfDirectors: 0,
+            totalNoOfDirectorsVoted: 0,
+          },
+          responseDeadLine: "",
+          status: String(meetingData?.status),
+          title: meetingData?.title,
+          key: 0,
+          isPrimaryOrganizer: meetingData?.isPrimaryOrganizer,
+          userDetails: null,
+        };
+
+        const { list, setList } = getActiveMeetingListAndSetter();
+        setList([newData, ...list]);
+      } catch (error) {
+        console.log(error, "mqttMeetingPrAdded effect");
+      }
+    }
+
+    // ---- Participant REMOVED ----
+    if (mqtMeetingPrRemoved != null) {
+      try {
+        const meetingID = mqtMeetingPrRemoved.meetingID;
+        if (meetingID != null) {
+          removeMeetingFromAllLists(meetingID);
+        }
+      } catch (error) {
+        console.log(error, "mqtMeetingPrRemoved effect");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mqttMeetingPrAdded, mqtMeetingPrRemoved]);
+
+  /**
+   * Synchronizes meeting search results from Redux into the right
+   * categorized list (published/draft/proposed) based on the current view.
+   * Also filters agendas by `canView` permission for the published view.
    */
   useEffect(() => {
     try {
-      if (
-        searchMeetings !== null &&
-        searchMeetings !== undefined &&
-        getALlMeetingTypes?.meetingTypes
-      ) {
-        try {
-          switch (Number(localStorage.getItem("MeetingCurrentView"))) {
-            case 1:
-              // PublishMeeting
-              setPublishedMeetingDataRecord(searchMeetings.totalRecords);
-              setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-              if (Object.keys(searchMeetings.meetings).length > 0) {
-                // Filter agendas based on canView permission
-                let copyMeetingData = searchMeetings.meetings.map(
-                  (meeting) => ({
-                    ...meeting,
-                    meetingAgenda: meeting.meetingAgenda.filter(
-                      (agenda) => agenda.objMeetingAgenda.canView,
-                    ),
-                  }),
-                );
-                // Redundant check for canView to ensure deep filtering
-                copyMeetingData.forEach((data) => {
-                  data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
-                    return agenda.objMeetingAgenda.canView === true;
-                  });
-                });
-                console.log("handleViewMeeting", copyMeetingData);
-                setPublishedMeetingData(copyMeetingData);
-              }
-              break;
-            case 3:
-              // DraftMeeting
-              setDraftMeetingDataRecord(searchMeetings.totalRecords);
-              setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-              if (Object.keys(searchMeetings.meetings).length > 0) {
-                setDraftMeetingData(searchMeetings.meetings);
-              }
-              break;
-            case 2:
-              // ProposedMeeting
-              setProposedMeetingDataRecord(searchMeetings.totalRecords);
-              setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-              if (Object.keys(searchMeetings.meetings).length > 0) {
-                setProposedMeetingData(searchMeetings.meetings);
-              }
-              break;
-            default:
-          }
-        } catch (error) {
-          console.log(error);
-          setPublishedMeetingData([]);
-          setDraftMeetingData([]);
-          setProposedMeetingData([]);
-          setPublishedMeetingDataRecord(0);
-          setDraftMeetingDataRecord(0);
-          setProposedMeetingDataRecord(0);
-        }
-      } else {
+      if (searchMeetings == null) {
         setPublishedMeetingData([]);
         setDraftMeetingData([]);
         setProposedMeetingData([]);
+        return;
+      }
+
+      const view = Number(localStorage.getItem("MeetingCurrentView"));
+      const meetings = searchMeetings.meetings || [];
+
+      switch (view) {
+        case 1: {
+          // Published Meetings
+          setPublishedMeetingDataRecord(searchMeetings.totalRecords || 0);
+          setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
+
+          if (meetings.length > 0) {
+            // Keep only agendas the current user is allowed to view
+            const filtered = meetings.map((meeting) => ({
+              ...meeting,
+              meetingAgenda: (meeting.meetingAgenda || []).filter(
+                (agenda) => agenda.objMeetingAgenda?.canView === true,
+              ),
+            }));
+            setPublishedMeetingData(filtered);
+          } else {
+            setPublishedMeetingData([]);
+          }
+          break;
+        }
+
+        case 2: {
+          // Proposed Meetings
+          setProposedMeetingDataRecord(searchMeetings.totalRecords || 0);
+          setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
+          setProposedMeetingData(meetings);
+          break;
+        }
+
+        case 3: {
+          // Draft Meetings
+          setDraftMeetingDataRecord(searchMeetings.totalRecords || 0);
+          setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
+          setDraftMeetingData(meetings);
+          break;
+        }
+
+        default:
+          break;
       }
     } catch (error) {
-      console.log(error);
+      console.log(error, "searchMeetings effect");
+      setPublishedMeetingData([]);
+      setDraftMeetingData([]);
+      setProposedMeetingData([]);
+      setPublishedMeetingDataRecord(0);
+      setDraftMeetingDataRecord(0);
+      setProposedMeetingDataRecord(0);
     }
   }, [searchMeetings, getALlMeetingTypes]);
 
   /**
-   * Effect to transform meeting type data from Redux into a format suitable for UI filters/dropdowns.
-   * Adds a default 'Quick-meeting' option.
+   * Transforms the meeting types from Redux into the dropdown/filter shape
+   * `{ text, value }`, prepending a default "Quick-meeting" option.
    */
   useEffect(() => {
     try {
-      if (
-        getALlMeetingTypes?.meetingTypes !== null &&
-        getALlMeetingTypes?.meetingTypes !== undefined
-      ) {
-        let meetingtypeFilter = [];
-        let byDefault = {
-          value: "0",
-          text: t("Quick-meeting"),
-        };
-        meetingtypeFilter.push(byDefault);
-        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
-          meetingtypeFilter.push({
-            text: data.type,
-            value: String(data.pK_MTID),
-          });
-        });
+      const types = getALlMeetingTypes?.meetingTypes;
+      if (types == null) return;
 
-        setMeetingTypeFilter(meetingtypeFilter);
-      }
-    } catch (error) {}
-  }, [getALlMeetingTypes?.meetingTypes]);
+      const meetingtypeFilter = [
+        { value: "0", text: t("Quick-meeting") },
+        ...types.map((data) => ({
+          text: data.type,
+          value: String(data.pK_MTID),
+        })),
+      ];
 
-  const joinMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
-  const leaveMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
+      setMeetingTypeFilter(meetingtypeFilter);
+    } catch (error) {
+      console.log(error, "meetingTypes filter effect");
+    }
+  }, [getALlMeetingTypes?.meetingTypes, t]);
 
-  const startMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
+  // ============================================================
+  // ---------------------- CONTEXT VALUE -------------------------
+  // ============================================================
 
-  const publishMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
-
-  const deleteMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
-
-  const cancelMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
-  const viewMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
-
-  const editMeetingAction = () => {
-    try {
-    } catch (error) {}
-  };
-  // Object containing all states and setters to be passed through context value
   const statesData = {
+    // Filters
     searchFilters,
     setSearchFilters,
     selectedStatusFilters,
     setSelectedStatusFilters,
     selectedMeetingTypeFilters,
     setSelectedMeetingTypeFilters,
+    isMeetingTypeFilter,
+
+    // Loading + meta
     isLoading,
     setIsLoading,
-
-    isMeetingTypeFilter,
     minutesAgo,
     startMeetingButton,
+    setStartMeetingButton,
+
+    // Folder + created info
     meetingMapFolderId,
     setMeetingMapFolderId,
     createdMeetingInfo,
     setCreatedMeetingInfo,
-    // New States
+
+    // Tabs
     currentTab,
     setCurrentTab,
+
+    // Published
     publishedMeetingData,
     setPublishedMeetingData,
     publishedMeetingDataRecord,
     setPublishedMeetingDataRecord,
+
+    // Proposed
     proposedMeetingData,
     setProposedMeetingData,
     proposedMeetingDataRecord,
     setProposedMeetingDataRecord,
+
+    // Draft
     draftMeetingData,
     setDraftMeetingData,
     draftMeetingDataRecord,
     setDraftMeetingDataRecord,
+
+    // UI flags
     isCreateEditMeeting,
     setIsCreateEditMeeting,
-    setIsViewMeeting,
     isViewMeeting,
+    setIsViewMeeting,
     isQuickMeetingCreate,
     setIsQuickMeetingCreate,
     isQuickMeetingUpdate,
@@ -379,11 +637,12 @@ export const NewMeetingProvider = ({ children }) => {
     setIsQuickMeetingView,
     isMeetingCreateOrEdit,
     setIsMeetingCreateOrEdit,
+
+    // Request payload
     requestData,
     setRequestData,
   };
 
-  // Provide the state data to the context
   return (
     <NewMeetingContext.Provider value={statesData}>
       {children}
@@ -394,22 +653,14 @@ export const NewMeetingProvider = ({ children }) => {
 /**
  * @hook useNewMeetingContext
  * @description Consumes NewMeetingContext and returns all meeting listing and
- *   creation state values and setters. Throws an error if called outside of
- *   NewMeetingProvider.
- * @returns {Object} All meeting listing state values and setter functions from NewMeetingProvider
+ *   creation state values and setters. Throws if used outside NewMeetingProvider.
  */
-// Custom Hook to consume the context
 export const useNewMeetingContext = () => {
-  // Access the context
   const context = useContext(NewMeetingContext);
-
-  // Throw an error if the hook is used outside of the NewMeetingProvider
   if (!context) {
     throw new Error(
       "useNewMeetingContext must be used within a NewMeetingProvider",
     );
   }
-
-  // Return the context data
   return context;
 };

@@ -36,6 +36,7 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  UpdateMeetingUserApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -67,7 +68,11 @@ import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
-import { meetingStatusUpdateApi } from "../../../../../store/actions/MeetingActions";
+import {
+  UpdateMeetingStatusApi,
+  UpdateMeetingUserApi,
+} from "../../../../../store/actions/NewMeeting2.actions";
+import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 
 const Organizers = () => {
   const { t } = useTranslation();
@@ -79,14 +84,18 @@ const Organizers = () => {
   const UserID = localStorage.getItem("userID");
 
   const currentMeetingInfo = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
   );
   const {
     isMeetingCreateOrEdit,
     setIsMeetingCreateOrEdit,
     setIsCreateEditMeeting,
   } = useNewMeetingContext();
-  const { editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole, setGoBackCancelModal } =
+    useContext(MeetingContext);
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
@@ -99,11 +108,12 @@ const Organizers = () => {
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const handleCancelOrganizer = () => {
-    dispatch(showCancelModalOrganizers(true));
+    setGoBackCancelModal(true);
+    // dispatch(showCancelModalOrganizers(true));
   };
 
   const currentOrganizerData = {
@@ -189,12 +199,12 @@ const Organizers = () => {
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
             editorRole.role === "Organizer" &&
-            isMeetingCreateOrEdit === 2
+            isAdvanceMeetingRoute === 2
           ) {
             return text;
           } else if (
             editorRole.role === "Agenda Contributor" &&
-            isMeetingCreateOrEdit === 2
+            isAdvanceMeetingRoute === 2
           ) {
             return text;
           } else {
@@ -215,14 +225,14 @@ const Organizers = () => {
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isMeetingCreateOrEdit === 2
+                      isAdvanceMeetingRoute === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                          isMeetingCreateOrEdit === 2
-                        ? true
-                        : record.disabledTitle === true
-                        ? true
-                        : false
+                            isAdvanceMeetingRoute === 2
+                          ? true
+                          : record.disabledTitle === true
+                            ? true
+                            : false
                     }
                   />
                 </Col>
@@ -246,8 +256,9 @@ const Organizers = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex gap-3 align-items-center'>
-                <label className='column-boldness w-100'>
+                className="d-flex gap-3 align-items-center"
+              >
+                <label className="column-boldness w-100">
                   {record.isPrimaryOrganizer ? t("Primary") : t("Secondary")}
                 </label>
               </Col>
@@ -269,9 +280,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -279,9 +290,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={thumbsup}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -289,9 +300,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={thumbsdown}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -299,9 +310,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           }
@@ -322,24 +333,25 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height='30px'
-                      width='30px'
+                      height="30px"
+                      width="30px"
                       onClick={() => sendRecentNotification(record)}
-                      className='cursor-pointer'
-                      alt=''
+                      className="cursor-pointer"
+                      alt=""
                     />
                   )}
                 </Col>
@@ -352,24 +364,25 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height='30px'
-                      width='30px'
+                      height="30px"
+                      width="30px"
                       onClick={() => sendRecentNotification(record)}
-                      className='cursor-pointer'
-                      alt=''
+                      className="cursor-pointer"
+                      alt=""
                     />
                   )}
                 </Col>
@@ -396,10 +409,10 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={CrossResolution}
-                height='30px'
-                alt=''
-                width='30px'
-                className='cursor-pointer'
+                height="30px"
+                alt=""
+                width="30px"
+                className="cursor-pointer"
                 onClick={() => deleteRow(record)}
               />
             );
@@ -444,12 +457,12 @@ const Organizers = () => {
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
             editorRole.role === "Organizer" &&
-            isMeetingCreateOrEdit === 2
+            isAdvanceMeetingRoute === 2
           ) {
             return text;
           } else if (
             editorRole.role === "Agenda Contributor" &&
-            isMeetingCreateOrEdit === 2
+            isAdvanceMeetingRoute === 2
           ) {
             return text;
           } else {
@@ -470,14 +483,14 @@ const Organizers = () => {
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isMeetingCreateOrEdit === 2
+                      isAdvanceMeetingRoute === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                          isMeetingCreateOrEdit === 2
-                        ? true
-                        : record.disabledTitle === true
-                        ? true
-                        : false
+                            isAdvanceMeetingRoute === 2
+                          ? true
+                          : record.disabledTitle === true
+                            ? true
+                            : false
                     }
                   />
                 </Col>
@@ -497,8 +510,9 @@ const Organizers = () => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex gap-3 align-items-center'>
-              <label className='column-boldness w-100'>
+              className="d-flex gap-3 align-items-center"
+            >
+              <label className="column-boldness w-100">
                 {record.isPrimaryOrganizer ? t("Primary") : t("Secondary")}
               </label>
             </Col>
@@ -520,24 +534,25 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height='30px'
-                      width='30px'
+                      height="30px"
+                      width="30px"
                       onClick={() => sendRecentNotification(record)}
-                      className='cursor-pointer'
-                      alt=''
+                      className="cursor-pointer"
+                      alt=""
                     />
                   )}
                 </Col>
@@ -550,24 +565,25 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height='30px'
-                      width='30px'
+                      height="30px"
+                      width="30px"
                       onClick={() => sendRecentNotification(record)}
-                      className='cursor-pointer'
-                      alt=''
+                      className="cursor-pointer"
+                      alt=""
                     />
                   )}
                 </Col>
@@ -592,10 +608,10 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={CrossResolution}
-                height='30px'
-                alt=''
-                width='30px'
-                className='cursor-pointer'
+                height="30px"
+                alt=""
+                width="30px"
+                className="cursor-pointer"
                 onClick={() => deleteRow(record)}
               />
             );
@@ -611,11 +627,11 @@ const Organizers = () => {
         Number(editorRole.status) === 8 ||
         Number(editorRole.status) === 10) &&
       editorRole.role === "Organizer" &&
-      isMeetingCreateOrEdit === 2
+      isAdvanceMeetingRoute === 2
     ) {
     } else if (
       editorRole.role === "Agenda Contributor" &&
-      isMeetingCreateOrEdit === 2
+      isAdvanceMeetingRoute === 2
     ) {
     } else {
       dispatch(sendRecentNotificationOrganizerModal(true));
@@ -625,7 +641,7 @@ const Organizers = () => {
 
   const deleteRow = (recordToDelete) => {
     let findisPrimary = rowsData.filter(
-      (rowData, index) => rowData.isPrimaryOrganizer === true
+      (rowData, index) => rowData.isPrimaryOrganizer === true,
     );
     if (recordToDelete.isPrimaryOrganizer) {
       if (findisPrimary.length === 1) {
@@ -634,7 +650,7 @@ const Organizers = () => {
       }
     } else {
       setRowsData((prevRowsData) =>
-        prevRowsData.filter((record) => record !== recordToDelete)
+        prevRowsData.filter((record) => record !== recordToDelete),
       );
     }
   };
@@ -651,33 +667,35 @@ const Organizers = () => {
     let Data = { MeetingID: currentMeetingInfo.meetingID, StatusID: 1 };
     console.log("end meeting chaek");
     dispatch(
-      meetingStatusUpdateApi(navigate, t, Data, "publishMeeting", {
+      UpdateMeetingStatusApi(navigate, t, Data, "publishMeetingFromOrganizer", {
         isQuickMeeting: false,
         setEditorRole, // shorthand if variable name matches key
         setIsMeetingCreateOrEdit, // For update create and update view
-        setIsCreateEditMeeting, // For Create and Update Component
-      })
-    );
+        setIsCreateEditMeeting, // For Create and Update Component,
 
-    setRowsData([]);
+        setRowsData,
+      }),
+    );
   };
 
   const nextTabOrganizer = () => {
-    setRowsData([]);
-    setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(true));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
+    dispatch(setCreateEditTab("agendaContributors"));
+
+    // setRowsData([]);
+    // setRowsData([]);
+    // dispatch(saveMeetingFlag(false));
+    // dispatch(editMeetingFlag(false));
+    // dispatch(meetingDetailsGlobalFlag(false));
+    // dispatch(organizersGlobalFlag(false));
+    // dispatch(agendaContributorsGlobalFlag(true));
+    // dispatch(participantsGlobalFlag(false));
+    // dispatch(agendaGlobalFlag(false));
+    // dispatch(meetingMaterialGlobalFlag(false));
+    // dispatch(minutesGlobalFlag(false));
+    // dispatch(proposedMeetingDatesGlobalFlag(false));
+    // dispatch(actionsGlobalFlag(false));
+    // dispatch(pollsGlobalFlag(false));
+    // dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
   };
 
@@ -706,7 +724,7 @@ const Organizers = () => {
     const allMeetingOrganizers =
       MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
     setIsPublishedState(
-      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
+      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished,
     );
     const updatedMeetingOrganizers = allMeetingOrganizers.map((organizer) => ({
       ...organizer,
@@ -726,7 +744,7 @@ const Organizers = () => {
       newarry.push(organizerData.userID);
     });
     let findisOrganizerisExist = rowsData.some(
-      (data, index) => data.isPrimaryOrganizer === true
+      (data, index) => data.isPrimaryOrganizer === true,
     );
     let Data = {
       MeetingID: currentMeetingInfo.meetingID,
@@ -735,25 +753,19 @@ const Organizers = () => {
     };
     if (findisOrganizerisExist) {
       dispatch(
-        UpdateMeetingUserForOrganizers(
-          navigate,
-          Data,
-          t,
-          saveMeetingFlag,
-          editMeetingFlag,
+        UpdateMeetingUserApi(navigate, t, Data, "saveMeetingOrganizer", {
           rowsData,
-          currentMeetingInfo.meetingID,
           isEditValue,
           notificationMessage,
-          setIsEdit
-        )
+          setIsEdit,
+        }),
       );
       setIsEdit(false);
     } else {
       showMessage(
         t("At-least-one-primary-organizer-is-required"),
         "error",
-        setOpen
+        setOpen,
       );
     }
   };
@@ -777,13 +789,13 @@ const Organizers = () => {
           isDeletable: false,
           NotificationMessage: "",
           isEdit: true,
-        })
+        }),
       );
 
       setRowsData(updatedMeetingOrganizers);
     }
     setIsPublishedState(
-      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
+      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished,
     );
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
@@ -796,7 +808,7 @@ const Organizers = () => {
       const updatedRowsData = rowsData.map((organizer) => {
         const matchingOrganizer =
           MeetingOrganizersReducer.MeetingOrganizersData.find(
-            (user) => user.userID === organizer.userID
+            (user) => user.userID === organizer.userID,
           );
 
         if (matchingOrganizer) {
@@ -856,7 +868,7 @@ const Organizers = () => {
 
     MeetingOrganizersReducer.NotificationUpdateData.forEach((data) => {
       const index = updatedRowsData.findIndex(
-        (rowData) => rowData.userID === data.userID
+        (rowData) => rowData.userID === data.userID,
       );
 
       if (index !== -1) {
@@ -897,7 +909,6 @@ const Organizers = () => {
     dispatch(getAgendaVotingDetails_success([], ""));
     dispatch(saveFiles_success(null, ""));
     dispatch(saveAgendaVoting_success([], ""));
-    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
     dispatch(uploadDocument_success(null, ""));
     dispatch(getAllVotingResultDisplay_success([], ""));
     return () => {
@@ -908,128 +919,115 @@ const Organizers = () => {
 
   return (
     <>
-  
-        <>
-          <section className='position-relative'>
-            <Row className='mt-4 m-0 p-0'>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className='d-flex justify-content-end gap-4'>
-                {isEdit ? (
-                  <>
-                    <Row className='d-flex align-items-center gap-2'>
-                      <Col lg={12} md={12} sm={12}>
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["Cancel_Organization"]}
-                          style={{ marginRight: "10px" }}
-                          onClick={handleCancelEdit}
-                        />
-
-                        <Button
-                          text={t("Save")}
-                          className={styles["Next_Organization"]}
-                          onClick={() => saveMeetingOrganizers(1)}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                ) : (Number(editorRole.status) === 9 ||
-                    Number(editorRole.status) === 8 ||
-                    Number(editorRole.status) === 10) &&
-                  editorRole.role === "Organizer" &&
-                  isMeetingCreateOrEdit === 2 ? null : editorRole.role ===
-                    "Agenda Contributor" &&
-                  isMeetingCreateOrEdit === 2 ? null : (
-                  <>
-                    <Button
-                      text={t("Edit")}
-                      className={styles["Edit_Button_Organizers"]}
-                      icon={
-                        <img
-                          draggable={false}
-                          src={EditIcon}
-                          width='11.75px'
-                          height='11.75px'
-                          alt=''
-                        />
-                      }
-                      onClick={enableEditButton}
-                    />
-                    <Button
-                      text={t("Add-more")}
-                      icon={<img draggable={false} src={addmore} alt='' />}
-                      className={styles["AddMoreBtn"]}
-                      onClick={openAddUserModal}
-                    />
-                  </>
-                )}
-              </Col>
-            </Row>
-            <section className={styles["height2"]}>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <Table
-                    column={MeetingColoumns}
-                    scroll={{ y: "62vh" }}
-                    pagination={false}
-                    className='Polling_table'
-                    rows={rowsData}
-                  />
-                </Col>
-              </Row>
-
-              {!isEdit ? (
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <section className={styles["Footer_button"]}>
+      <>
+        <section className="position-relative">
+          <Row className="mt-4 m-0 p-0">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-4"
+            >
+              {isEdit ? (
+                <>
+                  <Row className="d-flex align-items-center gap-2">
+                    <Col lg={12} md={12} sm={12}>
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
-                        onClick={handleCancelOrganizer}
+                        style={{ marginRight: "10px" }}
+                        onClick={handleCancelEdit}
                       />
 
                       <Button
-                        text={t("Next")}
-                        className={styles["publish_button_Organization"]}
-                        onClick={nextTabOrganizer}
+                        text={t("Save")}
+                        className={styles["Next_Organization"]}
+                        onClick={() => saveMeetingOrganizers(1)}
                       />
+                    </Col>
+                  </Row>
+                </>
+              ) : (Number(editorRole.status) === 9 ||
+                  Number(editorRole.status) === 8 ||
+                  Number(editorRole.status) === 10) &&
+                editorRole.role === "Organizer" &&
+                isAdvanceMeetingRoute === 2 ? null : editorRole.role ===
+                  "Agenda Contributor" && isAdvanceMeetingRoute === 2 ? null : (
+                <>
+                  <Button
+                    text={t("Edit")}
+                    className={styles["Edit_Button_Organizers"]}
+                    icon={
+                      <img
+                        draggable={false}
+                        src={EditIcon}
+                        width="11.75px"
+                        height="11.75px"
+                        alt=""
+                      />
+                    }
+                    onClick={enableEditButton}
+                  />
+                  <Button
+                    text={t("Add-more")}
+                    icon={<img draggable={false} src={addmore} alt="" />}
+                    className={styles["AddMoreBtn"]}
+                    onClick={openAddUserModal}
+                  />
+                </>
+              )}
+            </Col>
+          </Row>
+          <section className={styles["height2"]}>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Table
+                  column={MeetingColoumns}
+                  scroll={{ y: "62vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={rowsData}
+                />
+              </Col>
+            </Row>
 
-                      {Number(editorRole.status) === 11 ||
-                      Number(editorRole.status) === 12 ? (
-                        <Button
-                          disableBtn={
-                            Number(currentMeetingInfo.meetingID) === 0 ||
-                            isPublishedState === false
-                              ? true
-                              : false
-                          }
-                          text={t("Publish")}
-                          className={styles["Next_Organization"]}
-                          onClick={handlePublishButton}
-                        />
-                      ) : isMeetingCreateOrEdit === 2 ? null : (
-                        <Button
-                          disableBtn={
-                            Number(currentMeetingInfo.meetingID) === 0 ||
-                            isPublishedState === false
-                              ? true
-                              : false
-                          }
-                          text={t("Publish")}
-                          className={styles["Next_Organization"]}
-                          onClick={handlePublishButton}
-                        />
-                      )}
-                    </section>
-                  </Col>
-                </Row>
-              ) : null}
-            </section>
+            {!isEdit ? (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <section className={styles["Footer_button"]}>
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_Organization"]}
+                      onClick={handleCancelOrganizer}
+                    />
+
+                    <Button
+                      text={t("Next")}
+                      className={styles["publish_button_Organization"]}
+                      onClick={nextTabOrganizer}
+                    />
+
+                    {Number(editorRole.status) === 11 ||
+                    Number(editorRole.status) === 12 ? (
+                      <Button
+                        disableBtn={
+                          Number(currentMeetingInfo.meetingID) === 0 ||
+                          isPublishedState === false
+                            ? true
+                            : false
+                        }
+                        text={t("Publish")}
+                        className={styles["Next_Organization"]}
+                        onClick={handlePublishButton}
+                      />
+                    ) : null}
+                  </section>
+                </Col>
+              </Row>
+            ) : null}
           </section>
-        </>
+        </section>
+      </>
       <Notification open={open} setOpen={setOpen} />
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
@@ -1048,22 +1046,7 @@ const Organizers = () => {
         // setSceduleMeeting={setSceduleMeeting}
         />
       )}
-      {NewMeetingreducer.nextConfirmModal && (
-        <NextModal
-          // setAgendaContributors={setAgendaContributors}
-          // setmeetingDetails={setmeetingDetails}
-          // setorganizers={setorganizers}
-          // setParticipants={setParticipants}
-          // setAgenda={setAgenda}
-          // setMinutes={setMinutes}
-          // setactionsPage={setactionsPage}
-          // setAttendance={setAttendance}
-          // setPolls={setPolls}
-          // setMeetingMaterial={setMeetingMaterial}
-          setRowsData={setRowsData}
-          flag={flag}
-        />
-      )}
+
       {NewMeetingreducer.ShowPreviousModal && (
         <PreviousModal
           // setAgendaContributors={setAgendaContributors}

@@ -13,14 +13,15 @@ import member from "../../../assets/images/member.svg";
 import addmore from "../../../assets/images/addmore.png";
 import ViewModal from "../../modalView/ModalView";
 import { Col, Row } from "react-bootstrap";
-import { ChevronDown } from "react-bootstrap-icons";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
+import ReactBootstrapDropdown from "react-bootstrap/Dropdown";
+
 import {
   JoinCurrentMeeting,
-  getMeetingByCommitteeIDApi,
   meetingNotConductedMQTT,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
@@ -41,22 +42,50 @@ import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
-import { activeChatBoxGS, addNewChatScreen, chatBoxActiveFlag, createGroupScreen, createShoutAllScreen, footerActionStatus, footerShowHideStatus, headerShowHideStatus, recentChatFlag } from "../../../store/actions/Talk_Feature_actions";
-import { GetAllUserChats, GetAllUsers, GetAllUsersGroupsRoomsList, GetGroupMessages, activeChat } from "../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../store/actions/Talk_Feature_actions";
+import {
+  GetAllUserChats,
+  GetAllUsers,
+  GetAllUsersGroupsRoomsList,
+  GetGroupMessages,
+  activeChat,
+} from "../../../store/actions/Talk_action";
 import { StatusValue } from "@/container/meeting/commonComponents/statusJson";
-
+import { getMeetingByCommitteeIdApi } from "../../../store/actions/Committee_actions";
+import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import {
+  setAdvanceMeetingRoute,
+  toggleCreateEditMeetingModal,
+} from "../../../store/actions/ModalStates_actions";
+import CreateEditAdvanceMeeting from "../../meeting/advanceMeeting/createEditAdvanceMeeting";
+import ViewMeetingModal from "../../meeting/advanceMeeting/viewAdvanceMeeting";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
   console.log(committeeStatus, "committeeStatuscommitteeStatus");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const getMeetingByCommitteeID = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingByCommitteeID
+    (state) => state.NewMeetingreducer.getMeetingByCommitteeID,
   );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
-
+  const createEditMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditMeetingModal,
+  );
+  const isViewMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewMeetingModal,
+  );
   const meetingStatusNotConductedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData,
   );
   const {
     CommitteeMeetingMQTT,
@@ -101,7 +130,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     videoCallURL,
     meetingID,
     isQuickMeeting,
-    status
+    status,
   ) => {
     // console.log(record, "recordrecord")
     if (Number(status) === 10) {
@@ -121,8 +150,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           setSceduleMeeting,
           1,
           "",
-          ""
-        )
+          "",
+        ),
       );
     } else {
       let Data = { MeetingID: Number(meetingID) };
@@ -135,8 +164,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           setEditMeetingModal,
           setCalendarViewModal,
           // setSceduleMeeting,
-          6
-        )
+          6,
+        ),
       );
       // setEditMeetingModal(true);
     }
@@ -151,8 +180,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         setViewMeetingModal,
         setEditMeetingModal,
         setCalendarViewModal,
-        2
-      )
+        2,
+      ),
     );
   };
 
@@ -167,7 +196,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       Length: 50,
       PublishedMeetings: true,
     };
-    dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
   }, []);
 
   const handleChangePagination = (current, pageSize) => {
@@ -183,7 +212,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       Length: Number(pageSize),
       PublishedMeetings: true,
     };
-    dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
   };
 
   useEffect(() => {
@@ -285,13 +314,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyFilter = () => {
     const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.status.toString())
+      selectedValues.includes(item.status.toString()),
     );
     setRow(filteredData);
     setVisible(false);
@@ -308,7 +337,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   };
   const [talkGroupID, setTalkGroupID] = useState(0);
   let currentOrganizationId = localStorage.getItem("organizationID");
-
 
   const groupChatInitiation = async (data) => {
     console.log(data, "datadatadata");
@@ -336,8 +364,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       await dispatch(GetGroupMessages(navigate, chatGroupData, t));
       await dispatch(
@@ -345,21 +373,20 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       await dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
     }
   };
 
-  
   useEffect(() => {
     if (
       AllUserChats?.AllUserChatsData !== null &&
@@ -369,7 +396,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     ) {
       let allChatMessages = AllUserChats?.AllUserChatsData;
       const foundRecord = allChatMessages.allMessages.find(
-        (item) => item.id === talkGroupID
+        (item) => item.id === talkGroupID,
       );
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
@@ -384,14 +411,15 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex  align-items-center justify-content-between p-1'>
+      <div className="d-flex  align-items-center justify-content-between p-1">
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -410,13 +438,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const MeetingColoumns = [
     {
       title: (
-        <span className='d-flex gap-2 align-items-center'>
+        <span className="d-flex gap-2 align-items-center">
           {" "}
           {t("Title")}{" "}
           {meetingTitleSort === "descend" ? (
-            <img src={DescendIcon} alt='' />
+            <img src={DescendIcon} alt="" />
           ) : (
-            <img src={AscendIcon} alt='' />
+            <img src={AscendIcon} alt="" />
           )}
         </span>
       ),
@@ -432,11 +460,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 record.videoCallURL,
                 record.pK_MDID,
                 record.isQuickMeeting,
-                record.status
+                record.status,
               );
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
-            }}>
+            }}
+          >
             {truncateString(text, 30)}
           </span>
         );
@@ -464,7 +493,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -472,7 +501,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -482,12 +512,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     },
     {
       title: (
-        <span className='d-flex gap-2 align-items-center justify-content-center'>
+        <span className="d-flex gap-2 align-items-center justify-content-center">
           {t("Organizer")}
           {meetingOrganizerSort === "descend" ? (
-            <img src={DescendIcon} alt='' />
+            <img src={DescendIcon} alt="" />
           ) : (
-            <img src={AscendIcon} alt='' />
+            <img src={AscendIcon} alt="" />
           )}
         </span>
       ),
@@ -514,12 +544,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     },
     {
       title: (
-        <span className='d-flex gap-2 align-items-center justify-content-center'>
+        <span className="d-flex gap-2 align-items-center justify-content-center">
           {t("Date-time")}
           {meetingDateTimeSort === "descend" ? (
-            <img src={ArrowDownIcon} alt='' />
+            <img src={ArrowDownIcon} alt="" />
           ) : (
-            <img src={ArrowUpIcon} alt='' />
+            <img src={ArrowUpIcon} alt="" />
           )}
         </span>
       ),
@@ -542,7 +572,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             <span className={styles["meeting-start"]}>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime,
-                CurrentLanguage
+                CurrentLanguage,
               )}
             </span>
           );
@@ -550,10 +580,10 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       },
       sorter: (a, b, sortOrder) => {
         const dateA = utcConvertintoGMT(
-          `${a?.dateOfMeeting}${a?.meetingStartTime}`
+          `${a?.dateOfMeeting}${a?.meetingStartTime}`,
         );
         const dateB = utcConvertintoGMT(
-          `${b?.dateOfMeeting}${b?.meetingStartTime}`
+          `${b?.dateOfMeeting}${b?.meetingStartTime}`,
         );
         return dateA - dateB;
       },
@@ -566,7 +596,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.role === "Organizer",
         );
         console.log(record, "recordrecordrecordrecord");
         return (
@@ -576,19 +606,21 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex align-items-center'>
+                className="d-flex align-items-center"
+              >
                 {record.isAttachment ? (
                   <span
                     className={
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
+                    }
+                  >
                     <img
                       src={ClipIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      alt=""
+                      draggable="false"
                       title={t("ClipIcon")}
                     />
                   </span>
@@ -598,21 +630,23 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.isChat ? (
                   <span
-                  onClick={(e) => groupChatInitiation(record)}
+                    onClick={(e) => groupChatInitiation(record)}
                     className={
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
+                    }
+                  >
                     <img
                       src={CommentIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      alt=""
+                      draggable="false"
                       title={t("Chat")}
                     />
                   </span>
@@ -622,7 +656,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.isVideoCall ? (
                   <span
@@ -630,12 +665,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }>
+                    }
+                  >
                     <img
                       src={VideoIcon}
-                      alt=''
+                      alt=""
                       title={t("Video")}
-                      draggable='false'
+                      draggable="false"
                     />
                   </span>
                 ) : (
@@ -644,17 +680,18 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-20"
                         : "margin-right-20"
-                    }></span>
+                    }
+                  ></span>
                 )}
                 {record.status === "9" && isOrganiser && (
                   <img
                     src={member}
-                    className='cursor-pointer'
-                    width='17.1px'
-                    height='16.72px'
-                    alt=''
+                    className="cursor-pointer"
+                    width="17.1px"
+                    height="16.72px"
+                    alt=""
                     title={t("Member")}
-                    draggable='false'
+                    draggable="false"
                     onClick={() => onClickDownloadIcon(record.pK_MDID)}
                   />
                 )}
@@ -672,17 +709,17 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Participant"
+            attendee.meetingAttendeeRole.role === "Participant",
         );
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            attendee.meetingAttendeeRole.role === "Agenda Contributor",
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.role === "Organizer",
         );
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
@@ -696,7 +733,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           currentUTCDateTime.substring(6, 8), // Day
           currentUTCDateTime.substring(8, 10), // Hours
           currentUTCDateTime.substring(10, 12), // Minutes
-          currentUTCDateTime.substring(12, 14) // Seconds
+          currentUTCDateTime.substring(12, 14), // Seconds
         );
 
         const meetingDateObj = new Date(
@@ -705,7 +742,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           meetingDateTime.substring(6, 8), // Day
           meetingDateTime.substring(8, 10), // Hours
           meetingDateTime.substring(10, 12), // Minutes
-          meetingDateTime.substring(12, 14) // Seconds
+          meetingDateTime.substring(12, 14), // Seconds
         );
 
         // Calculate the time difference in milliseconds
@@ -731,7 +768,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
@@ -750,13 +788,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                             "",
                             setViewMeetingModal,
                             setEditMeetingModal,
-                            record
-                          )
+                            record,
+                          ),
                         );
                         localStorage.setItem("meetingTitle", record.title);
                         localStorage.setItem(
                           "videoCallURL",
-                          record.videoCallURL
+                          record.videoCallURL,
                         );
                       }}
                     />
@@ -773,7 +811,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <Button
                     text={t("Join-meeting")}
                     className={styles["joining-Meeting"]}
@@ -782,7 +821,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         record.videoCallURL,
                         record.pK_MDID,
                         record.isQuickMeeting,
-                        record.status
+                        record.status,
                       );
                       localStorage.setItem("meetingTitle", record.title);
                       localStorage.setItem("videoCallURL", record.videoCallURL);
@@ -798,7 +837,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <Button
                     text={t("Join-meeting")}
                     className={styles["joining-Meeting"]}
@@ -807,7 +847,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         record.videoCallURL,
                         record.pK_MDID,
                         record.isQuickMeeting,
-                        record.status
+                        record.status,
                       );
                       localStorage.setItem("meetingTitle", record.title);
                       localStorage.setItem("videoCallURL", record.videoCallURL);
@@ -823,7 +863,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <Button
                     text={t("Join-meeting")}
                     className={styles["joining-Meeting"]}
@@ -832,7 +873,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         record.videoCallURL,
                         record.pK_MDID,
                         record.isQuickMeeting,
-                        record.status
+                        record.status,
                       );
                       localStorage.setItem("meetingTitle", record.title);
                       localStorage.setItem("videoCallURL", record.videoCallURL);
@@ -860,16 +901,22 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 1
+            attendee.meetingAttendeeRole.pK_MARID === 1,
         );
 
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.pK_MARID === 4
+            attendee.meetingAttendeeRole.pK_MARID === 4,
         );
         const isQuickMeeting = record.isQuickMeeting;
-        console.log(record.status,isQuickMeeting,isOrganiser,committeeStatus, "committeeStatuscommitteeStatus");
+        console.log(
+          record.status,
+          isQuickMeeting,
+          isOrganiser,
+          committeeStatus,
+          "committeeStatuscommitteeStatus",
+        );
         if (
           record.status === "8" ||
           record.status === "4" ||
@@ -885,17 +932,17 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     {committeeStatus === 3 && (
                       <img
                         src={EditIcon}
-                        className='cursor-pointer'
-                        width='17.11px'
-                        height='17.11px'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        width="17.11px"
+                        height="17.11px"
+                        alt=""
+                        draggable="false"
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
                             isAgendaContributor,
-                            record
+                            record,
                           )
                         }
                       />
@@ -918,7 +965,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         ) {
           let meetingData = CommitteeMeetingMQTT.meeting;
           let findIsExist = rows.findIndex(
-            (data, index) => data.pK_MDID === meetingData.pK_MDID
+            (data, index) => data.pK_MDID === meetingData.pK_MDID,
           );
           if (findIsExist !== -1) {
             setRow((rowsData) => {
@@ -996,15 +1043,20 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const handelCreateMeeting = () => {
     setCreateMeetingModal(true);
   };
+
+  const handleCreateAdvanceMeeting = () => {
+    dispatch(setAdvanceMeetingRoute(1));
+    dispatch(toggleCreateEditMeetingModal(true));
+  };
   const emptyText = () => {
     return (
       <ResultMessage
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -1108,6 +1160,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       handleSize: 10, // Distance between data and scrollbar
     },
   };
+
   return (
     <>
       {createMeetingModal && (
@@ -1133,14 +1186,66 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         />
       )}
       <Row>
-        <Col sm={12} md={12} lg={12} className='d-flex justify-content-end'>
+        <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
           {committeeStatus === 3 && (
-            <Button
-              text={t("Create-Meeting")}
-              icon={<img draggable={false} src={addmore} alt='' />}
-              className={styles["Create_Meeting_Button"]}
-              onClick={handelCreateMeeting}
-            />
+            <ReactBootstrapDropdown
+              className="SceduleMeetingButton d-inline-block position-relative ms-2"
+              // onClick={eventClickHandler}
+            >
+              <ReactBootstrapDropdown.Toggle title={t("Schedule-a-meeting")}>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["schedule_button"]}
+                  >
+                    <Plus width={20} height={20} fontWeight={800} />
+                    <span> {t("Schedule-a-meeting")}</span>
+                  </Col>
+                </Row>
+              </ReactBootstrapDropdown.Toggle>
+
+              <ReactBootstrapDropdown.Menu>
+                {/* Quick meeting option - Feature ID 1 */}
+                {checkFeatureIDAvailability(1) ? (
+                  <ReactBootstrapDropdown.Item
+                    className={styles["dropdown-item"]}
+                    onClick={handelCreateMeeting}
+                  >
+                    {t("Quick-meeting")}
+                  </ReactBootstrapDropdown.Item>
+                ) : null}
+
+                {/* Advance meeting option - Feature ID 9 */}
+                {checkFeatureIDAvailability(9) ? (
+                  <ReactBootstrapDropdown.Item
+                    className={styles["dropdown-item"]}
+                    onClick={handleCreateAdvanceMeeting}
+                  >
+                    {t("Advance-meeting")}
+                  </ReactBootstrapDropdown.Item>
+                ) : null}
+
+                {/* Propose new meeting option - Feature ID 12 */}
+                {checkFeatureIDAvailability(12) ? (
+                  <>
+                    <ReactBootstrapDropdown.Item
+                      className={styles["dropdown-item"]}
+                      // onClick={openProposedNewMeetingPage}
+                    >
+                      {t("Propose-new-meeting")}
+                    </ReactBootstrapDropdown.Item>
+                  </>
+                ) : null}
+              </ReactBootstrapDropdown.Menu>
+            </ReactBootstrapDropdown>
+            // <Button
+            //   text={t("Create-Meeting")}
+            //   icon={<img draggable={false} src={addmore} alt='' />}
+            //   className={styles["Create_Meeting_Button"]}
+            //   onClick={handelCreateMeeting}
+            // />
           )}
         </Col>
       </Row>
@@ -1151,8 +1256,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             scroll={scroll}
             rows={rows}
             pagination={false}
-            size='small'
-            className='newMeetingTable'
+            size="small"
+            className="newMeetingTable"
             locale={{
               emptyText: emptyText(),
             }}
@@ -1165,10 +1270,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             lg={12}
             className={
               "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
+            }
+          >
+            <span className="PaginationStyle-TodoList">
               <CustomPagination
-                current={currentPage}
+                current={Number(currentPage)}
                 showSizer={true}
                 onChange={handleChangePagination}
                 pageSizeOptionsValues={["30", "50", "100", "200"]}

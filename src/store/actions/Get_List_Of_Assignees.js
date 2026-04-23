@@ -18,15 +18,13 @@ import {
 } from "../actions/GetDataForCalendar";
 import {
   searchNewUserMeeting,
-  setMeetingByGroupIDApi,
-  setMeetingbyCommitteeIDApi,
-  getMeetingByCommitteeIDApi,
-  getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
 import { CreateUpdateMeetingDataRoomMap } from "./MeetingAgenda_action";
 import { generateRandomPositiveId } from "../../commen/functions/utils";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { getMeetingByCommitteeIdApi } from "./Committee_actions";
+import { getMeetingbyGroupIdApi } from "./Groups_actions";
 
 const meetingLoaderDashboard = (payload) => {
   return {
@@ -662,7 +660,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   Length: 50,
                   PublishedMeetings: true,
                 };
-                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
               } else if (value === 7) {
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
@@ -675,7 +673,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   Length: 50,
                   PublishedMeetings: true,
                 };
-                dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
               } else if (value === 4) {
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent =

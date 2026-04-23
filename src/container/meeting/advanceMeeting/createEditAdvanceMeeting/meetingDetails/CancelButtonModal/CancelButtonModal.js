@@ -3,18 +3,21 @@ import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { meetingDetailsGlobalFlag, searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
+import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { MeetingContext } from "../../../../../../context/MeetingContext";
 import { useNavigate } from "react-router-dom";
 import { useNewMeetingContext } from "../../../../../../context/NewMeetingContext";
-const CancelButtonModal = ({
-  setRows,
-}) => {
+import {
+  resetCreateEditTabs,
+  toggleCreateEditMeetingModal,
+} from "../../../../../../store/actions/ModalStates_actions";
+import { isFunction } from "../../../../../../commen/functions/utils";
+const CancelButtonModal = ({ setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { goBackCancelModal, setGoBackCancelModal } =
+  const { goBackCancelModal, setGoBackCancelModal, setEditorRole } =
     useContext(MeetingContext);
   const { setIsCreateEditMeeting, isCreateEditMeeting } =
     useNewMeetingContext();
@@ -30,46 +33,55 @@ const CancelButtonModal = ({
   const handleYesFunctionality = () => {
     if (localStorage.getItem("navigateLocation") === "dataroom") {
       setGoBackCancelModal(false);
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       navigate("/Diskus/dataroom");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "resolution") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/resolution");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "committee") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/committee");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "groups") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/groups");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "polling") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/polling");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "calendar") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/calendar");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "todolist") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/todolist");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Notes") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       setGoBackCancelModal(false);
       navigate("/Diskus/Notes");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
-      setIsCreateEditMeeting(false);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       navigate("/Diskus/");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Meeting") {
@@ -88,11 +100,12 @@ const CancelButtonModal = ({
           currentView && Number(currentView) === 2 ? true : false,
       };
       console.log("chek search meeting");
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
       setIsCreateEditMeeting(false);
-      dispatch(meetingDetailsGlobalFlag(true));
-      setRows([]);
+      isFunction(setRows) && setRows([]);
       // setIsCreateEditMeeting(false);
       localStorage.removeItem("navigateLocation");
     } else {
@@ -113,9 +126,15 @@ const CancelButtonModal = ({
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
       setIsCreateEditMeeting(false);
-      dispatch(meetingDetailsGlobalFlag(true));
-      setRows([]);
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
+      isFunction(setRows) && setRows([]);
     }
+    setEditorRole({
+      status: null,
+      role: null,
+      isPrimaryOrganizer: false,
+    });
   };
 
   return (

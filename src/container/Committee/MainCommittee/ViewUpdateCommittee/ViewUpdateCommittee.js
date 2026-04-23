@@ -21,24 +21,24 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const { t } = useTranslation();
   const { setviewVotes } = usePollsContext();
   let NotificationClickCommitteeID = localStorage.getItem(
-    "NotifcationClickViewCommitteeID"
+    "NotifcationClickViewCommitteeID",
   );
   const [committeeStatus, setCommitteeStatus] = useState(null);
   const getCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID,
   );
   const dispatch = useDispatch();
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [currentView, setCurrentView] = useState(
     viewCommitteeTab !== undefined && viewCommitteeTab !== 0
       ? viewCommitteeTab
-      : 1
+      : 1,
   );
 
   useEffect(() => {
     return () => {
       setViewGroupPage(false);
-      localStorage.removeItem("ViewCommitteeID");
+      // localStorage.removeItem("ViewCommitteeID");
       dispatch(viewCommitteePageFlag(false));
     };
   }, []);
@@ -47,12 +47,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
       if (ViewCommitteeID !== null || NotificationClickCommitteeID !== null) {
         if (
           JSON.parse(
-            localStorage.getItem("NotificationClickCommitteeOperations")
+            localStorage.getItem("NotificationClickCommitteeOperations"),
           ) === true
         ) {
           //For Notification Click Redirection User Logic
           let OrganizationID = JSON.parse(
-            localStorage.getItem("organizationID")
+            localStorage.getItem("organizationID"),
           );
           let Data = {
             CommitteeID: Number(NotificationClickCommitteeID),
@@ -62,7 +62,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
         } else {
           // Normal Card Title Click View Logic
           let OrganizationID = JSON.parse(
-            localStorage.getItem("organizationID")
+            localStorage.getItem("organizationID"),
           );
           let Data = {
             CommitteeID: Number(ViewCommitteeID),

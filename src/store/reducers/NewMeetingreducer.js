@@ -1985,7 +1985,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           viewVotesAgenda: false,
           castVoteAgendaPage: false,
           // getALlMeetingTypes: [],
-          meetingDetails: [],
+          // meetingDetails: [],
           getAllReminderFrequency: [],
           recurring: [],
           searchMeetings: null,

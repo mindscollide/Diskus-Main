@@ -35,6 +35,7 @@ import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 import { TalkProvider } from "./context/TalkContext";
 import { ComlianceProvider } from "./context/ComplianceContext";
+import { NewMeetingProvider } from "./context/NewMeetingContext";
 
 // Root container
 const container = document.getElementById("root");
@@ -72,25 +73,27 @@ root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Provider store={store}>
       <AuthProvider>
-        <TalkProvider>
-          <MeetingProvider>
-            <GroupsProvider>
-              <CommitteeProvider>
-                <DataroomProvider>
-                  <PollsProvider>
-                    <NotesProvider>
-                      <ResolutionProvider>
-                        <ComlianceProvider>
-                          <App />
-                        </ComlianceProvider>
-                      </ResolutionProvider>
-                    </NotesProvider>
-                  </PollsProvider>
-                </DataroomProvider>
-              </CommitteeProvider>
-            </GroupsProvider>
-          </MeetingProvider>
-        </TalkProvider>
+        <NewMeetingProvider>
+          <TalkProvider>
+            <MeetingProvider>
+              <GroupsProvider>
+                <CommitteeProvider>
+                  <DataroomProvider>
+                    <PollsProvider>
+                      <NotesProvider>
+                        <ResolutionProvider>
+                          <ComlianceProvider>
+                            <App />
+                          </ComlianceProvider>
+                        </ResolutionProvider>
+                      </NotesProvider>
+                    </PollsProvider>
+                  </DataroomProvider>
+                </CommitteeProvider>
+              </GroupsProvider>
+            </MeetingProvider>
+          </TalkProvider>
+        </NewMeetingProvider>
       </AuthProvider>
     </Provider>
   </GoogleOAuthProvider>

@@ -599,8 +599,8 @@ const Minutes = () => {
     dispatch(
       UpdateMinutesGeneralApiFunc(
         navigate,
-        Data,
         t,
+        Data,
         false,
         null,
         false,

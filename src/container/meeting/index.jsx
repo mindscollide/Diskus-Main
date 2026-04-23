@@ -15,26 +15,23 @@ import PublishedMeetingList from "@/container/meeting/publishMeeting";
 import DatePicker from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useNavigate } from "react-router-dom";
-import {
-  clearMeetingState,
-  GetAllMeetingTypesNewFunction,
-  searchNewUserMeeting,
-} from "@/store/actions/NewMeetingActions";
+import { clearMeetingState } from "@/store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import CreateEditAdvanceMeeting from "./advanceMeeting/createEditAdvanceMeeting";
-import ViewAdvanceMeeting from "./advanceMeeting/viewAdvanceMeeting";
-import {
-  getAllMeetingsApi,
-  listOfMeetingTypesApi,
-} from "../../store/actions/MeetingActions";
+
 import { useMeetingContext } from "../../context/MeetingContext";
-import ViewMeetingModal from "./advanceMeeting/viewAdvanceMeeting/ViewMeetingModal";
+import ViewMeetingModal from "./advanceMeeting/viewAdvanceMeeting";
 import CreateQuickMeeting from "./quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import UpdateQuickMeeting from "./quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import ViewQuickMeeting from "./quickMeeting/ViewQuickMeeting";
+import {
+  setAdvanceMeetingRoute,
+  toggleCreateEditMeetingModal,
+} from "../../store/actions/ModalStates_actions";
+import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
+import { listOfMeetingsApi } from "../../store/actions/NewMeeting2.actions";
 /**
  * MainMeeting Component
  *
@@ -59,6 +56,12 @@ const MainMeeting = () => {
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes,
   );
+  const createEditMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditMeetingModal,
+  );
+  const isViewMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewMeetingModal,
+  );
 
   // Refs and hooks
   const calendRef = useRef();
@@ -67,22 +70,13 @@ const MainMeeting = () => {
 
   // Context for meeting state management
   const {
-    currentTab,
-    setCurrentTab,
-    isCreateEditMeeting,
-    setIsCreateEditMeeting,
     isQuickMeetingCreate,
     setIsQuickMeetingCreate,
     isQuickMeetingUpdate,
     setIsQuickMeetingUpdate,
     isQuickMeetingView,
     setIsQuickMeetingView,
-    isMeetingCreateOrEdit,
-    setIsMeetingCreateOrEdit,
   } = useNewMeetingContext();
-
-  const { viewAdvanceMeetingModal, advanceMeetingModalID } =
-    useMeetingContext();
 
   // Local state management
   const [searchText, setSearchText] = useState("");
@@ -106,24 +100,30 @@ const MainMeeting = () => {
   });
 
   useEffect(() => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(localStorage.getItem("userID")),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: true,
-      ProposedMeetings: false,
-    };
-
-    dispatch(getAllMeetingsApi(navigate, t, searchData));
+    dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings: true,
+          ProposedMeetings: false,
+        },
+        "mainListing",
+        {},
+      ),
+    );
     // Fetch meeting types if not already loaded
     if (
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      dispatch(listOfMeetingTypesApi(navigate, t, true));
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t));
     }
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
@@ -182,27 +182,44 @@ const MainMeeting = () => {
     dispatch(clearMeetingState());
 
     // Prepare search parameters for published meetings
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(localStorage.getItem("userID")),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: true,
-      ProposedMeetings: false,
-    };
+    // let searchData = {
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(localStorage.getItem("userID")),
+    //   PageNumber: 1,
+    //   Length: 30,
+    //   PublishedMeetings: true,
+    //   ProposedMeetings: false,
+    // };
 
     // Fetch meeting types if not already loaded
     if (
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      await dispatch(listOfMeetingTypesApi(navigate, t, true));
+      await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
     console.log("chek search meeting");
-    await dispatch(getAllMeetingsApi(navigate, t, searchData));
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings: true,
+          ProposedMeetings: false,
+        },
+        "mainListing",
+        {},
+      ),
+    );
 
     // Update localStorage with current view state
     localStorage.setItem("MeetingCurrentView", 1);
@@ -230,27 +247,33 @@ const MainMeeting = () => {
     dispatch(clearMeetingState());
 
     // Prepare search parameters for draft meetings
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(localStorage.getItem("userID")),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: false,
-      ProposedMeetings: false,
-    };
 
-    // Fetch meeting types if not already loaded
     if (
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      await dispatch(listOfMeetingTypesApi(navigate, t, true));
+      await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
     console.log("chek search meeting");
-    await dispatch(getAllMeetingsApi(navigate, t, searchData));
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings: false,
+          ProposedMeetings: false,
+        },
+        "mainListing",
+        {},
+      ),
+    );
 
     // Update localStorage with current view state
     localStorage.setItem("MeetingCurrentView", 3);
@@ -278,27 +301,34 @@ const MainMeeting = () => {
     dispatch(clearMeetingState());
 
     // Prepare search parameters for proposed meetings
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(localStorage.getItem("userID")),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: false,
-      ProposedMeetings: true,
-    };
 
     // Fetch meeting types if not already loaded
     if (
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      await dispatch(listOfMeetingTypesApi(navigate, t, true));
+      await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
     console.log("chek search meeting");
-    await dispatch(getAllMeetingsApi(navigate, t, searchData));
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings: false,
+          ProposedMeetings: true,
+        },
+        "mainListing",
+        {},
+      ),
+    );
 
     // Update localStorage with current view state
     localStorage.setItem("MeetingCurrentView", 2);
@@ -324,18 +354,33 @@ const MainMeeting = () => {
 
   const handleKeyPress = async (event) => {
     if (event.key === "Enter" && searchText !== "") {
-      let searchData = {
-        Date: "",
-        Title: searchText,
-        HostName: "",
-        UserID: Number(localStorage.getItem("userID")),
-        PageNumber:
-          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        PublishedMeetings: Number(currentView) === 1 ? true : false,
-      };
-      console.log("chek search meeting");
-      await dispatch(getAllMeetingsApi(navigate, t, searchData));
+      await dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: searchText,
+            HostName: "",
+            UserID: Number(localStorage.getItem("userID")),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+            PublishedMeetings:
+              localStorage.getItem("MeetingCurrentView") &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              localStorage.getItem("MeetingCurrentView") &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
+          },
+          "mainListing",
+          {},
+        ),
+      );
       setentereventIcon(true);
     }
   };
@@ -355,10 +400,18 @@ const MainMeeting = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
-    await dispatch(getAllMeetingsApi(navigate, t, searchData));
+    await dispatch(listOfMeetingsApi(navigate, t, searchData));
     setSearchText("");
     setentereventIcon(false);
     setSearchFeilds({
@@ -370,15 +423,15 @@ const MainMeeting = () => {
   };
 
   const handleCreateAdvanceMeeting = () => {
-    setIsMeetingCreateOrEdit(1);
-    setIsCreateEditMeeting(true);
+    dispatch(setAdvanceMeetingRoute(1));
+    dispatch(toggleCreateEditMeetingModal(true));
   };
 
-  if (isCreateEditMeeting) {
+  if (createEditMeetingModal) {
     return <CreateEditAdvanceMeeting />;
   }
 
-  if (viewAdvanceMeetingModal) {
+  if (isViewMeetingModal) {
     return <ViewMeetingModal />;
   }
 
@@ -677,9 +730,9 @@ const MainMeeting = () => {
             setViewFlag={setIsQuickMeetingView}
           />
         )}
-        {viewAdvanceMeetingModal && advanceMeetingModalID !== 0 && (
+        {/* {viewAdvanceMeetingModal && advanceMeetingModalID !== 0 && (
           <ViewAdvanceMeeting />
-        )}
+        )} */}
       </section>
     </>
   );
