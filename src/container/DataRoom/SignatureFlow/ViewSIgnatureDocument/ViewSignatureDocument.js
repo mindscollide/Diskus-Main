@@ -31,6 +31,13 @@ const ViewSignatureDocument = () => {
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
 
+  console.log(
+    getAllFieldsByWorkflowID,
+    getWorkfFlowByFileId,
+    getSignatureFileAnnotationResponse,
+    "getSignatureFileAnnotationResponse",
+  );
+
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const viewer = useRef(null);

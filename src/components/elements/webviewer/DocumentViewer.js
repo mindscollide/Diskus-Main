@@ -229,7 +229,7 @@ const DocumentViewer = () => {
             Tools,
           } = instance.Core;
           instance.UI.disableTools([Tools.disableTextSelection]);
-          instance.UI.disableElements(["saveAsButton"]);
+          instance.UI.disableElements(["saveAsButton", "toolbarGroup-Forms"]);
           const { CLIENT } = SupportedFileFormats;
           // Example usage:
           const extension = getFileExtension(fileName);
@@ -368,7 +368,6 @@ const DocumentViewer = () => {
     }
   };
 
-  // Set Permissions
   const setPermissions = (instance) => {
     const disabledElements = [
       "saveAsButton",
@@ -404,7 +403,7 @@ const DocumentViewer = () => {
       "header",
     ];
     instance.UI.disableElements(disabledElements);
-  };
+  }; // Set Permissions
 
   // Handle Notifications
   useEffect(() => {

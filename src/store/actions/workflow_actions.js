@@ -2605,6 +2605,14 @@ const MinuteReviwerCount = (response) => {
   };
 };
 
+//For Creater Signature Count SIgnee
+const signeeCreatorCount = (response) => {
+  return {
+    type: actions.SIGNATURE_SIGNEE_CREATOR_COUNT_UPDATE,
+    response: response,
+  };
+};
+
 //Clear as Minute Reviwer
 const clearMinuteReviewerMqtt = (response) => {
   return {
@@ -2645,4 +2653,5 @@ export {
   validateEncryptedStringSignatureDataApi,
   MinuteReviwerCount,
   clearMinuteReviewerMqtt,
+  signeeCreatorCount,
 };

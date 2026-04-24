@@ -1131,7 +1131,7 @@ const shareFilesApi = (navigate, FileData, t, setShareFile) => {
               dispatch(
                 shareFiles_success(
                   response.data.responseResult,
-                  t("Files-shared-successfully"),
+                  t("File-shared"),
                 ),
               );
               setShareFile(false);
@@ -3133,7 +3133,7 @@ const getPDFNet = async () => {
       licenseKey: process.env.REACT_APP_APRYSEKEY,
       fullAPI: true, // required to access PDFNet
     },
-    container
+    container,
   );
 
   const { PDFNet } = instance.Core;
@@ -3164,7 +3164,7 @@ const flattenAnnotationsIntoPdf = async (pdfBase64, xfdfString) => {
   await pdfDoc.flattenAnnotations();
 
   const savedBuffer = await pdfDoc.saveMemoryBuffer(
-    PDFNet.SDFDoc.SaveOptions.e_linearized
+    PDFNet.SDFDoc.SaveOptions.e_linearized,
   );
   return new Uint8Array(savedBuffer);
 };
@@ -3178,7 +3178,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
     const form = new FormData();
     form.append(
       "RequestMethod",
-      getAnnotationOfDataroomAttachment.RequestMethod
+      getAnnotationOfDataroomAttachment.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
 
@@ -3187,7 +3187,9 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, Name));
+        dispatch(
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, Name),
+        );
         return;
       }
 
@@ -3197,7 +3199,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
         response.data.responseResult.responseMessage
           .toLowerCase()
           .includes(
-            "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase()
+            "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase(),
           )
       ) {
         const attachmentBlob = response.data.responseResult.attachmentBlob;
@@ -3220,12 +3222,12 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
             // Step 1: flatten annotations (XFDF) into the PDF using Apryse
             pdfBytes = await flattenAnnotationsIntoPdf(
               attachmentBlob,
-              annotationString
+              annotationString,
             );
           } else {
             // No annotations — decode base64 directly
             pdfBytes = Uint8Array.from(atob(attachmentBlob), (c) =>
-              c.charCodeAt(0)
+              c.charCodeAt(0),
             );
           }
 
@@ -3244,7 +3246,9 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
           try {
             const logoResponse = await fetch(diskusLogo);
             const logoArrayBuffer = await logoResponse.arrayBuffer();
-            embeddedLogo = await pdfDoc.embedPng(new Uint8Array(logoArrayBuffer));
+            embeddedLogo = await pdfDoc.embedPng(
+              new Uint8Array(logoArrayBuffer),
+            );
             // Scale proportionally to the target height
             const scaled = embeddedLogo.scaleToFit(9999, logoPdfHeight);
             logoPdfWidth = scaled.width;
@@ -3334,7 +3338,10 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
       }
     } catch (err) {
       // Server 500 or any processing error — fall back to direct download
-      console.error("Footer download failed, falling back to direct download:", err);
+      console.error(
+        "Footer download failed, falling back to direct download:",
+        err,
+      );
       dispatch(DownloadMessage(0));
       dispatch(DownloadFileForDataRoomEnded(false));
       dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));

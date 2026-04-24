@@ -31,6 +31,7 @@ const initialState = {
   signatureDocumentStatusChangeForSignees: null,
   validateEncryptedStringSignatureDataResponse: null,
   addedAsMinuteReviwerMqttPayload: null,
+  signeeCounterData: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -74,7 +75,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.CREATESIGNATUREFLOW_SUCCESS: {
       console.log(
         { action },
-        "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS"
+        "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS",
       );
       return {
         ...state,
@@ -150,7 +151,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.ADD_UPDATE_FIELD_VALUE_FAIL: {
-      console.log(action, "ADD_UPDATE_FIELD_VALUE_FAIL")
+      console.log(action, "ADD_UPDATE_FIELD_VALUE_FAIL");
       return {
         ...state,
         Loading: false,
@@ -556,7 +557,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
     case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS: {
       console.log(
         { action },
-        "VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS"
+        "VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS",
       );
       return {
         ...state,
@@ -587,6 +588,15 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       return {
         ...state,
         addedAsMinuteReviwerMqttPayload: action.response,
+      };
+    }
+
+    // Signee Counter For Signature
+    case actions.SIGNATURE_SIGNEE_CREATOR_COUNT_UPDATE: {
+      console.log(action, "GLOBAL_SCREEN_SHARE_TRIGGERED");
+      return {
+        ...state,
+        signeeCounterData: action.response,
       };
     }
 

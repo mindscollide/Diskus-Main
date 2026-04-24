@@ -48,19 +48,22 @@ const Polls = ({ committeeStatus }) => {
   const { viewPublishedPoll, setViewPublishedPoll } = useMeetingContext();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const cancelPolls = useSelector(
-    (state) => state.NewMeetingreducer.cancelPolls
+    (state) => state.NewMeetingreducer.cancelPolls,
   );
   const getPollByCommitteeID = useSelector(
-    (state) => state.PollsReducer.getPollByCommitteeID
+    (state) => state.PollsReducer.getPollByCommitteeID,
   );
   const newPollCommittees = useSelector(
-    (state) => state.PollsReducer.newPollCommittees
+    (state) => state.PollsReducer.newPollCommittees,
   );
   const pollingSocket = useSelector(
-    (state) => state.PollsReducer.pollingSocket
+    (state) => state.PollsReducer.pollingSocket,
   );
+
+  console.log(pollingSocket, "pollingSocketpollingSocket");
+
   const newPollDelete = useSelector(
-    (state) => state.PollsReducer.newPollDelete
+    (state) => state.PollsReducer.newPollDelete,
   );
   // Vote Cast Polls
   const [votePolls, setvotePolls] = useState(false);
@@ -93,8 +96,8 @@ const Polls = ({ committeeStatus }) => {
         setEditPolls,
         setvotePolls,
         setUnPublished,
-        setViewPublishedPoll
-      )
+        setViewPublishedPoll,
+      ),
     );
   };
 
@@ -103,7 +106,7 @@ const Polls = ({ committeeStatus }) => {
       PollID: record.pollID,
     };
     dispatch(
-      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll),
     );
   };
 
@@ -120,8 +123,8 @@ const Polls = ({ committeeStatus }) => {
         t,
         setEditPolls,
         setvotePolls,
-        setUnPublished
-      )
+        setUnPublished,
+      ),
     );
     dispatch(showunsavedEditPollsMeetings(false));
     setCreatepoll(false);
@@ -151,8 +154,8 @@ const Polls = ({ committeeStatus }) => {
           setEditPolls,
           setvotePolls,
           setUnPublished,
-          setViewPublishedPoll
-        )
+          setViewPublishedPoll,
+        ),
       );
     } else if (record.pollStatus.pollStatusId === 2) {
       // Poll Published
@@ -165,8 +168,8 @@ const Polls = ({ committeeStatus }) => {
           setEditPolls,
           setvotePolls,
           setUnPublished,
-          setViewPublishedPoll
-        )
+          setViewPublishedPoll,
+        ),
       );
     } else if (record.pollStatus.pollStatusId === 3) {
       // Expired Poll
@@ -181,8 +184,8 @@ const Polls = ({ committeeStatus }) => {
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       } else {
         // If User is just a Participant then modal should open like Unpublished Poll
@@ -195,8 +198,8 @@ const Polls = ({ committeeStatus }) => {
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       }
     }
@@ -216,8 +219,8 @@ const Polls = ({ committeeStatus }) => {
         setEditPolls,
         setvotePolls,
         setUnPublished,
-        setViewPublishedPoll
-      )
+        setViewPublishedPoll,
+      ),
     );
   };
 
@@ -282,7 +285,7 @@ const Polls = ({ committeeStatus }) => {
         let updatedRows = [...pollsRows];
 
         const findIndex = updatedRows.findIndex(
-          (rowData) => rowData?.pollID === polls?.pollID
+          (rowData) => rowData?.pollID === polls?.pollID,
         );
 
         if (findIndex !== -1) {
@@ -310,7 +313,7 @@ const Polls = ({ committeeStatus }) => {
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
             (newData2, index) =>
-              Number(newData2.pollID) !== Number(polls?.pollID)
+              Number(newData2.pollID) !== Number(polls?.pollID),
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -348,12 +351,12 @@ const Polls = ({ committeeStatus }) => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
   const handleApplyFilter = () => {
     const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.pollStatus.status.toString())
+      selectedValues.includes(item.pollStatus.status.toString()),
     );
     setPollsRows(filteredData);
     setVisible(false);
@@ -386,8 +389,8 @@ const Polls = ({ committeeStatus }) => {
                 filter.value === "Published"
                   ? "userstatus-signal-PublishedPolls_Menu"
                   : filter.value === "UnPublished"
-                  ? "userstatus-signal-Unpublished_Menu"
-                  : "userstatus-signal-disabled_Menu"
+                    ? "userstatus-signal-Unpublished_Menu"
+                    : "userstatus-signal-disabled_Menu"
               }
             ></span>
             <span className="menu-text">{filter.text}</span>
@@ -511,12 +514,12 @@ const Polls = ({ committeeStatus }) => {
         new Date(
           a.dueDate.slice(0, 4),
           a.dueDate.slice(4, 6) - 1,
-          a.dueDate.slice(6, 8)
+          a.dueDate.slice(6, 8),
         ) -
         new Date(
           b.dueDate.slice(0, 4),
           b.dueDate.slice(4, 6) - 1,
-          b.dueDate.slice(6, 8)
+          b.dueDate.slice(6, 8),
         ),
       sortDirections: ["ascend", "descend"],
       render: (text, record) => {
@@ -551,6 +554,7 @@ const Polls = ({ committeeStatus }) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (currentDate < convertIntoGmt && committeeStatus === 3) {
+              console.log(record.voteStatus, "Check Vote");
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
@@ -799,7 +803,7 @@ const Polls = ({ committeeStatus }) => {
                                     className={styles["EmptyState_subHeading"]}
                                   >
                                     {t(
-                                      "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                                      "Be-the-first-to-create-a-poll-and-spark-the-conversation",
                                     )}
                                   </span>
                                 </Col>

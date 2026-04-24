@@ -250,6 +250,8 @@ const DataRoom = () => {
 
   console.log(errorSeverityState2, errorSeverityState, "errorSeverityState2");
 
+  console.log(BreadCrumbsListArr, "BreadCrumbsListArr");
+
   // ─── localStorage session values ─────────────────────────────────────────
   /** Currently authenticated user's ID. */
   let userID = localStorage.getItem("userID");
@@ -261,6 +263,7 @@ const DataRoom = () => {
   let viewFolderID = localStorage.getItem("folderID");
   /** Non-null when the user arrived via a "document signed" notification link. */
   const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+  console.log(currentView, "BreadCrumbsListArr");
 
   // ─── DOM refs ─────────────────────────────────────────────────────────────
   /** Ref for the search bar container — used for outside-click detection. */
@@ -422,6 +425,8 @@ const DataRoom = () => {
   /** Analytics data for the file/folder whose "Analytics" option was selected. */
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
+
+  console.log(getAllData, "CheckgetAll");
 
   // ─── Snack-bar notification state ────────────────────────────────────────
   const [open, setOpen] = useState({
@@ -1143,7 +1148,7 @@ const DataRoom = () => {
         FileID: Number(record.id),
       };
       dispatch(
-        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name),
       );
     }
   };
@@ -1382,7 +1387,7 @@ const DataRoom = () => {
           FileID: Number(record.id),
         };
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name),
         );
       }
     } else if (data.value === 6) {
@@ -3559,6 +3564,10 @@ const DataRoom = () => {
   // api call onscroll
 
   useScrollerAuditBottom(async () => {
+    if (currentView === 5) {
+      return;
+    }
+
     if (getAllData.length !== totalRecords) {
       if (sRowsData <= totalRecords) {
         await dispatch(dataBehaviour(true));
@@ -3747,6 +3756,7 @@ const DataRoom = () => {
   const handleClickGetFolderData = async (id, record, index) => {
     if (record?.main !== undefined && record?.main !== null && record?.main) {
       let currentView = localStorage.getItem("setTableView");
+      console.log(currentView, "BreadCrumbsListArr");
       if (currentView && Number(currentView) === 4) {
         let Data = {
           UserID: Number(userID),
@@ -3783,6 +3793,10 @@ const DataRoom = () => {
    * Returns early if the full dataset is already loaded.
    */
   const handleScroll = () => {
+    if (currentView === 5) {
+      return;
+    }
+
     if (getAllData.length >= totalRecords) return; // No more data
 
     dispatch(dataBehaviour(true));

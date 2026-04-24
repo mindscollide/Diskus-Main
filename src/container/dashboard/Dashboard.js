@@ -217,6 +217,7 @@ import {
   SignatureDocumentReceivedMyMe,
   SignatureDocumentStatusChange,
   SignatureDocumentStatusChangeSignees,
+  signeeCreatorCount,
 } from "../../store/actions/workflow_actions";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import {
@@ -4728,7 +4729,7 @@ const Dashboard = () => {
             data.payload?.workFlowStatusID === 4
           )
             return;
-            
+
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,
@@ -4807,6 +4808,36 @@ const Dashboard = () => {
             }
             return prev;
           });
+        }
+
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE".toLowerCase())
+        ) {
+          // Destructure the nested count data
+          const {
+            payload: {
+              data: { data: counts },
+            },
+          } = data;
+          // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
+          dispatch(signeeCreatorCount(counts));
+        }
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes(
+              "SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE_CREATOR".toLowerCase(),
+            )
+        ) {
+          const {
+            payload: {
+              data: { data: counts },
+            },
+          } = data;
+          // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
+          dispatch(signeeCreatorCount(counts));
         }
       }
       if (data.action?.toLowerCase() === "Settings".toLowerCase()) {

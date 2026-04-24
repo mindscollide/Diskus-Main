@@ -130,6 +130,8 @@ const VideoCallNormalHeader = ({
 
   const leaveModalPopupRef = useRef(null);
 
+  const screenVideoRef = useRef(null);
+
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
@@ -354,6 +356,8 @@ const VideoCallNormalHeader = ({
     useState([]);
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
+
+  const [screenStream, setScreenStream] = useState(null);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -1520,6 +1524,49 @@ const VideoCallNormalHeader = ({
     return null;
   };
 
+  const handleScreenShareButton = async () => {
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      if (!LeaveCallModalFlag) {
+        const iframe = iframeCurrent;
+        if (iframe && iframe.contentWindow) {
+          try {
+            // Store current video and mic states
+            const currentMicState = audioControl;
+            const currentVideoState = videoControl;
+
+            sessionStorage.setItem("isNonPresenterScreenShare", true);
+
+            sessionStorage.setItem("nonPresenter", true);
+
+            // Browser detection
+            const isFirefox = navigator.userAgent
+              .toLowerCase()
+              .includes("firefox");
+            const isSafari = /^((?!chrome|android).)*safari/i.test(
+              navigator.userAgent,
+            );
+            const isEdge = navigator.userAgent.toLowerCase().includes("edg");
+
+            if (isFirefox || isSafari) {
+              // Firefox and Safari: immediate postMessage
+              iframe.contentWindow.postMessage("ScreenShare", "*");
+            } else if (isEdge) {
+              setTimeout(() => {
+                iframe?.contentWindow?.postMessage("ScreenShare", "*");
+              }, 500);
+            } else {
+              setTimeout(() => {
+                iframe?.contentWindow?.postMessage("ScreenShare", "*");
+              }, 1000);
+            }
+          } catch (error) {
+            console.error("Screen share failed:", error);
+          }
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Row className="mb-4">
@@ -1793,7 +1840,7 @@ const VideoCallNormalHeader = ({
                 onClick={
                   (!presenterViewFlag && !globallyScreenShare) ||
                   (isZoomEnabled && disableBeforeJoinZoom)
-                    ? screenShareButton
+                    ? handleScreenShareButton
                     : null
                 }
                 src={NonActiveScreenShare}

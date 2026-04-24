@@ -1085,6 +1085,10 @@ const VideoPanelNormal = () => {
 
   const handlerForStaringPresenterView = async () => {
     console.log("maximizeParticipantVideoFlag");
+    const isNonPresenterScreenShare = JSON.parse(
+      sessionStorage.getItem("isNonPresenterScreenShare") || "false",
+    );
+
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck"),
@@ -1140,7 +1144,7 @@ const VideoPanelNormal = () => {
   // Add event listener for messages
   useEffect(() => {
     sessionStorage.removeItem("isWaiting");
-    const messageHandler = (event) => {
+    const messageHandler = async (event) => {
       // Check the origin for security
       console.log("handlePostMessage", event.data);
       console.log("handlePostMessage", process.env.REACT_APP_VIDEO_EVENTS);
@@ -1340,19 +1344,27 @@ const VideoPanelNormal = () => {
                     return;
                   }
 
-                  stopApiCalledRef.current = true; // 🔒 LOCK
+                  try {
+                    // ... existing code
 
-                  dispatch(
-                    stopPresenterViewMainApi(
-                      navigate,
-                      t,
-                      data,
-                      leavePresenterViewToJoinOneToOne ? 3 : 0,
-                      setLeaveMeetingVideoForOneToOneOrGroup,
-                      setJoiningOneToOneAfterLeavingPresenterView,
-                      setLeavePresenterViewToJoinOneToOne,
-                    ),
-                  );
+                    const result = await dispatch(
+                      stopPresenterViewMainApi(
+                        navigate,
+                        t,
+                        data,
+                        leavePresenterViewToJoinOneToOne ? 3 : 0,
+                        setLeaveMeetingVideoForOneToOneOrGroup,
+                        setJoiningOneToOneAfterLeavingPresenterView,
+                        setLeavePresenterViewToJoinOneToOne,
+                        stopApiCalledRef,
+                      ),
+                    );
+
+                    console.log("Stop presentation completed:", result);
+                  } catch (error) {
+                    console.error("Stop presentation failed:", error);
+                    stopApiCalledRef.current = false; // Reset on error
+                  }
                 }
               }
             }
@@ -1963,6 +1975,9 @@ const VideoPanelNormal = () => {
                                 height="100%"
                                 frameBorder="0"
                                 allow="camera;microphone;display-capture"
+                                // Add these for better cross-browser support
+                                mozallowfullscreen="true"
+                                webkitallowfullscreen="true"
                               />
                             )}
                           </>
