@@ -103,8 +103,6 @@ const ViewMeetingModal = ({
     isRecording,
   } = viewTabs;
 
-  console.log(agendaViewer, viewTabs, "agendaVieweragendaViewer");
-
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
 
   const {
@@ -233,7 +231,7 @@ const ViewMeetingModal = ({
             dispatch(setViewTab("agendaViewer"));
           }
         } else {
-          dispatch(setViewTab("agendaViewer"));
+          dispatch(setViewTab("meetingDetails"));
         }
       }
     }
@@ -355,11 +353,7 @@ const ViewMeetingModal = ({
                 FK_MDID: Number(currentMeeting),
                 DateTime: getCurrentDateTimeUTC(),
               },
-              false,
-              false,
               setEditorRole,
-              setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
             ),
           );
         } else {
@@ -410,11 +404,7 @@ const ViewMeetingModal = ({
                 FK_MDID: Number(currentMeeting),
                 DateTime: getCurrentDateTimeUTC(),
               },
-              false,
-              false,
               setEditorRole,
-              setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
             ),
           );
         }
@@ -671,11 +661,12 @@ const ViewMeetingModal = ({
             FK_MDID: Number(currentMeeting),
             DateTime: getCurrentDateTimeUTC(),
           },
-          false,
-          false,
-          setEditorRole,
-          setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal,
+          "FromMeetingDetaislTabLeaveMeeting",
+          {
+            setEditorRole,
+            setAdvanceMeetingModalID,
+            setViewAdvanceMeetingModal,
+          },
         ),
       );
     }

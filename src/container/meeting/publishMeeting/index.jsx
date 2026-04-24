@@ -78,7 +78,7 @@ import DoubleArrowIcon from "../../../assets/images/sortingIcons/Double Arrow2.s
 
 import styles from "./publishMeeting.module.css";
 
-import { ChevronDown } from "react-bootstrap-icons";
+import { ChevronDown, Record } from "react-bootstrap-icons";
 import CustomPagination from "@/commen/functions/customPagination/Paginations";
 import BoardDeckModal from "@/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal";
 import BoardDeckSendEmail from "@/container/meeting/commonComponents/BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
@@ -312,29 +312,31 @@ const PublishedMeetingList = () => {
     id,
     isQuickMeeting,
     status,
+    record,
   ) => {
     try {
       const statusNum = Number(status);
 
       if (statusNum === STATUS.ACTIVE) {
-        dispatch(
-          JoinCurrentMeeting(
-            isQuickMeeting,
-            navigate,
-            t,
-            {
-              VideoCallURL: videoCallURL,
-              FK_MDID: id,
-              DateTime: getCurrentDateTimeUTC(),
-            },
-            setViewFlag,
-            setEditFlag,
-            setIsCreateEditMeeting,
-            1,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal,
-          ),
-        );
+        handleJoinMeeting(record);
+        // dispatch(
+        //   JoinCurrentMeeting(
+        //     isQuickMeeting,
+        //     navigate,
+        //     t,
+        //     {
+        //       VideoCallURL: videoCallURL,
+        //       FK_MDID: id,
+        //       DateTime: getCurrentDateTimeUTC(),
+        //     },
+        //     setViewFlag,
+        //     setEditFlag,
+        //     setIsCreateEditMeeting,
+        //     1,
+        //     setAdvanceMeetingModalID,
+        //     setViewAdvanceMeetingModal,
+        //   ),
+        // );
         return;
       }
 
@@ -353,9 +355,9 @@ const PublishedMeetingList = () => {
         return;
       }
 
-      setAdvanceMeetingModalID(id);
-      setViewAdvanceMeetingModal(true);
-      dispatch(viewAdvanceMeetingPublishPageFlag(true));
+      // setAdvanceMeetingModalID(id);
+      // setViewAdvanceMeetingModal(true);
+      // dispatch(viewAdvanceMeetingPublishPageFlag(true));
       dispatch(toggleViewMeetingModal(true));
       dispatch(setViewTab("meetingDetails"));
     } catch (error) {
@@ -496,6 +498,7 @@ const PublishedMeetingList = () => {
       record.pK_MDID,
       record.isQuickMeeting,
       record.status,
+      record,
     );
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
@@ -646,9 +649,10 @@ const PublishedMeetingList = () => {
               },
               "startMeetingFromMainListing",
               {
-                isQuickMeeting: record.isQuickMeeting,
-                videoCallURL: record.videoCallURL,
-                MeetingID: record.pK_MDID,
+                // isQuickMeeting: record.isQuickMeeting,
+                // videoCallURL: record.videoCallURL,
+                // MeetingID: record.pK_MDID,
+                record,
               },
             ),
           );
@@ -697,6 +701,7 @@ const PublishedMeetingList = () => {
           record.pK_MDID,
           record.isQuickMeeting,
           record.status,
+          record,
         );
         setVideoTalk(buildVideoTalk(record));
         setEditorRole(buildEditorRole(record));
@@ -748,6 +753,7 @@ const PublishedMeetingList = () => {
                 record.pK_MDID,
                 record.isQuickMeeting,
                 record.status,
+                record,
               );
               setMeetingLocalStorage(record);
               setVideoTalk(buildVideoTalk(record));
@@ -1158,20 +1164,16 @@ const PublishedMeetingList = () => {
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(
-      searchNewUserMeeting(
-        navigate,
-        {
-          Date: searchFilters.Date,
-          Title: searchFilters.MeetingTitle,
-          HostName: searchFilters.OrganizerName,
-          UserID: Number(userID),
-          PageNumber: Number(current),
-          Length: Number(PageSize),
-          PublishedMeetings: true,
-          ProposedMeetings: false,
-        },
-        t,
-      ),
+      searchNewUserMeeting(navigate, t, {
+        Date: searchFilters.Date,
+        Title: searchFilters.MeetingTitle,
+        HostName: searchFilters.OrganizerName,
+        UserID: Number(userID),
+        PageNumber: Number(current),
+        Length: Number(PageSize),
+        PublishedMeetings: true,
+        ProposedMeetings: false,
+      }),
     );
   };
 

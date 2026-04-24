@@ -40,6 +40,10 @@ import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRo
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
+import {
+  setAdvanceMeetingRoute,
+  toggleCreateEditMeetingModal,
+} from "../../../../../store/actions/ModalStates_actions";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -57,23 +61,25 @@ const MeetingMaterial = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { meetingID = 0 } = useSelector(
-    (state) => state.NewMeetingreducer?.currentMeetingInfo
+    (state) => state.NewMeetingreducer?.currentMeetingInfo,
   );
 
   const { editorRole, setEditorRole } = useContext(MeetingContext);
+
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const meetingMaterialData = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialData
+    (state) => state.NewMeetingreducer.meetingMaterialData,
   );
   const isPublishedGlobal = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialIsPublished
+    (state) => state.NewMeetingreducer.meetingMaterialIsPublished,
   );
   const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial,
   );
 
   const ShowPreviousModal = useSelector(
-    (state) => state.NewMeetingreducer.ShowPreviousModal
+    (state) => state.NewMeetingreducer.ShowPreviousModal,
   );
 
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -113,10 +119,10 @@ const MeetingMaterial = ({
       const documentDataJson = JSON.stringify(documentData);
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-          documentDataJson
+          documentDataJson,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else if (
       editorRole.status === "9" &&
@@ -133,10 +139,10 @@ const MeetingMaterial = ({
       const documentDataJson = JSON.stringify(documentData);
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-          documentDataJson
+          documentDataJson,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -155,7 +161,7 @@ const MeetingMaterial = ({
         FileID: Number(record.originalFileName),
       };
       dispatch(
-        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
       );
     } else if (
       editorRole.status === "9" &&
@@ -166,7 +172,7 @@ const MeetingMaterial = ({
         FileID: Number(record.originalFileName),
       };
       dispatch(
-        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
       );
     }
   };
@@ -193,17 +199,22 @@ const MeetingMaterial = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     } else if (
@@ -223,17 +234,22 @@ const MeetingMaterial = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     }
@@ -250,13 +266,14 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={() => handleDoubeClick(record)}>
+              onClick={() => handleDoubeClick(record)}
+            >
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
-                alt=''
+                alt=""
                 width={"25px"}
                 height={"25px"}
-                className='me-2'
+                className="me-2"
               />
               <abbr title={`${text}`}>
                 <span className={styles["docx-name-title"]}>{text}</span>
@@ -286,7 +303,8 @@ const MeetingMaterial = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex gap-3 align-items-center justify-content-center'>
+                className="d-flex gap-3 align-items-center justify-content-center"
+              >
                 <Eye
                   fontSize={22}
                   cursor={
@@ -338,11 +356,20 @@ const MeetingMaterial = ({
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setSceduleMeeting(false);
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(toggleCreateEditMeetingModal(false));
+    dispatch(setAdvanceMeetingRoute(1));
   };
 
   const handleSaveAndNext = () => {
@@ -369,8 +396,8 @@ const MeetingMaterial = ({
         t,
         { MeetingID: meetingID, StatusID: 1 },
         "PublishMeetingFromMeetingMaterial",
-        {}
-      )
+        {},
+      ),
     );
     // dispatch(
     //   UpdateOrganizersMeeting(
@@ -391,15 +418,15 @@ const MeetingMaterial = ({
 
   return (
     <section>
-      <Row className='mt-5'>
+      <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
           {rows.length === 0 && !Loading ? (
             <>
               <ResultMessage
                 icon={
                   <img
-                    alt='NonMeeting'
-                    draggable='false'
+                    alt="NonMeeting"
+                    draggable="false"
                     src={NoMeetingsIcon}
                   />
                 }
@@ -409,7 +436,8 @@ const MeetingMaterial = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <span className={styles["No-meeting-material-title"]}>
                     {t("No-meeting-material")}
                   </span>
@@ -422,7 +450,7 @@ const MeetingMaterial = ({
                 column={materialColoumn}
                 scroll={{ y: "46vh" }}
                 pagination={false}
-                className='Polling_table'
+                className="Polling_table"
                 rows={rows}
               />
             </>
@@ -434,7 +462,8 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className='d-flex justify-content-end gap-2 mt-3'>
+          className="d-flex justify-content-end gap-2 mt-3"
+        >
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}
@@ -467,7 +496,6 @@ const MeetingMaterial = ({
       {cancelMeetingMaterial && (
         <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
       )}
-
 
       {ShowPreviousModal && (
         <PreviousModal

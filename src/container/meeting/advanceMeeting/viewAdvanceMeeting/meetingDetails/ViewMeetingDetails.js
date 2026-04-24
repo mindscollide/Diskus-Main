@@ -84,6 +84,7 @@ import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonCompon
 import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
+import { UpdateMeetingUserApi } from "../../../../../store/actions/NewMeeting2.actions";
 
 const ViewMeetingDetails = () => {
   const { t } = useTranslation();
@@ -96,13 +97,16 @@ const ViewMeetingDetails = () => {
     setEditorRole,
     setorganizers,
     setmeetingDetails,
-    advanceMeetingModalID,
     setViewAdvanceMeetingModal,
     setAdvanceMeetingModalID,
     setDataroomMapFolderId,
     setMeetingMaterial,
     setAgenda,
   } = useMeetingContext();
+
+  const { meetingID, meetingTitle, mapFolderId } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
 
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag,
@@ -249,12 +253,12 @@ const ViewMeetingDetails = () => {
       );
       let Data = {
         MeetingID:
-          advanceMeetingModalID === "0" ||
-          advanceMeetingModalID === 0 ||
-          advanceMeetingModalID === null ||
-          advanceMeetingModalID === undefined
+          meetingID === "0" ||
+          meetingID === 0 ||
+          meetingID === null ||
+          meetingID === undefined
             ? Number(AdvanceNotificationClickMeetingID)
-            : Number(advanceMeetingModalID),
+            : Number(meetingID),
       };
       await dispatch(
         GetAllMeetingDetailsApiFunc(
@@ -279,12 +283,12 @@ const ViewMeetingDetails = () => {
       console.log("Notes to be handled");
       let Data = {
         MeetingID:
-          advanceMeetingModalID === "0" ||
-          advanceMeetingModalID === 0 ||
-          advanceMeetingModalID === null ||
-          advanceMeetingModalID === undefined
+          meetingID === "0" ||
+          meetingID === 0 ||
+          meetingID === null ||
+          meetingID === undefined
             ? currentMeetingID
-            : Number(advanceMeetingModalID),
+            : Number(meetingID),
       };
       await dispatch(
         GetAllMeetingDetailsApiFunc(
@@ -355,76 +359,6 @@ const ViewMeetingDetails = () => {
     } else {
       setmeetingDetails(false);
       setorganizers(true);
-    }
-  };
-
-  //funciton cancel button
-  const handleCancelMeetingNoPopup = () => {
-    //Notifcation when Meeting Started and you have joined it if you didnt applied this it will say join logs didnt find
-    if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber:
-          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-        PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
-        ProposedMeetings:
-          currentView && Number(currentView) === 2 ? true : false,
-      };
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.removeItem("folderDataRoomMeeting");
-      setEditorRole({ status: null, role: null });
-      setAdvanceMeetingModalID(null);
-      setViewAdvanceMeetingModal(false);
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      localStorage.removeItem("AdvanceMeetingOperations");
-      localStorage.removeItem("NotificationAdvanceMeetingID");
-    } else {
-      if (meetingStatus === 10 || meetingStatus === "10") {
-        let leaveMeetingData = {
-          FK_MDID: Number(currentMeeting),
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(
-          LeaveCurrentMeeting(
-            navigate,
-            t,
-            leaveMeetingData,
-            false,
-            setViewFlag,
-            setEditorRole,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal,
-          ),
-        );
-      } else {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-          ProposedMeetings:
-            currentView && Number(currentView) === 2 ? true : false,
-        };
-        console.log("chek search meeting");
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.removeItem("folderDataRoomMeeting");
-        setEditorRole({ status: null, role: null });
-        setAdvanceMeetingModalID(null);
-        setViewAdvanceMeetingModal(false);
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      }
     }
   };
 
@@ -542,7 +476,7 @@ const ViewMeetingDetails = () => {
         currentOrganization,
         0,
         meetingDetails.MeetingTitle,
-        advanceMeetingModalID,
+        meetingID,
       ),
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
@@ -588,7 +522,7 @@ const ViewMeetingDetails = () => {
         currentOrganization,
         0,
         meetingDetails.MeetingTitle,
-        advanceMeetingModalID,
+        meetingID,
       ),
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
@@ -654,7 +588,7 @@ const ViewMeetingDetails = () => {
     let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
     if (MeetingData.isVideo === true) {
       let data = {
-        MeetingId: Number(advanceMeetingModalID),
+        MeetingId: Number(meetingID),
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
@@ -790,29 +724,38 @@ const ViewMeetingDetails = () => {
   }, [ResponseMessage]);
 
   const handleClickEndMeeting = useCallback(async () => {
-    let endMeetingRequest = {
-      MeetingID: Number(advanceMeetingModalID),
+    let requestData = {
+      MeetingID: Number(meetingID),
       StatusID: 9,
     };
-    await dispatch(
-      UpdateOrganizersMeeting(
-        false,
+    dispatch(
+      UpdateMeetingUserApi(
         navigate,
         t,
-        4,
-        endMeetingRequest,
-        setEditorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setViewAdvanceMeetingModal,
-        "",
-        "",
-        "",
-        "",
-        "",
-        setEndMeetingConfirmationModal,
+        requestData,
+        "EndMeetingFromMeetingDetailsModal",
+        { setEndMeetingConfirmationModal },
       ),
     );
+    // await dispatch(
+    //   UpdateOrganizersMeeting(
+    //     false,
+    //     navigate,
+    //     t,
+    //     4,
+    //     endMeetingRequest,
+    //     setEditorRole,
+    //     setAdvanceMeetingModalID,
+    //     setDataroomMapFolderId,
+    //     setViewAdvanceMeetingModal,
+    //     "",
+    //     "",
+    //     "",
+    //     "",
+    //     "",
+    //     setEndMeetingConfirmationModal,
+    //   ),
+    // );
 
     localStorage.removeItem("NotificationAdvanceMeetingID");
     localStorage.removeItem("QuickMeetingCheckNotification");

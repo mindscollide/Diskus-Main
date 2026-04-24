@@ -333,13 +333,13 @@ const ModalOrganizor = () => {
   };
 
   useEffect(() => {
-    if (committeeInfo === null && groupInfo === null) {
+    // if (committeeInfo === null && groupInfo === null) {
       let Data = {
         MeetingID: currentMeetingInfo.meetingID,
       };
       dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
-    }
-  }, [committeeInfo, groupInfo]);
+    // }
+  }, []);
 
   const [dropdowndata, setDropdowndata] = useState([]);
 
@@ -396,38 +396,43 @@ const ModalOrganizor = () => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.forEach((a, index) => {
-            let newData = {
-              value: a.committeeID,
-              name: a.committeeName,
+          if(committeeInfo !== null) {
 
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={committeeicon}
-                        alt=""
-                        width="21.71px"
-                        height="18.61px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.committeeName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 2,
-            };
-            temp.push(newData);
-          });
+          } else {
+            newOrganizersData.committees.forEach((a, index) => {
+              let newData = {
+                value: a.committeeID,
+                name: a.committeeName,
+  
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        <img
+                          src={committeeicon}
+                          alt=""
+                          width="21.71px"
+                          height="18.61px"
+                          draggable="false"
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {a.committeeName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                type: 2,
+              };
+              temp.push(newData);
+            });
+          }
+     
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
           newOrganizersData.organizationUsers.forEach((a, index) => {
@@ -470,99 +475,99 @@ const ModalOrganizor = () => {
     }
   }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
 
-  useEffect(() => {
-    if (
-      getCommitteeByCommitteeID !== null &&
-      getCommitteeByCommitteeID !== undefined
-    ) {
-      let newArr = [];
-      let getUserDetails = getCommitteeByCommitteeID.committeMembers;
-      getUserDetails.forEach((data, index) => {
-        newArr.push({
-          value: data.pK_UID,
-          name: data.userName,
-          label: (
-            <>
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
-                    />
-                    <span className={styles["NameDropDown"]}>
-                      {data.userName}
-                    </span>
-                  </Col>
-                </Row>
-              </>
-            </>
-          ),
-          type: 1,
-        });
-      });
-      let sortAssginersArr = newArr.sort((a, b) =>
-        a.name.localeCompare(b.name),
-      );
-      setDropdowndata(sortAssginersArr);
-    }
-  }, [getCommitteeByCommitteeID]);
+  // useEffect(() => {
+  //   if (
+  //     getCommitteeByCommitteeID !== null &&
+  //     getCommitteeByCommitteeID !== undefined
+  //   ) {
+  //     let newArr = [];
+  //     let getUserDetails = getCommitteeByCommitteeID.committeMembers;
+  //     getUserDetails.forEach((data, index) => {
+  //       newArr.push({
+  //         value: data.pK_UID,
+  //         name: data.userName,
+  //         label: (
+  //           <>
+  //             <>
+  //               <Row>
+  //                 <Col
+  //                   lg={12}
+  //                   md={12}
+  //                   sm={12}
+  //                   className="d-flex gap-2 align-items-center"
+  //                 >
+  //                   <img
+  //                     src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+  //                     height="16.45px"
+  //                     width="18.32px"
+  //                     draggable="false"
+  //                     alt=""
+  //                   />
+  //                   <span className={styles["NameDropDown"]}>
+  //                     {data.userName}
+  //                   </span>
+  //                 </Col>
+  //               </Row>
+  //             </>
+  //           </>
+  //         ),
+  //         type: 1,
+  //       });
+  //     });
+  //     let sortAssginersArr = newArr.sort((a, b) =>
+  //       a.name.localeCompare(b.name),
+  //     );
+  //     setDropdowndata(sortAssginersArr);
+  //   }
+  // }, [getCommitteeByCommitteeID]);
 
-  useEffect(() => {
-    if (
-      getGroupByGroupIdResponse !== null &&
-      getGroupByGroupIdResponse !== undefined
-    ) {
-      try {
-        let newArr = [];
-        let getUserDetails = getGroupByGroupIdResponse.groupMembers;
-        getUserDetails.forEach((data, index) => {
-          newArr.push({
-            value: data.pK_UID,
-            name: data.userName,
-            label: (
-              <>
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {data.userName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              </>
-            ),
-            type: 1,
-          });
-        });
-        let sortAssginersArr = newArr.sort((a, b) =>
-          a.name.localeCompare(b.name),
-        );
-        setDropdowndata(sortAssginersArr);
-      } catch (error) {}
-    }
-  }, [getGroupByGroupIdResponse]);
+  // useEffect(() => {
+  //   if (
+  //     getGroupByGroupIdResponse !== null &&
+  //     getGroupByGroupIdResponse !== undefined
+  //   ) {
+  //     try {
+  //       let newArr = [];
+  //       let getUserDetails = getGroupByGroupIdResponse.groupMembers;
+  //       getUserDetails.forEach((data, index) => {
+  //         newArr.push({
+  //           value: data.pK_UID,
+  //           name: data.userName,
+  //           label: (
+  //             <>
+  //               <>
+  //                 <Row>
+  //                   <Col
+  //                     lg={12}
+  //                     md={12}
+  //                     sm={12}
+  //                     className="d-flex gap-2 align-items-center"
+  //                   >
+  //                     <img
+  //                       src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+  //                       height="16.45px"
+  //                       width="18.32px"
+  //                       draggable="false"
+  //                       alt=""
+  //                     />
+  //                     <span className={styles["NameDropDown"]}>
+  //                       {data.userName}
+  //                     </span>
+  //                   </Col>
+  //                 </Row>
+  //               </>
+  //             </>
+  //           ),
+  //           type: 1,
+  //         });
+  //       });
+  //       let sortAssginersArr = newArr.sort((a, b) =>
+  //         a.name.localeCompare(b.name),
+  //       );
+  //       setDropdowndata(sortAssginersArr);
+  //     } catch (error) {}
+  //   }
+  // }, [getGroupByGroupIdResponse]);
 
   const saveOrganizers = () => {
     dispatch(showAddUserModal(false));

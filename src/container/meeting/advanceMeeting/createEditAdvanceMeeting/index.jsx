@@ -28,7 +28,11 @@ import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 
 // Fix: import Redux tab actions
-import { setCreateEditTab } from "../../../../store/actions/ModalStates_actions";
+import {
+  resetCreateEditTabs,
+  setAdvanceMeetingRoute,
+  setCreateEditTab,
+} from "../../../../store/actions/ModalStates_actions";
 import { getMeetingDetailsByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
 import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
@@ -80,6 +84,8 @@ const CreateEditAdvanceMeeting = ({ route }) => {
 
   const { editorRole, setEditorRole, currentMeeting } = useMeetingContext();
 
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
+
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
@@ -113,6 +119,8 @@ const CreateEditAdvanceMeeting = ({ route }) => {
       dispatch(resetViewGroupDetails());
       dispatch(resetViewCommitteeDetails());
       setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+      dispatch(setAdvanceMeetingRoute(1));
+      dispatch(resetCreateEditTabs());
     };
   }, []);
 

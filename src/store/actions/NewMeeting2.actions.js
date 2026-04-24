@@ -122,7 +122,7 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                           IsUpdateFlow: false,
                         },
                         routePath,
-                        {},
+                        object,
                       ),
                     );
                     break;
@@ -371,6 +371,14 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
             const handleRouteAfterSuccess = () => {
               switch (routePath) {
                 case "saveMeeting":
+                  const { setEditorRole } = object;
+                  dispatch(setCreateEditTab("organizers"));
+                  setEditorRole({
+                    status: "11",
+                    role: "Organizer",
+                    isPrimaryOrganizer: true,
+                  });
+                  break;
                 case "updateMeeting":
                   dispatch(setCreateEditTab("organizers"));
 
@@ -563,7 +571,13 @@ const UpdateMeetingUserFailed = (message) => ({
 
 // ─── Update Meeting Users ────────────────────────────────────────────────────
 
-export const UpdateMeetingUserApi = (navigate, t, Data, routePath, object) => {
+export const UpdateMeetingUserApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return (dispatch) => {
     dispatch(UpdateMeetingUserInit());
     const form = new FormData();
@@ -674,6 +688,10 @@ export const UpdateMeetingUserApi = (navigate, t, Data, routePath, object) => {
                       );
                       break;
                     }
+                    case "EndMeetingFromMeetingDetailsModal":
+                      const { setEndMeetingConfirmationModal } = object;
+                      setEndMeetingConfirmationModal(false);
+                      break;
                     default:
                       break;
                   }
@@ -2406,6 +2424,8 @@ export const UpdateMeetingStatusApi = (
                       case "publishMeetingFromAgendaContributor":
                       case "publishMeetingFromOrganizer":
                       case "PublishMeetingFromMeetingMaterial": {
+                        dispatch(toggleCreateEditMeetingModal(false));
+                        dispatch(resetCreateEditTabs());
                         const currentView =
                           localStorage.getItem("MeetingCurrentView");
                         const meetingpageRow =
@@ -2416,7 +2436,6 @@ export const UpdateMeetingStatusApi = (
                         await dispatch(
                           searchNewUserMeeting(
                             navigate,
-                            t,
                             {
                               Date: "",
                               Title: "",
@@ -2435,6 +2454,8 @@ export const UpdateMeetingStatusApi = (
                               ProposedMeetings:
                                 currentView && Number(currentView) === 2,
                             },
+                            t,
+
                             "",
                             {},
                           ),
@@ -2442,15 +2463,17 @@ export const UpdateMeetingStatusApi = (
                         break;
                       }
                       case "startMeetingFromMainListing": {
-                        const { videoCallURL } = object;
+                        dispatch(toggleViewMeetingModal(true));
+                        dispatch(setViewTab("agendaViewer"));
+                        const { record } = object;
                         dispatch(
                           joinMeetingApi(
                             navigate,
                             t,
                             {
-                              FK_MDID: Number(Data.MeetingID),
+                              FK_MDID: Number(record.pK_MDID),
                               DateTime: getCurrentDateTimeUTC(),
-                              VideoCallURL: videoCallURL,
+                              VideoCallURL: record.videoCallURL,
                             },
                             "startMeetingFromMainListing",
                             object,
@@ -3232,6 +3255,21 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     if (isQuickMeeting) {
                       return;
                     }
+                    dispatch(setViewTab("agendaViewer"));
+                    dispatch(toggleViewMeetingModal(true));
+                    localStorage.setItem("meetingTitle", record.title);
+                    dispatch(
+                      setCurrentMeetingInfo({
+                        meetingID: Data.MeetingID,
+                        meetingTitle: record.title,
+                        // mapFolderId: 0,
+                      }),
+                    );
+                    break;
+                  }
+                  case "startMeetingFromMainListing": {
+                    const { record } = object;
+
                     dispatch(setViewTab("agendaViewer"));
                     dispatch(toggleViewMeetingModal(true));
                     localStorage.setItem("meetingTitle", record.title);

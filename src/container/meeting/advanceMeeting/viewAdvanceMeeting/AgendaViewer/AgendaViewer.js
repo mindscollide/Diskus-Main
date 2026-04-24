@@ -63,7 +63,6 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
 import AllFilesModal from "./AllFilesModal/AllFilesModal";
 // import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
-import FullScreenAgendaModal from "./FullScreenAgendaModal/FullScreenAgendaModal";
 import ParticipantInfoModal from "./ParticipantInfoModal/ParticipantInfoModal";
 import PrintExportAgendaModal from "./PrintExportAgendaModal/PrintExportAgendaModal";
 import SelectAgendaModal from "./SelectAgendaModal/SelectAgendaModal";
@@ -338,7 +337,6 @@ const AgendaViewer = () => {
   const [agendaName, setAgendaName] = useState("");
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
-  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
@@ -474,7 +472,6 @@ const AgendaViewer = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
-    setInitiateVideoModalOto(false);
     dispatch(participantPopup(false));
     localStorage.setItem("activeCall", true);
     localStorage.setItem("callerID", 0);
@@ -516,61 +513,12 @@ const AgendaViewer = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
-    setInitiateVideoModalOto(false);
     dispatch(participantPopup(false));
     localStorage.setItem("CallType", 0);
     localStorage.setItem("activeCall", true);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", true);
-  };
-
-  const joinMeetingCall = () => {
-    if (activeCall === false && isMeeting === false) {
-      let Data = {
-        VideoCallURL: currentMeetingVideoURL,
-      };
-      dispatch(
-        FetchMeetingURLApi(
-          Data,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization,
-          1,
-          meetingTitle,
-          advanceMeetingModalID,
-        ),
-      );
-      localStorage.setItem("meetingTitle", meetingTitle);
-    } else if (activeCall === true && isMeeting === false) {
-      setInitiateVideoModalOto(true);
-      dispatch(callRequestReceivedMQTT({}, ""));
-    }
-  };
-
-  const leaveMeeting = async (flag) => {
-    let leaveMeetingData = {
-      FK_MDID: Number(currentMeeting),
-      DateTime: getCurrentDateTimeUTC(),
-    };
-    await dispatch(
-      LeaveCurrentMeeting(
-        navigate,
-        t,
-        leaveMeetingData,
-        false,
-        false,
-        setEditorRole,
-        setAdvanceMeetingModalID,
-        setViewAdvanceMeetingModal,
-      ),
-    );
-    // if (flag) {
-    //   console.log("mqtt mqmqmqmqmqmq");
-    //   await dispatch(leaveMeetingOnlogout(false));
-    //   dispatch(userLogOutApiFunc(navigate, t));
-    // }
   };
 
   const groupChatInitiation = async (talkChatID) => {
@@ -1401,60 +1349,6 @@ const AgendaViewer = () => {
           setParticipantInfoView={setParticipantInfoView}
         />
       ) : null}
-      <Modal
-        show={initiateVideoModalOto}
-        onHide={() => {
-          setInitiateVideoModalOto(false);
-        }}
-        setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
-        centered
-        size={"sm"}
-        className="callCheckModal"
-        ModalBody={
-          <>
-            <Container>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <p> {t("Disconnect-current-call")} </p>
-                </Col>
-              </Row>
-              <Row className="mt-3 mb-4">
-                <Col
-                  lg={12}
-                  sm={12}
-                  md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
-                  <Button
-                    text={
-                      callerID === currentUserID || callerID === 0
-                        ? t("End Host")
-                        : callerID !== currentUserID
-                          ? t("End Participant")
-                          : null
-                    }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
-                    onClick={
-                      callerID === currentUserID || callerID === 0
-                        ? leaveCallHost
-                        : callerID !== currentUserID
-                          ? leaveCallParticipant
-                          : null
-                    }
-                  />
-
-                  <Button
-                    text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
-                    onClick={() => setInitiateVideoModalOto(false)}
-                  />
-                </Col>
-              </Row>
-            </Container>
-          </>
-        }
-      />
 
       {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
       {NormalHostVideoFlag && <NormalHostVideoCallComponent />}

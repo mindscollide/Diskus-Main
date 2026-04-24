@@ -56,7 +56,10 @@ import {
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
-import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
+import {
+  resetCurrentMeetingInfo,
+  SaveMeetingDetailsApi,
+} from "../../../../../store/actions/NewMeeting2.actions";
 
 const MeetingDetails = () => {
   const { t } = useTranslation();
@@ -524,7 +527,9 @@ const MeetingDetails = () => {
           MeetingStatusID: currentMeetingStatus,
         },
       };
-      dispatch(SaveMeetingDetailsApi(navigate, t, data, context, {}));
+      dispatch(
+        SaveMeetingDetailsApi(navigate, t, data, context, { setEditorRole }),
+      );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
       seterror(true);

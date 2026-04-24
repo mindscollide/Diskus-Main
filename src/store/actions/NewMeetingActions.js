@@ -103,7 +103,10 @@ import {
 } from "./VideoFeature_actions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
-import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import {
+  getCurrentDateTimeUTC,
+  newTimeFormaterAsPerUTCFullDate,
+} from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
@@ -141,6 +144,8 @@ import {
 } from "./Groups_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import store from "../store";
+import { resetViewTabs, toggleViewMeetingModal } from "./ModalStates_actions";
+import { resetCurrentMeetingInfo } from "./NewMeeting2.actions";
 
 const boardDeckModal = (response) => {
   return {
@@ -3799,6 +3804,8 @@ const GetAllGeneralMinutesApiFunc = (
                     navigate,
                     MeetingDocs,
                     t,
+                    "",
+                    {},
                   ),
                 );
                 break;
@@ -7920,12 +7927,14 @@ const LeaveCurrentMeeting = (
   navigate,
   t,
   Data,
-  isQuickMeeting,
-  setViewFlag,
-  setEditorRole,
-  setAdvanceMeetingModalID,
-  setViewAdvanceMeetingModal,
-  setEndMeetingConfirmationModal,
+  routePath,
+  object,
+  // isQuickMeeting,
+  // setViewFlag,
+  // setEditorRole,
+  // setAdvanceMeetingModalID,
+  // setViewAdvanceMeetingModal,
+  // setEndMeetingConfirmationModal,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
@@ -7951,12 +7960,14 @@ const LeaveCurrentMeeting = (
               navigate,
               t,
               Data,
-              isQuickMeeting,
-              setViewFlag,
-              setEditorRole,
-              setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
-              setEndMeetingConfirmationModal,
+              routePath,
+              object,
+              // isQuickMeeting,
+              // setViewFlag,
+              // setEditorRole,
+              // setAdvanceMeetingModalID,
+              // setViewAdvanceMeetingModal,
+              // setEndMeetingConfirmationModal,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -7968,6 +7979,46 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase(),
                 )
             ) {
+              const {
+                setEditorRole,
+                isQuickMeeting = false,
+                setEndMeetingConfirmationModal,
+              } = object;
+              switch (routePath) {
+                case "FromMeetingDetaislTabLeaveMeeting":
+                  setEditorRole({
+                    status: null,
+                    role: null,
+                    isPrimaryOrganizer: null,
+                  });
+                  dispatch(toggleViewMeetingModal(false));
+                  dispatch(resetCurrentMeetingInfo());
+                  dispatch(resetViewTabs());
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow),
+                    PublishedMeetings:
+                      localStorage.getItem("MeetingCurrentView") &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 1
+                        ? true
+                        : false,
+                    ProposedMeetings:
+                      localStorage.getItem("MeetingCurrentView") &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 2
+                        ? true
+                        : false,
+                  };
+                  console.log("chek search meeting");
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  break;
+
+                default:
+                  break;
+              }
               localStorage.removeItem("meetingTitle");
               localStorage.removeItem("typeOfMeeting");
               localStorage.removeItem("currentMeetingID");
@@ -7975,9 +8026,7 @@ const LeaveCurrentMeeting = (
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(showEndMeetingModal(false));
-              if (typeof setViewAdvanceMeetingModal === "function") {
-                setViewAdvanceMeetingModal(false);
-              }
+              dispatch(toggleViewMeetingModal(false));
               try {
                 dispatch(currentMeetingStatus(0));
 
@@ -8120,10 +8169,10 @@ const LeaveCurrentMeeting = (
                     );
                     localStorage.removeItem("folderDataRoomMeeting");
                     setEditorRole({ status: null, role: null });
-                    setAdvanceMeetingModalID(null);
+                    // setAdvanceMeetingModalID(null);
 
-                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                   }
                 }
 
@@ -8155,7 +8204,7 @@ const LeaveCurrentMeeting = (
                 console.log(error);
               }
 
-              setViewFlag(false);
+              // setViewFlag(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

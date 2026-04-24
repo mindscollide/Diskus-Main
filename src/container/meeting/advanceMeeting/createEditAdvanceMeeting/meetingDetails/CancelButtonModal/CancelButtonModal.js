@@ -13,6 +13,7 @@ import {
   toggleCreateEditMeetingModal,
 } from "../../../../../../store/actions/ModalStates_actions";
 import { isFunction } from "../../../../../../commen/functions/utils";
+import { resetCurrentMeetingInfo } from "../../../../../../store/actions/NewMeeting2.actions";
 const CancelButtonModal = ({ setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -102,11 +103,15 @@ const CancelButtonModal = ({ setRows }) => {
       console.log("chek search meeting");
       dispatch(toggleCreateEditMeetingModal(false));
       dispatch(resetCreateEditTabs());
+      setEditorRole({
+        status: null,
+        role: null,
+        isPrimaryOrganizer: false,
+      });
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
       setIsCreateEditMeeting(false);
       isFunction(setRows) && setRows([]);
-      // setIsCreateEditMeeting(false);
       localStorage.removeItem("navigateLocation");
     } else {
       let searchData = {
@@ -135,6 +140,7 @@ const CancelButtonModal = ({ setRows }) => {
       role: null,
       isPrimaryOrganizer: false,
     });
+    dispatch(resetCurrentMeetingInfo());
   };
 
   return (
@@ -154,10 +160,11 @@ const CancelButtonModal = ({ setRows }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center'>
+                className="d-flex justify-content-center"
+              >
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t(
-                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
                   )}
                 </span>
               </Col>
@@ -171,7 +178,8 @@ const CancelButtonModal = ({ setRows }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center gap-2'>
+                className="d-flex justify-content-center gap-2"
+              >
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

@@ -425,8 +425,6 @@ const Minutes = ({
     }
   };
 
-  console.log(fileAttachments, "fileForSendfileForSendfileForSend");
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   const documentUploadingFunc = async (minuteID) => {
     let newFolder = [];
     let newfile = [];
@@ -471,7 +469,7 @@ const Minutes = ({
           t,
           { MeetingID: Number(meetingID) },
           "getallGeneralMinutes",
-          currentMeeting,
+          {},
         ),
       );
     }

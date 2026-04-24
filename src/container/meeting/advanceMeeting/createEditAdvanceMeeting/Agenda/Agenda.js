@@ -1,10 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+
 import {
   convertDateFieldsToUTC,
   convertUtcToGmt,
@@ -12,43 +20,33 @@ import {
 } from "../../../../../commen/functions/date_formater";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
+
+// Modals / child views
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
-import {
-  showCancelModalAgenda,
-  showImportPreviousAgendaModal,
-  getAllAgendaContributorApi,
-  GetAllMeetingUserApiFunc,
-  searchNewUserMeeting,
-  showCancelModalAgendaBuilder,
-  CleareMessegeNewMeeting,
-} from "../../../../../store/actions/NewMeetingActions";
-import {
-  UploadDocumentsAgendaApi,
-  SaveFilesAgendaApi,
-  clearResponseMessage,
-  GetAdvanceMeetingAgendabyMeetingID,
-} from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
-import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import NextAgenda from "./NextAgenda/NextAgenda";
 import PreviousAgenda from "./PreviousAgenda/PreviousAgenda";
+
+// Redux actions
 import {
-  previousTabAgenda,
-  nextTabAgenda,
+  showImportPreviousAgendaModal,
+  GetAllMeetingUserApiFunc,
+  CleareMessegeNewMeeting,
+} from "../../../../../store/actions/NewMeetingActions";
+import {
+  clearResponseMessage,
+  GetAdvanceMeetingAgendabyMeetingID,
 } from "../../../../../store/actions/MeetingAgenda_action";
-import { MeetingContext } from "../../../../../context/MeetingContext";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import {
   AddUpdateAdvanceMeetingAgendaApi,
   GetAdvanceMeetingAgendabyMeetingIdApi,
@@ -58,31 +56,259 @@ import {
   getMeetingDetailsByMeetingIdApi,
 } from "../../../../../store/actions/NewMeeting2.actions";
 
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
+
+/* ============================================================================
+ * CONSTANTS
+ * ============================================================================
+ * Pulling magic numbers/strings out of JSX makes the intent obvious and
+ * prevents typos from silently breaking role checks.
+ * ========================================================================= */
+
+const ROLES = {
+  AGENDA_CONTRIBUTOR: "Agenda Contributor",
+  PARTICIPANT: "Participant",
+};
+
+const STATUS = {
+  COMPLETED: 9, // meeting is finished — read-only
+  PUBLISHED: 11,
+  IN_PROGRESS: 12,
+  ACTIVE: 10, // ongoing meeting — edit only allowed if flag is on
+};
+
+const AGENDA_SOURCE = {
+  ATTACHMENT: 1, // user uploads files
+  URL: 2, // user provides a link
+  CONTRIBUTOR: 3, // delegate to an agenda contributor
+};
+
+const SAVE_FLAG = {
+  SAVE_ONLY: 1, // "Next" — save and move to next tab
+  SAVE_AND_PUBLISH: 2, // "Publish" — save and publish meeting
+};
+
+const MAX_FILES_PER_AGENDA = 10;
+
+/* ============================================================================
+ * PURE HELPER FUNCTIONS
+ * ============================================================================
+ * These have no dependency on component state, so they live outside the
+ * component to avoid being re-created on every render.
+ * ========================================================================= */
+
+/**
+ * Capitalizes the first letter of a key. Special-cases "id" → "ID" to match
+ * the backend's Pascal-case contract (the API expects `ID`, not `Id`).
+ */
+const capitalizeFirstLetter = (str) => {
+  if (str.toLowerCase() === "id") return str.toUpperCase();
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+/**
+ * Recursively converts all object keys from camelCase to PascalCase.
+ * The backend expects PascalCase; we keep camelCase in React for convention.
+ */
+const capitalizeKeys = (obj) => {
+  if (Array.isArray(obj)) return obj.map(capitalizeKeys);
+  if (obj !== null && typeof obj === "object") {
+    return Object.keys(obj).reduce((acc, key) => {
+      acc[capitalizeFirstLetter(key)] = capitalizeKeys(obj[key]);
+      return acc;
+    }, {});
+  }
+  return obj;
+};
+
+/**
+ * Strips UI-only fields before sending to the backend.
+ * These properties are derived client-side (e.g. presenter name from a lookup)
+ * and should never be persisted.
+ */
+const UI_ONLY_KEYS = [
+  "presenterName",
+  "requestContributorURlName",
+  "subAgendarequestContributorUrlName",
+  "userProfilePicture",
+  "contributor",
+];
+
+const removeProperties = (data) => {
+  if (Array.isArray(data)) return data.map(removeProperties);
+  if (data !== null && typeof data === "object") {
+    const cleaned = {};
+    for (const key in data) {
+      if (UI_ONLY_KEYS.includes(key)) continue;
+      cleaned[key] = removeProperties(data[key]);
+    }
+    return cleaned;
+  }
+  return data;
+};
+
+/**
+ * Determines whether an agenda row (parent + its sub-agendas) is effectively
+ * empty — i.e. the user hasn't filled in anything meaningful.
+ * Used when merging imported agendas to avoid keeping blank placeholder rows.
+ */
+const isAgendaRowEmpty = (agendaItem) => {
+  const parentEmpty =
+    agendaItem.title === "" &&
+    agendaItem.description === "" &&
+    agendaItem.startDate === "" &&
+    agendaItem.endDate === "" &&
+    agendaItem.urlFieldMain === "" &&
+    agendaItem.mainNote === "" &&
+    agendaItem.requestContributorURlName === "" &&
+    agendaItem.files.length === 0 &&
+    agendaItem.isLocked === false &&
+    agendaItem.voteOwner === null &&
+    agendaItem.isAttachment === false &&
+    agendaItem.userID === 0;
+
+  // If there are no sub-agendas, the parent's emptiness decides.
+  if (!agendaItem.subAgenda || agendaItem.subAgenda.length === 0) {
+    return parentEmpty;
+  }
+
+  // Otherwise, every sub-agenda must also be empty for the whole row to count as empty.
+  const allSubsEmpty = agendaItem.subAgenda.every(
+    (sub) =>
+      sub.subTitle === "" &&
+      sub.description === "" &&
+      sub.startDate === "" &&
+      sub.endDate === "" &&
+      sub.subAgendarequestContributorUrlName === "" &&
+      sub.subAgendarequestContributorEnterNotes === "" &&
+      sub.subAgendaUrlFieldRadio === "" &&
+      sub.subfiles.length === 0 &&
+      sub.isLocked === false &&
+      sub.voteOwner === null &&
+      sub.isAttachment === false &&
+      sub.userID === 0,
+  );
+
+  return parentEmpty && allSubsEmpty;
+};
+
+/**
+ * Builds a blank main-agenda row. Centralized so both the "Add" button and
+ * the fallback "empty agenda" path produce identical shapes — which matters
+ * because the backend is strict about field presence.
+ */
+const buildEmptyAgendaRow = (defaultPresenter, meetingTime) => ({
+  iD: getRandomUniqueNumber().toString() + "A",
+  title: "",
+  agendaVotingID: 0,
+  presenterID: defaultPresenter?.value ?? 0,
+  presenterName: defaultPresenter?.label ?? "",
+  description: "",
+  startDate: meetingTime?.meetingStartTime ?? "",
+  endDate: meetingTime?.meetingEndTime ?? "",
+  selectedRadio: AGENDA_SOURCE.ATTACHMENT,
+  urlFieldMain: "",
+  mainNote: "",
+  requestContributorURlName: "",
+  files: [],
+  isLocked: false,
+  voteOwner: null,
+  isAttachment: false,
+  userID: 0,
+  subAgenda: [],
+  canEdit: true,
+  canView: true,
+});
+
+/**
+ * Validates a single agenda row. Returns null if valid, otherwise returns
+ * a translation key + params describing the first failure.
+ *
+ * Data-driven so adding a new rule = adding one entry, not another if-block.
+ */
+const validateAgendaRow = (row, rowIndex) => {
+  const idx = { rowIndex: rowIndex + 1 };
+
+  if (row.files.length > MAX_FILES_PER_AGENDA)
+    return { key: "Files-should-not-more-than-10", params: idx };
+  if (row.title === "")
+    return { key: "Title-is-missing-in-agenda", params: idx };
+  if (row.startDate === "")
+    return { key: "start-time-is-missing-in-agenda", params: idx };
+  if (row.endDate === "")
+    return { key: "End-time-is-missing-in-agenda ", params: idx };
+  if (row.presenterID === 0)
+    return { key: "Presenter-is-missing-in-agenda ", params: idx };
+  if (row.selectedRadio === AGENDA_SOURCE.URL && row.urlFieldMain === "")
+    return { key: "URL-is-missing-in-agenda ", params: idx };
+  if (
+    row.selectedRadio === AGENDA_SOURCE.CONTRIBUTOR &&
+    (row.userID === 0 || row.mainNote === "")
+  )
+    return { key: "UserID/Note-is-missing-in-agenda ", params: idx };
+  return null;
+};
+
+/**
+ * Same idea as validateAgendaRow but for sub-agendas. Index is included so
+ * the error message can say "Sub-agenda 2 of Agenda 1 is missing a title".
+ */
+const validateSubAgendaRow = (sub, rowIndex, subIndex) => {
+  const idx = { rowIndex: rowIndex + 1, subIndex: subIndex + 1 };
+
+  if (sub.subfiles.length > MAX_FILES_PER_AGENDA)
+    return { key: "Files-should-not-more-than-10", params: idx };
+  if (sub.subTitle === "")
+    return { key: "Title-is-missing-in-agenda", params: idx };
+  if (sub.startDate === "")
+    return { key: "Start-date-is-missing-in-agenda", params: idx };
+  if (sub.endDate === "")
+    return { key: "End-date-is-missing-in-agenda", params: idx };
+  if (sub.presenterID === 0)
+    return { key: "Presenter-is-missing-in-agenda", params: idx };
+  if (
+    sub.subSelectRadio === AGENDA_SOURCE.URL &&
+    sub.subAgendaUrlFieldRadio === ""
+  )
+    return { key: "URL-is-missing-in-agenda", params: idx };
+  if (
+    sub.subSelectRadio === AGENDA_SOURCE.CONTRIBUTOR &&
+    (sub.userID === 0 || sub.subAgendarequestContributorEnterNotes === "")
+  )
+    return { key: "UserID/Note-is-missing-in-agenda", params: idx };
+  return null;
+};
+
+/* ============================================================================
+ * MAIN COMPONENT
+ * ========================================================================= */
+
 const Agenda = ({
   setSceduleMeeting,
   currentMeeting,
-  isEditMeeting,
-  dataroomMapFolderId,
+  // NOTE: several props kept for downstream compatibility even if unused here
+  // isEditMeeting, dataroomMapFolderId — kept intentionally
   setMeetingMaterial,
   setAgenda,
   setParticipants,
   setPublishState,
   setAdvanceMeetingModalID,
-  setViewFlag,
-  setEditFlag,
   setCalendarViewModal,
   setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  /* --------------------------------------------------------------------------
+   * Redux selectors
+   * ------------------------------------------------------------------------ */
   const meetingId = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo.meetingID,
   );
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state,
-  );
-
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector((s) => s);
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );
@@ -90,6 +316,9 @@ const Agenda = ({
   const MeetingAgendaData =
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData;
 
+  /* --------------------------------------------------------------------------
+   * Context — provides role info and "cancel/go back" modal trigger
+   * ------------------------------------------------------------------------ */
   const {
     isAgendaUpdateWhenMeetingActive,
     editorRole,
@@ -97,28 +326,27 @@ const Agenda = ({
     setGoBackCancelModal,
   } = useContext(MeetingContext);
 
-  // const ShowCancelAgendaBuilderModal = useSelector(
-  //   (state) => state.NewMeetingreducer.cancelAgendaSavedModal
-  // );
-
-  let folderDataRoomMeeting = Number(
-    localStorage.getItem("folderDataRoomMeeting"),
-  );
-
-  let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
-
+  /* --------------------------------------------------------------------------
+   * Local state
+   * ------------------------------------------------------------------------ */
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
-  const [fileForSend, setFileForSend] = useState([]);
-  const [isPublishedState, setIsPublishedState] = useState(false);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
-  const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
-  const [allUsersRC, setAllUsersRC] = useState([]);
+  const [fileForSend, setFileForSend] = useState([]); // pending uploads
+  const [isPublishedState, setIsPublishedState] = useState(false);
+  const [allSavedPresenters, setAllSavedPresenters] = useState([]);
+  const [allUsersRC, setAllUsersRC] = useState([]); // request-contributor users
+
+  // Indices of rows pending removal — passed to removal modals
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
-  const [selectedID, setSelectedID] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+
+  const [selectedID, setSelectedID] = useState(0);
+  const [emptyStateRows, setEmptyStateRows] = useState(false);
+  const [rows, setRows] = useState([]);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -128,30 +356,35 @@ const Agenda = ({
     meetingStartTime: "",
     meetingEndTime: "",
   });
+  console.log(meetingTime, "meetingTime");
+  /* --------------------------------------------------------------------------
+   * Derived values — memoized so expensive role checks don't re-run every render
+   * ------------------------------------------------------------------------ */
+  const isContributor = editorRole.role === ROLES.AGENDA_CONTRIBUTOR;
+  const isParticipant = editorRole.role === ROLES.PARTICIPANT;
+  const isCompleted = Number(editorRole.status) === STATUS.COMPLETED;
+  const canPublish =
+    (Number(editorRole.status) === STATUS.PUBLISHED ||
+      Number(editorRole.status) === STATUS.IN_PROGRESS) &&
+    !isCompleted &&
+    !isContributor;
 
+  /* --------------------------------------------------------------------------
+   * Initial data load — fires once on mount
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
-    let getAllData = {
-      MeetingID: meetingId !== null ? meetingId : 0,
-    };
-    let getMeetingData = {
-      MeetingID: meetingId,
-    };
-    let Data = {
-      MeetingID: meetingId,
-    };
-    dispatch(
-      GetAdvanceMeetingAgendabyMeetingIdApi(navigate, t, {
-        MeetingID: meetingId,
-      }),
-    );
-    dispatch(
-      getAllAgendaContributorsApi(navigate, t, {
-        MeetingID: meetingId,
-      }),
-    );
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+    const payload = { MeetingID: meetingId ?? 0 };
+    dispatch(GetAdvanceMeetingAgendabyMeetingIdApi(navigate, t, payload));
+    dispatch(getAllAgendaContributorsApi(navigate, t, payload));
+    dispatch(GetAllMeetingUserApiFunc(payload, navigate, t));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* --------------------------------------------------------------------------
+   * Meeting time setup
+   * Fetches meeting details if missing, then extracts start/end times for
+   * use as default values on new agenda rows.
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
     try {
       if (getAllMeetingDetails === null) {
@@ -166,617 +399,402 @@ const Agenda = ({
         );
         return;
       }
-      if (
-        getAllMeetingDetails !== null &&
-        getAllMeetingDetails?.advanceMeetingDetails !== null
-      ) {
-        let meetingStartTime =
-          getAllMeetingDetails?.advanceMeetingDetails?.meetingDates[0]
-            ?.meetingDate +
-          getAllMeetingDetails?.advanceMeetingDetails?.meetingDates[0]
-            ?.startTime;
-        let meetingEndTime =
-          getAllMeetingDetails?.advanceMeetingDetails?.meetingDates[0]
-            ?.meetingDate +
-          getAllMeetingDetails?.advanceMeetingDetails?.meetingDates[0]?.endTime;
-
-        setMeetingTime({
-          meetingStartTime: resolutionResultTable(meetingStartTime),
-          meetingEndTime: resolutionResultTable(meetingEndTime),
-        });
-      }
     } catch (error) {
-      console.log(error);
+      console.error("Failed to compute meeting times:", error);
     }
-  }, [getAllMeetingDetails]);
+  }, [getAllMeetingDetails, dispatch, meetingId, navigate, t]);
 
   useEffect(() => {
-    if (NewMeetingreducer.getMeetingusers !== null) {
-      // const newData = {
-      //   meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
-      //   meetingParticipants:
-      //     NewMeetingreducer.getMeetingusers.meetingParticipants,
-      //   meetingAgendaContributors:
-      //     NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
-      // };
-      // setAllPresenters(newData);
-      const allPresentersReducer = [
-        ...NewMeetingreducer.getMeetingusers.meetingOrganizers,
-        ...NewMeetingreducer.getMeetingusers.meetingParticipants,
-        ...NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
-      ];
-      if (allPresentersReducer.length > 0) {
-        console.log(
-          allPresentersReducer,
-          "allPresentersReducerallPresentersReducer",
-        );
-        const mappedPresenters = allPresentersReducer.map((presenter) => ({
-          value: presenter.userID,
-          name: presenter.userName,
-          label: (
-            <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                <img
-                  alt=""
-                  src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width="17px"
-                  height="17px"
-                  className={styles["Image_class_Agenda"]}
-                />
-                <span className={styles["Name_Class"]}>
-                  {presenter.userName}
-                </span>
-              </Col>
-            </Row>
-          ),
-        }));
+    if (!meetingTime.meetingStartTime) return;
 
-        setAllSavedPresenters(mappedPresenters);
-      }
-    }
+    setRows((prevRows) =>
+      prevRows.map((row) => {
+        // only update empty rows (don't overwrite user data)
+        if (!row.startDate && !row.endDate) {
+          return {
+            ...row,
+            startDate: meetingTime.meetingStartTime,
+            endDate: meetingTime.meetingEndTime,
+          };
+        }
+        return row;
+      }),
+    );
+  }, [meetingTime]);
+
+  useEffect(() => {
+    const firstDate =
+      getAllMeetingDetails?.advanceMeetingDetails?.meetingDates?.[0];
+
+    if (!firstDate) return;
+
+    setMeetingTime({
+      meetingStartTime: resolutionResultTable(
+        firstDate.meetingDate + firstDate.startTime,
+      ),
+      meetingEndTime: resolutionResultTable(
+        firstDate.meetingDate + firstDate.endTime,
+      ),
+    });
+  }, [getAllMeetingDetails]);
+
+  /* --------------------------------------------------------------------------
+   * Presenter dropdown options
+   * Combines organizers + participants + agenda contributors into a single
+   * dropdown list, formatted with avatar + name in a React node for `label`.
+   * ------------------------------------------------------------------------ */
+  useEffect(() => {
+    const users = NewMeetingreducer?.getMeetingusers;
+    if (!users) return;
+
+    const merged = [
+      ...users.meetingOrganizers,
+      ...users.meetingParticipants,
+      ...users.meetingAgendaContributors,
+    ];
+    if (merged.length === 0) return;
+
+    const mapped = merged.map((p) => ({
+      value: p.userID,
+      name: p.userName,
+      label: (
+        <Row>
+          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <img
+              alt=""
+              src={`data:image/jpeg;base64,${p.userProfilePicture.displayProfilePictureName}`}
+              width="17px"
+              height="17px"
+              className={styles["Image_class_Agenda"]}
+            />
+            <span className={styles["Name_Class"]}>{p.userName}</span>
+          </Col>
+        </Row>
+      ),
+    }));
+
+    setAllSavedPresenters(mapped);
   }, [NewMeetingreducer?.getMeetingusers]);
 
-  const [rows, setRows] = useState([]);
+  /* --------------------------------------------------------------------------
+   * Add a new (blank) main agenda row
+   * ------------------------------------------------------------------------ */
+  const addRow = useCallback(() => {
+    setRows((prev) => [
+      ...prev,
+      buildEmptyAgendaRow(allSavedPresenters[0], meetingTime),
+    ]);
+  }, [allSavedPresenters, meetingTime]);
 
-  const [emptyStateRows, setEmptyStateRows] = useState(false);
-
-  //Function For Adding Main Agendas
-  const addRow = () => {
-    const newMainAgenda = {
-      iD: getRandomUniqueNumber().toString() + "A",
-      title: "",
-      agendaVotingID: 0,
-      presenterID: allSavedPresenters[0]?.value,
-      presenterName: allSavedPresenters[0]?.label,
-      description: "",
-      startDate: meetingTime.meetingStartTime,
-      endDate: meetingTime.meetingEndTime,
-      selectedRadio: 1,
-      urlFieldMain: "",
-      mainNote: "",
-      requestContributorURlName: "",
-      files: [],
-      isLocked: false,
-      voteOwner: null,
-      isAttachment: false,
-      userID: 0,
-      subAgenda: [],
-      canEdit: false,
-      canView: false,
-    };
-    console.log("add newMainAgenda", newMainAgenda);
-    console.log("add newMainAgenda", rows);
-    setRows([...rows, newMainAgenda]);
-  };
-
-  //SubAgenda Statemanagement
-
-  const importPreviousAgenda = () => {
+  /* --------------------------------------------------------------------------
+   * Open the "Import previous agenda" modal
+   * ------------------------------------------------------------------------ */
+  const importPreviousAgenda = useCallback(() => {
     dispatch(showImportPreviousAgendaModal(true));
-  };
+  }, [dispatch]);
 
-  const handleCancelClick = async () => {
+  /* --------------------------------------------------------------------------
+   * Cancel — triggers the "are you sure?" modal via context
+   * ------------------------------------------------------------------------ */
+  const handleCancelClick = useCallback(() => {
     setGoBackCancelModal(true);
-  };
+  }, [setGoBackCancelModal]);
 
-  // // Function to capitalize the first letter of a string
-  const capitalizeFirstLetter = (str) => {
-    if (str.toLowerCase() === "id") {
-      return str.toUpperCase();
-    }
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  const capitalizeKeys = (obj) => {
-    if (Array.isArray(obj)) {
-      return obj.map((item) => capitalizeKeys(item));
-    } else if (typeof obj === "object" && obj !== null) {
-      const newObj = {};
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          const newKey = capitalizeFirstLetter(key);
-          newObj[newKey] = capitalizeKeys(obj[key]);
-        }
-      }
-      return newObj;
-    } else {
-      return obj;
-    }
-  };
-
-  function removeProperties(data) {
-    if (Array.isArray(data)) {
-      return data.map((item) => removeProperties(item));
-    } else if (typeof data === "object" && data !== null) {
-      const {
-        presenterName,
-        requestContributorURlName,
-        subAgendarequestContributorUrlName,
-        userProfilePicture,
-        contributor,
-        ...rest
-      } = data;
-      for (const key in rest) {
-        rest[key] = removeProperties(rest[key]);
-      }
-      return rest;
-    } else {
-      return data;
-    }
-  }
-
-  // const [newFile, setNewFile] = useState([]);
-
+  /* --------------------------------------------------------------------------
+   * The actual save/upload orchestration.
+   * Flow:
+   *   1. Upload any pending files → collect server-generated IDs into `newFolder`
+   *   2. Save the file metadata records
+   *   3. Build a clean payload (UTC dates, no UI-only fields, PascalCase keys)
+   *   4. Swap local display names for the real file IDs
+   *   5. Dispatch the "save agenda" API
+   * ------------------------------------------------------------------------ */
   const updateSave = async (flag) => {
-    // Upload documents
+    const newFolder = []; // populated by SaveMeetingAgendaFilesApi via closure
+    const newfile = []; // populated by UploadDocumentsMeetingAgendaApi via closure
 
-    let newFolder = [];
-    let newfile = [];
-
+    // ---- Step 1 & 2: upload + persist files only if there are any ---------
     if (fileForSend.length > 0) {
-      const uploadPromises = fileForSend.map(async (newData) => {
-        console.log("newDatanewData", newData);
-        await dispatch(
-          UploadDocumentsMeetingAgendaApi(
-            navigate,
-            t,
-            newData,
-            "uploadDocumentsFromAgenda",
-            { newfile },
+      // Upload every file in parallel rather than sequentially — they're independent.
+      await Promise.all(
+        fileForSend.map((file) =>
+          dispatch(
+            UploadDocumentsMeetingAgendaApi(
+              navigate,
+              t,
+              file,
+              "uploadDocumentsFromAgenda",
+              { newfile },
+            ),
           ),
-        );
-      });
-      console.log("uploadPromisesuploadPromises", uploadPromises);
-      // Wait for all promises to resolve
-      await Promise.all(uploadPromises); //till here the files get upload
+        ),
+      );
+
+      // Then register the uploaded files as a single batch.
       await dispatch(
         SaveMeetingAgendaFilesApi(navigate, t, newfile, "saveFilesFromAgenda", {
           newFolder,
         }),
       );
     }
-    // await Promise.all(
-    //   fileForSend.map(async (newData) => {
-    //     console.log("newDatanewData", newData);
-    //     try {
-    //       const result = await dispatch(
-    //         UploadDocumentsAgendaApi(
-    //           navigate,
-    //           t,
-    //           newData,
-    //           folderDataRoomMeeting,
-    //           newFolder
-    //         )
-    //       );
-    //       if (result && result.success) {
-    //         newfile = [...newfile, result.dummyData];
-    //         // setNewFile((prevState) => [...prevState, result.dummyData]);
-    //         console.log("newfilenewfile", newfile);
-    //         console.log("newfoldernewfolder", newFolder);
-    //       }
-    //       console.log("resultresult", result);
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   })
-    // );
 
-    // Convert date fields to UTC
+    // ---- Step 3: normalize dates to UTC + strip UI-only props -------------
     const convertedRows = convertDateFieldsToUTC(rows);
-    console.log("newfile", newfile);
+    const cleanedData = removeProperties(convertedRows);
 
-    // // Save files
-    // await dispatch(
-    //   SaveFilesAgendaApi(navigate, t, newfile, folderDataRoomMeeting, newFolder)
-    // );
+    // ---- Step 4: map each file's displayName → its persisted file ID ------
+    // Files are initially tagged by displayAttachmentName (a UI-side string);
+    // after upload, the backend returns a real pK_FileID we must swap in.
+    const displayNameToFileId = newFolder.reduce((acc, folder) => {
+      acc[folder.displayAttachmentName] = folder.pK_FileID.toString();
+      return acc;
+    }, {});
 
-    // Process data and update properties
-    let cleanedData = removeProperties(convertedRows);
-    console.log(
-      { newFolder, cleanedData },
-      "newFoldernewFoldernewFoldernewFolder",
-    );
-    let mappingObject = {};
-    newFolder.forEach((folder) => {
-      mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
+    const resolveFileId = (file) => ({
+      ...file,
+      originalAttachmentName:
+        displayNameToFileId[file.displayAttachmentName] ??
+        file.originalAttachmentName,
     });
 
-    let updatedData = cleanedData.map((item) => ({
+    const updatedData = cleanedData.map((item) => ({
       ...item,
-      files: item.files.map((file) => ({
-        ...file,
-        originalAttachmentName:
-          mappingObject[file.displayAttachmentName] ||
-          file.originalAttachmentName,
-      })),
-      subAgenda: item.subAgenda.map((subAgenda) => ({
-        ...subAgenda,
-        subfiles: subAgenda.subfiles.map((subFile) => ({
-          ...subFile,
-          originalAttachmentName:
-            mappingObject[subFile.displayAttachmentName] ||
-            subFile.originalAttachmentName,
-        })),
+      files: item.files.map(resolveFileId),
+      subAgenda: item.subAgenda.map((sub) => ({
+        ...sub,
+        subfiles: sub.subfiles.map(resolveFileId),
       })),
     }));
-    console.log(
-      { newFolder, cleanedData, mappingObject, updatedData },
-      "newFoldernewFoldernewFoldernewFolder",
-    );
-    // Clear fileForSend array
+
+    // Reset pending-files queue — they're saved now.
     setFileForSend([]);
 
-    // Construct data object
-    let Data = {
+    // ---- Step 5: dispatch the final save/publish API ----------------------
+    const payload = capitalizeKeys({
       MeetingID: meetingId,
       AgendaList: updatedData,
-    };
+    });
 
-    // Capitalize keys in the data object
-    let capitalizedData = capitalizeKeys(Data);
+    const routeValue =
+      flag === SAVE_FLAG.SAVE_ONLY
+        ? "saveMeetingAgenda"
+        : "saveAgendaAndPublishMeeting";
 
-    // Dispatch API call to update meeting agenda
-    let routeValue =
-      flag === 1 ? "saveMeetingAgenda" : "saveAgendaAndPublishMeeting";
     await dispatch(
-      AddUpdateAdvanceMeetingAgendaApi(
-        navigate,
-        t,
-        capitalizedData,
-        routeValue,
-        {
-          setEditorRole,
-          setAdvanceMeetingModalID,
-          setDataroomMapFolderId,
-          setSceduleMeeting,
-          setPublishState,
-          setCalendarViewModal,
-          setMeetingMaterial,
-          setAgenda,
-        },
-      ),
+      AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {
+        setEditorRole,
+        setAdvanceMeetingModalID,
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal,
+        setMeetingMaterial,
+        setAgenda,
+      }),
     );
   };
+
+  /* --------------------------------------------------------------------------
+   * Save entry point — validates every row (and its sub-rows) before calling
+   * updateSave. Short-circuits on the first failure.
+   *
+   * Also: if no row requires attachments, we can safely drop `fileForSend`
+   *       (the user changed their mind about uploading).
+   * ------------------------------------------------------------------------ */
   const saveAgendaData = async (flag) => {
-    let isValid = true;
     let shouldResetFileForSend = true;
-    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-      let row = rows[rowIndex];
-      console.log("row", row);
 
-      if (row.files.length > 10) {
-        showMessage(
-          t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
 
-        isValid = false;
-        return;
-      }
-      // Check conditions for the parent objects
-      if (row.title === "") {
-        showMessage(
-          t("Title-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
-
-        isValid = false;
-        break;
+      const rowError = validateAgendaRow(row, i);
+      if (rowError) {
+        showMessage(t(rowError.key, rowError.params), "error", setOpen);
+        return; // fail-fast
       }
 
-      if (row.startDate === "") {
-        showMessage(
-          t("start-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
-
-        isValid = false;
-        break;
-      }
-
-      if (row.endDate === "") {
-        showMessage(
-          t("End-time-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
-
-        isValid = false;
-        break;
-      }
-
-      if (row.presenterID === 0) {
-        showMessage(
-          t("Presenter-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
-
-        isValid = false;
-        break;
-      }
-
-      if (row.selectedRadio === 1) {
+      // Any attachment-mode row means the pending-file queue is still relevant.
+      if (row.selectedRadio === AGENDA_SOURCE.ATTACHMENT) {
         shouldResetFileForSend = false;
       }
 
-      if (row.selectedRadio === 2 && row.urlFieldMain === "") {
-        showMessage(
-          t("URL-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
-
-        isValid = false;
-        break;
-      }
-
-      if (
-        row.selectedRadio === 3 &&
-        (row.userID === 0 || row.mainNote === "")
-      ) {
-        showMessage(
-          t("UserID/Note-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
-
-        isValid = false;
-        break;
-      }
-
-      // Check conditions for subAgenda objects
-      if (row.subAgenda && row.subAgenda.length > 0) {
-        for (let subIndex = 0; subIndex < row.subAgenda.length; subIndex++) {
-          const subAgendaItem = row.subAgenda[subIndex];
-
-          console.log(subAgendaItem, "rowrowrow");
-          if (subAgendaItem.subfiles.length > 10) {
-            showMessage(
-              t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
+      // Validate every sub-agenda of this row.
+      if (row.subAgenda?.length) {
+        for (let j = 0; j < row.subAgenda.length; j++) {
+          const sub = row.subAgenda[j];
+          const subError = validateSubAgendaRow(sub, i, j);
+          if (subError) {
+            showMessage(t(subError.key, subError.params), "error", setOpen);
             return;
           }
-
-          if (subAgendaItem.subTitle === "") {
-            showMessage(
-              t("Title-is-missing-in-agenda", {
-                rowIndex: rowIndex + 1,
-                subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
-            break;
-          }
-
-          if (subAgendaItem.startDate === "") {
-            showMessage(
-              t("Start-date-is-missing-in-agenda", {
-                rowIndex: rowIndex + 1,
-                subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
-            break; // Stop processing if subAgenda startDate is missing
-          }
-
-          if (subAgendaItem.endDate === "") {
-            showMessage(
-              t("End-date-is-missing-in-agenda", {
-                rowIndex: rowIndex + 1,
-                subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
-            break; // Stop processing if subAgenda endDate is missing
-          }
-
-          if (subAgendaItem.presenterID === 0) {
-            showMessage(
-              t("Presenter-is-missing-in-agenda", {
-                rowIndex: rowIndex + 1,
-                subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
-            break; // Stop processing if subAgenda presenterID is missing
-          }
-          if (subAgendaItem.subSelectRadio === 1) {
+          if (sub.subSelectRadio === AGENDA_SOURCE.ATTACHMENT) {
             shouldResetFileForSend = false;
           }
-          if (
-            subAgendaItem.subSelectRadio === 2 &&
-            subAgendaItem.subAgendaUrlFieldRadio === ""
-          ) {
-            showMessage(
-              t("URL-is-missing-in-agenda", {
-                rowIndex: rowIndex + 1,
-                subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
-            break;
-          }
-
-          if (
-            subAgendaItem.subSelectRadio === 3 &&
-            (subAgendaItem.userID === 0 ||
-              subAgendaItem.subAgendarequestContributorEnterNotes === "")
-          ) {
-            showMessage(
-              t("UserID/Note-is-missing-in-agenda", {
-                rowIndex: rowIndex + 1,
-                subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
-
-            isValid = false;
-            break;
-          }
         }
       }
     }
-    console.log(fileForSend, "rowrowrow");
 
-    if (shouldResetFileForSend) {
-      setFileForSend([]);
-    }
-    if (isValid) {
-      updateSave(flag);
-    }
+    if (shouldResetFileForSend) setFileForSend([]);
+    await updateSave(flag);
   };
 
+  /* --------------------------------------------------------------------------
+   * Seed default presenter on the first (blank) row once presenter list loads.
+   * Only runs when there's no existing agenda data from the server.
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
+    const hasServerData =
+      MeetingAgendaData &&
+      Object.keys(MeetingAgendaData).length > 0 &&
+      MeetingAgendaData.agendaList?.length > 0;
+
+    if (hasServerData) return;
+    if (rows.length !== 1) return;
+    if (!allSavedPresenters[0]) return;
+
+    setRows((prev) => {
+      const updated = [...prev];
+      updated[0] = {
+        ...updated[0],
+        presenterID: allSavedPresenters[0].value,
+        presenterName: allSavedPresenters[0].label,
+      };
+      return updated;
+    });
+  }, [allSavedPresenters, allUsersRC, MeetingAgendaData, rows.length]);
+
+  /* --------------------------------------------------------------------------
+   * Hydrate `rows` from the server response.
+   * - If server has agendas → map them, resolving presenter/contributor labels
+   *   from their IDs and converting UTC dates back to local GMT display.
+   * - Otherwise → start with one empty row.
+   * ------------------------------------------------------------------------ */
+  useEffect(() => {
+    if (MeetingAgendaData == null) return;
+
     if (
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
-        undefined ||
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
-        0 ||
-      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
-        .length === 0
+      !MeetingAgendaData.agendaList ||
+      MeetingAgendaData.agendaList.length === 0
     ) {
-      let updatedRows = [...rows];
-      if (rows.length === 1) {
-        updatedRows[0].presenterID = allSavedPresenters[0]?.value;
-        updatedRows[0].presenterName = allSavedPresenters[0]?.label;
-        console.log("add newMainAgenda", updatedRows);
-        setRows(updatedRows);
-        console.log("updated Rows ROWS ROWS");
-      }
+      setRows([buildEmptyAgendaRow(allSavedPresenters[0], meetingTime)]);
+      return;
     }
-  }, [allSavedPresenters, allUsersRC]);
 
+    try {
+      const hydrated = MeetingAgendaData.agendaList.map((item) => {
+        const { id, presenterID, userID, subAgenda, ...rest } = item;
+
+        // Find presenter & contributor display labels from our dropdown data.
+        const presenter = allSavedPresenters.find(
+          (p) => p.value === presenterID,
+        );
+        const contributor = allUsersRC.find((u) => u.value === userID);
+
+        // Recurse for sub-agendas (same lookup + date conversion).
+        const hydratedSubs = subAgenda
+          ? subAgenda.map((sub) => {
+              const {
+                subAgendaID,
+                presenterID: sPid,
+                userID: sUid,
+                ...subRest
+              } = sub;
+              const subPresenter = allSavedPresenters.find(
+                (p) => p.value === sPid,
+              );
+              const subContributor = allUsersRC.find((u) => u.value === sUid);
+
+              return {
+                subAgendaID,
+                ...subRest,
+                presenterID: sPid,
+                userID: sUid,
+                subAgendarequestContributorUrlName: subContributor?.label ?? "",
+                presenterName: subPresenter?.label ?? "",
+                startDate: sub.startDate
+                  ? convertUtcToGmt(sub.startDate)
+                  : null,
+                endDate: sub.endDate ? convertUtcToGmt(sub.endDate) : null,
+                subfiles: sub.subfiles ? [...sub.subfiles] : [],
+              };
+            })
+          : null;
+
+        return {
+          iD: id,
+          ...rest,
+          presenterID,
+          presenterName: presenter?.label ?? "",
+          userID,
+          requestContributorURlName: contributor?.label ?? "",
+          startDate: item.startDate ? convertUtcToGmt(item.startDate) : null,
+          endDate: item.endDate ? convertUtcToGmt(item.endDate) : null,
+          subAgenda: hydratedSubs,
+          files: item.files ? [...item.files] : [],
+        };
+      });
+
+      setRows(hydrated);
+      setIsPublishedState(MeetingAgendaData.isPublished);
+    } catch (error) {
+      console.error("Failed to hydrate agenda rows:", error);
+    }
+    // We intentionally omit allSavedPresenters/allUsersRC: hydration should
+    // run when server data arrives, not whenever the dropdowns refresh.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [MeetingAgendaData]);
+
+  /* --------------------------------------------------------------------------
+   * Handle "Import previous agenda" result.
+   * The imported data is appended to the current rows, but:
+   *   - Presenter/contributor/vote/file fields are reset (they're meeting-specific)
+   *   - Fully-empty rows (both current and imported) are filtered out so the
+   *     user doesn't get stuck with a blank placeholder after importing.
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
-    if (MeetingAgendaData !== null && MeetingAgendaData !== undefined) {
-      if (MeetingAgendaData.agendaList?.length > 0) {
-        try {
-          let newData = MeetingAgendaData.agendaList;
-          let isPublishedAgenda = MeetingAgendaData.isPublished;
-          console.log(newData, isPublishedAgenda, "checkingMAinAgenda");
-          let generateAgendaData = newData.map((agendaItem) => {
-            const { id, presenterID, userID, subAgenda, files, ...rest } =
-              agendaItem;
-            const matchingPresenter = allSavedPresenters.find(
-              (presenter) => presenter.value === presenterID,
-            );
-            const matchinguserID = allUsersRC.find(
-              (rcuser) => rcuser.value === userID,
-            );
-            const updatedSubAgenda = subAgenda
-              ? subAgenda.map((subAgendaItem) => {
-                  const { subAgendaID, presenterID, userID, ...subAgendaRest } =
-                    subAgendaItem;
-                  const matchingSubPresenter = allSavedPresenters.find(
-                    (subPresenter) => subPresenter.value === presenterID,
-                  );
-                  const matchingSubUserID = allUsersRC.find(
-                    (subRcuser) => subRcuser.value === userID,
-                  );
-                  return {
-                    subAgendaID,
-                    ...subAgendaRest,
-                    presenterID, // Retain presenterID
-                    userID,
-                    subAgendarequestContributorUrlName: matchingSubUserID
-                      ? matchingSubUserID.label
-                      : "",
-                    presenterName: matchingSubPresenter
-                      ? matchingSubPresenter.label
-                      : "",
-                    startDate: subAgendaItem.startDate
-                      ? convertUtcToGmt(subAgendaItem.startDate)
-                      : null,
-                    endDate: subAgendaItem.endDate
-                      ? convertUtcToGmt(subAgendaItem.endDate)
-                      : null,
-                    subfiles: subAgendaItem.subfiles
-                      ? [...subAgendaItem.subfiles]
-                      : [],
-                  };
-                })
-              : null;
+    const importData = MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData;
+    if (!importData || importData.length === 0 || !importData.agendaList)
+      return;
 
-            return {
-              iD: id,
-              ...rest,
-              presenterID,
-              presenterName: matchingPresenter ? matchingPresenter.label : "",
-              userID,
-              requestContributorURlName: matchinguserID
-                ? matchinguserID.label
-                : "",
-              startDate: agendaItem.startDate
-                ? convertUtcToGmt(agendaItem.startDate)
-                : null,
-              endDate: agendaItem.endDate
-                ? convertUtcToGmt(agendaItem.endDate)
-                : null,
-              subAgenda: updatedSubAgenda,
-              files: agendaItem.files ? [...agendaItem.files] : [],
-            };
-          });
-          console.log("add newMainAgenda", generateAgendaData);
-          setRows(generateAgendaData);
-          setIsPublishedState(isPublishedAgenda);
-        } catch (error) {
-          console.log(error, "error");
-        }
-      } else {
-        let newData = {
-          iD: getRandomUniqueNumber().toString() + "A",
-          title: "",
+    setRows((prevRows) => {
+      // Re-shape each imported agenda into our UI format, clearing fields
+      // that shouldn't carry over between meetings.
+      const imported = importData.agendaList.map((item) => {
+        const { id, title, description, subAgenda, ...rest } = item;
+
+        const clearedSubs = subAgenda
+          ? subAgenda.map((sub) => ({
+              subAgendaID: sub.subAgendaID,
+              agendaVotingID: 0,
+              subTitle: sub.subTitle,
+              description: sub.description,
+              presenterID: 0,
+              presenterName: "",
+              startDate: sub.startDate ? convertUtcToGmt(sub.startDate) : null,
+              endDate: sub.endDate ? convertUtcToGmt(sub.endDate) : null,
+              subSelectRadio: AGENDA_SOURCE.ATTACHMENT,
+              subAgendaUrlFieldRadio: "",
+              subAgendarequestContributorUrlName: "",
+              subAgendarequestContributorEnterNotes: "",
+              subfiles: [],
+              isLocked: sub.isLocked,
+              voteOwner: null,
+              isAttachment: false,
+              userID: 0,
+            }))
+          : null;
+
+        return {
+          ...rest,
+          iD: id,
+          title,
           agendaVotingID: 0,
-          presenterID: allSavedPresenters[0]?.value,
-          presenterName: allSavedPresenters[0]?.label,
-          description: "",
-          startDate: meetingTime?.meetingStartTime,
-          endDate: meetingTime?.meetingEndTime,
-          selectedRadio: 1,
+          presenterID: 0,
+          description,
+          presenterName: "",
+          startDate: item.startDate ? convertUtcToGmt(item.startDate) : null,
+          endDate: item.endDate ? convertUtcToGmt(item.endDate) : null,
+          selectedRadio: AGENDA_SOURCE.ATTACHMENT,
           urlFieldMain: "",
           mainNote: "",
           requestContributorURlName: "",
@@ -785,599 +803,294 @@ const Agenda = ({
           voteOwner: null,
           isAttachment: false,
           userID: 0,
-          subAgenda: [],
-          canView: true,
-          canEdit: true,
+          subAgenda: clearedSubs,
         };
-        console.log("add newMainAgenda", newData);
-        setRows([newData]);
-      }
-    }
-  }, [
-    MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-    // allSavedPresenters,
-    // allUsersRC,
-  ]);
-
-  useEffect(() => {
-    if (
-      MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData !== null &&
-      MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData !== undefined &&
-      MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.length !== 0
-    ) {
-      let newData =
-        MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.agendaList;
-
-      console.log("add newMainAgenda", newData);
-      console.log("updated Rows ROWS ROWS", newData);
-      setRows((prevRows) => {
-        const updatedRows = newData.map((agendaItem) => {
-          const {
-            id,
-            title,
-            agendaVotingID,
-            presenterID,
-            description,
-            presenterName,
-            startDate,
-            endDate,
-            selectedRadio,
-            urlFieldMain,
-            mainNote,
-            requestContributorURlName,
-            files,
-            isLocked,
-            voteOwner,
-            isAttachment,
-            userID,
-            subAgenda,
-            ...rest
-          } = agendaItem;
-          const updatedSubAgenda = subAgenda
-            ? subAgenda.map((subAgendaItem) => {
-                const {
-                  subAgendaID,
-                  agendaVotingID,
-                  subTitle,
-                  description,
-                  presenterID,
-                  presenterName,
-                  startDate,
-                  endDate,
-                  subSelectRadio,
-                  subAgendaUrlFieldRadio,
-                  subAgendarequestContributorUrlName,
-                  subAgendarequestContributorEnterNotes,
-                  subfiles,
-                  isLocked,
-                  voteOwner,
-                  isAttachment,
-                  userID,
-                  ...subAgendaRest
-                } = subAgendaItem;
-                return {
-                  ...subAgendaRest,
-                  subAgendaID,
-                  agendaVotingID: 0,
-                  subTitle,
-                  description,
-                  presenterID: 0,
-                  presenterName: "",
-                  startDate: subAgendaItem.startDate
-                    ? convertUtcToGmt(subAgendaItem.startDate)
-                    : null,
-                  endDate: subAgendaItem.endDate
-                    ? convertUtcToGmt(subAgendaItem.endDate)
-                    : null,
-                  subSelectRadio: 1,
-                  subAgendaUrlFieldRadio: "",
-                  subAgendarequestContributorUrlName: "",
-                  subAgendarequestContributorEnterNotes: "",
-                  subfiles: [],
-                  isLocked,
-                  voteOwner: null,
-                  isAttachment: false,
-                  userID: 0,
-                };
-              })
-            : null;
-
-          return {
-            ...rest,
-            iD: id,
-            title,
-            agendaVotingID: 0,
-            presenterID: 0,
-            description,
-            presenterName: "",
-            startDate: agendaItem.startDate
-              ? convertUtcToGmt(agendaItem.startDate)
-              : null,
-            endDate: agendaItem.endDate
-              ? convertUtcToGmt(agendaItem.endDate)
-              : null,
-            selectedRadio: 1,
-            urlFieldMain: "",
-            mainNote: "",
-            requestContributorURlName: "",
-            files: [],
-            isLocked: false,
-            voteOwner: null,
-            isAttachment: false,
-            userID: 0,
-            subAgenda: updatedSubAgenda,
-          };
-        });
-
-        let isAgendaEmpty;
-        let isAgendaEmptyCR;
-        let areSubAgendasEmpty;
-        let areSubAgendasEmptyCR;
-
-        const nonEmptyRows = updatedRows.filter((agendaItem) => {
-          isAgendaEmpty =
-            agendaItem.title === "" &&
-            agendaItem.description === "" &&
-            // agendaItem.presenterID === 0 &&
-            // agendaItem.presenterName === "" &&
-            agendaItem.startDate === "" &&
-            agendaItem.endDate === "" &&
-            agendaItem.urlFieldMain === "" &&
-            agendaItem.mainNote === "" &&
-            agendaItem.requestContributorURlName === "" &&
-            agendaItem.files.length === 0 &&
-            agendaItem.isLocked === false &&
-            agendaItem.voteOwner === null &&
-            agendaItem.isAttachment === false &&
-            agendaItem.userID === 0 &&
-            (!agendaItem.subAgenda || agendaItem.subAgenda.length === 0);
-          areSubAgendasEmpty = true;
-
-          if (agendaItem.subAgenda.length > 0 && isAgendaEmpty === false) {
-            areSubAgendasEmpty =
-              !agendaItem.subAgenda ||
-              agendaItem.subAgenda.length === 0 ||
-              agendaItem.subAgenda.every((subAgendaItem) => {
-                return (
-                  subAgendaItem.subTitle === "" &&
-                  subAgendaItem.description === "" &&
-                  // subAgendaItem.presenterID === 0 &&
-                  // subAgendaItem.presenterName === "" &&
-                  subAgendaItem.startDate === "" &&
-                  subAgendaItem.endDate === "" &&
-                  subAgendaItem.subAgendarequestContributorUrlName === "" &&
-                  subAgendaItem.subAgendarequestContributorEnterNotes === "" &&
-                  subAgendaItem.subAgendaUrlFieldRadio === "" &&
-                  subAgendaItem.subfiles.length === 0 &&
-                  subAgendaItem.isLocked === false &&
-                  subAgendaItem.voteOwner === null &&
-                  subAgendaItem.isAttachment === false &&
-                  subAgendaItem.userID === 0
-                );
-              });
-            if (areSubAgendasEmpty === true) {
-              isAgendaEmpty = true;
-            } else {
-              isAgendaEmpty = false;
-            }
-          } else {
-            areSubAgendasEmpty = true;
-          }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmpty,
-            areSubAgendasEmpty,
-          );
-          // Include only non-empty items
-          return !(isAgendaEmpty && areSubAgendasEmpty);
-        });
-
-        // Filter out empty rows from the current state
-        const nonEmptyCurrentRows = prevRows.filter((agendaItem) => {
-          isAgendaEmptyCR =
-            agendaItem.title === "" &&
-            agendaItem.description === "" &&
-            // agendaItem.presenterID === 0 &&
-            // agendaItem.presenterName === "" &&
-            agendaItem.startDate === "" &&
-            agendaItem.endDate === "" &&
-            agendaItem.urlFieldMain === "" &&
-            agendaItem.mainNote === "" &&
-            agendaItem.requestContributorURlName === "" &&
-            agendaItem.files.length === 0 &&
-            agendaItem.isLocked === false &&
-            agendaItem.voteOwner === null &&
-            agendaItem.isAttachment === false &&
-            agendaItem.userID === 0 &&
-            (!agendaItem.subAgenda || agendaItem.subAgenda.length === 0);
-          areSubAgendasEmptyCR = true;
-          if (agendaItem.subAgenda.length > 0 && isAgendaEmptyCR === false) {
-            areSubAgendasEmptyCR =
-              !agendaItem.subAgenda ||
-              agendaItem.subAgenda.length === 0 ||
-              agendaItem.subAgenda.every((subAgendaItem) => {
-                return (
-                  subAgendaItem.subTitle === "" &&
-                  subAgendaItem.description === "" &&
-                  // subAgendaItem.presenterID === 0 &&
-                  // subAgendaItem.presenterName === "" &&
-                  subAgendaItem.startDate === "" &&
-                  subAgendaItem.endDate === "" &&
-                  subAgendaItem.subAgendarequestContributorUrlName === "" &&
-                  subAgendaItem.subAgendarequestContributorEnterNotes === "" &&
-                  subAgendaItem.subAgendaUrlFieldRadio === "" &&
-                  subAgendaItem.subfiles.length === 0 &&
-                  subAgendaItem.isLocked === false &&
-                  subAgendaItem.voteOwner === null &&
-                  subAgendaItem.isAttachment === false &&
-                  subAgendaItem.userID === 0
-                );
-              });
-            if (areSubAgendasEmptyCR === true) {
-              isAgendaEmptyCR = true;
-            } else {
-              isAgendaEmptyCR = false;
-            }
-          } else {
-            areSubAgendasEmptyCR = true;
-          }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmptyCR,
-            areSubAgendasEmptyCR,
-          );
-
-          // Include only non-empty items
-          return !(isAgendaEmptyCR && areSubAgendasEmptyCR);
-        });
-
-        return [...nonEmptyCurrentRows, ...nonEmptyRows];
       });
-    } else {
-      // Your existing logic for handling other cases
-      console.log("updated Rows ROWS ROWS", rows);
-      console.log("add newMainAgenda", rows);
-      setRows(rows);
-    }
+
+      // Drop blank rows on both sides before merging.
+      const keptExisting = prevRows.filter((r) => !isAgendaRowEmpty(r));
+      const keptImported = imported.filter((r) => !isAgendaRowEmpty(r));
+      return [...keptExisting, ...keptImported];
+    });
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
 
+  /* --------------------------------------------------------------------------
+   * Response-message snackbar handler.
+   * Uses a lookup table instead of an if/else chain — easier to extend.
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      showMessage(t("Record-saved"), "success", setOpen);
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      showMessage(t("Record-updated"), "success", setOpen);
-    } else if (
-      MeetingAgendaReducer.ResponseMessage ===
-      t("Agendas-imported-successfully")
-    ) {
-      showMessage(t("Agendas-imported-successfully"), "success", setOpen);
-    } else if (MeetingAgendaReducer.ResponseMessage === t("No-agendas-exist")) {
-      showMessage(t("No-agendas-exist"), "error", setOpen);
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-saved")) {
-      showMessage(
-        t("Agenda-voting-details-saved-successfully"),
-        "success",
-        setOpen,
-      );
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-updated")) {
-      showMessage(
-        t("Agenda-voting-details-updated-successfully"),
-        "success",
-        setOpen,
-      );
-    }
-    dispatch(clearResponseMessage(""));
-  }, [MeetingAgendaReducer.ResponseMessage]);
+    const msg = MeetingAgendaReducer.ResponseMessage;
+    if (!msg) return;
 
+    const messageMap = {
+      [t("Record-saved")]: { text: t("Record-saved"), type: "success" },
+      [t("Record-updated")]: { text: t("Record-updated"), type: "success" },
+      [t("Agendas-imported-successfully")]: {
+        text: t("Agendas-imported-successfully"),
+        type: "success",
+      },
+      [t("No-agendas-exist")]: { text: t("No-agendas-exist"), type: "error" },
+      [t("Voting-saved")]: {
+        text: t("Agenda-voting-details-saved-successfully"),
+        type: "success",
+      },
+      [t("Voting-updated")]: {
+        text: t("Agenda-voting-details-updated-successfully"),
+        type: "success",
+      },
+    };
+
+    const match = messageMap[msg];
+    if (match) showMessage(match.text, match.type, setOpen);
+
+    dispatch(clearResponseMessage(""));
+  }, [MeetingAgendaReducer.ResponseMessage, dispatch, t]);
+
+  /* --------------------------------------------------------------------------
+   * Generic snackbar handler for NewMeetingreducer response messages.
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      typeof NewMeetingreducer.ResponseMessage === "string"
-    ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+    const msg = NewMeetingreducer.ResponseMessage;
+    if (typeof msg === "string" && msg !== "") {
+      showMessage(msg, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [NewMeetingreducer.ResponseMessage, dispatch]);
 
+  /* --------------------------------------------------------------------------
+   * MQTT-pushed updates — another user modified this meeting's agenda.
+   * Re-fetch so our view stays in sync.
+   * ------------------------------------------------------------------------ */
   useEffect(() => {
-    if (
-      MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== undefined &&
-      MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== null
-    ) {
-      if (
-        meetingId === MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
-      ) {
-        let getMeetingData = {
-          MeetingID: meetingId,
-        };
-        dispatch(
-          GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t),
-        );
-      }
-    }
-  }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
+    const mqtt = MeetingAgendaReducer.MeetingAgendaUpdatedMqtt;
+    if (!mqtt) return;
+    if (meetingId !== mqtt.meetingID) return;
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingID({ MeetingID: meetingId }, navigate, t),
+    );
+  }, [
+    MeetingAgendaReducer.MeetingAgendaUpdatedMqtt,
+    dispatch,
+    meetingId,
+    navigate,
+    t,
+  ]);
 
-  // useEffect(() => {
-  //   if (rows.length !== 0) {
-  //     // Check if any of the canView values is true
-  //     const anyCanViewTrue = rows.some((row) => row.canView);
+  /* --------------------------------------------------------------------------
+   * Render helpers
+   * Pulled out so the JSX tree below stays readable.
+   * ------------------------------------------------------------------------ */
 
-  //     // Update the emptyStateRows state based on the condition
-  //     setEmptyStateRows(!anyCanViewTrue);
-  //   } else {
-  //     setEmptyStateRows(false);
-  //   }
-  // }, [rows.length]);
+  // Should the drag-drop area be hidden entirely? Happens for contributors
+  // whose only row is still blank (they can't add agendas, so nothing to show).
+  const hideDragArea =
+    isContributor && rows.length > 0 && rows[0]?.title === "";
 
-  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+  // Should we show the empty-state illustration?
+  const showEmptyState =
+    (emptyStateRows && (isContributor || isParticipant)) ||
+    (isContributor && rows.length > 0 && rows[0].title === "");
 
-  console.log("Agenda Data", rows);
+  // Should the "Add Agenda" button render?
+  const showAddAgendaBtn = !isParticipant && !isContributor && !isCompleted;
+
+  // Should the "Import previous" button render?
+  const showImportBtn = !isCompleted && !isContributor;
+
+  /* --------------------------------------------------------------------------
+   * Render
+   * ------------------------------------------------------------------------ */
+
+  // Full-page view overrides (the normal agenda editor is hidden when any of
+  // these are active).
+  if (savedViewAgenda) return <SaveAgendaView />;
+  if (agendaViewPage) return <AgendaView />;
+  if (enableVotingPage) return <VotingPage />;
 
   return (
     <>
-      {savedViewAgenda ? (
-        <SaveAgendaView />
-      ) : agendaViewPage ? (
-        <AgendaView />
-      ) : enableVotingPage ? (
-        <VotingPage />
-      ) : (
-        <>
-          {/* <Row className="m-0">
-            <Col className="p-0">
-              {editorRole.status === "9" ||
-              editorRole.status === 9 ||
-              editorRole.role === "Agenda Contributor" ? null : (
-                <Button
-                  text={t("Import-previous-agenda")}
-                  className={styles["Import_Agenda_Buttons"]}
-                  onClick={importPreviousAgenda}
-                />
-              )}
-            </Col>
-          </Row> */}
-          <section>
-            {editorRole.role === "Agenda Contributor" &&
-            rows.length > 0 &&
-            rows[0]?.title === "" ? null : (
-              <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+      <section>
+        {/* Draggable agenda list ------------------------------------------ */}
+        {!hideDragArea && (
+          <DragDropContext
+            onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+          >
+            {!showEmptyState && (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={
+                    rows.length > 1
+                      ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
+                      : styles["Scroller_Agenda"]
+                  }
+                >
+                  <Droppable droppableId="board" type="PARENT">
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {rows.map((data, index) => (
+                          <div
+                            key={data.iD ?? index}
+                            className={
+                              data.canView === false && isContributor
+                                ? "d-none"
+                                : styles["agenda-border-class"]
+                            }
+                          >
+                            <ParentAgenda
+                              fileForSend={fileForSend}
+                              setFileForSend={setFileForSend}
+                              currentMeeting={currentMeeting}
+                              data={data}
+                              allUsersRC={allUsersRC}
+                              setAllUsersRC={setAllUsersRC}
+                              index={index}
+                              allSavedPresenters={allSavedPresenters}
+                              setAllSavedPresenters={setAllSavedPresenters}
+                              rows={rows}
+                              setRows={setRows}
+                              setMainAgendaRemovalIndex={
+                                setMainAgendaRemovalIndex
+                              }
+                              agendaItemRemovedIndex={agendaItemRemovedIndex}
+                              setAgendaItemRemovedIndex={
+                                setAgendaItemRemovedIndex
+                              }
+                              setSubajendaRemoval={setSubajendaRemoval}
+                              editorRole={editorRole}
+                              setSelectedID={setSelectedID}
+                            />
+                          </div>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </Col>
+              </Row>
+            )}
+          </DragDropContext>
+        )}
+
+        {/* Empty-state illustration -------------------------------------- */}
+        {showEmptyState && (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center mt-3"
               >
-                {emptyStateRows === true &&
-                (editorRole.role === "Agenda Contributor" ||
-                  editorRole.role === "Participant") ? null : (
+                <img
+                  draggable={false}
+                  src={emptyContributorState}
+                  width="274.05px"
+                  height="230.96px"
+                  alt=""
+                  className={styles["Image-Add-Agenda"]}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center mt-3"
+              >
+                <span className={styles["Empty_state_heading"]}>
+                  {t("No-agenda-availabe-to-discuss").toUpperCase()}
+                </span>
+              </Col>
+            </Row>
+          </>
+        )}
+
+        {/* "Add Agenda" button ------------------------------------------- */}
+        {showAddAgendaBtn && (
+          <Row className="mt-3">
+            <Col lg={12} md={12} sm={12}>
+              <Button
+                text={
                   <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={
-                        rows.length > 1
-                          ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
-                          : styles["Scroller_Agenda"]
-                      }
+                      className="d-flex justify-content-center gap-2 align-items-center"
                     >
-                      <Droppable
-                        //  key={`main-agenda-${rows.id}`}
-                        //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId="board"
-                        type="PARENT"
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                          >
-                            {rows.length > 0
-                              ? rows.map((data, index) => {
-                                  console.log(
-                                    data,
-                                    "datadatadatadata Checking",
-                                  );
-                                  return (
-                                    <>
-                                      <div
-                                        // className={styles["agenda-border-class"]}
-                                        className={
-                                          data.canView === false &&
-                                          editorRole.role ===
-                                            "Agenda Contributor"
-                                            ? "d-none"
-                                            : styles["agenda-border-class"]
-                                        }
-                                      >
-                                        <ParentAgenda
-                                          fileForSend={fileForSend}
-                                          setFileForSend={setFileForSend}
-                                          currentMeeting={currentMeeting}
-                                          data={data}
-                                          allUsersRC={allUsersRC}
-                                          setAllUsersRC={setAllUsersRC}
-                                          index={index}
-                                          allSavedPresenters={
-                                            allSavedPresenters
-                                          }
-                                          setAllSavedPresenters={
-                                            setAllSavedPresenters
-                                          }
-                                          rows={rows}
-                                          setRows={setRows}
-                                          setMainAgendaRemovalIndex={
-                                            setMainAgendaRemovalIndex
-                                          }
-                                          agendaItemRemovedIndex={
-                                            agendaItemRemovedIndex
-                                          }
-                                          setAgendaItemRemovedIndex={
-                                            setAgendaItemRemovedIndex
-                                          }
-                                          setSubajendaRemoval={
-                                            setSubajendaRemoval
-                                          }
-                                          editorRole={editorRole}
-                                          setSelectedID={setSelectedID}
-                                        />
-                                      </div>
-                                    </>
-                                  );
-                                })
-                              : null}
-
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Droppable>
+                      <img
+                        draggable={false}
+                        src={plusFaddes}
+                        height="10.77px"
+                        width="10.77px"
+                        alt=""
+                      />
+                      <span className={styles["Add_Agen_Heading"]}>
+                        {t("Add-agenda")}
+                      </span>
                     </Col>
                   </Row>
-                )}
-              </DragDropContext>
-            )}
-            {(emptyStateRows === true &&
-              (editorRole.role === "Agenda Contributor" ||
-                editorRole.role === "Participant")) ||
-            (editorRole.role === "Agenda Contributor" &&
-              rows.length > 0 &&
-              rows[0].title === "") ? (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center mt-3"
-                  >
-                    <img
-                      draggable={false}
-                      src={emptyContributorState}
-                      width="274.05px"
-                      alt=""
-                      height="230.96px"
-                      className={styles["Image-Add-Agenda"]}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center mt-3"
-                  >
-                    <span className={styles["Empty_state_heading"]}>
-                      {t("No-agenda-availabe-to-discuss").toUpperCase()}
-                    </span>
-                  </Col>
-                </Row>
-              </>
-            ) : null}
-            {/* Seperator For Footer */}
-            {editorRole.role === "Participant" ||
-            editorRole.role === "Agenda Contributor" ||
-            editorRole.status === "9" ||
-            editorRole.status === 9 ? null : (
-              <Row className="mt-3">
-                <Col lg={12} md={12} sm={12}>
-                  <Button
-                    text={
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center gap-2 align-items-center"
-                          >
-                            <img
-                              draggable={false}
-                              src={plusFaddes}
-                              height="10.77px"
-                              width="10.77px"
-                              alt=""
-                            />
-                            <span className={styles["Add_Agen_Heading"]}>
-                              {t("Add-agenda")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                    className={styles["AddMoreBtnAgenda"]}
-                    disableBtn={
-                      Number(editorRole.status) === 10 &&
-                      !isAgendaUpdateWhenMeetingActive
-                        ? true
-                        : false
-                    }
-                    onClick={addRow}
-                  />
-                </Col>
-              </Row>
-            )}
-            <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
-                {editorRole.status === "9" ||
-                editorRole.status === 9 ||
-                editorRole.role === "Agenda Contributor" ? null : (
-                  <Button
-                    text={t("Import-previous-agenda")}
-                    className={styles["Agenda_Buttons"]}
-                    onClick={importPreviousAgenda}
-                  />
-                )}
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Agenda_Buttons"]}
-                  onClick={handleCancelClick}
-                />
-                {/* 
-                <Button
-                  text={t("Save-and-publish")}
-                  className={styles["Agenda_Buttons"]}
-                /> */}
-                {/* <Button
-                  text={t("Previous")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handlePerviousAgenda}
-                /> */}
-                {/* <Button
-                  text={t("Next")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handleNextAgenda}
-                /> */}
+                }
+                className={styles["AddMoreBtnAgenda"]}
+                // Active meetings can only add rows if the feature flag is on.
+                disableBtn={
+                  Number(editorRole.status) === STATUS.ACTIVE &&
+                  !isAgendaUpdateWhenMeetingActive
+                }
+                onClick={addRow}
+              />
+            </Col>
+          </Row>
+        )}
 
-                {editorRole.status === "9" || editorRole.status === 9 ? null : (
-                  <Button
-                    onClick={() => saveAgendaData(1)}
-                    text={t("Next")}
-                    className={styles["Save_Agenda_btn"]}
-                  />
-                )}
-                {(Number(editorRole.status) === 11 ||
-                  Number(editorRole.status) === 12) &&
-                (editorRole.status !== "9" || editorRole.status !== 9) &&
-                editorRole.role !== "Agenda Contributor" ? (
-                  <Button
-                    disableBtn={
-                      Number(meetingId) === 0 || isPublishedState === false
-                        ? true
-                        : false
-                    }
-                    text={t("Publish")}
-                    className={styles["Save_Agenda_btn"]}
-                    onClick={() => saveAgendaData(2)}
-                  />
-                ) : null}
-              </Col>
-            </Row>
-          </section>
-        </>
-      )}
+        {/* Footer action buttons ---------------------------------------- */}
+        <Row className="mt-4">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            {showImportBtn && (
+              <Button
+                text={t("Import-previous-agenda")}
+                className={styles["Agenda_Buttons"]}
+                onClick={importPreviousAgenda}
+              />
+            )}
+            <Button
+              text={t("Cancel")}
+              className={styles["Agenda_Buttons"]}
+              onClick={handleCancelClick}
+            />
+            {!isCompleted && (
+              <Button
+                text={t("Next")}
+                className={styles["Save_Agenda_btn"]}
+                onClick={() => saveAgendaData(SAVE_FLAG.SAVE_ONLY)}
+              />
+            )}
+            {canPublish && (
+              <Button
+                // Can't publish until the meeting has an ID and the agenda
+                // has actually been saved at least once.
+                disableBtn={
+                  Number(meetingId) === 0 || isPublishedState === false
+                }
+                text={t("Publish")}
+                className={styles["Save_Agenda_btn"]}
+                onClick={() => saveAgendaData(SAVE_FLAG.SAVE_AND_PUBLISH)}
+              />
+            )}
+          </Col>
+        </Row>
+      </section>
 
+      {/* ----- Modals — rendered conditionally from Redux flags -------- */}
       {NewMeetingreducer.agendaItemRemoved && (
         <AgenItemremovedModal
           setRows={setRows}
@@ -1428,10 +1141,8 @@ const Agenda = ({
           setAgenda={setAgenda}
         />
       )}
+
       <Notification open={open} setOpen={setOpen} />
-      {/* {ShowCancelAgendaBuilderModal && (
-        <NewCancelAgendaBuilderModal setSceduleMeeting={setSceduleMeeting} />
-      )} */}
     </>
   );
 };
