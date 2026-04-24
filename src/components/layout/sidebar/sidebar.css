@@ -491,3 +491,19 @@ body[dir="rtl"] .iconItemSideBarMain:hover {
   height: 25px !important;
   margin-top: 5px !important;
 }
+
+/* default */
+.complianceIcon svg path {
+  transition: fill 0.3s ease;
+}
+
+/* hover */
+.complianceIcon:hover svg path {
+  fill: #fff !important;
+}
+
+/* selected (active route) */
+.complianceIcon.active svg path {
+  fill: #fff !important;
+}
+

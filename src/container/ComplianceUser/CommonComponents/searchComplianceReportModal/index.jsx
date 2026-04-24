@@ -15,6 +15,12 @@ import styles from "./SearchComplianceReportModal.module.css";
 import { DatePicker } from "antd";
 import Select from "react-select";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import dayjs from "dayjs";
+import weekday from "dayjs/plugin/weekday";
+import localeData from "dayjs/plugin/localeData";
+
+dayjs.extend(weekday);
+dayjs.extend(localeData);
 
 const SearchComplianceReportModal = () => {
   const { t } = useTranslation();
@@ -30,6 +36,8 @@ const SearchComplianceReportModal = () => {
     setComplianceReportList,
     searchbox,
     setsearchbox,
+    reportTypeFilter,
+    setReportTypeFilter,
   } = useComplianceContext();
 
   /* ---------------------------------- */
@@ -80,9 +88,11 @@ const SearchComplianceReportModal = () => {
   const hitSearchApi = () => {
     const data = buildApiPayload();
     setComplianceReportList([]);
+
     dispatch(ComplianceReportListingAPI(navigate, data, t));
     setsearchbox(false);
     setEnterpressed(false);
+    setReportTypeFilter([1, 2, 3]);
   };
 
   /* ---------------------------------- */
@@ -93,6 +103,7 @@ const SearchComplianceReportModal = () => {
     if (e.key === "Enter") {
       setEnterpressed(true);
       hitSearchApi();
+      setReportTypeFilter([1, 2, 3]);
     }
   };
 
@@ -120,6 +131,7 @@ const SearchComplianceReportModal = () => {
     setSearchComplianceReportPayload(resetState);
     setComplianceReportList([]);
     setsearchbox(false);
+    setReportTypeFilter([1, 2, 3]);
 
     dispatch(
       ComplianceReportListingAPI(
@@ -132,8 +144,8 @@ const SearchComplianceReportModal = () => {
           length: 10,
           sRow: 0,
         },
-        t
-      )
+        t,
+      ),
     );
   };
 
@@ -153,7 +165,7 @@ const SearchComplianceReportModal = () => {
           <span ref={searchBoxRef} className="position-relative">
             <TextField
               placeholder={t(
-                "Report-title.click-the-icon-to-view-more-options"
+                "Report-title.click-the-icon-to-view-more-options",
               )}
               name={"reportTitleOutside"}
               disable={searchbox}
@@ -289,6 +301,31 @@ const SearchComplianceReportModal = () => {
                           allowEmpty={[true, true]}
                           className="custom-range-picker"
                           separator="-"
+                          value={[
+                            searchComplianceReportPayload.dueDateFrom
+                              ? dayjs(
+                                  searchComplianceReportPayload.dueDateFrom,
+                                  "YYYYMMDD",
+                                ).isValid()
+                                ? dayjs(
+                                    searchComplianceReportPayload.dueDateFrom,
+                                    "YYYYMMDD",
+                                  )
+                                : null
+                              : null,
+
+                            searchComplianceReportPayload.dueDateTo
+                              ? dayjs(
+                                  searchComplianceReportPayload.dueDateTo,
+                                  "YYYYMMDD",
+                                ).isValid()
+                                ? dayjs(
+                                    searchComplianceReportPayload.dueDateTo,
+                                    "YYYYMMDD",
+                                  )
+                                : null
+                              : null,
+                          ]}
                           onChange={(dates) => {
                             setSearchComplianceReportPayload((prev) => ({
                               ...prev,

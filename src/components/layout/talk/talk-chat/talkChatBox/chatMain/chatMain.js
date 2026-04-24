@@ -119,7 +119,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   let activeChatType = localStorage.getItem("ActiveChatType");
 
   let currentConnection = JSON.parse(
-    localStorage.getItem("MqttConnectionState")
+    localStorage.getItem("MqttConnectionState"),
   );
 
   const { t } = useTranslation();
@@ -135,7 +135,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   let currentDateTime = new Date();
   let changeDateFormatCurrent = moment(currentDateTime).utc();
   let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
-    "YYYYMMDDHHmmss"
+    "YYYYMMDDHHmmss",
   );
 
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
@@ -151,7 +151,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     const randomChars = Array.from(
       { length: 14 },
       () =>
-        alphanumericChars[Math.floor(Math.random() * alphanumericChars.length)]
+        alphanumericChars[Math.floor(Math.random() * alphanumericChars.length)],
     );
     const currentDate = new Date();
     const currentUTCDateTime = currentDate
@@ -351,7 +351,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       talkStateData.AllUserChats.AllUserChatsData.length !== 0
     ) {
       setAllChatData(
-        talkStateData?.AllUserChats?.AllUserChatsData?.allMessages
+        talkStateData?.AllUserChats?.AllUserChatsData?.allMessages,
       );
     }
   }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
@@ -367,7 +367,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       setGroupInfoData(
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
-          ?.groupUsers
+          ?.groupUsers,
       );
       const firstGroupUser =
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
@@ -487,7 +487,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       setAllUsersGroupsRooms(
         talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-          .userInformation
+          .userInformation,
       );
     }
   }, [
@@ -687,12 +687,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
             talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData.userInformation.filter(
               (value) => {
                 return value.name.toLowerCase().includes(e.toLowerCase());
-              }
+              },
             );
           if (filteredData.length === 0) {
             setAllUsersGroupsRooms(
               talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-                .userInformation
+                .userInformation,
             );
           } else {
             setAllUsersGroupsRooms(filteredData);
@@ -788,28 +788,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
             customCheckState === false
               ? currentDateToday
               : todayCheckState === false &&
-                allCheckState === true &&
-                customCheckState === false
-              ? "19700101"
-              : todayCheckState === false &&
-                allCheckState === false &&
-                customCheckState === true
-              ? chatDateState.StartDate
-              : "",
+                  allCheckState === true &&
+                  customCheckState === false
+                ? "19700101"
+                : todayCheckState === false &&
+                    allCheckState === false &&
+                    customCheckState === true
+                  ? chatDateState.StartDate
+                  : "",
           ToDate:
             todayCheckState === true &&
             allCheckState === false &&
             customCheckState === false
               ? currentDateToday
               : todayCheckState === false &&
-                allCheckState === true &&
-                customCheckState === false
-              ? "20991231"
-              : todayCheckState === false &&
-                allCheckState === false &&
-                customCheckState === true
-              ? chatDateState.EndDate
-              : "",
+                  allCheckState === true &&
+                  customCheckState === false
+                ? "20991231"
+                : todayCheckState === false &&
+                    allCheckState === false &&
+                    customCheckState === true
+                  ? chatDateState.EndDate
+                  : "",
           IsEmail: false,
         },
       },
@@ -836,28 +836,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
             customCheckState === false
               ? currentDateToday
               : todayCheckState === false &&
-                allCheckState === true &&
-                customCheckState === false
-              ? "19700101"
-              : todayCheckState === false &&
-                allCheckState === false &&
-                customCheckState === true
-              ? chatDateState.StartDate
-              : "",
+                  allCheckState === true &&
+                  customCheckState === false
+                ? "19700101"
+                : todayCheckState === false &&
+                    allCheckState === false &&
+                    customCheckState === true
+                  ? chatDateState.StartDate
+                  : "",
           ToDate:
             todayCheckState === true &&
             allCheckState === false &&
             customCheckState === false
               ? currentDateToday
               : todayCheckState === false &&
-                allCheckState === true &&
-                customCheckState === false
-              ? "20991231"
-              : todayCheckState === false &&
-                allCheckState === false &&
-                customCheckState === true
-              ? chatDateState.EndDate
-              : "",
+                  allCheckState === true &&
+                  customCheckState === false
+                ? "20991231"
+                : todayCheckState === false &&
+                    allCheckState === false &&
+                    customCheckState === true
+                  ? chatDateState.EndDate
+                  : "",
           IsEmail: false,
         },
       },
@@ -883,28 +883,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
             customCheckState === false
               ? currentDateToday
               : todayCheckState === false &&
-                allCheckState === true &&
-                customCheckState === false
-              ? "19700101"
-              : todayCheckState === false &&
-                allCheckState === false &&
-                customCheckState === true
-              ? chatDateState.StartDate
-              : "",
+                  allCheckState === true &&
+                  customCheckState === false
+                ? "19700101"
+                : todayCheckState === false &&
+                    allCheckState === false &&
+                    customCheckState === true
+                  ? chatDateState.StartDate
+                  : "",
           ToDate:
             todayCheckState === true &&
             allCheckState === false &&
             customCheckState === false
               ? currentDateToday
               : todayCheckState === false &&
-                allCheckState === true &&
-                customCheckState === false
-              ? "20991231"
-              : todayCheckState === false &&
-                allCheckState === false &&
-                customCheckState === true
-              ? chatDateState.EndDate
-              : "",
+                  allCheckState === true &&
+                  customCheckState === false
+                ? "20991231"
+                : todayCheckState === false &&
+                    allCheckState === false &&
+                    customCheckState === true
+                  ? chatDateState.EndDate
+                  : "",
           IsEmail: true,
         },
       },
@@ -1136,7 +1136,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const messagesCheckedHandler = (data, id, index) => {
     if (messagesChecked.includes(data)) {
       let messageIndex = messagesChecked.findIndex(
-        (data2, index) => data === data2
+        (data2, index) => data === data2,
       );
       if (messageIndex !== -1) {
         messagesChecked.splice(messageIndex, 1);
@@ -1151,7 +1151,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const forwardUsersCheckedHandler = (data, id, index) => {
     if (forwardUsersChecked.includes(data)) {
       let forwardUserIndex = forwardUsersChecked.findIndex(
-        (data2, index) => data === data2
+        (data2, index) => data === data2,
       );
       if (forwardUserIndex !== -1) {
         forwardUsersChecked.splice(forwardUserIndex, 1);
@@ -1166,10 +1166,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const editGroupUsersCheckedHandler = (data, id, index) => {
     if (editGroupUsersChecked.includes(id)) {
       let editGroupUserIndex = editGroupUsersChecked.findIndex(
-        (data2) => data2 === id
+        (data2) => data2 === id,
       );
       let findIndexgroupInfoData = groupInfoData.findIndex(
-        (data3, index) => data3.userID === id
+        (data3, index) => data3.userID === id,
       );
       if (findIndexgroupInfoData !== -1) {
         groupInfoData.splice(findIndexgroupInfoData, 1);
@@ -1195,10 +1195,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
     if (editShoutUsersChecked.includes(id)) {
       let editGroupUserIndex = editShoutUsersChecked.findIndex(
-        (data2) => data2 === id
+        (data2) => data2 === id,
       );
       let findIndexShoutInfoData = shoutAllUsersData.findIndex(
-        (data3, index) => data3.userID === id
+        (data3, index) => data3.userID === id,
       );
       if (findIndexShoutInfoData !== -1) {
         shoutAllUsersData.splice(findIndexShoutInfoData, 1);
@@ -1258,12 +1258,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 parseInt(currentOrganizationId),
                 parseInt(currentUserId),
                 id,
-                message.messageBody
+                message.messageBody,
               ),
               uploadFileTalk,
-              t
-            )
-          )
+              t,
+            ),
+          ),
         );
       } else if (type == "B") {
         messagesChecked?.map((message) =>
@@ -1274,11 +1274,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 parseInt(currentOrganizationId),
                 parseInt(currentUserId),
                 id,
-                message.messageBody
+                message.messageBody,
               ),
-              t
-            )
-          )
+              t,
+            ),
+          ),
         );
       } else if (type == "G") {
         messagesChecked?.map((message) =>
@@ -1289,11 +1289,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 parseInt(currentOrganizationId),
                 parseInt(currentUserId),
                 id,
-                message.messageBody
+                message.messageBody,
               ),
-              t
-            )
-          )
+              t,
+            ),
+          ),
         );
       }
     });
@@ -1320,8 +1320,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const deleteMultipleMessagesButton = () => {
-    const messageIDs = messagesChecked.map((obj) => obj.messageID);
+    // ✅ Remove duplicates based on messageID
+    const uniqueMessages = Object.values(
+      messagesChecked.reduce((acc, curr) => {
+        acc[curr.messageID] = curr;
+        return acc;
+      }, {}),
+    );
+
+    const messageIDs = uniqueMessages.map((obj) => obj.messageID);
+
+    console.log("Clean messageIDs:", messageIDs);
+
     const messageDeleteIDs = messageIDs.join("$");
+
     let Data = {
       TalkRequest: {
         UserID: Number(currentUserId),
@@ -1331,23 +1343,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
         },
       },
     };
+
     dispatch(DeleteMultipleMessages(Data, t, navigate));
+
+    // ✅ Filter using CLEAN data
     const filteredMessages = allMessages.filter((message1) => {
-      return !messagesChecked.some(
-        (message2) => message2.messageID === message1.messageID
+      return !uniqueMessages.some(
+        (message2) => message2.messageID === message1.messageID,
       );
     });
 
     setAllMessages(filteredMessages);
 
+    // ✅ Fix notification (dynamic)
+    const isSingleDelete = messageIDs.length === 1;
+
     setNotification({
       notificationShow: true,
-      message: "Messages Deleted",
+      message: isSingleDelete ? "Message Deleted" : "Messages Deleted",
     });
+
     setNotificationID(id);
 
     setDeleteFlag(false);
     setShowCheckboxes(false);
+
+    // ✅ Reset selection
+    setMessagesChecked([]);
   };
 
   const modalHandlerGroupEdit = () => {
@@ -1434,12 +1456,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 return value.userName
                   .toLowerCase()
                   .includes(searchGroupUserInfoValue.toLowerCase());
-              }
+              },
             );
           if (filteredData.length === 0) {
             setGroupInfoData(
               talkStateData.GetPrivateGroupMembers
-                .GetPrivateGroupMembersResponse.groupUsers
+                .GetPrivateGroupMembersResponse.groupUsers,
             );
           } else {
             setGroupInfoData(filteredData);
@@ -1564,7 +1586,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
     if (searchedKeyword !== "") {
       const filteredData = originalCopy.filter((message) =>
-        message.messageBody.toLowerCase().includes(searchedKeyword)
+        message.messageBody.toLowerCase().includes(searchedKeyword),
       );
       setAllMessages(filteredData);
     } else {
@@ -1587,7 +1609,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         if (allChatMessages.broadcastMessages) {
           return allChatMessages.broadcastMessages
             .filter(
-              (messagesData) => messagesData.frMessages !== "Direct Message"
+              (messagesData) => messagesData.frMessages !== "Direct Message",
             )
             .map((messagesData) => ({
               messageID: messagesData.messageID,
@@ -1741,7 +1763,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       if (Object.keys(mqttStarMessageData) !== null) {
         if (mqttStarMessageData.messageType === "O") {
           let messageOtoStarred = allMessages.find(
-            (item) => item.messageID === mqttStarMessageData.messageID
+            (item) => item.messageID === mqttStarMessageData.messageID,
           );
           if (messageOtoStarred !== undefined) {
             if (messageOtoStarred.isFlag === 1) {
@@ -1754,12 +1776,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
             allMessages.map((data) =>
               data.messageID === messageOtoStarred.messageID
                 ? messageOtoStarred
-                : data
-            )
+                : data,
+            ),
           );
         } else if (mqttStarMessageData.messageType === "G") {
           let messageGroupStarred = allMessages.find(
-            (item) => item.messageID === mqttStarMessageData.messageID
+            (item) => item.messageID === mqttStarMessageData.messageID,
           );
           if (messageGroupStarred !== undefined) {
             if (messageGroupStarred.isFlag === 1) {
@@ -1772,8 +1794,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             allMessages.map((data) =>
               data.messageID === messageGroupStarred.messageID
                 ? messageGroupStarred
-                : data
-            )
+                : data,
+            ),
           );
         }
       }
@@ -1793,7 +1815,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setAllMessages,
         allMessages,
         allMessages,
-        setAllMessages
+        setAllMessages,
       );
     }
   }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage]);
@@ -1848,7 +1870,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         const updatedAllOtoMessages = allMessages.map((message) => {
           const matchingAcknowledgedMessage = acknowledgedMessages.find(
             (acknowledgedMessage) =>
-              acknowledgedMessage.messageID === message.messageID
+              acknowledgedMessage.messageID === message.messageID,
           );
 
           if (matchingAcknowledgedMessage) {
@@ -2228,12 +2250,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
       localStorage.setItem(
         "singleMessageObject",
-        JSON.stringify(updatedMessages)
+        JSON.stringify(updatedMessages),
       );
 
       localStorage.setItem(
         "chatMessagesLocal",
-        JSON.stringify(updatedChatMessages)
+        JSON.stringify(updatedChatMessages),
       );
 
       if (
@@ -2291,7 +2313,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           });
 
           const isUIDInArray = updatedMessages.some(
-            (message) => message.uid === insertMqttOtoMessageData.uid
+            (message) => message.uid === insertMqttOtoMessageData.uid,
           );
           if (!isUIDInArray) {
             updatedMessages.push(insertMqttOtoMessageData);
@@ -2356,7 +2378,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
           });
 
           const isUIDInArray = updatedMessages.some(
-            (message) => message.uid === insertMqttOtoMessageData.uid
+            (message) => message.uid === insertMqttOtoMessageData.uid,
           );
           if (!isUIDInArray) {
             updatedMessages.push(insertMqttOtoMessageData);
@@ -2379,7 +2401,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       let frMessages = mqttInsertGroupMessageData.frMessages;
       console.log(
         "mqttInsertGroupMessageDatamqttInsertGroupMessageData",
-        mqttInsertGroupMessageData
+        mqttInsertGroupMessageData,
       );
       if (
         frMessages !== "Direct Message" &&
@@ -2432,7 +2454,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             });
 
             const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid
+              (message) => message.uid === insertMqttGroupMessageData.uid,
             );
             if (!isUIDInArray) {
               updatedMessages.push(insertMqttGroupMessageData);
@@ -2481,7 +2503,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             });
 
             const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid
+              (message) => message.uid === insertMqttGroupMessageData.uid,
             );
             if (!isUIDInArray) {
               updatedMessages.push(insertMqttGroupMessageData);
@@ -2530,7 +2552,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             });
 
             const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid
+              (message) => message.uid === insertMqttGroupMessageData.uid,
             );
             if (!isUIDInArray) {
               updatedMessages.push(insertMqttGroupMessageData);
@@ -2575,7 +2597,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             });
 
             const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === newGroupMessageChat.uid
+              (message) => message.uid === newGroupMessageChat.uid,
             );
             if (!isUIDInArray) {
               updatedMessages.push(newGroupMessageChat);
@@ -2808,7 +2830,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         const updatedMessages = allMessages.filter(
           (message) =>
             message.messageID !==
-            talkStateData.MqttMessageDeleteData.data[0].messageID
+            talkStateData.MqttMessageDeleteData.data[0].messageID,
         );
         setAllMessages(updatedMessages);
       }
@@ -2816,7 +2838,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         const updatedMessages = allMessages.filter(
           (message) =>
             message.messageID !==
-            talkStateData.MqttMessageDeleteData.data[0].messageID
+            talkStateData.MqttMessageDeleteData.data[0].messageID,
         );
         setAllMessages(updatedMessages);
       }
@@ -2824,7 +2846,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         const updatedMessages = allMessages.filter(
           (message) =>
             message.messageID !==
-            talkStateData.MqttMessageDeleteData.data[0].messageID
+            talkStateData.MqttMessageDeleteData.data[0].messageID,
         );
         setAllMessages(updatedMessages);
       }
@@ -2950,7 +2972,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       newArray.push(newObj);
     }
     const filteredArray = newArray.filter(
-      (item) => item.userID !== Number(currentUserId)
+      (item) => item.userID !== Number(currentUserId),
     );
     let newData = [];
     filteredArray.map((data) => {
@@ -3028,11 +3050,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const retrySendingMessage = (data) => {
     let otoMessageLocal = JSON.parse(
-      localStorage.getItem("singleMessageObject")
+      localStorage.getItem("singleMessageObject"),
     );
     let objectRemoved = false;
     let currentConnection = JSON.parse(
-      localStorage.getItem("MqttConnectionState")
+      localStorage.getItem("MqttConnectionState"),
     );
 
     if (Array.isArray(otoMessageLocal)) {
@@ -3041,7 +3063,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
           data.isRetry = false;
           if (currentConnection === true) {
             dispatch(
-              InsertOTOMessages(navigate, otoMessageLocal[i], uploadFileTalk, t)
+              InsertOTOMessages(
+                navigate,
+                otoMessageLocal[i],
+                uploadFileTalk,
+                t,
+              ),
             );
           } else {
             data.isRetry = true;
@@ -3055,11 +3082,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const deleteSingleMessageLocal = (data) => {
     let otoMessageLocal = JSON.parse(
-      localStorage.getItem("singleMessageObject")
+      localStorage.getItem("singleMessageObject"),
     );
 
     let chatMessageLocal = JSON.parse(
-      localStorage.getItem("chatMessagesLocal")
+      localStorage.getItem("chatMessagesLocal"),
     );
 
     let objectRemoved = false;
@@ -3075,12 +3102,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
       if (objectRemoved) {
         const updatedState = allMessages.filter(
-          (item) => item.uid !== data.uid
+          (item) => item.uid !== data.uid,
         );
         setAllMessages(updatedState);
         localStorage.setItem(
           "chatMessagesLocal",
-          JSON.stringify(chatMessageLocal)
+          JSON.stringify(chatMessageLocal),
         );
       }
     } else {
@@ -3097,12 +3124,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
       if (objectRemoved) {
         const updatedState = allMessages.filter(
-          (item) => item.uid !== data.uid
+          (item) => item.uid !== data.uid,
         );
         setAllMessages(updatedState);
         localStorage.setItem(
           "singleMessageObject",
-          JSON.stringify(otoMessageLocal)
+          JSON.stringify(otoMessageLocal),
         );
       }
     } else {
@@ -3114,7 +3141,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       const storedSingleMessageObject =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
       const uidSet = new Set(
-        storedSingleMessageObject.map((item) => item.TalkRequest.Message.UID)
+        storedSingleMessageObject.map((item) => item.TalkRequest.Message.UID),
       );
       const updatedAllMessages = allMessages.map((message) => {
         if (uidSet.has(message.uid)) {
@@ -3131,7 +3158,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   useEffect(() => {
     let singleMessageObject = JSON.parse(
-      localStorage.getItem("singleMessageObject")
+      localStorage.getItem("singleMessageObject"),
     );
 
     let interval;
@@ -3140,7 +3167,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       interval = setInterval(() => {
         if (singleMessageObject.length !== 0) {
           let otoMessageLocal = JSON.parse(
-            localStorage.getItem("singleMessageObject")
+            localStorage.getItem("singleMessageObject"),
           );
 
           if (Array.isArray(otoMessageLocal)) {
@@ -3151,8 +3178,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   navigate,
                   otoMessageLocal[i],
                   uploadFileTalk,
-                  t
-                )
+                  t,
+                ),
               );
             }
           }
@@ -3175,7 +3202,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   useEffect(() => {
     // Check if all objects have isRetry: false
     const allObjectsHaveIsRetryFalse = allMessages.every(
-      (message) => !message.isRetry
+      (message) => !message.isRetry,
     );
 
     if (allObjectsHaveIsRetryFalse) {
@@ -3315,7 +3342,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerPrint(
-                                    talkStateData.ActiveChatData
+                                    talkStateData.ActiveChatData,
                                   )
                                 }
                               >
@@ -3325,7 +3352,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 style={{ borderBottom: "none" }}
                                 onClick={() =>
                                   modalHandlerEmail(
-                                    talkStateData.ActiveChatData
+                                    talkStateData.ActiveChatData,
                                   )
                                 }
                               >
@@ -3345,7 +3372,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerPrint(
-                                    talkStateData.ActiveChatData
+                                    talkStateData.ActiveChatData,
                                   )
                                 }
                               >
@@ -3354,7 +3381,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerEmail(
-                                    talkStateData.ActiveChatData
+                                    talkStateData.ActiveChatData,
                                   )
                                 }
                               >
@@ -3389,7 +3416,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerPrint(
-                                    talkStateData.ActiveChatData
+                                    talkStateData.ActiveChatData,
                                   )
                                 }
                               >
@@ -3398,7 +3425,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerEmail(
-                                    talkStateData.ActiveChatData
+                                    talkStateData.ActiveChatData,
                                   )
                                 }
                               >
@@ -3423,8 +3450,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               activeChatType === "O"
                                 ? initiateOtoCall
                                 : activeChatType === "G"
-                                ? initiateGroupCall
-                                : null
+                                  ? initiateGroupCall
+                                  : null
                             }
                             draggable="false"
                             src={VideoCallIcon}
@@ -3523,8 +3550,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         leave === true
                           ? "chat-section applyBlur"
                           : showChatSearch === true
-                          ? "chat-section searchField"
-                          : "chat-section"
+                            ? "chat-section searchField"
+                            : "chat-section"
                       }
                       key={Math.random()}
                     >
@@ -3589,7 +3616,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       replyFeatureHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                   >
@@ -3605,7 +3632,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       deleteFeatureHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                   >
@@ -3614,7 +3641,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       messageInfoHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                   >
@@ -3623,7 +3650,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       markUnmarkStarMessageHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                     style={{
@@ -3656,7 +3683,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   className="image-thumbnail-chat"
                                                   onClick={() =>
                                                     imageClickFunction(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3694,7 +3721,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   onClick={() =>
                                                     DownloadFileFunction(
                                                       messageData,
-                                                      ext
+                                                      ext,
                                                     )
                                                   }
                                                 >
@@ -3707,8 +3734,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     {messageData.attachmentLocation
                                                       .substring(
                                                         messageData.attachmentLocation.lastIndexOf(
-                                                          "/"
-                                                        ) + 1
+                                                          "/",
+                                                        ) + 1,
                                                       )
                                                       .replace(/^\d+_/, "")}
                                                   </span>
@@ -3746,7 +3773,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <div
                                                   onClick={() =>
                                                     imageClickFunction(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                   className="image-thumbnail-chat"
@@ -3785,7 +3812,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   onClick={() =>
                                                     DownloadFileFunction(
                                                       messageData,
-                                                      ext
+                                                      ext,
                                                     )
                                                   }
                                                 >
@@ -3798,8 +3825,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     {messageData.attachmentLocation
                                                       .substring(
                                                         messageData.attachmentLocation.lastIndexOf(
-                                                          "/"
-                                                        ) + 1
+                                                          "/",
+                                                        ) + 1,
                                                       )
                                                       .replace(/^\d+_/, "")}
                                                   </span>
@@ -3870,22 +3897,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkTime(
                                                       messageData.sentDate,
-                                                      lang
+                                                      lang,
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
-                                                    8
+                                                    8,
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
-                                                      lang
+                                                      lang,
                                                     ) + " "}
                                                     | {t("Yesterday")}
                                                   </>
@@ -3894,7 +3921,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
-                                                      lang
+                                                      lang,
                                                     )}
                                                   </>
                                                 )}
@@ -3944,7 +3971,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 onClick={() =>
                                                   retrySendingMessage(
                                                     messageData,
-                                                    messageData.messageID
+                                                    messageData.messageID,
                                                   )
                                                 }
                                                 className="option-r"
@@ -3955,7 +3982,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 onClick={() =>
                                                   deleteSingleMessageLocal(
                                                     messageData,
-                                                    messageData.messageID
+                                                    messageData.messageID,
                                                   )
                                                 }
                                                 className="option-d"
@@ -3969,7 +3996,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           <Checkbox
                                             checked={
                                               messagesChecked.includes(
-                                                messageData
+                                                messageData,
                                               )
                                                 ? true
                                                 : false
@@ -3977,7 +4004,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                index
+                                                index,
                                               )
                                             }
                                             className="chat-message-checkbox-receiver"
@@ -4002,7 +4029,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         <Checkbox
                                           checked={
                                             messagesChecked.includes(
-                                              messageData
+                                              messageData,
                                             )
                                               ? true
                                               : false
@@ -4010,7 +4037,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           onChange={() =>
                                             messagesCheckedHandler(
                                               messageData,
-                                              index
+                                              index,
                                             )
                                           }
                                           className="chat-message-checkbox-sender"
@@ -4054,7 +4081,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4070,7 +4097,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4079,7 +4106,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4088,7 +4115,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     markUnmarkStarMessageHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                   style={{
@@ -4121,7 +4148,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <div
                                                 onClick={() =>
                                                   imageClickFunction(
-                                                    messageData
+                                                    messageData,
                                                   )
                                                 }
                                                 className="image-thumbnail-chat"
@@ -4160,7 +4187,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 onClick={() =>
                                                   DownloadFileFunction(
                                                     messageData,
-                                                    ext
+                                                    ext,
                                                   )
                                                 }
                                               >
@@ -4173,8 +4200,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   {messageData.attachmentLocation
                                                     .substring(
                                                       messageData.attachmentLocation.lastIndexOf(
-                                                        "/"
-                                                      ) + 1
+                                                        "/",
+                                                      ) + 1,
                                                     )
                                                     .replace(/^\d+_/, "")}
                                                 </span>
@@ -4230,22 +4257,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             <span className="direct-chat-sent-time chat-datetime">
                                               {messageData.sentDate.slice(
                                                 0,
-                                                8
+                                                8,
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
@@ -4253,7 +4280,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   )}
                                                 </>
                                               )}
@@ -4273,7 +4300,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               allMessages.map((messageData, index) => {
                                 console.log(
                                   messageData,
-                                  "messageDatamessageDatamessageData"
+                                  "messageDatamessageDatamessageData",
                                 );
                                 var ext = messageData.attachmentLocation
                                   .split(".")
@@ -4322,7 +4349,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4338,7 +4365,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4347,7 +4374,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4356,7 +4383,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     markUnmarkStarMessageHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                   style={{
@@ -4389,7 +4416,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <div
                                                 onClick={() =>
                                                   imageClickFunction(
-                                                    messageData
+                                                    messageData,
                                                   )
                                                 }
                                                 className="image-thumbnail-chat"
@@ -4415,7 +4442,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 onClick={() =>
                                                   DownloadFileFunction(
                                                     messageData,
-                                                    ext
+                                                    ext,
                                                   )
                                                 }
                                               >
@@ -4428,8 +4455,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   {messageData.attachmentLocation
                                                     .substring(
                                                       messageData.attachmentLocation.lastIndexOf(
-                                                        "/"
-                                                      ) + 1
+                                                        "/",
+                                                      ) + 1,
                                                     )
                                                     .replace(/^\d+_/, "")}
                                                 </span>
@@ -4476,22 +4503,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             <span className="direct-chat-sent-time chat-datetime">
                                               {messageData.sentDate.slice(
                                                 0,
-                                                8
+                                                8,
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
@@ -4499,7 +4526,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   )}
                                                 </>
                                               )}
@@ -4546,7 +4573,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         <Checkbox
                                           checked={
                                             messagesChecked.includes(
-                                              messageData
+                                              messageData,
                                             )
                                               ? true
                                               : false
@@ -4554,7 +4581,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           onChange={() =>
                                             messagesCheckedHandler(
                                               messageData,
-                                              index
+                                              index,
                                             )
                                           }
                                           className="chat-message-checkbox-receiver"
@@ -4575,7 +4602,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         <Checkbox
                                           checked={
                                             messagesChecked.includes(
-                                              messageData
+                                              messageData,
                                             )
                                               ? true
                                               : false
@@ -4583,7 +4610,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           onChange={() =>
                                             messagesCheckedHandler(
                                               messageData,
-                                              index
+                                              index,
                                             )
                                           }
                                           className="chat-message-checkbox-sender"
@@ -4619,7 +4646,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4635,7 +4662,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4644,7 +4671,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -4653,7 +4680,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     markUnmarkStarMessageHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                   style={{
@@ -4692,7 +4719,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <div
                                                 onClick={() =>
                                                   imageClickFunction(
-                                                    messageData
+                                                    messageData,
                                                   )
                                                 }
                                                 className="image-thumbnail-chat"
@@ -4718,7 +4745,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 onClick={() =>
                                                   DownloadFileFunction(
                                                     messageData,
-                                                    ext
+                                                    ext,
                                                   )
                                                 }
                                               >
@@ -4731,8 +4758,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   {messageData.attachmentLocation
                                                     .substring(
                                                       messageData.attachmentLocation.lastIndexOf(
-                                                        "/"
-                                                      ) + 1
+                                                        "/",
+                                                      ) + 1,
                                                     )
                                                     .replace(/^\d+_/, "")}
                                                 </span>
@@ -4782,22 +4809,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             <span className="direct-chat-sent-time chat-datetime">
                                               {messageData.sentDate.slice(
                                                 0,
-                                                8
+                                                8,
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
@@ -4805,7 +4832,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                    lang
+                                                    lang,
                                                   )}
                                                 </>
                                               )}
@@ -4868,7 +4895,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       replyFeatureHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                   >
@@ -4884,7 +4911,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       deleteFeatureHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                   >
@@ -4893,7 +4920,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       messageInfoHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                   >
@@ -4902,7 +4929,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       markUnmarkStarMessageHandler(
-                                                        messageData
+                                                        messageData,
                                                       )
                                                     }
                                                     style={{
@@ -4936,7 +4963,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <div
                                                   onClick={() =>
                                                     imageClickFunction(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                   className="image-thumbnail-chat"
@@ -4975,7 +5002,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   onClick={() =>
                                                     DownloadFileFunction(
                                                       messageData,
-                                                      ext
+                                                      ext,
                                                     )
                                                   }
                                                 >
@@ -4988,8 +5015,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     {messageData.attachmentLocation
                                                       .substring(
                                                         messageData.attachmentLocation.lastIndexOf(
-                                                          "/"
-                                                        ) + 1
+                                                          "/",
+                                                        ) + 1,
                                                       )
                                                       .replace(/^\d+_/, "")}
                                                   </span>
@@ -5046,22 +5073,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkTime(
                                                       messageData.sentDate,
-                                                      lang
+                                                      lang,
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
-                                                    8
+                                                    8,
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
-                                                      lang
+                                                      lang,
                                                     ) + " "}
                                                     | {t("Yesterday")}
                                                   </>
@@ -5070,7 +5097,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
-                                                      lang
+                                                      lang,
                                                     )}
                                                   </>
                                                 )}
@@ -5119,7 +5146,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           <Checkbox
                                             checked={
                                               messagesChecked.includes(
-                                                messageData
+                                                messageData,
                                               )
                                                 ? true
                                                 : false
@@ -5127,7 +5154,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                index
+                                                index,
                                               )
                                             }
                                             className="chat-message-checkbox-receiver"
@@ -5254,7 +5281,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         value={
                                           chatDateState.StartDate
                                             ? DateDisplayFormat(
-                                                chatDateState.StartDate
+                                                chatDateState.StartDate,
                                               )
                                             : null
                                         }
@@ -5277,7 +5304,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         value={
                                           chatDateState.EndDate
                                             ? DateDisplayFormat(
-                                                chatDateState.EndDate
+                                                chatDateState.EndDate,
                                               )
                                             : null
                                         }
@@ -5358,7 +5385,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         value={
                                           chatDateState.StartDate
                                             ? DateDisplayFormat(
-                                                chatDateState.StartDate
+                                                chatDateState.StartDate,
                                               )
                                             : null
                                         }
@@ -5380,7 +5407,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         value={
                                           chatDateState.EndDate
                                             ? DateDisplayFormat(
-                                                chatDateState.EndDate
+                                                chatDateState.EndDate,
                                               )
                                             : null
                                         }
@@ -5459,7 +5486,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         value={
                                           chatDateState.StartDate
                                             ? DateDisplayFormat(
-                                                chatDateState.StartDate
+                                                chatDateState.StartDate,
                                               )
                                             : null
                                         }
@@ -5481,7 +5508,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         value={
                                           chatDateState.EndDate
                                             ? DateDisplayFormat(
-                                                chatDateState.EndDate
+                                                chatDateState.EndDate,
                                               )
                                             : null
                                         }
@@ -5568,7 +5595,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   text={t("Yes")}
                                   onClick={() =>
                                     leaveGroupHandlerChat(
-                                      talkStateData.ActiveChatData
+                                      talkStateData.ActiveChatData,
                                     )
                                   }
                                 />
@@ -5610,12 +5637,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         (data, index) => {
                                           var ext =
                                             data.DisplayAttachmentName.split(
-                                              "."
+                                              ".",
                                             ).pop();
 
                                           const first =
                                             data.DisplayAttachmentName.split(
-                                              " "
+                                              " ",
                                             )[0];
                                           return (
                                             <Col
@@ -5642,7 +5669,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   onClick={() =>
                                                     deleteFilefromAttachments(
                                                       data,
-                                                      index
+                                                      index,
                                                     )
                                                   }
                                                   alt=""
@@ -5650,7 +5677,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </div>
                                             </Col>
                                           );
-                                        }
+                                        },
                                       )
                                     : null}
                                 </Row>
@@ -5868,7 +5895,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.sentDate,
-                          lang
+                          lang,
                         )
                       )}
                     </div>
@@ -5888,7 +5915,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.receivedDate,
-                          lang
+                          lang,
                         )
                       )}
                     </div>
@@ -5904,7 +5931,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.seenDate,
-                          lang
+                          lang,
                         )
                       )}
                     </div>
@@ -5970,7 +5997,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   forwardUsersCheckedHandler(
                                     dataItem,
                                     dataItem.id,
-                                    index
+                                    index,
                                   )
                                 }
                                 className=""
@@ -6082,7 +6109,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         ? ""
                         : newTimeFormaterAsPerUTCTalkDateTime(
                             messageInfoData.seenDate,
-                            lang
+                            lang,
                           )}
                     </p>
                   </Col>
@@ -6109,7 +6136,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   groupInfoData.length > 0
                     ? [
                         ...new Map(
-                          groupInfoData.map((item) => [item.userID, item])
+                          groupInfoData.map((item) => [item.userID, item]),
                         ).values(),
                       ].map((dataItem, index) => {
                         return (
@@ -6256,11 +6283,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   checked={
                                     Array.isArray(editGroupUsersChecked) &&
                                     (editGroupUsersChecked.some(
-                                      (item) => item === dataItem.id
+                                      (item) => item === dataItem.id,
                                     ) ||
                                       (Array.isArray(groupInfoData) &&
                                         groupInfoData.some(
-                                          (item) => item.userID === dataItem.id
+                                          (item) => item.userID === dataItem.id,
                                         )))
                                       ? true
                                       : false
@@ -6269,7 +6296,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     editGroupUsersCheckedHandler(
                                       dataItem,
                                       dataItem.id,
-                                      index
+                                      index,
                                     )
                                   }
                                   className="group-edit-users-add"
@@ -6414,11 +6441,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   checked={
                                     Array.isArray(editShoutUsersChecked) &&
                                     (editShoutUsersChecked.some(
-                                      (item) => item === dataItem.id
+                                      (item) => item === dataItem.id,
                                     ) ||
                                       (Array.isArray(shoutAllUsersData) &&
                                         shoutAllUsersData.some(
-                                          (item) => item.userID === dataItem.id
+                                          (item) => item.userID === dataItem.id,
                                         )))
                                       ? true
                                       : false
@@ -6427,7 +6454,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     editShoutUsersCheckedHandler(
                                       dataItem,
                                       dataItem.id,
-                                      index
+                                      index,
                                     )
                                   }
                                   className="group-edit-users-add"

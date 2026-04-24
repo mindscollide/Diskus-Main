@@ -121,9 +121,10 @@
 
 /* Whole collapse container */
 .collapseWrapper :global(.ant-collapse) {
-  background: #fff; /* your normal bg */
+  background: #fff;
   border: none;
 }
+
 .panelContent {
   padding: 16px;
   background: #f6f9fc !important;
@@ -134,6 +135,7 @@
   overflow: hidden;
   overflow-y: auto;
 }
+
 .insideAccordianTable {
   height: 140px;
   padding: 10px 20px;
@@ -181,18 +183,7 @@
   align-items: center;
   padding: 0px 20px;
 }
-/* .titleSection label {
-  font-size: 8px;
-  font-weight: 700;
-  font-family: "Montserrat";
-  color: #5a5a5a;
-}
-.titleSection label.ChecklistTitle {
-  font-size: 8px;
-  font-weight: 700;
-  font-family: "Montserrat";
-  color: #6172d6;
-} */
+
 .titleSection label {
   font-size: 10px;
   font-weight: 700;
@@ -201,15 +192,16 @@
   line-height: 20px;
   letter-spacing: 0%;
 }
+
 .titleSection p {
   font-size: 24px;
-  /* font-size: 16px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
   line-height: 20px;
   letter-spacing: 0%;
 }
+
 .titleSection label.ChecklistTitle {
   font-size: 10px;
   font-weight: 700;
@@ -238,15 +230,6 @@
   margin: 0;
 }
 
-.chartCol {
-  display: flex;
-  justify-content: end;
-  gap: 20px;
-  background: #ecefff;
-  border-radius: 8px;
-  padding: 24px 30px;
-}
-
 .chartWrapper {
   width: 100%;
   height: 200px;
@@ -257,9 +240,9 @@
 .centerLabel {
   position: absolute;
   top: 50%;
-  left: 32%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center; /* 🔥 prevents full width stretch */
+  text-align: center;
   pointer-events: none;
 }
 
@@ -276,30 +259,20 @@
   color: #6b7280;
 }
 
-.chartWrapper {
-  width: 100%;
-}
-
 .chartFlex {
   display: flex;
-  align-items: center; /* 🔥 vertical center */
+  align-items: center;
   justify-content: center;
   gap: 20px;
+  background: #ecefff;
+  border-radius: 8px;
+  padding: 12px 25px;
 }
 
 .chartBox {
   position: relative;
-  width: 200px;
+  width: 180px;
   height: 200px;
-}
-
-.centerLabel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
 }
 
 .customLegend {
@@ -308,6 +281,7 @@
   gap: 10px;
   font-size: 13px;
 }
+
 .customLegend div {
   font-family: "Montserrat";
   font-weight: 600;
@@ -316,9 +290,9 @@
   letter-spacing: 2%;
   color: #5a5a5a;
 }
+
 .legendItem {
   display: flex;
-
   align-items: center;
   gap: 8px;
   font-family: "Montserrat";
@@ -328,9 +302,11 @@
   letter-spacing: 2%;
   color: #5a5a5a;
 }
+
 .legendText {
   font-weight: 500;
 }
+
 .legendDotBlue,
 .legendDotYellow,
 .legendOrange {
@@ -344,17 +320,19 @@
 .legendDotBlue {
   background: #5b6bff;
 }
+
 .legendDotYellow {
   background: #f2c94c;
 }
+
 .legendOrange {
   background: #f16b6b;
 }
 
 .ComplianceMainHeading {
   display: flex;
-  flex-direction: column; /* ✅ IMPORTANT */
-  align-items: flex-start; /* align left */
+  flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
   padding: 0px 30px;
 }
@@ -365,7 +343,6 @@
   font-size: 8px;
   line-height: 8px;
   letter-spacing: 0%;
-
   color: #5a5a5a;
 }
 
@@ -378,6 +355,7 @@
   margin: 0;
   font-weight: 600;
 }
+
 .ComplianceMainHeading p.complianceTitleListDownload {
   font-family: "Montserrat";
   font-weight: 600;
@@ -413,9 +391,11 @@
   margin: 0;
   font-weight: 600;
 }
+
 .ComplianceSection {
   padding: 0px 16px;
 }
+
 .checklist_report {
   padding: 0px 30px;
   font-size: 12px;
@@ -442,6 +422,7 @@
   text-align: center;
   color: #e1e1e1;
 }
+
 .NoDataFoundTable {
   height: 140px;
   padding: 10px 20px;
@@ -453,6 +434,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .goBackButton {
   cursor: pointer;
 }
@@ -464,24 +446,25 @@
   margin-bottom: 8px;
 }
 
-.dueDate {
+.dueDateQuarterly {
   display: flex;
   gap: 4px;
 }
 
-.dueDate label,
-p {
+.dueDateQuarterlylabel {
   font-size: 12px;
   color: #5a5a5a;
   font-family: "Montserrat";
   font-weight: 600;
   line-height: 100%;
 }
+
 .TextDownloadWrapper {
   display: flex;
   gap: 30px;
   margin: 1px 0;
 }
+
 .TextDownload {
   display: flex;
   text-align: center;
@@ -499,23 +482,17 @@ p {
   color: #5a5a5a;
   font-family: "Montserrat";
   font-weight: 700;
-  /* line-height: 140%; */
-  /* letter-spacing: 2%; */
   text-align: center;
   margin-top: 5px;
 }
 
-/* view report */
-.panelContent {
-  padding: 16px;
-  background: #f6f9fc !important;
-}
 .insideAccordianMain label {
   color: #5a67d8;
   font-size: 10px;
   font-weight: 700;
   font-family: "Montserrat";
 }
+
 .insideAccordianMain p {
   color: #5a5a5a;
   font-size: 20px;
@@ -538,18 +515,17 @@ p {
   font-weight: 600;
   font-family: "Montserrat";
 }
-/* view report */
-/* Download Report */
+
 .TextDownload p {
   font-size: 30px;
   color: #6172d6;
   font-family: "Montserrat";
   font-weight: 700;
   margin: 0;
-  /* line-height: 140%; */
   letter-spacing: 2%;
   text-align: center;
 }
+
 .longTitleHeading {
   color: #5a5a5a;
   font-size: 16px;
@@ -557,17 +533,14 @@ p {
   font-family: "Montserrat";
   line-height: 1.4;
   margin-bottom: 15px;
-
-  /* 🔥 Important */
   word-break: break-word;
   max-width: 95%;
 }
-/* Download Report */
 
-/* Download Report */
 .panelContentDownload {
-  background: #f6f9fc !important;
+  background: #fff !important;
 }
+
 .insideAccordianMainHeading label {
   color: #5a67d8;
   font-size: 8px;
@@ -589,7 +562,6 @@ p {
   text-overflow: ellipsis;
   max-width: 800px;
 }
-/* Download Report */
 
 .complianceTitleList {
   font-family: "Montserrat";
@@ -599,6 +571,7 @@ p {
   letter-spacing: 2%;
   color: #5a5a5a !important;
 }
+
 .complainceTitleHeading {
   font-weight: 700;
   font-size: 8px;
@@ -609,11 +582,10 @@ p {
   font-weight: 600;
   font-size: 16px;
   color: #6172d6;
-
-  /* 🔥 Important */
   word-break: break-word;
   max-width: 95%;
 }
+
 .ChecklistTitleHeading {
   font-weight: 700 !important;
   font-size: 8px !important;
@@ -625,15 +597,236 @@ p {
   font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
-
-  /* 🔥 Important */
   word-break: break-word !important;
   max-width: 95% !important;
 }
+
 .insideAccordianTableDownload {
   padding: 10px 20px 0 20px;
   border: 1px solid #e1e1e1;
   border-radius: 8px;
   background-color: #fff;
   margin-top: 10px;
+}
+
+.dateText {
+  white-space: normal;
+  letter-spacing: normal;
+  font-family: "helvetica" !important;
+  font-weight: 600;
+}
+
+.dateText span {
+  margin-right: 4px;
+}
+
+/* ========== PDF PAGE BREAK FIXES - PREVENT CUTTING ========== */
+
+/* PDF Container */
+.pdfContainer {
+  padding: 30px 20px 80px 20px !important;
+  margin: 0 !important;
+  position: relative;
+  background: white;
+}
+
+/* Target the PDF container */
+#content-id {
+  padding: 30px 20px 80px 20px !important;
+  margin: 0 !important;
+  position: relative;
+  background: white;
+}
+
+/* Prevent header from being cut */
+#content-id > div:first-child,
+#content-id .ComplianceMainHeading:first-child {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+  page-break-before: avoid !important;
+  page-break-after: avoid !important;
+}
+
+/* Prevent footer from being cut - increased bottom margin */
+#content-id > div:last-child,
+#content-id .checklist_report:last-child {
+  margin-bottom: 100px !important;
+  padding-bottom: 50px !important;
+}
+
+/* Prevent content from being cut at page breaks */
+.checklist_report,
+.panelContentDownload,
+.insideAccordianTableDownload,
+.TextDownloadWrapper,
+.iconTextWrapperDownload,
+.ComplianceSection,
+.ComplianceMainHeading {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure each compliance section stays together */
+.checklist_report {
+  page-break-after: auto;
+  page-break-before: auto;
+  margin-bottom: 50px !important;
+  padding-bottom: 30px !important;
+}
+
+/* Prevent individual task items from breaking */
+.insideAccordianTableDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 20px;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Prevent the TextDownload boxes from breaking */
+.TextDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure metadata row stays together */
+.iconTextWrapperDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Add extra bottom margin to last elements */
+.checklist_report:last-child {
+  margin-bottom: 100px !important;
+  padding-bottom: 60px !important;
+}
+
+/* Ensure proper spacing at bottom of each page */
+#content-id {
+  position: relative;
+}
+
+/* Print-specific styles */
+@media print {
+  /* Ensure proper margins on printed page */
+  @page {
+    margin: 1.5cm !important;
+    size: landscape;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #content-id {
+    padding: 20px 15px 70px 15px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+
+  /* Prevent header cutoff */
+  #content-id > div:first-child {
+    margin-top: 0 !important;
+    padding-top: 10px !important;
+  }
+
+  /* Prevent footer cutoff */
+  #content-id > div:last-child {
+    margin-bottom: 80px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* Ensure content doesn't break badly */
+  .checklist_report {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 60px !important;
+  }
+
+  .insideAccordianTableDownload {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-height: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .TextDownload {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Remove fixed heights that might cause cutting */
+  .insideAccordianTable,
+  .insideAccordianTableDownload {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure all content is visible */
+  * {
+    overflow: visible !important;
+  }
+}
+
+/* Additional fixes for better PDF rendering */
+.pdfContainer {
+  width: 100%;
+  max-width: 100%;
+  overflow: visible !important;
+}
+
+/* Remove fixed heights for PDF content */
+#content-id .insideAccordianTable,
+#content-id .insideAccordianTableDownload {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure long text wraps properly */
+#content-id .longTitleHeading,
+#content-id .complainceTitle,
+#content-id p {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* Fix donut chart centering in PDF */
+#content-id .chartBox {
+  position: relative;
+  width: 180px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#content-id .centerLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  z-index: 10;
+}
+
+#content-id .centerLabel h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+  line-height: 1.2;
+}
+
+#content-id .centerLabel p {
+  margin: 0;
+  font-size: 10px;
+  color: #6b7280;
+  line-height: 1.3;
 }

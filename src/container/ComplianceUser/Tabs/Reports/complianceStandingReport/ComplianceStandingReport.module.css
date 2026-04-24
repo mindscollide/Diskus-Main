@@ -390,7 +390,7 @@
 }
 .panelContentDownload {
   padding: 10px 0px;
-  background: #f6f9fc !important;
+  background: #fff !important;
 }
 .insideAccordianMainHeading label {
   color: #5a67d8;
@@ -410,13 +410,12 @@
   letter-spacing: 0%;
 }
 /* Download report */
-.dueDate {
+.dueDateComStanding {
   display: flex;
   gap: 4px;
 }
 
-.dueDate label,
-p {
+.dueDateComStandinglabel {
   font-size: 14px;
   color: #5a5a5a;
   font-family: "Montserrat";
@@ -458,4 +457,99 @@ p {
   color: #5a5a5a;
   font-family: "Montserrat";
   font-weight: 700;
+}
+
+/* Add these CSS rules at the end of your CSS file */
+
+/* ========== PDF PAGE BREAK FIXES ========== */
+
+/* Target the PDF container */
+#content-id {
+  padding-bottom: 60px !important;
+  padding-top: 20px !important;
+}
+
+/* Prevent content from being cut at page breaks */
+.checklist_report,
+.panelContentDownload,
+.insideAccordianTableTasks,
+.TextDownloadWrapper {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Ensure each compliance section stays together */
+.checklist_report {
+  page-break-after: auto;
+  page-break-before: auto;
+  margin-bottom: 40px !important;
+  padding-bottom: 20px !important;
+}
+
+/* Prevent individual task items from breaking */
+.insideAccordianTableTasks {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 15px;
+}
+
+/* Prevent the TextDownload boxes from breaking */
+.TextDownload {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Prevent metadata sections from breaking */
+.iconTextWrapperPDF,
+.ComplianceSection {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Add extra bottom margin to last elements */
+.checklist_report:last-child,
+#content-id > div:last-child {
+  margin-bottom: 80px !important;
+  padding-bottom: 40px !important;
+}
+
+/* Ensure proper spacing at bottom of each page */
+#content-id {
+  position: relative;
+}
+
+/* Print-specific styles */
+@media print {
+  #content-id {
+    padding-bottom: 80px !important;
+  }
+
+  .checklist_report {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 50px !important;
+  }
+
+  .insideAccordianTableTasks {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .TextDownload {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
+.dateText {
+  white-space: normal;
+  letter-spacing: normal;
+  font-family: "helvetica" !important;
+  font-weight: 600;
+}
+
+.dateText span {
+  margin-right: 4px;
 }

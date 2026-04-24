@@ -293,6 +293,18 @@ export const ComlianceProvider = ({ children }) => {
   const [selectedChecklistId, setSelectedChecklistId] = useState(null);
   const [selectedChecklistDueDate, setSelectedChecklistDueDate] = useState("");
 
+  /** Controlled filter values for the Status column (array of statusTitle strings). */
+  const [statusFilter, setStatusFilter] = useState([]);
+
+  /** Controlled filter values for the Criticality column (1=High, 2=Med, 3=Low). */
+  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
+  const [criticalityFilterForMe, setCriticalityFilterForMe] = useState([
+    1, 2, 3,
+  ]);
+
+  /** Controlled filter values for the Report Type column (("End-of-Compliance-Reports") === value: 1, ("Quarterly-reports") === value: 2, ("Accumulative-reports") === value: 3 ). */
+  const [reportTypeFilter, setReportTypeFilter] = useState([1, 2, 3]);
+
   console.log(
     complianceCreatedMqttData,
     complianceByMeList,
@@ -1142,6 +1154,14 @@ export const ComlianceProvider = ({ children }) => {
         setSelectedChecklistDueDate,
         isReopenConfirmed,
         setIsReopenConfirmed,
+        statusFilter,
+        setStatusFilter,
+        criticalityFilter,
+        setCriticalityFilter,
+        criticalityFilterForMe,
+        setCriticalityFilterForMe,
+        reportTypeFilter,
+        setReportTypeFilter,
       }}
     >
       {children}

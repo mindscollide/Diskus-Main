@@ -76,7 +76,7 @@ const authReducer = (state = initialState, action) => {
       localStorage.setItem("token", JSON.stringify(action.response.token));
       localStorage.setItem(
         "RefreshToken",
-        JSON.stringify(action.response.refreshToken)
+        JSON.stringify(action.response.refreshToken),
       );
       localStorage.setItem("UserName", action.response.name);
       localStorage.setItem("Email", JSON.stringify(action.response.userName));
@@ -112,6 +112,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         ForgotPasswordData: action.response,
         ResponseMessage: action.message,
+        messageId: Date.now(),
       };
     }
     case actions.FORGOT_PASSWORD_FAIL: {
@@ -120,6 +121,7 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: false,
         Loading: false,
         ResponseMessage: action.message,
+        messageId: Date.now(),
       };
     }
     case actions.VERIFY_OPT_INIT: {
@@ -222,10 +224,10 @@ const authReducer = (state = initialState, action) => {
 
     case actions.CLEAR_STATE_BACK:
       let RememberEmailLocal = JSON.parse(
-        localStorage.getItem("rememberEmail")
+        localStorage.getItem("rememberEmail"),
       );
       let RememberPasswordLocal = JSON.parse(
-        localStorage.getItem("remeberPassword")
+        localStorage.getItem("remeberPassword"),
       );
       let reLang = localStorage.getItem("i18nextLng");
       if (RememberEmailLocal === true && RememberPasswordLocal === true) {
@@ -233,9 +235,9 @@ const authReducer = (state = initialState, action) => {
           localStorage.getItem("rememberEmailValue");
 
         let RememberPasswordLocalValue = localStorage.getItem(
-          "rememberPasswordValue"
+          "rememberPasswordValue",
         );
-        
+
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -243,14 +245,14 @@ const authReducer = (state = initialState, action) => {
         localStorage.setItem("remeberPassword", RememberPasswordLocal);
         localStorage.setItem(
           "rememberPasswordValue",
-          RememberPasswordLocalValue
+          RememberPasswordLocalValue,
         );
         localStorage.setItem("rememberEmail", RememberEmailLocal);
         localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
-        
+
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -259,9 +261,9 @@ const authReducer = (state = initialState, action) => {
         localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       } else if (RememberPasswordLocal === true) {
         let RememberPasswordLocalValue = localStorage.getItem(
-          "rememberPasswordValue"
+          "rememberPasswordValue",
         );
-        
+
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -269,10 +271,9 @@ const authReducer = (state = initialState, action) => {
         localStorage.setItem("remeberPassword", RememberPasswordLocal);
         localStorage.setItem(
           "rememberPasswordValue",
-          RememberPasswordLocalValue
+          RememberPasswordLocalValue,
         );
       } else {
-        
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);

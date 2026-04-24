@@ -1340,9 +1340,9 @@ const ResendForgotPasswordCodeApi = (
             let nextAttemptDate = response.data.responseResult.nextAttemptDate;
             let nextAttemptTime = response.data.responseResult.nextAttemptTime;
             let dateTimeValue = newDateTimeFormatterForOTPResend(
-              `${nextAttemptDate}${nextAttemptTime}`,
+              ` ${nextAttemptDate} ${nextAttemptTime}`,
             );
-            let newMessage = `${t("Please-try-again-after")} ${dateTimeValue};`;
+            let newMessage = `${t("Maximum-attempts-reached-Please-try-again-after")} ${dateTimeValue}`;
             dispatch(ResendForgotPasswordCodefail(newMessage));
             setSeconds(0);
             setMinutes(0);
