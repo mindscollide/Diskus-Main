@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./ModalOrganizor.module.css";
 import { Modal, Button } from "../../../../../../components/elements";
 import {
@@ -20,554 +20,240 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+
 const ModalOrganizor = () => {
   const { t } = useTranslation();
   const animatedComponents = makeAnimated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer.getCommitteeByCommitteeID,
-  );
 
-  const getGroupByGroupIdResponse = useSelector(
-    (state) => state.GroupsReducer.getGroupByGroupIdResponse,
-  );
-
-  const currentMeetingInfo = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
+    (state) => state
   );
 
   const committeeInfo = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteeDetails,
+    (state) => state.CommitteeReducer.viewCommitteeDetails
   );
 
   const groupInfo = useSelector(
-    (state) => state.GroupsReducer.viewGroupDetails,
+    (state) => state.GroupsReducer.viewGroupDetails
   );
 
-  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state,
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
   );
 
   const [membersOrganizers, setMembersOrganizers] = useState([]);
-
   const [organizersSave, setOrganizersSave] = useState([]);
-
   const [selectedsearch, setSelectedsearch] = useState([]);
 
-  // for selection of data
-  const handleSelectValue = (value) => {
-    setSelectedsearch(value);
-  };
+  // -------------------------
+  // dropdown
+  // -------------------------
+  const dropdowndata = useMemo(() => {
+    const data = MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+    if (!data) return [];
 
+    let temp = [];
+
+    if (groupInfo) {
+      const group = data.groups?.find((g) => g.groupID === groupInfo.groupID);
+
+      return (
+        group?.groupUsers?.map((u) => ({
+          value: u.userID,
+          name: u.userName,
+          label: (
+            <Row>
+              <Col className='d-flex gap-2 align-items-center'>
+                <img
+                  src={`data:image/jpeg;base64,${u?.profilePicture?.displayProfilePictureName}`}
+                  className={styles["UserProfilepic"]}
+                  width='18'
+                  height='18'
+                  alt=''
+                />
+                <span className={styles["NameDropDown"]}>{u.userName}</span>
+              </Col>
+            </Row>
+          ),
+          type: 3,
+        })) || []
+      );
+    }
+
+    if (committeeInfo) {
+      const committee = data.committees?.find(
+        (c) => c.committeeID === committeeInfo.committeeID
+      );
+
+      return (
+        committee?.committeeUsers?.map((u) => ({
+          value: u.userID,
+          name: u.userName,
+          label: (
+            <Row>
+              <Col className='d-flex gap-2 align-items-center'>
+                <img
+                  src={`data:image/jpeg;base64,${u?.profilePicture?.displayProfilePictureName}`}
+                  className={styles["UserProfilepic"]}
+                  width='18'
+                  height='18'
+                  alt=''
+                />
+                <span className={styles["NameDropDown"]}>{u.userName}</span>
+              </Col>
+            </Row>
+          ),
+          type: 3,
+        })) || []
+      );
+    }
+
+    data.groups?.forEach((g) =>
+      temp.push({
+        value: g.groupID,
+        name: g.groupName,
+        label: (
+          <Row>
+            <Col className='d-flex gap-2 align-items-center'>
+              <img src={GroupIcon} width='18' height='18' alt='' />
+              <span>{g.groupName}</span>
+            </Col>
+          </Row>
+        ),
+        type: 1,
+      })
+    );
+
+    data.committees?.forEach((c) =>
+      temp.push({
+        value: c.committeeID,
+        name: c.committeeName,
+        label: (
+          <Row>
+            <Col className='d-flex gap-2 align-items-center'>
+              <img src={committeeicon} width='18' height='18' alt='' />
+              <span>{c.committeeName}</span>
+            </Col>
+          </Row>
+        ),
+        type: 2,
+      })
+    );
+
+    data.organizationUsers?.forEach((u) =>
+      temp.push({
+        value: u.userID,
+        name: u.userName,
+        label: (
+          <Row>
+            <Col className='d-flex gap-2 align-items-center'>
+              <img
+                src={`data:image/jpeg;base64,${u?.profilePicture?.displayProfilePictureName}`}
+                width='18'
+                height='18'
+                alt=''
+              />
+              <span>{u.userName}</span>
+            </Col>
+          </Row>
+        ),
+        type: 3,
+      })
+    );
+
+    return temp;
+  }, [MeetingOrganizersReducer, committeeInfo, groupInfo]);
+
+  // -------------------------
+  // ADD USERS (FIXED)
+  // -------------------------
   const handleAddUsers = () => {
+    const data = MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+
+    if (!selectedsearch?.length) return;
+
     let tem = [...membersOrganizers];
     let tem2 = [...organizersSave];
-    if (committeeInfo !== null) {
-      let committeeUsers = [...getCommitteeByCommitteeID?.committeMembers];
-      console.log({ committeeUsers, tem2, tem }, "committeeUsers");
-      if (committeeUsers.length > 0) {
-        committeeUsers.forEach((cUser, index) => {
-          let check2 = membersOrganizers.find(
-            (data, index) => data.UserID === cUser.pK_UID,
-          );
-          let check2Save = organizersSave.find(
-            (data, index) => data.UserID === cUser.pK_UID,
-          );
-          if (check2 === undefined && check2Save === undefined) {
-            let newUser = {
-              userName: cUser.userName,
-              userID: cUser.pK_UID,
-              displayPicture:
-                cUser.userProfilePicture.displayProfilePictureName,
-              email: cUser.emailAddress,
-              isPrimaryOrganizer: false,
-              isOrganizerNotified: false,
-              organizerTitle: "",
-              rsvp: false,
-              isDeletable: true,
-              disabledTitle: false,
-              disabledRSVP: true,
-              disabledNotification: true,
-              disabledSwitch: true,
-              NotificationMessage: "",
-              isEdit: false,
-              attendeeAvailability: 1,
-            };
-            let newUserSave = {
-              isPrimaryOrganizer: false,
-              isOrganizerNotified: false,
-              organizerTitle: "",
-              UserID: cUser.userID,
-            };
-            tem.push(newUser);
-            tem2.push(newUserSave);
-          }
-        });
-        const uniqueData = new Set(tem.map(JSON.stringify));
 
-        const uniqueDataSave = new Set(tem2.map(JSON.stringify));
+    const ids = new Set(tem.map((u) => u.userID));
 
-        // Convert the Set back to an array of objects
-        const result = Array.from(uniqueData).map(JSON.parse);
-        const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
-        setMembersOrganizers(result);
-        setOrganizersSave(resultSave);
+    const addUser = (user) => {
+      const id = user.userID || user.pK_UID;
+      if (!id || ids.has(id)) return;
 
-        setSelectedsearch([]);
-        return;
+      tem.push({
+        userName: user.userName,
+        userID: id,
+        displayPicture: user?.profilePicture?.displayProfilePictureName || "",
+        email: user.emailAddress,
+        isPrimaryOrganizer: false,
+        isOrganizerNotified: false,
+        organizerTitle: "",
+        rsvp: false,
+        isDeletable: true,
+        disabledTitle: false,
+        disabledRSVP: true,
+        disabledNotification: true,
+        disabledSwitch: true,
+        NotificationMessage: "",
+        isEdit: false,
+        attendeeAvailability: 1,
+      });
+
+      tem2.push({
+        UserID: id,
+        isPrimaryOrganizer: false,
+        isOrganizerNotified: false,
+        organizerTitle: "",
+      });
+
+      ids.add(id);
+    };
+
+    selectedsearch.forEach((s) => {
+      if (s.type === 1) {
+        data.groups
+          ?.find((g) => g.groupID === s.value)
+          ?.groupUsers?.forEach(addUser);
       }
-    }
-    if (groupInfo !== null) {
-      let groupUsers = [...getGroupByGroupIdResponse?.groupMembers];
-      if (groupUsers.length > 0) {
-        groupUsers.forEach((gUser, index) => {
-          let check2 = membersOrganizers.find(
-            (data, index) => data.UserID === gUser.userID,
-          );
-          let check2Save = organizersSave.find(
-            (data, index) => data.UserID === gUser.userID,
-          );
-          if (check2 === undefined && check2Save === undefined) {
-            let newUser = {
-              userName: gUser.userName,
-              userID: gUser.userID,
-              displayPicture: gUser.profilePicture.displayProfilePictureName,
-              email: gUser.emailAddress,
-              isPrimaryOrganizer: false,
-              isOrganizerNotified: false,
-              organizerTitle: "",
-              rsvp: false,
-              isDeletable: true,
-              disabledTitle: false,
-              disabledRSVP: true,
-              disabledNotification: true,
-              disabledSwitch: true,
-              NotificationMessage: "",
-              isEdit: false,
-              attendeeAvailability: 1,
-            };
-            let newUserSave = {
-              isPrimaryOrganizer: false,
-              isOrganizerNotified: false,
-              organizerTitle: "",
-              UserID: gUser.userID,
-            };
-            tem.push(newUser);
-            tem2.push(newUserSave);
-          }
-        });
-        const uniqueData = new Set(tem.map(JSON.stringify));
 
-        const uniqueDataSave = new Set(tem2.map(JSON.stringify));
-
-        // Convert the Set back to an array of objects
-        const result = Array.from(uniqueData).map(JSON.parse);
-        const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
-        setMembersOrganizers(result);
-        setOrganizersSave(resultSave);
-        setSelectedsearch([]);
-        return;
+      if (s.type === 2) {
+        data.committees
+          ?.find((c) => c.committeeID === s.value)
+          ?.committeeUsers?.forEach(addUser);
       }
-    }
 
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+      if (s.type === 3) {
+        const user = data.organizationUsers?.find((u) => u.userID === s.value);
+        if (user) addUser(user);
+      }
+    });
 
-    if (Object.keys(selectedsearch).length > 0) {
-      try {
-        selectedsearch.forEach((seledtedData, index) => {
-          if (seledtedData.type === 1) {
-            let check1 = newOrganizersData.groups.find(
-              (data, index) => data.groupID === seledtedData.value,
-            );
-            if (check1 !== undefined) {
-              let groupUsers = check1.groupUsers;
-              if (Object.keys(groupUsers).length > 0) {
-                groupUsers.forEach((gUser, index) => {
-                  let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === gUser.userID,
-                  );
-                  let check2Save = organizersSave.find(
-                    (data, index) => data.UserID === gUser.userID,
-                  );
-                  if (check2 === undefined && check2Save === undefined) {
-                    let newUser = {
-                      userName: gUser.userName,
-                      userID: gUser.userID,
-                      displayPicture:
-                        gUser.profilePicture.displayProfilePictureName,
-                      email: gUser.emailAddress,
-                      isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
-                      organizerTitle: "",
-                      rsvp: false,
-                      isDeletable: true,
-                      disabledTitle: false,
-                      disabledRSVP: true,
-                      disabledNotification: true,
-                      disabledSwitch: true,
-                      NotificationMessage: "",
-                      isEdit: false,
-                      attendeeAvailability: 1,
-                    };
-                    let newUserSave = {
-                      isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
-                      organizerTitle: "",
-                      UserID: gUser.userID,
-                    };
-                    tem.push(newUser);
-                    tem2.push(newUserSave);
-                  }
-                });
-              }
-            }
-          } else if (seledtedData.type === 2) {
-            let check1 = newOrganizersData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value,
-            );
-            if (check1 !== undefined) {
-              let committeesUsers = check1.committeeUsers;
-              if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.forEach((cUser, index) => {
-                  let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === cUser.userID,
-                  );
-                  let check2Save = organizersSave.find(
-                    (data, index) => data.UserID === cUser.userID,
-                  );
-                  if (check2 === undefined && check2Save === undefined) {
-                    let newUser = {
-                      userName: cUser.userName,
-                      userID: cUser.userID,
-                      displayPicture:
-                        cUser.profilePicture.displayProfilePictureName,
-                      email: cUser.emailAddress,
-                      isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
-                      organizerTitle: "",
-                      rsvp: false,
-                      isDeletable: true,
-                      disabledTitle: false,
-                      disabledRSVP: true,
-                      disabledNotification: true,
-                      disabledSwitch: true,
-                      NotificationMessage: "",
-                      isEdit: false,
-                      attendeeAvailability: 1,
-                    };
-                    let newUserSave = {
-                      isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
-                      organizerTitle: "",
-                      UserID: cUser.userID,
-                    };
-                    tem.push(newUser);
-                    tem2.push(newUserSave);
-                  }
-                });
-              }
-            }
-          } else if (seledtedData.type === 3) {
-            let check1 = membersOrganizers.find(
-              (data, index) => data.UserID === seledtedData.value,
-            );
-            if (check1 !== undefined) {
-            } else {
-              let check2 = newOrganizersData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value,
-              );
-              if (check2 !== undefined) {
-                let newUser = {
-                  userName: check2.userName,
-                  userID: check2.userID,
-                  displayPicture:
-                    check2.profilePicture.displayProfilePictureName,
-                  email: check2.emailAddress,
-                  isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
-                  organizerTitle: "",
-                  rsvp: false,
-                  isDeletable: true,
-                  disabledTitle: false,
-                  disabledRSVP: true,
-                  disabledNotification: true,
-                  disabledSwitch: true,
-                  NotificationMessage: "",
-                  isEdit: false,
-                  attendeeAvailability: 1,
-                };
-                let newUserSave = {
-                  isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
-                  organizerTitle: "",
-                  UserID: check2.userID,
-                };
-                tem.push(newUser);
-                tem2.push(newUserSave);
-              }
-            }
-          } else {
-          }
-        });
-        const uniqueData = new Set(tem.map(JSON.stringify));
-
-        const uniqueDataSave = new Set(tem2.map(JSON.stringify));
-
-        // Convert the Set back to an array of objects
-        const result = Array.from(uniqueData).map(JSON.parse);
-        const resultSave = Array.from(uniqueDataSave).map(JSON.parse);
-        setMembersOrganizers(result);
-        setOrganizersSave(resultSave);
-
-        setSelectedsearch([]);
-      } catch {}
-    } else {
-      // setopen notionation work here
-    }
+    setMembersOrganizers([...tem]);
+    setOrganizersSave([...tem2]);
+    setSelectedsearch([]);
   };
 
-  const handleCrossIcon = () => {
-    dispatch(showAddUserModal(false));
-  };
-
+  // -------------------------
+  // API CALL
+  // -------------------------
   useEffect(() => {
-    // if (committeeInfo === null && groupInfo === null) {
-      let Data = {
-        MeetingID: currentMeetingInfo.meetingID,
-      };
-      dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
-    // }
-  }, []);
-
-  const [dropdowndata, setDropdowndata] = useState([]);
-
-  const cancellAnyUser = (index) => {
-    let removeData = [...membersOrganizers];
-    let removeDataSave = [...organizersSave];
-    removeData.splice(index, 1);
-    removeDataSave.splice(index, 1);
-    setMembersOrganizers(removeData);
-    setOrganizersSave(removeDataSave);
-  };
+    if (currentMeetingInfo?.meetingID) {
+      dispatch(
+        GetAllCommitteesUsersandGroups(
+          { MeetingID: currentMeetingInfo.meetingID },
+          navigate,
+          t
+        )
+      );
+    }
+  }, [currentMeetingInfo?.meetingID]);
 
   useEffect(() => {
     return () => dispatch(meetingOrganizers([]));
   }, []);
-
-  useEffect(() => {
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
-    if (newOrganizersData !== null && newOrganizersData !== undefined) {
-      let temp = [];
-      if (Object.keys(newOrganizersData).length > 0) {
-        if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.forEach((a, index) => {
-            let newData = {
-              value: a.groupID,
-              name: a.groupName,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={GroupIcon}
-                        alt=""
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.groupName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 1,
-            };
-            temp.push(newData);
-          });
-        }
-        if (Object.keys(newOrganizersData.committees).length > 0) {
-          if(committeeInfo !== null) {
-
-          } else {
-            newOrganizersData.committees.forEach((a, index) => {
-              let newData = {
-                value: a.committeeID,
-                name: a.committeeName,
-  
-                label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={committeeicon}
-                          alt=""
-                          width="21.71px"
-                          height="18.61px"
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.committeeName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                ),
-                type: 2,
-              };
-              temp.push(newData);
-            });
-          }
-     
-        }
-        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.forEach((a, index) => {
-            let newData = {
-              value: a.userID,
-              name: a.userName,
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        alt=""
-                        className={styles["UserProfilepic"]}
-                        width="18px"
-                        height="18px"
-                        draggable="false"
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.userName}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              type: 3,
-            };
-            temp.push(newData);
-          });
-        }
-        setDropdowndata(temp);
-      } else {
-        setDropdowndata([]);
-      }
-    }
-  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
-
-  // useEffect(() => {
-  //   if (
-  //     getCommitteeByCommitteeID !== null &&
-  //     getCommitteeByCommitteeID !== undefined
-  //   ) {
-  //     let newArr = [];
-  //     let getUserDetails = getCommitteeByCommitteeID.committeMembers;
-  //     getUserDetails.forEach((data, index) => {
-  //       newArr.push({
-  //         value: data.pK_UID,
-  //         name: data.userName,
-  //         label: (
-  //           <>
-  //             <>
-  //               <Row>
-  //                 <Col
-  //                   lg={12}
-  //                   md={12}
-  //                   sm={12}
-  //                   className="d-flex gap-2 align-items-center"
-  //                 >
-  //                   <img
-  //                     src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-  //                     height="16.45px"
-  //                     width="18.32px"
-  //                     draggable="false"
-  //                     alt=""
-  //                   />
-  //                   <span className={styles["NameDropDown"]}>
-  //                     {data.userName}
-  //                   </span>
-  //                 </Col>
-  //               </Row>
-  //             </>
-  //           </>
-  //         ),
-  //         type: 1,
-  //       });
-  //     });
-  //     let sortAssginersArr = newArr.sort((a, b) =>
-  //       a.name.localeCompare(b.name),
-  //     );
-  //     setDropdowndata(sortAssginersArr);
-  //   }
-  // }, [getCommitteeByCommitteeID]);
-
-  // useEffect(() => {
-  //   if (
-  //     getGroupByGroupIdResponse !== null &&
-  //     getGroupByGroupIdResponse !== undefined
-  //   ) {
-  //     try {
-  //       let newArr = [];
-  //       let getUserDetails = getGroupByGroupIdResponse.groupMembers;
-  //       getUserDetails.forEach((data, index) => {
-  //         newArr.push({
-  //           value: data.pK_UID,
-  //           name: data.userName,
-  //           label: (
-  //             <>
-  //               <>
-  //                 <Row>
-  //                   <Col
-  //                     lg={12}
-  //                     md={12}
-  //                     sm={12}
-  //                     className="d-flex gap-2 align-items-center"
-  //                   >
-  //                     <img
-  //                       src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-  //                       height="16.45px"
-  //                       width="18.32px"
-  //                       draggable="false"
-  //                       alt=""
-  //                     />
-  //                     <span className={styles["NameDropDown"]}>
-  //                       {data.userName}
-  //                     </span>
-  //                   </Col>
-  //                 </Row>
-  //               </>
-  //             </>
-  //           ),
-  //           type: 1,
-  //         });
-  //       });
-  //       let sortAssginersArr = newArr.sort((a, b) =>
-  //         a.name.localeCompare(b.name),
-  //       );
-  //       setDropdowndata(sortAssginersArr);
-  //     } catch (error) {}
-  //   }
-  // }, [getGroupByGroupIdResponse]);
 
   const saveOrganizers = () => {
     dispatch(showAddUserModal(false));
@@ -576,171 +262,170 @@ const ModalOrganizor = () => {
     dispatch(selectedMeetingOrganizers(organizersSave));
   };
 
-  const customFilter = (options, searchText) => {
-    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
+  // -------------------------
+  // UI
+  // -------------------------
   return (
-    <section>
-      <Modal
-        show={NewMeetingreducer.adduserModal}
-        setShow={dispatch(showAddUserModal)}
-        modalFooterClassName={"d-block"}
-        onHide={() => {
-          dispatch(showAddUserModal(false));
-        }}
-        size={"md"}
-        ModalBody={
-          <>
+    <Modal
+    show={NewMeetingreducer.adduserModal}
+    onHide={() => dispatch(showAddUserModal(false))}
+    size="md"
+    modalFooterClassName={"d-block"}
+    ModalBody={
+      <>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className={styles["OverAll_styling"]}
+          >
+            {/* HEADER */}
             <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["OverAll_styling"]}
-              >
-                <Row>
-                  <Col lg={5} md={5} sm={12}>
-                    <span className={styles["Add_organization"]}>
-                      {t("Add-organizers")}
-                    </span>
-                  </Col>
-                  <Col
-                    lg={7}
-                    md={7}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <img
-                      draggable={false}
-                      src={BlackCrossIcon}
-                      alt=""
-                      className={"cursor-pointer"}
-                      width="16px"
-                      height="16px"
-                      onClick={handleCrossIcon}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="group-fields d-flex align-items-center gap-2"
-                  >
-                    <Select
-                      onChange={handleSelectValue}
-                      isDisabled={dropdowndata.length === 0 ? true : false}
-                      value={selectedsearch}
-                      classNamePrefix={"selectMember"}
-                      closeMenuOnSelect={false}
-                      components={animatedComponents}
-                      isMulti
-                      options={dropdowndata}
-                      isSearchable={true}
-                      filterOption={customFilter}
-                    />
-                    <Button
-                      text={t("ADD")}
-                      className={styles["ADD_Btn_CreatePool_Modal"]}
-                      onClick={handleAddUsers}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center align-items-center mt-3"
-                  ></Col>
-                </Row>
-                <Row className={styles["Scroller_For_CreatePollModal2"]}>
-                  {membersOrganizers.length > 0
-                    ? membersOrganizers.map((data, index) => {
-                        return (
-                          <>
-                            <Col lg={6} md={6} sm={12} className="mt-2">
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={styles["Padding_Class"]}
-                                >
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <Row className={styles["Card_border2"]}>
-                                        <Col sm={12} md={10} lg={10}>
-                                          <img
-                                            draggable={false}
-                                            src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                            width="33px"
-                                            height="33px"
-                                            alt=""
-                                          />
-                                          <span
-                                            className={styles["Name_cards"]}
-                                          >
-                                            {data.userName}
-                                          </span>
-                                        </Col>
-                                        <Col sm={12} md={2} lg={2}>
-                                          <img
-                                            src={CrossIcon}
-                                            width="14px"
-                                            height="14px"
-                                            onClick={() =>
-                                              cancellAnyUser(index)
-                                            }
-                                            draggable="false"
-                                            style={{ cursor: "pointer" }}
-                                            alt=""
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </>
-                        );
-                      })
-                    : null}
-                </Row>
+              <Col lg={5} md={5} sm={12}>
+                <span className={styles["Add_organization"]}>
+                  {t("Add-organizers")}
+                </span>
               </Col>
-            </Row>
-          </>
-        }
-        ModalFooter={
-          <>
-            {/* {membersOrganizers} */}
-            <Row>
+  
               <Col
-                lg={12}
-                md={12}
+                lg={7}
+                md={7}
                 sm={12}
                 className="d-flex justify-content-end"
               >
-                {membersOrganizers.length > 0 && (
-                  <Button
-                    text={t("Done")}
-                    className={styles["Done_btn_organizor_modal"]}
-                    onClick={saveOrganizers}
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={BlackCrossIcon}
+                  alt=""
+                  className="cursor-pointer"
+                  width="16px"
+                  height="16px"
+                  onClick={() => dispatch(showAddUserModal(false))}
+                />
               </Col>
             </Row>
-          </>
-        }
-      />
-    </section>
+  
+            {/* SELECT ROW */}
+            <Row className="mt-3">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="group-fields d-flex align-items-center gap-2"
+              >
+                <Select
+                  onChange={setSelectedsearch}
+                  value={selectedsearch}
+                  classNamePrefix="selectMember"
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={dropdowndata}
+                  isSearchable
+                />
+  
+                <Button
+                  text={t("ADD")}
+                  className={styles["ADD_Btn_CreatePool_Modal"]}
+                  onClick={handleAddUsers}
+                />
+              </Col>
+            </Row>
+  
+            {/* USERS LIST */}
+            <Row className={styles["Scroller_For_CreatePollModal2"]}>
+              {membersOrganizers.map((data, index) => (
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className="mt-2"
+                  key={data.userID}
+                >
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Padding_Class"]}
+                    >
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Row className={styles["Card_border2"]}>
+                            
+                            {/* LEFT SIDE USER INFO */}
+                            <Col
+                              sm={10}
+                              md={10}
+                              lg={10}
+                              className="d-flex align-items-center"
+                            >
+                              <img
+                                draggable={false}
+                                src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                width="33px"
+                                height="33px"
+                                alt=""
+                              />
+  
+                              <span className={styles["Name_cards"]}>
+                                {data.userName}
+                              </span>
+                            </Col>
+  
+                            {/* DELETE ICON */}
+                            <Col sm={2} md={2} lg={2}>
+                              <img
+                                src={CrossIcon}
+                                width="14px"
+                                height="14px"
+                                draggable="false"
+                                style={{ cursor: "pointer" }}
+                                alt=""
+                                onClick={() => {
+                                  setMembersOrganizers((prev) =>
+                                    prev.filter((_, i) => i !== index)
+                                  );
+  
+                                  setOrganizersSave((prev) =>
+                                    prev.filter((_, i) => i !== index)
+                                  );
+                                }}
+                              />
+                            </Col>
+  
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              ))}
+            </Row>
+          </Col>
+        </Row>
+      </>
+    }
+    ModalFooter={
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end"
+        >
+          {membersOrganizers.length > 0 && (
+            <Button
+              text={t("Done")}
+              className={styles["Done_btn_organizor_modal"]}
+              onClick={saveOrganizers}
+            />
+          )}
+        </Col>
+      </Row>
+    }
+  />
   );
 };
 

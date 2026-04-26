@@ -79,6 +79,10 @@ const ViewMeetingModal = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const castYourVotePollModalState = useSelector(
+    (state) => state.PollsReducer.castPollVoteModal,
+  );
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -145,6 +149,11 @@ const ViewMeetingModal = ({
   );
   const { meetingIdReducer, NewMeetingreducer, MeetingAgendaReducer } =
     useSelector((state) => state);
+  const { meetingID } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+
+  console.log(meetingID, "meetingIDmeetingIDmeetingID");
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
   );
@@ -335,7 +344,7 @@ const ViewMeetingModal = ({
                 UserGUID: String(newUserGUID),
                 Name: String(newName),
                 IsHost: parsedHostFlag?.isHost ? true : false,
-                MeetingID: Number(currentMeetingID),
+                MeetingID: Number(meetingID),
               },
               navigate,
               t,
@@ -350,7 +359,7 @@ const ViewMeetingModal = ({
               navigate,
               t,
               {
-                FK_MDID: Number(currentMeeting),
+                FK_MDID: Number(meetingID),
                 DateTime: getCurrentDateTimeUTC(),
               },
               setEditorRole,
@@ -386,7 +395,7 @@ const ViewMeetingModal = ({
                 UserGUID: String(participantUID),
                 Name: String(newName),
                 IsHost: parsedHostFlag?.isHost ? true : false,
-                MeetingID: Number(currentMeetingID),
+                MeetingID: Number(meetingID),
               },
               navigate,
               t,
@@ -401,10 +410,10 @@ const ViewMeetingModal = ({
               navigate,
               t,
               {
-                FK_MDID: Number(currentMeeting),
+                FK_MDID: Number(meetingID),
                 DateTime: getCurrentDateTimeUTC(),
               },
-              setEditorRole,
+              { setEditorRole },
             ),
           );
         }
@@ -429,20 +438,16 @@ const ViewMeetingModal = ({
       localStorage.removeItem("navigateLocation");
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
-      let currentMeeting = localStorage.getItem("currentMeetingID");
       dispatch(
         LeaveCurrentMeeting(
           navigate,
           t,
           {
-            FK_MDID: Number(currentMeeting),
+            FK_MDID: Number(meetingID),
             DateTime: getCurrentDateTimeUTC(),
           },
-          false,
-          false,
-          setEditorRole,
-          setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal,
+          "FromEndMeetingModal",
+          { setEditorRole },
         ),
       );
     }
@@ -612,34 +617,38 @@ const ViewMeetingModal = ({
       meetingIdReducer.MeetingStatusEnded !== undefined &&
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
-      const endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
-      if (
-        advanceMeetingModalID === endMeetingData?.pK_MDID &&
-        endMeetingData.status === "9" &&
-        editorRole.status !== "9"
-      ) {
-        setEditorRole({ status: null, role: null });
-        setViewAdvanceMeetingModal(false);
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        if (isMeetingVideo === true) {
-          localStorage.setItem("isCaller", false);
-          localStorage.setItem("isMeetingVideo", false);
-          localStorage.setItem("callerStatusObject", JSON.stringify([]));
-          localStorage.setItem("activeCall", false);
-          sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
-          localStorage.setItem("acceptedRoomID", 0);
-          localStorage.setItem("activeRoomID", 0);
-          dispatch(normalizeVideoPanelFlag(false));
-          dispatch(maximizeVideoPanelFlag(false));
-          dispatch(minimizeVideoPanelFlag(false));
-          dispatch(leaveCallModal(false));
-          dispatch(participantPopup(false));
+      try {
+        const endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+        if (
+          advanceMeetingModalID === endMeetingData?.pK_MDID &&
+          endMeetingData.status === "9" &&
+          editorRole.status !== "9"
+        ) {
+          setEditorRole({ status: null, role: null });
+          setViewAdvanceMeetingModal(false);
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+          if (isMeetingVideo === true) {
+            localStorage.setItem("isCaller", false);
+            localStorage.setItem("isMeetingVideo", false);
+            localStorage.setItem("callerStatusObject", JSON.stringify([]));
+            localStorage.setItem("activeCall", false);
+            sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+            localStorage.setItem("acceptedRoomID", 0);
+            localStorage.setItem("activeRoomID", 0);
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
+            dispatch(leaveCallModal(false));
+            dispatch(participantPopup(false));
+          }
+          setCurrentMeetingID(0);
+          setAdvanceMeetingModalID(null);
+          setDataroomMapFolderId(0);
+          localStorage.setItem("folderDataRoomMeeting", 0);
         }
-        setCurrentMeetingID(0);
-        setAdvanceMeetingModalID(null);
-        setDataroomMapFolderId(0);
-        localStorage.setItem("folderDataRoomMeeting", 0);
+      } catch (error) {
+        console.log(error);
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
@@ -647,7 +656,6 @@ const ViewMeetingModal = ({
   // ─── Leave Meeting Handler ────────────────────────────────────────────────
 
   const leaveMeeting = async (flag, flag2) => {
-    const currentMeeting = localStorage.getItem("currentMeetingID");
     const isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
     if (isMeeting) {
@@ -658,14 +666,12 @@ const ViewMeetingModal = ({
           navigate,
           t,
           {
-            FK_MDID: Number(currentMeeting),
+            FK_MDID: Number(meetingID),
             DateTime: getCurrentDateTimeUTC(),
           },
           "FromMeetingDetaislTabLeaveMeeting",
           {
             setEditorRole,
-            setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal,
           },
         ),
       );
@@ -1017,7 +1023,8 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
-      <PollsCastVoteInitimationModal />
+      {castYourVotePollModalState && <PollsCastVoteInitimationModal />}
+
       {NewMeetingreducer.castVoteAgendaPage && (
         <CastVoteAgendaModal
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}

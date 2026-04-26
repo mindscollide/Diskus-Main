@@ -252,15 +252,14 @@ import { useComplianceContext } from "../../context/ComplianceContext";
 
 const Dashboard = () => {
   const location = useLocation();
-
   const { Sider, Content } = Layout;
-
+  
   const navigate = useNavigate();
-
+  
   const { t } = useTranslation();
-
+  
   const dispatch = useDispatch();
-
+  
   const {
     editorRole,
     cancelConfirmationModal,
@@ -295,6 +294,12 @@ const Dashboard = () => {
   let currentUserName = localStorage.getItem("name");
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+  
+  const meetingId = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo.meetingID,
+  );
+
+  console.log(meetingId, "meetingIDmeetingID");
 
   const cancelModalMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
@@ -308,39 +313,40 @@ const Dashboard = () => {
   const IncomingVideoCallFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
   );
-
+  
   const VideoMainReducerResponseMessage = useSelector(
     (state) => state.VideoMainReducer.ResponseMessage,
   );
-
+  
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
-
+  
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag,
   );
-
+  
   const getJoinMeetingParticipantorHostrequest = useSelector(
     (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
   );
-
+  
   const maximizeParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
-
+  
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
-
+  
   const ShowGuestPopup = useSelector(
     (state) => state.videoFeatureReducer.ShowGuestPopup,
   );
-
+  
   const VideoChatMessagesFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
   );
-
+  const meetingIdRef = useRef(meetingId);
+  
   const MinimizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
@@ -460,6 +466,10 @@ const Dashboard = () => {
   }, [maximizeParticipantVideoFlag]);
 
   useEffect(() => {
+    meetingIdRef.current = meetingId;
+  }, [meetingId]);
+
+  useEffect(() => {
     if (getJoinMeetingParticipantorHostrequest) {
       getJoinMeetingParticipantorHostrequestGuidRef.current =
         getJoinMeetingParticipantorHostrequest
@@ -542,35 +552,70 @@ const Dashboard = () => {
   // For End QUick Meeting
 
   const meetingEnded = (payload) => {
-    console.log("mqtt mqmqmqmqmqmq", payload);
-    let meetingVideoID = localStorage.getItem("currentMeetingID");
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    if (Number(meetingVideoID) === Number(payload?.meeting?.pK_MDID)) {
-      if (isMeeting) {
-        console.log("mqtt mqmqmqmqmqmq");
-        let typeOfMeeting = localStorage.getItem("typeOfMeeting");
-        if (String(typeOfMeeting) === "isQuickMeeting") {
+
+    const currentMeetingId = meetingIdRef.current;
+    console.log(
+      "mqtt mqmqmqmqmqmq",
+      payload,
+      meetingId,
+      payload?.meeting?.pK_MDID,
+      localStorage.getItem("isMeeting"),
+    );
+    try {
+      console.log(
+        "mqtt mqmqmqmqmqmq",
+        payload,
+        meetingId,
+        payload?.meeting?.pK_MDID,
+        localStorage.getItem("isMeeting"),
+      );
+      let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+      let isMeetingVideo =
+        localStorage.getItem("isMeetingVideo") !== null
+          ? JSON.parse(localStorage.getItem("isMeetingVideo"))
+          : null;
+      console.log(
+        "mqtt mqmqmqmqmqmq",
+        payload,
+        meetingId,
+        payload?.meeting?.pK_MDID,
+        localStorage.getItem("isMeeting"),
+      );
+      if (Number(currentMeetingId) === Number(payload?.meeting?.pK_MDID)) {
+        console.log(
+          "mqtt mqmqmqmqmqmq",
+          payload,
+          meetingId,
+          payload?.meeting?.pK_MDID,
+          localStorage.getItem("isMeeting"),
+        );
+        if (isMeeting) {
           console.log("mqtt mqmqmqmqmqmq");
-          if (isMeetingVideo) {
+          let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+          if (String(typeOfMeeting) === "isQuickMeeting") {
             console.log("mqtt mqmqmqmqmqmq");
-            dispatch(endMeetingStatusForQuickMeetingVideo(true));
-          } else {
+            if (isMeetingVideo) {
+              console.log("mqtt mqmqmqmqmqmq");
+              dispatch(endMeetingStatusForQuickMeetingVideo(true));
+            } else {
+              console.log("mqtt mqmqmqmqmqmq");
+              dispatch(endMeetingStatusForQuickMeetingModal(true));
+            }
+          } else if (String(typeOfMeeting) === "isAdvanceMeeting") {
             console.log("mqtt mqmqmqmqmqmq");
-            dispatch(endMeetingStatusForQuickMeetingModal(true));
-          }
-        } else if (String(typeOfMeeting) === "isAdvanceMeeting") {
-          console.log("mqtt mqmqmqmqmqmq");
-          if (isMeetingVideo) {
-            console.log("mqtt mqmqmqmqmqmq");
-            dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
-            dispatch(leaveMeetingOnEndStatusMqtt(true));
-          } else {
-            console.log("mqtt mqmqmqmqmqmq");
-            dispatch(leaveMeetingOnEndStatusMqtt(true));
+            if (isMeetingVideo) {
+              console.log("mqtt mqmqmqmqmqmq");
+              dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
+              dispatch(leaveMeetingOnEndStatusMqtt(true));
+            } else {
+              console.log("mqtt mqmqmqmqmqmq");
+              dispatch(leaveMeetingOnEndStatusMqtt(true));
+            }
           }
         }
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -601,7 +646,7 @@ const Dashboard = () => {
       // denied screen should be closed when presentation is started
       dispatch(maxParticipantVideoDenied(false));
 
-      if (String(meetingVideoID) === String(payload?.meetingID)) {
+      if (String(meetingVideoID) === String(payload?.meetingId)) {
         if (maxParticipantVideoRemovedFlag) {
           // remove Screen Should be closed when presentation is started
           await dispatch(maxParticipantVideoRemoved(false));
@@ -755,10 +800,10 @@ const Dashboard = () => {
         : false,
     );
     console.log(
-      String(meetingVideoID) === String(payload?.meetingID),
+      String(meetingVideoID) === String(payload?.meetingId),
       "mqtt mqmqmqmqmqmq",
     );
-    if (String(meetingVideoID) === String(payload?.meetingID)) {
+    if (String(meetingVideoID) === String(payload?.meetingId)) {
       console.log("mqtt mqmqmqmqmqmq", payload);
       console.log("mqtt mqmqmqmqmqmq", isMeetingVideo);
       // dispatch(setAudioControlHost(false));
@@ -796,7 +841,7 @@ const Dashboard = () => {
                 ),
                 IsMuted: false, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-                MeetingID: payload?.meetingID,
+                MeetingID: payload?.meetingId,
               };
 
               // // Dispatch the API request with the data
@@ -807,7 +852,7 @@ const Dashboard = () => {
                 ),
                 HideVideo: true, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-                MeetingID: Number(payload?.meetingID),
+                MeetingID: Number(payload?.meetingId),
               };
 
               // // Dispatch the API request with the data
@@ -4727,7 +4772,7 @@ const Dashboard = () => {
             data.payload?.workFlowStatusID === 4
           )
             return;
-            
+
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,

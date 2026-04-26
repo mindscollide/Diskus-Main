@@ -56,10 +56,7 @@ import {
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
-import {
-  resetCurrentMeetingInfo,
-  SaveMeetingDetailsApi,
-} from "../../../../../store/actions/NewMeeting2.actions";
+import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
 
 const MeetingDetails = () => {
   const { t } = useTranslation();
@@ -89,6 +86,8 @@ const MeetingDetails = () => {
   const groupInfo = useSelector(
     (state) => state.GroupsReducer.viewGroupDetails,
   );
+
+  console.log(committeeInfo,editorRole, "committeeInfocommitteeInfo")
 
   // const cancelModalMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
@@ -983,10 +982,11 @@ const MeetingDetails = () => {
           });
         }
         setRows(newDateTimeData);
-        setEditorRole({
-          ...editorRole,
-          status: MeetingData.meetingStatus.pK_MSID,
-        });
+        // setEditorRole({
+        //   ...editorRole,
+        //   status: MeetingData.meetingStatus.pK_MSID,
+
+        // });
       } else {
         setCurrentMeetingStatus(11);
         // setRows([]);

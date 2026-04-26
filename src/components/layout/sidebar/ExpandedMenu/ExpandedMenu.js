@@ -16,6 +16,7 @@ import styles from "./ExpandMenu.module.css";
 import {
   checkFeatureIDAvailability,
   SideBarGlobalNavigationFunction,
+  SideBarGlobalNavigationFunctionNew,
 } from "../../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
 import {
@@ -29,6 +30,11 @@ import {
   showEndMeetingModal,
 } from "../../../../store/actions/NewMeetingActions";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import { resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
+import {
+  resetViewTabs,
+  toggleViewMeetingModal,
+} from "../../../../store/actions/ModalStates_actions";
 
 const ExpandedMenu = ({
   handleSidebarNavigation,
@@ -64,7 +70,9 @@ const ExpandedMenu = ({
     createEditCompliance,
     setPendingNavigation,
   } = useComplianceContext();
-
+  const { isViewMeetingModal } = useSelector(
+    (state) => state.ModalStatesReducer,
+  );
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
@@ -135,23 +143,31 @@ const ExpandedMenu = ({
     console.log("Checking", editorRole);
 
     localStorage.setItem("navigateLocation", "groups");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/groups",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/groups",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/groups",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   //Polls Sidebar Click
@@ -172,23 +188,32 @@ const ExpandedMenu = ({
     dispatch(normalizeVideoPanelFlag(false));
     console.log("Checking", editorRole);
     localStorage.setItem("navigateLocation", "polling");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/polling",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/polling",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/polling",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   //Calendar Sidebar Click
@@ -210,23 +235,31 @@ const ExpandedMenu = ({
     console.log("Checking", editorRole);
 
     localStorage.setItem("navigateLocation", "calendar");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/calendar",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/calendar",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/calendar",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   // Todo Sidebar Click
@@ -247,23 +280,31 @@ const ExpandedMenu = ({
     dispatch(normalizeVideoPanelFlag(false));
     console.log("Checking", editorRole);
     localStorage.setItem("navigateLocation", "todolist");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/todolist",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/todolist",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/todolist",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   const handleMeetingSidebarNotes = () => {
@@ -283,23 +324,31 @@ const ExpandedMenu = ({
     dispatch(normalizeVideoPanelFlag(false));
     console.log("Checking", editorRole);
     localStorage.setItem("navigateLocation", "Notes");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/Notes",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/Notes",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/Notes",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   const handleSidebarClickForExpand = ({
@@ -322,9 +371,12 @@ const ExpandedMenu = ({
 
     if (isMeeting) {
       console.log("Check Route scenario's");
-      if (location.pathname !== targetPath && !viewAdvanceMeetingModal) {
+      if (location.pathname !== targetPath && isViewMeetingModal) {
         console.log("Check Route scenario's");
         navigate(targetPath);
+        dispatch(resetCurrentMeetingInfo());
+        dispatch(toggleViewMeetingModal(false));
+        dispatch(resetViewTabs());
         return "";
       }
 

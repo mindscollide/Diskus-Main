@@ -7979,6 +7979,24 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase(),
                 )
             ) {
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber: Number(meetingPageCurrent),
+                Length: Number(meetingpageRow),
+                PublishedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    ? true
+                    : false,
+                ProposedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    ? true
+                    : false,
+              };
               const {
                 setEditorRole,
                 isQuickMeeting = false,
@@ -7994,28 +8012,23 @@ const LeaveCurrentMeeting = (
                   dispatch(toggleViewMeetingModal(false));
                   dispatch(resetCurrentMeetingInfo());
                   dispatch(resetViewTabs());
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: Number(meetingPageCurrent),
-                    Length: Number(meetingpageRow),
-                    PublishedMeetings:
-                      localStorage.getItem("MeetingCurrentView") &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 1
-                        ? true
-                        : false,
-                    ProposedMeetings:
-                      localStorage.getItem("MeetingCurrentView") &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 2
-                        ? true
-                        : false,
-                  };
+
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   break;
+                case "FromEndMeetingModal":
+                  setEditorRole({
+                    status: null,
+                    role: null,
+                    isPrimaryOrganizer: null,
+                  });
+                  dispatch(toggleViewMeetingModal(false));
+                  dispatch(resetCurrentMeetingInfo());
+                  dispatch(resetViewTabs());
 
+                  console.log("chek search meeting");
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  break;
                 default:
                   break;
               }
@@ -8145,30 +8158,30 @@ const LeaveCurrentMeeting = (
                     console.log("navigateLocation");
                     navigate("/Diskus/");
                   } else {
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: Number(meetingPageCurrent),
-                      Length: Number(meetingpageRow),
-                      PublishedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 1
-                          ? true
-                          : false,
-                      ProposedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 2
-                          ? true
-                          : false,
-                    };
-                    console.log("chek search meeting");
-                    await dispatch(
-                      searchNewUserMeeting(navigate, searchData, t),
-                    );
-                    localStorage.removeItem("folderDataRoomMeeting");
-                    setEditorRole({ status: null, role: null });
+                    // let searchData = {
+                    //   Date: "",
+                    //   Title: "",
+                    //   HostName: "",
+                    //   UserID: Number(userID),
+                    //   PageNumber: Number(meetingPageCurrent),
+                    //   Length: Number(meetingpageRow),
+                    //   PublishedMeetings:
+                    //     localStorage.getItem("MeetingCurrentView") &&
+                    //     Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    //       ? true
+                    //       : false,
+                    //   ProposedMeetings:
+                    //     localStorage.getItem("MeetingCurrentView") &&
+                    //     Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    //       ? true
+                    //       : false,
+                    // };
+                    // console.log("chek search meeting");
+                    // await dispatch(
+                    //   searchNewUserMeeting(navigate, searchData, t),
+                    // );
+                    // localStorage.removeItem("folderDataRoomMeeting");
+                    // setEditorRole({ status: null, role: null });
                     // setAdvanceMeetingModalID(null);
 
                     // dispatch(viewAdvanceMeetingPublishPageFlag(false));

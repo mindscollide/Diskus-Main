@@ -195,7 +195,7 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                           IsUpdateFlow: false,
                         },
                         routePath,
-                        {},
+                        object
                       ),
                     );
                     break;
@@ -367,11 +367,11 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
             const committeeInfo =
               store.getState().CommitteeReducer?.viewCommitteeDetails;
             const groupInfo = store.getState().GroupsReducer?.viewGroupDetails;
+            const { setEditorRole } = object;
 
             const handleRouteAfterSuccess = () => {
               switch (routePath) {
                 case "saveMeeting":
-                  const { setEditorRole } = object;
                   dispatch(setCreateEditTab("organizers"));
                   setEditorRole({
                     status: "11",
@@ -432,9 +432,17 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
                       "fromCommitteeAdvanceMeeting",
                       {},
                     ),
+                    
                   );
+                  setEditorRole({
+                    status: "11",
+                    role: "Organizer",
+                    isPrimaryOrganizer: true,
+                  });
                   break;
                 case "committeeUpdateMeeting":
+                  dispatch(setCreateEditTab("organizers"));
+
                   break;
                 case "groupSaveMeeting":
                   dispatch(
@@ -606,14 +614,13 @@ export const UpdateMeetingUserApi = (
                   ),
                 );
                 try {
-                  const { editableSave } = object;
                   const meetingId =
                     store.getState().NewMeetingreducer?.currentMeetingInfo
                       ?.meetingID;
 
                   switch (routePath) {
                     case "saveMeetingParticipants": {
-                      const { rspvRows } = object;
+                      const { rspvRows,editableSave } = object;
                       dispatch(
                         SaveParticipantsApi(
                           navigate,
@@ -636,7 +643,7 @@ export const UpdateMeetingUserApi = (
                       break;
                     }
                     case "saveMeetingOrganizer": {
-                      const { rowsData, notificationMessage, setIsEdit } =
+                      const { rowsData, notificationMessage, setIsEdit ,editableSave} =
                         object;
                       dispatch(saveMeetingFlag(false));
                       dispatch(editMeetingFlag(false));
@@ -688,10 +695,7 @@ export const UpdateMeetingUserApi = (
                       );
                       break;
                     }
-                    case "EndMeetingFromMeetingDetailsModal":
-                      const { setEndMeetingConfirmationModal } = object;
-                      setEndMeetingConfirmationModal(false);
-                      break;
+
                     default:
                       break;
                   }
@@ -2482,6 +2486,11 @@ export const UpdateMeetingStatusApi = (
                         // here we need to call Join Meeting API
                         break;
                       }
+                      case "EndMeetingFromMeetingDetailsModal": {
+                        console.log("asdasdad");
+                        setEndMeetingConfirmationModal(false);
+                        break;
+                      }
                       case 3:
                         await dispatch(
                           getMeetingDetailsByMeetingIdApi(
@@ -3260,7 +3269,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     localStorage.setItem("meetingTitle", record.title);
                     dispatch(
                       setCurrentMeetingInfo({
-                        meetingID: Data.MeetingID,
+                        meetingID: Data.FK_MDID,
                         meetingTitle: record.title,
                         // mapFolderId: 0,
                       }),
@@ -3275,7 +3284,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     localStorage.setItem("meetingTitle", record.title);
                     dispatch(
                       setCurrentMeetingInfo({
-                        meetingID: Data.MeetingID,
+                        meetingID: Data.FK_MDID,
                         meetingTitle: record.title,
                         // mapFolderId: 0,
                       }),

@@ -84,7 +84,10 @@ import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonCompon
 import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
-import { UpdateMeetingUserApi } from "../../../../../store/actions/NewMeeting2.actions";
+import {
+  UpdateMeetingStatusApi,
+  UpdateMeetingUserApi,
+} from "../../../../../store/actions/NewMeeting2.actions";
 
 const ViewMeetingDetails = () => {
   const { t } = useTranslation();
@@ -93,6 +96,7 @@ const ViewMeetingDetails = () => {
 
   const {
     setEndMeetingConfirmationModal,
+    endMeetingConfirmationModal,
     editorRole,
     setEditorRole,
     setorganizers,
@@ -729,7 +733,7 @@ const ViewMeetingDetails = () => {
       StatusID: 9,
     };
     dispatch(
-      UpdateMeetingUserApi(
+      UpdateMeetingStatusApi(
         navigate,
         t,
         requestData,
@@ -764,7 +768,7 @@ const ViewMeetingDetails = () => {
     localStorage.removeItem("AdvanceMeetingOperations");
     localStorage.removeItem("NotificationClickTaskID");
     localStorage.removeItem("viewadvanceMeetingTask");
-  }, []);
+  }, [meetingID]);
 
   // to show message when join meeting Video Response comes 4
   useEffect(() => {
@@ -1074,12 +1078,12 @@ const ViewMeetingDetails = () => {
             </Row>
           </Col>
         </Row>
-        {
+        {endMeetingConfirmationModal && (
           <EndMeetingConfirmationModal
             handleClickContinue={handleClickEndMeeting}
             handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
           />
-        }
+        )}
         {cancelModalView && (
           <CancelButtonModal
             setCancelModalView={setCancelModalView}

@@ -16,7 +16,10 @@ import {
   viewGroupPageFlag,
 } from "../../store/actions/Groups_actions";
 import { MinutesWorkFlowActorStatusNotificationAPI } from "../../store/actions/Minutes_action";
-import { resetCreateEditTabs } from "../../store/actions/ModalStates_actions";
+import {
+  resetCreateEditTabs,
+  toggleViewMeetingModal,
+} from "../../store/actions/ModalStates_actions";
 import {
   actionsGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -55,6 +58,7 @@ import {
 } from "../../store/actions/Resolution_actions";
 import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
 import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
+import store from "../../store/store";
 import { validateExtensionsforHTMLPage } from "./validations";
 
 // this is function save avalable feature for current user implementation its save all data in local storage
@@ -103,7 +107,6 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     { id: 17, name: "groups" },
     { id: 48, name: "committee" },
     { id: 18, name: "resolution" },
-
   ];
   try {
     // Iterate through each feature from the API response
@@ -2016,7 +2019,20 @@ export const SideBarGlobalNavigationFunction = async (
 ) => {
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
-
+  // let viewMeetingModal = store.getState().ModalStatesReducer.isViewMeetingModal;
+  // const {
+  //   meetingDetails,
+  //   organizers,
+  //   agendaContributors,
+  //   agenda,
+  //   agendaViewer,
+  //   minutes,
+  //   attendance,
+  //   recording,
+  //   polls,
+  //   actions,
+  //   attendees,
+  // } = store.getStore().ModalStatesReducer.viewTabs;
   console.log(
     { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
     "Checking",
@@ -2028,7 +2044,8 @@ export const SideBarGlobalNavigationFunction = async (
     } else if (minutes || actionsPage || polls) {
       console.log("Checking");
       if (Number(editorRole.status) === 9 && polls) {
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
+        // setViewAdvanceMeetingModal(false);
         let searchData = {
           Date: "",
           Title: "",
@@ -2124,6 +2141,143 @@ export const SideBarGlobalNavigationFunction = async (
       { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
       "Checking",
     );
+    navigate(navigateValue);
+  }
+};
+//Side Bar Functions Clicks Global Function
+export const SideBarGlobalNavigationFunctionNew = async (
+  dispatch,
+  navigate,
+  t,
+  navigateValue,
+  editorRole,
+  setCancelConfirmationModal,
+  setGoBackCancelModal,
+) => {
+  let userID = localStorage.getItem("userID");
+  let viewMeetingModal = store.getState().ModalStatesReducer.isViewMeetingModal;
+  let createEditMeetingModal =
+    store.getState().ModalStatesReducer.isCreateEditMeetingModal;
+
+  const {
+    meetingDetails,
+    organizers,
+    agendaContributors,
+    agenda,
+    agendaViewer,
+    minutes,
+    attendance,
+    recording,
+    polls,
+    actions,
+    attendees,
+  } = store.getStore()?.ModalStatesReducer?.viewTabs;
+
+  if (viewMeetingModal) {
+    console.log("Checking");
+    if (Number(editorRole?.status) === 10) {
+      console.log("Checking");
+    } else if (minutes || actions || polls) {
+      console.log("Checking");
+      if (Number(editorRole.status) === 9 && polls) {
+        dispatch(toggleViewMeetingModal(false));
+        // setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            localStorage.getItem("MeetingCurrentView") &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 1
+              ? true
+              : false,
+          ProposedMeetings:
+            localStorage.getItem("MeetingCurrentView") &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 2
+              ? true
+              : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } else {
+        setCancelConfirmationModal(true);
+      }
+    } else if (Number(editorRole.status) === 11) {
+      console.log("Checking");
+      console.log("Check Route Meeting");
+      dispatch(toggleViewMeetingModal(false));
+
+      // dispatch(viewMeetingFlag(false));
+      // setViewAdvanceMeetingModalUnpublish(false);
+      // setViewAdvanceMeetingModal(false);
+      navigate(navigateValue);
+    } else {
+      console.log(navigateValue, "Checking");
+
+      if (navigateValue === "/Diskus/") {
+        console.log(navigateValue, "Checking");
+        navigate("/Diskus/");
+      } else {
+        try {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings:
+              localStorage.getItem("MeetingCurrentView") &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              localStorage.getItem("MeetingCurrentView") &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
+          };
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          console.log("chek search meeting");
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+          dispatch(toggleViewMeetingModal(false));
+          console.log("Check Route Meeting");
+
+          // dispatch(viewMeetingFlag(false));
+          // isFunction(setViewAdvanceMeetingModalUnpublish) &&
+          //   setViewAdvanceMeetingModalUnpublish(false);
+
+          localStorage.removeItem("NotificationAdvanceMeetingID");
+          localStorage.removeItem("QuickMeetingCheckNotification");
+          localStorage.removeItem("viewadvanceMeetingPolls");
+          localStorage.removeItem("NotificationClickPollID");
+          localStorage.removeItem("AdvanceMeetingOperations");
+          localStorage.removeItem("NotificationClickTaskID");
+          localStorage.removeItem("viewadvanceMeetingTask");
+        } catch (error) {
+          console.log("Checking", error);
+        }
+      }
+      console.log("Checking");
+    }
+  } else if (createEditMeetingModal) {
+    // console.log(
+    //   { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
+    //   "Checking",
+    // );
+    setGoBackCancelModal(true);
+  } else {
+    // console.log(
+    //   { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
+    //   "Checking",
+    // );
     navigate(navigateValue);
   }
 };
@@ -2393,7 +2547,7 @@ const handleMeetingCase = (
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   }
   console.log("Check Route Meeting");
-  dispatch(resetCreateEditTabs())
+  dispatch(resetCreateEditTabs());
 
   setViewAdvanceMeetingModal(false);
   dispatch(viewMeetingFlag(false));
@@ -2413,7 +2567,6 @@ export const getMeetingValues = () => {
   const session = sessionStorage.getItem("isMeeting");
   return { local, session };
 };
-
 
 export const checklistStatusErrorMap = {
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_01:
@@ -2477,7 +2630,7 @@ export const checklistStatusErrorMap = {
 // and calls its handler. Falls back to `default` if no match found.
 export const switchOnMessage = (responseMessage, cases) => {
   const matchedKey = Object.keys(cases).find(
-    (key) => key !== "default" && responseMessage.includes(key.toLowerCase())
+    (key) => key !== "default" && responseMessage.includes(key.toLowerCase()),
   );
   const handler = matchedKey ? cases[matchedKey] : cases.default;
   if (handler) handler();

@@ -33,7 +33,14 @@ const AgendaContributorsModal = ({
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const { meetingID = 0 } = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo,
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails
   );
 
   const [selectedsearch, setSelectedsearch] = useState([]);
@@ -49,129 +56,192 @@ const AgendaContributorsModal = ({
   );
 
   useEffect(() => {
-    try {
-      let newOrganizersData =
-        MeetingOrganizersReducer.AllUserCommitteesGroupsData;
-      if (newOrganizersData !== null && newOrganizersData !== undefined) {
-        let temp = [];
-        if (Object.keys(newOrganizersData).length > 0) {
-          if (Object.keys(newOrganizersData.groups).length > 0) {
-            newOrganizersData.groups.forEach((a, index) => {
-              let newData = {
-                value: a.groupID,
-                name: a.groupName,
-
-                label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.groupName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                ),
-                type: 1,
-              };
-              temp.push(newData);
-            });
-          }
-          if (Object.keys(newOrganizersData.committees).length > 0) {
-            newOrganizersData.committees.forEach((a, index) => {
-              let newData = {
-                value: a.committeeID,
-                name: a.committeeName,
-                label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={committeeicon}
-                          width="21.71px"
-                          height="18.61px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.committeeName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                ),
-                type: 2,
-              };
-              temp.push(newData);
-            });
-          }
-          if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-            newOrganizersData.organizationUsers.forEach((a, index) => {
-              let newData = {
-                value: a.userID,
-                name: a.userName,
-                label: (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                          // src={}
-                          alt=""
-                          className={styles["UserProfilepic"]}
-                          width="18px"
-                          height="18px"
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {a.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                ),
-                type: 3,
-              };
-              temp.push(newData);
-            });
-          }
-          setDropdowndata(temp);
-        } else {
-          setDropdowndata([]);
-        }
-      }
-    } catch {}
-  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
-
-  useEffect(() => {
     let Data = {
       MeetingID: meetingID,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
-  }, []);
+  }, [meetingID]);
 
+
+  useEffect(() => {
+    const data = MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+
+    if (!data || Object.keys(data).length === 0) {
+      setDropdowndata([]);
+      return;
+    }
+
+    let temp = [];
+
+    // Groups
+    if (data.groups && data.groups.length > 0) {
+      if (groupInfo) {
+        const selectedGroup = data.groups.find(
+          (c) => c.groupID === groupInfo.groupID
+        );
+
+        if (selectedGroup && selectedGroup.groupUsers.length > 0) {
+          selectedGroup.groupUsers.forEach((member) => {
+            temp.push({
+              value: member.userID,
+              name: member.userName,
+              label: (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex gap-2 align-items-center'>
+                    <img
+                      src={`data:image/jpeg;base64,${member?.profilePicture?.displayProfilePictureName}`}
+                      alt=''
+                      className={styles["UserProfilepic"]}
+                      width='18px'
+                      height='18px'
+                      draggable='false'
+                    />
+                    <span className={styles["NameDropDown"]}>
+                      {member.userName}
+                    </span>
+                  </Col>
+                </Row>
+              ),
+              type: 3,
+            });
+          });
+          setDropdowndata(temp);
+          return;
+        } else {
+          data.groups.forEach((a) => {
+            temp.push({
+              value: a.groupID,
+              name: a.groupName,
+              label: (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex gap-2 align-items-center'>
+                    <img
+                      src={GroupIcon}
+                      alt=''
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                    />
+                    <span className={styles["NameDropDown"]}>
+                      {a.groupName}
+                    </span>
+                  </Col>
+                </Row>
+              ),
+              type: 1,
+            });
+          });
+        }
+      }
+    }
+
+    // Committees
+    if (data.committees && data.committees.length > 0) {
+      if (committeeInfo) {
+        const selectedCommittee = data.committees.find(
+          (c) => c.committeeID === committeeInfo.committeeID
+        );
+
+        if (selectedCommittee?.committeeUsers?.length > 0) {
+          selectedCommittee.committeeUsers.forEach((member) => {
+            temp.push({
+              value: member.userID,
+              name: member.userName,
+              label: (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex gap-2 align-items-center'>
+                    <img
+                      src={`data:image/jpeg;base64,${member?.profilePicture?.displayProfilePictureName}`}
+                      alt=''
+                      className={styles["UserProfilepic"]}
+                      width='18px'
+                      height='18px'
+                      draggable='false'
+                    />
+                    <span className={styles["NameDropDown"]}>
+                      {member.userName}
+                    </span>
+                  </Col>
+                </Row>
+              ),
+              type: 3,
+            });
+          });
+          
+    setDropdowndata(temp);
+    return;
+        }
+      } else {
+        data.committees.forEach((a) => {
+          temp.push({
+            value: a.committeeID,
+            name: a.committeeName,
+            label: (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex gap-2 align-items-center'>
+                  <img
+                    src={committeeicon}
+                    alt=''
+                    width='21.71px'
+                    height='18.61px'
+                    draggable='false'
+                  />
+                  <span className={styles["NameDropDown"]}>
+                    {a.committeeName}
+                  </span>
+                </Col>
+              </Row>
+            ),
+            type: 2,
+          });
+        });
+      }
+    }
+
+    // Organization Users
+    if (data.organizationUsers && data.organizationUsers.length > 0 && groupInfo === null && committeeInfo === null) {
+      data.organizationUsers.forEach((a) => {
+        temp.push({
+          value: a.userID,
+          name: a.userName,
+          label: (
+            <Row>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2 align-items-center">
+                <img
+                  src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                  alt=""
+                  className={styles["UserProfilepic"]}
+                  width="18px"
+                  height="18px"
+                  draggable="false"
+                />
+                <span className={styles["NameDropDown"]}>{a.userName}</span>
+              </Col>
+            </Row>
+          ),
+          type: 3,
+        });
+      });
+    }
+
+    setDropdowndata(temp);
+  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData, committeeInfo, groupInfo]);
   const handleCrossIcon = () => {
     dispatch(showAddAgendaContributor(false));
   };
@@ -187,112 +257,77 @@ const AgendaContributorsModal = ({
     setSelectedsearch(value);
   };
   const handleAddUsers = () => {
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+    const data = MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+  
+    if (!selectedsearch?.length) {
+      // TODO: show notification
+      return;
+    }
+  
     let tem = [...membersOrganizers];
-
-    if (Object.keys(selectedsearch).length > 0) {
-      try {
-        selectedsearch.forEach((seledtedData, index) => {
-          if (seledtedData.type === 1) {
-            let check1 = newOrganizersData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
-            );
-            if (check1 !== undefined) {
-              let groupUsers = check1.groupUsers;
-              if (Object.keys(groupUsers).length > 0) {
-                groupUsers.forEach((gUser, index) => {
-                  let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === gUser.userID
-                  );
-                  if (check2 !== undefined) {
-                  } else {
-                    let newUser = {
-                      userName: gUser.userName,
-                      userID: gUser.userID,
-                      displayPicture:
-                        gUser.profilePicture.displayProfilePictureName,
-                      email: gUser.emailAddress,
-                      Title: "",
-                      agendaListRightsAll:
-                        Number(SelectedRSVP.value) === 1 ? true : false,
-                      isEdit: false,
-                      isContributorNotified: true,
-                      attendeeAvailability: 1,
-                    };
-                    tem.push(newUser);
-                  }
-                });
-              }
+  
+    // 🔥 Use Set for fast duplicate check
+    const existingUserIds = new Set(tem.map((u) => u.userID));
+  
+    const createUserObject = (user) => ({
+      userName: user.userName,
+      userID: user.userID,
+      displayPicture: user.profilePicture?.displayProfilePictureName,
+      email: user.emailAddress,
+      Title: "",
+      agendaListRightsAll: Number(SelectedRSVP.value) === 1,
+      isEdit: false,
+      isContributorNotified: true,
+      attendeeAvailability: 1,
+    });
+  
+    try {
+      selectedsearch.forEach((selected) => {
+        // 🔹 GROUP
+        if (selected.type === 1) {
+          const group = data.groups?.find(
+            (g) => g.groupID === selected.value
+          );
+  
+          group?.groupUsers?.forEach((user) => {
+            if (!existingUserIds.has(user.userID)) {
+              tem.push(createUserObject(user));
+              existingUserIds.add(user.userID);
             }
-          } else if (seledtedData.type === 2) {
-            let check1 = newOrganizersData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
-            );
-            if (check1 !== undefined) {
-              let committeesUsers = check1.committeeUsers;
-              if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.forEach((cUser, index) => {
-                  let check2 = membersOrganizers.find(
-                    (data, index) => data.UserID === cUser.userID
-                  );
-                  if (check2 !== undefined) {
-                  } else {
-                    let newUser = {
-                      userName: cUser.userName,
-                      userID: cUser.userID,
-                      displayPicture:
-                        cUser.profilePicture.displayProfilePictureName,
-                      email: cUser.emailAddress,
-                      isContributorNotified: true,
-                      Title: "",
-                      agendaListRightsAll:
-                        Number(SelectedRSVP.value) === 1 ? true : false,
-                      isEdit: false,
-                      attendeeAvailability: 1,
-                    };
-                    tem.push(newUser);
-                  }
-                });
-              }
+          });
+        }
+  
+        // 🔹 COMMITTEE
+        else if (selected.type === 2) {
+          const committee = data.committees?.find(
+            (c) => c.committeeID === selected.value
+          );
+  
+          committee?.committeeUsers?.forEach((user) => {
+            if (!existingUserIds.has(user.userID)) {
+              tem.push(createUserObject(user));
+              existingUserIds.add(user.userID);
             }
-          } else if (seledtedData.type === 3) {
-            let check1 = membersOrganizers.find(
-              (data, index) => data.UserID === seledtedData.value
-            );
-            if (check1 !== undefined) {
-            } else {
-              let check2 = newOrganizersData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              if (check2 !== undefined) {
-                let newUser = {
-                  userName: check2.userName,
-                  userID: check2.userID,
-                  displayPicture:
-                    check2.profilePicture.displayProfilePictureName,
-                  email: check2.emailAddress,
-                  isContributorNotified: true,
-                  Title: "",
-                  agendaListRightsAll:
-                    Number(SelectedRSVP.value) === 1 ? true : false,
-                  isEdit: false,
-                  attendeeAvailability: 1,
-                };
-                tem.push(newUser);
-              }
-            }
-          } else {
+          });
+        }
+  
+        // 🔹 SINGLE USER
+        else if (selected.type === 3) {
+          const user = data.organizationUsers?.find(
+            (u) => u.userID === selected.value
+          );
+  
+          if (user && !existingUserIds.has(user.userID)) {
+            tem.push(createUserObject(user));
+            existingUserIds.add(user.userID);
           }
-        });
-      } catch {}
-      const uniqueData = new Set(tem.map(JSON.stringify));
-
-      const result = Array.from(uniqueData).map(JSON.parse);
-      setMembersOrganizers(result);
+        }
+      });
+  
+      setMembersOrganizers(tem);
       setSelectedsearch([]);
-    } else {
-      // setopen notionation work here
+    } catch (error) {
+      console.error("handleAddUsers error:", error);
     }
   };
   const handleClickDone = () => {
@@ -343,8 +378,7 @@ const AgendaContributorsModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_Padding"]}
-              >
+                className={styles["OverAll_Padding"]}>
                 <Row>
                   <Col lg={7} md={7} sm={12}>
                     <span className={styles["Add_organization"]}>
@@ -355,20 +389,19 @@ const AgendaContributorsModal = ({
                     lg={5}
                     md={5}
                     sm={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <img
                       draggable={false}
                       src={BlackCrossIcon}
                       className={"cursor-pointer"}
-                      width="16px"
-                      height="16px"
-                      alt=""
+                      width='16px'
+                      height='16px'
+                      alt=''
                       onClick={handleCrossIcon}
                     />
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col lg={10} md={10} sm={10}>
                     <Select
                       isDisabled={dropdowndata.length === 0 ? true : false}
@@ -397,8 +430,7 @@ const AgendaContributorsModal = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center align-items-center mt-3"
-                  ></Col>
+                    className='d-flex justify-content-center align-items-center mt-3'></Col>
                 </Row>
 
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
@@ -406,14 +438,13 @@ const AgendaContributorsModal = ({
                     ? membersOrganizers.map((data, index) => {
                         return (
                           <>
-                            <Col lg={6} md={6} sm={6} className="mt-2">
+                            <Col lg={6} md={6} sm={6} className='mt-2'>
                               <Row>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className={styles["padding_class"]}
-                                >
+                                  className={styles["padding_class"]}>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className={styles["Card_border2"]}>
@@ -421,13 +452,12 @@ const AgendaContributorsModal = ({
                                           <img
                                             draggable={false}
                                             src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                            width="33px"
-                                            height="33px"
-                                            alt=""
+                                            width='33px'
+                                            height='33px'
+                                            alt=''
                                           />
                                           <span
-                                            className={styles["Name_cards"]}
-                                          >
+                                            className={styles["Name_cards"]}>
                                             {data.userName}
                                           </span>
                                         </Col>
@@ -435,10 +465,10 @@ const AgendaContributorsModal = ({
                                           <img
                                             draggable={false}
                                             src={CrossIcon}
-                                            className="cursor-pointer"
-                                            width="14px"
-                                            alt=""
-                                            height="14px"
+                                            className='cursor-pointer'
+                                            width='14px'
+                                            alt=''
+                                            height='14px'
                                             onClick={() =>
                                               removeContributor(data)
                                             }
@@ -466,8 +496,7 @@ const AgendaContributorsModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 {membersOrganizers.length > 0 && (
                   <Button
                     text={t("Done")}
