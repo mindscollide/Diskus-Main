@@ -35,6 +35,7 @@ import {
   checkFeatureIDAvailability,
   getLocalStorageItemNonActiveCheck,
   SideBarGlobalNavigationFunction,
+  SideBarGlobalNavigationFunctionNew,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
@@ -600,20 +601,13 @@ const Header2 = ({ isVideo }) => {
 
   const homePageDashboardClickNoCall = () => {
     localStorage.setItem("navigateLocation", "MainDashBoard");
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal
     );
   };

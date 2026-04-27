@@ -9286,8 +9286,6 @@ const GetMeetingStatusDataAPI = (
   setVideoTalk,
   setViewFlag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
     let form = new FormData();
@@ -9363,10 +9361,11 @@ const GetMeetingStatusDataAPI = (
 
                 // For Notification ID === 9
                 if (FlagOnRouteClickAdvanceMeet === true) {
-                  dispatch(scheduleMeetingPageFlag(false));
-                  isFunction(setViewAdvanceMeetingModal) &&
-                    setViewAdvanceMeetingModal(true);
-                  dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                  dispatch(toggleViewMeetingModal(true))
+                  // dispatch(scheduleMeetingPageFlag(false));
+                  // isFunction(setViewAdvanceMeetingModal) &&
+                  //   setViewAdvanceMeetingModal(true);
+                  // dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 }
                 //Global Video Chat And Group ID Context State
                 isFunction(setVideoTalk) &&
