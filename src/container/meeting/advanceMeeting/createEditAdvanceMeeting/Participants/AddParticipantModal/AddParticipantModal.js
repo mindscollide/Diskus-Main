@@ -123,6 +123,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
             },
             isComingApi: false,
             attendeeAvailability: 1,
+            Title: "",
           });
         }
       }

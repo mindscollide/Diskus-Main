@@ -2171,7 +2171,7 @@ export const SideBarGlobalNavigationFunctionNew = async (
     polls,
     actions,
     attendees,
-  } = store.getStore()?.ModalStatesReducer?.viewTabs;
+  } = store.getState()?.ModalStatesReducer?.viewTabs;
 
   if (viewMeetingModal) {
     console.log("Checking");

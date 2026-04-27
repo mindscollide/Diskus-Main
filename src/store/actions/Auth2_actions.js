@@ -39,6 +39,7 @@ import {
 import { changeNewLanguage } from "./Language_actions";
 import { endMeetingStatusApi } from "./NewMeetingActions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { UpdateMeetingStatusApi } from "./NewMeeting2.actions";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -76,33 +77,33 @@ const createOrganization = (data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase()
                 )
             ) {
               localStorage.setItem(
                 "organizatioName",
-                data.Organization.OrganizationName,
+                data.Organization.OrganizationName
               );
               localStorage.setItem(
                 "userID",
-                response.data.responseResult.userID,
+                response.data.responseResult.userID
               );
               localStorage.setItem(
                 "OrganizationID",
-                response.data.responseResult.organizationID,
+                response.data.responseResult.organizationID
               );
               localStorage.setItem(
                 "userEmail",
-                data.Organization.ContactPersonEmail,
+                data.Organization.ContactPersonEmail
               );
 
               dispatch(
                 createOrganizationSuccess(
                   response.data.responseResult,
                   t(
-                    "The-organization-has-been-created-successfully-and-the-OTP-has-been-generated-Please-verfiy-you-email",
-                  ),
-                ),
+                    "The-organization-has-been-created-successfully-and-the-OTP-has-been-generated-Please-verfiy-you-email"
+                  )
+                )
               );
               localStorage.removeItem("PackageID");
               localStorage.setItem("minutes", 4);
@@ -112,32 +113,32 @@ const createOrganization = (data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_02".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_02".toLowerCase()
                 )
             ) {
               localStorage.setItem(
                 "userID",
-                response.data.responseResult.userID,
+                response.data.responseResult.userID
               );
               localStorage.setItem(
                 "OrganizationID",
-                response.data.responseResult.organizationID,
+                response.data.responseResult.organizationID
               );
               localStorage.setItem(
                 "userEmail",
-                data.Organization.ContactPersonEmail,
+                data.Organization.ContactPersonEmail
               );
               localStorage.setItem(
                 "organizatioName",
-                data.Organization.OrganizationName,
+                data.Organization.OrganizationName
               );
               dispatch(
                 createOrganizationSuccess(
                   response.data.responseResult,
                   t(
-                    "The-organization-has-been-created-successfully-but-the-OTP-has-not-been-generated",
-                  ),
-                ),
+                    "The-organization-has-been-created-successfully-but-the-OTP-has-not-been-generated"
+                  )
+                )
               );
               localStorage.setItem("minutes", 0);
               localStorage.setItem("seconds", 0);
@@ -147,55 +148,53 @@ const createOrganization = (data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_03".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_03".toLowerCase()
                 )
             ) {
               dispatch(
                 createOrganizationFail(
                   t(
-                    "The-organization-has-been-created-successfully-failed-to-save-user",
-                  ),
-                ),
+                    "The-organization-has-been-created-successfully-failed-to-save-user"
+                  )
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_04".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_04".toLowerCase()
                 )
             ) {
               dispatch(
                 createOrganizationFail(
-                  t("Failed-to-save-organization-subscription"),
-                ),
+                  t("Failed-to-save-organization-subscription")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_05".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_05".toLowerCase()
                 )
             ) {
               dispatch(
-                createOrganizationFail(
-                  t("Failed-to-save-organization-package"),
-                ),
+                createOrganizationFail(t("Failed-to-save-organization-package"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_06".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_06".toLowerCase()
                 )
             ) {
               dispatch(
-                createOrganizationFail(t("This-organization-already-exists")),
+                createOrganizationFail(t("This-organization-already-exists"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_07".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_07".toLowerCase()
                 )
             ) {
               dispatch(createOrganizationFail(t("The-user-email-exist")));
@@ -203,7 +202,7 @@ const createOrganization = (data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_08".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_08".toLowerCase()
                 )
             ) {
               dispatch(createOrganizationFail(t("Something-went-wrong")));
@@ -277,42 +276,42 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
                 )
             ) {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Device-does-not-exists"),
-                ),
+                  t("Device-does-not-exists")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
                 )
             ) {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Device-id-does-not-exists"),
-                ),
+                  t("Device-id-does-not-exists")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
                 )
             ) {
               localStorage.setItem(
                 "userID",
-                response.data.responseResult.userID,
+                response.data.responseResult.userID
               );
               localStorage.setItem(
                 "organizationID",
-                response.data.responseResult.organizationID,
+                response.data.responseResult.organizationID
               );
               let getLanguageSelected = localStorage.getItem("i18nextLng");
               let selectedLanguageID = getLanguageSelected === "en" ? 1 : 2;
@@ -326,8 +325,8 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Users-password-is-created"),
-                ),
+                  t("Users-password-is-created")
+                )
               );
               localStorage.setItem("LoginFlowPageRoute", 2);
               dispatch(LoginFlowRoutes(2));
@@ -336,27 +335,27 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
                 )
             ) {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Users-password-is-created-but-somthing-went-wrong"),
-                ),
+                  t("Users-password-is-created-but-somthing-went-wrong")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
                 )
             ) {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("User-password-is-not-created-please-create-your-password"),
-                ),
+                  t("User-password-is-not-created-please-create-your-password")
+                )
               );
               //localStorage.setItem("LoginFlowPageRoute", 11);
               dispatch(LoginFlowRoutes(11));
@@ -365,7 +364,7 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
                 )
             ) {
               localStorage.setItem("seconds", 0);
@@ -377,27 +376,27 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Users-email-is-not-verified-please-verify-your-email"),
-                ),
+                  t("Users-email-is-not-verified-please-verify-your-email")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
                 )
             ) {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Not-a-valid-user-please-login-with-valid-user"),
-                ),
+                  t("Not-a-valid-user-please-login-with-valid-user")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_08".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_08".toLowerCase()
                 )
             ) {
               dispatch(validationEmailFail(t("Trail-request-pending")));
@@ -408,12 +407,12 @@ const validationEmailAction = (email, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_09".toLowerCase(),
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_09".toLowerCase()
                 )
             ) {
               localStorage.setItem("LoginFlowPageRoute", 1);
               dispatch(
-                validationEmailFail(t("Trial-request-rejected-for-this-org")),
+                validationEmailFail(t("Trial-request-rejected-for-this-org"))
               );
               navigate("/");
               dispatch(LoginFlowRoutes(1));
@@ -457,7 +456,7 @@ const enterPasswordvalidation = (
   value,
   navigate,
   t,
-  setPasswordFieldDisabled,
+  setPasswordFieldDisabled
 ) => {
   const userID = localStorage.getItem("userID");
   const data = {
@@ -491,7 +490,7 @@ const enterPasswordvalidation = (
         response.data.responseResult,
         dispatch,
         navigate,
-        t,
+        t
       );
       let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
@@ -530,9 +529,7 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_07:
           dispatch(
-            enterPasswordFail(
-              t("Organization-subscription-packages-not-found"),
-            ),
+            enterPasswordFail(t("Organization-subscription-packages-not-found"))
           );
           clearLocalStorageAtloginresponce(dispatch, 4, navigate);
           // dispatch(LoginFlowRoutes(1));
@@ -543,8 +540,8 @@ const enterPasswordvalidation = (
             await dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("Organization-is-inactive"),
-              ),
+                t("Organization-is-inactive")
+              )
             );
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("SignupFlowPageRoute", 5);
@@ -561,28 +558,28 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordSuccess(
               response.data.responseResult,
-              "",
+              ""
               // t("Password-verified-and-user-is-new-and-2FA-is-enabled")
-            ),
+            )
           );
           localStorage.setItem("2fa", true);
           mqttConnection(
             response.data.responseResult.authToken.userID,
-            dispatch,
+            dispatch
           );
           await dispatch(
             TwoFaAuthenticate(
               t,
               response.data.responseResult.organizationID,
               data.UserID,
-              navigate,
-            ),
+              navigate
+            )
           );
           // clearLocalStorageAtloginresponce(dispatch, 3, navigate);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           await dispatch(
-            enterPasswordSuccess(response.data.responseResult, ""),
+            enterPasswordSuccess(response.data.responseResult, "")
           );
 
           handleNavigation(
@@ -590,18 +587,18 @@ const enterPasswordvalidation = (
             response.data.responseResult.authToken.isFirstLogIn,
             response.data.responseResult.hasUserRights,
             response.data.responseResult.hasAdminRights,
-            dispatch,
+            dispatch
           );
           await mqttConnection(
             response.data.responseResult.authToken.userID,
-            dispatch,
+            dispatch
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
             mqttConnection(
               response.data.responseResult.authToken.userID,
-              dispatch,
+              dispatch
             );
             navigate("/Admin/ManageUsers");
             dispatch(enterPasswordSuccess(response.data.responseResult, ""));
@@ -616,14 +613,14 @@ const enterPasswordvalidation = (
           dispatch(enterPasswordSuccess(response.data.responseResult, ""));
           mqttConnection(
             response.data.responseResult.authToken.userID,
-            dispatch,
+            dispatch
           );
           handleNavigation(
             navigate,
             response.data.responseResult.authToken.isFirstLogIn,
             response.data.responseResult.hasUserRights,
             response.data.responseResult.hasAdminRights,
-            dispatch,
+            dispatch
           );
 
           // route to onboard
@@ -641,7 +638,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -656,7 +653,7 @@ const enterPasswordvalidation = (
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
                   { name: "AuditTrial", id: 219 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -664,7 +661,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -677,7 +674,7 @@ const enterPasswordvalidation = (
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
                   { name: "AuditTrial", id: 219 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -685,9 +682,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -711,7 +708,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -726,7 +723,7 @@ const enterPasswordvalidation = (
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
                   { name: "AuditTrial", id: 219 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -734,7 +731,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -747,7 +744,7 @@ const enterPasswordvalidation = (
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
                   { name: "AuditTrial", id: 219 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -755,9 +752,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user",
-                ),
-              ),
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin-user"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -780,7 +777,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -795,7 +792,7 @@ const enterPasswordvalidation = (
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
                   { name: "AuditTrial", id: 219 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -803,7 +800,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -816,7 +813,7 @@ const enterPasswordvalidation = (
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
                   { name: "AuditTrial", id: 219 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -824,9 +821,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-not-active-and-this-is-an-admin",
-                ),
-              ),
+                  "Password-verified-and-subscription-not-active-and-this-is-an-admin"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -845,7 +842,7 @@ const enterPasswordvalidation = (
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -853,7 +850,7 @@ const enterPasswordvalidation = (
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -863,9 +860,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-not-active-and-this-is-an-user",
-                ),
-              ),
+                  "Password-verified-and-subscription-not-active-and-this-is-an-user"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -885,14 +882,14 @@ const enterPasswordvalidation = (
           packageFeatureIDs = [28];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalAdminRoutes",
             JSON.stringify([
               { id: 28, name: "PakageDetailsUserManagement" },
               { id: 200, name: "Admin" },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -901,8 +898,8 @@ const enterPasswordvalidation = (
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("The-organization-trial-has-expired"),
-              ),
+                t("The-organization-trial-has-expired")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -920,33 +917,33 @@ const enterPasswordvalidation = (
             if (JSON.parse(localStorage.getItem("isExtensionAvailable"))) {
               localStorage.setItem(
                 "TrialExpireSelectPac",
-                JSON.stringify(true),
+                JSON.stringify(true)
               );
               dispatch(showUpgradeNowModal(true));
               packageFeatureIDs = [28];
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
                 JSON.stringify([
                   { id: 28, name: "PakageDetailsUserManagement" },
                   { id: 200, name: "Admin" },
-                ]),
+                ])
               );
               navigate("/Admin/PakageDetailsUserManagement");
               dispatch(
                 enterPasswordSuccess(
                   response.data.responseResult,
-                  t("Organization-trial-has-expired-and-this-is-admin-user"),
-                ),
+                  t("Organization-trial-has-expired-and-this-is-admin-user")
+                )
               );
             } else {
               clearLocalStorageAtloginresponce(dispatch, 2, navigate);
               dispatch(LoginFlowRoutes(1));
               dispatch(
-                enterPasswordFail(t("User-not-authorised-contact-admin")),
+                enterPasswordFail(t("User-not-authorised-contact-admin"))
               );
             }
           } else {
@@ -965,33 +962,33 @@ const enterPasswordvalidation = (
             if (JSON.parse(localStorage.getItem("isExtensionAvailable"))) {
               localStorage.setItem(
                 "TrialExpireSelectPac",
-                JSON.stringify(true),
+                JSON.stringify(true)
               );
               dispatch(showUpgradeNowModal(true));
               packageFeatureIDs = [28];
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
                 JSON.stringify([
                   { id: 28, name: "PakageDetailsUserManagement" },
                   { id: 200, name: "Admin" },
-                ]),
+                ])
               );
               navigate("/Admin/PakageDetailsUserManagement");
               dispatch(
                 enterPasswordSuccess(
                   response.data.responseResult,
-                  t("Organization-trial-has-expired-and-this-is-admin"),
-                ),
+                  t("Organization-trial-has-expired-and-this-is-admin")
+                )
               );
             } else {
               clearLocalStorageAtloginresponce(dispatch, 2, navigate);
               dispatch(LoginFlowRoutes(1));
               dispatch(
-                enterPasswordFail(t("User-not-authorised-contact-admin")),
+                enterPasswordFail(t("User-not-authorised-contact-admin"))
               );
             }
           } else {
@@ -1008,7 +1005,7 @@ const enterPasswordvalidation = (
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -1016,7 +1013,7 @@ const enterPasswordvalidation = (
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -1024,8 +1021,8 @@ const enterPasswordvalidation = (
             navigate("/Diskus");
             dispatch(
               enterPasswordSuccess(
-                t("Organization-trial-has-expired-and-this-is-user"),
-              ),
+                t("Organization-trial-has-expired-and-this-is-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1046,9 +1043,9 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordFail(
               t(
-                "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance",
-              ),
-            ),
+                "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_27:
@@ -1057,9 +1054,9 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordFail(
               t(
-                "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance",
-              ),
-            ),
+                "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_28:
@@ -1068,9 +1065,9 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordFail(
               t(
-                "Password-verified-and-subscription-is-closed-and-this-is-organization-creator",
-              ),
-            ),
+                "Password-verified-and-subscription-is-closed-and-this-is-organization-creator"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_29:
@@ -1080,9 +1077,9 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordFail(
               t(
-                "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user",
-              ),
-            ),
+                "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_30:
@@ -1092,9 +1089,9 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordFail(
               t(
-                "Password-verified-and-subscription-is-closed-and-this-is-an-admin",
-              ),
-            ),
+                "Password-verified-and-subscription-is-closed-and-this-is-an-admin"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_31:
@@ -1104,9 +1101,9 @@ const enterPasswordvalidation = (
           dispatch(
             enterPasswordFail(
               t(
-                "Password-verified-and-subscription-is-closed-and-this-is-an-user",
-              ),
-            ),
+                "Password-verified-and-subscription-is-closed-and-this-is-an-user"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_32:
@@ -1123,7 +1120,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1137,7 +1134,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1145,7 +1142,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1157,7 +1154,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -1165,9 +1162,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-cancel-and-this-is-organization-creator",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-cancel-and-this-is-organization-creator"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1190,7 +1187,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1204,7 +1201,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1212,7 +1209,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1224,7 +1221,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -1232,9 +1229,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-cancel-and-this-is-an-admin-user",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-cancel-and-this-is-an-admin-user"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1257,7 +1254,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1271,7 +1268,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1279,7 +1276,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1291,7 +1288,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -1299,9 +1296,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-cancel-and-this-is-an-admin",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-cancel-and-this-is-an-admin"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1318,7 +1315,7 @@ const enterPasswordvalidation = (
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -1326,7 +1323,7 @@ const enterPasswordvalidation = (
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -1336,9 +1333,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-cancel-and-this-is-an-user",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-cancel-and-this-is-an-user"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1353,8 +1350,8 @@ const enterPasswordvalidation = (
 
           dispatch(
             enterPasswordFail(
-              "Password-verified-and-subscription-is-suspended-and-this-is-organization-creator",
-            ),
+              "Password-verified-and-subscription-is-suspended-and-this-is-organization-creator"
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_37:
@@ -1370,7 +1367,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1384,7 +1381,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1392,7 +1389,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1404,7 +1401,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -1412,9 +1409,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin-user",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin-user"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1437,7 +1434,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1451,7 +1448,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1459,7 +1456,7 @@ const enterPasswordvalidation = (
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1471,7 +1468,7 @@ const enterPasswordvalidation = (
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -1479,9 +1476,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-suspended-and-this-is-an-admin"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1498,7 +1495,7 @@ const enterPasswordvalidation = (
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -1506,7 +1503,7 @@ const enterPasswordvalidation = (
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -1516,9 +1513,9 @@ const enterPasswordvalidation = (
               enterPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "Password-verified-and-subscription-is-suspended-and-this-is-an-user",
-                ),
-              ),
+                  "Password-verified-and-subscription-is-suspended-and-this-is-an-user"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1567,7 +1564,7 @@ const verificationEmailOTP = (
   t,
   updateFlag,
   setSeconds,
-  setMinutes,
+  setMinutes
 ) => {
   let userID = localStorage.getItem("userID");
   let email =
@@ -1587,15 +1584,15 @@ const verificationEmailOTP = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserEmailVerification_01".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_01".toLowerCase()
                 )
             ) {
               console.log("LoginFlowPageRoute");
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
-                  t("The-users-email-has-been-verified"),
-                ),
+                  t("The-users-email-has-been-verified")
+                )
               );
               console.log("LoginFlowPageRoute");
               if (updateFlag === true) {
@@ -1626,34 +1623,34 @@ const verificationEmailOTP = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserEmailVerification_02".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_02".toLowerCase()
                 )
             ) {
               dispatch(
-                verifyOTPFail(t("Invalid-otp-failed-to-verify-user-email")),
+                verifyOTPFail(t("Invalid-otp-failed-to-verify-user-email"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserEmailVerification_03".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_03".toLowerCase()
                 )
             ) {
               console.log("423986");
               dispatch(
-                verifyOTPFail(t("The-users-email-has-not-been-verified")),
+                verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserEmailVerification_04".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_04".toLowerCase()
                 )
             ) {
               dispatch(
                 verifyOTPFail(
-                  t("The-user-has-reached-the-maximum-faileda-attempts"),
-                ),
+                  t("The-user-has-reached-the-maximum-faileda-attempts")
+                )
               );
               localStorage.removeItem("LoginFlowPageRoute");
               localStorage.removeItem("SignupFlowPageRoute");
@@ -1662,7 +1659,7 @@ const verificationEmailOTP = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserEmailVerification_05".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_05".toLowerCase()
                 )
             ) {
               dispatch(verifyOTPFail(t("Trail-request-pending")));
@@ -1673,7 +1670,7 @@ const verificationEmailOTP = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_UserEmailVerification_06".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_06".toLowerCase()
                 )
             ) {
               dispatch(verifyOTPFail(t("Trial-request-rejected-for-this=Org")));
@@ -1738,7 +1735,7 @@ const createPasswordAction = (value, navigate, t) => {
         response.data.responseResult,
         dispatch,
         navigate,
-        t,
+        t
       );
       // await dispatch(
       //   getPackageExpiryDetail(
@@ -1756,8 +1753,8 @@ const createPasswordAction = (value, navigate, t) => {
         case USERSPASSWORDCREATION.CREATION_02:
           dispatch(
             createPasswordFail(
-              t("Organization-subscription-packages-not-found"),
-            ),
+              t("Organization-subscription-packages-not-found")
+            )
           );
           // no action
           break;
@@ -1772,14 +1769,14 @@ const createPasswordAction = (value, navigate, t) => {
           packageFeatureIDs = [28];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalAdminRoutes",
             JSON.stringify([
               { id: 28, name: "PakageDetailsUserManagement" },
               { id: 200, name: "Admin" },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -1788,8 +1785,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("User-is-the-organization-creator-trial-has-expired"),
-              ),
+                t("User-is-the-organization-creator-trial-has-expired")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1807,15 +1804,15 @@ const createPasswordAction = (value, navigate, t) => {
           localStorage.setItem("2fa", true);
           mqttConnection(
             response.data.responseResult.authToken.userID,
-            dispatch,
+            dispatch
           );
           await dispatch(
             TwoFaAuthenticate(
               t,
               response.data.responseResult.organizationID,
               data.UserID,
-              navigate,
-            ),
+              navigate
+            )
           );
           clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           // }
@@ -1839,7 +1836,7 @@ const createPasswordAction = (value, navigate, t) => {
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
@@ -1858,7 +1855,7 @@ const createPasswordAction = (value, navigate, t) => {
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
@@ -1870,7 +1867,7 @@ const createPasswordAction = (value, navigate, t) => {
           handleNavigation(
             navigate,
             response.data.responseResult.authToken.isFirstLogIn,
-            dispatch,
+            dispatch
           );
           dispatch(createPasswordSuccess(response.data.responseResult, ""));
 
@@ -1890,7 +1887,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1904,7 +1901,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1912,7 +1909,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1924,7 +1921,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -1932,9 +1929,9 @@ const createPasswordAction = (value, navigate, t) => {
               createPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "User-is-the-organization-creator-org-sub-not-active-and-this-is-organization-creator",
-                ),
-              ),
+                  "User-is-the-organization-creator-org-sub-not-active-and-this-is-organization-creator"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -1942,7 +1939,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           break;
@@ -1960,7 +1957,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1974,7 +1971,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -1982,7 +1979,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -1994,15 +1991,15 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-not-active-and-this-is-an-admin-user"),
-              ),
+                t("Org-sub-not-active-and-this-is-an-admin-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2010,7 +2007,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
 
@@ -2028,7 +2025,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2042,7 +2039,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2050,7 +2047,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2062,15 +2059,15 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-not-active-and-this-is-a-admin"),
-              ),
+                t("Org-sub-not-active-and-this-is-a-admin")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2078,7 +2075,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           break;
@@ -2089,7 +2086,7 @@ const createPasswordAction = (value, navigate, t) => {
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -2097,7 +2094,7 @@ const createPasswordAction = (value, navigate, t) => {
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -2106,15 +2103,15 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-not-active-and-this-is-a-user"),
-              ),
+                t("Org-sub-not-active-and-this-is-a-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           break;
@@ -2125,8 +2122,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Organization-is-inactive"),
-              ),
+                t("Organization-is-inactive")
+              )
             );
 
             // localStorage.removeItem("LoginFlowPageRoute");
@@ -2141,8 +2138,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(
-                t("Organization-is-inactive-and-the-user-is-an-admin-user"),
-              ),
+                t("Organization-is-inactive-and-the-user-is-an-admin-user")
+              )
             );
           }
           // route to onboard
@@ -2153,8 +2150,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Organization-is-inactive"),
-              ),
+                t("Organization-is-inactive")
+              )
             );
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("SignupFlowPageRoute", 5);
@@ -2164,8 +2161,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(
-                t("Organization-is-inactive-and-this-is-an-admin"),
-              ),
+                t("Organization-is-inactive-and-this-is-an-admin")
+              )
             );
           }
 
@@ -2176,8 +2173,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Organization-is-inactive"),
-              ),
+                t("Organization-is-inactive")
+              )
             );
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("SignupFlowPageRoute", 5);
@@ -2187,8 +2184,8 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(LoginFlowRoutes(1));
             dispatch(
               createPasswordFail(
-                t("Organization-is-inactive-and-this-is-an-user"),
-              ),
+                t("Organization-is-inactive-and-this-is-an-user")
+              )
             );
           }
 
@@ -2205,8 +2202,8 @@ const createPasswordAction = (value, navigate, t) => {
 
           dispatch(
             createPasswordFail(
-              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance",
-            ),
+              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+            )
           );
           break;
         case USERSPASSWORDCREATION.CREATION_17:
@@ -2216,9 +2213,9 @@ const createPasswordAction = (value, navigate, t) => {
           dispatch(
             createPasswordFail(
               t(
-                "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance",
-              ),
-            ),
+                "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+              )
+            )
           );
           break;
         case USERSPASSWORDCREATION.CREATION_18:
@@ -2234,7 +2231,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2248,7 +2245,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2256,7 +2253,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2268,7 +2265,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -2276,9 +2273,9 @@ const createPasswordAction = (value, navigate, t) => {
               createPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator",
-                ),
-              ),
+                  "User-is-the-organization-creator-org-sub-is-suspended-and-this-is-organization-creator"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2286,7 +2283,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2304,7 +2301,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2318,7 +2315,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2326,7 +2323,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2338,15 +2335,15 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-is-suspended-and-this-is-an-admin-user"),
-              ),
+                t("Org-sub-is-suspended-and-this-is-an-admin-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2354,7 +2351,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2372,7 +2369,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2386,7 +2383,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2394,7 +2391,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2406,15 +2403,15 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-is-suspended-and-this-is-a-admin"),
-              ),
+                t("Org-sub-is-suspended-and-this-is-a-admin")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2422,7 +2419,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2434,7 +2431,7 @@ const createPasswordAction = (value, navigate, t) => {
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -2442,7 +2439,7 @@ const createPasswordAction = (value, navigate, t) => {
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -2451,15 +2448,15 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-is-suspended-and-this-is-a-user"),
-              ),
+                t("Org-sub-is-suspended-and-this-is-a-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2470,9 +2467,9 @@ const createPasswordAction = (value, navigate, t) => {
           dispatch(
             createPasswordFail(
               t(
-                "User-is-the-organization-creator-org-sub-is-closed-and-this-is-organization-creator",
-              ),
-            ),
+                "User-is-the-organization-creator-org-sub-is-closed-and-this-is-organization-creator"
+              )
+            )
           );
           // no action
           break;
@@ -2480,9 +2477,7 @@ const createPasswordAction = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
-            createPasswordFail(
-              t("Org-sub-is-closed-and-this-is-an-admin-user"),
-            ),
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-an-admin-user"))
           );
           // no action
           break;
@@ -2490,7 +2485,7 @@ const createPasswordAction = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
-            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-admin")),
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-admin"))
           );
           // no action
           break;
@@ -2498,7 +2493,7 @@ const createPasswordAction = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
-            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-user")),
+            createPasswordFail(t("Org-sub-is-closed-and-this-is-a-user"))
           );
           // no action
           break;
@@ -2515,7 +2510,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2529,7 +2524,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2537,7 +2532,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2549,7 +2544,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
@@ -2557,9 +2552,9 @@ const createPasswordAction = (value, navigate, t) => {
               createPasswordSuccess(
                 response.data.responseResult,
                 t(
-                  "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator",
-                ),
-              ),
+                  "User-is-the-Organization-Creator-Org-sub-is-cancel-and-this-is-organization-creator"
+                )
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2567,7 +2562,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2585,7 +2580,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2599,7 +2594,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2607,7 +2602,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2619,15 +2614,15 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-is-cancel-and-this-is-an-admin-user"),
-              ),
+                t("Org-sub-is-cancel-and-this-is-an-admin-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2635,7 +2630,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2653,7 +2648,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2667,7 +2662,7 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/PayOutstanding");
             } else {
@@ -2675,7 +2670,7 @@ const createPasswordAction = (value, navigate, t) => {
               localStorage.removeItem("LocalAdminRoutes");
               localStorage.setItem(
                 "packageFeatureIDs",
-                JSON.stringify(packageFeatureIDs),
+                JSON.stringify(packageFeatureIDs)
               );
               localStorage.setItem(
                 "LocalAdminRoutes",
@@ -2687,15 +2682,15 @@ const createPasswordAction = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
-                ]),
+                ])
               );
               navigate("/Admin/ManageUsers");
             }
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-is-cancel-and-this-is-an-admin"),
-              ),
+                t("Org-sub-is-cancel-and-this-is-an-admin")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2703,7 +2698,7 @@ const createPasswordAction = (value, navigate, t) => {
             localStorage.removeItem("LocalUserRoutes");
             localStorage.setItem("VERIFICATION", false);
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2715,7 +2710,7 @@ const createPasswordAction = (value, navigate, t) => {
           packageFeatureIDs = [100, 101, 102];
           localStorage.setItem(
             "packageFeatureIDs",
-            JSON.stringify(packageFeatureIDs),
+            JSON.stringify(packageFeatureIDs)
           );
           localStorage.setItem(
             "LocalUserRoutes",
@@ -2723,7 +2718,7 @@ const createPasswordAction = (value, navigate, t) => {
               { name: "Diskus", id: 100 },
               { name: "home", id: 101 },
               { name: "", id: 102 },
-            ]),
+            ])
           );
 
           //yeah pay outstanding per lai jai ga
@@ -2732,15 +2727,15 @@ const createPasswordAction = (value, navigate, t) => {
             dispatch(
               createPasswordSuccess(
                 response.data.responseResult,
-                t("Org-sub-is-cancel-and-this-is-an-user"),
-              ),
+                t("Org-sub-is-cancel-and-this-is-an-user")
+              )
             );
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
             dispatch(LoginFlowRoutes(1));
 
             dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin")),
+              createPasswordFail(t("User-not-authorised-contact-admin"))
             );
           }
           // no action
@@ -2795,14 +2790,14 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_01".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_01".toLowerCase()
                 )
             ) {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  "",
-                ),
+                  ""
+                )
               );
               let TenureID =
                 response.data.responseResult.organizationSelectedPackage
@@ -2814,27 +2809,27 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_02".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_02".toLowerCase()
                 )
             ) {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  "",
-                ),
+                  ""
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_03".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_03".toLowerCase()
                 )
             ) {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  "",
-                ),
+                  ""
+                )
               );
             }
           } else {
@@ -2894,17 +2889,17 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ChangePassword_01".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ChangePassword_01".toLowerCase()
                 )
             ) {
               dispatch(
-                changePasswordSuccess(t("Password-updated-successfully")),
+                changePasswordSuccess(t("Password-updated-successfully"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ChangePassword_02".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ChangePassword_02".toLowerCase()
                 )
             ) {
               dispatch(changePasswordFail(t("No-password-updated")));
@@ -2912,7 +2907,7 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase()
                 )
             ) {
               dispatch(changePasswordFail(t("Old-password-is-incorrect")));
@@ -2920,7 +2915,7 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase()
                 )
             ) {
               dispatch(changePasswordFail(t("Something-went-wrong")));
@@ -2976,7 +2971,7 @@ const organizationPackageReselection = (
   ID,
   TenureOfSuscriptionID,
   navigate,
-  t,
+  t
 ) => {
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
@@ -3000,55 +2995,55 @@ const organizationPackageReselection = (
               ID,
               TenureOfSuscriptionID,
               navigate,
-              t,
-            ),
+              t
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             localStorage.setItem(
               "organizationID",
-              response.data.responseResult.organizationID,
+              response.data.responseResult.organizationID
             );
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_01".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_01".toLowerCase()
                 )
             ) {
               dispatch(
                 organizationPackageReselectionSuccess(
                   response.data.responseResult,
-                  t("Organization-package-selected-successfully"),
-                ),
+                  t("Organization-package-selected-successfully")
+                )
               );
               navigate("/selectedpackage");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_02".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_02".toLowerCase()
                 )
             ) {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("Organization-package-not-selected"),
-                ),
+                  t("Organization-package-not-selected")
+                )
               );
               // navigate("/Admin/PackageDetail");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_03".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_03".toLowerCase()
                 )
             ) {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("Organization-package-not-save"),
-                ),
+                  t("Organization-package-not-save")
+                )
               );
               if (response.data.responseResult.hasAdminRights) {
                 navigate("/Admin/PackageDetail");
@@ -3057,14 +3052,14 @@ const organizationPackageReselection = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_04".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_04".toLowerCase()
                 )
             ) {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("Previous-package-not-deleted"),
-                ),
+                  t("Previous-package-not-deleted")
+                )
               );
               if (response.data.responseResult.hasAdminRights) {
                 navigate("/Admin/PackageDetail");
@@ -3073,14 +3068,14 @@ const organizationPackageReselection = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_05".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_05".toLowerCase()
                 )
             ) {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("Previous-subscription-not-deleted"),
-                ),
+                  t("Previous-subscription-not-deleted")
+                )
               );
               if (response.data.responseResult.hasAdminRights) {
                 navigate("/Admin/PackageDetail");
@@ -3089,31 +3084,31 @@ const organizationPackageReselection = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_06".toLowerCase(),
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_06".toLowerCase()
                 )
             ) {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("Something-went-wrong"),
-                ),
+                  t("Something-went-wrong")
+                )
               );
               if (response.data.responseResult.hasAdminRights) {
                 navigate("/Admin/PackageDetail");
               }
             } else {
               dispatch(
-                organizationPackageReselectionFail(t("Something-went-wrong")),
+                organizationPackageReselectionFail(t("Something-went-wrong"))
               );
             }
           } else {
             dispatch(
-              organizationPackageReselectionFail(t("Something-went-wrong")),
+              organizationPackageReselectionFail(t("Something-went-wrong"))
             );
           }
         } else {
           dispatch(
-            organizationPackageReselectionFail(t("Something-went-wrong")),
+            organizationPackageReselectionFail(t("Something-went-wrong"))
           );
         }
       })
@@ -3156,7 +3151,7 @@ const updatePasswordAction = (value, navigate, t) => {
     form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
-      passswordUpdationOnForgetPassword.RequestMethod,
+      passswordUpdationOnForgetPassword.RequestMethod
     );
     axiosInstance
       .post(authenticationApi, form)
@@ -3167,24 +3162,21 @@ const updatePasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_01".toLowerCase(),
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_01".toLowerCase()
                 )
             ) {
               try {
                 dispatch(
-                  passwordupdatesuccess(t("Password-updated-successfully")),
+                  passwordupdatesuccess(t("Password-updated-successfully"))
                 );
                 localStorage.removeItem("updatePasswordCheck");
                 navigate("/updatepassword");
-              } catch (error) {
-                
-              }
-         
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_02".toLowerCase(),
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_02".toLowerCase()
                 )
             ) {
               dispatch(createPasswordFail(t("No-password-updated")));
@@ -3192,7 +3184,7 @@ const updatePasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_03".toLowerCase(),
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_03".toLowerCase()
                 )
             ) {
               dispatch(createPasswordFail(t("No-password-updated")));
@@ -3200,7 +3192,7 @@ const updatePasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_04".toLowerCase(),
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_04".toLowerCase()
                 )
             ) {
               dispatch(createPasswordFail(t("Something-went-wrong")));
@@ -3259,21 +3251,21 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01".toLowerCase(),
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_01".toLowerCase()
                 )
             ) {
               setInvoiceModal(true);
               dispatch(
                 getInvoiceHTML_Success(
                   response.data.responseResult,
-                  t("Successfull"),
-                ),
+                  t("Successfull")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_02".toLowerCase(),
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_02".toLowerCase()
                 )
             ) {
               dispatch(getInvoiceHTML_Fail(t("Not-created")));
@@ -3281,7 +3273,7 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_03".toLowerCase(),
+                  "Admin_AdminServiceManager_GetInvoiceHtmlByOrganizationID_03".toLowerCase()
                 )
             ) {
               dispatch(getInvoiceHTML_Fail(t("Something-went-wrong")));
@@ -3389,7 +3381,7 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      ValidateEncryptedStringForOTPEmailLinkRM.RequestMethod,
+      ValidateEncryptedStringForOTPEmailLinkRM.RequestMethod
     );
     axiosInstance
       .post(authenticationApi, form)
@@ -3400,27 +3392,27 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_01".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_01".toLowerCase()
                 )
             ) {
               dispatch(
                 validateStringOTPEmail_success(
                   response.data.responseResult,
-                  t("Successfully-updated"),
-                ),
+                  t("Successfully-updated")
+                )
               );
 
               localStorage.setItem(
                 "email",
-                response?.data?.responseResult?.data?.email,
+                response?.data?.responseResult?.data?.email
               );
               localStorage.setItem(
                 "userID",
-                Number(response?.data?.responseResult?.data?.userID),
+                Number(response?.data?.responseResult?.data?.userID)
               );
               localStorage.setItem(
                 "organizationID",
-                response?.data?.responseResult?.data?.organizationID,
+                response?.data?.responseResult?.data?.organizationID
               );
               localStorage.setItem("LoginFlowPageRoute", 3);
               dispatch(LoginFlowRoutes(3));
@@ -3432,7 +3424,7 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_02".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_02".toLowerCase()
                 )
             ) {
               dispatch(validateStringOTPEmail_fail(t("Validation-Failed")));
@@ -3442,7 +3434,7 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_03".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ValidateEncryptedStringForOTPEmailLink_03".toLowerCase()
                 )
             ) {
               localStorage.setItem("LoginFlowPageRoute", 1);
@@ -3499,7 +3491,7 @@ const validatePasswordActionApi = (
   deleteMeetingRecord,
   setDeleteMeetingConfirmationModal,
   setShowErrorMessage,
-  setShowError,
+  setShowError
 ) => {
   return (dispatch) => {
     dispatch(validatePassword_init());
@@ -3519,8 +3511,8 @@ const validatePasswordActionApi = (
               deleteMeetingRecord,
               setDeleteMeetingConfirmationModal,
               setShowErrorMessage,
-              setShowError,
-            ),
+              setShowError
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3528,32 +3520,41 @@ const validatePasswordActionApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ValidateUserPassword_01".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ValidateUserPassword_01".toLowerCase()
                 )
             ) {
               dispatch(
                 validatePassword_success(
                   response.data.responseResult,
-                  t("Password-verified"),
-                ),
+                  t("Password-verified")
+                )
               );
               await dispatch(
-                endMeetingStatusApi(
+                UpdateMeetingStatusApi(
                   navigate,
                   t,
                   deleteMeetingRecord,
-                  false,
-                  false,
-                  5,
-                  setDeleteMeetingConfirmationModal,
-                ),
+                  "deleteMeetingFromDraftTab",
+                  { setDeleteMeetingConfirmationModal }
+                )
               );
+              // await dispatch(
+              //   endMeetingStatusApi(
+              //     navigate,
+              //     t,
+              //     deleteMeetingRecord,
+              //     false,
+              //     false,
+              //     5,
+              //     setDeleteMeetingConfirmationModal,
+              //   ),
+              // );
               // navigate("/updatepassword");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ValidateUserPassword_02".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ValidateUserPassword_02".toLowerCase()
                 )
             ) {
               dispatch(validatePassword_fail(t("Password-not-verified")));
@@ -3563,7 +3564,7 @@ const validatePasswordActionApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_ValidatePassword_03".toLowerCase(),
+                  "ERM_AuthService_AuthManager_ValidatePassword_03".toLowerCase()
                 )
             ) {
               dispatch(validatePassword_fail(t("Something-went-wrong")));

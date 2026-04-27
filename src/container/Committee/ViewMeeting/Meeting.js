@@ -193,7 +193,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       HostName: "",
       UserID: Number(userID),
       PageNumber: 1,
-      Length: 50,
+      Length: 30,
       PublishedMeetings: true,
     };
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));

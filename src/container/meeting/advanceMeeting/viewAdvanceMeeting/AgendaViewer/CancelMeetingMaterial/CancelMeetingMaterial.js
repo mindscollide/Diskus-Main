@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
+import { resetCurrentMeetingInfo } from "../../../../../../store/actions/NewMeeting2.actions";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 
 const CancelMeetingMaterial = ({
   setViewAdvanceMeetingModal,
@@ -29,12 +31,12 @@ const CancelMeetingMaterial = ({
 
   const handleYesFunctionality = () => {
     dispatch(showCancelMeetingMaterial(false));
-    setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     dispatch(cleareAllState());
     setEditorRole({ status: null, role: null });
-    setAdvanceMeetingModalID(null);
+    dispatch(resetCurrentMeetingInfo())
+    dispatch(toggleViewMeetingModal(false))
   };
 
   return (

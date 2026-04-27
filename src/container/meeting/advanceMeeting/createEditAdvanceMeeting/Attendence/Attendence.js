@@ -29,18 +29,17 @@ import {
 import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { resetCreateEditTabs, toggleCreateEditMeetingModal } from "../../../../../store/actions/ModalStates_actions";
 
-const Attendence = ({
-  currentMeeting,
-  setSceduleMeeting,
-  setPolls,
-  setAttendance,
-}) => {
+const Attendence = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { setEditorRole } = useContext(MeetingContext);
-
+  const {  setEditorRole, setGoBackCancelModal } =
+    useContext(MeetingContext);
+  const { meetingID = 0, } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
   //reducer call from Attendance_Reducers
   const ResponseMessage = useSelector(
     (state) => state.attendanceMeetingReducer.ResponseMessage,
@@ -272,7 +271,7 @@ const Attendence = ({
   // dispatch Api in useEffect
   useEffect(() => {
     let meetingData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
     };
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);
@@ -297,7 +296,7 @@ const Attendence = ({
       });
       let Data = {
         MeetingAttendance: newData,
-        MeetingID: Number(currentMeeting),
+        MeetingID: Number(meetingID),
       };
 
       const response = await dispatch(
@@ -306,7 +305,6 @@ const Attendence = ({
 
       if (response && response.success) {
         handleSaveNotification();
-      } else {
       }
     } catch (error) {
       handleSaveNotification();
@@ -333,31 +331,35 @@ const Attendence = ({
   };
 
   const handleCancelBtn = () => {
-    let ReducerAttendeceData = deepEqual(attendanceMeetings, attendenceRows);
-    if (ReducerAttendeceData) {
-      setSceduleMeeting(false);
-      setPolls(false);
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber:
-          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-        PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
-        ProposedMeetings:
-          currentView && Number(currentView) === 2 ? true : false,
-      };
-      console.log("chek search meeting");
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.removeItem("folderDataRoomMeeting");
-      setEditorRole({ status: null, role: null });
-    } else {
-      dispatch(showAttendanceConfirmationModal(true));
-      setUseCase(2);
-    }
+    setGoBackCancelModal(true);
+
+    // let ReducerAttendeceData = deepEqual(attendanceMeetings, attendenceRows);
+    // if (ReducerAttendeceData) {
+    //   dispatch(toggleCreateEditMeetingModal(false))
+    //   // setSceduleMeeting(false);
+    //   // setPolls(false);
+    //   dispatch(resetCreateEditTabs())
+    //   let searchData = {
+    //     Date: "",
+    //     Title: "",
+    //     HostName: "",
+    //     UserID: Number(userID),
+    //     PageNumber:
+    //       meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+    //     Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+    //     PublishedMeetings:
+    //       currentView && Number(currentView) === 1 ? true : false,
+    //     ProposedMeetings:
+    //       currentView && Number(currentView) === 2 ? true : false,
+    //   };
+    //   console.log("chek search meeting");
+    //   dispatch(searchNewUserMeeting(navigate, searchData, t));
+    //   localStorage.removeItem("folderDataRoomMeeting");
+    //   setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+    // } else {
+    //   dispatch(showAttendanceConfirmationModal(true));
+    //   setUseCase(2);
+    // }
   };
   return (
     <>
@@ -401,14 +403,7 @@ const Attendence = ({
         </Col>
       </Row>
 
-      {attendanceConfirmationModal && (
-        <CancelModal
-          setAttendance={setAttendance}
-          setPolls={setPolls}
-          useCase={useCase}
-          setSceduleMeeting={setSceduleMeeting}
-        />
-      )}
+   
 
       <Notification open={open} setOpen={setOpen} />
     </>

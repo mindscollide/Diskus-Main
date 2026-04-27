@@ -27,6 +27,11 @@ import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonM
 import { Tooltip } from "antd";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import {
+  resetViewTabs,
+  toggleViewMeetingModal,
+} from "../../../../../store/actions/ModalStates_actions";
+import { resetCurrentMeetingInfo } from "../../../../../store/actions/NewMeeting2.actions";
 
 const Participants = () => {
   const { t } = useTranslation();
@@ -101,34 +106,6 @@ const Participants = () => {
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
   console.log(rowsData, "getAllDatagetAllDatagetAllData");
-  const handleNextBtn = () => {
-    setAgenda(true);
-    setParticipants(false);
-  };
-
-  const handleCancelMeetingNoPopup = () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setParticipants(false);
-    localStorage.removeItem("folderDataRoomMeeting");
-    setEditorRole({ status: null, role: null });
-    setAdvanceMeetingModalID(null);
-    setViewAdvanceMeetingModal(false);
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    localStorage.removeItem("AdvanceMeetingOperations");
-    localStorage.removeItem("NotificationAdvanceMeetingID");
-  };
 
   let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
   let ParticipantsViewColoumn = [];
@@ -164,7 +141,7 @@ const Participants = () => {
         align: "left",
         width: "249px",
         render: (text) => (
-          <label className="column-boldness">{text.participantRole}</label>
+          <label className='column-boldness'>{text.participantRole}</label>
         ),
       },
       {
@@ -176,37 +153,37 @@ const Participants = () => {
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 2) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <Tooltip placement='bottomLeft' title={t("Accepted")}>
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 3) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <Tooltip placement='bottomLeft' title={t("Rejected")}>
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
@@ -215,9 +192,9 @@ const Participants = () => {
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -256,7 +233,7 @@ const Participants = () => {
         align: "left",
         width: "249px",
         render: (text) => (
-          <label className="column-boldness">{text.participantRole}</label>
+          <label className='column-boldness'>{text.participantRole}</label>
         ),
       },
     ];
@@ -295,14 +272,13 @@ const Participants = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <img
                               draggable={false}
                               src={emptyContributorState}
-                              width="274.05px"
-                              alt=""
-                              height="230.96px"
+                              width='274.05px'
+                              alt=''
+                              height='230.96px'
                             />
                           </Col>
                         </Row>
@@ -311,8 +287,7 @@ const Participants = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_heading"]}>
                               {t("No-participant")}
                             </span>
@@ -323,8 +298,7 @@ const Participants = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_Subheading"]}>
                               {t("There-are-no-Participants")}
                             </span>
@@ -333,7 +307,7 @@ const Participants = () => {
                       </>
                     ),
                   }}
-                  className="Polling_table"
+                  className='Polling_table'
                   rows={rowsData}
                 />
               </Col>

@@ -30,6 +30,8 @@ import {
   MeetingContext,
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
+import { resetCurrentMeetingInfo } from "../../../../../store/actions/NewMeeting2.actions";
+import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
 const AgendaContributers = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -98,34 +100,8 @@ const AgendaContributers = () => {
     }
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
-  const handleNextBtn = () => {
-    setParticipants(true);
-    setAgendaContributors(false);
-  };
 
-  const handleCancelMeetingNoPopup = () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setViewAdvanceMeetingModal(false);
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    setAgendaContributors(false);
-    localStorage.removeItem("folderDataRoomMeeting");
-    setEditorRole({ status: null, role: null });
-    setAdvanceMeetingModalID(null);
-    localStorage.removeItem("AdvanceMeetingOperations");
-    localStorage.removeItem("NotificationAdvanceMeetingID");
-  };
+
   useEffect(() => {
     let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
     let AgendaContributorViewColoumns = [];

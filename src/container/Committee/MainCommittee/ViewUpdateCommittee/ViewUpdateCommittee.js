@@ -37,11 +37,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
 
   useEffect(() => {
     return () => {
-      setViewGroupPage(false);
-      // localStorage.removeItem("ViewCommitteeID");
-      dispatch(viewCommitteePageFlag(false));
+      // setViewGroupPage(false);
+      // // localStorage.removeItem("ViewCommitteeID");
+      // dispatch(viewCommitteePageFlag(false));
     };
   }, []);
+  
   useEffect(() => {
     try {
       if (ViewCommitteeID !== null || NotificationClickCommitteeID !== null) {

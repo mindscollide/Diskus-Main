@@ -62,7 +62,9 @@ import Recording from "./recording/Recording";
 import {
   setViewTab,
   resetViewTabs,
+  toggleViewMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
+import { resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
 
 const ViewMeetingModal = ({
   advanceMeetingModalID,
@@ -522,7 +524,9 @@ const ViewMeetingModal = ({
         dispatch(setVideoControlHost(false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
-        setAdvanceMeetingModalID(null);
+        
+        dispatch(resetCurrentMeetingInfo())
+        dispatch(toggleViewMeetingModal(false))
         localStorage.setItem("isMeeting", false);
         sessionStorage.removeItem("isMeeting");
 
@@ -546,11 +550,8 @@ const ViewMeetingModal = ({
     ) {
       try {
         setEditorRole({ status: null, role: null });
-        setViewAdvanceMeetingModal(false);
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        setAdvanceMeetingModalID(null);
-        setDataroomMapFolderId(0);
+        dispatch(resetCurrentMeetingInfo())
+        dispatch(toggleViewMeetingModal(false))
         dispatch(
           searchNewUserMeeting(
             navigate,
@@ -581,11 +582,9 @@ const ViewMeetingModal = ({
     ) {
       try {
         setEditorRole({ status: null, role: null });
-        setViewAdvanceMeetingModal(false);
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        setAdvanceMeetingModalID(null);
-        setDataroomMapFolderId(0);
+        
+        dispatch(resetCurrentMeetingInfo())
+        dispatch(toggleViewMeetingModal(false))
         dispatch(
           searchNewUserMeeting(
             navigate,
@@ -620,14 +619,13 @@ const ViewMeetingModal = ({
       try {
         const endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
         if (
-          advanceMeetingModalID === endMeetingData?.pK_MDID &&
+          meetingID === endMeetingData?.pK_MDID &&
           endMeetingData.status === "9" &&
           editorRole.status !== "9"
         ) {
           setEditorRole({ status: null, role: null });
-          setViewAdvanceMeetingModal(false);
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+          dispatch(resetCurrentMeetingInfo())
+          dispatch(toggleViewMeetingModal(false))
           if (isMeetingVideo === true) {
             localStorage.setItem("isCaller", false);
             localStorage.setItem("isMeetingVideo", false);
@@ -642,9 +640,6 @@ const ViewMeetingModal = ({
             dispatch(leaveCallModal(false));
             dispatch(participantPopup(false));
           }
-          setCurrentMeetingID(0);
-          setAdvanceMeetingModalID(null);
-          setDataroomMapFolderId(0);
           localStorage.setItem("folderDataRoomMeeting", 0);
         }
       } catch (error) {

@@ -17,7 +17,7 @@ import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
 
-const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
+const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
@@ -30,7 +30,9 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const navigate = useNavigate();
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
-
+  const { meetingID = 0, } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -47,7 +49,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
       console.log(data, "submitvotesubmitvotesubmitvote");
-      dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, currentMeeting));
+      dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, meetingID));
     } else {
       // open sncak bar for atleast select one option
       showMessage(t("Required-atleast-one-vote"), "error", setOpen);
@@ -55,7 +57,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   };
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find(
-      (data, index) => data === value,
+      (data, index) => data === value
     );
     if (findID !== undefined) {
       return true;
@@ -64,26 +66,26 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
     }
   };
 
-  const handleCheckBoxYes = (e) => {
-    let checked = e.target.checked;
-    let name = e.target.name;
-    let array = [...viewProgressPollsDetails.answer];
-    if (checked) {
-      array.push(name);
-      setViewProgressPollsDetails({
-        ...viewProgressPollsDetails,
-        answer: array,
-      });
-    } else {
-      const findID = viewProgressPollsDetails.answer.indexOf(name);
-      if (findID !== -1) {
-        array.splice(findID, 1);
-        setViewProgressPollsDetails({
-          ...viewProgressPollsDetails,
-          answer: array,
-        });
+  const handleOptionChange = (value, checked = true) => {
+    setViewProgressPollsDetails((prev) => {
+      const currentAnswers = prev.answer || [];
+
+      if (prev.AllowMultipleAnswers) {
+        // checkbox behavior
+        return {
+          ...prev,
+          answer: checked
+            ? [...currentAnswers, value]
+            : currentAnswers.filter((item) => item !== value),
+        };
+      } else {
+        // radio behavior (single select)
+        return {
+          ...prev,
+          answer: [value],
+        };
       }
-    }
+    });
   };
   useEffect(() => {
     try {
@@ -121,7 +123,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
       <section>
         <Row>
           <Col lg={6} md={6} sm={6}>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_vewPolls_Published"]}>
                   {viewProgressPollsDetails.PollTitle}
@@ -133,8 +135,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["Scroller_View_Published_Polls"]}
-              >
+                className={styles["Scroller_View_Published_Polls"]}>
                 <Row>
                   {pollsOption.length > 0
                     ? pollsOption.map((data, index) => {
@@ -144,15 +145,13 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="mt-2"
-                              key={index}
-                            >
+                              className='mt-2'
+                              key={index}>
                               <section>
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <span
-                                      className={styles["Messege_span_Class"]}
-                                    >
+                                      className={styles["Messege_span_Class"]}>
                                       {data.answer}{" "}
                                       <span>({data.totalVotes})</span>
                                     </span>
@@ -165,30 +164,31 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className="d-flex gap-3"
-                                      >
+                                        className='d-flex gap-3'>
                                         {viewProgressPollsDetails.AllowMultipleAnswers ===
                                         true ? (
                                           <Checkbox
                                             name={data.pollAnswerID}
                                             checked={handleForCheck(
-                                              data.pollAnswerIDW,
+                                              data.pollAnswerID
                                             )}
-                                            onChange={handleCheckBoxYes}
-                                            classNameCheckBoxP="d-none"
+                                            onChange={(e) =>
+                                              handleOptionChange(
+                                                data.pollAnswerID,
+                                                e.target.checked
+                                              )
+                                            }
+                                            classNameCheckBoxP='d-none'
                                           />
                                         ) : (
                                           <CustomRadioGroup
                                             onChange={(e) =>
-                                              setViewProgressPollsDetails({
-                                                ...viewProgressPollsDetails,
-                                                answer: e.target.value,
-                                              })
+                                              handleOptionChange(e.target.value)
                                             }
                                             value={
-                                              viewProgressPollsDetails.answer
-                                            }
-                                            className="AnotherRadioSelect"
+                                              viewProgressPollsDetails.answer[0]
+                                            } // important fix
+                                            className='AnotherRadioSelect'
                                             options={[
                                               {
                                                 value: data.pollAnswerID,
@@ -198,9 +198,9 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                           />
                                         )}
                                         <Progress
-                                          className="Progress_bar_Polls"
+                                          className='Progress_bar_Polls'
                                           percent={data.votePercentage}
-                                          status="active"
+                                          status='active'
                                         />
                                       </Col>
                                     </Row>
@@ -215,7 +215,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                 </Row>
               </Col>
             </Row>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col lg={6} md={6} sm={6}>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
@@ -231,8 +231,8 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                         <>
                           {moment(
                             EditmeetingDateFormat(
-                              viewProgressPollsDetails?.Date,
-                            ),
+                              viewProgressPollsDetails?.Date
+                            )
                           ).format("DD MMM YYYY")}
                         </>
                       )}
@@ -245,8 +245,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                   lg={6}
                   md={6}
                   sm={6}
-                  className="d-flex justify-content-end align-items-center"
-                >
+                  className='d-flex justify-content-end align-items-center'>
                   <span className={styles["Multiple_Answers_zstyles"]}>
                     {t("Multiple-answers-allowed")}
                   </span>
@@ -261,23 +260,22 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
               {pollParticipants.length > 0 &&
                 pollParticipants.map((data, index) => {
                   return (
-                    <Col lg={6} md={6} sm={6} className="mt-3">
+                    <Col lg={6} md={6} sm={6} className='mt-3'>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <section className={styles["Outer_Box_Members"]}>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={10}
                                 md={10}
                                 sm={10}
-                                className="d-flex gap-2 align-items-center"
-                              >
+                                className='d-flex gap-2 align-items-center'>
                                 <img
                                   src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
                                   draggable={false}
-                                  height="33px"
-                                  alt=""
-                                  width="33px"
+                                  height='33px'
+                                  alt=''
+                                  width='33px'
                                   className={styles["ProfileStyles"]}
                                 />
                                 <span className={styles["Name_Members"]}>
@@ -299,8 +297,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Button_Cast_vote_polls_Meeting"]}

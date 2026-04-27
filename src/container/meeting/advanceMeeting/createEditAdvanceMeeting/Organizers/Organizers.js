@@ -752,6 +752,7 @@ const Organizers = () => {
       UpdatedUsers: newarry,
     };
     if (findisOrganizerisExist) {
+      console.log(isEditValue, typeof isEditValue, "saveMeetingOrganizer")
       dispatch(
         UpdateMeetingUserApi(navigate, t, Data, "saveMeetingOrganizer", {
           rowsData,
@@ -760,7 +761,6 @@ const Organizers = () => {
           setIsEdit,
         }),
       );
-      setIsEdit(false);
     } else {
       showMessage(
         t("At-least-one-primary-organizer-is-required"),

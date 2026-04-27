@@ -53,7 +53,6 @@ const getGroup_Fail = (message) => {
 };
 
 const getGroups = (navigate, t, currentPage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {

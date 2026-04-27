@@ -8158,34 +8158,7 @@ const LeaveCurrentMeeting = (
                     console.log("navigateLocation");
                     navigate("/Diskus/");
                   } else {
-                    // let searchData = {
-                    //   Date: "",
-                    //   Title: "",
-                    //   HostName: "",
-                    //   UserID: Number(userID),
-                    //   PageNumber: Number(meetingPageCurrent),
-                    //   Length: Number(meetingpageRow),
-                    //   PublishedMeetings:
-                    //     localStorage.getItem("MeetingCurrentView") &&
-                    //     Number(localStorage.getItem("MeetingCurrentView")) === 1
-                    //       ? true
-                    //       : false,
-                    //   ProposedMeetings:
-                    //     localStorage.getItem("MeetingCurrentView") &&
-                    //     Number(localStorage.getItem("MeetingCurrentView")) === 2
-                    //       ? true
-                    //       : false,
-                    // };
-                    // console.log("chek search meeting");
-                    // await dispatch(
-                    //   searchNewUserMeeting(navigate, searchData, t),
-                    // );
-                    // localStorage.removeItem("folderDataRoomMeeting");
-                    // setEditorRole({ status: null, role: null });
-                    // setAdvanceMeetingModalID(null);
-
-                    // dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                    // dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              
                   }
                 }
 

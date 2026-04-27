@@ -9,14 +9,16 @@ import { Modal, Button } from "../../../../../../components/elements";
 import { deleteMeetingPollApi } from "../../../../../../store/actions/Polls_actions";
 import { editFlowDeleteSavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
 
-const EditDeletePollConfirm = ({ currentMeeting, pollID }) => {
+const EditDeletePollConfirm = ({ pollID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const editFlowDeletePollsMeeting = useSelector(
     (state) => state.NewMeetingreducer.editFlowDeletePollsMeeting
   );
-
+  const { meetingID = 0, mapFolderId = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
   const handleNOFunctionality = () => {
     dispatch(editFlowDeleteSavedPollsMeeting(false));
   };
@@ -24,9 +26,9 @@ const EditDeletePollConfirm = ({ currentMeeting, pollID }) => {
   const handleYesFunctionality = () => {
     let data = {
       PollID: Number(pollID),
-      MeetingID: parseInt(currentMeeting),
+      MeetingID: parseInt(meetingID),
     };
-    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
+    dispatch(deleteMeetingPollApi(navigate, t, data, meetingID));
     dispatch(editFlowDeleteSavedPollsMeeting(false));
   };
   return (
@@ -45,8 +47,7 @@ const EditDeletePollConfirm = ({ currentMeeting, pollID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center"
-            >
+              className='d-flex justify-content-center'>
               <span className={styles["UnsaveheadingFileUpload"]}>
                 {t("Are-you-sure-you-want-to-delete-Poll")}
               </span>
@@ -61,8 +62,7 @@ const EditDeletePollConfirm = ({ currentMeeting, pollID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center gap-2"
-            >
+              className='d-flex justify-content-center gap-2'>
               <Button
                 text={t("No")}
                 className={styles["Yes_unsave_File_Upload"]}

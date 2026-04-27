@@ -52,18 +52,26 @@ import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import EditDeletePollConfirm from "./EditDeletePollConfirm/EditDeletePollConfirm";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 const Polls = ({
-  setSceduleMeeting,
-  setPolls,
-  setAttendance,
+  // setSceduleMeeting,
+  // setPolls,
+  // setAttendance,
   currentMeeting,
-  isEditMeeting,
-  setactionsPage,
+  // setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole } = useMeetingContext();
+
+  const { meetingID = 0, mapFolderId = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
+  );
+
 
   const getPollsMeetingID = useSelector(
     (state) => state.NewMeetingreducer.getPollsMeetingID
@@ -95,7 +103,6 @@ const Polls = ({
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
-  console.log(currentMeeting, "currentMeetingcurrentMeeting");
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   const [open, setOpen] = useState({
@@ -126,7 +133,7 @@ const Polls = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: meetingID,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -140,7 +147,7 @@ const Polls = ({
     setPageNumber(current);
     setPageSize(pageSize);
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: meetingID,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -172,7 +179,7 @@ const Polls = ({
     try {
       if (newPollMeeting !== null) {
         let PollData = newPollMeeting;
-        if (Number(PollData.meetingID) === Number(currentMeeting)) {
+        if (Number(PollData.meetingID) === Number(meetingID)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
         dispatch(createPollMeetingMQTT(null));
@@ -407,7 +414,7 @@ const Polls = ({
           (editorRole.role === "Organizer" ||
             editorRole.role === "Agenda Contributor" ||
             editorRole?.role === "Participant") &&
-          isEditMeeting === true
+            isAdvanceMeetingRoute === 2
         ) {
           if (record.pollStatus.pollStatusId === 2) {
             if (record.isVoter) {
@@ -466,7 +473,7 @@ const Polls = ({
           (editorRole.role === "Organizer" ||
             editorRole.role === "Agenda Contributor" ||
             editorRole?.role === "Participant") &&
-          isEditMeeting === true &&
+            isAdvanceMeetingRoute === 2 &&
           Number(editorRole.status) !== 9
         ) {
           return (
@@ -559,19 +566,20 @@ const Polls = ({
   };
 
   const handleNextButtonPolls = () => {
-    setPolls(false);
-    setAttendance(true);
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(false));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(true));
+    dispatch(setCreateEditTab("attendance"))
+    // setPolls(false);
+    // setAttendance(true);
+    // dispatch(meetingDetailsGlobalFlag(false));
+    // dispatch(organizersGlobalFlag(false));
+    // dispatch(agendaContributorsGlobalFlag(false));
+    // dispatch(participantsGlobalFlag(false));
+    // dispatch(agendaGlobalFlag(false));
+    // dispatch(meetingMaterialGlobalFlag(false));
+    // dispatch(minutesGlobalFlag(false));
+    // dispatch(proposedMeetingDatesGlobalFlag(false));
+    // dispatch(actionsGlobalFlag(false));
+    // dispatch(pollsGlobalFlag(false));
+    // dispatch(attendanceGlobalFlag(true));
     dispatch(uploadGlobalFlag(false));
   };
 
@@ -594,27 +602,27 @@ const Polls = ({
         {createpoll ? (
           <Createpolls
             setCreatepoll={setCreatepoll}
-            currentMeeting={currentMeeting}
+            // currentMeeting={currentMeeting}
           />
         ) : votePolls ? (
           <CastVotePollsMeeting
             setvotePolls={setvotePolls}
-            currentMeeting={currentMeeting}
+            // currentMeeting={currentMeeting}
           />
         ) : editPolls ? (
           <EditPollsMeeting
             setEditPolls={setEditPolls}
-            currentMeeting={currentMeeting}
+            // currentMeeting={currentMeeting}
           />
         ) : viewPublishedPoll ? (
           <ViewPollsPublishedScreen
             setViewPublishedPoll={setViewPublishedPoll}
-            currentMeeting={currentMeeting}
+            // currentMeeting={currentMeeting}
           />
         ) : unPublished ? (
           <ViewPollsUnPublished
             setUnPublished={setUnPublished}
-            currentMeeting={currentMeeting}
+            // currentMeeting={currentMeeting}
           />
         ) : (
           <>
@@ -622,7 +630,7 @@ const Polls = ({
             (editorRole.role === "Organizer" ||
               editorRole.role === "Agenda Contributor" ||
               editorRole?.role === "Participant") &&
-            isEditMeeting === true ? (
+              isAdvanceMeetingRoute === 2 ? (
               <Row className="mt-4">
                 <Col
                   lg={12}
@@ -759,11 +767,11 @@ const Polls = ({
           </>
         )}
 
-        {cancelPolls && <CancelPolls setSceduleMeeting={setSceduleMeeting} />}
+        {cancelPolls && <CancelPolls  />}
         {editFlowDeletePollsMeeting && (
           <EditDeletePollConfirm
             pollID={pollID}
-            currentMeeting={currentMeeting}
+            // currentMeeting={currentMeeting}
           />
         )}
         <Notification open={open} setOpen={setOpen} />

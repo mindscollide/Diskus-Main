@@ -44,11 +44,7 @@ import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png"
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 const Actions = ({
-  setSceduleMeeting,
-  setactionsPage,
-  currentMeeting,
 
-  isEditMeeting,
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
@@ -61,6 +57,12 @@ const Actions = ({
     toDoListReducer,
     todoStatus,
   } = useSelector((state) => state);
+  const { meetingID = 0, mapFolderId = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
+  );
   let userID = localStorage.getItem("userID");
   const { editorRole } = useMeetingContext();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -104,7 +106,7 @@ const Actions = ({
       setRemoveTodo(statusdata);
     }
     dispatch(
-      updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, currentMeeting)
+      updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, meetingID)
     );
   };
 
@@ -114,7 +116,7 @@ const Actions = ({
       dispatch(getTodoStatus(navigate, t));
     }
     let meetingTaskData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
       Date: actionState.Date,
       Title: actionState.Title,
       AssignedToName: actionState.AssignedToName,
@@ -129,7 +131,7 @@ const Actions = ({
   // for pagination in Create Task
   const handleForPagination = (current, pageSize) => {
     let data = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
       Date: actionState.Date,
       Title: actionState.Title,
       AssignedToName: actionState.AssignedToName,
@@ -620,7 +622,7 @@ const Actions = ({
         setCreateaTask,
         newData,
         0,
-        currentMeeting
+        meetingID
       )
     );
   };
@@ -648,7 +650,7 @@ const Actions = ({
       if (toDoListReducer.createTaskMeeting !== null) {
         let taskData = toDoListReducer.createTaskMeeting;
         let taskInfo = toDoListReducer.createTaskMeeting.todoList;
-        if (Number(taskData.meetingID) === Number(currentMeeting)) {
+        if (Number(taskData.meetingID) === Number(meetingID)) {
           let findisAlreadExist = actionsRows.findIndex(
             (data, index) => data.pK_TID === taskData.todoList.pK_TID
           );
@@ -711,10 +713,6 @@ const Actions = ({
       {createaTask ? (
         <CreateTask
           setCreateaTask={setCreateaTask}
-          currentMeeting={currentMeeting}
-          setActionState={setActionState}
-          actionState={actionState}
-          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : (
         <>
@@ -861,12 +859,12 @@ const Actions = ({
                   Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12) &&
                   editorRole.role === "Organizer" &&
-                  isEditMeeting === true) ||
+                  isAdvanceMeetingRoute === true) ||
                   ((Number(editorRole.status) === 9 ||
                     Number(editorRole.status) === 10) &&
                     (editorRole.role === "Participant" ||
                       editorRole.role === "Agenda Contributor") &&
-                    isEditMeeting === true) ? (
+                      isAdvanceMeetingRoute === true) ? (
                   <></>
                 ) : null}
               </Col>
@@ -880,13 +878,7 @@ const Actions = ({
           setViewFlagToDo={setViewTaskModal}
         />
       )}
-      {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
-      {NewMeetingreducer.cancelActions && (
-        <CancelActions
-          setSceduleMeeting={setSceduleMeeting}
-          currentMeeting={currentMeeting}
-        />
-      )}
+ 
     </section>
   );
 };

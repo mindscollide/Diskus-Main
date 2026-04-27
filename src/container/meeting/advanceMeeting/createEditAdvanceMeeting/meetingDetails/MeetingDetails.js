@@ -87,7 +87,7 @@ const MeetingDetails = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  console.log(committeeInfo,editorRole, "committeeInfocommitteeInfo")
+  console.log(committeeInfo,editorRole,currentMeetingInfo, "committeeInfocommitteeInfo")
 
   // const cancelModalMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
@@ -422,7 +422,7 @@ const MeetingDetails = () => {
 
       let data = {
         MeetingDetails: {
-          MeetingID: meetingDetails.MeetingID,
+          MeetingID: currentMeetingInfo.meetingID,
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,

@@ -28,7 +28,10 @@ import {
   saveTaskDocumentsAndAssigneesApi,
 } from "../../../../../../store/actions/Action_Meeting";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import { convertGMTDateintoUTC, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  convertGMTDateintoUTC,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
@@ -38,15 +41,14 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../../commen/functions/utils";
-const CreateTask = ({
-  setCreateaTask,
-  currentMeeting,
-  dataroomMapFolderId,
-}) => {
+const CreateTask = ({ setCreateaTask }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Dragger } = Upload;
+  const { meetingID = 0, mapFolderId = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
 
   const getMeetingusers = useSelector(
     (state) => state.NewMeetingreducer.getMeetingusers
@@ -74,7 +76,7 @@ const CreateTask = ({
   const [error, seterror] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  console.log(fileForSend, "fileForSendfileForSend")
+  console.log(fileForSend, "fileForSendfileForSend");
   const [selectedTask, setSelectedTask] = useState({
     value: 0,
     label: "",
@@ -102,10 +104,10 @@ const CreateTask = ({
   useEffect(() => {
     const callApi = async () => {
       let Data = {
-        MeetingID: Number(currentMeeting),
+        MeetingID: Number(meetingID),
       };
       let getMeetingData = {
-        MeetingID: Number(currentMeeting),
+        MeetingID: Number(meetingID),
       };
       dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
       dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
@@ -127,14 +129,14 @@ const CreateTask = ({
 
   const changeDateActionCreate = (date) => {
     let meetingDateValueFormat2 = new Date(date);
-    meetingDateValueFormat2.setHours(23)
-    meetingDateValueFormat2.setMinutes(59)
-    meetingDateValueFormat2.setSeconds(58)
+    meetingDateValueFormat2.setHours(23);
+    meetingDateValueFormat2.setMinutes(59);
+    meetingDateValueFormat2.setSeconds(58);
     setAgendaDueDate(meetingDateValueFormat2);
     setcreateTaskDetails({
       ...createTaskDetails,
-      date: meetingDateValueFormat2
-    })
+      date: meetingDateValueFormat2,
+    });
   };
 
   const actionSaveHandler = () => {
@@ -149,8 +151,12 @@ const CreateTask = ({
           Title: createTaskDetails.ActionsToTake,
           Description: createTaskDetails.Description,
           IsMainTask: true,
-          DeadLineDate: multiDatePickerDateChangIntoUTC(createTaskDetails.date).slice(0, 8),
-          DeadLineTime: multiDatePickerDateChangIntoUTC(createTaskDetails.date).slice(8, 14),
+          DeadLineDate: multiDatePickerDateChangIntoUTC(
+            createTaskDetails.date
+          ).slice(0, 8),
+          DeadLineTime: multiDatePickerDateChangIntoUTC(
+            createTaskDetails.date
+          ).slice(8, 14),
           CreationDateTime: "",
         },
       };
@@ -272,32 +278,20 @@ const CreateTask = ({
   };
 
   // for upload Action
-  const documentsUploadCall = async (dataroomMapFolderId) => {
+  const documentsUploadCall = async (mapFolderId) => {
     let newFolder = [];
     let newSaveFiles = [];
     let newAttachmentData = [];
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadActionMeetingApi(
-            navigate,
-            t,
-            newData,
-            dataroomMapFolderId,
-            newFolder
-          )
+          uploadActionMeetingApi(navigate, t, newData, mapFolderId, newFolder)
         );
       });
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
       await dispatch(
-        saveFilesTaskApi(
-          navigate,
-          t,
-          newFolder,
-          dataroomMapFolderId,
-          newSaveFiles
-        )
+        saveFilesTaskApi(navigate, t, newFolder, mapFolderId, newSaveFiles)
       );
 
       newAttachmentData = newSaveFiles.map((data, index) => {
@@ -318,7 +312,7 @@ const CreateTask = ({
 
     let newData = {
       TaskID: Number(createTaskID),
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
       AgendaID:
         createTaskDetails.AgendaID !== 0
           ? createTaskDetails.AgendaID.toString()
@@ -340,7 +334,7 @@ const CreateTask = ({
 
   useEffect(() => {
     if (createTaskID !== 0) {
-      documentsUploadCall(dataroomMapFolderId);
+      documentsUploadCall(mapFolderId);
     }
   }, [createTaskID]);
 
@@ -909,12 +903,7 @@ const CreateTask = ({
             />
           </Col>
         </Row>
-        {unsavedActions && (
-          <UnsavedActions
-            setCreateaTask={setCreateaTask}
-            currentMeeting={currentMeeting}
-          />
-        )}
+        {unsavedActions && <UnsavedActions setCreateaTask={setCreateaTask} />}
       </section>
       <Notification open={open} setOpen={setOpen} />
     </>

@@ -42,6 +42,7 @@ import { MeetingContext } from "../../../../../context/MeetingContext";
 import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
 import {
   setAdvanceMeetingRoute,
+  setCreateEditTab,
   toggleCreateEditMeetingModal,
 } from "../../../../../store/actions/ModalStates_actions";
 
@@ -64,7 +65,7 @@ const MeetingMaterial = ({
     (state) => state.NewMeetingreducer?.currentMeetingInfo,
   );
 
-  const { editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole ,setGoBackCancelModal} = useContext(MeetingContext);
 
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const meetingMaterialData = useSelector(
@@ -348,44 +349,46 @@ const MeetingMaterial = ({
   console.log("isPublishedGlobalisPublishedGlobal", isPublishedGlobal);
 
   const handleCancelButton = async () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings:
-        localStorage.getItem("MeetingCurrentView") &&
-        Number(localStorage.getItem("MeetingCurrentView")) === 1
-          ? true
-          : false,
-      ProposedMeetings:
-        localStorage.getItem("MeetingCurrentView") &&
-        Number(localStorage.getItem("MeetingCurrentView")) === 2
-          ? true
-          : false,
-    };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    dispatch(toggleCreateEditMeetingModal(false));
-    dispatch(setAdvanceMeetingRoute(1));
+    setGoBackCancelModal(true);
+    // let searchData = {
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+    //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+    //   PublishedMeetings:
+    //     localStorage.getItem("MeetingCurrentView") &&
+    //     Number(localStorage.getItem("MeetingCurrentView")) === 1
+    //       ? true
+    //       : false,
+    //   ProposedMeetings:
+    //     localStorage.getItem("MeetingCurrentView") &&
+    //     Number(localStorage.getItem("MeetingCurrentView")) === 2
+    //       ? true
+    //       : false,
+    // };
+    // console.log("chek search meeting");
+    // dispatch(searchNewUserMeeting(navigate, searchData, t));
+    // dispatch(toggleCreateEditMeetingModal(false));
+    // dispatch(setAdvanceMeetingRoute(1));
   };
 
   const handleSaveAndNext = () => {
-    setMeetingMaterial(false);
-    setMinutes(true);
-    dispatch(meetingDetailsGlobalFlag(false));
-    dispatch(organizersGlobalFlag(false));
-    dispatch(agendaContributorsGlobalFlag(false));
-    dispatch(participantsGlobalFlag(false));
-    dispatch(agendaGlobalFlag(false));
-    dispatch(meetingMaterialGlobalFlag(false));
-    dispatch(minutesGlobalFlag(true));
-    dispatch(proposedMeetingDatesGlobalFlag(false));
-    dispatch(actionsGlobalFlag(false));
-    dispatch(pollsGlobalFlag(false));
-    dispatch(attendanceGlobalFlag(false));
+    dispatch(setCreateEditTab("minutes"))
+    // setMeetingMaterial(false);
+    // setMinutes(true);
+    // dispatch(meetingDetailsGlobalFlag(false));
+    // dispatch(organizersGlobalFlag(false));
+    // dispatch(agendaContributorsGlobalFlag(false));
+    // dispatch(participantsGlobalFlag(false));
+    // dispatch(agendaGlobalFlag(false));
+    // dispatch(meetingMaterialGlobalFlag(false));
+    // dispatch(minutesGlobalFlag(true));
+    // dispatch(proposedMeetingDatesGlobalFlag(false));
+    // dispatch(actionsGlobalFlag(false));
+    // dispatch(pollsGlobalFlag(false));
+    // dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
   };
   const handlePublish = () => {
@@ -493,7 +496,7 @@ const MeetingMaterial = ({
           ) : null}
         </Col>
       </Row>
-      {cancelMeetingMaterial && (
+      {/* {cancelMeetingMaterial && (
         <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
       )}
 
@@ -503,7 +506,7 @@ const MeetingMaterial = ({
           setMeetingMaterial={setMeetingMaterial}
           prevFlag={prevFlag}
         />
-      )}
+      )} */}
     </section>
   );
 };

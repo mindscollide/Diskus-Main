@@ -46,6 +46,10 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const getMeetingusers = useSelector(
     (state) => state.NewMeetingreducer.getMeetingusers
   );
+
+  const { meetingID = 0, mapFolderId = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
@@ -324,7 +328,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       };
 
       dispatch(
-        updatePollsApi(navigate, data, t, 2, setEditPolls, currentMeeting)
+        updatePollsApi(navigate, data, t, 2, setEditPolls, meetingID)
       );
     } else {
       if (updatePolls.Title === "") {
@@ -345,7 +349,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: meetingID,
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);

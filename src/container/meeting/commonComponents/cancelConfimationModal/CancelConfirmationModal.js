@@ -14,18 +14,17 @@ import {
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
+import { resetViewTabs, toggleViewMeetingModal } from "../../../../store/actions/ModalStates_actions";
 const CancelConfirmationModal = () => {
   const {
     cancelConfirmationModal,
     setCancelConfirmationModal,
     setEditorRole,
-    setAdvanceMeetingModalID,
-    setViewAdvanceMeetingModal,
   } = useContext(MeetingContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
   let userID = localStorage.getItem("userID");
@@ -83,12 +82,10 @@ const CancelConfirmationModal = () => {
       };
       console.log("chek search meeting");
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.removeItem("folderDataRoomMeeting");
       setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
-      setAdvanceMeetingModalID(null);
-      setAdvanceMeetingModalID(0);
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(resetCurrentMeetingInfo());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetViewTabs());
 
       localStorage.removeItem("NotificationAdvanceMeetingID");
       localStorage.removeItem("QuickMeetingCheckNotification");
