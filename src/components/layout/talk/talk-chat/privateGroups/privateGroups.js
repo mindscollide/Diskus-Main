@@ -44,6 +44,8 @@ const PrivateGroups = () => {
 
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
+  console.log(talkStateData.AllUserChats.AllUserChatsData, "AllUserChatsData");
+
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
 
@@ -51,7 +53,7 @@ const PrivateGroups = () => {
   let currentDateTime = new Date();
   let changeDateFormatCurrent = moment(currentDateTime).utc();
   let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
-    "YYYYMMDDHHmmss"
+    "YYYYMMDDHHmmss",
   );
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
   //YESTERDAY'S DATE
@@ -72,14 +74,17 @@ const PrivateGroups = () => {
     ) {
       let privateGroupsMessages =
         talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-          (data, index) => data.messageType === "G"
+          (data, index) => data.messageType === "G",
         );
       setPrivateGroupsData(privateGroupsMessages);
+    } else if (talkStateData.AllUserChats.Loading === true) {
+      // ✅ Don't clear data while loading - keep existing data
+      return;
     } else {
       setPrivateGroupsData([]);
     }
     return () => {
-      setPrivateGroupsData([]);
+      // Only cleanup on unmount, not on every dependency change
     };
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
@@ -143,7 +148,7 @@ const PrivateGroups = () => {
       console.log(talkStateData.MqttGroupLeftData, "MqttGroupLeftData");
       let leaveGroupData = talkStateData.MqttGroupLeftData.data[0];
       const indexToRemove = privateGroupsData.findIndex(
-        (item) => item.id === leaveGroupData.groupID
+        (item) => item.id === leaveGroupData.groupID,
       );
       console.log(leaveGroupData, "MqttGroupLeftData");
       console.log(privateGroupsData, "MqttGroupLeftData");
@@ -173,13 +178,13 @@ const PrivateGroups = () => {
                   value.fullName.toLowerCase().includes(e.toLowerCase()) &&
                   value.messageType === "G"
                 );
-              }
+              },
             );
 
           if (filteredData.length === 0) {
             let privateAllMessages =
               talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-                (data, index) => data.messageType === "G"
+                (data, index) => data.messageType === "G",
               );
             setPrivateGroupsData(privateAllMessages);
           } else {
@@ -188,7 +193,7 @@ const PrivateGroups = () => {
         } else if (e === "" || e === null) {
           let privateAllMessages =
             talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-              (data, index) => data.messageType === "G"
+              (data, index) => data.messageType === "G",
             );
           setPrivateGroupsData(privateAllMessages);
           setSearchChatValue("");
@@ -304,7 +309,7 @@ const PrivateGroups = () => {
                       <>
                         {newTimeFormaterAsPerUTCTalkTime(
                           dataItem.messageDate,
-                          lang
+                          lang,
                         )}
                       </>
                     ) : dataItem.messageDate.slice(0, 8) ===
@@ -312,7 +317,7 @@ const PrivateGroups = () => {
                       <>
                         {newTimeFormaterAsPerUTCTalkDate(
                           dataItem.messageDate,
-                          lang
+                          lang,
                         ) + " "}
                         | {t("Yesterday")}
                       </>
@@ -320,7 +325,7 @@ const PrivateGroups = () => {
                       <>
                         {newTimeFormaterAsPerUTCTalkDate(
                           dataItem.messageDate,
-                          lang
+                          lang,
                         )}
                       </>
                     )}

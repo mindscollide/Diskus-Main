@@ -3553,7 +3553,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             ? "chat-section searchField"
                             : "chat-section"
                       }
-                      key={Math.random()}
+                      // key={Math.random()}
                     >
                       <>
                         {file === "" ? (

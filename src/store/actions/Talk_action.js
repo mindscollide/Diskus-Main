@@ -89,16 +89,16 @@ const RefreshTokenTalk = (props) => {
           await dispatch(
             refreshtokenTalkSuccess(
               response.data.responseResult,
-              "Refresh Token Update Successfully"
-            )
+              "Refresh Token Update Successfully",
+            ),
           );
         } else {
           // dispatch(signOut(navigate, message2));
           await dispatch(
             refreshtokenTalkFail(
               response.data.responseResult,
-              "Your Session has expired. Please login again."
-            )
+              "Your Session has expired. Please login again.",
+            ),
           );
         }
       })
@@ -140,6 +140,7 @@ const mqttInsertOtoMessage = (response) => {
 
 //insert private group talk mqtt
 const mqttInsertPrivateGroupMessage = (response) => {
+  console.log("responseresponse324", response);
   return {
     type: actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE,
     response: response,
@@ -272,7 +273,7 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
-            GetAllUserChats(navigate, currentUserId, currentOrganizationId, t)
+            GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -283,8 +284,8 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
             await dispatch(
               getAllUserChatsSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -396,14 +397,14 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
             dispatch(
               getOTOUserMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
             dispatch(
               getAllMessagesGlobalSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -494,8 +495,8 @@ const GetOTOUserUndeliveredMessages = (t) => {
             await dispatch(
               getOTOUserUndeliveredMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -583,14 +584,14 @@ const GetGroupMessages = (navigate, chatGroupData, t) => {
             dispatch(
               getGroupMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
             dispatch(
               getAllMessagesGlobalSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -680,14 +681,14 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
             dispatch(
               getBroacastMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
             dispatch(
               getAllMessagesGlobalSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -774,8 +775,8 @@ const GetArchivedDataByUserID = (t) => {
             await dispatch(
               getArchivedDataByUserIDSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -849,7 +850,7 @@ const GetFlagMessages = (navigate, currentUserId, currentOrganizationId, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
-            GetFlagMessages(navigate, currentUserId, currentOrganizationId, t)
+            GetFlagMessages(navigate, currentUserId, currentOrganizationId, t),
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -860,8 +861,8 @@ const GetFlagMessages = (navigate, currentUserId, currentOrganizationId, t) => {
             await dispatch(
               getFlagMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -944,8 +945,8 @@ const GetFollowMessages = (t) => {
             await dispatch(
               getFollowMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1028,8 +1029,8 @@ const GetRecentTags = (t) => {
             await dispatch(
               getRecentTagsSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1114,8 +1115,8 @@ const GetTagsMessages = (t) => {
             await dispatch(
               getTagsMessagesSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1199,8 +1200,8 @@ const GetMessageSentReceiveTime = (t) => {
             await dispatch(
               getMessageSentReceiveTimeSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1283,8 +1284,8 @@ const GetRecentFlagCount = (t) => {
             await dispatch(
               getRecentFlagCountSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1351,7 +1352,7 @@ const GetRecentFollowDataCount = (t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getRecentFollowDataCountByUserID.RequestMethod
+      getRecentFollowDataCountByUserID.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
 
@@ -1370,8 +1371,8 @@ const GetRecentFollowDataCount = (t) => {
             await dispatch(
               getRecentFollowDataCountSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1454,8 +1455,8 @@ const GetAllRecentTagsCount = (t) => {
             await dispatch(
               getAllRecentTagsCountSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1522,7 +1523,7 @@ const GetRecentDataArchiveCount = (t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getRecentArchiveDataCountByUserID.RequestMethod
+      getRecentArchiveDataCountByUserID.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
 
@@ -1541,8 +1542,8 @@ const GetRecentDataArchiveCount = (t) => {
             await dispatch(
               getRecentDataArchiveCountSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1624,8 +1625,8 @@ const GetBlockedUsersCount = (t) => {
             await dispatch(
               getBlockedUsersCountSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1697,7 +1698,7 @@ const GetBlockedUsers = (navigate, currentUserId, currentOrganizationId, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
-            GetBlockedUsers(navigate, currentUserId, currentOrganizationId, t)
+            GetBlockedUsers(navigate, currentUserId, currentOrganizationId, t),
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1708,8 +1709,8 @@ const GetBlockedUsers = (navigate, currentUserId, currentOrganizationId, t) => {
             await dispatch(
               getBlockedUsersSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1782,7 +1783,7 @@ const GetAllUsers = (navigate, currentUserId, currentOrganizationId, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
-            GetAllUsers(navigate, currentUserId, currentOrganizationId, t)
+            GetAllUsers(navigate, currentUserId, currentOrganizationId, t),
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1793,8 +1794,8 @@ const GetAllUsers = (navigate, currentUserId, currentOrganizationId, t) => {
             await dispatch(
               getAllUsersSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1852,7 +1853,7 @@ const GetAllUsersGroupsRoomsList = (
   navigate,
   currentUserId,
   currentOrganizationId,
-  t
+  t,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
@@ -1876,8 +1877,8 @@ const GetAllUsersGroupsRoomsList = (
               navigate,
               currentUserId,
               currentOrganizationId,
-              t
-            )
+              t,
+            ),
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1888,8 +1889,8 @@ const GetAllUsersGroupsRoomsList = (
             await dispatch(
               getAllUsersGroupsRoomsListSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -1971,8 +1972,8 @@ const GetActiveUsersByGroupID = (t) => {
             await dispatch(
               getActiveUsersByGroupIDSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -2054,8 +2055,8 @@ const GetActiveUsersByRoomID = (t) => {
             await dispatch(
               getActiveUsersByRoomIDSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -2131,8 +2132,8 @@ const GetActiveUsersByBroadcastID = (navigate, Data, t) => {
             await dispatch(
               getActiveUsersByBroadcastIDSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -2209,7 +2210,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            InsertOTOMessages(navigate, object, fileUploadData, t, flag)
+            InsertOTOMessages(navigate, object, fileUploadData, t, flag),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2217,28 +2218,28 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertOTOMessages_01".toLowerCase()
+                  "Talk_TalkServiceManager_InsertOTOMessages_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 OTOMessageSendSuccess(
                   t("OTO-message-inserted"),
-                  response.data.responseResult.talkResponse
-                )
+                  response.data.responseResult.talkResponse,
+                ),
               );
               dispatch(retryFlagState(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertOTOMessages_02".toLowerCase()
+                  "Talk_TalkServiceManager_InsertOTOMessages_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 OTOMessageSendSuccess(
                   t("User-is-not-in-channel"),
-                  response.data.responseResult.talkResponse
-                )
+                  response.data.responseResult.talkResponse,
+                ),
               );
               // if (unsentMessageObject) {
               //   messageUnsent = [...unsentMessageObject];
@@ -2255,7 +2256,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertOTOMessages_03".toLowerCase()
+                  "Talk_TalkServiceManager_InsertOTOMessages_03".toLowerCase(),
                 )
             ) {
               await dispatch(
@@ -2263,10 +2264,10 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   changeMQTTJSONOne(
                     t("You-have-been-blocked"),
                     "[User Name]",
-                    currentUserName
+                    currentUserName,
                   ),
-                  response.data.responseResult.talkResponse
-                )
+                  response.data.responseResult.talkResponse,
+                ),
               );
 
               // if (unsentMessageObject) {
@@ -2284,14 +2285,14 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertOTOMessages_04".toLowerCase()
+                  "Talk_TalkServiceManager_InsertOTOMessages_04".toLowerCase(),
                 )
             ) {
               await dispatch(
                 OTOMessageSendSuccess(
                   t("OTO-message-not-inserted"),
-                  response.data.responseResult.talkResponse
-                )
+                  response.data.responseResult.talkResponse,
+                ),
               );
               // if (unsentMessageObject) {
               //   messageUnsent = [...unsentMessageObject];
@@ -2308,7 +2309,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertOTOMessages_05".toLowerCase()
+                  "Talk_TalkServiceManager_InsertOTOMessages_05".toLowerCase(),
                 )
             ) {
               await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
@@ -2399,7 +2400,7 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            InsertPrivateGroupMessages(navigate, object, fileUploadData, t)
+            InsertPrivateGroupMessages(navigate, object, fileUploadData, t),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2407,21 +2408,21 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertGroupMessage_01".toLowerCase()
+                  "Talk_TalkServiceManager_InsertGroupMessage_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                GroupPrivateSendNotification(t("Group-message-inserted"))
+                GroupPrivateSendNotification(t("Group-message-inserted")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertGroupMessage_02".toLowerCase()
+                  "Talk_TalkServiceManager_InsertGroupMessage_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                GroupPrivateSendNotification(t("Group-message-not-inserted"))
+                GroupPrivateSendNotification(t("Group-message-not-inserted")),
               );
               if (unsentMessageObject) {
                 messageUnsent = [...unsentMessageObject];
@@ -2432,17 +2433,17 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
 
               localStorage.setItem(
                 "unsentMessage",
-                JSON.stringify(messageUnsent)
+                JSON.stringify(messageUnsent),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertGroupMessage_03".toLowerCase()
+                  "Talk_TalkServiceManager_InsertGroupMessage_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                GroupPrivateSendNotification(t("Something-went-wrong"))
+                GroupPrivateSendNotification(t("Something-went-wrong")),
               );
               if (unsentMessageObject) {
                 messageUnsent = [...unsentMessageObject];
@@ -2453,12 +2454,12 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
 
               localStorage.setItem(
                 "unsentMessage",
-                JSON.stringify(messageUnsent)
+                JSON.stringify(messageUnsent),
               );
             }
           } else {
             await dispatch(
-              GroupPrivateSendNotification(t("Something-went-wrong"))
+              GroupPrivateSendNotification(t("Something-went-wrong")),
             );
             if (unsentMessageObject) {
               messageUnsent = [...unsentMessageObject];
@@ -2469,12 +2470,12 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
 
             localStorage.setItem(
               "unsentMessage",
-              JSON.stringify(messageUnsent)
+              JSON.stringify(messageUnsent),
             );
           }
         } else {
           await dispatch(
-            GroupPrivateSendNotification(t("Something-went-wrong"))
+            GroupPrivateSendNotification(t("Something-went-wrong")),
           );
           if (unsentMessageObject) {
             messageUnsent = [...unsentMessageObject];
@@ -2541,43 +2542,43 @@ const BlockUnblockUser = (navigate, object, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_BlockUnBlockUser_01".toLowerCase()
+                  "Talk_TalkServiceManager_BlockUnBlockUser_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                BlockUnblockUserNotification(t("User-is-blocked-or-unblocked"))
+                BlockUnblockUserNotification(t("User-is-blocked-or-unblocked")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_BlockUnBlockUser_02".toLowerCase()
+                  "Talk_TalkServiceManager_BlockUnBlockUser_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 BlockUnblockUserNotification(
-                  t("User-is-not-blocked-or-unblocked")
-                )
+                  t("User-is-not-blocked-or-unblocked"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_BlockUnBlockUser_03".toLowerCase()
+                  "Talk_TalkServiceManager_BlockUnBlockUser_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                BlockUnblockUserNotification(t("Something-went-wrong"))
+                BlockUnblockUserNotification(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              BlockUnblockUserNotification(t("Something-went-wrong"))
+              BlockUnblockUserNotification(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            BlockUnblockUserNotification(t("Something-went-wrong"))
+            BlockUnblockUserNotification(t("Something-went-wrong")),
           );
         }
       })
@@ -2641,8 +2642,8 @@ const DeleteSingleMessage = (navigate, object, t) => {
             await dispatch(
               deleteSingleMessageSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -2697,7 +2698,7 @@ const InsertBroadcastMessages = (navigate, object, fileUploadData, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            InsertBroadcastMessages(navigate, object, fileUploadData, t)
+            InsertBroadcastMessages(navigate, object, fileUploadData, t),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2705,45 +2706,45 @@ const InsertBroadcastMessages = (navigate, object, fileUploadData, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBroadcastMessage_01".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBroadcastMessage_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 broadcastMessageSendNotification(
-                  t("Broadcast-message-inserted")
-                )
+                  t("Broadcast-message-inserted"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBroadcastMessage_02".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBroadcastMessage_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 broadcastMessageSendNotification(
-                  t("Broadcast-message-not-inserted")
-                )
+                  t("Broadcast-message-not-inserted"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBroadcastMessage_03".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBroadcastMessage_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                broadcastMessageSendNotification(t("Something-went-wrong"))
+                broadcastMessageSendNotification(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              broadcastMessageSendNotification(t("Something-went-wrong"))
+              broadcastMessageSendNotification(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            broadcastMessageSendNotification(t("Something-went-wrong"))
+            broadcastMessageSendNotification(t("Something-went-wrong")),
           );
         }
       })
@@ -2798,41 +2799,41 @@ const CreateShoutAll = (navigate, object, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBroadcast_01".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBroadcast_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 createShoutAllSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Broadcast-list-created")
-                )
+                  t("Broadcast-list-created"),
+                ),
               );
               dispatch(
                 GetAllUserChats(
                   navigate,
                   currentUserId,
                   currentOrganizationId,
-                  t
-                )
+                  t,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBroadcast_02".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBroadcast_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 createShoutAllSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Broadcast-list-not-created")
-                )
+                  t("Broadcast-list-not-created"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBroadcast_03".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBroadcast_03".toLowerCase(),
                 )
             ) {
               await dispatch(createShoutAllFail(t("Something-went-wrong")));
@@ -2886,41 +2887,41 @@ const CreatePrivateGroup = (navigate, object, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertGroup_01".toLowerCase()
+                  "Talk_TalkServiceManager_InsertGroup_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                createPrivateGroupNotification(t("Group-created"))
+                createPrivateGroupNotification(t("Group-created")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertGroup_02".toLowerCase()
+                  "Talk_TalkServiceManager_InsertGroup_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                createPrivateGroupNotification(t("Group-not-created"))
+                createPrivateGroupNotification(t("Group-not-created")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertGroup_03".toLowerCase()
+                  "Talk_TalkServiceManager_InsertGroup_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                createPrivateGroupNotification(t("Something-went-wrong"))
+                createPrivateGroupNotification(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              createPrivateGroupNotification(t("Something-went-wrong"))
+              createPrivateGroupNotification(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            createPrivateGroupNotification(t("Something-went-wrong"))
+            createPrivateGroupNotification(t("Something-went-wrong")),
           );
         }
       })
@@ -2988,8 +2989,8 @@ const GetAllPrivateGroupMembers = (navigate, object, t) => {
             await dispatch(
               getPrivateGroupMembersSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -3052,53 +3053,53 @@ const UpdatePrivateGroup = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_ModifyGroup_01".toLowerCase()
+                  "Talk_TalkServiceManager_ModifyGroup_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                updatePrivateGroupInit(response, t("Group-modified"))
+                updatePrivateGroupInit(response, t("Group-modified")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_ModifyGroup_02".toLowerCase()
+                  "Talk_TalkServiceManager_ModifyGroup_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                updatePrivateGroupInit(response, t("Group-not-modified"))
+                updatePrivateGroupInit(response, t("Group-not-modified")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_ModifyGroup_03".toLowerCase()
+                  "Talk_TalkServiceManager_ModifyGroup_03".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updatePrivateGroupNotification(
                   response,
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             await dispatch(
               updatePrivateGroupNotification(
                 response,
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           await dispatch(
-            updatePrivateGroupNotification(response, t("Something-went-wrong"))
+            updatePrivateGroupNotification(response, t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          updatePrivateGroupNotification(response, t("Something-went-wrong"))
+          updatePrivateGroupNotification(response, t("Something-went-wrong")),
         );
       });
   };
@@ -3148,43 +3149,43 @@ const MarkStarredUnstarredMessage = (navigate, object, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_SetMessageFlag_01".toLowerCase()
+                  "Talk_TalkServiceManager_SetMessageFlag_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                MarkStarredMessageNotification(t("Message-is-marked-as-flag"))
+                MarkStarredMessageNotification(t("Message-is-marked-as-flag")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_SetMessageFlag_02".toLowerCase()
+                  "Talk_TalkServiceManager_SetMessageFlag_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 MarkStarredMessageNotification(
-                  t("Message-is-not-marked-as-flag")
-                )
+                  t("Message-is-not-marked-as-flag"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_SetMessageFlag_03".toLowerCase()
+                  "Talk_TalkServiceManager_SetMessageFlag_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                MarkStarredMessageNotification(t("Something-went-wrong"))
+                MarkStarredMessageNotification(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              MarkStarredMessageNotification(t("Something-went-wrong"))
+              MarkStarredMessageNotification(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            MarkStarredMessageNotification(t("Something-went-wrong"))
+            MarkStarredMessageNotification(t("Something-went-wrong")),
           );
         }
       })
@@ -3237,7 +3238,7 @@ const LeaveGroup = (navigate, object, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_RemoveUserFromGroup_01".toLowerCase()
+                  "Talk_TalkServiceManager_RemoveUserFromGroup_01".toLowerCase(),
                 )
             ) {
               await dispatch(LeaveGroupInit(response, t("Group-left")));
@@ -3245,17 +3246,17 @@ const LeaveGroup = (navigate, object, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_RemoveUserFromGroup_02".toLowerCase()
+                  "Talk_TalkServiceManager_RemoveUserFromGroup_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                LeaveGroupInit(response, t("Group-left-didnt-work"))
+                LeaveGroupInit(response, t("Group-left-didnt-work")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_RemoveUserFromGroup_03".toLowerCase()
+                  "Talk_TalkServiceManager_RemoveUserFromGroup_03".toLowerCase(),
                 )
             ) {
               await dispatch(LeaveGroupNotification(t("Something-went-wrong")));
@@ -3341,12 +3342,17 @@ const DeleteShout = (navigate, object, t) => {
             await dispatch(
               deletShoutSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
             await dispatch(chatBoxActiveFlag(false));
             await dispatch(
-              GetAllUserChats(navigate, currentUserId, currentOrganizationId, t)
+              GetAllUserChats(
+                navigate,
+                currentUserId,
+                currentOrganizationId,
+                t,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -3356,8 +3362,8 @@ const DeleteShout = (navigate, object, t) => {
             dispatch(
               deletShoutSuccess(
                 response.data.responseResult.talkResponse,
-                newError
-              )
+                newError,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -3421,14 +3427,14 @@ const UpdateShoutAll = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_UpdateBroadcast_01".toLowerCase()
+                  "Talk_TalkServiceManager_UpdateBroadcast_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updateShoutAllSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Broadcast-list-modified")
-                )
+                  t("Broadcast-list-modified"),
+                ),
               );
               await dispatch(chatBoxActiveFlag(false));
               await dispatch(
@@ -3436,27 +3442,27 @@ const UpdateShoutAll = (object, t, navigate) => {
                   navigate,
                   currentUserId,
                   currentOrganizationId,
-                  t
-                )
+                  t,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_UpdateBroadcast_02".toLowerCase()
+                  "Talk_TalkServiceManager_UpdateBroadcast_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updateShoutAllSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Broadcast-list-not-modified")
-                )
+                  t("Broadcast-list-not-modified"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_UpdateBroadcast_03".toLowerCase()
+                  "Talk_TalkServiceManager_UpdateBroadcast_03".toLowerCase(),
                 )
             ) {
               await dispatch(updateShoutAllFail(t("Something-went-wrong")));
@@ -3515,33 +3521,33 @@ const InsertBulkMessages = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBulkMessages_01".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBulkMessages_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 insertBulkMessagesSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Bulk-messages-processed")
-                )
+                  t("Bulk-messages-processed"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBulkMessages_02".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBulkMessages_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 insertBulkMessagesSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Bulk-messages-not-processed")
-                )
+                  t("Bulk-messages-not-processed"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_InsertBulkMessages_03".toLowerCase()
+                  "Talk_TalkServiceManager_InsertBulkMessages_03".toLowerCase(),
                 )
             ) {
               await dispatch(insertBulkMessagesFail(t("Something-went-wrong")));
@@ -3666,8 +3672,8 @@ const EmailChat = (object, t, navigate) => {
               await dispatch(
                 emailChatSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Chat-emailed-successfully")
-                )
+                  t("Chat-emailed-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3677,8 +3683,8 @@ const EmailChat = (object, t, navigate) => {
               await dispatch(
                 emailChatSuccess(
                   response.data.responseResult.talkResponse,
-                  t("No-data-found")
-                )
+                  t("No-data-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3692,7 +3698,7 @@ const EmailChat = (object, t, navigate) => {
                 .includes("Talk_TalkServiceManager_EmailChat_04".toLowerCase())
             ) {
               await dispatch(
-                emailChatFail(t("Exception-while-writing-to-stream"))
+                emailChatFail(t("Exception-while-writing-to-stream")),
               );
             }
           } else {
@@ -3749,30 +3755,30 @@ const UpdateMessageAcknowledgement = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_UpdateMessageAcknowledgement_01".toLowerCase()
+                  "Talk_TalkServiceManager_UpdateMessageAcknowledgement_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updateMessageAcknowledgementSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Message-acknowledged")
-                )
+                  t("Message-acknowledged"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_UpdateMessageAcknowledgement_02".toLowerCase()
+                  "Talk_TalkServiceManager_UpdateMessageAcknowledgement_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                updateMessageAcknowledgementFail(t("Message-not-acknowledged"))
+                updateMessageAcknowledgementFail(t("Message-not-acknowledged")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_UpdateMessageAcknowledgement_03".toLowerCase()
+                  "Talk_TalkServiceManager_UpdateMessageAcknowledgement_03".toLowerCase(),
                 )
             ) {
               await dispatch(updateMessageAcknowledgementFail(t("Exception")));
@@ -3859,33 +3865,33 @@ const GetAllStarredMessages = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_GetAllFlaggedMessages_01".toLowerCase()
+                  "Talk_TalkServiceManager_GetAllFlaggedMessages_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getAllStarredMessagesSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Flag-messages-found")
-                )
+                  t("Flag-messages-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_GetAllFlaggedMessages_02".toLowerCase()
+                  "Talk_TalkServiceManager_GetAllFlaggedMessages_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getAllStarredMessagesSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Flag-messages-not-found")
-                )
+                  t("Flag-messages-not-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_GetAllFlaggedMessages_03".toLowerCase()
+                  "Talk_TalkServiceManager_GetAllFlaggedMessages_03".toLowerCase(),
                 )
             ) {
               await dispatch(getAllStarredMessagesFail(t("Exception")));
@@ -3959,30 +3965,30 @@ const DeleteMultipleMessages = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_DeleteMultipleMessages_01".toLowerCase()
+                  "Talk_TalkServiceManager_DeleteMultipleMessages_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 multipleMessagesDeletedSuccess(
                   response.data.responseResult.talkResponse,
-                  t("Multiple-messages-deleted")
-                )
+                  t("Multiple-messages-deleted"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_DeleteMultipleMessages_02".toLowerCase()
+                  "Talk_TalkServiceManager_DeleteMultipleMessages_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                multipleMessagesDeletedFail(t("Multiple-messages-not-deleted"))
+                multipleMessagesDeletedFail(t("Multiple-messages-not-deleted")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Talk_TalkServiceManager_DeleteMultipleMessages_03".toLowerCase()
+                  "Talk_TalkServiceManager_DeleteMultipleMessages_03".toLowerCase(),
                 )
             ) {
               await dispatch(multipleMessagesDeletedFail(t("Exception")));
