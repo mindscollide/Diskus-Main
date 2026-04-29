@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   UserProfileData: null,
   ResponseMessage: "",
+  severity: null,
   ResponseCode: "",
   Loading: false,
   Spinner: false,
@@ -63,7 +64,7 @@ const settingReducer = (state = initialState, action) => {
         googleClientID: action.response,
       };
     }
-    
+
     case actions.SET_CLINET_ID_MS: {
       return {
         ...state,
@@ -294,6 +295,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: true,
         UpdateUserSettingResponse: "",
         UpdateUserSettingResponseMessage: "",
+        severity: null,
       };
     }
     case actions.UDPATEUSERSETTING_SUCCESS: {
@@ -302,6 +304,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateUserSettingResponse: action.response,
         UpdateUserSettingResponseMessage: action.message,
+        severity: "success",
       };
     }
     case actions.UDPATEUSERSETTING_FAIL: {
@@ -310,6 +313,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateUserSettingResponse: null,
         UpdateUserSettingResponseMessage: action.message,
+        severity: "error",
       };
     }
     case actions.GET_USERS_DETAILS_INIT: {
@@ -365,6 +369,7 @@ const settingReducer = (state = initialState, action) => {
       return {
         ...state,
         UpdateUserSettingResponseMessage: "",
+        severity: null,
         ResponseMessage: "",
         UpdateOrganizationLevelSettingResponseMessage: "",
         GetOrganizationLevelSettingResponseMessage: "",

@@ -18,16 +18,16 @@ const UpgradeNowModal = () => {
   const navigate = useNavigate();
 
   const UserManagementModalsUpgradeNowModalData = useSelector(
-    (state) => state.UserManagementModals.UpgradeNowModal
+    (state) => state.UserManagementModals.UpgradeNowModal,
   );
 
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
-    "TrialExpireSelectPac"
+    "TrialExpireSelectPac",
   );
   const organizationID = localStorage.getItem("organizationID");
   const UserID = localStorage.getItem("userID");
   const isExtensionAvailable = JSON.parse(
-    localStorage.getItem("isExtensionAvailable")
+    localStorage.getItem("isExtensionAvailable"),
   );
 
   // new API apply which is requestOrganizationTrialExtend
@@ -49,6 +49,8 @@ const UpgradeNowModal = () => {
   };
 
   const handleClickhere = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl);
     dispatch(showUpgradeNowModal(false));
   };
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Button } from "../../../components/elements";
+import { Button, Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +23,11 @@ import {
   getMicrosoftValidToken,
   revokeMicrosoftTokenApi,
   revokeToken,
+  updateUserMessageCleare,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UserSettings = ({ googleClientIDs }) => {
   const { t } = useTranslation();
@@ -33,10 +35,18 @@ const UserSettings = ({ googleClientIDs }) => {
   const navigate = useNavigate();
 
   const settingReducerData = useSelector(
-    (state) => state.settingReducer.UserProfileData
+    (state) => state.settingReducer.UserProfileData,
   );
   const microsoftClientID = useSelector(
-    (state) => state.settingReducer.microsoftClientID
+    (state) => state.settingReducer.microsoftClientID,
+  );
+
+  // Add these selectors
+  const userSettingsResponseMessagesData = useSelector(
+    (state) => state.settingReducer.UpdateUserSettingResponseMessage,
+  );
+  const userSettingsResponseSeverity = useSelector(
+    (state) => state.settingReducer.severity,
   );
 
   const [securitystate, setSecuritystate] = useState(true);
@@ -48,6 +58,12 @@ const UserSettings = ({ googleClientIDs }) => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+    severity: "success",
+  });
 
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
@@ -244,6 +260,23 @@ const UserSettings = ({ googleClientIDs }) => {
     }
   }, [settingReducerData]);
 
+  // Add this useEffect for showing toast
+  useEffect(() => {
+    if (
+      userSettingsResponseMessagesData &&
+      userSettingsResponseMessagesData !== "" &&
+      userSettingsResponseMessagesData !== null &&
+      userSettingsResponseMessagesData !== undefined
+    ) {
+      showMessage(
+        userSettingsResponseMessagesData,
+        userSettingsResponseSeverity || "success",
+        setOpen,
+      );
+      dispatch(updateUserMessageCleare());
+    }
+  }, [userSettingsResponseMessagesData, userSettingsResponseSeverity]);
+
   const openSecurityTab = () => {
     setSecuritystate(true);
     setmeetingsState(false);
@@ -432,7 +465,7 @@ const UserSettings = ({ googleClientIDs }) => {
       const baseUrl = process.env.REACT_APP_MS_LOGIN_URL;
       const url = baseUrl.replace(
         /client_id=[^&]+/,
-        `client_id=${microsoftClientID}`
+        `client_id=${microsoftClientID}`,
       );
       console.log("Client ID", url);
       const windowFeatures = "width=600,height=400,top=100,left=100";
@@ -732,7 +765,7 @@ const UserSettings = ({ googleClientIDs }) => {
   };
 
   const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated = (
-    e
+    e,
   ) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -783,15 +816,16 @@ const UserSettings = ({ googleClientIDs }) => {
             userOptionsSettings,
             t,
             userOptionsSettings.AllowGoogleCalenderSync,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
         // revoke token api hit
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
+          AllowMicrosoftCalenderSyncCall,
         );
       } else {
+        console.log("CHeck Is Calling Here");
         AllowMicrosoftCalenderSyncCall = true;
         await dispatch(
           updateUserSettingFunc(
@@ -799,19 +833,19 @@ const UserSettings = ({ googleClientIDs }) => {
             userOptionsSettings,
             t,
             true,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
     } else if (userOptionsSettings.AllowMicrosoftCalenderSync) {
       console.log(
         "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-        AllowMicrosoftCalenderSyncCall
+        AllowMicrosoftCalenderSyncCall,
       );
       if (authMicrosoftAccessCode !== "") {
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
+          AllowMicrosoftCalenderSyncCall,
         );
         AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
@@ -819,20 +853,20 @@ const UserSettings = ({ googleClientIDs }) => {
             authMicrosoftAccessCode,
             userOptionsSettings,
             userOptionsSettings.AllowMicrosoftCalenderSync,
-            t
-          )
+            t,
+          ),
         );
       }
     }
     if (signUpCodeToken !== "") {
       console.log(
         "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-        AllowMicrosoftCalenderSyncCall
+        AllowMicrosoftCalenderSyncCall,
       );
       if (userOptionsSettings.AllowGoogleCalenderSync) {
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
+          AllowMicrosoftCalenderSyncCall,
         );
         await dispatch(
           getGoogleValidToken(
@@ -840,22 +874,24 @@ const UserSettings = ({ googleClientIDs }) => {
             signUpCodeToken,
             userOptionsSettings,
             t,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       } else {
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
+          AllowMicrosoftCalenderSyncCall,
         );
+        console.log("CHeck Is Calling Here");
+
         await dispatch(
           updateUserSettingFunc(
             navigate,
             userOptionsSettings,
             t,
             true,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
       setSignUpCodeToken("");
@@ -863,49 +899,52 @@ const UserSettings = ({ googleClientIDs }) => {
       if (settingReducerData.userAllowGoogleCalendarSynch) {
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
+          AllowMicrosoftCalenderSyncCall,
         );
         if (userOptionsSettings.AllowGoogleCalenderSync) {
           console.log(
             "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-            AllowMicrosoftCalenderSyncCall
+            AllowMicrosoftCalenderSyncCall,
           );
+          console.log("CHeck Is Calling Here");
+
           await dispatch(
             updateUserSettingFunc(
               navigate,
               userOptionsSettings,
               t,
               true,
-              AllowMicrosoftCalenderSyncCall
-            )
+              AllowMicrosoftCalenderSyncCall,
+            ),
           );
         } else {
           console.log(
             "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-            AllowMicrosoftCalenderSyncCall
+            AllowMicrosoftCalenderSyncCall,
           );
           await dispatch(
             revokeToken(
               navigate,
               userOptionsSettings,
               t,
-              AllowMicrosoftCalenderSyncCall
-            )
+              AllowMicrosoftCalenderSyncCall,
+            ),
           );
         }
       } else {
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
+          AllowMicrosoftCalenderSyncCall,
         );
+        console.log("CHeck Is Calling Here");
         await dispatch(
           updateUserSettingFunc(
             navigate,
             userOptionsSettings,
             t,
             false,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
     }
@@ -1540,7 +1579,7 @@ const UserSettings = ({ googleClientIDs }) => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-on-cancelled-or-deleted-meeting"
+                              "Push-notification-on-cancelled-or-deleted-meeting",
                             )}
                           </span>
                         </Checkbox>
@@ -1671,7 +1710,7 @@ const UserSettings = ({ googleClientIDs }) => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-removed-from-committee"
+                                  "Push-notification-when-removed-from-committee",
                                 )}
                               </span>
                             </Checkbox>
@@ -1689,7 +1728,7 @@ const UserSettings = ({ googleClientIDs }) => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Email-when-committee-is-dissolved-or-archived"
+                                  "Email-when-committee-is-dissolved-or-archived",
                                 )}
                               </span>
                             </Checkbox>
@@ -1707,7 +1746,7 @@ const UserSettings = ({ googleClientIDs }) => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-dissolved-or-archived"
+                                  "Push-notification-when-committee-is-dissolved-or-archived",
                                 )}
                               </span>
                             </Checkbox>
@@ -1739,7 +1778,7 @@ const UserSettings = ({ googleClientIDs }) => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-inActive"
+                                  "Push-notification-when-committee-is-inActive",
                                 )}
                               </span>
                             </Checkbox>
@@ -1771,7 +1810,7 @@ const UserSettings = ({ googleClientIDs }) => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-set-active"
+                                  "Push-notification-when-committee-is-set-active",
                                 )}
                               </span>
                             </Checkbox>
@@ -1878,7 +1917,7 @@ const UserSettings = ({ googleClientIDs }) => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-group-is-dissolved-or-archived"
+                                  "Push-notification-when-group-is-dissolved-or-archived",
                                 )}
                               </span>
                             </Checkbox>
@@ -1976,7 +2015,7 @@ const UserSettings = ({ googleClientIDs }) => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-new-resolution-is-circulated"
+                              "Push-notification-when-new-resolution-is-circulated",
                             )}
                           </span>
                         </Checkbox>
@@ -1994,7 +2033,7 @@ const UserSettings = ({ googleClientIDs }) => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Email-when-new-resolution-is-cancelled-after-circulation"
+                              "Email-when-new-resolution-is-cancelled-after-circulation",
                             )}
                           </span>
                         </Checkbox>
@@ -2012,7 +2051,7 @@ const UserSettings = ({ googleClientIDs }) => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-new-resolution-is-cancelled-after-circulated"
+                              "Push-notification-when-new-resolution-is-cancelled-after-circulated",
                             )}
                           </span>
                         </Checkbox>
@@ -2138,7 +2177,7 @@ const UserSettings = ({ googleClientIDs }) => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-published-poll-is-deleted"
+                              "Push-notification-when-published-poll-is-deleted",
                             )}
                           </span>
                         </Checkbox>
@@ -2170,7 +2209,7 @@ const UserSettings = ({ googleClientIDs }) => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-published-poll-is--updated"
+                              "Push-notification-when-published-poll-is--updated",
                             )}
                           </span>
                         </Checkbox>
@@ -2325,6 +2364,7 @@ const UserSettings = ({ googleClientIDs }) => {
           </Col>
         </Row>
       </section>
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

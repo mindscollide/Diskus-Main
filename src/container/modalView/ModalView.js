@@ -37,6 +37,8 @@ import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmation
 import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
+import crossicon from "../../assets/images/BlackCrossIconModals.svg";
+
 import {
   clearMessegesVideoFeature,
   disableZoomBeforeJoinSession,
@@ -1305,6 +1307,33 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           modalHeaderClassName="d-none"
           ModalBody={
             <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-end mb-2"
+                >
+                  <img
+                    src={crossicon}
+                    alt="Close"
+                    onClick={() => {
+                      if (
+                        allMeetingDetails?.meetingStatus?.status === "10" ||
+                        allMeetingDetails?.meetingStatus?.status === 10
+                      ) {
+                        leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+                      } else {
+                        setViewFlag(false);
+                      }
+                    }}
+                    className="cursor-pointer"
+                    width="10px"
+                    height="10px"
+                  />
+                </Col>
+              </Row>
               <Row>
                 <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                   <Button

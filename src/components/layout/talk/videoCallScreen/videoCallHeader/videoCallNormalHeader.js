@@ -2046,21 +2046,60 @@ const VideoCallNormalHeader = ({
                     !getMeetingHostInfo.isHost &&
                     !presenterViewHostFlag &&
                     !getMeetingHostInfo.isDashboard
-                      ? /* ===== VIEWER LIST ===== */
-                        inCallParticipantsList &&
-                        inCallParticipantsList.length > 0 &&
-                        inCallParticipantsList.map((participant, index) => (
-                          <Row className="m-0" key={index}>
-                            <Col className="p-0" lg={12} md={12} sm={12}>
-                              <p className="participant-name">
-                                {participant.name}
-                                {participant.isHost && (
-                                  <span className="ms-1">(Caller)</span>
-                                )}
-                              </p>
-                            </Col>
-                          </Row>
-                        ))
+                      ? /* ===== VIEWER LIST (MERGED) ===== */
+                        (() => {
+                          // Merge inCall and pending lists, removing duplicates by userID
+                          const inCallList = Array.isArray(
+                            inCallParticipantsList,
+                          )
+                            ? inCallParticipantsList
+                            : [];
+                          const pendingList = Array.isArray(
+                            pendingCallParticipantList,
+                          )
+                            ? pendingCallParticipantList
+                            : [];
+
+                          // Create a Map to deduplicate by userID
+                          const mergedMap = new Map();
+
+                          // Add inCall participants first
+                          inCallList.forEach((participant) => {
+                            mergedMap.set(participant.userID, {
+                              ...participant,
+                              callStatus: "In Call", // or whatever status you want
+                            });
+                          });
+
+                          // Add pending participants (won't override existing if same userID)
+                          pendingList.forEach((participant) => {
+                            if (!mergedMap.has(participant.userID)) {
+                              mergedMap.set(participant.userID, {
+                                ...participant,
+                                callStatus: participant.callStatus || "Pending",
+                              });
+                            }
+                          });
+
+                          const mergedParticipants = Array.from(
+                            mergedMap.values(),
+                          );
+
+                          return mergedParticipants.length > 0
+                            ? mergedParticipants.map((participant, index) => (
+                                <Row className="m-0" key={index}>
+                                  <Col className="p-0" lg={12} md={12} sm={12}>
+                                    <p className="participant-name">
+                                      {participant.name}
+                                      {participant.isHost && (
+                                        <span className="ms-1">(Caller)</span>
+                                      )}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              ))
+                            : null;
+                        })()
                       : /* ===== CALLER LIST ===== */
                         isCaller && (
                           <>
@@ -2224,8 +2263,33 @@ const VideoCallNormalHeader = ({
                               !isMeetingVideo &&
                               !getMeetingHostInfo.isHost &&
                               !getMeetingHostInfo.isDashboard
-                              ? inCallParticipantsList?.length
-                              : Array.isArray(groupCallParticipantList) &&
+                              ? /* ===== NON-CALLER: Merge both lists count ===== */
+                                (() => {
+                                  const inCallList = Array.isArray(
+                                    inCallParticipantsList,
+                                  )
+                                    ? inCallParticipantsList
+                                    : [];
+                                  const pendingList = Array.isArray(
+                                    pendingCallParticipantList,
+                                  )
+                                    ? pendingCallParticipantList
+                                    : [];
+
+                                  // Merge and deduplicate by userID
+                                  const mergedSet = new Set();
+
+                                  inCallList.forEach((p) =>
+                                    mergedSet.add(p.userID),
+                                  );
+                                  pendingList.forEach((p) =>
+                                    mergedSet.add(p.userID),
+                                  );
+
+                                  return mergedSet.size;
+                                })()
+                              : /* ===== CALLER: Show group participants count ===== */
+                                Array.isArray(groupCallParticipantList) &&
                                   groupCallParticipantList?.length,
                             lan,
                           )}
