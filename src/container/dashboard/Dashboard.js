@@ -263,6 +263,7 @@ const Dashboard = () => {
   const {
     editorRole,
     cancelConfirmationModal,
+    unSaveChangesModalForMeeting,
     setPresenterForOneToOneOrGroup,
     setLeaveOneToOne,
     setGroupVideoCallAccepted,
@@ -8247,7 +8248,7 @@ const Dashboard = () => {
               }
             />
           )}
-          {cancelConfirmationModal && <CancelConfirmationModal />}
+          {unSaveChangesModalForMeeting && <CancelConfirmationModal />}
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />

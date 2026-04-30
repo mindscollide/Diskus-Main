@@ -46,13 +46,13 @@ import ArrowDownIcon from "../../../../../assets/images/sortingIcons/Arrow-down.
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import AccessDeniedModal from "../../../../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
 const Actions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     editorRole,
-    setViewAdvanceMeetingModal,
     setactionsPage,
     setPolls,
     advanceMeetingModalID,
@@ -722,7 +722,7 @@ const Actions = () => {
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
-    setViewAdvanceMeetingModal(false);
+    dispatch(toggleViewMeetingModal(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     setactionsPage(false);
@@ -901,7 +901,7 @@ const Actions = () => {
       )}
       {removeTableModal && <RemoveTableModal />}
       {cancelActions && (
-        <CancelActions setSceduleMeeting={setViewAdvanceMeetingModal} />
+        <CancelActions />
       )}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
     </section>

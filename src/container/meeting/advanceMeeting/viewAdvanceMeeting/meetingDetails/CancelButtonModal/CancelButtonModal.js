@@ -20,7 +20,6 @@ import { resetCurrentMeetingInfo } from "../../../../../../store/actions/NewMeet
 const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
-  setViewAdvanceMeetingModal,
   setAgenda,
   setPolls,
   setMinutes,

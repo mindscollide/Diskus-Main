@@ -36,6 +36,10 @@ export const setAdvanceMeetingRoute = (value) => ({
   payload: value, // 1 = Create, 2 = Edit
 });
 
+export const setProposedMeetingRoute = (value) => ({
+  type: actions.SET_PROPOSED_MEETING_ROUTE,
+  payload: value,
+});
 export const toggleUnsavedChangesModal = (value) => ({
   type: actions.TOGGLE_UNSAVED_CHANGES_MODAL,
   payload: value,

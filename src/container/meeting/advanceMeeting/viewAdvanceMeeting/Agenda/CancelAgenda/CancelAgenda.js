@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { showCancelModalAgenda } from "../../../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../../components/elements";
 
-const CancelAgenda = ({ setSceduleMeeting }) => {
+const CancelAgenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const cancelAgenda = useSelector(
@@ -18,7 +19,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
-    setSceduleMeeting(false);
+    dispatch(toggleViewMeetingModal(false));
     dispatch(showCancelModalAgenda(false));
   };
   return (

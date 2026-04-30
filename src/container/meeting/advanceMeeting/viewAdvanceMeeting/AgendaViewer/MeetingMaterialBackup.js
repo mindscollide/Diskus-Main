@@ -22,9 +22,9 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { Eye } from "react-bootstrap-icons";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
 
 const MeetingMaterialPrev = ({
-  setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
   setMeetingMaterial,
@@ -271,7 +271,7 @@ const MeetingMaterialPrev = ({
         console.log("chek search meeting")
         dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
-    setViewAdvanceMeetingModal(false);
+    dispatch(toggleViewMeetingModal(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     setactionsPage(false);
@@ -337,7 +337,6 @@ const MeetingMaterialPrev = ({
       </Row>
       {cancelMeetingMaterial && (
         <CancelMeetingMaterial
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}

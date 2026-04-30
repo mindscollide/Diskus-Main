@@ -16,7 +16,6 @@ import { resetCurrentMeetingInfo } from "../../../../../../store/actions/NewMeet
 import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 
 const CancelMeetingMaterial = ({
-  setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();

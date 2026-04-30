@@ -145,7 +145,10 @@ import {
 import axiosInstance from "../../commen/functions/axiosInstance";
 import store from "../store";
 import { resetViewTabs, toggleViewMeetingModal } from "./ModalStates_actions";
-import { resetCurrentMeetingInfo } from "./NewMeeting2.actions";
+import {
+  listOfMeetingsApi,
+  resetCurrentMeetingInfo,
+} from "./NewMeeting2.actions";
 
 const boardDeckModal = (response) => {
   return {
@@ -7729,7 +7732,6 @@ const JoinCurrentMeeting = (
   setSceduleMeeting,
   no,
   setAdvanceMeetingModalID,
-  setViewAdvanceMeetingModal,
   NotificationCheckQuickMeet,
 ) => {
   return async (dispatch) => {
@@ -7753,7 +7755,6 @@ const JoinCurrentMeeting = (
               setSceduleMeeting,
               no,
               setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
               NotificationCheckQuickMeet,
             ),
           );
@@ -7811,8 +7812,7 @@ const JoinCurrentMeeting = (
               } else {
                 isFunction(setAdvanceMeetingModalID) &&
                   setAdvanceMeetingModalID(Number(Data.FK_MDID));
-                isFunction(setViewAdvanceMeetingModal) &&
-                  setViewAdvanceMeetingModal(true);
+                dispatch(toggleViewMeetingModal(true));
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
               }
@@ -7923,28 +7923,12 @@ const leaveMeetingFail = (message) => {
   };
 };
 
-const LeaveCurrentMeeting = (
-  navigate,
-  t,
-  Data,
-  routePath,
-  object,
-  // isQuickMeeting,
-  // setViewFlag,
-  // setEditorRole,
-  // setAdvanceMeetingModalID,
-  // setViewAdvanceMeetingModal,
-  // setEndMeetingConfirmationModal,
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
-  let roomID = localStorage.getItem("acceptedRoomID");
-  let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-  let currentView = localStorage.getItem("MeetingCurrentView");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -7955,21 +7939,7 @@ const LeaveCurrentMeeting = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            LeaveCurrentMeeting(
-              navigate,
-              t,
-              Data,
-              routePath,
-              object,
-              // isQuickMeeting,
-              // setViewFlag,
-              // setEditorRole,
-              // setAdvanceMeetingModalID,
-              // setViewAdvanceMeetingModal,
-              // setEndMeetingConfirmationModal,
-            ),
-          );
+          dispatch(LeaveCurrentMeeting(navigate, t, Data, routePath, object));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -8014,7 +7984,7 @@ const LeaveCurrentMeeting = (
                   dispatch(resetViewTabs());
 
                   console.log("chek search meeting");
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  await dispatch(listOfMeetingsApi(navigate, t, searchData));
                   break;
                 case "FromEndMeetingModal":
                   setEditorRole({
@@ -8027,7 +7997,18 @@ const LeaveCurrentMeeting = (
                   dispatch(resetViewTabs());
 
                   console.log("chek search meeting");
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  await dispatch(listOfMeetingsApi(navigate, t, searchData));
+                  break;
+                case "formLeaveMeetingModal":
+                  setEditorRole({
+                    status: null,
+                    role: null,
+                    isPrimaryOrganizer: null,
+                  });
+                  dispatch(toggleViewMeetingModal(false));
+                  dispatch(resetCurrentMeetingInfo());
+                  dispatch(resetViewTabs());
+
                   break;
                 default:
                   break;
@@ -8083,28 +8064,7 @@ const LeaveCurrentMeeting = (
                     };
                     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
                   } else {
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: Number(meetingPageCurrent),
-                      Length: Number(meetingpageRow),
-                      PublishedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 1
-                          ? true
-                          : false,
-                      ProposedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 2
-                          ? true
-                          : false,
-                    };
                     console.log("chek search meeting");
-                    await dispatch(
-                      searchNewUserMeeting(navigate, searchData, t),
-                    );
                   }
                 } else {
                   dispatch(
@@ -8158,7 +8118,9 @@ const LeaveCurrentMeeting = (
                     console.log("navigateLocation");
                     navigate("/Diskus/");
                   } else {
-              
+                    await dispatch(
+                      listOfMeetingsApi(navigate, t, searchData, "", {}),
+                    );
                   }
                 }
 
@@ -8250,7 +8212,6 @@ const LeaveCurrentMeetingOtherMenus = (
   proposeNewMeetingPageFlagReducer,
   viewMeetingFlagReducer,
   location,
-  setViewAdvanceMeetingModal,
 ) => {
   console.log(
     {
@@ -8269,7 +8230,6 @@ const LeaveCurrentMeetingOtherMenus = (
       proposeNewMeetingPageFlagReducer,
       viewMeetingFlagReducer,
       location,
-      setViewAdvanceMeetingModal,
     },
     "Coming inside this block scopr",
   );
@@ -8306,7 +8266,6 @@ const LeaveCurrentMeetingOtherMenus = (
               proposeNewMeetingPageFlagReducer,
               viewMeetingFlagReducer,
               location,
-              setViewAdvanceMeetingModal,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -8357,7 +8316,6 @@ const LeaveCurrentMeetingOtherMenus = (
                   navigate,
                   dispatch,
                   location,
-                  setViewAdvanceMeetingModal,
                   flags: {
                     scheduleMeetingPageFlagReducer,
                     viewProposeDateMeetingPageFlagReducer,
@@ -9281,7 +9239,6 @@ const GetMeetingStatusDataAPI = (
   Data,
   setEditorRole,
   FlagOnRouteClickAdvanceMeet,
-  setViewAdvanceMeetingModal,
   Check,
   setVideoTalk,
   setViewFlag,
@@ -9302,7 +9259,6 @@ const GetMeetingStatusDataAPI = (
               Data,
               setEditorRole,
               FlagOnRouteClickAdvanceMeet,
-              setViewAdvanceMeetingModal,
               Check,
               setVideoTalk,
               setViewFlag,
@@ -9361,7 +9317,7 @@ const GetMeetingStatusDataAPI = (
 
                 // For Notification ID === 9
                 if (FlagOnRouteClickAdvanceMeet === true) {
-                  dispatch(toggleViewMeetingModal(true))
+                  dispatch(toggleViewMeetingModal(true));
                   // dispatch(scheduleMeetingPageFlag(false));
                   // isFunction(setViewAdvanceMeetingModal) &&
                   //   setViewAdvanceMeetingModal(true);

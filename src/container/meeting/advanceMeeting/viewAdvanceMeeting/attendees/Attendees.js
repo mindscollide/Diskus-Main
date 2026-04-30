@@ -13,6 +13,7 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
 import { useSelector } from "react-redux";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
@@ -27,7 +28,6 @@ const Attendees = () => {
     editorRole,
     setEditorRole,
     advanceMeetingModalID,
-    setViewAdvanceMeetingModal,
     setAttendees,
   } = useMeetingContext();
 
@@ -101,7 +101,7 @@ const Attendees = () => {
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEditorRole({ status: null, role: null });
-      setViewAdvanceMeetingModal(false);
+      dispatch(toggleViewMeetingModal(false));
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       setAttendees(false);
@@ -144,7 +144,7 @@ const Attendees = () => {
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         localStorage.removeItem("folderDataRoomMeeting");
         setEditorRole({ status: null, role: null });
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       }

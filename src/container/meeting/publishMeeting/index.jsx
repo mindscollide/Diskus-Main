@@ -142,7 +142,6 @@ const PublishedMeetingList = () => {
     editorRole,
     setEditorRole,
     setVideoTalk,
-    setViewAdvanceMeetingModal,
     setAdvanceMeetingModalID,
     setSceduleMeeting,
     setDataroomMapFolderId,

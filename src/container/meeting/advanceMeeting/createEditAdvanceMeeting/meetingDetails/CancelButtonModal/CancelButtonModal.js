@@ -23,8 +23,7 @@ const CancelButtonModal = ({ setRows }) => {
   const navigate = useNavigate();
   const { goBackCancelModal, setGoBackCancelModal, setEditorRole } =
     useContext(MeetingContext);
-  const { setIsCreateEditMeeting, isCreateEditMeeting } =
-    useNewMeetingContext();
+
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -34,151 +33,68 @@ const CancelButtonModal = ({ setRows }) => {
     setGoBackCancelModal(false);
   };
 
-  const handleYesFunctionality = () => {
-    if (localStorage.getItem("navigateLocation") === "dataroom") {
-      setGoBackCancelModal(false);
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      navigate("/Diskus/dataroom");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "resolution") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/resolution");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "committee") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/committee");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "groups") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/groups");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "polling") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/polling");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "calendar") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/calendar");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "todolist") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/todolist");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "Notes") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setGoBackCancelModal(false);
-      navigate("/Diskus/Notes");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      navigate("/Diskus/");
-      localStorage.removeItem("navigateLocation");
-    } else if (localStorage.getItem("navigateLocation") === "Meeting") {
-      setGoBackCancelModal(false);
+const handleYesFunctionality = () => {
+  const location = localStorage.getItem("navigateLocation");
 
-      console.log("chek search meeting");
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      setEditorRole({
-        status: null,
-        role: null,
-        isPrimaryOrganizer: false,
-      });
-      dispatch(
-        listOfMeetingsApi(
-          navigate,
-          t,
-          {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-            PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
-            ProposedMeetings:
-              currentView && Number(currentView) === 2 ? true : false,
-          },
-          "",
-          {}
-        )
-      );
-      setGoBackCancelModal(false);
-      setIsCreateEditMeeting(false);
-      isFunction(setRows) && setRows([]);
-      localStorage.removeItem("navigateLocation");
-    } else {
-      // let searchData = {
-      //   Date: "",
-      //   Title: "",
-      //   HostName: "",
-      //   UserID: Number(userID),
-      //   PageNumber:
-      //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      //   PublishedMeetings:
-      //     currentView && Number(currentView) === 1 ? true : false,
-      //   ProposedMeetings:
-      //     currentView && Number(currentView) === 2 ? true : false,
-      // };
-      console.log("chek search meeting");
-      dispatch(
-        listOfMeetingsApi(
-          navigate,
-          t,
-          {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-            PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
-            ProposedMeetings:
-              currentView && Number(currentView) === 2 ? true : false,
-          },
-          "",
-          {}
-        )
-      );
-      setGoBackCancelModal(false);
-      setIsCreateEditMeeting(false);
-      dispatch(toggleCreateEditMeetingModal(false));
-      dispatch(resetCreateEditTabs());
-      isFunction(setRows) && setRows([]);
-      setEditorRole({
-        status: null,
-        role: null,
-        isPrimaryOrganizer: false,
-      });
-    }
+  const commonReset = () => {
+    dispatch(toggleCreateEditMeetingModal(false));
+    dispatch(resetCreateEditTabs());
+    dispatch(resetCurrentMeetingInfo());
+    setGoBackCancelModal(false);
+
     setEditorRole({
       status: null,
       role: null,
       isPrimaryOrganizer: false,
     });
-    dispatch(resetCurrentMeetingInfo());
   };
 
+  const navigateRoutes = {
+    dataroom: "/Diskus/dataroom",
+    resolution: "/Diskus/resolution",
+    committee: "/Diskus/committee",
+    groups: "/Diskus/groups",
+    polling: "/Diskus/polling",
+    calendar: "/Diskus/calendar",
+    todolist: "/Diskus/todolist",
+    Notes: "/Diskus/Notes",
+    MainDashBoard: "/Diskus/",
+  };
+
+  // 🔁 Handle Meeting Case Separately
+  if (location === "Meeting" || !location) {
+    commonReset();
+
+    dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1,
+          ProposedMeetings:
+            currentView && Number(currentView) === 2,
+        },
+        "",
+        {},
+      )
+    );
+
+    isFunction(setRows) && setRows([]);
+  } else if (navigateRoutes[location]) {
+    commonReset();
+    navigate(navigateRoutes[location]);
+  }
+
+  localStorage.removeItem("navigateLocation");
+};
   return (
     <section>
       <Modal
@@ -199,7 +115,7 @@ const CancelButtonModal = ({ setRows }) => {
                 className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t(
-                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
                   )}
                 </span>
               </Col>

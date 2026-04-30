@@ -45,6 +45,7 @@ import {
   uploadGlobalFlag,
   viewMeetingFlag,
 } from "../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../store/actions/ModalStates_actions";
 import { useSelector } from "react-redux";
 import { mqttMeetingData } from "../../../../hooks/meetingResponse/response";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
@@ -99,7 +100,6 @@ const DraftMeeting = () => {
     editFlag,
     setEditFlag,
     setCurrentMeetingID,
-    setViewAdvanceMeetingModal,
     setVideoTalk,
     setEditorRole,
   } = useMeetingContext();
@@ -419,7 +419,7 @@ const DraftMeeting = () => {
 
   const handleClickMeetingView = (record) => {
     setAdvanceMeetingModalID(record.pK_MDID);
-    setViewAdvanceMeetingModal(true);
+    dispatch(toggleViewMeetingModal(true));
     localStorage.setItem("videoCallURL", record.videoCallURL);
     setVideoTalk({
       isChat: record.isChat,

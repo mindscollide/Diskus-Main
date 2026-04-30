@@ -559,7 +559,7 @@ export const NewMeetingProvider = ({ children }) => {
   useEffect(() => {
     try {
       const types = getALlMeetingTypes?.meetingTypes;
-      if (types == null) return;
+      if (types === null) return;
 
       const meetingtypeFilter = [
         { value: "0", text: t("Quick-meeting") },

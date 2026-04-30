@@ -55,9 +55,7 @@ import {
 
 const LeaveVideoIntimationModal = () => {
   const dispatch = useDispatch();
-  const {setViewAdvanceMeetingModal} =useMeetingContext()
-
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -236,7 +234,6 @@ const LeaveVideoIntimationModal = () => {
           proposeNewMeetingPageFlagReducer,
           viewMeetingFlagReducer,
           location,
-          setViewAdvanceMeetingModal
         )
       );
       await dispatch(currentMeetingStatus(0));

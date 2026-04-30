@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { clearMeetingState } from "@/store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import CreateEditAdvanceMeeting from "./advanceMeeting/createEditAdvanceMeeting";
+import CreateEditProposedMeetingModal from './proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting'
 
 import { useMeetingContext } from "../../context/MeetingContext";
 import ViewMeetingModal from "./advanceMeeting/viewAdvanceMeeting";
@@ -28,10 +29,13 @@ import UpdateQuickMeeting from "./quickMeeting/UpdateQuickMeeting/UpdateQuickMee
 import ViewQuickMeeting from "./quickMeeting/ViewQuickMeeting";
 import {
   setAdvanceMeetingRoute,
+  setProposedMeetingRoute,
   toggleCreateEditMeetingModal,
+  toggleCreateEditProposedMeetingModal,
 } from "../../store/actions/ModalStates_actions";
 import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
 import { listOfMeetingsApi } from "../../store/actions/NewMeeting2.actions";
+import ProposedNewMeeting from "./proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
 /**
  * MainMeeting Component
  *
@@ -63,6 +67,9 @@ const MainMeeting = () => {
     (state) => state.ModalStatesReducer.isViewMeetingModal,
   );
 
+  const createEditProposedMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditProposedMeetingModal,
+  );
   // Refs and hooks
   const calendRef = useRef();
   const navigate = useNavigate();
@@ -427,6 +434,11 @@ const MainMeeting = () => {
     dispatch(toggleCreateEditMeetingModal(true));
   };
 
+  const handleCreateProposedMeeting = () => {
+    dispatch(setProposedMeetingRoute(1))
+    dispatch(toggleCreateEditProposedMeetingModal(true))
+  }
+
   if (createEditMeetingModal) {
     return <CreateEditAdvanceMeeting />;
   }
@@ -434,7 +446,9 @@ const MainMeeting = () => {
   if (isViewMeetingModal) {
     return <ViewMeetingModal />;
   }
-
+  if (createEditProposedMeetingModal) {
+    return <ProposedNewMeeting />;
+  }
   return (
     <>
       {/* Header Section - Contains title and schedule meeting dropdown */}
@@ -487,7 +501,7 @@ const MainMeeting = () => {
                   <>
                     <ReactBootstrapDropdown.Item
                       className={styles["dropdown-item"]}
-                      // onClick={openProposedNewMeetingPage}
+                      onClick={handleCreateProposedMeeting}
                     >
                       {t("Propose-new-meeting")}
                     </ReactBootstrapDropdown.Item>

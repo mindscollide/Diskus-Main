@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { NewJoinCurrentMeeting } from "../store/actions/NewMeetingActions";
@@ -52,7 +51,6 @@ export const MeetingProvider = ({ children }) => {
   const UserProfileData = useSelector(
     (state) => state.settingReducer.UserProfileData,
   );
-  const dispatch = useDispatch();
   // State to manage whether agenda updates are active during a meeting
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
@@ -84,7 +82,10 @@ export const MeetingProvider = ({ children }) => {
 
   // State for managing view flags and modals
   const [viewFlag, setViewFlag] = useState(false);
-  const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const viewAdvanceMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewMeetingModal,
+  );
+
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -163,6 +164,7 @@ export const MeetingProvider = ({ children }) => {
   const [maximizeMeetingVideo, setMaximizeMeetingVideo] = useState(false);
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
+  const [unSaveChangesModalForMeeting, setUnSaveChangesModalForMeeting] = useState(false)
 
   const [viewMeetingAgendaBuilderRowData, setViewMeetingAgendaBuilderRowData] =
     useState([]);
@@ -327,7 +329,6 @@ export const MeetingProvider = ({ children }) => {
     viewFlag,
     setViewFlag,
     viewAdvanceMeetingModal,
-    setViewAdvanceMeetingModal,
     viewProposeDatePoll,
     setViewProposeDatePoll,
     deleteMeetingConfirmationModal,
@@ -510,6 +511,7 @@ export const MeetingProvider = ({ children }) => {
     setEditFlag,
     downloadVideoRecordingModal,
     setDownloadVideoRecordingModal,
+    unSaveChangesModalForMeeting, setUnSaveChangesModalForMeeting
   };
 
   // Provide the state data to the context

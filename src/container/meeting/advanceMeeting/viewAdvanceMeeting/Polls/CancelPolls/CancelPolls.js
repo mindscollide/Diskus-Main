@@ -6,6 +6,7 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 
-const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
+const CancelPolls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
 
   const handleYesFunctionality = () => {
     dispatch(showCancelPolls(false));
-    setViewAdvanceMeetingModal(false);
+    dispatch(toggleViewMeetingModal(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     let searchData = {

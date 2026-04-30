@@ -10,8 +10,9 @@ import {
   searchNewUserMeeting,
   showCancelModalAgendaBuilder,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 import blackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
+const NewCancelAgendaBuilderModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setSceduleMeeting(false);
+    dispatch(toggleViewMeetingModal(false));
     localStorage.setItem("folderDataRoomMeeting", 0);
     dispatch(showCancelModalAgendaBuilder(false));
   };

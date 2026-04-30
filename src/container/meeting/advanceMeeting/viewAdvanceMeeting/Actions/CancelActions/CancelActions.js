@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./CancelActions.module.css";
 import { showCancelActions } from "../../../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
+const CancelActions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const cancelActions = useSelector(
@@ -18,7 +19,7 @@ const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
   };
 
   const handleYesFunctionality = () => {
-    setSceduleMeeting(false);
+    dispatch(toggleViewMeetingModal(false));
   };
 
   return (

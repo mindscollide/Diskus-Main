@@ -65,6 +65,7 @@ import {
   toggleViewMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
+import NewEndMeetingModal from "../../commonComponents/NewEndMeetingModal/NewEndMeetingModal";
 
 const ViewMeetingModal = ({
   advanceMeetingModalID,
@@ -83,6 +84,9 @@ const ViewMeetingModal = ({
 
   const castYourVotePollModalState = useSelector(
     (state) => state.PollsReducer.castPollVoteModal,
+  );
+  const endMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.endMeetingModal,
   );
 
   const [open, setOpen] = useState({
@@ -118,7 +122,6 @@ const ViewMeetingModal = ({
     setPauseRecordingState,
     setResumeRecordingState,
     setStopRecordingState,
-    setViewAdvanceMeetingModal,
     iframeRef,
   } = useContext(MeetingContext);
 
@@ -733,7 +736,6 @@ const ViewMeetingModal = ({
           webNotificationData,
           setViewFlag,
           setEditorRole,
-          setViewAdvanceMeetingModal,
           setViewProposeDatePoll,
           setViewGroupPage,
           setShowModal,
@@ -1019,6 +1021,7 @@ const ViewMeetingModal = ({
         />
       )}
       {castYourVotePollModalState && <PollsCastVoteInitimationModal />}
+      {endMeetingModal && <NewEndMeetingModal />}
 
       {NewMeetingreducer.castVoteAgendaPage && (
         <CastVoteAgendaModal

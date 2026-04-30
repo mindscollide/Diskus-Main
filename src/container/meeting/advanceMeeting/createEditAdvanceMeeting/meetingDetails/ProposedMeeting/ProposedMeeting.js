@@ -57,6 +57,7 @@ import {
   activeChat,
 } from "../../../../../../store/actions/Talk_action";
 import { useDispatch } from "react-redux";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 import { useNavigate } from "react-router-dom";
 import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
 import { useEffect } from "react";
@@ -124,8 +125,6 @@ const UnpublishedProposedMeeting = ({
     setEditorRole,
     setEndMeetingConfirmationModal,
     setDeleteMeetingRecord,
-    setViewAdvanceMeetingModal,
-    viewAdvanceMeetingModal,
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -212,7 +211,7 @@ const UnpublishedProposedMeeting = ({
 
   const handleOpenViewModal = async (data) => {
     setAdvanceMeetingModalID(data.pK_MDID);
-    setViewAdvanceMeetingModal(true);
+    dispatch(toggleViewMeetingModal(true));
     // dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 

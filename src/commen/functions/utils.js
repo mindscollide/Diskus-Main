@@ -113,7 +113,7 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     userFeatures.forEach((feature) => {
       // Find matching route by packageFeatureID
       const matchingRoute = user.find(
-        (route) => route.id === feature.packageFeatureID
+        (route) => route.id === feature.packageFeatureID,
       );
       if (matchingRoute) {
         // Check if LocalUserRoutes already contains an entry with this name
@@ -165,7 +165,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     adminFeatures.forEach((feature) => {
       // Find matching route by packageFeatureID
       const matchingRoute = Admin.find(
-        (route) => route.id === feature.packageFeatureID
+        (route) => route.id === feature.packageFeatureID,
       );
       if (matchingRoute) {
         // Check if LocalUserRoutes already contains an entry with this name
@@ -200,7 +200,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
 
     localStorage.setItem(
       "organizationSubscriptionID",
-      response.organizationSubscriptionID
+      response.organizationSubscriptionID,
     );
 
     if (response.organizationName) {
@@ -217,7 +217,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
     if (response.authToken) {
       sessionStorage.setItem(
         "userID",
-        JSON.stringify(response.authToken.userID)
+        JSON.stringify(response.authToken.userID),
       );
       localStorage.setItem("name", response.authToken.name);
       localStorage.setItem("userEmail", response.authToken.userName);
@@ -225,11 +225,11 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       sessionStorage.setItem("token", JSON.stringify(response.authToken.token));
       localStorage.setItem(
         "refreshToken",
-        JSON.stringify(response.authToken.refreshToken)
+        JSON.stringify(response.authToken.refreshToken),
       );
       localStorage.setItem(
         "organizationRoleID",
-        response.authToken.organizationRoleID
+        response.authToken.organizationRoleID,
       );
 
       localStorage.setItem("isFirstLogin", response.authToken.isFirstLogIn);
@@ -254,13 +254,13 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
     localStorage.setItem("isTrial", response.isTrial);
     if (response.isTrial) {
       await dispatch(
-        getPackageExpiryDetail(navigate, response.organizationID, t)
+        getPackageExpiryDetail(navigate, response.organizationID, t),
       );
     }
 
     localStorage.setItem(
       "organizationSelectedUserPackageID",
-      response.organizationSelectedUserPackageID
+      response.organizationSelectedUserPackageID,
     );
 
     localStorage.setItem("hasUserRights", response.hasUserRights);
@@ -320,7 +320,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
           { name: "signatureviewer", id: 19 },
           { name: "documentViewer", id: 20 },
           { name: "Payment", id: 109 },
-          { name: "Minutes", id: 115 }
+          { name: "Minutes", id: 115 },
         );
       }
       if (response.hasAdminRights) {
@@ -332,7 +332,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
           { name: "AddUsers", id: 26 },
           { name: "loginreport", id: 35 },
           { name: "PaymentFormUserManagement", id: 222 },
-          { name: "AuditTrial", id: 219 }
+          { name: "AuditTrial", id: 219 },
         );
       }
     } else {
@@ -340,7 +340,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       if (response.hasUserRights) {
         const dynamicUserFeatures = await updateLocalUserRoutes(
           response.userFeatures,
-          LocalUserRoutes
+          LocalUserRoutes,
         ); // get dynamic features
         LocalUserRoutes = dynamicUserFeatures;
       }
@@ -348,7 +348,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       if (response.hasAdminRights) {
         const dynamicUserFeatures = await updateAdminRoutes(
           response.adminFeatures,
-          LocalAdminRoutes
+          LocalAdminRoutes,
         ); // get dynamic features
         LocalAdminRoutes = dynamicUserFeatures;
       }
@@ -432,7 +432,7 @@ export const truncateText = (text, maxLength) => {
     text.length,
     maxLength,
     text.length > maxLength,
-    "truncateTexttruncateText"
+    "truncateTexttruncateText",
   );
   if (text.length > maxLength) {
     return `${text.substring(0, maxLength - 3)}...`;
@@ -458,7 +458,7 @@ export const xorEncryptDecrypt = (input, key) => {
   let out = "";
   for (let i = 0; i < input.length; i++) {
     out += String.fromCharCode(
-      input.charCodeAt(i) ^ key.charCodeAt(i % key.length)
+      input.charCodeAt(i) ^ key.charCodeAt(i % key.length),
     );
   }
   return out;
@@ -608,20 +608,20 @@ export const openDocumentViewer = (
   dispatch,
   navigate,
   t,
-  record
+  record,
 ) => {
   if (NewfileFormatforSignatureFlow.includes(ext)) {
     window.open(
       `/Diskus/documentViewer?pdfData=${encodeURIComponent(jsonData)}`,
       "_blank",
-      "noopener noreferrer"
+      "noopener noreferrer",
     );
   } else if (validateExtensionsforHTMLPage(ext)) {
     let dataRoomData = {
       FileID: record.id,
     };
     dispatch(
-      getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData, true)
+      getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData, true),
     );
   }
 };
@@ -646,7 +646,6 @@ export const WebNotificationExportRoutFunc = (
   NotificationData,
   setViewFlag,
   setEditorRole,
-  setViewAdvanceMeetingModal,
   setViewProposeDatePoll,
   setViewGroupPage,
   setShowModal,
@@ -654,7 +653,7 @@ export const WebNotificationExportRoutFunc = (
   setAdvanceMeetingModalID,
   setResultresolution,
   isMeeting,
-  setPolls
+  setPolls,
 ) => {
   console.log("webNotifactionDataRoutecheckFlag");
   console.log("webNotifactionDataRoutecheckFlag", NotificationData);
@@ -671,7 +670,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -682,9 +681,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     } else {
@@ -694,7 +692,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         //Advance Meeting
@@ -702,7 +700,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -713,9 +711,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     }
@@ -730,7 +727,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
@@ -740,8 +737,7 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal
-          )
+          ),
         );
       }
     } else {
@@ -751,14 +747,14 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         navigate("/Diskus/Meeting");
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
@@ -775,7 +771,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -786,10 +782,9 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
             1,
-            setVideoTalk
-          )
+            setVideoTalk,
+          ),
         );
       }
     } else {
@@ -799,7 +794,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         navigate("/Diskus/Meeting");
@@ -807,11 +802,11 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem(
           "QuickMeetingCheckNotification",
-          PayLoadData.IsQuickMeeting
+          PayLoadData.IsQuickMeeting,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -824,8 +819,8 @@ export const WebNotificationExportRoutFunc = (
             false,
             false,
             1,
-            setVideoTalk
-          )
+            setVideoTalk,
+          ),
         );
       }
     }
@@ -838,7 +833,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
@@ -848,8 +843,7 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal
-          )
+          ),
         );
       }
     } else {
@@ -859,14 +853,14 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         navigate("/Diskus/Meeting");
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
@@ -882,7 +876,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       }
     }
@@ -902,7 +896,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("MinutesOperations", true);
       localStorage.setItem(
         "NotificationClickMinutesMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       //Notification for being added as a minute reviewer
       let Data = {
@@ -916,7 +910,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("MinutesOperations", true);
       localStorage.setItem(
         "NotificationClickMinutesMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       //Notification for being added as a minute reviewer
       let Data = {
@@ -940,7 +934,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -951,9 +945,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     } else {
@@ -963,7 +956,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         navigate("/Diskus/Meeting");
@@ -971,7 +964,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -982,9 +975,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     }
@@ -997,7 +989,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -1008,9 +1000,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     } else {
@@ -1020,7 +1011,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         navigate("/Diskus/Meeting");
@@ -1028,7 +1019,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -1039,9 +1030,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     }
@@ -1054,7 +1044,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         setAdvanceMeetingModalID(PayLoadData.MeetingID);
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -1066,9 +1056,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     } else {
@@ -1078,7 +1067,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("QuicMeetingOperations", true);
         localStorage.setItem(
           "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
       } else {
         navigate("/Diskus/Meeting");
@@ -1086,7 +1075,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         setAdvanceMeetingModalID(PayLoadData.MeetingID);
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -1098,9 +1087,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
-            1
-          )
+            1,
+          ),
         );
       }
     }
@@ -1110,7 +1098,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("AdvanceMeetingOperations", true);
       localStorage.setItem(
         "NotificationAdvanceMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
       localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
@@ -1125,10 +1113,9 @@ export const WebNotificationExportRoutFunc = (
           Data,
           setEditorRole,
           true,
-          setViewAdvanceMeetingModal,
           1,
-          setVideoTalk
-        )
+          setVideoTalk,
+        ),
       );
     } else {
       navigate("/Diskus/Meeting");
@@ -1136,7 +1123,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("AdvanceMeetingOperations", true);
       localStorage.setItem(
         "NotificationAdvanceMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
       //set Local storage flag for identification for polls
@@ -1152,8 +1139,8 @@ export const WebNotificationExportRoutFunc = (
           false,
           false,
           1,
-          setVideoTalk
-        )
+          setVideoTalk,
+        ),
       );
     }
   } else if (NotificationData.notificationActionID === 13) {
@@ -1187,7 +1174,7 @@ export const WebNotificationExportRoutFunc = (
       // Get the current date in "YYYYMMDD" format
       const currentDate = new Date();
       const formattedCurrentDate = `${currentDate.getFullYear()}${String(
-        currentDate.getMonth() + 1
+        currentDate.getMonth() + 1,
       ).padStart(2, "0")}${String(currentDate.getDate()).padStart(2, "0")}`;
 
       // Compare stored date with the current date
@@ -1205,7 +1192,7 @@ export const WebNotificationExportRoutFunc = (
         dispatch(viewProposeDateMeetingPageFlag(false));
         //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
         localStorage.removeItem(
-          "ProposedMeetOperationsDateSelectedSendResponseByDate"
+          "ProposedMeetOperationsDateSelectedSendResponseByDate",
         );
       }
     } else {
@@ -1215,7 +1202,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
       localStorage.setItem(
         "ProposedMeetOperationsDateSelectedSendResponseByDate",
-        PayLoadData.DeadlineDate
+        PayLoadData.DeadlineDate,
       );
     }
   } else if (NotificationData.notificationActionID === 15) {
@@ -1224,7 +1211,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("ProposedMeetingOrganizer", true);
       localStorage.setItem(
         "ProposedMeetingOrganizerMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       let Data = { MeetingID: Number(PayLoadData.MeetingID) };
       dispatch(
@@ -1236,8 +1223,8 @@ export const WebNotificationExportRoutFunc = (
           false,
           false,
           2,
-          setVideoTalk
-        )
+          setVideoTalk,
+        ),
       );
     } else {
       //Call Status API to see what is the status of the meeting eighter proposed or published
@@ -1245,7 +1232,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("ProposedMeetingOrganizer", true);
       localStorage.setItem(
         "ProposedMeetingOrganizerMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       let Data = { MeetingID: Number(PayLoadData.MeetingID) };
       dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -1314,7 +1301,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
       setViewGroupPage(true);
       dispatch(viewCommitteePageFlag(true));
@@ -1324,7 +1311,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
     }
   } else if (NotificationData.notificationActionID === 22) {
@@ -1348,7 +1335,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
       setViewGroupPage(true);
       dispatch(viewCommitteePageFlag(true));
@@ -1358,7 +1345,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
     }
   } else if (NotificationData.notificationActionID === 25) {
@@ -1366,7 +1353,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
       setViewGroupPage(true);
       dispatch(viewCommitteePageFlag(true));
@@ -1376,7 +1363,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
     }
   } else if (NotificationData.notificationActionID === 26) {
@@ -1387,8 +1374,8 @@ export const WebNotificationExportRoutFunc = (
           navigate,
           Number(PayLoadData.ResolutionID),
           t,
-          2
-        )
+          2,
+        ),
       );
     } else {
       //Notification for Added as Voter in the resolution
@@ -1399,8 +1386,8 @@ export const WebNotificationExportRoutFunc = (
           navigate,
           Number(PayLoadData.ResolutionID),
           t,
-          2
-        )
+          2,
+        ),
       );
     }
   } else if (NotificationData.notificationActionID === 27) {
@@ -1411,8 +1398,8 @@ export const WebNotificationExportRoutFunc = (
           navigate,
           Number(PayLoadData.ResolutionID),
           t,
-          2
-        )
+          2,
+        ),
       );
     } else {
       //Notification for Added as Non-Voter in the resolution
@@ -1423,8 +1410,8 @@ export const WebNotificationExportRoutFunc = (
           navigate,
           Number(PayLoadData.ResolutionID),
           t,
-          2
-        )
+          2,
+        ),
       );
     }
   } else if (NotificationData.notificationActionID === 28) {
@@ -1478,8 +1465,8 @@ export const WebNotificationExportRoutFunc = (
           t,
           Data,
           Number(PayLoadData.FileID),
-          PayLoadData.FileName
-        )
+          PayLoadData.FileName,
+        ),
       );
     } else {
       //Notification For Being File shared to you as viewer
@@ -1494,8 +1481,8 @@ export const WebNotificationExportRoutFunc = (
           t,
           Data,
           Number(PayLoadData.FileID),
-          PayLoadData.FileName
-        )
+          PayLoadData.FileName,
+        ),
       );
     }
   } else if (NotificationData.notificationActionID === 34) {
@@ -1512,8 +1499,8 @@ export const WebNotificationExportRoutFunc = (
           t,
           Data,
           Number(PayLoadData.FileID),
-          PayLoadData.FileName
-        )
+          PayLoadData.FileName,
+        ),
       );
     } else {
       //Notification For Being File shared to you as Editor
@@ -1527,8 +1514,8 @@ export const WebNotificationExportRoutFunc = (
           t,
           Data,
           Number(PayLoadData.FileID),
-          PayLoadData.FileName
-        )
+          PayLoadData.FileName,
+        ),
       );
     }
   } else if (NotificationData.notificationActionID === 35) {
@@ -1536,7 +1523,7 @@ export const WebNotificationExportRoutFunc = (
       location.pathname.toLowerCase().includes("/Diskus/dataroom".toLowerCase())
     ) {
       dispatch(
-        getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+        getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t),
       );
     } else {
       //Notification for sharing folder as a viewer
@@ -1549,7 +1536,7 @@ export const WebNotificationExportRoutFunc = (
       location.pathname.toLowerCase().includes("/Diskus/dataroom".toLowerCase())
     ) {
       dispatch(
-        getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+        getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t),
       );
     } else {
       //Notification for sharing folder as a Editor
@@ -1590,7 +1577,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("MinutesOperations", true);
       localStorage.setItem(
         "NotificationClickMinutesMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       //Notification for being added as a minute reviewer
       let Data = {
@@ -1604,7 +1591,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("MinutesOperations", true);
       localStorage.setItem(
         "NotificationClickMinutesMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       //Notification for being added as a minute reviewer
       let Data = {
@@ -1633,7 +1620,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
       setViewGroupPage(true);
       dispatch(viewCommitteePageFlag(true));
@@ -1643,7 +1630,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("NotificationClickCommitteeOperations", true);
       localStorage.setItem(
         "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
+        PayLoadData.CommitteeID,
       );
     }
   } else if (NotificationData.notificationActionID === 44) {
@@ -1661,7 +1648,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
@@ -1676,10 +1663,9 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
             1,
-            setVideoTalk
-          )
+            setVideoTalk,
+          ),
         );
       } else {
         navigate("/Diskus/Meeting");
@@ -1687,7 +1673,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         //set Local storage flag for identification for polls
@@ -1703,8 +1689,8 @@ export const WebNotificationExportRoutFunc = (
             false,
             false,
             1,
-            setVideoTalk
-          )
+            setVideoTalk,
+          ),
         );
       }
     }
@@ -1717,7 +1703,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
@@ -1732,10 +1718,9 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal,
             1,
-            setVideoTalk
-          )
+            setVideoTalk,
+          ),
         );
       } else {
         navigate("/Diskus/Meeting");
@@ -1743,7 +1728,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
+          PayLoadData.MeetingID,
         );
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         //set Local storage flag for identification for polls
@@ -1759,8 +1744,8 @@ export const WebNotificationExportRoutFunc = (
             false,
             false,
             1,
-            setVideoTalk
-          )
+            setVideoTalk,
+          ),
         );
       }
     }
@@ -1772,7 +1757,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("ProposedMeetingOrganizer", true);
       localStorage.setItem(
         "ProposedMeetingOrganizerMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       let Data = { MeetingID: Number(PayLoadData.MeetingID) };
       dispatch(
@@ -1784,8 +1769,8 @@ export const WebNotificationExportRoutFunc = (
           false,
           false,
           2,
-          setVideoTalk
-        )
+          setVideoTalk,
+        ),
       );
     } else {
       //Call Status API to see what is the status of the meeting eighter proposed or published
@@ -1793,7 +1778,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("ProposedMeetingOrganizer", true);
       localStorage.setItem(
         "ProposedMeetingOrganizerMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       let Data = { MeetingID: Number(PayLoadData.MeetingID) };
       dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -1804,7 +1789,7 @@ export const WebNotificationExportRoutFunc = (
       localStorage.setItem("AdvanceMeetingOperations", true);
       localStorage.setItem(
         "NotificationAdvanceMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       localStorage.setItem("viewadvanceMeetingTask", true);
       localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -1818,17 +1803,16 @@ export const WebNotificationExportRoutFunc = (
           Data,
           setEditorRole,
           true,
-          setViewAdvanceMeetingModal,
           1,
-          setVideoTalk
-        )
+          setVideoTalk,
+        ),
       );
     } else {
       navigate("/Diskus/Meeting");
       localStorage.setItem("AdvanceMeetingOperations", true);
       localStorage.setItem(
         "NotificationAdvanceMeetingID",
-        PayLoadData.MeetingID
+        PayLoadData.MeetingID,
       );
       localStorage.setItem("viewadvanceMeetingTask", true);
       localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -1844,8 +1828,8 @@ export const WebNotificationExportRoutFunc = (
           false,
           false,
           1,
-          setVideoTalk
-        )
+          setVideoTalk,
+        ),
       );
     }
   } else if (NotificationData.notificationActionID === 50) {
@@ -1856,8 +1840,8 @@ export const WebNotificationExportRoutFunc = (
           navigate,
           Number(PayLoadData.Resolution_ID),
           t,
-          setResultresolution
-        )
+          setResultresolution,
+        ),
       );
     } else {
       //Notification for Added as Voter in the resolution
@@ -1867,8 +1851,8 @@ export const WebNotificationExportRoutFunc = (
           navigate,
           Number(PayLoadData.Resolution_ID),
           t,
-          setResultresolution
-        )
+          setResultresolution,
+        ),
       );
     }
   } else {
@@ -1898,7 +1882,7 @@ export const handleNavigation = (
   isFirstLogin,
   // userRights,
   // adminRights,
-  dispatch
+  dispatch,
 ) => {
   const RSVP = localStorage.getItem("RSVP");
   const dataroomValue = localStorage.getItem("DataRoomEmail");
@@ -1923,7 +1907,7 @@ export const handleNavigation = (
   const taskListView_Id = localStorage.getItem("taskListView_Id");
   const taskListView = localStorage.getItem("taskListView");
   const reviewSubmittedMinutesLink = localStorage.getItem(
-    "reviewSubmittedMinutesLink"
+    "reviewSubmittedMinutesLink",
   );
   const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
   const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
@@ -2005,8 +1989,9 @@ export const SideBarGlobalNavigationFunctionNew = async (
   t,
   navigateValue,
   editorRole,
+  setEditorRole,
   setCancelConfirmationModal,
-  setGoBackCancelModal
+  setGoBackCancelModal,
 ) => {
   let userID = localStorage.getItem("userID");
   let viewMeetingModal = store.getState().ModalStatesReducer.isViewMeetingModal;
@@ -2035,6 +2020,11 @@ export const SideBarGlobalNavigationFunctionNew = async (
       console.log("Checking");
       if (Number(editorRole.status) === 9 && polls) {
         dispatch(toggleViewMeetingModal(false));
+        setEditorRole({
+          status: null,
+          role: null,
+          isPrimaryOrganizer: false,
+        });
         let searchData = {
           Date: "",
           Title: "",
@@ -2160,7 +2150,7 @@ export const isAnyMeetingPageActive = async (flags) => {
   return (
     console.log(
       "Check Route Meeting",
-      flags
+      flags,
     )(
       ((await isFunction(scheduleMeetingPageFlag)) &&
         scheduleMeetingPageFlag === true) ||
@@ -2173,7 +2163,7 @@ export const isAnyMeetingPageActive = async (flags) => {
         ((await isFunction(viewProposeOrganizerMeetingPageFlag)) &&
           viewProposeOrganizerMeetingPageFlag === true) ||
         ((await isFunction(proposeNewMeetingPageFlag)) &&
-          proposeNewMeetingPageFlag === true)
+          proposeNewMeetingPageFlag === true),
     ) &&
     (await isFunction(viewMeetingFlag)) &&
     viewMeetingFlag === false
@@ -2210,7 +2200,6 @@ export const handleNavigationforParticipantVideoFlow = async ({
   navigate,
   dispatch,
   location,
-  setViewAdvanceMeetingModal,
   flags,
   t,
 }) => {
@@ -2247,7 +2236,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
       case "dataroom":
         navigate("/Diskus/dataroom");
         resetMeetingFlags(dispatch);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "resolution":
@@ -2258,7 +2247,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
         dispatch(viewAttachmentFlag(false));
         dispatch(createResolutionModal(false));
         dispatch(viewResolutionModal(false));
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "committee":
@@ -2267,11 +2256,11 @@ export const handleNavigationforParticipantVideoFlow = async ({
         dispatch(createCommitteePageFlag(false));
         dispatch(updateCommitteePageFlag(false));
         dispatch(viewCommitteePageFlag(false));
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "Meeting":
-        handleMeetingCase(navigate, dispatch, t, setViewAdvanceMeetingModal);
+        handleMeetingCase(navigate, dispatch, t);
 
         break;
 
@@ -2281,38 +2270,38 @@ export const handleNavigationforParticipantVideoFlow = async ({
         dispatch(createGroupPageFlag(false));
         dispatch(updateGroupPageFlag(false));
         dispatch(viewGroupPageFlag(false));
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "todolist":
         navigate("/Diskus/todolist");
         resetMeetingFlags(dispatch);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "calendar":
         navigate("/Diskus/calendar");
         resetMeetingFlags(dispatch);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "Notes":
         navigate("/Diskus/Notes");
         resetMeetingFlags(dispatch);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "polling":
         navigate("/Diskus/polling");
         resetMeetingFlags(dispatch);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "home":
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/");
           resetMeetingFlags(dispatch);
-          setViewAdvanceMeetingModal(false);
+          dispatch(toggleViewMeetingModal(false));
         }
         break;
 
@@ -2320,14 +2309,14 @@ export const handleNavigationforParticipantVideoFlow = async ({
         localStorage.setItem("setTableView", 4);
         navigate("/Diskus/dataroom");
         resetMeetingFlags(dispatch);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         break;
 
       case "setting":
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/setting");
           resetMeetingFlags(dispatch);
-          setViewAdvanceMeetingModal(false);
+          dispatch(toggleViewMeetingModal(false));
         }
         break;
 
@@ -2335,7 +2324,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/Minutes");
           resetMeetingFlags(dispatch);
-          setViewAdvanceMeetingModal(false);
+          dispatch(toggleViewMeetingModal(false));
         }
         break;
 
@@ -2343,7 +2332,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/faq's");
           resetMeetingFlags(dispatch);
-          setViewAdvanceMeetingModal(false);
+          dispatch(toggleViewMeetingModal(false));
         }
         break;
 
@@ -2360,7 +2349,6 @@ const handleMeetingCase = (
   navigate,
   dispatch,
   t,
-  setViewAdvanceMeetingModal
 ) => {
   const currentView = localStorage.getItem("MeetingCurrentView");
   const meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -2399,7 +2387,7 @@ const handleMeetingCase = (
   console.log("Check Route Meeting");
   dispatch(resetCreateEditTabs());
 
-  setViewAdvanceMeetingModal(false);
+  dispatch(toggleViewMeetingModal(false));
   dispatch(viewMeetingFlag(false));
 
   dispatch(proposedMeetingDatesGlobalFlag(false));
@@ -2480,7 +2468,7 @@ export const checklistStatusErrorMap = {
 // and calls its handler. Falls back to `default` if no match found.
 export const switchOnMessage = (responseMessage, cases) => {
   const matchedKey = Object.keys(cases).find(
-    (key) => key !== "default" && responseMessage.includes(key.toLowerCase())
+    (key) => key !== "default" && responseMessage.includes(key.toLowerCase()),
   );
   const handler = matchedKey ? cases[matchedKey] : cases.default;
   if (handler) handler();

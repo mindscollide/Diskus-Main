@@ -20,6 +20,7 @@ import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { videoIconOrButtonState } from "./VideoFeature_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { isFunction } from "../../commen/functions/utils";
+import { toggleViewMeetingModal } from "./ModalStates_actions";
 import { getMeetingByCommitteeIdApi } from "./Committee_actions";
 import { getMeetingbyGroupIdApi } from "./Groups_actions";
 
@@ -263,7 +264,6 @@ const UpdateOrganizersMeeting = (
   setEditFlag,
   setCalendarViewModal,
   dashboardFlag,
-  setViewAdvanceMeetingModal,
   setEndMeetingConfirmationModal,
 ) => {
   console.log("end meeting chaek");
@@ -300,7 +300,6 @@ const UpdateOrganizersMeeting = (
               setEditFlag,
               setCalendarViewModal,
               dashboardFlag,
-              setViewAdvanceMeetingModal,
               setEndMeetingConfirmationModal,
             ),
           );
@@ -375,7 +374,6 @@ const UpdateOrganizersMeeting = (
                       setSceduleMeeting,
                       1,
                       setAdvanceMeetingModalID,
-                      setViewAdvanceMeetingModal,
                     ),
                   );
                 } else if (route === 4) {
@@ -420,7 +418,6 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   }
@@ -468,7 +465,6 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   } else {
@@ -508,7 +504,6 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   } else {
@@ -541,7 +536,6 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         route,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   }
@@ -858,7 +852,6 @@ const UpdateMeetingStatus = (
   setEditFlag,
   setCalendarViewModal,
   dashboardFlag,
-  setViewAdvanceMeetingModal,
   setEndMeetingConfirmationModal,
 ) => {
   console.log("end meeting chaek");
@@ -895,7 +888,6 @@ const UpdateMeetingStatus = (
               setEditFlag,
               setCalendarViewModal,
               dashboardFlag,
-              setViewAdvanceMeetingModal,
               setEndMeetingConfirmationModal,
             ),
           );
@@ -962,7 +954,6 @@ const UpdateMeetingStatus = (
                       setSceduleMeeting,
                       1,
                       setAdvanceMeetingModalID,
-                      setViewAdvanceMeetingModal,
                     ),
                   );
                 } else if (route === 4) {
@@ -1007,7 +998,6 @@ const UpdateMeetingStatus = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   }
@@ -1055,7 +1045,6 @@ const UpdateMeetingStatus = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   } else {
@@ -1095,7 +1084,6 @@ const UpdateMeetingStatus = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
                       ),
                     );
                   } else {

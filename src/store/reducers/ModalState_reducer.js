@@ -12,6 +12,7 @@ const initialState = {
   // ─── Advance Meeting Route ───────────────────────────────────────────────
   // 1 = Create Main Advance Meeting, 2 = Edit Main Advance Meeting
   isAdvanceMeetingRoute: 1,
+  isProposedMeetingRoute: 1,
 
   // ─── Unsaved Changes Modal ───────────────────────────────────────────────
   isUnsavedChangesModal: false,
@@ -80,6 +81,9 @@ const ModalStatesReducer = (state = initialState, action) => {
     case actions.SET_ADVANCE_MEETING_ROUTE:
       return { ...state, isAdvanceMeetingRoute: action.payload };
 
+    case actions.SET_PROPOSED_MEETING_ROUTE: {
+      return { ...state, isProposedMeetingRoute: action.payload };
+    }
     case actions.TOGGLE_UNSAVED_CHANGES_MODAL:
       return { ...state, isUnsavedChangesModal: action.payload };
 

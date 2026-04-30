@@ -59,7 +59,6 @@ const ParticipantVideoCallComponent = () => {
   const {
     setEditorRole,
     setViewFlag,
-    setViewAdvanceMeetingModal,
     setViewProposeDatePoll,
     editorRole,
     setVideoTalk,
@@ -538,7 +537,6 @@ const ParticipantVideoCallComponent = () => {
           webNotificationData,
           setViewFlag,
           setEditorRole,
-          setViewAdvanceMeetingModal,
           setViewProposeDatePoll,
           setViewGroupPage,
           setShowModal,

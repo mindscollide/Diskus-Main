@@ -9,13 +9,13 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { toggleViewMeetingModal } from "../../../../../../store/actions/ModalStates_actions";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 const ModalCancelAttendance = ({
   setAttendance,
-  setViewAdvanceMeetingModal,
   useCase,
   setPolls,
 }) => {
@@ -42,7 +42,7 @@ const ModalCancelAttendance = ({
         setPolls(true);
       } else {
         setAttendance(false);
-        setViewAdvanceMeetingModal(false);
+        dispatch(toggleViewMeetingModal(false));
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
 
