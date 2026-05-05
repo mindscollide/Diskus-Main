@@ -24,6 +24,7 @@ import {
   saveMeetingDocuments,
   saveMeetingOrganizers,
   saveParticipantsMeeting,
+  ScheduleMeetingOnSelectedDate,
   searchUserMeetings,
   SettingMeetingProposedDates,
   UpdateMeetingUserhit,
@@ -45,10 +46,12 @@ import {
   resetCreateEditTabs,
   setAdvanceMeetingRoute,
   setCreateEditTab,
+  setProposedMeetingRoute,
   setViewTab,
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
   toggleViewMeetingModal,
+  toggleViewProposedMeetingModal,
 } from "./ModalStates_actions";
 import {
   getMeetingByCommitteeIdApi,
@@ -266,6 +269,21 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                       ),
                     );
                     break;
+                  case "updateProposedMeeting":
+                    dispatch(
+                      CreateUpdateMeetingDataRoomMapeedFolderIdApi(
+                        navigate,
+                        t,
+                        {
+                          MeetingID: meetingID,
+                          MeetingTitle: Data.MeetingDetails.MeetingTitle,
+                          IsUpdateFlow: true,
+                        },
+                        routePath,
+                        object,
+                      ),
+                    );
+                    break;
                   default:
                     break;
                 }
@@ -426,6 +444,31 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
                     ),
                   );
                   break;
+                }
+                case "updateProposedMeeting": {
+                  const {
+                    sortedDates,
+                    sendResponseBtDateVal,
+                    membersParticipants,
+                  } = object;
+
+                  dispatch(
+                    UpdateMeetingUserApi(
+                      navigate,
+                      t,
+                      {
+                        MeetingID: Data.MeetingID,
+                        MeetingAttendeRoleID: 2,
+                        UpdatedUsers: membersParticipants.map((m) => m.userID),
+                      },
+                      "updateProposedMeeting",
+                      {
+                        membersParticipants,
+                        sortedDates,
+                        sendResponseBtDateVal,
+                      },
+                    ),
+                  );
                 }
                 case "getMeetingDetailsFromAgendaTab":
                 case "EditMeetingFromMainListing": {
@@ -620,6 +663,13 @@ export const UpdateMeetingUserApi = (
                   const meetingId =
                     store.getState().NewMeetingreducer?.currentMeetingInfo
                       ?.meetingID;
+                  const {
+                    membersParticipants,
+                    sortedDates,
+                    sendResponseBtDateVal,
+                  } = object;
+                  let newMembers = [];
+                  let DublicateData = [...membersParticipants];
 
                   switch (routePath) {
                     case "saveMeetingParticipants": {
@@ -705,13 +755,6 @@ export const UpdateMeetingUserApi = (
                       break;
                     }
                     case "saveProposedMeeting":
-                      const {
-                        membersParticipants,
-                        sortedDates,
-                        sendResponseBtDateVal,
-                      } = object;
-                      let newMembers = [];
-                      let DublicateData = [...membersParticipants];
                       DublicateData.forEach((data, index) => {
                         newMembers.push({
                           UserID: data.userID,
@@ -733,7 +776,28 @@ export const UpdateMeetingUserApi = (
                         ),
                       );
                       break;
+                    case "updateProposedMeeting":
+                      DublicateData.forEach((data, index) => {
+                        newMembers.push({
+                          UserID: data.userID,
+                          Title: "",
+                          ParticipantRoleID: 2,
+                        });
+                      });
 
+                      dispatch(
+                        saveParcipantsProposeMeetingApi(
+                          navigate,
+                          t,
+                          {
+                            MeetingParticipants: newMembers,
+                            MeetingID: meetingId,
+                          },
+                          "updateProposedMeeting",
+                          { sortedDates, sendResponseBtDateVal },
+                        ),
+                      );
+                      break;
                     default:
                       break;
                   }
@@ -927,6 +991,7 @@ export const setProposedMeetingDateApi = (
                 );
                 switch (routePath) {
                   case "saveProposedMeeting":
+                  case "updateProposedMeeting":
                     dispatch(toggleCreateEditProposedMeetingModal(false));
                     localStorage.setItem("MeetingCurrentView", 2);
                     const userID = localStorage.getItem("userID");
@@ -2802,7 +2867,21 @@ export const getMeetingDetailsByMeetingIdApi = (
                 break;
               }
 
-              case "viewDetail":
+              case "EditProposedMeetingFromListing":
+                dispatch(GetAllSavedparticipantsApi(navigate, t, Data, "", {}));
+                dispatch(
+                  GetAllProposedMeetingDateApi(navigate, t, Data, "", {}),
+                );
+                dispatch(setProposedMeetingRoute(2));
+                dispatch(toggleCreateEditProposedMeetingModal(true));
+                break;
+              case "ProposedMeetingFromListingView":
+                dispatch(GetAllSavedparticipantsApi(navigate, t, Data, "", {}));
+                dispatch(
+                  GetAllProposedMeetingDateApi(navigate, t, Data, "", {}),
+                );
+                dispatch(toggleViewProposedMeetingModal(true));
+                break;
               default:
                 break;
             }
@@ -3351,7 +3430,10 @@ export const getViewMeetingByMeetingIdApi = (
                           ),
                         );
                         break;
-
+                      case "EditProposedMeetingFromListing":
+                        dispatch(setProposedMeetingRoute(2));
+                        dispatch(toggleCreateEditProposedMeetingModal(true));
+                        break;
                       default:
                         break;
                     }
@@ -3555,7 +3637,13 @@ export const cleareAllProposedMeetingDates = () => {
     type: actions.CLEARE_ALL_PROPOSED_MEETING_DATES,
   };
 };
-export const GetAllProposedMeetingDateApi = (navigate, t, Data, flag) => {
+export const GetAllProposedMeetingDateApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return async (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
     let form = new FormData();
@@ -3566,7 +3654,9 @@ export const GetAllProposedMeetingDateApi = (navigate, t, Data, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllProposedMeetingDateApi(Data, navigate, t, flag));
+          dispatch(
+            GetAllProposedMeetingDateApi(navigate, t, Data, routePath, object),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -3580,7 +3670,6 @@ export const GetAllProposedMeetingDateApi = (navigate, t, Data, flag) => {
                 showGetAllProposedMeetingDatesSuccess(
                   response.data.responseResult,
                   "",
-                  flag,
                 ),
               );
             } else if (
@@ -3591,11 +3680,7 @@ export const GetAllProposedMeetingDateApi = (navigate, t, Data, flag) => {
                 )
             ) {
               dispatch(
-                showGetAllProposedMeetingDatesSuccess(
-                  [],
-                  t("No-record-found"),
-                  flag,
-                ),
+                showGetAllProposedMeetingDatesSuccess([], t("No-record-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3708,14 +3793,14 @@ export const saveParcipantsProposeMeetingApi = (
               const meetingId =
                 store.getState().NewMeetingreducer?.currentMeetingInfo
                   ?.meetingID;
+
+              let Data = {
+                MeetingID: meetingId,
+                SendResponsebyDate: sendResponseBtDateVal,
+                ProposedDates: sortedDates,
+              };
               switch (routePath) {
                 case "saveProposedMeeting":
-                  let Data = {
-                    MeetingID: meetingId,
-                    SendResponsebyDate: sendResponseBtDateVal,
-                    ProposedDates: sortedDates,
-                  };
-
                   dispatch(
                     setProposedMeetingDateApi(
                       navigate,
@@ -3728,7 +3813,19 @@ export const saveParcipantsProposeMeetingApi = (
                     ),
                   );
                   break;
-
+                case "updateProposedMeeting":
+                  dispatch(
+                    setProposedMeetingDateApi(
+                      navigate,
+                      t,
+                      Data,
+                      "updateProposedMeeting",
+                      {},
+                      // setProposedNewMeeting,
+                      // setSceduleMeeting,
+                    ),
+                  );
+                  break;
                 default:
                   break;
               }
@@ -3805,6 +3902,145 @@ export const saveParcipantsProposeMeetingApi = (
       })
       .catch((response) => {
         dispatch(saveParcipantsProposeMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const scheduleMeetingInit = () => {
+  return {
+    type: actions.SCHEDULE_MEETING_ON_SELECT_DATE_INIT,
+  };
+};
+
+const scheduleMeetingSuccess = (response, message) => {
+  return {
+    type: actions.SCHEDULE_MEETING_ON_SELECT_DATE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const scheduleMeetingFail = (message) => {
+  return {
+    type: actions.SCHEDULE_MEETING_ON_SELECT_DATE_FAIL,
+    message: message,
+  };
+};
+
+export const scheduleMeetingFromProposedMeetingApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+  // setDataroomMapFolderId,
+  // setCurrentMeetingID,
+  // setSceduleMeeting,
+  // MeetingID,
+) => {
+  return (dispatch) => {
+    dispatch(scheduleMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", ScheduleMeetingOnSelectedDate.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            scheduleMeetingFromProposedMeetingApi(
+              navigate,
+              t,
+              Data,
+              routePath,
+              object,
+              // setDataroomMapFolderId,
+              // setCurrentMeetingID,
+              // setSceduleMeeting,
+              // MeetingID,
+            ),
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_01".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                scheduleMeetingSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-saved"),
+                ),
+              );
+              dispatch(showSceduleProposedMeeting(false));
+
+              await dispatch(
+                getMeetingDetailsByMeetingIdApi(
+                  navigate,
+                  t,
+                  {
+                    MeetingID: Number(Data.MeetingID),
+                  },
+                  // false,
+                  // setCurrentMeetingID,
+                  // setSceduleMeeting,
+                  // setDataroomMapFolderId,
+                  // 0,
+                  // 1,
+                ),
+              ); //         GetAllMeetingDetailsApiFunc(
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_02".toLowerCase(),
+                )
+            ) {
+              dispatch(scheduleMeetingFail(t("No-record-saved")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_03".toLowerCase(),
+                )
+            ) {
+              dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_04".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                scheduleMeetingFail(
+                  t("The-meeting-must-be-in-a-proposed-state"),
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_05".toLowerCase(),
+                )
+            ) {
+              dispatch(scheduleMeetingFail(t("The-user-must-be-an-organizer")));
+            } else {
+              dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(scheduleMeetingFail(t("Something-went-wrong")));
       });
   };
 };

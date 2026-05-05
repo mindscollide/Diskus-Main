@@ -76,3 +76,13 @@ export const setViewTab = (tabName) => ({
 export const resetViewTabs = () => ({
   type: actions.RESET_VIEW_TABS,
 });
+
+export const toggleIsParticipantProposedMeetingDates = (value) => ({
+  type: actions.PARTICIPANT_RESPOND_PROPOSED_MEETING_DATES,
+  payload: value,
+});
+
+export const toggleIsOrganizerProposedMeetingDates = (value) => ({
+  type: actions.ORGANIZER_RESPONSE_PROPOSED_MEETING_DATES,
+  payload: value,
+});

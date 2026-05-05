@@ -3,8 +3,8 @@ import styles from "./DeleteMeetingModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { Modal, Button } from "../../../../../../../components/elements";
-import { showDeleteMeetingModal } from "../../../../../../../store/actions/NewMeetingActions";
+import { Modal, Button } from "@/components/elements";
+import { showDeleteMeetingModal } from "@/store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 
 const DeleteMeetingModal = () => {

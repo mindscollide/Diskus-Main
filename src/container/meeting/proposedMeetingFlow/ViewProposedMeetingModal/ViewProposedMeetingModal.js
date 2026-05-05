@@ -3,19 +3,20 @@ import styles from "./ViewProposedMeetingModal.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { Button } from "../../../../../../../components/elements";
+import { Button } from "@/components/elements";
 import { useDispatch } from "react-redux";
 import {
   GetAllMeetingDetialsData,
   ParticipantsData,
   proposedMeetingData,
-  searchNewUserMeeting,
-} from "../../../../../../../store/actions/NewMeetingActions";
+} from "@/store/actions/NewMeetingActions";
 import {
   ProposedMeetingDateViewFormat,
   ProposedMeetingViewDateFormatWithTime,
-} from "../../../../../../../commen/functions/date_formater";
+} from "@/commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import { listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
+import { toggleViewProposedMeetingModal } from "../../../../store/actions/ModalStates_actions";
 const ViewProposedMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -23,22 +24,19 @@ const ViewProposedMeetingModal = () => {
   //Getting the Current Language from LocalStorage
   let locale = localStorage.getItem("i18nextLng");
 
-  const MeetingStatusSocket = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusSocket
-  );
   //Getting all Proposed meeting Data
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
+    (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );
 
   //Getting all Proposed meeting Participants
   const getAllSavedparticipantsData = useSelector(
-    (state) => state.NewMeetingreducer.getAllSavedparticipants
+    (state) => state.NewMeetingreducer.getAllSavedparticipants,
   );
 
   //Getting all Proposed meeting Dates
   const getAllProposedDatesData = useSelector(
-    (state) => state.NewMeetingreducer.getAllProposedDates
+    (state) => state.NewMeetingreducer.getAllProposedDates,
   );
 
   //Local States
@@ -69,10 +67,6 @@ const ViewProposedMeetingModal = () => {
         getAllMeetingDetails.advanceMeetingDetails !== null &&
         getAllMeetingDetails.advanceMeetingDetails !== undefined
       ) {
-        console.log(
-          getAllMeetingDetails,
-          "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails"
-        );
         //For Meeting Title
         setBasicMeetingTitle({
           Title: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
@@ -119,7 +113,8 @@ const ViewProposedMeetingModal = () => {
 
   //Handling Cancel Button OnClick
   const hadleCancelButtonClick = () => {
-    console.log("Click");
+    dispatch(toggleViewProposedMeetingModal(false));
+
     let meetingpageRow = localStorage.getItem("MeetingPageRows");
     let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
     let userID = localStorage.getItem("userID");
@@ -129,30 +124,14 @@ const ViewProposedMeetingModal = () => {
       HostName: "",
       UserID: Number(userID),
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings: false,
       ProposedMeetings: true,
     };
     localStorage.removeItem("folderDataRoomMeeting");
 
-    dispatch(searchNewUserMeeting(navigate, searchData, t, 1));
+    dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
   };
-
-  useEffect(() => {
-    if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
-      try {
-        let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
-        let meetingID = MeetingStatusSocket?.meetingID;
-
-        console.log(
-          MeetingStatusSocket,
-          meetingStatusID,
-          meetingID,
-          "MeetingStatusSocketMeetingStatusSocket"
-        );
-      } catch (error) {}
-    }
-  }, [MeetingStatusSocket]);
 
   return (
     <>
@@ -196,7 +175,7 @@ const ViewProposedMeetingModal = () => {
                     console.log(dateData, "dateData");
                     const formattedDate = ProposedMeetingViewDateFormatWithTime(
                       dateData,
-                      locale
+                      locale,
                     );
                     return (
                       <Col lg={6} md={6} sm={6} className='mt-2' key={index}>

@@ -72,6 +72,8 @@ export const NewMeetingProvider = ({ children }) => {
   const [minutesAgo, setMinutesAgo] = useState(0);
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
+  const [responseByDate, setResponseByDate] = useState(false);
+
   // --- Search Filters ---
   const [searchFilters, setSearchFilters] = useState({
     Date: "",
@@ -637,7 +639,8 @@ export const NewMeetingProvider = ({ children }) => {
     setIsQuickMeetingView,
     isMeetingCreateOrEdit,
     setIsMeetingCreateOrEdit,
-
+    responseByDate,
+    setResponseByDate,
     // Request payload
     requestData,
     setRequestData,

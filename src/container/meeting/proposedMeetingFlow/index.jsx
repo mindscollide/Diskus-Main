@@ -2,16 +2,15 @@ import React, { useContext, useMemo, useState } from "react";
 import styles from "./ProposedMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import CancelMeetingIcon from "../../../../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
-import SortIconAscend from "../../../../../../assets/images/sortingIcons/SorterIconAscend.png";
-import SortIconDescend from "../../../../../../assets/images/sortingIcons/SorterIconDescend.png";
-import EditIcon from "../../../../../../assets/images/New Meeting Listing Icons/EditMeeting.png";
+import CancelMeetingIcon from "@/assets/images/New Meeting Listing Icons/CancelMeeting.png";
+import SortIconAscend from "@/assets/images/sortingIcons/SorterIconAscend.png";
+import SortIconDescend from "@/assets/images/sortingIcons/SorterIconDescend.png";
+import EditIcon from "@/assets/images/New Meeting Listing Icons/EditMeeting.png";
 import { ChevronDown } from "react-bootstrap-icons";
-import ChevronDownIcon from "../../../../../../assets/images/dropdown-icon.png";
-import DoubleArrowIcon from "../../../../../../assets/images/sortingIcons/Double Arrow2.svg";
-
-import { Button, Table } from "../../../../../../components/elements";
-import rspvGreenIcon from "../../../../../../assets/images/rspvGreen.svg";
+import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
+import DoubleArrowIcon from "@/assets/images/sortingIcons/Double Arrow2.svg";
+import { Button, Table } from "@/components/elements";
+import rspvGreenIcon from "@/assets/images/rspvGreen.svg";
 import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
@@ -39,7 +38,7 @@ import {
   validateStringUserMeetingProposedDatesPollsApi,
   ProposedMeetingViewFlagAction,
   meetingStatusProposedMqtt,
-} from "../../../../../../store/actions/NewMeetingActions";
+} from "@/store/actions/NewMeetingActions";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -47,18 +46,26 @@ import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeet
 import { useEffect } from "react";
 
 import moment from "moment";
-import { convertToArabicNumerals } from "../../../../../../commen/functions/regex";
+import { convertToArabicNumerals } from "@/commen/functions/regex";
 import { Checkbox, Dropdown, Menu, Popover, Tooltip } from "antd";
-import { getAllUnpublishedMeetingData } from "../../../../../../hooks/meetingResponse/response";
-import ArrowDownIcon from "../../../../../../assets/images/sortingIcons/Arrow-down.png";
-import ArrowUpIcon from "../../../../../../assets/images/sortingIcons/Arrow-up.png";
-import { MeetingContext } from "../../../../../../context/MeetingContext";
-import DeleteMeetingConfirmationModal from "../../../deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
-import EmptyTableComponent from "../../../EmptyTableComponent/EmptyTableComponent";
-import { useNewMeetingContext } from "../../../../../../context/NewMeetingContext";
-import CustomButton from "../../../../../../components/elements/button/Button";
-import CustomPagination from "../../../../../../commen/functions/customPagination/Paginations";
-import { forRecentActivity, getDifferentisDateisPassed } from "../../../commen/functions/date_formater";
+import { getAllUnpublishedMeetingData } from "@/hooks/meetingResponse/response";
+import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "@/assets/images/sortingIcons/Arrow-up.png";
+import { MeetingContext } from "@/context/MeetingContext";
+import DeleteMeetingConfirmationModal from "../commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import EmptyTableComponent from "../commonComponents/EmptyTableComponent/EmptyTableComponent";
+import { useNewMeetingContext } from "@/context/NewMeetingContext";
+import CustomButton from "@/components/elements/button/Button";
+import CustomPagination from "@/commen/functions/customPagination/Paginations";
+import {
+  forRecentActivity,
+  getDifferentisDateisPassed,
+} from "@/commen/functions/date_formater";
+
+import {
+  getMeetingDetailsByMeetingIdApi,
+} from "../../../store/actions/NewMeeting2.actions";
+import { toggleIsOrganizerProposedMeetingDates, toggleIsParticipantProposedMeetingDates } from "../../../store/actions/ModalStates_actions";
 
 const ProposedMeeting = () => {
   const dispatch = useDispatch();
@@ -70,6 +77,7 @@ const ProposedMeeting = () => {
     proposedMeetingData,
     setProposedMeetingDataRecord,
     proposedMeetingDataRecord,
+    setResponseByDate,
   } = useNewMeetingContext();
   //Current User ID
   //Current Organization
@@ -84,6 +92,7 @@ const ProposedMeeting = () => {
     setEditorRole,
     setDeleteMeetingRecord,
   } = useContext(MeetingContext);
+  //Proposed Meeting View Flag
 
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting,
@@ -105,8 +114,8 @@ const ProposedMeeting = () => {
   ) => {
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
-    //   setResponseByDate(responseDeadLine);
-    //   setViewProposeDatePoll(true);
+      //   setResponseByDate(responseDeadLine);
+      //   setViewProposeDatePoll(true);
       dispatch(viewProposeDateMeetingPageFlag(true));
       dispatch(meetingDetailsGlobalFlag(false));
       dispatch(organizersGlobalFlag(false));
@@ -123,7 +132,7 @@ const ProposedMeeting = () => {
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
       dispatch(showSceduleProposedMeeting(true));
-    //   setViewProposeOrganizerPoll(false);
+      //   setViewProposeOrganizerPoll(false);
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(meetingDetailsGlobalFlag(false));
       dispatch(organizersGlobalFlag(false));
@@ -140,6 +149,22 @@ const ProposedMeeting = () => {
     }
   };
 
+  const handleClickActions = (record) => {
+    if (record.isParticipant) {
+      // record.responseDeadLine
+      // record.pK_MDID
+      dispatch(toggleIsParticipantProposedMeetingDates(true))
+      dispatch(viewProposeDateMeetingPageFlag(true));
+      return;
+    }
+    if (record.isOrganizer) {
+      dispatch(toggleIsOrganizerProposedMeetingDates(true))
+      dispatch(showSceduleProposedMeeting(true));
+
+      return;
+    }
+  };
+
   const handleEditMeeting = async (id, agendaContributorFlag, record) => {
     if (agendaContributorFlag === false && record.status === "12") {
       let Data = {
@@ -152,18 +177,18 @@ const ProposedMeeting = () => {
           t,
           Data,
           false,
-          setCurrentMeetingID,
-          setSceduleMeeting,
-          setDataroomMapFolderId,
-          0,
-          2,
+          // setCurrentMeetingID,
+          // setSceduleMeeting,
+          // setDataroomMapFolderId,
+          // 0,
+          // 2,
         ),
       );
       await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
       await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
-      setIsProposedMeetEdit(true);
-      setProposedNewMeeting(true);
-    } 
+      // setIsProposedMeetEdit(true);
+      // setProposedNewMeeting(true);
+    }
   };
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -261,40 +286,34 @@ const ProposedMeeting = () => {
       }
     }
   };
-
+  const handleCLickView = (record) => {
+    console.log("Edit Meeting", record);
+    if (record.isOrganizer) {
+      dispatch(
+        getMeetingDetailsByMeetingIdApi(
+          navigate,
+          t,
+          { MeetingID: record.pK_MDID },
+          "ProposedMeetingFromListingView",
+          {},
+        ),
+      );
+    }
+  };
   const moreButtons = (record) => {
     const handleEdit = () => {
       console.log("Edit Meeting", record);
-      if (record.isAgendaContributor) {
-        dispatch(agendaGlobalFlag(true));
-        dispatch(meetingDetailsGlobalFlag(false));
-      } else if (record.isOrganizer) {
-        dispatch(agendaGlobalFlag(false));
-        dispatch(meetingDetailsGlobalFlag(true));
+      if (record.isOrganizer) {
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: record.pK_MDID },
+            "EditProposedMeetingFromListing",
+            {},
+          ),
+        );
       }
-      setEditorRole({
-        status: record.status,
-        role: record.isAgendaContributor ? "Agenda Contributor" : "Organizer",
-        isPrimaryOrganizer: record.isPrimaryOrganizer,
-      });
-      handleEditMeeting(record.pK_MDID, record.isAgendaContributor, record);
-
-      localStorage.setItem("videoCallURL", record.videoCallURL);
-
-    //   setEditMeeting(true);
-      dispatch(viewMeetingFlag(true));
-
-      dispatch(meetingDetailsGlobalFlag(false));
-      dispatch(organizersGlobalFlag(false));
-      dispatch(agendaContributorsGlobalFlag(false));
-      dispatch(participantsGlobalFlag(false));
-      dispatch(meetingMaterialGlobalFlag(false));
-      dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(false));
-      dispatch(actionsGlobalFlag(false));
-      dispatch(pollsGlobalFlag(false));
-      dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
     };
 
     const handleDelete = () => {
@@ -349,7 +368,7 @@ const ProposedMeeting = () => {
           return (
             <span
               onClick={() => {
-                dispatch(ProposedMeetingViewFlagAction(true));
+                handleCLickView(record);
                 // try {
                 //   let Data = {
                 //     MeetingID: Number(record.pK_MDID),
@@ -593,14 +612,15 @@ const ProposedMeeting = () => {
                   className={styles.MoreMeetingButton}
                   text='Send Reply'
                   disableBtn={isViewPollShown ? true : false}
-                  onClick={() =>
-                    viewProposeDatePollHandler(
-                      true,
-                      false,
-                      false,
-                      record.pK_MDID,
-                      record.responseDeadLine,
-                    )
+                  onClick={
+                    () => handleClickActions(record)
+                    // viewProposeDatePollHandler(
+                    //   true,
+                    //   false,
+                    //   false,
+                    //   record.pK_MDID,
+                    //   record.responseDeadLine,
+                    // )
                   }
                 />
               </div>
@@ -611,13 +631,16 @@ const ProposedMeeting = () => {
                 <CustomButton
                   className={styles.MoreMeetingButton}
                   text={t("View-poll")}
-                  onClick={() =>
-                    viewProposeDatePollHandler(
-                      false,
-                      false,
-                      true,
-                      record.pK_MDID,
-                    )
+                  onClick={
+                    () => handleClickActions(record)
+
+                    // onClick={() =>
+                    //   viewProposeDatePollHandler(
+                    //     false,
+                    //     false,
+                    //     true,
+                    //     record.pK_MDID,
+                    //   )
                   }
                 />
               </div>
@@ -646,7 +669,13 @@ const ProposedMeeting = () => {
                     <CustomButton
                       className={styles.MoreMeetingButton}
                       text='More'
-                      icon2={<img src={ChevronDownIcon} width={10} />}
+                      icon2={
+                        <img
+                          src={ChevronDownIcon}
+                          alt='Chevron Down'
+                          width={10}
+                        />
+                      }
                     />
                   </Popover>
                 </div>
@@ -737,7 +766,7 @@ const ProposedMeeting = () => {
               getApiResponse.meetingID,
             );
             localStorage.removeItem("meetingprop");
-            // setResponseByDate(getApiResponse.deadline);
+            setResponseByDate(getApiResponse.deadline);
             // setViewProposeDatePoll(true);
             dispatch(viewProposeDateMeetingPageFlag(true));
             dispatch(meetingDetailsGlobalFlag(false));
@@ -782,7 +811,7 @@ const ProposedMeeting = () => {
               );
               localStorage.removeItem("UserMeetPropoDatPoll");
               dispatch(showSceduleProposedMeeting(true));
-            //   setViewProposeOrganizerPoll(false);
+              //   setViewProposeOrganizerPoll(false);
               dispatch(viewProposeOrganizerMeetingPageFlag(false));
               dispatch(meetingDetailsGlobalFlag(false));
               dispatch(organizersGlobalFlag(false));
@@ -856,13 +885,7 @@ const ProposedMeeting = () => {
           </Col>
         )}
       </Row>
-      {sceduleproposedMeeting && (
-        <SceduleProposedmeeting
-        //   setDataroomMapFolderId={setDataroomMapFolderId}
-        //   setCurrentMeetingID={setCurrentMeetingID}
-        //   setSceduleMeeting={setSceduleMeeting}
-        />
-      )}
+      {sceduleproposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
     </section>

@@ -55,6 +55,8 @@ const initialState = {
     actions: false,
     attendees: false,
   },
+  isParticiapntRespondProposedMeeting: false,
+  isOrganizerRespondProposedMeeting: false,
 };
 const ModalStatesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -93,7 +95,12 @@ const ModalStatesReducer = (state = initialState, action) => {
     case actions.TOGGLE_END_MEETING_MODAL:
       return { ...state, isEndMeetingModal: action.payload };
     // ─── Create & Edit Meeting Tabs ──────────────────────────────────────────────
-
+    case actions.PARTICIPANT_RESPOND_PROPOSED_MEETING_DATES: {
+      return { ...state, isParticiapntRespondProposedMeeting: action.payload };
+    }
+    case actions.ORGANIZER_RESPONSE_PROPOSED_MEETING_DATES: {
+      return { ...state, isOrganizerRespondProposedMeeting: action.payload };
+    }
     case actions.SET_CREATE_EDIT_TAB:
       return {
         ...state,

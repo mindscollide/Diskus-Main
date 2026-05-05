@@ -195,10 +195,10 @@ const SceduleProposedmeeting = ({
           navigate,
           t,
           scheduleMeeting,
-          setDataroomMapFolderId,
-          setCurrentMeetingID,
-          setSceduleMeeting,
-          viewProposeDatePollMeetingID
+          // setDataroomMapFolderId,
+          // setCurrentMeetingID,
+          // setSceduleMeeting,
+          // viewProposeDatePollMeetingID
         )
       );
     }

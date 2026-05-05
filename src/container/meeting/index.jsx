@@ -9,7 +9,7 @@ import { Button, TextField } from "@/components/elements";
 import searchIcon from "@/assets/images/searchicon.svg";
 import BlackCrossIcon from "@/assets/images/BlackCrossIconModals.svg";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
-import ProposedMeetingList from "@/container/meeting/proposedMeeting";
+import ProposedMeetingList from "@/container/meeting/proposedMeetingFlow";
 import DraftNeetingList from "@/container/meeting/draftMeeting";
 import PublishedMeetingList from "@/container/meeting/publishMeeting";
 import DatePicker from "react-multi-date-picker";
@@ -20,9 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { clearMeetingState } from "@/store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import CreateEditAdvanceMeeting from "./advanceMeeting/createEditAdvanceMeeting";
-import CreateEditProposedMeetingModal from './proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting'
+import CreateEditProposedMeetingModal from "./proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
 
-import { useMeetingContext } from "../../context/MeetingContext";
 import ViewMeetingModal from "./advanceMeeting/viewAdvanceMeeting";
 import CreateQuickMeeting from "./quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import UpdateQuickMeeting from "./quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
@@ -33,9 +32,11 @@ import {
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
 } from "../../store/actions/ModalStates_actions";
-import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
-import { listOfMeetingsApi } from "../../store/actions/NewMeeting2.actions";
+import { GetAllMeetingTypesNewFunction } from "@/store/actions/NewMeetingActions";
+import { listOfMeetingsApi } from "@/store/actions/NewMeeting2.actions";
 import ProposedNewMeeting from "./proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
+import ViewProposedMeetingModal from "./proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
+import ViewParticipantsDates from "./proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
 /**
  * MainMeeting Component
  *
@@ -69,6 +70,12 @@ const MainMeeting = () => {
 
   const createEditProposedMeetingModal = useSelector(
     (state) => state.ModalStatesReducer.isCreateEditProposedMeetingModal,
+  );
+  const isViewProposedMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewProposedMeetingModal,
+  );
+  const isParticiapntRespondProposedMeeting = useSelector(
+    (state) => state.ModalStatesReducer.isParticiapntRespondProposedMeeting,
   );
   // Refs and hooks
   const calendRef = useRef();
@@ -435,9 +442,9 @@ const MainMeeting = () => {
   };
 
   const handleCreateProposedMeeting = () => {
-    dispatch(setProposedMeetingRoute(1))
-    dispatch(toggleCreateEditProposedMeetingModal(true))
-  }
+    dispatch(setProposedMeetingRoute(1));
+    dispatch(toggleCreateEditProposedMeetingModal(true));
+  };
 
   if (createEditMeetingModal) {
     return <CreateEditAdvanceMeeting />;
@@ -449,16 +456,24 @@ const MainMeeting = () => {
   if (createEditProposedMeetingModal) {
     return <ProposedNewMeeting />;
   }
+  if (isViewProposedMeetingModal) {
+    return <ViewProposedMeetingModal />;
+  }
+
+  if (isParticiapntRespondProposedMeeting) {
+    return <ViewParticipantsDates />;
+  }
+
   return (
     <>
       {/* Header Section - Contains title and schedule meeting dropdown */}
       <Row>
-        <Col sm={12} md={12} lg={6} className="d-flex align-items-center  ">
+        <Col sm={12} md={12} lg={6} className='d-flex align-items-center  '>
           <span className={styles["NewMeetinHeading"]}>{t("Meetings")}</span>
           <span>
             {/* Schedule Meeting Dropdown - Feature-based access control */}
             <ReactBootstrapDropdown
-              className="SceduleMeetingButton d-inline-block position-relative ms-2"
+              className='SceduleMeetingButton d-inline-block position-relative ms-2'
               // onClick={eventClickHandler}
             >
               <ReactBootstrapDropdown.Toggle title={t("Schedule-a-meeting")}>
@@ -467,8 +482,7 @@ const MainMeeting = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["schedule_button"]}
-                  >
+                    className={styles["schedule_button"]}>
                     <Plus width={20} height={20} fontWeight={800} />
                     <span> {t("Schedule-a-meeting")}</span>
                   </Col>
@@ -480,8 +494,7 @@ const MainMeeting = () => {
                 {checkFeatureIDAvailability(1) ? (
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
-                    onClick={() => setIsQuickMeetingCreate(true)}
-                  >
+                    onClick={() => setIsQuickMeetingCreate(true)}>
                     {t("Quick-meeting")}
                   </ReactBootstrapDropdown.Item>
                 ) : null}
@@ -490,8 +503,7 @@ const MainMeeting = () => {
                 {checkFeatureIDAvailability(9) ? (
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
-                    onClick={handleCreateAdvanceMeeting}
-                  >
+                    onClick={handleCreateAdvanceMeeting}>
                     {t("Advance-meeting")}
                   </ReactBootstrapDropdown.Item>
                 ) : null}
@@ -501,8 +513,7 @@ const MainMeeting = () => {
                   <>
                     <ReactBootstrapDropdown.Item
                       className={styles["dropdown-item"]}
-                      onClick={handleCreateProposedMeeting}
-                    >
+                      onClick={handleCreateProposedMeeting}>
                       {t("Propose-new-meeting")}
                     </ReactBootstrapDropdown.Item>
                   </>
@@ -514,14 +525,14 @@ const MainMeeting = () => {
 
         {/* Search Section */}
         <Col sm={12} md={12} lg={6}>
-          <div className="position-relative">
+          <div className='position-relative'>
             {/* Main search input field */}
             <TextField
               width={"100%"}
               placeholder={t("Search-on-meeting-title")}
               applyClass={"meetingSearch"}
               name={"SearchVal"}
-              labelclass="d-none"
+              labelclass='d-none'
               value={searchText}
               change={handleSearchChange}
               onKeyDown={handleKeyPress}
@@ -531,16 +542,15 @@ const MainMeeting = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     {/* Clear search icon - shows when search is active */}
                     {entereventIcon === true ? (
                       <img
                         src={BlackCrossIcon}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                         onClick={handleClearSearch}
-                        alt=""
-                        draggable="false"
+                        alt=''
+                        draggable='false'
                       />
                     ) : null}
                     {/* Advanced search filters toggle */}
@@ -549,8 +559,8 @@ const MainMeeting = () => {
                       src={searchIcon}
                       className={styles["Search_Bar_icon_class"]}
                       onClick={HandleShowSearch} // Add click functionality here
-                      alt=""
-                      draggable="false"
+                      alt=''
+                      draggable='false'
                     />
                     {/* </Tooltip> */}
                   </Col>
@@ -567,57 +577,55 @@ const MainMeeting = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Search-Box_meeting"]}
-                  >
+                    className={styles["Search-Box_meeting"]}>
                     {/* Modal header with close button */}
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         <img
                           src={BlackCrossIcon}
                           className={styles["Cross_Icon_Styling"]}
-                          width="16px"
-                          height="16px"
+                          width='16px'
+                          height='16px'
                           onClick={HandleCloseSearchModalMeeting}
-                          alt=""
-                          draggable="false"
+                          alt=''
+                          draggable='false'
                         />
                       </Col>
                     </Row>
 
                     {/* Search form fields */}
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <TextField
                           placeholder={t("Meeting-title")}
                           applyClass={"meetinInnerSearch"}
-                          labelclass="d-none"
-                          name="MeetingTitle"
+                          labelclass='d-none'
+                          name='MeetingTitle'
                           value={searchFields.MeetingTitle}
                           change={searchMeetingChangeHandler}
                         />
                       </Col>
                     </Row>
 
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       {/* Date picker field */}
                       <Col lg={6} md={6} sm={12}>
                         <DatePicker
                           value={searchFields.DateView}
                           format={"DD/MM/YYYY"}
-                          placeholder="DD/MM/YYYY"
+                          placeholder='DD/MM/YYYY'
                           render={
                             <InputIcon
-                              placeholder="DD/MM/YYYY"
-                              className="datepicker_input"
+                              placeholder='DD/MM/YYYY'
+                              className='datepicker_input'
                             />
                           }
                           editable={false}
-                          className="datePickerTodoCreate2"
+                          className='datePickerTodoCreate2'
                           onOpenPickNewDate={false}
                           calendar={calendarValue} // Arabic calendar
                           locale={localValue} // Arabic locale
@@ -630,8 +638,8 @@ const MainMeeting = () => {
                       <Col lg={6} md={6} sm={12}>
                         <TextField
                           placeholder={t("Organizer-name")}
-                          labelclass="d-none"
-                          name="OrganizerName"
+                          labelclass='d-none'
+                          name='OrganizerName'
                           applyClass={"meetinInnerSearch"}
                           value={searchFields.OrganizerName}
                           change={searchMeetingChangeHandler}
@@ -640,13 +648,12 @@ const MainMeeting = () => {
                     </Row>
 
                     {/* Search action buttons */}
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-end gap-2"
-                      >
+                        className='d-flex justify-content-end gap-2'>
                         <Button
                           text={t("Reset")}
                           className={styles["ResetButtonMeeting"]}
@@ -674,7 +681,7 @@ const MainMeeting = () => {
             <span className={styles["PaperStylesMeetingTwoPage"]}>
               {/* Tab navigation buttons */}
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                   <Button
                     text={t("Published")}
                     className={
