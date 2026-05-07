@@ -5,7 +5,7 @@ import "./videoCallNormalPanel.css";
 import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
-import { LoaderPanelVideoScreen } from "../../../../elements";
+import { LoaderPanelVideoScreen, Notification } from "../../../../elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
@@ -66,11 +66,14 @@ import {
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { useTalkContext } from "../../../../../context/TalkContext";
 import { Tooltip } from "antd";
+import { showMessage } from "../../../../elements/snack_bar/utill";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const recordingToastShownRef = useRef(false);
+  const hasTriggeredRecordingRef = useRef(false);
   const ActiveChatBoxGS = useSelector(
     (state) => state.talkFeatureStates.ActiveChatBoxGS,
   );
@@ -336,6 +339,12 @@ const VideoPanelNormal = () => {
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   console.log(
     {
@@ -979,6 +988,62 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [shareScreenTrue]);
 
+  // Add this useEffect to trigger RecordingStartMsgFromIframe when isMeetingVideo becomes true
+  useEffect(() => {
+    console.log("useEffect triggered - isMeetingVideo:", isMeetingVideo);
+    console.log(
+      "hasTriggeredRecordingRef.current:",
+      hasTriggeredRecordingRef.current,
+    );
+    console.log("iframeRef.current:", iframeRef.current);
+
+    if (isMeetingVideo === true && !hasTriggeredRecordingRef.current) {
+      console.log(
+        "Condition passed - isMeetingVideo is true and not triggered before",
+      );
+      hasTriggeredRecordingRef.current = true;
+
+      // Wait a bit for iframe to be ready, then send postMessage ONLY
+      // DO NOT show notification here
+      setTimeout(() => {
+        const iframe = iframeRef.current;
+        console.log("iframe inside setTimeout:", iframe);
+
+        if (iframe && iframe.contentWindow) {
+          console.log(
+            "Triggering RecordingStartMsgFromIframe because isMeetingVideo is true",
+          );
+          iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+        } else {
+          console.log("iframe or contentWindow not available");
+        }
+      }, 1000); // Give iframe time to load
+    }
+
+    // Reset when isMeetingVideo becomes false
+    if (!isMeetingVideo || isMeetingVideo === false) {
+      console.log("isMeetingVideo is false, resetting trigger ref");
+      hasTriggeredRecordingRef.current = false;
+      recordingToastShownRef.current = false;
+    }
+  }, [isMeetingVideo, iframeRef]);
+
+  // Add this useEffect to watch for the transfer completion
+  useEffect(() => {
+    if (hostTransferFlag) {
+      console.log("Host transfer detected, showing recording notification");
+
+      // Show recording notification
+      if (!recordingToastShownRef.current) {
+        recordingToastShownRef.current = true;
+        showMessage(t("The-recording-is-started"), "info", setOpen);
+      }
+
+      // Reset the success flag if needed
+      // dispatch(resetTransferMeetingHostSuccess());
+    }
+  }, [hostTransferFlag]);
+
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
@@ -1375,6 +1440,13 @@ const VideoPanelNormal = () => {
             console.log("disableZoomBeforeJoinSession", event.data);
             RecordingStopScenarioForOneToOne();
 
+            // Show recording notification when stream is connected
+            if (isMeetingVideo && !recordingToastShownRef.current) {
+              recordingToastShownRef.current = true;
+              showMessage(t("The-recording-is-started"), "info", setOpen);
+              console.log(" Recording notification shown on StreamConnected");
+            }
+
             if (isZoomEnabled) {
               console.log("is Zoom Connected");
               setTimeout(() => {
@@ -1402,10 +1474,23 @@ const VideoPanelNormal = () => {
 
           case "RecordingStartMsgFromIframe":
             console.log("recording Start");
+            // Show toast only once per recording session
+            if (!recordingToastShownRef.current) {
+              recordingToastShownRef.current = true;
+              showMessage(t("The-recording-is-started"), "info", setOpen);
+            }
+
+            // Update recording states
+            setStartRecordingState(false);
+            setPauseRecordingState(true);
+            setResumeRecordingState(false);
+            setStopRecordingState(false);
+
             break;
 
           case "RecordingStopMsgFromIframe":
             console.log("recording Stop");
+            recordingToastShownRef.current = false;
             break;
 
           case "RecordingPauseMsgFromIframe":
@@ -1437,6 +1522,7 @@ const VideoPanelNormal = () => {
     // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("message", messageHandler);
+      recordingToastShownRef.current = false;
     };
   }, []);
 
@@ -1694,6 +1780,12 @@ const VideoPanelNormal = () => {
 
   const onHandleClickForStartRecording = () => {
     console.log("onHandleClickForStartRecording");
+
+    if (!recordingToastShownRef.current) {
+      recordingToastShownRef.current = true;
+      showMessage(t("The-recording-is-started"), "info", setOpen);
+    }
+
     setStartRecordingState(false);
     setPauseRecordingState(true);
     setResumeRecordingState(false);
@@ -1767,7 +1859,8 @@ const VideoPanelNormal = () => {
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
       console.log("RecordingStopMsgFromIframe");
-
+      // Reset the recording toast flag so it can show again next time
+      recordingToastShownRef.current = false;
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -2137,6 +2230,8 @@ const VideoPanelNormal = () => {
           </Col>
         </Row>
       )}
+
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

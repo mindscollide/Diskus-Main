@@ -1,9 +1,9 @@
 .gridViewFile__name {
   background-color: #fff;
   border-top: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
+  border-radius: 0 0 4px 4px;
   display: flex;
-  padding: 12px !important;
+  padding: 8px 8px 8px 12px !important; /* Adjust padding */
   justify-content: space-between;
   align-items: center;
   position: relative;
@@ -15,12 +15,12 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px;
   display: flex;
-  gap: 10px !important;
-  padding: 12px 16px !important;
+  gap: 0px !important; /* Remove gap since we're using margin */
+  padding: 8px 8px 8px 16px !important; /* Adjust padding - more on left, less on right */
   justify-content: space-between;
+  align-items: center; /* Ensure vertical centering */
   margin-bottom: 10px !important;
   position: relative;
-  cursor: pointer;
 }
 
 .folderName__text {
@@ -30,6 +30,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1; /* Allow text to take remaining space */
+  min-width: 0;
+  cursor: pointer;
 }
 
 .folderFile__text {
@@ -41,6 +44,11 @@
   white-space: nowrap;
   text-overflow: ellipsis !important;
   overflow: hidden;
+  flex: 1; /* Allow text to take remaining space */
+  min-width: 0; /* Allow text to shrink below content size */
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .FolderHeading {
@@ -220,5 +228,16 @@
 }
 
 .dots_Icons {
-  z-index: -1 !important;
+  z-index: 1;
+  position: relative;
+}
+
+.dots_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px; /* Minimum width for clickable area */
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent dots from shrinking */
+  margin-left: 8px; /* Add space between text and dots */
 }

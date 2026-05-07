@@ -30,18 +30,19 @@ const AddUsers = () => {
   const dispatch = useDispatch();
 
   const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
-    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph,
   );
 
   const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
     useSelector(
       (state) =>
         state.UserMangementReducer
-          .organizationSelectedPakagesByOrganizationIDData
+          .organizationSelectedPakagesByOrganizationIDData,
     );
 
   let organizationID = localStorage.getItem("organizationID");
   let organizationNames = localStorage.getItem("organizatioName");
+  let getUserPackageID = Number(localStorage.getItem("userPackageID"));
 
   // get IsTrial from LocalStorage
   let isFreeTrial = localStorage.getItem("isTrial");
@@ -151,23 +152,23 @@ const AddUsers = () => {
     if (
       UserMangementReducerorganizationSelectedPakagesByOrganizationIDData &&
       Object.keys(
-        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData,
       ).length > 0
     ) {
       setWorldCountryID(
         UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
-          .organization.fK_NumberWorldCountryID
+          .organization.fK_NumberWorldCountryID,
       );
       UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
         (data) => {
           data.organizationSelectedPackages?.map((packageData) => {
             console.log(
               packageData.pK_OrganizationsSelectedPackageID,
-              "indexindexindex"
+              "indexindexindex",
             );
             setPakageID(packageData.pK_OrganizationsSelectedPackageID);
           });
-        }
+        },
       );
     }
   }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
@@ -288,8 +289,8 @@ const AddUsers = () => {
             setCompanyEmailValidateError,
             addUserFreeTrial,
             t,
-            setEmailUnique
-          )
+            setEmailUnique,
+          ),
         );
       } else {
         setEmailUnique(false);
@@ -346,14 +347,14 @@ const AddUsers = () => {
         UserDataList: [
           {
             UserName: addUserFreeTrial.Name.value,
-            OrganizationName:organizationNames,
+            OrganizationName: organizationNames,
             Designation: addUserFreeTrial.Desgination.value,
             MobileNumber: addUserFreeTrial.Contact.value,
             UserEmail: addUserFreeTrial.Email.value,
             OrganizationID: Number(organizationID),
             RoleID: addUserFreeTrial.isAdmin,
             FK_NumberWorldCountryID: Number(addUserFreeTrial.CountyCode),
-            PackageID: 4,
+            PackageID: getUserPackageID,
           },
         ],
       };

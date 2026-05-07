@@ -590,6 +590,11 @@ const DataRoom = () => {
     }
   }, [docSignedCrAction]);
 
+  useEffect(() => {
+    // Close the breadcrumb popover when view changes
+    setIsPopoverVisible(false);
+  }, [gridbtnactive, listviewactive]);
+
   // ─── Mount: initial load + deep-link handling ─────────────────────────────
   /**
    * Runs once on mount (docSignedCrAction dependency is stable on first render).
@@ -1304,6 +1309,8 @@ const DataRoom = () => {
    * @param {object} record - Full row record (used for breadcrumb construction).
    */
   const getFolderDocuments = async (folderid, record) => {
+    console.log("Main getFolderDocuments - record:", record);
+    console.log("Main getFolderDocuments - folderid:", folderid);
     localStorage.setItem("folderID", folderid);
     await dispatch(
       getFolderDocumentsApi(
@@ -1367,12 +1374,14 @@ const DataRoom = () => {
           ID: record.id,
           isFolder: true,
         };
+        console.log("Data Room Three Dots");
         dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       } else {
         let Data = {
           ID: record.id,
           isFolder: false,
         };
+        console.log("Data Room Three Dots");
         dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       }
     } else if (data.value === 5) {
@@ -3754,6 +3763,7 @@ const DataRoom = () => {
    * @param {number} index  - Position of the crumb in the breadcrumb array.
    */
   const handleClickGetFolderData = async (id, record, index) => {
+    console.log("Check Yaha");
     if (record?.main !== undefined && record?.main !== null && record?.main) {
       let currentView = localStorage.getItem("setTableView");
       console.log(currentView, "BreadCrumbsListArr");
@@ -4193,6 +4203,7 @@ const DataRoom = () => {
                                                       "breadCrumbsThreeDotsDiv_Row"
                                                     ]
                                                   }
+                                                  onClick={togglePopover}
                                                 >
                                                   <img
                                                     src={folderColor}
@@ -4214,12 +4225,44 @@ const DataRoom = () => {
                                       defaultOpen={false}
                                       showArrow={false}
                                     >
-                                      <img
-                                        src={ThreeDotsBreadCrumbs}
-                                        style={{ cursor: "pointer" }}
-                                        alt="More Breadcrumbs"
-                                        onClick={togglePopover}
-                                      />
+                                      {/* Make the trigger area larger and more clickable */}
+                                      <span
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          setIsPopoverVisible(
+                                            !isPopoverVisible,
+                                          );
+                                        }}
+                                        style={{
+                                          cursor: "pointer",
+                                          display: "inline-flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          minWidth: "32px",
+                                          minHeight: "25px",
+                                          borderRadius: "4px",
+                                          transition: "background-color 0.2s",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                          e.currentTarget.style.backgroundColor =
+                                            "#ecefff";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          e.currentTarget.style.backgroundColor =
+                                            "transparent";
+                                        }}
+                                      >
+                                        <img
+                                          src={ThreeDotsBreadCrumbs}
+                                          style={{
+                                            pointerEvents: "none",
+                                            userSelect: "none",
+                                          }}
+                                          alt="More Breadcrumbs"
+                                          onClick={togglePopover}
+                                        />
+                                      </span>
                                     </Popover>
                                   </Breadcrumb.Item>
                                 )}

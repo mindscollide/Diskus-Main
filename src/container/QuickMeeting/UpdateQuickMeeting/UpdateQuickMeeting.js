@@ -3455,7 +3455,7 @@ const UpdateQuickMeeting = ({
                       md={12}
                       lg={12}
                       className='Confirmationmodal_body_text_meeting_update'>
-                      {t("Are-you-sure-note-reset-closed")}
+                      {t("Are-you-sure-you-want-to-continue")}
                     </Col>
                   </Row>
                 </>

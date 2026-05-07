@@ -2444,6 +2444,7 @@ const SearchComponent = ({
               optionsforFolder={optionsforFolder(t)}
               optionsforFile={optionsforFile(t)}
               setSearchTabOpen={setSearchTabOpen}
+              setDetailView={setDetailView}
             />
           </InfiniteScroll>
         </>

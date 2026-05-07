@@ -76,8 +76,11 @@ const RecentChats = () => {
   let yesterdayDateUtc = moment(changeDateFormatYesterday).format("YYYYMMDD");
 
   const [allChatData, setAllChatData] = useState([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [updateAllChatData, setUpdateAllChatData] = useState(false);
   const [searchChatValue, setSearchChatValue] = useState("");
+
+  console.log(allChatData, "allChatDataallChatData");
 
   //Dropdown state of chat head menu (Dropdown icon wali)
   const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false);
@@ -85,16 +88,28 @@ const RecentChats = () => {
   const [newGroupData, setNewGroupData] = useState([]);
 
   useEffect(() => {
+    const data = talkStateData.AllUserChats.AllUserChatsData;
+
+    // Sirf tab update karo jab data valid ho
     if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+      data?.allMessages &&
+      Array.isArray(data.allMessages) &&
+      data.allMessages.length > 0
     ) {
-      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
-    } else {
+      // CRITICAL CHECK: Sirf tab update karo jab data mein "fullName" ho (recent chat list ka property)
+      // Single chat API response mein "fullName" nahi hota
+      const isRecentChatList = data.allMessages.some(
+        (msg) => msg.fullName && msg.messageType,
+      );
+
+      if (isRecentChatList) {
+        setAllChatData(data.allMessages);
+        setIsInitialized(true);
+      }
+    } else if (!isInitialized && (!data || !data.allMessages)) {
       setAllChatData([]);
     }
-  }, [talkStateData.AllUserChats.AllUserChatsData]);
+  }, [talkStateData.AllUserChats.AllUserChatsData, isInitialized]);
 
   //Search Chats
   const searchChat = (e) => {
@@ -141,6 +156,7 @@ const RecentChats = () => {
   const chatClick = (record) => {
     localStorage.setItem("ActiveChatType", record.messageType);
     localStorage.setItem("userNameChat", record.fullName);
+    localStorage.setItem("activeOtoChatID", record.id);
     if (!talkFeatureStates.ChatBoxActiveFlag) {
       dispatch(chatBoxActiveFlag(true));
     }
@@ -167,15 +183,19 @@ const RecentChats = () => {
       NumberOfMessages: 10,
       OffsetMessage: 0,
     };
+    dispatch(activeChat(record));
+
     try {
-      if (record.messageType === "O") {
-        dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-      } else if (record.messageType === "G") {
-        dispatch(GetGroupMessages(navigate, chatGroupData, t));
-      } else if (record.messageType === "B") {
-        dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t));
-      }
-      dispatch(activeChat(record));
+      // API calls ko setTimeout mein daalo taake Redux state pehle update ho jaye
+      setTimeout(() => {
+        if (record.messageType === "O") {
+          dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+        } else if (record.messageType === "G") {
+          dispatch(GetGroupMessages(navigate, chatGroupData, t));
+        } else if (record.messageType === "B") {
+          dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t));
+        }
+      }, 100);
     } catch (error) {
       //
     }

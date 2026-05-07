@@ -15,7 +15,7 @@ import {
   deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
 } from "../../../store/actions/DataRoom_actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ArrowUp from "../../../assets/images/Icon awesome-arrow-up.svg";
@@ -65,6 +65,11 @@ const GridViewDataRoom = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  /** Breadcrumb path array for folder navigation. */
+  const BreadCrumbsListArr = useSelector(
+    (state) => state.DataRoomReducer.BreadCrumbsList,
+  );
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const currentView = Number(localStorage.getItem("setTableView"));
   const [showrenameFile, setShowRenameFile] = useState(false);
@@ -100,8 +105,23 @@ const GridViewDataRoom = ({
   const [isDataforGrid, setDataForGrid] = useState([]);
 
   const getFolderDocuments = (folderid, record) => {
+    console.log("GridView - getFolderDocuments - record:", record);
+    console.log("getFolderDocuments folderid", folderid);
+    console.log(
+      "GridView - getFolderDocuments - full record:",
+      JSON.stringify(record, null, 2),
+    );
     localStorage.setItem("folderID", folderid);
-    dispatch(getFolderDocumentsApi(navigate, folderid, t, 2, record, []));
+    dispatch(
+      getFolderDocumentsApi(
+        navigate,
+        folderid,
+        t,
+        2,
+        record,
+        BreadCrumbsListArr,
+      ),
+    );
     setSearchTabOpen(false);
     if (currentView !== null) {
       localStorage.setItem("setTableView", currentView);
@@ -464,6 +484,7 @@ const GridViewDataRoom = ({
               ? isDataforGrid
                   .filter((data) => data.isFolder === true)
                   .map((fileData, index) => {
+                    console.log(fileData, "fileDatafileData");
                     const getMenuPopover = (listData) => (
                       <MenuPopover
                         imageImage={threedots_dataroom}
@@ -491,15 +512,17 @@ const GridViewDataRoom = ({
                                 />{" "}
                                 {fileData.name}
                               </span>
-                              {fileData.permissionID === 2
-                                ? getMenuPopover(optionsforFolderEditor)
-                                : fileData.permissionID === 1
-                                  ? getMenuPopover(optionsforFolderViewer)
-                                  : fileData.permissionID === 3
-                                    ? getMenuPopover(
-                                        optionsforFolderEditableNonShareable,
-                                      )
-                                    : null}
+                              <div className={styles["dots_container"]}>
+                                {fileData.permissionID === 2
+                                  ? getMenuPopover(optionsforFolderEditor)
+                                  : fileData.permissionID === 1
+                                    ? getMenuPopover(optionsforFolderViewer)
+                                    : fileData.permissionID === 3
+                                      ? getMenuPopover(
+                                          optionsforFolderEditableNonShareable,
+                                        )
+                                      : null}
+                              </div>
                             </div>
                           </Col>
                         </>
@@ -592,15 +615,17 @@ const GridViewDataRoom = ({
                                       />{" "}
                                       {fileData.name}
                                     </span>
-                                    {fileData.permissionID === 2
-                                      ? getMenuPopover(optionsforFileEditor)
-                                      : fileData.permissionID === 1
-                                        ? getMenuPopover(optionsforFileViewer)
-                                        : fileData.permissionID === 3
-                                          ? getMenuPopover(
-                                              optionsforFileEditableNonShareable,
-                                            )
-                                          : null}
+                                    <div className={styles["dots_container"]}>
+                                      {fileData.permissionID === 2
+                                        ? getMenuPopover(optionsforFileEditor)
+                                        : fileData.permissionID === 1
+                                          ? getMenuPopover(optionsforFileViewer)
+                                          : fileData.permissionID === 3
+                                            ? getMenuPopover(
+                                                optionsforFileEditableNonShareable,
+                                              )
+                                            : null}
+                                    </div>
                                   </div>
                                 </Col>
                               </Row>

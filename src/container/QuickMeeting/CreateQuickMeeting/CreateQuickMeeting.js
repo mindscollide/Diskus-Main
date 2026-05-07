@@ -2206,24 +2206,26 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         size={closeConfirmationModal === true ? null : "md"}
         ModalBody={
           <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end mb-2"
-              >
-                <img
-                  src={crossicon}
-                  alt="Close"
-                  onClick={handleCloseModal}
-                  className="cursor-pointer"
-                  width="10px"
-                  height="10px"
-                />
-              </Col>
-            </Row>
+            {!closeConfirmationModal && (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-end mb-2"
+                >
+                  <img
+                    src={crossicon}
+                    alt="Close"
+                    onClick={handleCloseModal}
+                    className="cursor-pointer"
+                    width="10px"
+                    height="10px"
+                  />
+                </Col>
+              </Row>
+            )}
             {closeConfirmationModal === true ? null : (
               <Row>
                 <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
@@ -2839,7 +2841,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     lg={12}
                     className="Confirmationmodal_body_text_meeting_update"
                   >
-                    {t("Are-you-sure-note-reset-closed")}
+                    {t("Are-you-sure-you-want-to-continue")}
                   </Col>
                 </Row>
               </>

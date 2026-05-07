@@ -1376,6 +1376,20 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                 )
             ) {
               dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_DeleteFile_04".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                deleteFileDataroom_fail(
+                  t(
+                    "Not-authorized-to-delete-the-file",
+                  ),
+                ),
+              );
             } else {
               dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
             }
