@@ -1,62 +1,12 @@
-/**
- * @file index.js
- * @description Application entry point.
- *
- * Bootstraps two React roots:
- *  1. `#mainSpinner` — global loading spinner (Redux-connected, shown via store state)
- *  2. `#root`        — main application tree wrapped in the full provider stack
- *
- * Provider nesting order (outer → inner):
- *   GoogleOAuthProvider → Redux Provider → AuthProvider → TalkProvider →
- *   MeetingProvider → GroupsProvider → CommitteeProvider → DataroomProvider →
- *   PollsProvider → NotesProvider → ResolutionProvider → ComlianceProvider → App
- *
- * AuthProvider is near the top because downstream providers may depend on auth state.
- */
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-
-// Redux store
 import { Provider } from "react-redux";
-import store from "./store/store";
-
-// Context providers
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { MeetingProvider } from "./context/MeetingContext";
-import { DataroomProvider } from "./context/DataroomContext";
-import { GroupsProvider } from "./context/GroupsContext";
-import { CommitteeProvider } from "./context/CommitteeContext";
-import { PollsProvider } from "./context/PollsContext";
-import { NotesProvider } from "./context/NotesContext";
-import { ResolutionProvider } from "./context/ResolutionContext";
+import store from "./store/store";
+import App from "./App";
+import "./index.css";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
-import { TalkProvider } from "./context/TalkContext";
-import { ComlianceProvider } from "./context/ComplianceContext";
-import { NewMeetingProvider } from "./context/NewMeetingContext";
-
-// Root container
-const container = document.getElementById("root");
-
-// Create the root with error handling (if applicable)
-const root = ReactDOM.createRoot(container, {
-  onCaughtError: (error, errorInfo) => {
-    if (error.message !== "Known error") {
-      console.error("Caught error:", error);
-      console.error("Component stack:", errorInfo.componentStack);
-    }
-  },
-});
-
-// Disable console methods in production for better security and performance
-// if (process.env.REACT_APP_ENV === "prod") {
-//   console.log = () => {};
-//   console.error = () => {};
-//   console.debug = () => {};
-//   console.warn = () => {};
-// }
 
 // Render the app with all providers
 // Root for Spinner or secondary element
@@ -69,32 +19,15 @@ if (spinnerContainer) {
     </Provider>
   );
 }
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Provider store={store}>
       <AuthProvider>
-        <NewMeetingProvider>
-          <TalkProvider>
-            <MeetingProvider>
-              <GroupsProvider>
-                <CommitteeProvider>
-                  <DataroomProvider>
-                    <PollsProvider>
-                      <NotesProvider>
-                        <ResolutionProvider>
-                          <ComlianceProvider>
-                            <App />
-                          </ComlianceProvider>
-                        </ResolutionProvider>
-                      </NotesProvider>
-                    </PollsProvider>
-                  </DataroomProvider>
-                </CommitteeProvider>
-              </GroupsProvider>
-            </MeetingProvider>
-          </TalkProvider>
-        </NewMeetingProvider>
+        <App />
       </AuthProvider>
     </Provider>
-  </GoogleOAuthProvider>
+  </GoogleOAuthProvider>,
 );

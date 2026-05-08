@@ -2770,5 +2770,6 @@
   "File-deleted": "File Deleted",
   "Folder-deleted": "Folder Deleted",
   "All-participants-must-have-at-least-one-field-assigned": "All participants must have at least one field assigned",
-  "Document-save-successfully": "Document saved successfully"
+  "Document-save-successfully": "Document saved successfully",
+  "Propose-new-committee-meeting": "Propose New Committee Meeting"
 }

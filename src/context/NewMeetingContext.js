@@ -15,7 +15,6 @@ export const NewMeetingContext = createContext();
 
 export const NewMeetingProvider = ({ children }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const userID = localStorage.getItem("userID");
 
   // ============================================================

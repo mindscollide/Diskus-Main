@@ -1,10 +1,6 @@
 import React from "react";
 import styles from "./ViewParticipantsDates.module.css";
-import {
-  Button,
-  Checkbox,
-  Notification,
-} from "@/components/elements";
+import { Button, Checkbox, Notification } from "@/components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -26,6 +22,7 @@ import {
   listOfMeetingsApi,
 } from "@/store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "@/context/MeetingContext";
+import { toggleIsParticipantProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
 
 const ViewParticipantsDates = ({
   setViewProposeDatePoll,
@@ -338,7 +335,7 @@ const ViewParticipantsDates = ({
         MeetingID:
           NotificationClickProposedMeetingFlag === true
             ? Number(NotificationClickMeetingID)
-            : currentMeetingID,
+            : meetingDeatils.MeetingID,
         ProposedDates: defaultarr,
       };
       dispatch(
@@ -360,7 +357,7 @@ const ViewParticipantsDates = ({
         MeetingID:
           NotificationClickProposedMeetingFlag === true
             ? Number(NotificationClickMeetingID)
-            : currentMeetingID,
+            : meetingDeatils.MeetingID,
         ProposedDates: newarr,
       };
 
@@ -389,8 +386,7 @@ const ViewParticipantsDates = ({
     };
     dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
     localStorage.setItem("MeetingCurrentView", 2);
-    setViewProposeDatePoll(false);
-    dispatch(viewProposeDateMeetingPageFlag(false));
+    dispatch(toggleIsParticipantProposedMeetingDates(false));
   };
 
   useEffect(() => {

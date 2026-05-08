@@ -108,6 +108,15 @@ import { AuthorityProvider } from "../context/AuthorityContext.js";
 import MainCompliance from "../container/ComplianceUser/index.jsx";
 import { NewMeetingProvider } from "../context/NewMeetingContext.js";
 import MainMeeting from "../container/meeting/index.jsx";
+import { TalkProvider } from "../context/TalkContext.js";
+import { MeetingProvider } from "../context/MeetingContext.js";
+import { GroupsProvider } from "../context/GroupsContext.js";
+import { CommitteeProvider } from "../context/CommitteeContext.js";
+import { DataroomProvider } from "../context/DataroomContext.js";
+import { PollsProvider } from "../context/PollsContext.js";
+import { NotesProvider } from "../context/NotesContext.js";
+import { ResolutionProvider } from "../context/ResolutionContext.js";
+import { ComlianceProvider } from "../context/ComplianceContext.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -221,7 +230,27 @@ export const router = createBrowserRouter(
               <ErrorBoundary
                 FallbackComponent={ErrorFallback}
                 onError={logErrors}>
-                <Dashboard />
+                <NewMeetingProvider>
+                  <TalkProvider>
+                    <MeetingProvider>
+                      <GroupsProvider>
+                        <CommitteeProvider>
+                          <DataroomProvider>
+                            <PollsProvider>
+                              <NotesProvider>
+                                <ResolutionProvider>
+                                  <ComlianceProvider>
+                                    <Dashboard />
+                                  </ComlianceProvider>
+                                </ResolutionProvider>
+                              </NotesProvider>
+                            </PollsProvider>
+                          </DataroomProvider>
+                        </CommitteeProvider>
+                      </GroupsProvider>
+                    </MeetingProvider>
+                  </TalkProvider>
+                </NewMeetingProvider>
               </ErrorBoundary>
             </RouteWrapperUser>
           }>
@@ -937,6 +966,6 @@ export const router = createBrowserRouter(
           />
         </Route>
       </Route>
-    </>
-  )
+    </>,
+  ),
 );

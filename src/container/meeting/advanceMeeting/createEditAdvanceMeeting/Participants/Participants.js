@@ -49,12 +49,12 @@ const Participants = () => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const { meetingID = 0 } = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
   let meetingData = store.getState().NewMeetingreducer.currentMeetingInfo;
   console.log(meetingData, "meetingDatameetingDatameetingData");
   const isAdvanceMeetingRoute = useSelector(
-    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
   );
   const { setIsMeetingCreateOrEdit, setIsCreateEditMeeting } =
     useNewMeetingContext();
@@ -108,8 +108,8 @@ const Participants = () => {
         "publishMeetingFromParticipant",
         {
           setEditorRole, // shorthand if variable name matches key
-        }
-      )
+        },
+      ),
     );
   };
 
@@ -135,7 +135,7 @@ const Participants = () => {
               value: data.participantRoleID,
               label: data.participantRole,
             });
-          }
+          },
         );
         setParticpantsRole(Newdata);
       }
@@ -197,17 +197,17 @@ const Participants = () => {
         showMessage(
           t("Please-at-least-one-partcipant-required"),
           "error",
-          setOpen
+          setOpen,
         );
       } else {
         let removingfromrow = rspvRows.filter(
-          (data, index) => data.userID !== record.userID
+          (data, index) => data.userID !== record.userID,
         );
         setrspvRows(removingfromrow);
       }
     } else {
       let removingfromrow = rspvRows.filter(
-        (data, index) => data.userID !== record.userID
+        (data, index) => data.userID !== record.userID,
       );
       setrspvRows(removingfromrow);
     }
@@ -663,7 +663,7 @@ const Participants = () => {
 
   const handleSaveparticpants = () => {
     let findshouldnotempty = rspvRows.every(
-      (newData, index) => Object.keys(newData.participantRole).length > 0
+      (newData, index) => Object.keys(newData.participantRole).length > 0,
     );
     let newarry = [];
     let copyData = [...rspvRows];
@@ -686,8 +686,8 @@ const Participants = () => {
           {
             rspvRows,
             editableSave,
-          }
-        )
+          },
+        ),
       );
     } else {
       showMessage(t("Role-is-required"), "error", setOpen);
@@ -698,7 +698,7 @@ const Participants = () => {
   useEffect(() => {
     if (rspvRows.length > 0) {
       let removedublicates = rspvRows.some(
-        (data, index) => data.isComingApi === false
+        (data, index) => data.isComingApi === false,
       );
       setIsEditable(removedublicates);
     } else {

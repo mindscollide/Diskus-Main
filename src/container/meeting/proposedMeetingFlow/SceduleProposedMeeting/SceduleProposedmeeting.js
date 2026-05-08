@@ -13,9 +13,7 @@ import {
 import { useSelector } from "react-redux";
 import {
   showSceduleProposedMeeting,
-  getUserProposedWiseApi,
   clearProposedWiseData,
-  getUserWiseProposedDatesMainApi,
 } from "../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../assets/images/BlueTick.svg";
 import moment from "moment";
@@ -28,30 +26,27 @@ import {
 } from "../../../../commen/functions/date_formater";
 // import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
+import { toggleIsOrganizerProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
+import { scheduleMeetingFromProposedMeetingApi } from "../../../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../../../context/MeetingContext";
 // import { showMessage } from "../../../../components/elements/snack_bar/utill";
-const SceduleProposedmeeting = ({
-  setDataroomMapFolderId,
-  setCurrentMeetingID,
-  setSceduleMeeting,
-}) => {
+const SceduleProposedmeeting = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
-  let viewProposeDatePollMeetingID = Number(
-    localStorage.getItem("viewProposeDatePollMeetingID")
-  );
-
+  
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const sceduleproposedMeeting = useSelector(
-    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+  const {setEditorRole} = useMeetingContext()
+  const isOrganizerViewPollProposedMeeting = useSelector(
+    (state) => state.ModalStatesReducer.isOrganizerRespondProposedMeeting,
   );
 
   const getUserProposedOrganizerData = useSelector(
-    (state) => state.NewMeetingreducer.getUserProposedOrganizerData
+    (state) => state.NewMeetingreducer.getUserProposedOrganizerData,
   );
 
   const [formattedDates, setFormattedDates] = useState([]);
@@ -61,32 +56,30 @@ const SceduleProposedmeeting = ({
   const [organizerRows, setOrganizerRows] = useState([]);
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
-
-  // dispatch Api in useEffect
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(viewProposeDatePollMeetingID),
-    };
-    dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
-  }, []);
+  const [currentMeetingId, setCurrentMeetingId] = useState(0);
 
   // for rendering data in table
   useEffect(() => {
     if (
       getUserProposedOrganizerData !== null &&
       getUserProposedOrganizerData !== undefined &&
-      getUserProposedOrganizerData.length > 0
+      getUserProposedOrganizerData
     ) {
+      console.log(
+        getUserProposedOrganizerData,
+        "getUserProposedOrganizerDatagetUserProposedOrganizerData",
+      );
       let ProposeDates;
 
-      getUserProposedOrganizerData.forEach((datesData, index) => {
+      getUserProposedOrganizerData.response.forEach((datesData, index) => {
         const uniqueData = new Set(
-          datesData.selectedProposedDates.map(JSON.stringify)
+          datesData.selectedProposedDates.map(JSON.stringify),
         );
         ProposeDates = Array.from(uniqueData).map(JSON.parse);
       });
+      setCurrentMeetingId(getUserProposedOrganizerData.meetingID);
       setProposedDates(ProposeDates);
-      setInitialOrganizerRows(getUserProposedOrganizerData);
+      setInitialOrganizerRows(getUserProposedOrganizerData.response);
     } else {
       setInitialOrganizerRows([]);
     }
@@ -153,7 +146,7 @@ const SceduleProposedmeeting = ({
             proposedData.proposedDateID === record.proposedDateID
               ? true
               : false,
-        }))
+        })),
       );
     }
   };
@@ -182,24 +175,21 @@ const SceduleProposedmeeting = ({
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
     let findIsSelected = proposedDatesData.find(
-      (propsedData, index) => propsedData.isSelected === true
+      (propsedData, index) => propsedData.isSelected === true,
     );
 
     if (findIsSelected) {
-      let scheduleMeeting = {
-        MeetingID: Number(viewProposeDatePollMeetingID),
-        ProposedDateID: findIsSelected.proposedDateID,
-      };
       dispatch(
-        scheduleMeetingMainApi(
+        scheduleMeetingFromProposedMeetingApi(
           navigate,
           t,
-          scheduleMeeting,
-          // setDataroomMapFolderId,
-          // setCurrentMeetingID,
-          // setSceduleMeeting,
-          // viewProposeDatePollMeetingID
-        )
+          {
+            MeetingID: Number(currentMeetingId),
+            ProposedDateID: findIsSelected.proposedDateID,
+          },
+          "",
+          { role: "Organizer" ,setEditorRole},
+        ),
       );
     }
   };
@@ -258,7 +248,7 @@ const SceduleProposedmeeting = ({
         render: (text, record) => {
           if (record.userName === "Total") {
             const totalDate = record?.selectedProposedDates?.find(
-              (date) => date?.isTotal === 0
+              (date) => date?.isTotal === 0,
             );
             if (totalDate) {
               return (
@@ -270,7 +260,7 @@ const SceduleProposedmeeting = ({
           } else {
             const proposedDate = record?.selectedProposedDates?.find(
               (date) =>
-                date.proposedDate === moment(formattedDate).format("YYYYMMDD")
+                date.proposedDate === moment(formattedDate).format("YYYYMMDD"),
             );
             if (proposedDate?.isSelected) {
               return (
@@ -292,14 +282,13 @@ const SceduleProposedmeeting = ({
   return (
     <section>
       <Modal
-        show={sceduleproposedMeeting}
-        setShow={dispatch(showSceduleProposedMeeting)}
+        show={isOrganizerViewPollProposedMeeting}
         className={styles["main-modal-class"]}
         modalBodyClassName={styles["modal-class-width"]}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => {
-          dispatch(showSceduleProposedMeeting(false));
+          dispatch(toggleIsOrganizerProposedMeetingDates(false));
         }}
         dialogClassName={`${styles["modal-class-width"]} ${styles["custom-modal-dialog"]}`}
         size={"xl"}
@@ -315,7 +304,9 @@ const SceduleProposedmeeting = ({
                 lg={1}
                 md={1}
                 sm={1}
-                onClick={() => dispatch(showSceduleProposedMeeting(false))}
+                onClick={() =>
+                  dispatch(toggleIsOrganizerProposedMeetingDates(false))
+                }
                 className='d-flex justify-content-end'>
                 <img
                   src={BlackCrossIcon}

@@ -13,7 +13,7 @@ import ViewCommitteeDetails from "../ViewCommittee/ViewCommittee.js";
 import Polls from "../../ViewPolls/Polls/Polls.js";
 import CommitteeTodo from "../../ViewTodo/CommitteeTodo.js";
 import { XLg } from "react-bootstrap-icons";
-import CommitteeMeetingTab from "../../ViewMeeting/Meeting";
+import CommitteeMeetingTab from "../../committeeMeetings";
 import { useSelector } from "react-redux";
 import { usePollsContext } from "../../../../context/PollsContext.js";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {

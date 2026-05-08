@@ -1,80 +1,77 @@
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
-import { forRecentActivity } from "../../../commen/functions/date_formater";
+import { forRecentActivity } from "@/commen/functions/date_formater";
 import { ChevronDown } from "react-bootstrap-icons";
 import { Checkbox, Menu, Popover } from "antd";
-import CustomButton from "../../../components/elements/button/Button";
+import CustomButton from "@/components/elements/button/Button";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "../../../components/elements";
+import { Button, Table } from "@/components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useNewMeetingContext } from "../../../context/NewMeetingContext";
-import { useMeetingContext } from "../../../context/MeetingContext";
+import { useNewMeetingContext } from "@/context/NewMeetingContext";
+import { useMeetingContext } from "@/context/MeetingContext";
 import CustomPagination from "@/commen/functions/customPagination/Paginations";
 
 // Icons
-import SortIconAscend from "../../../assets/images/sortingIcons/SorterIconAscend.png";
-import SortIconDescend from "../../../assets/images/sortingIcons/SorterIconDescend.png";
-import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
-import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
-import CancelMeetingIcon from "../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
-import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
-import EditIcon from "../../../assets/images/New Meeting Listing Icons/EditMeeting.png";
+import SortIconAscend from "@/assets/images/sortingIcons/SorterIconAscend.png";
+import SortIconDescend from "@/assets/images/sortingIcons/SorterIconDescend.png";
+import ArrowUpIcon from "@/assets/images/sortingIcons/Arrow-up.png";
+import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
+import CancelMeetingIcon from "@/assets/images/New Meeting Listing Icons/CancelMeeting.png";
+import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
+import EditIcon from "@/assets/images/New Meeting Listing Icons/EditMeeting.png";
 
 // Redux actions
-import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
+import { ViewMeeting } from "@/store/actions/Get_List_Of_Assignees";
 import {
   meetingAgendaContributorAdded,
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
   searchNewUserMeeting,
-} from "../../../store/actions/NewMeetingActions";
-import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
+} from "@/store/actions/NewMeetingActions";
+import { mqttMeetingData } from "@/hooks/meetingResponse/response";
 
 // Styles (reuse DraftMeeting styles from existing component)
-import styles from "./draftMeeting.module.css";
+import styles from "./committeeDraftMeeting.module.css";
 import {
   UpdateMeetingStatusApi,
   getMeetingDetailsByMeetingIdApi,
   setCurrentMeetingInfo,
-} from "../../../store/actions/NewMeeting2.actions";
-import DeleteMeetingConfirmationModal from "../commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+} from "@/store/actions/NewMeeting2.actions";
 import {
   setViewTab,
   toggleViewMeetingModal,
-} from "../../../store/actions/ModalStates_actions";
+} from "@/store/actions/ModalStates_actions";
+import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
   role: record.isParticipant
     ? "Participant"
     : record.isAgendaContributor
-    ? "Agenda Contributor"
-    : "Organizer",
+      ? "Agenda Contributor"
+      : "Organizer",
   isPrimaryOrganizer: record.isPrimaryOrganizer,
 });
-
 
 const buildVideoTalk = (record) => ({
   isChat: record.isChat,
   isVideoCall: record.isVideoCall,
   talkGroupID: record.talkGroupID,
 });
-
-const DraftMeetingList = () => {
+const CommitteeDraftMeetings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { committeeDraftMeetingData, committeeDraftMeetingDataRecord } =
+    useCommitteeContext();
 
   // ─── Context ───
-  const {
-    isMeetingTypeFilter,
-    draftMeetingDataRecord,
-    draftMeetingData,
-    setDraftMeetingData,
-  } = useNewMeetingContext();
+  const { isMeetingTypeFilter } = useNewMeetingContext();
   const {
     setViewFlag,
     setSceduleMeeting,
@@ -86,19 +83,10 @@ const DraftMeetingList = () => {
     setVideoTalk,
   } = useMeetingContext();
 
-  // ─── Redux selectors ───
-  const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
-  const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
-  );
-  const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
-  );
-  const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
-  );
+
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   // ─── Local state ───
@@ -107,87 +95,6 @@ const DraftMeetingList = () => {
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
 
-  // ─── MQTT: Agenda Contributor Added ───
-  useEffect(() => {
-    try {
-      const callAddAgendaContributor = async () => {
-        if (mqttMeetingAcAdded !== null && mqttMeetingAcAdded !== undefined) {
-          let newObj = mqttMeetingAcAdded;
-          try {
-            let getData = await mqttMeetingData(newObj, 2);
-            setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {
-            console.log(error, "getDatagetDatagetData");
-          }
-          dispatch(meetingAgendaContributorAdded(null));
-          dispatch(meetingAgendaContributorRemoved(null));
-          dispatch(meetingOrganizerAdded(null));
-          dispatch(meetingOrganizerRemoved(null));
-        }
-      };
-      callAddAgendaContributor();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [mqttMeetingAcAdded]);
-
-  // ─── MQTT: Agenda Contributor Removed ───
-  useEffect(() => {
-    if (mqttMeetingAcRemoved !== null && mqttMeetingAcRemoved !== undefined) {
-      let meetingData = mqttMeetingAcRemoved;
-      try {
-        const updatedRows = draftMeetingData.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
-        );
-        setDraftMeetingData(updatedRows);
-        dispatch(meetingAgendaContributorAdded(null));
-        dispatch(meetingAgendaContributorRemoved(null));
-        dispatch(meetingOrganizerAdded(null));
-        dispatch(meetingOrganizerRemoved(null));
-      } catch {}
-    }
-  }, [mqttMeetingAcRemoved]);
-
-  // ─── MQTT: Organizer Added ───
-  useEffect(() => {
-    try {
-      const callAddOrganizer = async () => {
-        if (mqttMeetingOrgAdded !== null && mqttMeetingOrgAdded !== undefined) {
-          let newObj = mqttMeetingOrgAdded;
-          try {
-            let getData = await mqttMeetingData(newObj, 2);
-            setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {
-            console.log(error, "getDatagetDatagetData");
-          }
-          dispatch(meetingAgendaContributorAdded(null));
-          dispatch(meetingAgendaContributorRemoved(null));
-          dispatch(meetingOrganizerAdded(null));
-          dispatch(meetingOrganizerRemoved(null));
-        }
-      };
-      callAddOrganizer();
-    } catch (error) {
-      console.error(error);
-    }
-  }, [mqttMeetingOrgAdded]);
-
-  // ─── MQTT: Organizer Removed ───
-  useEffect(() => {
-    if (mqttMeetingOrgRemoved !== null && mqttMeetingOrgRemoved !== undefined) {
-      let meetingData = mqttMeetingOrgRemoved;
-      try {
-        const updatedRows = draftMeetingData.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
-        );
-        setDraftMeetingData(updatedRows);
-        dispatch(meetingAgendaContributorAdded(null));
-        dispatch(meetingAgendaContributorRemoved(null));
-        dispatch(meetingOrganizerAdded(null));
-        dispatch(meetingOrganizerRemoved(null));
-      } catch {}
-    }
-  }, [mqttMeetingOrgRemoved]);
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -232,8 +139,8 @@ const DraftMeetingList = () => {
             setViewFlag,
             setEditFlag,
             setSceduleMeeting,
-            2
-          )
+            2,
+          ),
         );
       } else if (record.isQuickMeeting === false) {
         // Set state synchronously BEFORE dispatch — no stale closure issue
@@ -248,8 +155,8 @@ const DraftMeetingList = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} }
-          )
+            { role, callFunc: () => {} },
+          ),
         );
       }
     };
@@ -273,8 +180,8 @@ const DraftMeetingList = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          {}
-        )
+          {},
+        ),
       );
     };
 
@@ -316,17 +223,19 @@ const DraftMeetingList = () => {
   const handleClickTitle = (record) => {
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
-    dispatch(setCurrentMeetingInfo({
-      meetingID: record.pK_MDID,
-    }))
+    dispatch(
+      setCurrentMeetingInfo({
+        meetingID: record.pK_MDID,
+      }),
+    );
     setEditorRole((prev) => ({
       ...prev,
       status: record.status,
       role: record.isParticipant
         ? "Participant"
         : record.isAgendaContributor
-        ? "Agenda Contributor"
-        : "Organizer",
+          ? "Agenda Contributor"
+          : "Organizer",
       isPrimaryOrganizer: record.isPrimaryOrganizer,
     }));
   };
@@ -404,15 +313,15 @@ const DraftMeetingList = () => {
         sortOrder: meetingTimeSort,
         render: (text, record) => {
           let meetingStartTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           let meetingEndTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingEndTime
+            record.dateOfMeeting + record.meetingEndTime,
           );
           if (!meetingStartTime && !meetingEndTime) return;
           return (
             <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime
+              meetingEndTime,
             ).format("hh:mm a")}`}</>
           );
         },
@@ -438,61 +347,24 @@ const DraftMeetingList = () => {
           const dateA = new Date(
             a.dateOfMeeting.substring(0, 4),
             parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8)
+            a.dateOfMeeting.substring(6, 8),
           );
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8)
+            b.dateOfMeeting.substring(6, 8),
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
       },
 
-      // Meeting Type
-      {
-        title: (
-          <span className='d-flex justify-content-center align-items-center'>
-            {t("Meeting-type")}
-          </span>
-        ),
-        dataIndex: "meetingType",
-        key: "meetingType",
-        width: 160,
-        align: "center",
-        filters: isMeetingTypeFilter.map((filter) => ({
-          text: filter.text,
-          value: filter.value,
-        })),
-        defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
-        filterResetToDefaultFilteredValue: true,
-        onFilter: (value, record) =>
-          Number(record.meetingType) === Number(value),
-        filterIcon: (filtered) => (
-          <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
-          />
-        ),
-        render: (_, record) => {
-          const meetingType = Number(record.meetingType);
-          const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType
-          );
-          if (record.isQuickMeeting && meetingType === 1) {
-            return t("Quick-meeting");
-          }
-          return matchedFilter ? t(matchedFilter.text) : "";
-        },
-      },
 
       // More Popover
       {
@@ -543,7 +415,7 @@ const DraftMeetingList = () => {
               className='MeetingTable'
               column={columns}
               size={"small"}
-              rows={draftMeetingData}
+              rows={committeeDraftMeetingData}
               sticky={true}
               pagination={false}
               scroll={{
@@ -551,7 +423,7 @@ const DraftMeetingList = () => {
               }}
             />
           </Col>
-          {draftMeetingData.length > 0 && (
+          {committeeDraftMeetingData.length > 0 && (
             <Col className={styles["Meeting_Pagination"]}>
               <div className='d-flex justify-content-center mt-2 '>
                 <Row className={styles["PaginationStyle-Meeting"]}>
@@ -570,7 +442,7 @@ const DraftMeetingList = () => {
                         meetingpageRow !== null ? Number(meetingpageRow) : 30
                       }
                       onChange={handelChangePagination}
-                      total={draftMeetingDataRecord}
+                      total={committeeDraftMeetingDataRecord}
                       showSizer={true}
                       pageSizeOptionsValues={["30", "50", "100", "200"]}
                     />
@@ -586,4 +458,4 @@ const DraftMeetingList = () => {
   );
 };
 
-export default DraftMeetingList;
+export default CommitteeDraftMeetings;

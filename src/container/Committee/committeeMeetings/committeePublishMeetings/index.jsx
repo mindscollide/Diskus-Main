@@ -7,12 +7,12 @@ import { Col, Row } from "react-bootstrap";
 import moment from "moment";
 
 // Context hooks
-import { useMeetingContext } from "../../../context/MeetingContext";
-import { useNewMeetingContext } from "../../../context/NewMeetingContext";
+import { useMeetingContext } from "@/context/MeetingContext";
+import { useNewMeetingContext } from "@/context/NewMeetingContext";
 
 // Components
-import { Table } from "../../../components/elements";
-import CustomButton from "../../../components/elements/button/Button";
+import { Table } from "@/components/elements";
+import CustomButton from "@/components/elements/button/Button";
 import EmptyTableComponent from "@/container/meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
 // Status helper
@@ -23,7 +23,7 @@ import {
   utcConvertintoGMT,
   getCurrentDateTimeUTC,
   forRecentActivity,
-} from "../../../commen/functions/date_formater";
+} from "@/commen/functions/date_formater";
 
 // Redux actions
 import {
@@ -35,15 +35,14 @@ import {
   boardDeckModal,
   getMeetingRecordingFilesApi,
   searchNewUserMeeting,
-} from "../../../store/actions/NewMeetingActions";
-import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
-import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
-import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
+} from "@/store/actions/NewMeetingActions";
+import { ViewMeeting } from "@/store/actions/Get_List_Of_Assignees";
+import { downloadAttendanceReportApi } from "@/store/actions/Download_action";
 
 import {
   setViewTab,
   toggleViewMeetingModal,
-} from "../../../store/actions/ModalStates_actions";
+} from "@/store/actions/ModalStates_actions";
 
 // Talk actions
 import {
@@ -51,7 +50,7 @@ import {
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   GetAllUserChats,
-} from "../../../store/actions/Talk_action";
+} from "@/store/actions/Talk_action";
 import {
   recentChatFlag,
   headerShowHideStatus,
@@ -61,22 +60,22 @@ import {
   footerActionStatus,
   createGroupScreen,
   activeChatBoxGS,
-} from "../../../store/actions/Talk_Feature_actions";
+} from "@/store/actions/Talk_Feature_actions";
 
 // Icons
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import ChatIcon from "../../../assets/images/New Meeting Listing Icons/Talk.png";
-import AgendaIcon from "../../../assets/images/New Meeting Listing Icons/ViewAgenda.png";
-import ClipboardIcon from "../../../assets/images/New Meeting Listing Icons/Attendance.png";
-import DownloadVideoIcon from "../../../assets/images/New Meeting Listing Icons/VideoRecording.png";
-import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
-import SortIconAscend from "../../../assets/images/sortingIcons/SorterIconAscend.png";
-import SortIconDescend from "../../../assets/images/sortingIcons/SorterIconDescend.png";
-import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
-import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
-import DoubleArrowIcon from "../../../assets/images/sortingIcons/Double Arrow2.svg";
+import EditIcon from "@/assets/images/Edit-Icon.png";
+import ChatIcon from "@/assets/images/New Meeting Listing Icons/Talk.png";
+import AgendaIcon from "@/assets/images/New Meeting Listing Icons/ViewAgenda.png";
+import ClipboardIcon from "@/assets/images/New Meeting Listing Icons/Attendance.png";
+import DownloadVideoIcon from "@/assets/images/New Meeting Listing Icons/VideoRecording.png";
+import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
+import SortIconAscend from "@/assets/images/sortingIcons/SorterIconAscend.png";
+import SortIconDescend from "@/assets/images/sortingIcons/SorterIconDescend.png";
+import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "@/assets/images/sortingIcons/Arrow-up.png";
+import DoubleArrowIcon from "@/assets/images/sortingIcons/Double Arrow2.svg";
 
-import styles from "./publishMeeting.module.css";
+import styles from "./committeePublishMeeting.module.css";
 
 import { ChevronDown, Record } from "react-bootstrap-icons";
 import CustomPagination from "@/commen/functions/customPagination/Paginations";
@@ -91,7 +90,8 @@ import {
   joinMeetingApi,
   setCurrentMeetingInfo,
   UpdateMeetingStatusApi,
-} from "../../../store/actions/NewMeeting2.actions";
+} from "@/store/actions/NewMeeting2.actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -116,7 +116,7 @@ const parseDateTime = (str) =>
     str.substring(12, 14),
   );
 
-const PublishedMeetingList = () => {
+const CommitteePublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -158,29 +158,21 @@ const PublishedMeetingList = () => {
     isMeetingTypeFilter,
     minutesAgo,
     startMeetingButton,
-    publishedMeetingData,
-    publishedMeetingDataRecord,
-    setPublishedMeetingData,
-    searchFilters,
-    setIsCreateEditMeeting,
-  } = useNewMeetingContext();
-
-  console.log(minutesAgo, "minutesAgominutesAgo");
+    committeePublishedMeetingData,
+    committeePublishedMeetingDataRecord,
+  } = useCommitteeContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
+  const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
-  const [duplicatedrows] = useState([]);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
-  const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
-  const [selectedMeetingTypes] = useState(
-    isMeetingTypeFilter.map((f) => f.value),
-  );
+
   const [radioValue, setRadioValue] = useState(1);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
@@ -300,7 +292,7 @@ const PublishedMeetingList = () => {
             t,
             setViewFlag,
             setEditFlag,
-            setIsCreateEditMeeting,
+            // setIsCreateEditMeeting,
             1,
           ),
         );
@@ -842,47 +834,6 @@ const PublishedMeetingList = () => {
         ),
       },
 
-      // ── Meeting Type ──
-      {
-        title: (
-          <span className='d-flex justify-content-center align-items-center'>
-            {t("Meeting-type")}
-          </span>
-        ),
-        dataIndex: "meetingType",
-        key: "meetingType",
-        width: 140,
-        align: "center",
-        filters: isMeetingTypeFilter.map((f) => ({
-          text: f.text,
-          value: f.value,
-        })),
-        defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
-        filterResetToDefaultFilteredValue: true,
-        onFilter: (value, record) =>
-          Number(record.meetingType) === Number(value),
-        filterIcon: (filtered) => (
-          <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
-          />
-        ),
-        render: (_, record) => {
-          const meetingType = Number(record.meetingType);
-          const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType,
-          );
-          if (record.isQuickMeeting && meetingType === 1)
-            return t("Quick-meeting");
-          return matchedFilter ? (
-            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
-          ) : (
-            ""
-          );
-        },
-      },
-
       // ── Action Column ──
       {
         title: "",
@@ -917,7 +868,20 @@ const PublishedMeetingList = () => {
               isOrganizer &&
               minutesDifference < minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
-
+          console.log(
+            {
+              canStartMeeting,
+              STATUS,
+              meetingCurrentStatus,
+              isButtonShown,
+              record,
+              minutesDifference,
+              currentDateObj,
+              meetingDateObj,
+              isOrganizer,
+            },
+            "Checking meeting action button visibility",
+          );
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 
@@ -1095,27 +1059,14 @@ const PublishedMeetingList = () => {
     }
   };
 
-  // ─── Pagination ───────────────────────────────────────────────────────────
-
-  const handelChangePagination = async (current, PageSize) => {
-    localStorage.setItem("MeetingPageRows", PageSize);
-    localStorage.setItem("MeetingPageCurrent", current);
-    await dispatch(
-      searchNewUserMeeting(navigate, t, {
-        Date: searchFilters.Date,
-        Title: searchFilters.MeetingTitle,
-        HostName: searchFilters.OrganizerName,
-        UserID: Number(userID),
-        PageNumber: Number(current),
-        Length: Number(PageSize),
-        PublishedMeetings: true,
-        ProposedMeetings: false,
-      }),
-    );
-  };
-
   // ─── Render ───────────────────────────────────────────────────────────────
-
+  const scroll = {
+    y: "39vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
+  };
   return (
     <>
       <Row className='mt-2'>
@@ -1130,45 +1081,14 @@ const PublishedMeetingList = () => {
             className='MeetingTable'
             column={columns}
             size='small'
-            rows={publishedMeetingData}
+            rows={committeePublishedMeetingData}
             sticky={true}
             pagination={false}
             locale={{ emptyText: <EmptyTableComponent /> }}
-            scroll={{ y: 400 }}
+            scroll={scroll}
           />
         </Col>
-        <Col>
-          {publishedMeetingData.length > 0 && (
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={`${styles["Meeting_Pagination"]} d-flex justify-content-center`}>
-              <Row className={styles["PaginationStyle-Meeting"]}>
-                <Col
-                  className='pagination-groups-table'
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    onChange={handelChangePagination}
-                    total={publishedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          )}
-        </Col>
+        <Col></Col>
       </Row>
 
       {boardDeckModalData && (
@@ -1209,4 +1129,4 @@ const PublishedMeetingList = () => {
   );
 };
 
-export default PublishedMeetingList;
+export default CommitteePublishedMeetingList;

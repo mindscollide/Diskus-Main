@@ -15,6 +15,8 @@ import {
   GetAllUserAgendaRights,
   getMeetingByMeetingID,
   GetMeetingNewFrequencyReminder,
+  getUserWiseProposeDate,
+  getUserWiseProposeDateOrganizer,
   joinMeeting,
   meetingStatusUpdate,
   ProposeNewMeetingSaveParticipants,
@@ -50,6 +52,8 @@ import {
   setViewTab,
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
+  toggleIsOrganizerProposedMeetingDates,
+  toggleIsParticipantProposedMeetingDates,
   toggleViewMeetingModal,
   toggleViewProposedMeetingModal,
 } from "./ModalStates_actions";
@@ -469,9 +473,14 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
                       },
                     ),
                   );
+                  break;
                 }
-                case "getMeetingDetailsFromAgendaTab":
+                case "getMeetingDetailsFromAgendaTab": {
+                  break;
+                }
                 case "EditMeetingFromMainListing": {
+                  dispatch(setCreateEditTab("organizers"));
+
                   break;
                 }
                 case "committeeSaveMeeting":
@@ -664,9 +673,9 @@ export const UpdateMeetingUserApi = (
                     store.getState().NewMeetingreducer?.currentMeetingInfo
                       ?.meetingID;
                   const {
-                    membersParticipants,
-                    sortedDates,
-                    sendResponseBtDateVal,
+                    membersParticipants = [],
+                    sortedDates = [],
+                    sendResponseBtDateVal = "",
                   } = object;
                   let newMembers = [];
                   let DublicateData = [...membersParticipants];
@@ -989,10 +998,49 @@ export const setProposedMeetingDateApi = (
                     t("Your-slots-has-been-added-successfully"),
                   ),
                 );
+                const committeeInfo =
+                  store.getState().CommitteeReducer?.viewCommitteeDetails;
+                const groupInfo =
+                  store.getState().GroupsReducer?.viewGroupDetails;
                 switch (routePath) {
                   case "saveProposedMeeting":
                   case "updateProposedMeeting":
+                    if (committeeInfo) {
+                      dispatch(toggleCreateEditProposedMeetingModal(false));
+
+                      dispatch(
+                        setMeetingbyCommitteeIdApi(
+                          navigate,
+                          t,
+                          {
+                            MeetingID: Number(Data.MeetingID),
+                            CommitteeID: Number(committeeInfo.committeeID),
+                          },
+                          "saveProposedMeetingFromCommittee",
+                          {},
+                        ),
+                      );
+                      return;
+                    }
+                    if (groupInfo) {
+                      dispatch(toggleCreateEditProposedMeetingModal(false));
+
+                      dispatch(
+                        setMeetingByGroupIdApi(
+                          navigate,
+                          t,
+                          {
+                            MeetingID: Number(Data.MeetingID),
+                            GroupID: Number(groupInfo.groupID),
+                          },
+                          "saveProposedMeetingFromGroup",
+                          {},
+                        ),
+                      );
+                      return;
+                    }
                     dispatch(toggleCreateEditProposedMeetingModal(false));
+
                     localStorage.setItem("MeetingCurrentView", 2);
                     const userID = localStorage.getItem("userID");
                     const meetingpageRow =
@@ -2829,7 +2877,6 @@ export const getMeetingDetailsByMeetingIdApi = (
               MeetingTitle: details.meetingTitle,
               IsUpdateFlow: true,
             };
-
             switch (routePath) {
               case "getMeetingDetailsFromAgendaTab": {
                 dispatch(
@@ -2844,7 +2891,8 @@ export const getMeetingDetailsByMeetingIdApi = (
                 break;
               }
 
-              case "EditMeetingFromMainListing": {
+              case "EditMeetingFromMainListing":
+              case "EditMeetingFromScheduleProposed": {
                 const { role, callFunc } = object;
                 callFunc?.();
 
@@ -2860,7 +2908,7 @@ export const getMeetingDetailsByMeetingIdApi = (
                     navigate,
                     t,
                     mappedFolderPayload,
-                    "EditMeetingFromMainListing",
+                    routePath,
                     {},
                   ),
                 );
@@ -2881,6 +2929,13 @@ export const getMeetingDetailsByMeetingIdApi = (
                   GetAllProposedMeetingDateApi(navigate, t, Data, "", {}),
                 );
                 dispatch(toggleViewProposedMeetingModal(true));
+                break;
+
+              case "ProposedMeetingViewForParticipant":
+                dispatch(
+                  getUserSelectProposedWiseApi(navigate, t, Data, "", object),
+                );
+
                 break;
               default:
                 break;
@@ -3976,8 +4031,7 @@ export const scheduleMeetingFromProposedMeetingApi = (
                   t("Record-saved"),
                 ),
               );
-              dispatch(showSceduleProposedMeeting(false));
-
+              const { setEditorRole } = object;
               await dispatch(
                 getMeetingDetailsByMeetingIdApi(
                   navigate,
@@ -3985,6 +4039,8 @@ export const scheduleMeetingFromProposedMeetingApi = (
                   {
                     MeetingID: Number(Data.MeetingID),
                   },
+                  "EditMeetingFromScheduleProposed",
+                  object,
                   // false,
                   // setCurrentMeetingID,
                   // setSceduleMeeting,
@@ -3992,6 +4048,12 @@ export const scheduleMeetingFromProposedMeetingApi = (
                   // 0,
                   // 1,
                 ),
+                setEditorRole({
+                  status: 11,
+                  role: "Organizer",
+                  isPrimaryOrganizer: true,
+                }),
+                dispatch(toggleIsOrganizerProposedMeetingDates(false)),
               ); //         GetAllMeetingDetailsApiFunc(
             } else if (
               response.data.responseResult.responseMessage
@@ -4041,6 +4103,202 @@ export const scheduleMeetingFromProposedMeetingApi = (
       })
       .catch((response) => {
         dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// get user wise proposed dates in unpublished meeting on organizer start
+const getUserProposedDatesInit = () => {
+  return {
+    type: actions.GET_USER_PROPOSED_DATES_INIT,
+  };
+};
+
+const getUserProposedDatesSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_PROPOSED_DATES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getUserProposedDatesFail = (message) => {
+  return {
+    type: actions.GET_USER_PROPOSED_DATES_FAIL,
+    message: message,
+  };
+};
+
+export const getUserWiseProposedDatesForOrganizerApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
+  return (dispatch) => {
+    dispatch(getUserProposedDatesInit());
+    let form = new FormData();
+    form.append("RequestMethod", getUserWiseProposeDateOrganizer.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getUserWiseProposedDatesForOrganizerApi(
+              navigate,
+              t,
+              Data,
+              routePath,
+              (object = {}),
+            ),
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01".toLowerCase(),
+                )
+            ) {
+              dispatch(toggleIsOrganizerProposedMeetingDates(true));
+
+              dispatch(
+                getUserProposedDatesSuccess(
+                  {
+                    response:
+                      response.data.responseResult.userWiseMeetingProposedDates,
+                    meetingID: Data.MeetingID,
+                  },
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_02".toLowerCase(),
+                )
+            ) {
+              dispatch(getUserProposedDatesFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_03".toLowerCase(),
+                )
+            ) {
+              dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getUserProposedDatesFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// GET USER WISE PROPOSED API
+const getProposedWiseInit = () => {
+  return {
+    type: actions.GET_USER_WISE_PROPOSED_INIT,
+  };
+};
+
+const getProposedWiseSuccess = (response, message, loader) => {
+  return {
+    type: actions.GET_USER_WISE_PROPOSED_SUCCESS,
+    response: response,
+    message: message,
+    loader: loader,
+  };
+};
+
+const getProposedWiseFail = (message, loader) => {
+  return {
+    type: actions.GET_USER_WISE_PROPOSED_FAIL,
+    message: message,
+    loader: loader,
+  };
+};
+
+export const getUserSelectProposedWiseApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object,
+) => {
+  return (dispatch) => {
+    dispatch(getProposedWiseInit());
+    let form = new FormData();
+    form.append("RequestMethod", getUserWiseProposeDate.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getUserSelectProposedWiseApi(navigate, t, Data, routePath, object),
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_01".toLowerCase(),
+                )
+            ) {
+              const { setResponseByDate, responseDeadline } = object;
+              setResponseByDate(responseDeadline);
+
+              dispatch(toggleIsParticipantProposedMeetingDates(true));
+              dispatch(
+                getProposedWiseSuccess(
+                  response.data.responseResult.userWiseMeetingProposedDates,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_02".toLowerCase(),
+                )
+            ) {
+              dispatch(getProposedWiseFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_03".toLowerCase(),
+                )
+            ) {
+              dispatch(getProposedWiseFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getProposedWiseFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getProposedWiseFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getProposedWiseFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getProposedWiseFail(t("Something-went-wrong")));
       });
   };
 };

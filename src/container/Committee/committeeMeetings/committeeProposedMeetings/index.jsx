@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import styles from "./ProposedMeeting.module.css";
+import styles from "./committeeProposedMeetings.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import CancelMeetingIcon from "@/assets/images/New Meeting Listing Icons/CancelMeeting.png";
@@ -11,28 +11,23 @@ import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
 import DoubleArrowIcon from "@/assets/images/sortingIcons/Double Arrow2.svg";
 import { Button, Table } from "@/components/elements";
 import rspvGreenIcon from "@/assets/images/rspvGreen.svg";
-import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
   validateStringParticipantProposedApi,
   validateStringUserMeetingProposedDatesPollsApi,
-  meetingStatusProposedMqtt,
 } from "@/store/actions/NewMeetingActions";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
 import { useEffect } from "react";
 
 import moment from "moment";
 import { convertToArabicNumerals } from "@/commen/functions/regex";
 import { Checkbox, Menu, Popover } from "antd";
-import { getAllUnpublishedMeetingData } from "@/hooks/meetingResponse/response";
 import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "@/assets/images/sortingIcons/Arrow-up.png";
 import { MeetingContext } from "@/context/MeetingContext";
-import DeleteMeetingConfirmationModal from "../commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
-import EmptyTableComponent from "../commonComponents/EmptyTableComponent/EmptyTableComponent";
+
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 import CustomButton from "@/components/elements/button/Button";
 import CustomPagination from "@/commen/functions/customPagination/Paginations";
@@ -44,13 +39,17 @@ import {
 import {
   getMeetingDetailsByMeetingIdApi,
   getUserWiseProposedDatesForOrganizerApi,
-} from "../../../store/actions/NewMeeting2.actions";
+} from "@/store/actions/NewMeeting2.actions";
 import {
   toggleIsOrganizerProposedMeetingDates,
   toggleIsParticipantProposedMeetingDates,
-} from "../../../store/actions/ModalStates_actions";
-
-const ProposedMeeting = () => {
+} from "@/store/actions/ModalStates_actions";
+import { useCommitteeContext } from "@/context/CommitteeContext";
+import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
+import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
+import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
+const CommitteeProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -59,9 +58,10 @@ const ProposedMeeting = () => {
     setProposedMeetingData,
     proposedMeetingData,
     setProposedMeetingDataRecord,
-    proposedMeetingDataRecord,
     setResponseByDate,
   } = useNewMeetingContext();
+  const { committeeProposedMeetingData, committeeProposedMeetingDataRecord } =
+    useCommitteeContext();
   //Current User ID
   //Current Organization
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -374,60 +374,7 @@ const ProposedMeeting = () => {
           );
         },
       },
-      {
-        title: (
-          <span className='d-flex justify-content-center align-items-center'>
-            {t("Meeting-type")}
-          </span>
-        ),
-        dataIndex: "meetingType",
-        key: "meetingType",
-        width: 140,
-        align: "center",
 
-        filters: isMeetingTypeFilter.map((filter) => ({
-          text: filter.text,
-          value: filter.value,
-        })),
-
-        // ⭐ default selected values
-        defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
-
-        filterResetToDefaultFilteredValue: true,
-
-        // ⭐ REQUIRED: actual filtering logic
-        onFilter: (value, record) => {
-          return Number(record.meetingType) === Number(value);
-        },
-
-        filterIcon: (filtered) => (
-          <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
-          />
-        ),
-
-        // ⭐ custom dropdown UI
-        // filterDropdown: () => meetingTypeMenu,
-
-        render: (_, record) => {
-          const meetingType = Number(record.meetingType);
-          const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType,
-          );
-
-          if (record.isQuickMeeting && meetingType === 1) {
-            return t("Quick-meeting");
-          }
-
-          return matchedFilter ? (
-            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
-          ) : (
-            ""
-          );
-        },
-      },
       {
         title: (
           <>
@@ -624,63 +571,6 @@ const ProposedMeeting = () => {
   //
 
   useEffect(() => {
-    if (
-      meetingStatusProposedMqttData !== null &&
-      meetingStatusProposedMqttData !== undefined
-    ) {
-      try {
-        const updateMeetingData = async () => {
-          let meetingData = meetingStatusProposedMqttData;
-          console.log(meetingData, "meetingDatameetingData");
-
-          const indexToUpdate = proposedMeetingData.findIndex(
-            (obj) => obj.pK_MDID === meetingData.pK_MDID,
-          );
-          console.log(indexToUpdate, "meetingDatameetingData");
-
-          // Fetching unpublished meeting data
-          let getMeetingDataArray = await getAllUnpublishedMeetingData(
-            [meetingData],
-            1,
-          );
-          console.log(getMeetingDataArray, "meetingDatameetingData");
-
-          // Assuming getMeetingDataArray is an array with a single object
-          const getMeetingData = getMeetingDataArray[0];
-          // Check if the meeting exists in the current meetingsRecords
-
-          console.log(getMeetingData, "meetingDatameetingData");
-
-          if (indexToUpdate !== -1) {
-            let updatedRows = [...proposedMeetingData];
-            console.log(updatedRows, "meetingDatameetingData");
-
-            updatedRows[indexToUpdate] = getMeetingData;
-            console.log(updatedRows, "meetingDatameetingData");
-
-            setProposedMeetingData(updatedRows);
-          } else {
-            console.log(getMeetingData, "meetingDatameetingData");
-
-            let updatedRows = [getMeetingData, ...proposedMeetingData];
-            console.log(updatedRows, "meetingDatameetingData");
-
-            setProposedMeetingData(updatedRows);
-            setProposedMeetingDataRecord((prev) => prev + 1);
-          }
-        };
-        updateMeetingData();
-        dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {
-        console.log(
-          error,
-          "meetingStatusProposedMqttDatameetingStatusProposedMqttData",
-        );
-      }
-    }
-  }, [meetingStatusProposedMqttData]);
-
-  useEffect(() => {
     if (MeetingProp !== null) {
       const callApi = async () => {
         try {
@@ -739,7 +629,7 @@ const ProposedMeeting = () => {
     }
   }, [UserMeetPropoDatPoll]);
   return (
-    <section>
+    <>
       <Row>
         <Col lg={12} md={12} sm={12} className='w-100'>
           <Table
@@ -747,7 +637,7 @@ const ProposedMeeting = () => {
             className='MeetingTable'
             column={columns}
             size={"small"}
-            rows={proposedMeetingData}
+            rows={committeeProposedMeetingData}
             sticky={true}
             pagination={false}
             scroll={{
@@ -758,7 +648,7 @@ const ProposedMeeting = () => {
             }}
           />
         </Col>{" "}
-        {proposedMeetingData.length > 0 && (
+        {committeeProposedMeetingData.length > 0 && (
           <Col className={styles["ProposedMeeting_Pagination"]}>
             <div className='d-flex justify-content-center mt-2 '>
               <Row className={styles["PaginationStyle-Committee"]}>
@@ -777,7 +667,7 @@ const ProposedMeeting = () => {
                       meetingpageRow !== null ? Number(meetingpageRow) : 50
                     }
                     // onChange={handelChangePagination}
-                    total={proposedMeetingDataRecord}
+                    total={committeeProposedMeetingDataRecord}
                     showSizer={true}
                     pageSizeOptionsValues={["30", "50", "100", "200"]}
                   />
@@ -790,8 +680,8 @@ const ProposedMeeting = () => {
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
-    </section>
+    </>
   );
 };
 
-export default ProposedMeeting;
+export default CommitteeProposedMeetings;

@@ -193,3 +193,17 @@ body[dir="rtl"] .errorMessage-inLogin {
 .Cross_icon_class {
   cursor: pointer !important;
 }
+.Meeting_type_heading {
+  color: #6172d6;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.meetingType_Value {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  max-height: 75px;
+  overflow-y: auto;
+  word-break: break-all;
+}

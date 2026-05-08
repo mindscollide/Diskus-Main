@@ -136,3 +136,19 @@ body[dir="rtl"] .Create_Meeting_Button {
   font-weight: 400 !important;
   /* white-space: ; */
 }
+.meetingTab {
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+.meetingTab-active {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}

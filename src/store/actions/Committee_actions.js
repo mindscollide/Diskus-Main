@@ -31,6 +31,7 @@ import { isFunction } from "../../commen/functions/utils";
 import { AccessDeniedPolls } from "./Polls_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { setCreateEditTab } from "./ModalStates_actions";
+import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -1897,12 +1898,18 @@ const getMeetingByCommitteeIdApi = (navigate, t, Data) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_01".toLowerCase(),
                 )
             ) {
-              dispatch(
-                getMeetingByCommitteeID_success(
-                  response.data.responseResult,
-                  "",
-                ),
+              let getMeetingData = await getAllUnpublishedMeetingData(
+                response.data.responseResult.meetings,
+                1,
               );
+              let newMeetingData = {
+                meetingStartedMinuteAgo:
+                  response.data.responseResult.meetingStartedMinuteAgo,
+                meetings: getMeetingData,
+                pageNumbers: response.data.responseResult.pageNumbers,
+                totalRecords: response.data.responseResult.totalRecords,
+              };
+              dispatch(getMeetingByCommitteeID_success(newMeetingData, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

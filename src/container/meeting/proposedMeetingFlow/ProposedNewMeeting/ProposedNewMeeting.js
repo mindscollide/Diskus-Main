@@ -71,6 +71,17 @@ const ProposedNewMeeting = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  const isCreateEditProposedMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditProposedMeetingModal,
+  );
+
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
+
   const isProposedMeetingRoute = useSelector(
     (state) => state.ModalStatesReducer.isProposedMeetingRoute,
   );
@@ -115,14 +126,8 @@ const ProposedNewMeeting = () => {
 
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
-      PK_MTID:
-        isProposedMeetingRoute === 2
-          ? EditmeetingTypeDetails.MeetingType.PK_MTID
-          : 0,
-      Type:
-        isProposedMeetingRoute === 2
-          ? EditmeetingTypeDetails.MeetingType.Type
-          : t("Board-meeting"),
+      PK_MTID: 0,
+      Type: "",
     },
   });
 
@@ -275,144 +280,114 @@ const ProposedNewMeeting = () => {
     }
   }, [getAllProposedDatesEditFlow, isProposedMeetingRoute]);
 
-  //Getting All Groups And Committees and users data from polls api
+  const renderLabel = (img, name, isBase64 = false) => (
+    <Row>
+      <Col className='d-flex gap-2 align-items-center'>
+        <img
+          src={isBase64 ? `data:image/jpeg;base64,${img}` : img}
+          alt=''
+          className={styles["UserProfilepic"]}
+          width='18'
+          height='18'
+        />
+        <span className={styles["NameDropDown"]}>{name}</span>
+      </Col>
+    </Row>
+  );
+
+  // ===============================
+  // LOAD DROPDOWN (FIXED FLOW)
+  // ===============================
   useEffect(() => {
-    let newParticpantData = gellAllCommittesandGroups;
-    try {
-      if (newParticpantData !== null && newParticpantData !== undefined) {
-        let temp = [];
+    const data = gellAllCommittesandGroups;
+    if (!data) return;
 
-        if (Object.keys(newParticpantData).length > 0) {
-          if (Object.keys(newParticpantData.groups).length > 0) {
-            newParticpantData.groups.forEach((a, index) => {
-              let newData = {
-                value: a.groupID,
-                name: a.groupName,
-                label: (
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={GroupIcon}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.groupName}
-                      </span>
-                    </Col>
-                  </Row>
-                ),
-                type: 1,
-              };
-              temp.push(newData);
-            });
-          }
+    let temp = [];
 
-          if (Object.keys(newParticpantData.committees).length > 0) {
-            newParticpantData.committees.forEach((a, index) => {
-              let newData = {
-                value: a.committeeID,
-                name: a.committeeName,
-                label: (
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={committeeicon}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.committeeName}
-                      </span>
-                    </Col>
-                  </Row>
-                ),
-                type: 2,
-              };
-              temp.push(newData);
-            });
-          }
+    // GROUP MODE
+    if (groupInfo) {
+      const group = data.groups?.find((g) => g.groupID === groupInfo.groupID);
 
-          if (Object.keys(newParticpantData.organizationUsers).length > 0) {
-            let filteredUsers = newParticpantData.organizationUsers;
-
-            // Filter out the creator user
-            let filterOutCreatorUser = filteredUsers.filter(
-              (data, index) => Number(data?.userID) !== Number(userID),
-            );
-
-            filterOutCreatorUser.forEach((a, index) => {
-              let newData = {
-                value: a.userID,
-                name: a.userName,
-                label: (
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        alt=''
-                        className={styles["UserProfilepic"]}
-                        width='18px'
-                        height='18px'
-                        draggable='false'
-                      />
-                      <span className={styles["NameDropDown"]}>
-                        {a.userName}
-                      </span>
-                    </Col>
-                  </Row>
-                ),
-                type: 3,
-              };
-              temp.push(newData);
-            });
-
-            // Check if isProposedMeetEdit is true
-            if (
-              isProposedMeetingRoute === 2 &&
-              membersParticipants?.length > 0
-            ) {
-              // Filter out the users that are already part of membersParticipants
-              temp = temp.filter(
-                (participant) =>
-                  !membersParticipants.some(
-                    (member) =>
-                      Number(member.userID) === Number(participant.value),
-                  ),
-              );
-            }
-          }
-
-          setDropdowndata(temp);
-        } else {
-          setDropdowndata([]);
-        }
+      if (group?.groupUsers?.length) {
+        temp = group.groupUsers
+          .filter(
+            (gUser, index) =>
+              Number(gUser.userID) !== Number(localStorage.getItem("userID")),
+          )
+          .map((u) => ({
+            value: u.userID,
+            name: u.userName,
+            label: renderLabel(
+              u?.profilePicture?.displayProfilePictureName,
+              u.userName,
+              true,
+            ),
+            type: 3,
+          }));
       }
-    } catch (error) {
-      console.error("Error processing participant data:", error);
     }
-  }, [
-    gellAllCommittesandGroups,
-    isProposedMeetingRoute,
-    membersParticipants,
-    userID,
-  ]);
+
+    // COMMITTEE MODE
+    else if (committeeInfo) {
+      const committee = data.committees?.find(
+        (c) => c.committeeID === committeeInfo.committeeID,
+      );
+
+      if (committee?.committeeUsers?.length) {
+        temp = committee.committeeUsers
+          .filter(
+            (cUser, index) =>
+              Number(cUser.userID) !== Number(localStorage.getItem("userID")),
+          )
+          .map((u) => ({
+            value: u.userID,
+            name: u.userName,
+            label: renderLabel(
+              u?.profilePicture?.displayProfilePictureName,
+              u.userName,
+              true,
+            ),
+            type: 3,
+          }));
+      }
+    }
+
+    // DEFAULT MODE
+    else {
+      data.groups?.forEach((g) =>
+        temp.push({
+          value: g.groupID,
+          name: g.groupName,
+          label: renderLabel(GroupIcon, g.groupName),
+          type: 1,
+        }),
+      );
+
+      data.committees?.forEach((c) =>
+        temp.push({
+          value: c.committeeID,
+          name: c.committeeName,
+          label: renderLabel(committeeicon, c.committeeName),
+          type: 2,
+        }),
+      );
+
+      data.organizationUsers?.forEach((u) =>
+        temp.push({
+          value: u.userID,
+          name: u.userName,
+          label: renderLabel(
+            u?.profilePicture?.displayProfilePictureName,
+            u.userName,
+            true,
+          ),
+          type: 3,
+        }),
+      );
+    }
+
+    setDropdowndata(temp);
+  }, [gellAllCommittesandGroups, committeeInfo, groupInfo]);
 
   //Getting all meeting Types
   useEffect(() => {
@@ -420,40 +395,54 @@ const ProposedNewMeeting = () => {
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
     }
   }, []);
 
   useEffect(() => {
     try {
-      const allTypes = getALlMeetingTypes?.meetingTypes;
+      const meetingTypes = getALlMeetingTypes?.meetingTypes ?? [];
 
-      if (allTypes !== null && allTypes !== undefined) {
-        const filteredData = allTypes
-          .filter(({ description }) =>
-            description?.toLowerCase().includes("board"),
-          )
-          .map(({ pK_MTID, type }) => ({
-            value: pK_MTID,
-            label: type,
-          }));
+      if (meetingTypes.length > 0) {
+        let typeData = {};
 
-        setmeetingTypeDropdown(filteredData);
+        meetingTypes.forEach((data) => {
+          if (committeeInfo !== null) {
+            if (data.description?.toLowerCase().includes("committee")) {
+              // Save the last matching type
+              typeData = {
+                PK_MTID: data.pK_MTID,
+                Type: data.type,
+              };
+            }
+          }
+          if (groupInfo !== null) {
+            if (data.description?.toLowerCase().includes("group")) {
+              // Save the last matching type
+              typeData = {
+                PK_MTID: data.pK_MTID,
+                Type: data.type,
+              };
+            }
+          }
+          if (data.description?.toLowerCase().includes("board")) {
+            // Save the last matching type
+            typeData = {
+              PK_MTID: data.pK_MTID,
+              Type: data.type,
+            };
+          }
+        });
 
-        // Only set meetingTypeDetails if it wasn't set from the Edit flow
-        if (filteredData.length > 0) {
-          setMeetingTypeDetails({
-            MeetingType: {
-              PK_MTID: filteredData[0].value,
-              Type: filteredData[0].label,
-            },
-          });
-        }
+        setMeetingTypeDetails((prev) => ({
+          ...prev,
+          MeetingType: typeData,
+        }));
       }
     } catch (error) {
-      console.log(error, "error");
+      console.error("Error setting meeting types:", error);
     }
-  }, [getALlMeetingTypes, isProposedMeetingRoute]);
+  }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   //onChange function Search
   const onChangeSearch = (event) => {
@@ -825,7 +814,6 @@ const ProposedNewMeeting = () => {
         });
       });
 
-
       let ProposedDates = [];
       rows.forEach((data, index) => {
         ProposedDates.push({
@@ -843,7 +831,6 @@ const ProposedNewMeeting = () => {
           ),
         });
       });
-
 
       // Sorting the Dates array
       let sortedDates = ProposedDates.sort((a, b) => {
@@ -1126,9 +1113,19 @@ const ProposedNewMeeting = () => {
     <section>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <span className={styles["ProposedMeetingHeading"]}>
-            {t("Propose-new-meeting")}
-          </span>
+          {isCreateEditProposedMeetingModal && (
+            <span className={styles["ProposedMeetingHeading"]}>
+              {isProposedMeetingRoute === 1
+                ? committeeInfo !== null
+                  ? t("Propose-new-committee-meeting")
+                  : groupInfo !== null
+                    ? t("Propose-new-group-meeting")
+                    : t("Propose-new-meeting")
+                : isProposedMeetingRoute === 2
+                  ? t("Edit-propose-meeting")
+                  : null}
+            </span>
+          )}
         </Col>
       </Row>
       <Row>
@@ -1184,13 +1181,53 @@ const ProposedNewMeeting = () => {
                       placeholder={t("Description")}
                       as={"textarea"}
                       labelclass={"d-none"}
-                      rows='7'
+                      rows='3'
                       value={proposedMeetingDetails.Description}
                       change={HandleChange}
                       required
                     />
                   </Col>
                 </Row>
+                {groupInfo !== null || committeeInfo !== null ? (
+                  <Row className='mt-2'>
+                    <Col lg={6} md={6} sm={6}>
+                      <span className={styles["Meeting_type_heading"]}>
+                        {t("Meeting-type")}
+                        <span className={styles["steric"]}>*</span>
+                      </span>
+                      <div className={styles["meetingType_Value"]}>
+                        {" "}
+                        {meetingTypeDetails.MeetingType.Type}
+                      </div>
+                    </Col>
+                    <Col lg={6} md={6} sm={6}>
+                      {committeeInfo !== null ? (
+                        <>
+                          {" "}
+                          <span className={styles["Meeting_type_heading"]}>
+                            {t("Committee-title")}
+                            <span className={styles["steric"]}>*</span>
+                          </span>
+                          <div className={styles["meetingType_Value"]}>
+                            {committeeInfo.committeeTitle}
+                          </div>
+                        </>
+                      ) : groupInfo !== null ? (
+                        <>
+                          <span className={styles["Meeting_type_heading"]}>
+                            {t("Group-title")}
+                            <span className={styles["steric"]}>*</span>
+                          </span>
+
+                          <div className={styles["meetingType_Value"]}>
+                            {groupInfo.groupTitle}
+                          </div>
+                        </>
+                      ) : null}
+                    </Col>
+                  </Row>
+                ) : null}
+
                 <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Sub_headings"]}>
@@ -1598,30 +1635,25 @@ const ProposedNewMeeting = () => {
                   </Row>
                 </Row>
                 <Row className='mt-3'>
-                  <Col lg={6} md={6} sm={6}>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex flex-column flex-wrap'>
-                        <span className={styles["Sub_headings"]}>
-                          {t("Meeting-type")}{" "}
-                          <span className={styles["res_steric"]}>*</span>
-                        </span>
-                        <Select
-                          options={meetingTypeDropdown}
-                          placeholder={t("Meeting-type")}
-                          value={{
-                            value: meetingTypeDetails.MeetingType?.PK_MTID,
-                            label: meetingTypeDetails.MeetingType?.Type,
-                          }}
-                          onChange={handleMeetingSelectChange}
-                          isSearchable={false}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
+                  {groupInfo === null || committeeInfo === null ? null : (
+                    <Col lg={6} md={6} sm={6}>
+                      <span className={styles["Sub_headings"]}>
+                        {t("Meeting-type")}{" "}
+                        <span className={styles["res_steric"]}>*</span>
+                      </span>
+                      <Select
+                        options={meetingTypeDropdown}
+                        placeholder={t("Meeting-type")}
+                        value={{
+                          value: meetingTypeDetails.MeetingType?.PK_MTID,
+                          label: meetingTypeDetails.MeetingType?.Type,
+                        }}
+                        onChange={handleMeetingSelectChange}
+                        isSearchable={false}
+                      />
+                    </Col>
+                  )}
+
                   <Col lg={6} md={6} sm={6}>
                     <Row>
                       <Col
