@@ -1,43 +1,569 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import {
+  toggleIsOrganizerProposedMeetingDates,
+  toggleIsParticipantProposedMeetingDates,
+} from "../store/actions/ModalStates_actions";
+import {
+  meetingNotConductedMQTT,
+  meetingStatusProposedMqtt,
+  validateStringParticipantProposedApi,
+  validateStringUserMeetingProposedDatesPollsApi,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
+} from "../store/actions/NewMeetingActions";
+import { createGroupMeeting } from "../store/actions/GetMeetingUserId";
+import { getAllUnpublishedMeetingData, mqttMeetingData } from "../hooks/meetingResponse/response";
 
 /**
  * @context GroupContext
- * @description Provides UI state for the Groups module, controlling which view
- * is displayed (list vs. detail), the visibility of the create/edit modal, and
- * whether the vote results panel is open.
- *
- * @provides {boolean}  ViewGroupPage    - Whether the main group list page is visible
- * @provides {Function} setViewGroupPage - Setter for ViewGroupPage
- * @provides {boolean}  showModal        - Whether the group create/edit modal is open
- * @provides {Function} setShowModal     - Setter for showModal
- * @provides {boolean}  viewVotes        - Whether the votes panel is visible
- * @provides {Function} setviewVotes     - Setter for viewVotes
- *
- * Usage:
- *   import { useGroupsContext } from '../context/GroupsContext';
- *   const { showModal, setShowModal } = useGroupsContext();
+ * @description Provides UI state for the Groups module.
  */
-
-// Create the Context
 export const GroupContext = createContext();
 
-// Create a Provider component
 export const GroupsProvider = ({ children }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  // ─── UI State ───
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [viewVotes, setviewVotes] = useState(false);
 
+  // ─── Redux Selectors ───
+  const { GroupMeetingMQTT, allMeetingsSocketData, MeetingStatusEnded } =
+    useSelector((state) => state.meetingIdReducer);
+
+  const meetingStatusNotConductedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData,
+  );
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer?.viewGroupDetails,
+  );
+  const mqttMeetingAcAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
+  );
+  const mqttMeetingAcRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+  );
+  const mqttMeetingOrgAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
+  );
+  const mqttMeetingOrgRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
+  );
+  const meetingStatusProposedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+  );
+  const getMeetingbyGroupID = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingbyGroupID,
+  );
+
+  let MeetingProp = localStorage.getItem("meetingprop");
+
+  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
+
+
+  // ─── Tab State ───
+  const [currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive] =
+    useState(1);
+  const [minutesAgo, setMinutesAgo] = useState(0);
+
+  // ─── Meeting Lists ───
+  const [groupPublishedMeetingData, setGroupPublishedMeetingData] = useState([]);
+  const [groupPublishedMeetingDataRecord, setGroupPublishedMeetingDataRecord] =
+    useState(0);
+
+  const [groupProposedMeetingData, setGroupProposedMeetingData] = useState([]);
+  const [groupProposedMeetingDataRecord, setGroupProposedMeetingDataRecord] =
+    useState(0);
+
+  const [groupDraftMeetingData, setGroupDraftMeetingData] = useState([]);
+  const [groupDraftMeetingDataRecord, setGroupDraftMeetingDataRecord] =
+    useState(0);
+
+  // ─── Quick Meeting State ───
+  const [isGroupCreateQuickMeeting, setIsGroupCreateQuickMeeting] =
+    useState(false);
+  const [isGroupUpdateQuickMeeting, setIsGroupUpateQuickMeeting] =
+    useState(false);
+  const [isGroupViewQuickMeeting, setIsGroupViewQuickMeeting] = useState(false);
+
+  const [startMeetingButton, setStartMeetingButton] = useState([]);
+  const ViewGroupID = localStorage.getItem("ViewGroupID");
+
+  // =========================
+  // HELPERS
+  // =========================
+  const getActiveListAndSetter = () => {
+    switch (currentGroupMeetingTabActive) {
+      case 2:
+        return {
+          list: groupProposedMeetingData,
+          setList: setGroupProposedMeetingData,
+        };
+      case 3:
+        return {
+          list: groupDraftMeetingData,
+          setList: setGroupDraftMeetingData,
+        };
+      case 1:
+      default:
+        return {
+          list: groupPublishedMeetingData,
+          setList: setGroupPublishedMeetingData,
+        };
+    }
+  };
+
+  const updateMeetingInAllLists = (meetingID, updateFn) => {
+    const mapper = (item) =>
+      Number(item.pK_MDID) === Number(meetingID) ? updateFn(item) : item;
+
+    setGroupPublishedMeetingData((prev) => prev.map(mapper));
+    setGroupProposedMeetingData((prev) => prev.map(mapper));
+    setGroupDraftMeetingData((prev) => prev.map(mapper));
+  };
+
+  const removeMeetingFromAllLists = (meetingID) => {
+    const filterFn = (item) => Number(item.pK_MDID) !== Number(meetingID);
+
+    setGroupPublishedMeetingData((prev) => prev.filter(filterFn));
+    setGroupProposedMeetingData((prev) => prev.filter(filterFn));
+    setGroupDraftMeetingData((prev) => prev.filter(filterFn));
+  };
+
+  // =========================
+  // EFFECT: MAIN DATA SYNC (from API)
+  // =========================
+  useEffect(() => {
+    try {
+      if (!getMeetingbyGroupID) {
+        setGroupPublishedMeetingData([]);
+        setGroupProposedMeetingData([]);
+        setGroupDraftMeetingData([]);
+        return;
+      }
+
+      const meetings = getMeetingbyGroupID.meetings || [];
+      setMinutesAgo(getMeetingbyGroupID.meetingStartedMinuteAgo || 0);
+
+      switch (currentGroupMeetingTabActive) {
+        case 1:
+          setGroupPublishedMeetingData(meetings);
+          setGroupPublishedMeetingDataRecord(
+            getMeetingbyGroupID.totalRecords || 0,
+          );
+          break;
+        case 2:
+          setGroupProposedMeetingData(meetings);
+          setGroupProposedMeetingDataRecord(
+            getMeetingbyGroupID.totalRecords || 0,
+          );
+          break;
+        case 3:
+          setGroupDraftMeetingData(meetings);
+          setGroupDraftMeetingDataRecord(getMeetingbyGroupID.totalRecords || 0);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log("GroupContext getMeetingbyGroupID Error", error);
+    }
+  }, [getMeetingbyGroupID, currentGroupMeetingTabActive]);
+
+  // =========================
+  // EFFECT: GroupMeetingMQTT — handles new / updated meeting via MQTT
+  // (Replaces the two duplicate effects from the original code)
+  // =========================
+  useEffect(() => {
+    try {
+      if (!GroupMeetingMQTT) return;
+
+      const incomingGroupID = Number(GroupMeetingMQTT.groupID);
+      const currentGroupID = Number(groupInfo?.groupID ?? ViewGroupID);
+
+      if (incomingGroupID !== currentGroupID) return;
+
+      const meetingData = GroupMeetingMQTT.meeting;
+      if (!meetingData?.pK_MDID) return;
+
+      const { list, setList } = getActiveListAndSetter();
+
+      const exists = list.some(
+        (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
+      );
+
+      if (exists) {
+        setList((prev) =>
+          prev.map((item) =>
+            Number(item.pK_MDID) === Number(meetingData.pK_MDID)
+              ? meetingData
+              : item,
+          ),
+        );
+      } else {
+        setList((prev) => [meetingData, ...prev]);
+      }
+
+      dispatch(createGroupMeeting(null));
+    } catch (error) {
+      console.log("GroupMeetingMQTT Error", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [GroupMeetingMQTT]);
+
+  // =========================
+  // EFFECT: MeetingStatusEnded
+  // =========================
+  useEffect(() => {
+    if (!MeetingStatusEnded) return;
+
+    try {
+      if (
+        MeetingStatusEnded.message?.toLowerCase() ===
+        "meeting_status_edited_end"
+      ) {
+        const meetingID = MeetingStatusEnded.meeting?.pK_MDID;
+        if (!meetingID) return;
+
+        updateMeetingInAllLists(meetingID, (item) => ({
+          ...item,
+          status: "9",
+        }));
+      }
+    } catch (error) {
+      console.log("MeetingStatusEnded Error", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [MeetingStatusEnded]);
+
+  // =========================
+  // EFFECT: allMeetingsSocketData — update meeting in any list
+  // =========================
+  useEffect(() => {
+    if (!allMeetingsSocketData) return;
+
+    try {
+      const meetingID = allMeetingsSocketData.pK_MDID;
+      if (!meetingID) return;
+
+      updateMeetingInAllLists(meetingID, () => allMeetingsSocketData);
+    } catch (error) {
+      console.log("allMeetingsSocketData Error", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allMeetingsSocketData]);
+
+  // =========================
+  // EFFECT: meetingStatusNotConductedMqttData
+  // =========================
+  useEffect(() => {
+    if (!meetingStatusNotConductedMqttData) return;
+
+    try {
+      const meetingDetails = meetingStatusNotConductedMqttData.meetingDetails;
+      if (!meetingDetails?.pK_MDID) return;
+
+      // Filter by group
+      const incomingGroupID = Number(
+        meetingStatusNotConductedMqttData.groupID,
+      );
+      const currentGroupID = Number(groupInfo?.groupID ?? ViewGroupID);
+
+      if (
+        incomingGroupID &&
+        currentGroupID &&
+        incomingGroupID !== currentGroupID
+      ) {
+        return;
+      }
+
+      const meetingID = meetingDetails.pK_MDID;
+      const statusID = meetingDetails.statusID;
+
+      updateMeetingInAllLists(meetingID, (item) => ({
+        ...item,
+        status: String(statusID),
+      }));
+
+      // Handle "Start Meeting" button state
+      setStartMeetingButton((prev) => {
+        const exists = prev.some(
+          (b) => Number(b.meetingID) === Number(meetingID),
+        );
+
+        if (statusID === 1) {
+          if (exists) return prev;
+          return [...prev, { meetingID: Number(meetingID), showButton: true }];
+        }
+
+        return prev.filter((b) => Number(b.meetingID) !== Number(meetingID));
+      });
+
+      dispatch(meetingNotConductedMQTT(null));
+    } catch (error) {
+      console.log("meetingStatusNotConductedMqttData Error", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meetingStatusNotConductedMqttData]);
+
+  // =========================
+  // EFFECT: MQTT — Agenda Contributor Added
+  // =========================
+  useEffect(() => {
+    if (!mqttMeetingAcAdded) return;
+
+    const callAddAgendaContributor = async () => {
+      try {
+        const getData = await mqttMeetingData(mqttMeetingAcAdded, 2);
+        if (getData) {
+          setGroupDraftMeetingData((prev) => [getData, ...prev]);
+          setGroupDraftMeetingDataRecord((prev) => prev + 1);
+        }
+      } catch (error) {
+        console.log("AgendaContributorAdded fetch error", error);
+      } finally {
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      }
+    };
+
+    callAddAgendaContributor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mqttMeetingAcAdded]);
+
+  // =========================
+  // EFFECT: MQTT — Agenda Contributor Removed
+  // =========================
+  useEffect(() => {
+    if (!mqttMeetingAcRemoved?.pK_MDID) return;
+
+    try {
+      removeMeetingFromAllLists(mqttMeetingAcRemoved.pK_MDID);
+      setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
+    } catch (error) {
+      console.log("AgendaContributorRemoved Error", error);
+    } finally {
+      dispatch(meetingAgendaContributorAdded(null));
+      dispatch(meetingAgendaContributorRemoved(null));
+      dispatch(meetingOrganizerAdded(null));
+      dispatch(meetingOrganizerRemoved(null));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mqttMeetingAcRemoved]);
+
+  // =========================
+  // EFFECT: MQTT — Organizer Added
+  // =========================
+  useEffect(() => {
+    if (!mqttMeetingOrgAdded) return;
+
+    const callAddOrganizer = async () => {
+      try {
+        const getData = await mqttMeetingData(mqttMeetingOrgAdded, 2);
+        if (getData) {
+          setGroupDraftMeetingData((prev) => [getData, ...prev]);
+          setGroupDraftMeetingDataRecord((prev) => prev + 1);
+        }
+      } catch (error) {
+        console.log("OrganizerAdded fetch error", error);
+      } finally {
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      }
+    };
+
+    callAddOrganizer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mqttMeetingOrgAdded]);
+
+  // =========================
+  // EFFECT: MQTT — Organizer Removed
+  // =========================
+  useEffect(() => {
+    if (!mqttMeetingOrgRemoved?.pK_MDID) return;
+
+    try {
+      removeMeetingFromAllLists(mqttMeetingOrgRemoved.pK_MDID);
+      setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
+    } catch (error) {
+      console.log("OrganizerRemoved Error", error);
+    } finally {
+      dispatch(meetingAgendaContributorAdded(null));
+      dispatch(meetingAgendaContributorRemoved(null));
+      dispatch(meetingOrganizerAdded(null));
+      dispatch(meetingOrganizerRemoved(null));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mqttMeetingOrgRemoved]);
+
+  // =========================
+  // EFFECT: meetingStatusProposedMqttData
+  // =========================
+  useEffect(() => {
+    if (!meetingStatusProposedMqttData) return;
+
+    const updateMeetingData = async () => {
+      try {
+        const meetingData = meetingStatusProposedMqttData;
+
+        const getMeetingDataArray = await getAllUnpublishedMeetingData(
+          [meetingData],
+          1,
+        );
+        const getMeetingData = getMeetingDataArray?.[0];
+        if (!getMeetingData) return;
+
+        setGroupProposedMeetingData((prev) => {
+          const indexToUpdate = prev.findIndex(
+            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+          );
+
+          if (indexToUpdate !== -1) {
+            const updated = [...prev];
+            updated[indexToUpdate] = getMeetingData;
+            return updated;
+          }
+          return [getMeetingData, ...prev];
+        });
+
+        // Only increment record count if it's a new entry
+        // setGroupProposedMeetingData((prev) => {
+        //   // (record updated separately below — guarded against duplicates)
+        //   return prev;
+        // });
+      } catch (error) {
+        console.log("meetingStatusProposedMqttData Error", error);
+      } finally {
+        dispatch(meetingStatusProposedMqtt(null));
+      }
+    };
+
+    updateMeetingData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meetingStatusProposedMqttData]);
+
+  // =========================
+  // EFFECT: MeetingProp — participant proposed dates validation
+  // =========================
+  // useEffect(() => {
+  //   if (!MeetingProp) return;
+
+  //   const callApi = async () => {
+  //     try {
+  //       const getApiResponse = await validateStringParticipantProposedApi(
+  //         MeetingProp,
+  //         navigate,
+  //         t,
+  //       )(dispatch);
+
+  //       if (getApiResponse) {
+  //         localStorage.setItem(
+  //           "viewProposeDatePollMeetingID",
+  //           getApiResponse.meetingID,
+  //         );
+  //         localStorage.removeItem("meetingprop");
+  //         dispatch(toggleIsParticipantProposedMeetingDates(true));
+  //       }
+  //     } catch (error) {
+  //       console.error("Error in MeetingProp API call:", error);
+  //       localStorage.removeItem("meetingprop");
+  //     }
+  //   };
+
+  //   callApi();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [MeetingProp]);
+
+  // =========================
+  // EFFECT: UserMeetPropoDatPoll — organizer proposed dates validation
+  // =========================
+  // useEffect(() => {
+  //   if (!UserMeetPropoDatPoll) return;
+
+  //   const callApi1 = async () => {
+  //     try {
+  //       const getApiResponse =
+  //         await validateStringUserMeetingProposedDatesPollsApi(
+  //           UserMeetPropoDatPoll,
+  //           navigate,
+  //           t,
+  //         )(dispatch);
+
+  //       if (getApiResponse) {
+  //         localStorage.setItem(
+  //           "viewProposeDatePollMeetingID",
+  //           getApiResponse.meetingID,
+  //         );
+  //         localStorage.removeItem("UserMeetPropoDatPoll");
+  //         dispatch(toggleIsOrganizerProposedMeetingDates(true));
+  //       }
+  //     } catch (error) {
+  //       console.error("Error in UserMeetPropoDatPoll API call:", error);
+  //       localStorage.removeItem("UserMeetPropoDatPoll");
+  //     }
+  //   };
+
+  //   callApi1();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [UserMeetPropoDatPoll]);
+
   return (
     <GroupContext.Provider
       value={{
+        // UI
         ViewGroupPage,
         setViewGroupPage,
         showModal,
         setShowModal,
         viewVotes,
         setviewVotes,
-      }}
-    >
+
+        // Tabs
+        currentGroupMeetingTabActive,
+        setCurrentGroupMeetingTabActive,
+        minutesAgo,
+
+        // Lists
+        groupPublishedMeetingData,
+        setGroupPublishedMeetingData,
+        groupPublishedMeetingDataRecord,
+        setGroupPublishedMeetingDataRecord,
+
+        groupProposedMeetingData,
+        setGroupProposedMeetingData,
+        groupProposedMeetingDataRecord,
+        setGroupProposedMeetingDataRecord,
+
+        groupDraftMeetingData,
+        setGroupDraftMeetingData,
+        groupDraftMeetingDataRecord,
+        setGroupDraftMeetingDataRecord,
+
+        // Quick Meeting
+        isGroupCreateQuickMeeting,
+        setIsGroupCreateQuickMeeting,
+        isGroupUpdateQuickMeeting,
+        setIsGroupUpateQuickMeeting,
+        isGroupViewQuickMeeting,
+        setIsGroupViewQuickMeeting,
+
+        // Buttons
+        startMeetingButton,
+        setStartMeetingButton,
+      }}>
       {children}
     </GroupContext.Provider>
   );
@@ -45,11 +571,7 @@ export const GroupsProvider = ({ children }) => {
 
 /**
  * @hook useGroupsContext
- * @description Consumes GroupContext and returns the Groups UI state and setters.
- *   Throws an error if called outside of GroupsProvider.
- * @returns {{ ViewGroupPage: boolean, setViewGroupPage: Function, showModal: boolean, setShowModal: Function, viewVotes: boolean, setviewVotes: Function }} GroupContext value
  */
-// Custom Hook to consume the context
 export const useGroupsContext = () => {
   const context = useContext(GroupContext);
 

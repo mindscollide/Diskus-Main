@@ -73,9 +73,8 @@ const ROLES = {
 };
 
 const STATUS = {
-  COMPLETED: 9, // meeting is finished — read-only
-  PUBLISHED: 11,
-  IN_PROGRESS: 12,
+  END: 9, // meeting is finished — read-only
+  UPCOMING: 1,
   ACTIVE: 10, // ongoing meeting — edit only allowed if flag is on
 };
 
@@ -285,19 +284,7 @@ const validateSubAgendaRow = (sub, rowIndex, subIndex) => {
  * MAIN COMPONENT
  * ========================================================================= */
 
-const Agenda = ({
-  setSceduleMeeting,
-  currentMeeting,
-  // NOTE: several props kept for downstream compatibility even if unused here
-  // isEditMeeting, dataroomMapFolderId — kept intentionally
-  setMeetingMaterial,
-  setAgenda,
-  setParticipants,
-  setPublishState,
-  setAdvanceMeetingModalID,
-  setCalendarViewModal,
-  setDataroomMapFolderId,
-}) => {
+const Agenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -322,7 +309,6 @@ const Agenda = ({
   const {
     isAgendaUpdateWhenMeetingActive,
     editorRole,
-    setEditorRole,
     setGoBackCancelModal,
   } = useContext(MeetingContext);
 
@@ -362,12 +348,12 @@ const Agenda = ({
    * ------------------------------------------------------------------------ */
   const isContributor = editorRole.role === ROLES.AGENDA_CONTRIBUTOR;
   const isParticipant = editorRole.role === ROLES.PARTICIPANT;
-  const isCompleted = Number(editorRole.status) === STATUS.COMPLETED;
-  const canPublish =
-    (Number(editorRole.status) === STATUS.PUBLISHED ||
-      Number(editorRole.status) === STATUS.IN_PROGRESS) &&
-    !isCompleted &&
-    !isContributor;
+  const isEnded = Number(editorRole.status) === STATUS.END;
+  // const canPublish =
+  //   (Number(editorRole.status) === STATUS.PUBLISHED ||
+  //     Number(editorRole.status) === STATUS.IN_PROGRESS) &&
+  //   !isEnded &&
+  //   !isContributor;
 
   /* --------------------------------------------------------------------------
    * Initial data load — fires once on mount
@@ -459,12 +445,12 @@ const Agenda = ({
       name: p.userName,
       label: (
         <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+          <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
             <img
-              alt=""
+              alt=''
               src={`data:image/jpeg;base64,${p.userProfilePicture.displayProfilePictureName}`}
-              width="17px"
-              height="17px"
+              width='17px'
+              height='17px'
               className={styles["Image_class_Agenda"]}
             />
             <span className={styles["Name_Class"]}>{p.userName}</span>
@@ -581,16 +567,7 @@ const Agenda = ({
         : "saveAgendaAndPublishMeeting";
 
     await dispatch(
-      AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {
-        setEditorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setSceduleMeeting,
-        setPublishState,
-        setCalendarViewModal,
-        setMeetingMaterial,
-        setAgenda,
-      }),
+      AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {}),
     );
   };
 
@@ -677,6 +654,7 @@ const Agenda = ({
       MeetingAgendaData.agendaList.length === 0
     ) {
       setRows([buildEmptyAgendaRow(allSavedPresenters[0], meetingTime)]);
+      setIsPublishedState(false)
       return;
     }
 
@@ -892,10 +870,10 @@ const Agenda = ({
     (isContributor && rows.length > 0 && rows[0].title === "");
 
   // Should the "Add Agenda" button render?
-  const showAddAgendaBtn = !isParticipant && !isContributor && !isCompleted;
+  const showAddAgendaBtn = !isParticipant && !isContributor && !isEnded;
 
   // Should the "Import previous" button render?
-  const showImportBtn = !isCompleted && !isContributor;
+  const showImportBtn = !isEnded && !isContributor;
 
   /* --------------------------------------------------------------------------
    * Render
@@ -913,8 +891,7 @@ const Agenda = ({
         {/* Draggable agenda list ------------------------------------------ */}
         {!hideDragArea && (
           <DragDropContext
-            onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-          >
+            onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
             {!showEmptyState && (
               <Row>
                 <Col
@@ -925,9 +902,8 @@ const Agenda = ({
                     rows.length > 1
                       ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                       : styles["Scroller_Agenda"]
-                  }
-                >
-                  <Droppable droppableId="board" type="PARENT">
+                  }>
+                  <Droppable droppableId='board' type='PARENT'>
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.droppableProps}>
                         {rows.map((data, index) => (
@@ -937,12 +913,11 @@ const Agenda = ({
                               data.canView === false && isContributor
                                 ? "d-none"
                                 : styles["agenda-border-class"]
-                            }
-                          >
+                            }>
                             <ParentAgenda
                               fileForSend={fileForSend}
                               setFileForSend={setFileForSend}
-                              currentMeeting={currentMeeting}
+                              // currentMeeting={currentMeeting}
                               data={data}
                               allUsersRC={allUsersRC}
                               setAllUsersRC={setAllUsersRC}
@@ -982,14 +957,13 @@ const Agenda = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center mt-3"
-              >
+                className='d-flex justify-content-center mt-3'>
                 <img
                   draggable={false}
                   src={emptyContributorState}
-                  width="274.05px"
-                  height="230.96px"
-                  alt=""
+                  width='274.05px'
+                  height='230.96px'
+                  alt=''
                   className={styles["Image-Add-Agenda"]}
                 />
               </Col>
@@ -999,8 +973,7 @@ const Agenda = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center mt-3"
-              >
+                className='d-flex justify-content-center mt-3'>
                 <span className={styles["Empty_state_heading"]}>
                   {t("No-agenda-availabe-to-discuss").toUpperCase()}
                 </span>
@@ -1011,7 +984,7 @@ const Agenda = ({
 
         {/* "Add Agenda" button ------------------------------------------- */}
         {showAddAgendaBtn && (
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col lg={12} md={12} sm={12}>
               <Button
                 text={
@@ -1020,14 +993,13 @@ const Agenda = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex justify-content-center gap-2 align-items-center"
-                    >
+                      className='d-flex justify-content-center gap-2 align-items-center'>
                       <img
                         draggable={false}
                         src={plusFaddes}
-                        height="10.77px"
-                        width="10.77px"
-                        alt=""
+                        height='10.77px'
+                        width='10.77px'
+                        alt=''
                       />
                       <span className={styles["Add_Agen_Heading"]}>
                         {t("Add-agenda")}
@@ -1048,13 +1020,12 @@ const Agenda = ({
         )}
 
         {/* Footer action buttons ---------------------------------------- */}
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             {showImportBtn && (
               <Button
                 text={t("Import-previous-agenda")}
@@ -1067,14 +1038,13 @@ const Agenda = ({
               className={styles["Agenda_Buttons"]}
               onClick={handleCancelClick}
             />
-            {!isCompleted && (
+            {!isEnded && (
               <Button
                 text={t("Next")}
                 className={styles["Save_Agenda_btn"]}
                 onClick={() => saveAgendaData(SAVE_FLAG.SAVE_ONLY)}
               />
             )}
-            {canPublish && (
               <Button
                 // Can't publish until the meeting has an ID and the agenda
                 // has actually been saved at least once.
@@ -1085,7 +1055,6 @@ const Agenda = ({
                 className={styles["Save_Agenda_btn"]}
                 onClick={() => saveAgendaData(SAVE_FLAG.SAVE_AND_PUBLISH)}
               />
-            )}
           </Col>
         </Row>
       </section>
@@ -1121,24 +1090,22 @@ const Agenda = ({
       {NewMeetingreducer.voteAgendaModal && (
         <VoteModal
           setenableVotingPage={setenableVotingPage}
-          currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
         />
       )}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
-      {NewMeetingreducer.cancelAgenda && (
-        <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
-      )}
+      {NewMeetingreducer.cancelAgenda && <CancelAgenda />}
       {MeetingAgendaReducer.PreviousTabAgenda && (
         <PreviousAgenda
-          setAgenda={setAgenda}
-          setParticipants={setParticipants}
+        // setAgenda={setAgenda}
+        // setParticipants={setParticipants}
         />
       )}
       {MeetingAgendaReducer.NextTabAgenda && (
         <NextAgenda
-          setMeetingMaterial={setMeetingMaterial}
-          setAgenda={setAgenda}
+        // setMeetingMaterial={setMeetingMaterial}
+        // setAgenda={setAgenda}
         />
       )}
 

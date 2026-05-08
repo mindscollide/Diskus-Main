@@ -10,7 +10,7 @@ import { Button } from "./../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { XLg } from "react-bootstrap-icons";
-import GroupMeeting from "../../GroupViewMeeting/Meeting";
+import GroupMeetingTab from "../../groupsMeetings";
 
 const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const { t } = useTranslation();
@@ -145,7 +145,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
               <Polls view={2} groupStatus={groupStatus} />
             </>
           ) : currentViewGroup === 4 ? (
-            <GroupMeeting groupStatus={groupStatus} />
+            <GroupMeetingTab groupStatus={groupStatus} />
           ) : null}
         </span>
       </section>

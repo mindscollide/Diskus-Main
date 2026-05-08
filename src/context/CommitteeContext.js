@@ -15,7 +15,10 @@ import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
 } from "../hooks/meetingResponse/response";
-import { toggleIsOrganizerProposedMeetingDates, toggleIsParticipantProposedMeetingDates } from "../store/actions/ModalStates_actions";
+import {
+  toggleIsOrganizerProposedMeetingDates,
+  toggleIsParticipantProposedMeetingDates,
+} from "../store/actions/ModalStates_actions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +26,7 @@ export const CommitteeContext = createContext();
 
 export const CommitteeProvider = ({ children }) => {
   const navigate = useNavigate();
-  const {t} =useTranslation()
+  const { t } = useTranslation();
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const dispatch = useDispatch();
@@ -162,34 +165,6 @@ export const CommitteeProvider = ({ children }) => {
       const meetings = getMeetingByCommitteeID.meetings || [];
 
       setMinutesAgo(getMeetingByCommitteeID.meetingStartedMinuteAgo || 0);
-
-      // const formattedData = meetings.map((data, index) => ({
-      //   dateOfMeeting: data.dateOfMeeting,
-      //   host: data.host,
-      //   isAttachment: data.isAttachment,
-      //   isChat: data.isChat,
-      //   isVideoCall: data.isVideoCall,
-      //   videoCallURL: data.videoCallURL,
-      //   isQuickMeeting: data.isQuickMeeting,
-      //   meetingAgenda: data.meetingAgenda,
-      //   meetingAttendees: data.meetingAttendees,
-      //   meetingEndTime: data.meetingEndTime,
-      //   meetingStartTime: data.meetingStartTime,
-      //   meetingURL: data.meetingURL,
-      //   orignalProfilePictureName: data.orignalProfilePictureName,
-      //   pK_MDID: data.pK_MDID,
-      //   meetingPoll: {
-      //     totalNoOfDirectors:
-      //       data?.proposedMeetingDetail?.totalNoOfDirectors || 0,
-      //     totalNoOfDirectorsVoted:
-      //       data?.proposedMeetingDetail?.totalNoOfDirectorsVoted || 0,
-      //   },
-      //   responseDeadLine: data.responseDeadLine,
-      //   status: String(data.status),
-      //   title: data.title,
-      //   talkGroupID: data.talkGroupID,
-      //   key: index,
-      // }));
 
       switch (currentCommitteeMeetingTabActive) {
         case 1:

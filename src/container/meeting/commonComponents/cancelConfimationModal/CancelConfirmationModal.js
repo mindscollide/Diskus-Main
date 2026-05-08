@@ -6,7 +6,7 @@ import { MeetingContext } from "../../../../context/MeetingContext";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../../components/elements";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   listOfMeetingsApi,
@@ -16,7 +16,16 @@ import {
   resetCreateEditTabs,
   toggleCreateEditMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
+import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 const CancelConfirmationModal = () => {
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
+
   const {
     unSaveChangesModalForMeeting,
     setEditorRole,
@@ -70,6 +79,24 @@ const CancelConfirmationModal = () => {
       return;
     }
 
+    if (committeeInfo !== null) {
+      let searchData = {
+        CommitteeID: committeeInfo.CommitteeID,
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(localStorage.getItem("userID")),
+        PageNumber: 1,
+        Length: 30,
+        PublishedMeetings: true,
+        ProposedMeetings: false,
+      };
+      dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+      return;
+    }
+    if (groupInfo !== null) {
+      return;
+    }
     // ✅ Default flow (search meetings)
     const meetingpageRow = Number(
       localStorage.getItem("MeetingPageRows") || 30,

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -17,12 +17,21 @@ import {
   listOfMeetingsApi,
   resetCurrentMeetingInfo,
 } from "../../../../../../store/actions/NewMeeting2.actions";
+import { getMeetingByCommitteeIdApi } from "../../../../../../store/actions/Committee_actions";
 const CancelButtonModal = ({ setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { goBackCancelModal, setGoBackCancelModal, setEditorRole } =
     useContext(MeetingContext);
+
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
 
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -33,68 +42,86 @@ const CancelButtonModal = ({ setRows }) => {
     setGoBackCancelModal(false);
   };
 
-const handleYesFunctionality = () => {
-  const location = localStorage.getItem("navigateLocation");
+  const handleYesFunctionality = () => {
+    const location = localStorage.getItem("navigateLocation");
 
-  const commonReset = () => {
-    dispatch(toggleCreateEditMeetingModal(false));
-    dispatch(resetCreateEditTabs());
-    dispatch(resetCurrentMeetingInfo());
-    setGoBackCancelModal(false);
+    const commonReset = () => {
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
+      dispatch(resetCurrentMeetingInfo());
+      setGoBackCancelModal(false);
 
-    setEditorRole({
-      status: null,
-      role: null,
-      isPrimaryOrganizer: false,
-    });
+      setEditorRole({
+        status: null,
+        role: null,
+        isPrimaryOrganizer: false,
+      });
+    };
+
+    const navigateRoutes = {
+      dataroom: "/Diskus/dataroom",
+      resolution: "/Diskus/resolution",
+      committee: "/Diskus/committee",
+      groups: "/Diskus/groups",
+      polling: "/Diskus/polling",
+      calendar: "/Diskus/calendar",
+      todolist: "/Diskus/todolist",
+      Notes: "/Diskus/Notes",
+      MainDashBoard: "/Diskus/",
+    };
+
+    // 🔁 Handle Meeting Case Separately
+    if (location === "Meeting" || !location) {
+      commonReset();
+
+      if (committeeInfo !== null) {
+        dispatch(
+          getMeetingByCommitteeIdApi(navigate, t, {
+            CommitteeID: committeeInfo.CommitteeID,
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(localStorage.getItem("userID")),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+          }),
+        );
+        return;
+      }
+      if (groupInfo !== null) {
+        return;
+      }
+
+      dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+            PublishedMeetings: currentView && Number(currentView) === 1,
+            ProposedMeetings: currentView && Number(currentView) === 2,
+          },
+          "",
+          {},
+        ),
+      );
+
+      isFunction(setRows) && setRows([]);
+    } else if (navigateRoutes[location]) {
+      commonReset();
+      navigate(navigateRoutes[location]);
+    }
+
+    localStorage.removeItem("navigateLocation");
   };
-
-  const navigateRoutes = {
-    dataroom: "/Diskus/dataroom",
-    resolution: "/Diskus/resolution",
-    committee: "/Diskus/committee",
-    groups: "/Diskus/groups",
-    polling: "/Diskus/polling",
-    calendar: "/Diskus/calendar",
-    todolist: "/Diskus/todolist",
-    Notes: "/Diskus/Notes",
-    MainDashBoard: "/Diskus/",
-  };
-
-  // 🔁 Handle Meeting Case Separately
-  if (location === "Meeting" || !location) {
-    commonReset();
-
-    dispatch(
-      listOfMeetingsApi(
-        navigate,
-        t,
-        {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1,
-          ProposedMeetings:
-            currentView && Number(currentView) === 2,
-        },
-        "",
-        {},
-      )
-    );
-
-    isFunction(setRows) && setRows([]);
-  } else if (navigateRoutes[location]) {
-    commonReset();
-    navigate(navigateRoutes[location]);
-  }
-
-  localStorage.removeItem("navigateLocation");
-};
   return (
     <section>
       <Modal

@@ -30,6 +30,7 @@ import { isFunction } from "../../commen/functions/utils";
 import { AccessDeniedPolls } from "./Polls_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { setCreateEditTab } from "./ModalStates_actions";
+import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 
 const clearMessagesGroup = () => {
   return {
@@ -1889,8 +1890,19 @@ const getMeetingbyGroupIdApi = (navigate, t, Data) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByGroupID_01".toLowerCase(),
                 )
             ) {
+              let getMeetingData = await getAllUnpublishedMeetingData(
+                response.data.responseResult.meetings,
+                1,
+              );
+              let newMeetingData = {
+                meetingStartedMinuteAgo:
+                  response.data.responseResult.meetingStartedMinuteAgo,
+                meetings: getMeetingData,
+                pageNumbers: response.data.responseResult.pageNumbers,
+                totalRecords: response.data.responseResult.totalRecords,
+              };
               dispatch(
-                getMeetingbyGroup_success(response.data.responseResult, ""),
+                getMeetingbyGroup_success(newMeetingData, ""),
               );
             } else if (
               response.data.responseResult.responseMessage

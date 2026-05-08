@@ -776,9 +776,8 @@ const Committee = () => {
   };
 
   if (createEditMeetingModal) {
-    return <CreateEditAdvanceMeeting route='Committee' />;
+    return <CreateEditAdvanceMeeting  />;
   }
-
   if (isViewMeetingModal) {
     return <ViewMeetingModal />;
   }

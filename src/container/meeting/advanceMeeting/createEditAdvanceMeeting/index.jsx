@@ -36,7 +36,7 @@ import {
 import { getMeetingDetailsByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
 import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
-const CreateEditAdvanceMeeting = ({ route }) => {
+const CreateEditAdvanceMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

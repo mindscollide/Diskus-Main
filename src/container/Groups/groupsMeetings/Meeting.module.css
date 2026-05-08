@@ -4,13 +4,10 @@
   font-size: 14px !important;
   cursor: pointer;
   overflow: hidden !important;
+  /* width: 180px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
   display: block !important;
-}
-
-body[dir="rtl"] .meetingTitle {
-  margin-right: 20px !important;
 }
 
 .Start-Meeting {
@@ -95,12 +92,12 @@ body[dir="rtl"] .meetingTitle {
 }
 
 .organizer-value {
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   font-weight: 500 !important;
 }
 
 .datetime-value {
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   font-weight: 500 !important;
 }
 
@@ -108,13 +105,13 @@ body[dir="rtl"] .meetingTitle {
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-weight: 500 !important;
-  display: flex;
+  font-weight: 600 !important;
+  display: flex !important;
   align-items: center !important;
-  gap: 5px;
-  border: none;
+  gap: 5px !important;
+  border: none !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .Create_Meeting_Button {
@@ -125,7 +122,7 @@ body[dir="rtl"] .Create_Meeting_Button {
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
@@ -137,78 +134,21 @@ body[dir="rtl"] .Create_Meeting_Button {
 .meeting-start {
   font-size: 14px;
   font-weight: 400 !important;
+  /* white-space: ; */
 }
-
-.IconAlignment {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-}
-
-.iconsWidth {
-  min-width: 25px !important;
-}
-.ApplyBtn {
-  padding: 8px 12px !important;
-  font-size: 12px !important;
-  border-radius: 4px !important;
-  font-weight: 500 !important;
-  display: flex;
-  align-items: center !important;
-  gap: 5px;
-  border: none;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
-}
-.ClearBtn {
-  padding: 8px 12px !important;
-  font-size: 12px !important;
-  border-radius: 4px !important;
-  font-weight: 500 !important;
-  display: flex;
-  align-items: center !important;
-  gap: 5px;
-  border: 1px solid #e1e1e1;
+.meetingTab {
   background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
   color: #5a5a5a !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }
-
-.ResetOkBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
+.meetingTab-active {
   background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
   border: none !important;
-}
-
-.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
   border-radius: 4px !important;
-  background: #6172d6 !important;
   color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-body[dir="rtl"] .TitleArabic {
-  margin-right: 20px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }
