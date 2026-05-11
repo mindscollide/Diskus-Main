@@ -83,7 +83,7 @@ const SelectMinutes = ({
         setSelectedMinuteIDs([]);
       }
     } catch (error) {
-      console.log("Error:", error);
+      
     }
   };
 

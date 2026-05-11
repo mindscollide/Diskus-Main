@@ -26,7 +26,7 @@ const DeleteChecklistConfirmationModal = () => {
       const Data = {
         checklistId: deleteChecklistId,
       };
-      console.log(Data, "handleDeleteChecklist");
+      
       dispatch(
         DeleteCheckListAPI(
           navigate,
@@ -37,7 +37,7 @@ const DeleteChecklistConfirmationModal = () => {
         )
       );
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

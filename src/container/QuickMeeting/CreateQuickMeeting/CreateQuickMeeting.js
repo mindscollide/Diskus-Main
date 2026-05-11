@@ -69,7 +69,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 5 is for Create Meeting
 
   //For Localization
-  console.log(checkFlag, "checkFlagcheckFlagcheckFlag");
+  
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -127,7 +127,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     PK_MAID: 0,
   });
 
-  console.log(objMeetingAgenda, "objMeetingAgendaobjMeetingAgenda");
+  
   const [defaultMeetingAgenda, setDefaultObjMeetingAgenda] = useState({
     Title: "",
     PresenterName: "",
@@ -163,10 +163,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
-  console.log(
-    addedParticipantNameList,
-    "addedParticipantNameListaddedParticipantNameList"
-  );
+  
   const getStartTime = getStartTimeWithCeilFunction();
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState({
@@ -187,7 +184,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   );
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
-  console.log(fileForSend, "fileForSendfileForSend");
+  
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
   const [reminderOptValue, setReminderOptValue] = useState({
@@ -229,7 +226,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
   });
-  console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
+  
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -373,7 +370,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // Reminder handler
   const ReminderNameHandler = (event) => {
-    console.log(event, "ReminderNameHandlerReminderNameHandler");
+    
     setReminderOptValue(event);
     setCreateMeeting({
       ...createMeeting,
@@ -686,7 +683,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for add another agenda main inputs handler
   const addAnOtherAgenda = async (e) => {
-    console.log("agenda main calling");
+    
     e.preventDefault();
     let previousAdendas = createMeeting.MeetingAgendas;
     if (editRecordFlag !== null && editRecordFlag === true) {
@@ -878,7 +875,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   useEffect(() => {
     try {
       let valueOfReminder = assigneesRemindersData;
-      console.log(valueOfReminder, "valueOfRemindervalueOfReminder");
+      
       let reminderOptions = [];
 
       valueOfReminder.forEach((reminderData, index) => {
@@ -901,7 +898,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       });
       setReminderOptions(reminderOptions);
     } catch (error) {
-      console.log(error);
+      
     }
   }, [assigneesRemindersData]);
 
@@ -1107,11 +1104,11 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //         setAllPresenters(PresenterData);
   //         setAddedParticipantNameList(newMemberData);
   //       } catch (error) {
-  //         console.log(error);
+  //         
   //       }
   //     }
   //   } catch (error) {
-  //     console.log(error);
+  //     
   //   }
   // }, [assigneesuser, checkFlag]);
 
@@ -1126,7 +1123,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //       // Committees MembersData
   //       let CommitteeMembers =
   //         CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
-  //       console.log(CommitteeMembers, "CommitteeMembers");
+  //       
   //       if (
   //         CommitteeMembers !== null &&
   //         CommitteeMembers !== undefined &&
@@ -1135,7 +1132,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //         let findisCreatorFind = CommitteeMembers.find(
   //           (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
   //         );
-  //         console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
+  //         
   //         if (findisCreatorFind === undefined) {
   //           setDefaultPresenter({
   //             label: (
@@ -1739,7 +1736,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
       }
     } catch (error) {
-      console.log("Error in useEffect:", error);
+      
     }
   }, [
     assigneesuser,
@@ -1888,14 +1885,14 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for add Attendees handler
   const addAttendees = () => {
-    console.log("I am clicked");
+    
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
     let found =
       user1.length > 0
         ? user1.find((element) => element?.User?.PK_UID === taskAssignedTo)
         : undefined;
-    console.log(found, "foundfoundfound");
+    
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
         showMessage(t("User-already-exists"), "error", setOpen);
@@ -2040,7 +2037,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    console.log(newData, "newDatanewDatanewData");
+    
     await dispatch(
       ScheduleNewMeeting(navigate, t, checkFlag, newData, setShow)
     );
@@ -2137,7 +2134,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       fileName: record.DisplayAttachmentName,
       attachmentID: Number(record.OriginalAttachmentName),
     };
-    console.log(pdfData, ext, "pdfDatapdfData");
+    
     const pdfDataJson = JSON.stringify(pdfData);
     openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
   };

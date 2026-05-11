@@ -104,7 +104,7 @@ const Createpolls = ({ setCreatepoll }) => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    console.log("iam clicked");
+    
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
@@ -583,7 +583,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
-                            console.log(data, "membersmembersmembers");
+                            
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className='mt-3'>

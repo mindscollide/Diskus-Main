@@ -52,16 +52,9 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     complianceAddEditViewState,
     setIsReopenConfirmed,
   } = useComplianceContext();
-  console.log(
-    complianceReopenDetailsState,
-    complianceDetailsState,
-    "complianceReopenDetailsState",
-  );
+  
 
-  console.log(
-    { tempDueDateChange, complianceReopenDetailsState, openCalendarValue },
-    "openCalendarValueopenCalendarValue",
-  );
+  
 
   useEffect(() => {
     if (comlianceStatusReopenedModal) {
@@ -96,7 +89,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
 
   const handleProceedButton = () => {
     setIsReopenConfirmed(true);
-    console.log(comlianceStatusReopenedModal, "comlianceStatusReopenedModal");
+    
     setComlianceStatusReopenedModal(false);
     setComplianceDetailsState((prev) => ({
       ...prev,
@@ -135,7 +128,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     meetingDateValueFormat2.setMinutes(59);
     meetingDateValueFormat2.setSeconds(58);
 
-    console.log(meetingDateValueFormat2, "meetingDateValueFormat2");
+    
 
     setComplianceReopenDetailsState((prev) => ({
       ...prev,
@@ -148,7 +141,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
+    
     let filesArray = Object.values(data.target.files);
     let totalFiles =
       filesArray.length + complianceReopenDetailsState.attachments.length;

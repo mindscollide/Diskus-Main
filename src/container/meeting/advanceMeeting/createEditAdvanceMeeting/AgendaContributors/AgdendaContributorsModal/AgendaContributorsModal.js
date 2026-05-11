@@ -327,7 +327,7 @@ const AgendaContributorsModal = ({
       setMembersOrganizers(tem);
       setSelectedsearch([]);
     } catch (error) {
-      console.error("handleAddUsers error:", error);
+      
     }
   };
   const handleClickDone = () => {

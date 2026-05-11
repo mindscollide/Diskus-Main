@@ -313,15 +313,15 @@ const CreatePolling = () => {
           }
         });
       } catch {}
-      console.log({ members }, "setMemberssetMembers");
+      
 
-      console.log({ tem }, "setMemberssetMembers");
+      
       const uniqueData = new Set(tem.map(JSON.stringify));
-      console.log({ uniqueData }, "setMemberssetMembers");
+      
 
       // Convert the Set back to an array of objects
       const result = Array.from(uniqueData).map(JSON.parse);
-      console.log({ result }, "setMemberssetMembers");
+      
 
       setMembers(result);
       setSelectedsearch([]);
@@ -342,7 +342,7 @@ const CreatePolling = () => {
         date: DateDate,
       });
     } catch (error) {
-      console.log(error, "error");
+      
     }
   };
 
@@ -460,7 +460,7 @@ const CreatePolling = () => {
   };
 
   const cancellAnyUser = (index) => {
-    console.log(index, "indexindexindexindex");
+    
     let removeData = [...members];
     removeData.splice(index, 1);
     setMembers(removeData);

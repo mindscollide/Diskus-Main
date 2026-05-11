@@ -48,7 +48,7 @@ const AgendaContributers = () => {
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [columnsData, setColumnsData] = useState([]);
-  console.log(columnsData, "columnsDatacolumnsData");
+  
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -137,7 +137,7 @@ const AgendaContributers = () => {
           align: "left",
           ellipsis: true,
           render: (text, record) => {
-            console.log(record);
+            
             if (record.attendeeAvailability === 1) {
               return (
                 <img

@@ -18,7 +18,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
   const navigate = useNavigate();
   const locale = localStorage.getItem("i18nextLng");
 
-  console.log(viewActionModalDataState, "viewActionModalDataState");
+  
 
   //Local state
   const [auditActionsData, setAuditActionsData] = useState([]);
@@ -40,7 +40,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
         setAuditActionsData([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
     return () => {
       setAuditActionsData([]);

@@ -50,7 +50,7 @@ const PackageUpgrade = () => {
 
   const handleAnnualPackage = (packageId) => {
     setCurrentPackageId(packageId);
-    console.log(packageId);
+    
     setAnnualPackageShow(true);
     setMonthlyPackageShow(false);
   };
@@ -68,7 +68,7 @@ const PackageUpgrade = () => {
       // monthly packege
       localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
     }
-    console.log(data, "updatedata");
+    
     navigate("/Admin/UpgradePackageDetail", { state: data });
   };
 
@@ -141,7 +141,7 @@ const PackageUpgrade = () => {
                   data.PackageBadgeColor.split("_SEPERATOR_")[0];
                 let packageColorPath2 =
                   data.PackageBadgeColor.split("_SEPERATOR_")[1];
-                console.log("datadata", data);
+                
                 return (
                   <>
                     <Col

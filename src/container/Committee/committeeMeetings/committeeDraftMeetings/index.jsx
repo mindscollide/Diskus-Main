@@ -161,7 +161,7 @@ const CommitteeDraftMeetings = () => {
     };
 
     const handleCancel = () => {
-      console.log("Cancel Meeting", record);
+      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -172,7 +172,7 @@ const CommitteeDraftMeetings = () => {
     };
 
     const handleClickPublish = () => {
-      console.log("Talk", record);
+      
       dispatch(
         UpdateMeetingStatusApi(
           navigate,
@@ -215,7 +215,7 @@ const CommitteeDraftMeetings = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 

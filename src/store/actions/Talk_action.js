@@ -3584,7 +3584,7 @@ const DownloadChat = (object, t, navigate) => {
       .post(talkApiReport, form)
 
       .then(async (response) => {
-        console.log("Talk Chat Response", response);
+        
         const blob = new Blob([response.data], { type: "application/txt" });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -3609,7 +3609,7 @@ const PrintChat = (object, t, navigate) => {
     axiosInstance
       .post(talkApiReport, form)
       .then(async (response) => {
-        console.log("Talk Chat Response", response);
+        
         const printWindow = window.open("", "_blank");
         printWindow.document.write("<pre>" + response.data + "</pre>");
         printWindow.document.close();
@@ -4016,7 +4016,7 @@ const getImageData = (response) => {
 };
 
 const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
-  console.log("DataDataData", Data);
+  
   let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", downloadAttachmentTalk.RequestMethod);

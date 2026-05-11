@@ -374,7 +374,7 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
         }
       })
       .catch((error) => {
-        console.error("SaveMeetingDetailsApi:", error);
+        
         dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
       });
   };
@@ -642,7 +642,7 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
         }
       })
       .catch((error) => {
-        console.error("CreateUpdateMeetingDataRoomMapeedFolderIdApi:", error);
+        
         dispatch(
           showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong")),
         );
@@ -846,7 +846,7 @@ export const UpdateMeetingUserApi = (
                       break;
                   }
                 } catch (error) {
-                  console.error("UpdateMeetingUserApi switch error:", error);
+                  
                 }
               },
               // _02: Update failed
@@ -863,7 +863,7 @@ export const UpdateMeetingUserApi = (
         }
       })
       .catch((error) => {
-        console.error("UpdateMeetingUserApi:", error);
+        
         dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
       });
   };
@@ -973,7 +973,7 @@ export const SaveParticipantsApi = (navigate, t, Data, routePath, object) => {
         }
       })
       .catch((error) => {
-        console.error("SaveParticipantsApi:", error);
+        
         dispatch(showSaveParticipantsFailed(t("Something-went-wrong")));
       });
   };
@@ -1142,7 +1142,7 @@ export const setProposedMeetingDateApi = (
         }
       })
       .catch((error) => {
-        console.error("setProposedMeetingDateApi:", error);
+        
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
       });
   };
@@ -1278,7 +1278,7 @@ export const GetAllSavedparticipantsApi = (
         }
       })
       .catch((error) => {
-        console.error("GetAllSavedparticipantsApi:", error);
+        
         dispatch(showAllMeetingParticipantsFailed(t("Something-went-wrong")));
       });
   };
@@ -1373,7 +1373,7 @@ export const SaveMeetingOrganizersApi = (
         }
       })
       .catch((error) => {
-        console.error("SaveMeetingOrganizersApi:", error);
+        
         dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
       });
   };
@@ -1454,7 +1454,7 @@ export const GetAllMeetingOrganizersApi = (
         }
       })
       .catch((error) => {
-        console.error("GetAllMeetingOrganizersApi:", error);
+        
         dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
       });
   };
@@ -1561,7 +1561,7 @@ export const saveAgendaContributorsApi = (
         }
       })
       .catch((error) => {
-        console.error("saveAgendaContributorsApi:", error);
+        
         dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
       });
   };
@@ -1677,7 +1677,7 @@ export const getAllAgendaContributorsApi = (
         }
       })
       .catch((error) => {
-        console.error("getAllAgendaContributorsApi:", error);
+        
         dispatch(getAllAgendaContributor_fail(t("Something-went-wrong")));
       });
   };
@@ -1796,7 +1796,7 @@ export const GetAdvanceMeetingAgendabyMeetingIdApi = (
         }
       })
       .catch((error) => {
-        console.error("GetAdvanceMeetingAgendabyMeetingIdApi:", error);
+        
         dispatch(
           getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong")),
         );
@@ -1883,7 +1883,7 @@ export const GetAllUserAgendaRightsApi = (
         }
       })
       .catch((error) => {
-        console.error("GetAllUserAgendaRightsApi:", error);
+        
         dispatch(showGetAllUserAgendaRightsFailed(t("Something-went-wrong")));
       });
   };
@@ -1977,7 +1977,7 @@ export const UploadDocumentsMeetingAgendaApi = (
         dispatch(uploadDocument_fail(t("Something-went-wrong")));
       }
     } catch (error) {
-      console.error("UploadDocumentsMeetingAgendaApi:", error);
+      
       dispatch(uploadDocument_fail(t("Something-went-wrong")));
     }
   };
@@ -2070,7 +2070,7 @@ export const SaveMeetingAgendaFilesApi = (
         }
       })
       .catch((error) => {
-        console.error("SaveMeetingAgendaFilesApi:", error);
+        
         dispatch(saveFiles_fail(t("Something-went-wrong")));
       });
   };
@@ -2276,7 +2276,7 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
         }
       })
       .catch((error) => {
-        console.error("AddUpdateAdvanceMeetingAgendaApi:", error);
+        
         dispatch(addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")));
       });
   };
@@ -2449,7 +2449,7 @@ const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
         }
       })
       .catch((error) => {
-        console.error("SaveMeetingDocuments:", error);
+        
         dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
       });
   };
@@ -2643,7 +2643,7 @@ export const UpdateMeetingStatusApi = (
                         break;
                       }
                       case "EndMeetingFromMeetingDetailsModal": {
-                        console.log("asdasdad");
+                        
                         setEndMeetingConfirmationModal(false);
                         break;
                       }
@@ -2697,10 +2697,7 @@ export const UpdateMeetingStatusApi = (
                         break;
                     }
                   } catch (error) {
-                    console.error(
-                      "UpdateMeetingStatusApi route handler:",
-                      error,
-                    );
+                    
                   }
                 },
               // _02: Record not updated
@@ -2758,7 +2755,7 @@ export const UpdateMeetingStatusApi = (
         }
       })
       .catch((error) => {
-        console.error("UpdateMeetingStatusApi:", error);
+        
         dispatch(updateOrganizerMeetingStatus_fail(t("Something-went-wrong")));
       });
   };
@@ -2918,7 +2915,7 @@ export const getMeetingDetailsByMeetingIdApi = (
         default: failGeneric,
       });
     } catch (error) {
-      console.error("getMeetingDetailsByMeetingIdApi:", error);
+      
       failGeneric();
     }
   };
@@ -2993,7 +2990,7 @@ export const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
       }
     } catch (error) {
-      console.error("GetAllMeetingTypesNewFunction:", error);
+      
       dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
     }
   };
@@ -3071,7 +3068,7 @@ export const GetAllMeetingRemindersFrequencyApi = (navigate, t) => {
         );
       }
     } catch (error) {
-      console.error("GetAllMeetingRemindersFrequencyApi:", error);
+      
       dispatch(handlegetallReminderFrequencyFailed(t("Something-went-wrong")));
     }
   };
@@ -3148,7 +3145,7 @@ export const GetAllMeetingRecurringApi = (navigate, t, loader) => {
         }
       })
       .catch((error) => {
-        console.error("GetAllMeetingRecurringApi:", error);
+        
         dispatch(handleReucrringFailed(t("Something-went-wrong"), loader));
       });
   };
@@ -3347,7 +3344,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
         }
       })
       .catch((error) => {
-        console.error("joinMeetingApi:", error);
+        
         dispatch(joinMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -3481,10 +3478,7 @@ export const getViewMeetingByMeetingIdApi = (
                     //     break;
                     // }
                   } catch (error) {
-                    console.error(
-                      "getViewMeetingByMeetingIdApi post-success:",
-                      error,
-                    );
+                    
                   }
                 },
               // _02: No records found
@@ -3506,7 +3500,7 @@ export const getViewMeetingByMeetingIdApi = (
         }
       })
       .catch((error) => {
-        console.error("getViewMeetingByMeetingIdApi:", error);
+        
         dispatch(ViewMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -3576,7 +3570,7 @@ export const listOfMeetingsApi = (navigate, t, Data, routePath, object) => {
                   dispatch(webnotificationGlobalFlag(true));
                 }
               } catch (error) {
-                console.log(error);
+                
               }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
@@ -3586,11 +3580,11 @@ export const listOfMeetingsApi = (navigate, t, Data, routePath, object) => {
                   JSON.parse(localStorage.getItem("MeetingStatusID")) === 12
                 ) {
                   //Notification Work
-                  console.log("ComingIN");
+                  
                   //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
                   dispatch(showSceduleProposedMeeting(true));
                 } else {
-                  console.log("ComingIN");
+                  
                   //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
                   localStorage.removeItem("MeetingStatusID");
                   localStorage.removeItem("ProposedMeetingOrganizer");
@@ -4332,7 +4326,7 @@ export const SetMeetingResponseApi = (
               localStorage.setItem("MeetingCurrentView", 2);
               // setViewProposeDatePoll(false);
 
-              console.log("chek search meeting");
+              
               dispatch(
                 listOfMeetingsApi(
                   navigate,

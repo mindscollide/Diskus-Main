@@ -329,10 +329,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                         doc.MeetingAgendaAttachments.filter(
                           (fileData, index) => fileData.isNew === true,
                         );
-                      console.log(
-                        checkIsNewFileExist.length,
-                        "checkIsNewFileExistcheckIsNewFileExistF",
-                      );
+                      
                       const AgendaID = String(
                         mainMatch
                           ? mainMatch.newId
@@ -372,10 +369,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   ),
                 );
               } catch (error) {
-                console.log(
-                  error,
-                  "Meeting_MeetingServiceManager_UpdateMeeting_01",
-                );
+                
               }
 
               // dispatch(
@@ -401,7 +395,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
               //     Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
               //     PublishedMeetings: true,
               //   };
-              //   console.log("chek search meeting");
+              //   
               //   await dispatch(searchNewUserMeeting(navigate, searchData, t));
               // } else if (checkFlag === 7) {
               //   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -534,7 +528,7 @@ const ViewMeeting = (
               );
               try {
                 if (Number(no) === 1) {
-                  console.log("saif coming");
+                  
                   setViewFlag(true);
                   localStorage.setItem("typeOfMeeting", "isQuickMeeting");
                   dispatch(scheduleMeetingPageFlag(false));
@@ -555,7 +549,7 @@ const ViewMeeting = (
                 }
                 dispatch(removeCalenderDataFunc(null));
               } catch (error) {
-                console.log(error, "errorerror");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -647,7 +641,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   t("The-meeting-has-been-cancelled"),
                 ),
               );
-              console.log("valuevaluevalue", value);
+              
               if (value === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                 let Data = {
@@ -691,7 +685,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   ProposedMeetings:
                     currentView && Number(currentView) === 2 ? true : false,
                 };
-                console.log("chek search meeting");
+                
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
               }
             } else if (
@@ -884,7 +878,7 @@ const EndMeeting = (navigate, object, t, searchData) => {
                 ),
               );
 
-              console.log("chek search meeting");
+              
               await dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage

@@ -44,7 +44,7 @@ const ModalToDoListChecklist = ({
   setShow,
   show,
 }) => {
-  console.log(checkListData, "checkListDatacheckListData");
+  
   //For Localization
   const { t } = useTranslation();
   const [allAsigneeOption, setAllAsgneeOption] = useState([]);
@@ -63,7 +63,7 @@ const ModalToDoListChecklist = ({
     (state) => state.toDoListReducer.todoDocumentsMapping
   );
 
-  console.log(AllAssigneesData, "toDoListReducerCommitteeReducer");
+  
 
   const { complianceAddEditViewState, complianceInfo } = useComplianceContext();
   //To Display Modal
@@ -97,7 +97,7 @@ const ModalToDoListChecklist = ({
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
   //task Object
@@ -208,7 +208,7 @@ const ModalToDoListChecklist = ({
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
+    
     let filesArray = Object.values(data.target.files);
     let totalFiles =
       filesArray.length + tasksAttachments.TasksAttachments.length;
@@ -348,9 +348,9 @@ const ModalToDoListChecklist = ({
         );
       }
 
-      console.log(newFolder, "newFoldernewFoldernewFolder");
+      
       let newAttachmentData = newFolder.map((data, index) => {
-        console.log(data, "newFoldernewFoldernewFolder");
+        
         return {
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.pK_FileID.toString(),
@@ -379,7 +379,7 @@ const ModalToDoListChecklist = ({
         )
       );
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 
@@ -485,13 +485,13 @@ const ModalToDoListChecklist = ({
   //       setAllPresenters(sortedAssigners);
   //     }
   //   } catch (error) {
-  //     console.error("Error in committee useEffect:", error);
+  //     
   //   }
   // }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   useEffect(() => {
     if (AllAssigneesData && AllAssigneesData !== null) {
-      console.log("AllAsignee", AllAssigneesData);
+      
       try {
         const AllAsignee = AllAssigneesData.map((data) => {
           return {
@@ -533,14 +533,14 @@ const ModalToDoListChecklist = ({
   //Selecter Assignee onChange
 
   const onChangeSearch = (item) => {
-    // console.log(item, "itemitemitem");
-    console.log(item, "onChangeSearch");
+    // 
+    
     // setPresenterValue(item);
     setTaskAssignedTo([item.value]);
     setSelectedAsignee(item);
   };
 
-  console.log(`duedate: ${checkListData.dueDate}${checkListData.dueTime}`);
+  
 
   return (
     <>

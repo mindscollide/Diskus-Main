@@ -21,8 +21,8 @@
  *                              shape `{ open: boolean, message: string, severity: string }`.
  */
 export const showMessage = (message, severity, setOpen) => {
-  console.log("openopen", message);
-  console.log("Showing severity:", severity);
+  
+  
 
   if (message) {
     setOpen({

@@ -360,7 +360,7 @@ const getbyGroupID = (
                   dispatch(viewGroupPageFlag(true));
                 }
               } catch (error) {
-                console.log(error, "error");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -982,10 +982,7 @@ const methodCreateUpdateDataRoadMapFailed = (message) => {
 };
 
 const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
-  console.log(
-    { Data },
-    "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc",
-  );
+  
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(methodCreateUpdateDataRoadMapInit());
@@ -1267,12 +1264,12 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase(),
                 )
             ) {
-              console.log(response.data.responseResult, "consoleconsole");
+              
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "newFileID");
+                
                 fileIds.map((newFileID, index) => {
-                  console.log(newFileID, "newFileID");
+                  
 
                   return newFolder.push({
                     pK_FileID: newFileID.pK_FileID,
@@ -1280,7 +1277,7 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                   });
                 });
               } catch (error) {
-                console.log(error, "newFileID");
+                
               }
               await dispatch(
                 saveFiles_success(response.data.responseResult, ""),

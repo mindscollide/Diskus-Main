@@ -318,7 +318,7 @@ const GroupPublishedMeetingList = () => {
         }),
       );
     } catch (error) {
-      console.error("handleViewMeeting:", error);
+      
     }
   };
 
@@ -869,20 +869,7 @@ const GroupPublishedMeetingList = () => {
               isOrganizer &&
               minutesDifference < minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
-          console.log(
-            {
-              canStartMeeting,
-              STATUS,
-              meetingCurrentStatus,
-              isButtonShown,
-              record,
-              minutesDifference,
-              currentDateObj,
-              meetingDateObj,
-              isOrganizer,
-            },
-            "Checking meeting action button visibility",
-          );
+          
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 

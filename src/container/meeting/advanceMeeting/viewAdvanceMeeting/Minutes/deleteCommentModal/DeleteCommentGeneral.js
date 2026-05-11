@@ -39,7 +39,7 @@ const DeleteCommentGeneral = ({ advanceMeetingModalID }) => {
     dispatch(deleteCommentModalGeneral(false));
   };
 
-  console.log("This is Delete Modal of General");
+  
 
   return (
     <section>

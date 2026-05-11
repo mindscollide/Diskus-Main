@@ -175,7 +175,7 @@ export const GroupsProvider = ({ children }) => {
           break;
       }
     } catch (error) {
-      console.log("GroupContext getMeetingbyGroupID Error", error);
+      
     }
   }, [getMeetingbyGroupID, currentGroupMeetingTabActive]);
 
@@ -215,7 +215,7 @@ export const GroupsProvider = ({ children }) => {
 
       dispatch(createGroupMeeting(null));
     } catch (error) {
-      console.log("GroupMeetingMQTT Error", error);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
@@ -240,7 +240,7 @@ export const GroupsProvider = ({ children }) => {
         }));
       }
     } catch (error) {
-      console.log("MeetingStatusEnded Error", error);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
@@ -257,7 +257,7 @@ export const GroupsProvider = ({ children }) => {
 
       updateMeetingInAllLists(meetingID, () => allMeetingsSocketData);
     } catch (error) {
-      console.log("allMeetingsSocketData Error", error);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMeetingsSocketData]);
@@ -310,7 +310,7 @@ export const GroupsProvider = ({ children }) => {
 
       dispatch(meetingNotConductedMQTT(null));
     } catch (error) {
-      console.log("meetingStatusNotConductedMqttData Error", error);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusNotConductedMqttData]);
@@ -329,7 +329,7 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
-        console.log("AgendaContributorAdded fetch error", error);
+        
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -352,7 +352,7 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingAcRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      console.log("AgendaContributorRemoved Error", error);
+      
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -376,7 +376,7 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
-        console.log("OrganizerAdded fetch error", error);
+        
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -399,7 +399,7 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingOrgRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      console.log("OrganizerRemoved Error", error);
+      
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -445,7 +445,7 @@ export const GroupsProvider = ({ children }) => {
         //   return prev;
         // });
       } catch (error) {
-        console.log("meetingStatusProposedMqttData Error", error);
+        
       } finally {
         dispatch(meetingStatusProposedMqtt(null));
       }
@@ -478,7 +478,7 @@ export const GroupsProvider = ({ children }) => {
   //         dispatch(toggleIsParticipantProposedMeetingDates(true));
   //       }
   //     } catch (error) {
-  //       console.error("Error in MeetingProp API call:", error);
+  //       
   //       localStorage.removeItem("meetingprop");
   //     }
   //   };
@@ -511,7 +511,7 @@ export const GroupsProvider = ({ children }) => {
   //         dispatch(toggleIsOrganizerProposedMeetingDates(true));
   //       }
   //     } catch (error) {
-  //       console.error("Error in UserMeetPropoDatPoll API call:", error);
+  //       
   //       localStorage.removeItem("UserMeetPropoDatPoll");
   //     }
   //   };

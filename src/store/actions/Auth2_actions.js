@@ -1528,7 +1528,7 @@ const enterPasswordvalidation = (
           dispatch(enterPasswordFail("Something-went-wrong"));
       }
     } catch (error) {
-      console.error("Network or other error:", error);
+      
       clearLocalStorageAtloginresponce(dispatch, 2, navigate);
       dispatch(LoginFlowRoutes(1));
 
@@ -1587,14 +1587,14 @@ const verificationEmailOTP = (
                   "ERM_AuthService_SignUpManager_UserEmailVerification_01".toLowerCase()
                 )
             ) {
-              console.log("LoginFlowPageRoute");
+              
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
                   t("The-users-email-has-been-verified")
                 )
               );
-              console.log("LoginFlowPageRoute");
+              
               if (updateFlag === true) {
                 localStorage.setItem("updatePasswordCheck", true);
               } else {
@@ -1602,22 +1602,22 @@ const verificationEmailOTP = (
               }
               let signUp = localStorage.getItem("SignupFlowPageRoute");
               if (signUp) {
-                console.log("LoginFlowPageRoute");
+                
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
                 localStorage.setItem("SignupFlowPageRoute", 4);
                 dispatch(signUpFlowRoutes(4));
                 navigate("/Signup");
-                console.log("LoginFlowPageRoute");
+                
               } else {
                 //  this is used on when we ccaome from verify emaol otp of qrganaisation creation
-                console.log("LoginFlowPageRoute");
+                
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
                 localStorage.setItem("LoginFlowPageRoute", 11);
-                console.log("LoginFlowPageRoute");
+                
                 dispatch(LoginFlowRoutes(11));
-                console.log("LoginFlowPageRoute");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1636,7 +1636,7 @@ const verificationEmailOTP = (
                   "ERM_AuthService_SignUpManager_UserEmailVerification_03".toLowerCase()
                 )
             ) {
-              console.log("423986");
+              
               dispatch(
                 verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
@@ -2744,7 +2744,7 @@ const createPasswordAction = (value, navigate, t) => {
           dispatch(enterPasswordFail("Something-went-wrong"));
       }
     } catch (error) {
-      console.error("Network or other error:", error);
+      
       clearLocalStorageAtloginresponce(dispatch, 2, navigate);
       dispatch(LoginFlowRoutes(1));
 
@@ -3332,7 +3332,7 @@ const DownlaodInvoiceLApi = (navigate, t, Data) => {
       })
 
       .then(async (response) => {
-        console.log("DownloadInvoice", response);
+        
 
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

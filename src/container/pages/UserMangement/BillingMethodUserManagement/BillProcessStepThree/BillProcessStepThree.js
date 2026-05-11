@@ -33,7 +33,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
   const [tenureID, setTenureID] = useState(0);
-  console.log("check error k");
+  
   //UseEffect For Get All Organziation Selected Pakages
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
         dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
       }
     } catch (error) {
-      console.log(error);
+      
     }
     return () => {
       setGetAllPakagesData([]);
@@ -96,7 +96,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 
@@ -114,7 +114,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
       align: "center",
       render: (text, record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
-        console.log(record.name, "namenamenamenamename");
+        
         if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>{t(name)}</span>

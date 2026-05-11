@@ -35,7 +35,7 @@ const PayOutstanding = () => {
     BalanceDue: 0,
     InvoiceID: 0,
   });
-  console.log(payOutStanding, "payOutStandingpayOutStanding");
+  
 
   const [invoiceModal, setInvoiceModal] = useState(false);
   useEffect(() => {
@@ -81,7 +81,7 @@ const PayOutstanding = () => {
   const hadlePayInvoiceButton = () => {};
 
   const handleViewInvoice = () => {
-    console.log("hello");
+    
     let Data = {
       OrganizationID:
         localStorage.getItem("organizationID") !== null

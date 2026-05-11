@@ -334,7 +334,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
               t("Something-went-wrong"),
             ),
           );
-          console.log(error, "errorerrorerrorerrorerror");
+          
         }
       })
       .catch((response) => {
@@ -707,7 +707,7 @@ const allOrganizationUsersFail = (message) => {
 
 const AllOrganizationsUsersApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("AllOrganizationsUsersApi");
+  
   return (dispatch) => {
     dispatch(allOrganizationUsersInit());
     let form = new FormData();
@@ -2076,7 +2076,7 @@ const paymentStatusApi = (navigate, t, data) => {
                 "ERM_AuthService_SignUpManager_PaymentStatus_08".toLowerCase(),
               )
           ) {
-            console.log(dispatch, "dispatchdispatch");
+            
             dispatch(paymentStatusFailed(t("Something-went-wrong")));
             clearPaymentActionFromUrl();
             navigate("/");
@@ -2633,7 +2633,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
       })
 
       .then(async (response) => {
-        console.log(response, "response");
+        
         // Handle ArrayBuffer case (optional)
 
         if (response.status === 200) {
@@ -2644,10 +2644,10 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
               );
             } catch {}
           }
-          console.log(response, "response");
+          
 
-          console.log(response.status, "responsestatus");
-          console.log("Response data:", response.data);
+          
+          
           if (response.data.responseCode === 400) {
             dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
             return;
@@ -2655,7 +2655,7 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
 
           const blob = new Blob([response.data], { type: "application/pdf" });
           const url = window.URL.createObjectURL(blob);
-          console.log("Blob URL:", url);
+          
 
           const link = document.createElement("a");
           link.href = url;
@@ -2679,13 +2679,13 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
             Agenda: false,
           });
         } else {
-          console.log("Unexpected response status:", response.status);
-          console.log("Response headers:", response.headers);
-          console.log("Response data:", response.data);
+          
+          
+          
         }
       })
       .catch((error) => {
-        console.error("Error during file download:", error);
+        
         dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
       });
   };
@@ -2736,7 +2736,7 @@ const BoardDeckValidateURLAPI = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_01".toLowerCase(),
                 )
             ) {
-              console.log("i am success");
+              
               dispatch(
                 BoardDeckValidateURL_success(
                   response.data.responseResult,

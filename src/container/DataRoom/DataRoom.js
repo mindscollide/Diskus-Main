@@ -248,7 +248,7 @@ const DataRoom = () => {
     (state) => state.DataRoomReducer.errorSeverity,
   );
 
-  console.log(errorSeverityState2, errorSeverityState, "errorSeverityState2");
+  
 
   // ─── localStorage session values ─────────────────────────────────────────
   /** Currently authenticated user's ID. */
@@ -511,9 +511,9 @@ const DataRoom = () => {
   useEffect(() => {
     try {
       if (DataRoomString !== undefined && DataRoomString !== null) {
-        console.log("Test Dataroom");
+        
         const remainingString = DataRoomString;
-        console.log(remainingString, "remainingStringremainingString");
+        
         setDataRoomString(remainingString);
         let Data = { Link: remainingString };
 
@@ -530,7 +530,7 @@ const DataRoom = () => {
         navigate("/Diskus/dataroom");
       }
     } catch (error) {
-      console.log("Test Dataroom", error);
+      
     }
 
     return () => {
@@ -567,7 +567,7 @@ const DataRoom = () => {
       let getData = await dispatch(
         getDocumentsAndFolderApi(navigate, currentView, t, 1),
       );
-      console.log(getData, "getDatagetDatagetData");
+      
       localStorage.removeItem("folderID");
     }
     dispatch(BreadCrumbsList([]));
@@ -643,7 +643,7 @@ const DataRoom = () => {
         const getResponse = await dispatch(
           validateEncryptedStringViewFolderLinkApi(viewFol_action, navigate, t),
         );
-        console.log(getResponse, "viewFol_action");
+        
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           // Set necessary states and flags for viewing committee details
           localStorage.setItem(
@@ -673,15 +673,12 @@ const DataRoom = () => {
         const getResponse = await dispatch(
           validateEncryptedStringViewFileLinkApi(documentViewer, navigate, t),
         );
-        console.log(getResponse, "viewFol_action");
+        
 
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           let ext = getResponse.response.fileName?.split(".").pop();
           let record = { id: getResponse.response.response.fileID };
-          console.log(
-            record,
-            "validateEncryptedStringViewFileLinkApivalidateEncryptedStringViewFileLinkApi",
-          );
+          
           const pdfData = {
             taskId: getResponse.response.response.fileID,
             commingFrom: 4,
@@ -689,10 +686,7 @@ const DataRoom = () => {
             attachmentID: getResponse.response.response.fileID,
             isPermission: getResponse.response.response.permissionID,
           };
-          console.log(
-            pdfData,
-            "validateEncryptedStringViewFileLinkApivalidateEncryptedStringViewFileLinkApi",
-          );
+          
 
           const pdfDataJson = JSON.stringify(pdfData);
           openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
@@ -784,7 +778,7 @@ const DataRoom = () => {
         const container = doc.getElementById("html-content");
         container.innerHTML = htmlContent;
       } else {
-        console.error("Failed to open new tab");
+        
       }
     };
 
@@ -805,12 +799,9 @@ const DataRoom = () => {
         );
         displayBlobAsHtml(base64String);
       } catch (error) {
-        console.error("Error converting blob to base64:", error);
+        
       }
-      console.log(
-        webViewer.attachmentBlob,
-        "webViewer.attachmentBlobwebViewer.attachmentBlobwebViewer.attachmentBlob",
-      );
+      
     }
   }, [webViewer.attachmentBlob, webViewer.isHTML]);
 
@@ -956,12 +947,12 @@ const DataRoom = () => {
   // Share File MQTT
   useEffect(() => {
     if (DataRoomReducer.FileSharedMQTT !== null) {
-      console.log(DataRoomReducer.FileSharedMQTT, currentView, "datadatadata");
+      
 
       try {
         let fileData;
         const { data } = DataRoomReducer.FileSharedMQTT;
-        console.log(data, "datadatadata");
+        
 
         if (currentView === 2) {
           // currentView 2 for Share with me
@@ -984,7 +975,7 @@ const DataRoom = () => {
           setGetAllData([fileData, ...getAllData]);
           setTotalRecords((totalValue) => totalValue + 1);
 
-          console.log(fileData, "datadatadata");
+          
         } else if (currentView === 3) {
           // currentView 3 for All Tab
 
@@ -1008,7 +999,7 @@ const DataRoom = () => {
         }
         dispatch(fileSharedMQTT(null));
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [DataRoomReducer.FileSharedMQTT]);
@@ -1030,7 +1021,7 @@ const DataRoom = () => {
           setTotalRecords((totalValue) => totalValue - 1);
         }
       } catch (error) {
-        console.log(error, "datadatadata");
+        
       }
     }
   }, [DataRoomReducer.FileRemoveMQTT]);
@@ -1053,7 +1044,7 @@ const DataRoom = () => {
         } else if (currentView === 2) {
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [DataRoomReducer.FolderRemoveMQTT]);
@@ -1114,7 +1105,7 @@ const DataRoom = () => {
 
         dispatch(folderSharedMQTT(null));
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [DataRoomReducer.FolderSharedMQTT]);
@@ -1499,7 +1490,7 @@ const DataRoom = () => {
         <Menu.Item
           key={filter.value}
           onClick={() => {
-            console.log(filter, "filterfilterfilter");
+            
             handleMenuClick(filter);
           }}
         >
@@ -2018,7 +2009,7 @@ const DataRoom = () => {
       width: "10%",
       align: "center",
       render: (text, record) => {
-        console.log(record, "File-size");
+        
         if (record.isFolder) {
           return <Dash />;
         } else {
@@ -2433,7 +2424,7 @@ const DataRoom = () => {
           return <Dash />;
         } else {
           {
-            console.log("File-size", text);
+            
           }
           return <span className={styles["ownerName"]}>{formatMB(text)}</span>;
         }
@@ -2667,7 +2658,7 @@ const DataRoom = () => {
    * @param {object} record - Row record containing id, name, permissionID.
    */
   const handleLinkClick = (e, record) => {
-    console.log(record, "preventDefault");
+    
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
       const pdfData = {
@@ -2679,7 +2670,7 @@ const DataRoom = () => {
       };
       const pdfDataJson = JSON.stringify(pdfData);
       let ext = record.name.split(".").pop();
-      console.log(ext, "preventDefault");
+      
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
@@ -3760,7 +3751,7 @@ const DataRoom = () => {
 
       dispatch(BreadCrumbsList([]));
     } else {
-      console.log(index, "indexindex");
+      
       dispatch(
         getFolderDocumentsApi(
           navigate,

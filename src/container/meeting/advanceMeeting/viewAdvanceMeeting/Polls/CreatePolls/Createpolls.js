@@ -67,7 +67,7 @@ const Createpolls = ({ setCreatepoll }) => {
     date: "",
   });
 
-  console.log(pollsData, "pollsDatapollsDatapollsData")
+  
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(EnglishCalendar);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -180,7 +180,7 @@ const Createpolls = ({ setCreatepoll }) => {
   };
 
   const changeDateStartHandler = (date) => {
-    console.log(date, "datedatedatedatedate");
+    
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     DateDate.setHours(23, 59, 0, 0);
@@ -412,7 +412,7 @@ const Createpolls = ({ setCreatepoll }) => {
             }
           });
         } catch {
-          console.log("error in add");
+          
         }
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
@@ -743,7 +743,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
-                            console.log(data, "membersmembersmembers");
+                            
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className='mt-3'>

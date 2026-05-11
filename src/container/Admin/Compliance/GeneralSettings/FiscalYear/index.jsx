@@ -31,10 +31,7 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
   const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
-    console.log(
-      organizationSettingData,
-      "Reached here organizationSettingData"
-    );
+    
     if (!organizationSettingData) return;
 
     const monthIndex = organizationSettingData.fiscalStartMonth - 1;
@@ -69,7 +66,7 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
 
   const onChangeFYStartDate = (event) => {
     const { name, value } = event.target;
-    console.log(name, value, "handleChangeDueDatehandleChangeDueDate");
+    
     if (name === "FYStartDate") {
       setOrganizationSetting((organizationSettings) => {
         return {
@@ -83,7 +80,7 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
   };
 
   const handleChangeMonth = (event) => {
-    console.log(event, "handleChangeMonth");
+    
     setOrganizationSetting((organizationSettings) => {
       return {
         ...organizationSettings,

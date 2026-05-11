@@ -121,7 +121,7 @@ const PasswordCreationUM = () => {
         setErrorBar(false);
       }
     } else if (value === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
+      
 
       setErrorBar(false);
     }

@@ -47,7 +47,7 @@ const uploaddocumentloader = (payload) => {
 };
 //File Upload
 const FileUploadToDo = (navigate, data, t, newfile, route) => {
-  console.log(route, typeof route, "routerouteroute");
+  
   let token = JSON.parse(localStorage.getItem("token"));
 
   let form = new FormData();
@@ -72,7 +72,7 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
                   "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
-              console.log(newfile, "PromisePromisePromise");
+              
               if (newfile) {
                 let dataResultdisplayFileName =
                   response.data.responseResult.displayFileName;

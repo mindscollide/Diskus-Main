@@ -67,10 +67,7 @@ const ComplianceForMe = () => {
     statusFilter,
     setStatusFilter,
   } = useComplianceContext();
-  console.log(
-    { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "setComplianceForMeList",
-  );
+  
 
   const TAB = {
     DASHBOARD: 1,
@@ -138,7 +135,7 @@ const ComplianceForMe = () => {
   }, [allComplianceStatusForFilter, statusFilter.length]);
 
   const handleViewCompliance = (record) => {
-    console.log("reached here");
+    
     const Data = {
       complianceId: record.complianceId,
       viewType: 2,

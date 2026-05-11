@@ -78,7 +78,7 @@ import { useCommitteeContext } from "../../../context/CommitteeContext";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
-  console.log(committeeStatus, "committeeStatuscommitteeStatus");
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const getMeetingByCommitteeID = useSelector(

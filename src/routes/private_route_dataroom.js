@@ -14,15 +14,7 @@ const PrivateRouteDataroom = () => {
     localStorage.getItem("token") !== null
       ? JSON.parse(localStorage.getItem("token"))
       : "";
-  console.log(
-    DataRoomEmailValue && currentUser && token,
-    {
-      DataRoomEmailValue,
-      currentUser,
-      token,
-    },
-    "PrivateRouteDataroomPrivateRouteDataroom"
-  );
+  
   return DataRoomEmailValue && currentUser && token ? (
     <Outlet />
   ) : (

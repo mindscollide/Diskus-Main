@@ -57,7 +57,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
         dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ViewCommitteeID]);
 

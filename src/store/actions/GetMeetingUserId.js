@@ -68,7 +68,7 @@ const getMeetingStatusfromSocket = (response) => {
 };
 
 const mqttCurrentMeetingEnded = (response) => {
-  console.log(response, "MEETING_STATUS_ENDED");
+  
   return {
     type: actions.MEETING_STATUS_ENDED,
     response: response,
@@ -477,7 +477,7 @@ const searchUserMeeting = (navigate, searchData, t) => {
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
-        console.log("chek search meeting");
+        
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(searchUserMeeting(navigate, searchData, t));

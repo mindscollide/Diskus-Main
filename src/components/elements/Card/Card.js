@@ -135,7 +135,7 @@ const Card = ({
         }
       });
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, []);
   // Sort member profiles alphabetically by userName (case-insensitive) so the

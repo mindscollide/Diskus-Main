@@ -762,12 +762,7 @@ const ManageAuthority = () => {
   };
 
   const handleChangeAuthorityFilerSorter = (pagination, filters, sorter) => {
-    console.log(
-      pagination,
-      filters,
-      sorter,
-      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter",
-    );
+    
     // 🔁 Reset all icons first
     resetAllSorts();
 
@@ -779,7 +774,7 @@ const ManageAuthority = () => {
       setAuthorityNameSort(sorter.order);
     }
     if (sorter.columnKey === "countryName") {
-      console.log(sorter, "shortCodeSortshortCodeSort");
+      
       setCountrySort(sorter.order);
     }
     if (sorter.columnKey === "sector") {
@@ -804,7 +799,7 @@ const ManageAuthority = () => {
     return data;
   }, [data]);
 
-  console.log(rowsData, "rowsDatarowsData");
+  
   // ========================
   // JSX Rendering
   // ========================

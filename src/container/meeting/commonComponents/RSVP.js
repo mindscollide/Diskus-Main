@@ -42,12 +42,12 @@ const RSVP = () => {
   useEffect(() => {
     let getValue = location.search.substring(8);
     const params = new URLSearchParams(location.search);
-    console.log(params, getValue, "paramsparamsparamsparams");
+    
     // Decode special characters
     const urlKey = params.get("action")
       ? decodeURIComponent(params.get("action"))
       : null;
-    console.log(urlKey, "paramsparamsparamsparams");
+    
 
     if (getValue) {
       localStorage.setItem("RSVP", getValue);
@@ -90,7 +90,7 @@ const RSVP = () => {
         }));
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerror");
+      
     }
     // return () => {
     //   dispatch(validateEmptyStringUserAvailibilityFailed(""));

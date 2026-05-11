@@ -65,9 +65,9 @@ export const newData = () => {
     let newList = Data.agendaHierarchyList.forEach(
       (data2, index) => data2.pK_MAID === data2.agendaID
     );
-    console.log(newList, "newListnewListnewList");
+    
   });
-  console.log(getMinutesIds, "getMinutesIdsgetMinutesIdsgetMinutesIds");
+  
 };
 
 

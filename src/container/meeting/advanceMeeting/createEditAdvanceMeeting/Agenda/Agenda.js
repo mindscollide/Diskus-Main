@@ -343,7 +343,7 @@ const Agenda = () => {
     meetingStartTime: "",
     meetingEndTime: "",
   });
-  console.log(meetingTime, "meetingTime");
+  
   /* --------------------------------------------------------------------------
    * Derived values — memoized so expensive role checks don't re-run every render
    * ------------------------------------------------------------------------ */
@@ -387,7 +387,7 @@ const Agenda = () => {
         return;
       }
     } catch (error) {
-      console.error("Failed to compute meeting times:", error);
+      
     }
   }, [getAllMeetingDetails, dispatch, meetingId, navigate, t]);
 
@@ -718,7 +718,7 @@ const Agenda = () => {
       setRows(hydrated);
       setIsPublishedState(MeetingAgendaData.isPublished);
     } catch (error) {
-      console.error("Failed to hydrate agenda rows:", error);
+      
     }
     // We intentionally omit allSavedPresenters/allUsersRC: hydration should
     // run when server data arrives, not whenever the dropdowns refresh.

@@ -69,7 +69,7 @@ const Header2 = ({ isVideo }) => {
   const WebNotificationBell = useRef();
   const remainingDays = localStorage.getItem("remainingDays");
 
-  console.log(remainingDays, "remainingDaysremainingDays");
+  
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -196,7 +196,7 @@ const Header2 = ({ isVideo }) => {
   }, [showWebNotification]);
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
-  console.log(roleRoute, "roleRouteroleRoute");
+  
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
@@ -216,11 +216,11 @@ const Header2 = ({ isVideo }) => {
 
   useEffect(() => {
     if (Blur !== null) {
-      console.log("Blur", Blur);
+      
 
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
+      
 
       setActivateBlur(false);
     }
@@ -242,10 +242,7 @@ const Header2 = ({ isVideo }) => {
   }, []);
 
   //Web Notfication Real Time Data
-  console.log(
-    GlobalUnreadCountNotificaitonFromMqtt,
-    "GlobalUnreadCountNotificaitonFromMqtt"
-  );
+  
   //Real Time data For Notification
   useEffect(() => {
     if (
@@ -266,7 +263,7 @@ const Header2 = ({ isVideo }) => {
         const data = { sRow: 0, eRow: 8 }; // Initial fetch data from API
         await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
       } catch (error) {
-        console.error("Error fetching initial notifications:", error);
+        
       }
     };
     fetchInitialData();
@@ -300,7 +297,7 @@ const Header2 = ({ isVideo }) => {
       const data = { sRow: webNotificationData.length, eRow: 8 };
       await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
     } catch (error) {
-      console.error("Error fetching more notifications:", error);
+      
     }
   };
 
@@ -332,7 +329,7 @@ const Header2 = ({ isVideo }) => {
         dispatch(ClearNotesResponseMessage());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [NotesReponseMessege]);
 
@@ -524,7 +521,7 @@ const Header2 = ({ isVideo }) => {
       /** -------------------- FINAL LOGOUT -------------------- **/
       dispatch(userLogOutApiFunc(navigate, t));
     } catch (error) {
-      console.error("Logout failed:", error);
+      
       dispatch(userLogOutApiFunc(navigate, t));
     }
   };
@@ -688,7 +685,7 @@ const Header2 = ({ isVideo }) => {
 
   // as huzeifa bhai said when we click on upgrade button then it'll navigate to the billing calculator page
   const handleShowUpgradedNowModal = () => {
-    console.log("Clicked");
+    
     navigate("/Admin/PakageDetailsUserManagement");
   };
 
@@ -721,7 +718,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleClickLogo = async (e) => {
-    console.log("Checking route");
+    
     e.preventDefault();
 
     if (!location.pathname.includes("/Admin")) {
@@ -733,20 +730,17 @@ const Header2 = ({ isVideo }) => {
       } else {
         try {
           const activeCall = localStorage.getItem("activeCall");
-          console.log("Checking route", activeCall);
+          
 
           // Check if activeCall exists and is a valid JSON
           if (activeCall !== false && activeCall !== null) {
-            console.log("Checking route");
+            
 
             const parsedActiveCall = JSON.parse(activeCall);
 
             // Explicitly evaluate activeCall
             if (parsedActiveCall === false) {
-              console.log(
-                "When User is in Proposed Meeting View",
-                proposedMeetingViewFlag
-              );
+              
               // dispatch(ProposedMeetingViewFlagAction(false));
 
               if (proposedMeetingViewFlag) {
@@ -766,7 +760,7 @@ const Header2 = ({ isVideo }) => {
                 //   ProposedMeetings: true,
                 // };
 
-                // console.log("chek search meeting");
+                // 
                 // await dispatch(
                 //   searchNewUserMeeting(navigate, searchData, t, 1)
                 // );
@@ -778,22 +772,19 @@ const Header2 = ({ isVideo }) => {
               homePageDashboardClick();
             }
           } else {
-            console.log("Checking route");
+            
 
             // Handle case when activeCall is null or not available
-            console.warn("activeCall is not available in localStorage");
+            
           }
         } catch (error) {
-          console.log("Checking route");
+          
 
           // Handle any errors that occur during parsing or function calls
-          console.error(
-            "Error processing activeCall from localStorage:",
-            error
-          );
+          
         }
       }
-      console.log("Checking route", viewAdvanceMeetingModal, editorRole);
+      
     } else {
       navigate("/Admin");
     }
@@ -1162,15 +1153,15 @@ const Header2 = ({ isVideo }) => {
               //   // Prevent default behavior
               //   e.preventDefault();
               //   if (!location.pathname.includes("/Admin")) {
-              //     console.log("Checking route");
+              //     
 
               //     try {
               //       const activeCall = localStorage.getItem("activeCall");
-              //       console.log("Checking route", activeCall);
+              //       
 
               //       // Check if activeCall exists and is a valid JSON
               //       if (activeCall !== null) {
-              //         console.log("Checking route");
+              //         
 
               //         const parsedActiveCall = JSON.parse(activeCall);
 
@@ -1181,24 +1172,19 @@ const Header2 = ({ isVideo }) => {
               //           homePageDashboardClick();
               //         }
               //       } else {
-              //         console.log("Checking route");
+              //         
 
               //         // Handle case when activeCall is null or not available
-              //         console.warn(
-              //           "activeCall is not available in localStorage"
-              //         );
+              //         
               //       }
               //     } catch (error) {
-              //       console.log("Checking route");
+              //       
 
               //       // Handle any errors that occur during parsing or function calls
-              //       console.error(
-              //         "Error processing activeCall from localStorage:",
-              //         error
-              //       );
+              //       
               //     }
               //   } else {
-              //     console.log("Checking route");
+              //     
               //     navigate("/Diskus");
               //   }
               // }}

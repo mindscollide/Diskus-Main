@@ -212,7 +212,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     let findRegularState = groupMembersRolesOptions.find(
       (data, index) => data.label === "Regular"
     );
-    console.log(findRegularState, "findRegularStatefindRegularState");
+    
     // Check if there's  a selected user and a role
     if (taskAssignedTo !== 0 && attendees.length > 0) {
       showMessage(
@@ -531,7 +531,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   let previousFileList = [];
 
   const handleRemoveFile = (data) => {
-    console.log(data, "datadatadatadata");
+    
     setFileAttachments((filesData) => {
       return filesData.filter(
         (fileData, index) =>
@@ -548,8 +548,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
     }
   };
 
-  console.log(fileAttachments, "datadatadatadata");
-  console.log(fileForSend, "datadatadatadata");
+  
+  
 
   const GroupsDocumentCallUpload = async (folderID) => {
     let newFolder = [];

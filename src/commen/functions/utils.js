@@ -129,9 +129,7 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
       }
     });
     return LocalUserRoutes;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
@@ -182,9 +180,7 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     });
 
     return LocalAdminRoutes;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 // for enter posword state management and routes management
@@ -234,13 +230,13 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
 
       localStorage.setItem("isFirstLogin", response.authToken.isFirstLogIn);
       localStorage.setItem("activeOtoChatID", 0);
-      console.log("busyCall");
+
       localStorage.setItem("activeCall", false);
       sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
       localStorage.setItem("initiateVideoCall", false);
       localStorage.setItem("activeRoomID", 0);
-      console.log("mqtt");
+
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       sessionStorage.removeItem("isMeeting");
@@ -359,9 +355,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
     if (Number(localStorage.getItem("LoginFlowPageRoute")) !== 1) {
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
 }
 
 // Features IDs Check Fucntion
@@ -415,7 +409,7 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
 //Clearing URL function
 export const clearPaymentActionFromUrl = () => {
   const currentUrl = new URL(window.location.href);
-  console.log(currentUrl, "currentUrlcurrentUrl");
+
   // Create the new URL without query parameters and hash
   const newUrl = currentUrl.origin + currentUrl.pathname;
 
@@ -428,12 +422,6 @@ export const findAndSetConfigValue = (data, key) => {
   return foundObject;
 };
 export const truncateText = (text, maxLength) => {
-  console.log(
-    text.length,
-    maxLength,
-    text.length > maxLength,
-    "truncateTexttruncateText",
-  );
   if (text.length > maxLength) {
     return `${text.substring(0, maxLength - 3)}...`;
   }
@@ -469,7 +457,6 @@ export const encrypt = (data, key) => {
     const encrypted = xorEncryptDecrypt(JSON.stringify(data), key);
     return btoa(encrypted); // base64 encode
   } catch (e) {
-    console.log("Encrypt Error:", e);
     return null;
   }
 };
@@ -479,7 +466,6 @@ export const decrypt = (data, key) => {
     const decoded = atob(data); // base64 decode
     return JSON.parse(xorEncryptDecrypt(decoded, key));
   } catch (e) {
-    console.log("Decrypt Error:", e);
     return null;
   }
 };
@@ -655,11 +641,9 @@ export const WebNotificationExportRoutFunc = (
   isMeeting,
   setPolls,
 ) => {
-  console.log("webNotifactionDataRoutecheckFlag");
-  console.log("webNotifactionDataRoutecheckFlag", NotificationData);
   localStorage.setItem("webNotifactionDataRoutecheckFlag", false);
   let PayLoadData = JSON.parse(NotificationData.payloadData);
-  console.log("webNotifactionDataRoutecheckFlag", PayLoadData);
+
   if (NotificationData.notificationActionID === 1) {
     if (currentURL.includes("/Diskus/Meeting")) {
       //If you already on the Meeting Page
@@ -675,14 +659,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     } else {
@@ -705,14 +682,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     }
@@ -731,13 +701,7 @@ export const WebNotificationExportRoutFunc = (
         );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true),
         );
       }
     } else {
@@ -798,7 +762,7 @@ export const WebNotificationExportRoutFunc = (
         );
       } else {
         navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
@@ -837,13 +801,7 @@ export const WebNotificationExportRoutFunc = (
         );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true),
         );
       }
     } else {
@@ -939,14 +897,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     } else {
@@ -960,7 +911,7 @@ export const WebNotificationExportRoutFunc = (
         );
       } else {
         navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
@@ -969,14 +920,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     }
@@ -994,14 +938,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     } else {
@@ -1015,7 +952,7 @@ export const WebNotificationExportRoutFunc = (
         );
       } else {
         navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
@@ -1024,14 +961,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     }
@@ -1050,14 +980,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     } else {
@@ -1071,7 +994,7 @@ export const WebNotificationExportRoutFunc = (
         );
       } else {
         navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+
         localStorage.setItem("AdvanceMeetingOperations", true);
         localStorage.setItem(
           "NotificationAdvanceMeetingID",
@@ -1081,14 +1004,7 @@ export const WebNotificationExportRoutFunc = (
         localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            setEditorRole,
-            true,
-            1,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole, true, 1),
         );
       }
     }
@@ -2013,11 +1929,8 @@ export const SideBarGlobalNavigationFunctionNew = async (
   } = store.getState()?.ModalStatesReducer?.viewTabs;
 
   if (viewMeetingModal) {
-    console.log("Checking");
     if (Number(editorRole?.status) === 10) {
-      console.log("Checking");
     } else if (minutes || actions || polls) {
-      console.log("Checking");
       if (Number(editorRole.status) === 9 && polls) {
         dispatch(toggleViewMeetingModal(false));
         setEditorRole({
@@ -2045,24 +1958,19 @@ export const SideBarGlobalNavigationFunctionNew = async (
         };
         localStorage.setItem("MeetingPageRows", 30);
         localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
+
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
       } else {
         setCancelConfirmationModal(true);
       }
     } else if (Number(editorRole.status) === 11) {
-      console.log("Checking");
-      console.log("Check Route Meeting");
       dispatch(toggleViewMeetingModal(false));
 
       // dispatch(viewMeetingFlag(false));
       // setViewAdvanceMeetingModalUnpublish(false);
       navigate(navigateValue);
     } else {
-      console.log(navigateValue, "Checking");
-
       if (navigateValue === "/Diskus/") {
-        console.log(navigateValue, "Checking");
         navigate("/Diskus/");
       } else {
         try {
@@ -2086,11 +1994,10 @@ export const SideBarGlobalNavigationFunctionNew = async (
           };
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
-          console.log("chek search meeting");
+
           await dispatch(searchNewUserMeeting(navigate, searchData, t));
 
           dispatch(toggleViewMeetingModal(false));
-          console.log("Check Route Meeting");
 
           // dispatch(viewMeetingFlag(false));
           // isFunction(setViewAdvanceMeetingModalUnpublish) &&
@@ -2103,23 +2010,14 @@ export const SideBarGlobalNavigationFunctionNew = async (
           localStorage.removeItem("AdvanceMeetingOperations");
           localStorage.removeItem("NotificationClickTaskID");
           localStorage.removeItem("viewadvanceMeetingTask");
-        } catch (error) {
-          console.log("Checking", error);
-        }
+        } catch (error) {}
       }
-      console.log("Checking");
     }
   } else if (createEditMeetingModal) {
-    // console.log(
-    //   { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
-    //   "Checking",
-    // );
+    //
     setGoBackCancelModal(true);
   } else {
-    // console.log(
-    //   { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
-    //   "Checking",
-    // );
+    //
     navigate(navigateValue);
   }
 };
@@ -2148,25 +2046,19 @@ export const isAnyMeetingPageActive = async (flags) => {
   } = flags;
 
   return (
-    console.log(
-      "Check Route Meeting",
-      flags,
-    )(
-      ((await isFunction(scheduleMeetingPageFlag)) &&
-        scheduleMeetingPageFlag === true) ||
-        ((await isFunction(viewProposeDateMeetingPageFlag)) &&
-          viewProposeDateMeetingPageFlag === true) ||
-        ((await isFunction(viewAdvanceMeetingPublishPageFlag)) &&
-          viewAdvanceMeetingPublishPageFlag === true) ||
-        ((await isFunction(viewAdvanceMeetingUnpublishPageFlag)) &&
-          viewAdvanceMeetingUnpublishPageFlag === true) ||
-        ((await isFunction(viewProposeOrganizerMeetingPageFlag)) &&
-          viewProposeOrganizerMeetingPageFlag === true) ||
-        ((await isFunction(proposeNewMeetingPageFlag)) &&
-          proposeNewMeetingPageFlag === true),
-    ) &&
-    (await isFunction(viewMeetingFlag)) &&
-    viewMeetingFlag === false
+    ((await isFunction(scheduleMeetingPageFlag)) &&
+      scheduleMeetingPageFlag === true) ||
+      ((await isFunction(viewProposeDateMeetingPageFlag)) &&
+        viewProposeDateMeetingPageFlag === true) ||
+      ((await isFunction(viewAdvanceMeetingPublishPageFlag)) &&
+        viewAdvanceMeetingPublishPageFlag === true) ||
+      ((await isFunction(viewAdvanceMeetingUnpublishPageFlag)) &&
+        viewAdvanceMeetingUnpublishPageFlag === true) ||
+      ((await isFunction(viewProposeOrganizerMeetingPageFlag)) &&
+        viewProposeOrganizerMeetingPageFlag === true) ||
+      ((await isFunction(proposeNewMeetingPageFlag)) &&
+        proposeNewMeetingPageFlag === true),
+    (await isFunction(viewMeetingFlag)) && viewMeetingFlag === false
   );
 };
 
@@ -2223,9 +2115,9 @@ export const handleNavigationforParticipantVideoFlow = async ({
   //     flags.proposeNewMeetingsPageFlag,
   //   viewMeetingFlag: flags.viewMeetingFlagReducer || flags.viewMeetingsFlag,
   // };
-  // console.log(meetingFlags,NavigationLocation, "MeetingFlags");
+  //
   // const shouldNavigateToMeeting = await isAnyMeetingPageActive(meetingFlags);
-  // console.log(shouldNavigateToMeeting, "MeetingFlags");
+  //
   try {
     // if (shouldNavigateToMeeting) {
     //   handleMeetingNavigation(navigate, dispatch);
@@ -2339,17 +2231,11 @@ export const handleNavigationforParticipantVideoFlow = async ({
       default:
         break;
     }
-  } catch (error) {
-    console.log(error, "Navigation error");
-  }
+  } catch (error) {}
 };
 
 // Special handling for Meeting case
-const handleMeetingCase = (
-  navigate,
-  dispatch,
-  t,
-) => {
+const handleMeetingCase = (navigate, dispatch, t) => {
   const currentView = localStorage.getItem("MeetingCurrentView");
   const meetingpageRow = localStorage.getItem("MeetingPageRows");
   const meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -2384,7 +2270,7 @@ const handleMeetingCase = (
     localStorage.setItem("MeetingPageCurrent", 1);
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   }
-  console.log("Check Route Meeting");
+
   dispatch(resetCreateEditTabs());
 
   dispatch(toggleViewMeetingModal(false));

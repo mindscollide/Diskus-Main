@@ -32,15 +32,9 @@ const CreateEditCompliance = () => {
     setIsComplianceCreateOrEdit,
   } = useComplianceContext();
   // Tracking all Loading States
-  console.log(
-    { checkListData, complianceDetailsState },
-    "checkListTabscheckListTabs",
-  );
+  
 
-  console.log(
-    { complianceAddEditViewState, showViewCompliance },
-    "complianceAddEditViewState",
-  );
+  
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {

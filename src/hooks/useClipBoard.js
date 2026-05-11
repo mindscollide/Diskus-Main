@@ -16,7 +16,7 @@ const copyToClipboard = async (text) => {
       await clipboardCopy(text);
     }
   } catch (error) {
-    console.error("Copy to clipboard failed:", error);
+    
   }
 };
 

@@ -94,7 +94,7 @@ const SearchComplianceBoxModal = () => {
         setComplianceByMeList([]);
         dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
       } else if (complianceViewMode === "forMe") {
-        console.log("here");
+        
         setEnterpressed(true);
         setCriticalityFilter([1, 2, 3]);
         setCriticalityFilterForMe([1, 2, 3]);
@@ -187,7 +187,7 @@ const SearchComplianceBoxModal = () => {
         pageNumber: 0,
         length: 10,
       };
-      console.log("dataforByme", Data);
+      
       dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
     } else if (complianceViewMode === "forMe") {
       setComplianceForMeList([]);
@@ -260,7 +260,7 @@ const SearchComplianceBoxModal = () => {
     setsearchbox(false);
   };
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    
     setSearchCompliancePayload({
       ...searchCompliancePayload,
       tagsCSV: value,

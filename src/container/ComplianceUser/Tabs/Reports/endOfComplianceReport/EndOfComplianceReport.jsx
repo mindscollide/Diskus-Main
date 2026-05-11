@@ -156,7 +156,7 @@ const EndOfComplianceReport = () => {
   }, []);
 
   const handleDownloadPDF = async () => {
-    console.log("Is Coming report");
+    
     try {
       setIsGenerating(true);
       setShowPdfLayout(true);
@@ -179,7 +179,7 @@ const EndOfComplianceReport = () => {
       // Remove the class after generation
       element.classList.remove("pdf-print-mode");
     } catch (err) {
-      console.error(err);
+      
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -187,16 +187,16 @@ const EndOfComplianceReport = () => {
   };
 
   const handleAutoDownload = async () => {
-    console.log("Is Coming report");
+    
     try {
-      console.log("Is Coming report");
+      
       setIsGenerating(true);
       await handleDownloadPDF();
       setEndOfComplianceReport(false);
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
-      console.error(error);
+      
     } finally {
       setIsGenerating(false);
     }
@@ -204,7 +204,7 @@ const EndOfComplianceReport = () => {
 
   useEffect(() => {
     if (autoPdfDownload && GetEndOfComplianceReport && !hasDownloaded) {
-      console.log("Is Coming report");
+      
       setHasDownloaded(true);
       handleAutoDownload();
     }
@@ -223,7 +223,7 @@ const EndOfComplianceReport = () => {
   //     await document.fonts.ready;
   //     await generatePDF(getTargetElement, pdfOptions);
   //   } catch (err) {
-  //     console.error("PDF generation failed:", err);
+  //     
   //   } finally {
   //     setShowPdfLayout(false); // hide PDF layout
   //     setIsGenerating(false); // spinner OFF

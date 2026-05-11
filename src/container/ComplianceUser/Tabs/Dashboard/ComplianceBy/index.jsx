@@ -46,14 +46,14 @@ const ComplianceBy = () => {
   const hasDataComplianceBy = GetComplianceByDashboardData !== null;
 
   const handleCardClick = (complianceId) => {
-    console.log(complianceId, "asgvdajsgdv");
+    
     const getViewType = localStorage.getItem("viewType");
     setMainComplianceTabs(2);
     const Data = {
       complianceId: Number(complianceId),
       viewType: Number(getViewType),
     };
-    console.log(Data, "DataDataDataData");
+    
     dispatch(
       ViewComplianceDetailsByViewTypeAPI(
         navigate,

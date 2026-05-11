@@ -15,9 +15,9 @@ const Documents = ({
 }) => {
   const { editorRole } = useMeetingContext();
 
-  console.log("datafilesdatafilesdata", editorRole);
+  
   const CrossDocument = (fileIndex, fileDataProp) => {
-    console.log(fileDataProp, "fileDataPropfileDataProp");
+    
     let optionscross = [...rows];
     const updatedOptionsCross = optionscross.map((option) => {
       if (option.files) {
@@ -36,7 +36,7 @@ const Documents = ({
     );
   };
 
-  console.log("fileDataPropfileDataProp", fileForSend);
+  
 
   let currentUserID = Number(localStorage.getItem("userID"));
 

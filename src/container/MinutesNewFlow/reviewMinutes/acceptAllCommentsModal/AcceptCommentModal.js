@@ -68,7 +68,7 @@ const AcceptCommentModal = ({
       setMinutesToReview(0);
       dispatch(acceptCommentModal(false));
     } catch (error) {
-      console.log("Error", error);
+      
     }
   };
 

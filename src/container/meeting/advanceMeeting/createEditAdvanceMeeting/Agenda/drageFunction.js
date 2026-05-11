@@ -1,11 +1,11 @@
 export const onDragEnd = (result, rows, setRows) => {
-  console.log("result", result);
+  
   // Dropped nowhere
   if (!result.destination) {
     return;
   }
   if (result.type === "PARENT") {
-    console.log("result", result);
+    
     const reorderedRows = [...rows];
     const [movedRow] = reorderedRows.splice(result.source.index, 1);
     reorderedRows.splice(result.destination.index, 0, movedRow);

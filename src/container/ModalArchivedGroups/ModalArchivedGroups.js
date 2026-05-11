@@ -115,10 +115,7 @@ const ModalArchivedCommittee = ({
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
       } catch (error) {
-        console.log(
-          error,
-          "error in useEffect GroupsReducerrealtimeGroupStatus"
-        );
+        
       }
     }
   }, [GroupsReducerrealtimeGroupStatus]);

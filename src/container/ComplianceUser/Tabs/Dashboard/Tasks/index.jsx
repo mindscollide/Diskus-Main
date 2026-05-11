@@ -31,10 +31,7 @@ const ComplianceTasks = () => {
       state.ComplainceSettingReducerReducer.GetComplianceTasksDashboardData,
   );
 
-  console.log(
-    GetComplianceTasksDashboardData,
-    "GetComplianceTasksDashboardData",
-  );
+  
 
   const complianceTaskList =
     GetComplianceTasksDashboardData?.taskList?.slice(0, 4) || [];

@@ -494,7 +494,7 @@ const Actions = ({
         utcConvertintoGMT(b.deadlineDateTime),
 
       render: (text, record) => {
-        console.log(record, "deadlineDateTime");
+        
         return (
           <span className="text-nowrap text-center">
             {_justShowDateformatBilling(record.deadlineDateTime)}
@@ -662,7 +662,7 @@ const Actions = ({
         dispatch(createTaskMeetingMQTT(null));
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [toDoListReducer.createTaskMeeting]);
   const handleCreateTaskButton = () => {

@@ -100,12 +100,7 @@ const SignupProcessUserManagement = () => {
       }
     }
   }, []);
-  console.log(
-    "SignupFlowPageRoute",
-    signUpUserManagementRoute,
-    storedStep,
-    UserMangementReducerdefaultRoutingValue
-  );
+  
 
   //For SnakBar Messeges
 
@@ -227,10 +222,7 @@ const SignupProcessUserManagement = () => {
 
       dispatch(cleareMessage());
     } else if (AuthreducerEmailValidationResponseMessage !== "") {
-      console.log(
-        AuthreducerEmailValidationResponseMessage,
-        "EmailValidationResponseMessage"
-      );
+      
       showMessage(
         AuthreducerEmailValidationResponseMessage,
         "success",
@@ -274,7 +266,7 @@ const SignupProcessUserManagement = () => {
     let roleID = parseInt(localStorage.getItem("roleID"));
     let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-    console.log("message arrived", data);
+    
     if (
       data.payload.message
         .toLowerCase()
@@ -285,7 +277,7 @@ const SignupProcessUserManagement = () => {
       if (roleID === 1 || roleID === 2) {
         navigate("/Admin/");
       } else {
-        console.log("message arrived");
+        
         if (isFirstLogin != undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
@@ -311,7 +303,7 @@ const SignupProcessUserManagement = () => {
       "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
     ) {
       localStorage.setItem("TowApproval", false);
-      console.log("TowApproval");
+      
       dispatch(LoginFlowRoutes(7));
     }
   };
@@ -342,7 +334,7 @@ const SignupProcessUserManagement = () => {
     SignupComponent = <BillingMethodUsermanagement setStoredStep={setStoredStep}/>;
   } else {
     SignupComponent = null;
-    console.log("Errorr in route");
+    
   }
 
   return (

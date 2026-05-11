@@ -32,7 +32,7 @@ const BoardDeckSendEmail = ({
   setBoarddeckOptions,
   boardDeckMeetingTitle,
 }) => {
-  console.log(boardDeckMeetingID, "radioValueradioValue");
+  
   const { t } = useTranslation();
   const { editorRole } = useMeetingContext();
   const dispatch = useDispatch();
@@ -73,7 +73,7 @@ const BoardDeckSendEmail = ({
 
   // for selection of data
   const handleSelectValue = (value) => {
-    console.log(value, "handleSelectValue");
+    
     setSelectedsearch(value);
   };
 
@@ -148,7 +148,7 @@ const BoardDeckSendEmail = ({
             fetchAgendaWithoutAttachments: boarddeckOptions.Agenda,
           },
         };
-        console.log(data, "datadatadatadatadata");
+        
         dispatch(
           BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions, 1)
         );
@@ -172,7 +172,7 @@ const BoardDeckSendEmail = ({
             fetchAgendaWithoutAttachments: boarddeckOptions.Agenda,
           },
         };
-        console.log(data, "datadatadatadatadata");
+        
         dispatch(
           BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions, 2)
         );

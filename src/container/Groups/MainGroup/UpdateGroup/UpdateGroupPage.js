@@ -264,7 +264,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     });
   };
 
-  console.log(GroupDetails.GroupStatusID, "valuevalue");
+  
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -425,7 +425,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             },
             GroupMembers: membersData,
           };
-          console.log(Data, "valuevalue");
+          
           dispatch(updateGroup(navigate, Data, t, setUpdateComponentpage));
         }
       }
@@ -561,7 +561,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   let previousFileList = [];
 
   const handleRemoveFile = (data) => {
-    console.log(data, "indexindexindex");
+    
     setFileAttachments((filesData) => {
       return filesData.filter(
         (fileData, index) =>
@@ -582,7 +582,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       });
     }
   };
-  console.log(fileForSend, fileAttachments, "fileForSendfileForSend");
+  
 
   useEffect(() => {
     if (

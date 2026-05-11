@@ -36,7 +36,7 @@ const VerificationCodeThree = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
+  
 
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
@@ -44,7 +44,7 @@ const VerificationCodeThree = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  console.log(minutes, seconds, "datadatadatadatadata");
+  
   let currentDevice = JSON.parse(localStorage.getItem("selectDevice"));
   const [device, setDevice] = useState({
     DeviceName: currentDevice?.DeviceName,
@@ -79,7 +79,7 @@ const VerificationCodeThree = () => {
     let roleID = parseInt(localStorage.getItem("roleID"));
     let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-    console.log("message arrived", data);
+    
     if (
       data.payload.message
         .toLowerCase()
@@ -90,7 +90,7 @@ const VerificationCodeThree = () => {
       if (roleID === 1 || roleID === 2) {
         navigate("/Admin/");
       } else {
-        console.log("message arrived");
+        
         if (isFirstLogin !== null && isFirstLogin !== undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
@@ -116,7 +116,7 @@ const VerificationCodeThree = () => {
       "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
     ) {
       localStorage.setItem("TowApproval", false);
-      console.log("TowApproval");
+      
       dispatch(LoginFlowRoutes(7));
     }
   };
@@ -181,7 +181,7 @@ const VerificationCodeThree = () => {
   }, []);
 
   const handleGoback = () => {
-    console.log("goback");
+    
     if (localStorage.getItem("isMultiDevice") === "false") {
       localStorage.setItem("LoginFlowPageRoute", 8);
       dispatch(LoginFlowRoutes(8));

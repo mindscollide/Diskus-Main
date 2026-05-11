@@ -18,7 +18,7 @@ const SubDocumnets = ({
   const { editorRole } = useMeetingContext();
 
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex, subAgendaFiles) => {
-    console.log(subAgendaFiles, "fileDataPropfileDataProp");
+    
     let optionscross = [...rows];
 
     // Find the correct subAgenda and update its subfiles array

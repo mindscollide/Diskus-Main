@@ -52,7 +52,7 @@ const Participants = () => {
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
   let meetingData = store.getState().NewMeetingreducer.currentMeetingInfo;
-  console.log(meetingData, "meetingDatameetingDatameetingData");
+  
   const isAdvanceMeetingRoute = useSelector(
     (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
   );
@@ -99,7 +99,7 @@ const Participants = () => {
   // handling save and next button
   const handleNextButton = () => {
     let Data = { MeetingID: meetingID, StatusID: 1 };
-    console.log("end meeting chaek");
+    
     dispatch(
       UpdateMeetingStatusApi(
         navigate,

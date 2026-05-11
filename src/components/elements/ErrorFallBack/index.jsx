@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 export const ErrorFallback = ({ error }) => {
   const { t } = useTranslation();
   const { resetBoundary } = useErrorBoundary();
-  console.log(error, "ErrorFallback");
+  
   return (
     <section className='ErrorWrapperContainer'>
       <Row>
@@ -76,6 +76,7 @@ export const ErrorFallback = ({ error }) => {
  * @param {object} info  - React error info object containing `componentStack`.
  */
 export const logErrors = (error, info) => {
-  console.log("logErrors error :", error);
-  console.log("logErrors error :", JSON.stringify(info));
+  console.error("ErrorBoundary caught an error:", error);
+  console.error("Component stack trace:", info.componentStack);
+
 };

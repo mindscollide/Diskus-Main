@@ -76,7 +76,7 @@ const ViewProposedMeetingModal = () => {
         });
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   }, [getAllMeetingDetails]);
 
@@ -90,7 +90,7 @@ const ViewProposedMeetingModal = () => {
         setParticipants(getAllSavedparticipantsData);
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   }, [getAllSavedparticipantsData]);
 
@@ -107,7 +107,7 @@ const ViewProposedMeetingModal = () => {
       } else {
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerror");
+      
     }
   }, [getAllProposedDatesData]);
 
@@ -172,7 +172,7 @@ const ViewProposedMeetingModal = () => {
                 {Array.isArray(meetingProposedDates) &&
                 meetingProposedDates.length > 0 ? (
                   meetingProposedDates.map((dateData, index) => {
-                    console.log(dateData, "dateData");
+                    
                     const formattedDate = ProposedMeetingViewDateFormatWithTime(
                       dateData,
                       locale,

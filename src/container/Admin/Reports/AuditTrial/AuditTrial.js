@@ -86,7 +86,7 @@ const AuditTrial = () => {
       };
       dispatch(GetAuditListingAPI(navigate, Data, t));
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
     return () => {
       setAuditTrialSearch({
@@ -175,7 +175,7 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         return (
           <>
             <span className={styles["NameStylesTable"]}>{record.userName}</span>
@@ -191,7 +191,7 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -226,7 +226,7 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -244,7 +244,7 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -262,7 +262,7 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -323,14 +323,14 @@ const AuditTrial = () => {
   const handeSearchBoxTextField = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log({ name, value }, "handleChangeSearchBoxValues");
+    
 
     // Normalize the key to match state
     const key = name.charAt(0).toLowerCase() + name.slice(1);
 
     if (name === "UserName" || name === "Title") {
       if (value !== "") {
-        console.log("saif");
+        
         let valueCheck = /^[A-Za-z\s]*$/i.test(value);
         if (valueCheck) {
           setAuditTrialSearch((prevState) => ({
@@ -345,7 +345,7 @@ const AuditTrial = () => {
           }));
         }
       } else {
-        console.log("saif");
+        
         setAuditTrialSearch((prevState) => ({
           ...prevState,
           userName: "",
@@ -456,7 +456,7 @@ const AuditTrial = () => {
         },
       });
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   };
 
@@ -495,7 +495,7 @@ const AuditTrial = () => {
         },
       });
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   };
 
@@ -553,7 +553,7 @@ const AuditTrial = () => {
         },
       });
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   };
 

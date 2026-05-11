@@ -199,9 +199,9 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
             ) {
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "fileIdsfileIds");
+                
                 fileIds.map((newFileID, index) => {
-                  console.log(fileIds, "newFileID");
+                  
 
                   return newFolder.push({
                     pK_FileID: newFileID.pK_FileID,
@@ -209,10 +209,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
                   });
                 });
               } catch (error) {
-                console.log(
-                  error,
-                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds",
-                );
+                
               }
 
               await dispatch(
@@ -526,10 +523,7 @@ const getCommitteesbyCommitteeId = (
       .post(getCommitteesApi, form)
 
       .then(async (response) => {
-        console.log(
-          "getAllCommitteesByUserIdActionsgetAllCommitteesByUserIdActions",
-          response,
-        );
+        
 
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -591,7 +585,7 @@ const getCommitteesbyCommitteeId = (
                   dispatch(viewCommitteePageFlag(true));
                 }
               } catch (error) {
-                console.log(error, "Saiferrorerrorerror");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1533,7 +1527,7 @@ const viewCommitteePageFlag = (response) => {
 };
 
 const removeCommitteeMemberMQTT = (response) => {
-  console.log(response, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT");
+  
   return {
     type: actions.REMOVE_COMMITTEE_MEMBER,
     response: response,

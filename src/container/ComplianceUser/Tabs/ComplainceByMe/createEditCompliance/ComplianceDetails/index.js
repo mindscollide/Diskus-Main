@@ -91,7 +91,7 @@ const ComplainceDetails = () => {
     setIsReopenConfirmed,
   } = useComplianceContext();
 
-  console.log(comlianceStatusReopenedModal, "comlianceStatusReopenedModal");
+  
   const complianceDataroomFolderId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
@@ -100,14 +100,10 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails,
   );
 
-  console.log(
-    complianceDataroomFolderId,
-    complianceReopenedDetail,
-    "complianceReopenedDetail",
-  );
+  
 
-  console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
-  console.log(complianceDetailsState, "complianceDetailsState");
+  
+  
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -150,9 +146,9 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
-  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+  
 
-  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
+  
 
   const [open, setOpen] = useState({
     open: false,
@@ -363,7 +359,7 @@ const ComplainceDetails = () => {
         setTaskCount(totalTaskCount);
       } catch (error) {}
     } else {
-      console.log("Check Check");
+      
       //  CLEAR UI when API returns null
       setTaskCount(0);
       return;
@@ -385,7 +381,7 @@ const ComplainceDetails = () => {
         });
         setAuthorityOptions(allAuthority);
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [getAllAuthorities]);
@@ -399,7 +395,7 @@ const ComplainceDetails = () => {
         setTagsOptions(GetAllTagsByOrganizationIDData.tags);
       } catch (error) {
         setTagsOptions([]);
-        console.log(error);
+        
       }
     } else {
       setTagsOptions([]);
@@ -463,7 +459,7 @@ const ComplainceDetails = () => {
           ),
         );
       } else {
-        console.log("complianceByMeList");
+        
         dispatch(
           EditComplianceAPI(
             navigate,
@@ -475,9 +471,9 @@ const ComplainceDetails = () => {
         );
       }
 
-      console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
+       // ✅ DATA HERE
     } catch (error) {
-      console.error(error);
+      
     }
   };
 
@@ -488,7 +484,7 @@ const ComplainceDetails = () => {
   }, [complianceDataroomFolderId, complianceReopenedDetail]);
 
   useEffect(() => {
-    console.log("dueDate changed:", complianceDetailsState.dueDate);
+    
   }, [complianceDetailsState.dueDate]);
 
   const handleValueChange = (event) => {
@@ -573,7 +569,7 @@ const ComplainceDetails = () => {
       };
       if (complianceDetailsState.status.value === 6 && isReopenConfirmed) {
         // There should we use update with repopend compliancere
-        console.log("CHeck Issue 606");
+        
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
           updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
@@ -583,12 +579,7 @@ const ComplainceDetails = () => {
           complianceId: complianceInfo.complianceId,
           complianceTitle: complianceDetailsState.complianceTitle,
         };
-        console.log(
-          "DataReOpenCompliance",
-          reopenDataroomMap,
-          complianceReopenDetailsState,
-          DataReOpenCompliance,
-        );
+        
         setEditComplianceData(Data);
         dispatch(
           AddReopenComplianceAPI(
@@ -601,7 +592,7 @@ const ComplainceDetails = () => {
         setIsReopenConfirmed(false);
         return;
       }
-      console.log("complianceByMeList");
+      
       dispatch(
         EditComplianceAPI(
           navigate,
@@ -611,8 +602,8 @@ const ComplainceDetails = () => {
           ViewComplianceDetailsByViewTypeAPI,
         ),
       );
-      console.log("complianceReopenDetailsState", complianceReopenDetailsState);
-      console.log(Data, "complianceReopenDetailsState");
+      
+      
       // dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
     } else {
       const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
@@ -645,7 +636,7 @@ const ComplainceDetails = () => {
     meetingDateValueFormat2.setMinutes(59);
     meetingDateValueFormat2.setSeconds(58);
 
-    console.log(meetingDateValueFormat2, "meetingDateValueFormat2");
+    
 
     setComplianceDetailsState((prev) => ({
       ...prev,
@@ -798,7 +789,7 @@ const ComplainceDetails = () => {
 
   // Status
   const handleChangeComplianceStatus = (event) => {
-    console.log(event, "CompliaceStatusOnHoldModal");
+    
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
       if (complianceDetailsState.status.value === 3) {
@@ -827,11 +818,7 @@ const ComplainceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
         if (checkAnyChecklistOnPendingState || hasIncompleteChecklistOrTask) {
-          console.log(
-            checkAnyChecklistOnPendingState,
-            checkAnyTaskInProgress,
-            "CompliaceStatusOnHoldModal",
-          );
+          
 
           resetModalStates();
           setTempSelectedComplianceStatus(event);
@@ -976,7 +963,7 @@ const ComplainceDetails = () => {
             }
             onBlur={handleBlur}
           />
-          {console.log(errors, "COmplainceError")}
+          {}
           <p
             className={
               errors.complianceTitle

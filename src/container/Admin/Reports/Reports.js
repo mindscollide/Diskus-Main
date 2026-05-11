@@ -209,7 +209,7 @@ const Reports = () => {
       key: "dateLogOut",
       align: "center",
       render: (text, record) => {
-        console.log(text, "dateLogOutdateLogOutdateLogOut");
+        
 
         return (
           <>
@@ -262,8 +262,8 @@ const Reports = () => {
       align: "center",
       key: "loggedInFromIP",
       render: (text, record) => {
-        console.log(typeof text, "texttexttext");
-        console.log(text, "texttexttext");
+        
+        
 
         return (
           <>
@@ -302,7 +302,7 @@ const Reports = () => {
   const handleChangeSearchBoxValues = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log({ name, value }, "handleChangeSearchBoxValues");
+    
 
     // For userName or Title, ensure only letters and whitespace are allowed
     if (name === "userName" || name === "Title") {
@@ -449,7 +449,7 @@ const Reports = () => {
         Title: "",
       });
     } catch (error) {
-      console.log(error, "userLoginHistorySearchuserLoginHistorySearch");
+      
     }
   };
 
@@ -493,7 +493,7 @@ const Reports = () => {
   };
 
   const handleSearches = (data, fieldName) => {
-    console.log(data, fieldName, "datadatadatahandleSearches");
+    
     setUserLoginHistorySearch({
       ...userLoginHistorySearch,
       [fieldName]: "",
@@ -513,7 +513,7 @@ const Reports = () => {
       sRow: 0,
       Length: 10,
     };
-    console.log(Data, "consoleconsole");
+    
     dispatch(userLoginHistory_Api(navigate, t, Data, true));
   };
 

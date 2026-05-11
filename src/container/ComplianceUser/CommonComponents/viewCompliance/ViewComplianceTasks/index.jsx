@@ -54,7 +54,7 @@ const ViewComplianceTasks = () => {
   const [activeSortedChecklistId, setActiveSortedChecklistId] = useState(null);
   const [taskStatus, setTaskStatus] = useState([]);
 
-  console.log(taskStatus, "taskStatustaskStatus");
+  
 
   // Status Options
   const TASK_STATUS_TRANSITIONS = {
@@ -80,12 +80,9 @@ const ViewComplianceTasks = () => {
     viewComplianceTasksContextData,
     setViewComplianceTasksContextData,
   } = useComplianceContext();
-  console.log(
-    complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState",
-  );
-  console.log(expandChecklistOnTasksPage, "expandChecklistOnTasksPage");
-  console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
+  
+  
+  
   
 
   const getAllComplianceChecklistTask = useSelector(
@@ -100,10 +97,7 @@ const ViewComplianceTasks = () => {
         .GetComplianceChecklistsWithTasksByComplianceIdForMe,
   );
 
-  console.log(
-    getAllComplianceChecklistTask,
-    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask",
-  );
+  
 
   useEffect(() => {
     if (allTasksStatusForFilter?.length > 0) {
@@ -119,10 +113,7 @@ const ViewComplianceTasks = () => {
 
   useEffect(() => {
     if (complianceDetailsState.complianceId !== 0) {
-      console.log(
-        complianceDetailsState.complianceId,
-        "complianceDetailsState.complianceIdcomplianceDetailsState.complianceId",
-      );
+      
       let Data = {
         complianceId: complianceDetailsState.complianceId,
       };
@@ -211,7 +202,7 @@ const ViewComplianceTasks = () => {
 
     resetAllSorts();
 
-    console.log(sorter.order, "taskTitletaskTitle");
+    
     if (sorter.columnKey === "taskTitle") {
       setTaskTitleSort(sorter.order);
     }
@@ -287,7 +278,7 @@ const ViewComplianceTasks = () => {
 
   // functions
   const handleStatusChange = (taskId, selectedStatus) => {
-    console.log({ selectedStatus, taskId }, "selectedStatusselectedStatus");
+    
     setViewComplianceTasksContextData(
       (prev) =>
         prev.map((checklist) => ({
@@ -308,7 +299,7 @@ const ViewComplianceTasks = () => {
   };
 
   const statusChangeHandler = (statusId, taskId) => {
-    console.log(statusId, taskId, "statusIdtaskId");
+    
     let complianceId = complianceDetailsState?.complianceId;
     const Data = {
       TaskID: taskId,
@@ -443,7 +434,7 @@ const ViewComplianceTasks = () => {
       align: "left",
       ellipsis: true,
       render: (text, record) => {
-        console.log(text, record, "assignedUsers");
+        
         const firstUser = text?.[0];
         return (
           <span className="text-truncate">
@@ -566,7 +557,7 @@ const ViewComplianceTasks = () => {
 
       // Action buttons column
       render: (hasAttachments) => {
-        console.log(hasAttachments, "hasAttachmentshasAttachments");
+        
         return (
           <Row>
             <Col

@@ -47,7 +47,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
           ? true
           : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSceduleMeeting(false);
     localStorage.setItem("folderDataRoomMeeting", 0);

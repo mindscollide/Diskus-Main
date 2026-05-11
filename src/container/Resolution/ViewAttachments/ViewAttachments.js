@@ -10,10 +10,7 @@ import AttachmentViewer from "../../../components/elements/fileAttachment/attach
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import CustomModal from "../../../components/elements/modal/Modal";
 const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
-  console.log(
-    resolutionAttachments,
-    "resolutionAttachmentsresolutionAttachments"
-  );
+  
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();

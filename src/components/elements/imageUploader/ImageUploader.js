@@ -21,7 +21,7 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   const { Authreducer } = useSelector((state) => state);
   const { t } = useTranslation();
   const navigate = useNavigate();
-  console.log(fileList, "fileListfileList");
+  
   const handlePreview = async (file) => {
     const base64Image = file.url.split(",")[1];
     if (isBase64(base64Image)) {
@@ -33,7 +33,7 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   const handleCancel = () => setPreviewOpen(false);
 
   const uploadProfilePic = ({ file }) => {
-    console.log(file, "filefilefilefile");
+    
     getBase64(file)
       .then((res) => {
         let fileUrL = res.split(",")[1];
@@ -81,7 +81,7 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
     //     reader.readAsDataURL(blob);
     //   })
     //   .catch((err) =>
-    //     console.error("Error converting DefaultAvatar to base64:", err)
+    //     
     //   );
 
     // Reset fileList to empty

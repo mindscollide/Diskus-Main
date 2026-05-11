@@ -266,7 +266,7 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
         setActiveComponent("PakageDetails");
       }
     } catch {
-      console.log("error on back");
+      
     }
   };
 
@@ -287,7 +287,7 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
 
   //Flag Selector
   const countryOnSelect = (code) => {
-    console.log(code, "countryOnSelect");
+    
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
@@ -314,7 +314,7 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
         },
       });
     }
-    console.log(a, "countryOnSelect");
+    
   };
 
   //Go Back

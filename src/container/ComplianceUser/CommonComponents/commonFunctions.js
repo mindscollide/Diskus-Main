@@ -85,7 +85,7 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
 
     return new Date(year, month, day, 23, 59, 58);
   } catch (error) {
-    console.log(error, dateString);
+    
   }
 };
 

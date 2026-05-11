@@ -138,11 +138,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           }
           setDecisionId(getVoteresult?.decisionID);
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [VoteDetails]);
   return (

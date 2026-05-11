@@ -164,7 +164,7 @@ const Notes = () => {
         localStorage.removeItem("notesPageSize");
       };
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -544,7 +544,7 @@ const Notes = () => {
 
   // this is onchange envent of search modal Documnet
   const handleChangeDocumentsOptions = (event) => {
-    console.log(event, "eventeventevent");
+    
     setSearchResultFields((prevState) => ({
       ...prevState, // Copy the existing state
       Type: event, // Update the Type field
@@ -908,7 +908,7 @@ const Notes = () => {
             {/* Test Accordian Body Starts  */}
             {notes.length > 0 && notes !== null && notes !== undefined ? (
               notes.map((data, index) => {
-                console.log(data, "datdayaminyamin");
+                
                 return (
                   <CustomAccordion
                     key={data.pK_NotesID}

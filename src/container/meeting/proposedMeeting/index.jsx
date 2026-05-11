@@ -402,7 +402,7 @@ const ProposedMeetingList = ({
                   GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
                 );
               } catch (error) {
-                console.log(error, "apis call Error");
+                
               }
             }}
             className={styles.tableRow}
@@ -801,7 +801,7 @@ const ProposedMeetingList = ({
             dispatch(uploadGlobalFlag(false));
           }
         } catch (error) {
-          console.error("Error in API call:", error);
+          
           localStorage.removeItem("meetingprop");
         }
       };
@@ -844,7 +844,7 @@ const ProposedMeetingList = ({
               dispatch(uploadGlobalFlag(false));
             }
           } catch (error) {
-            console.error("Error in API call:", error);
+            
             localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };

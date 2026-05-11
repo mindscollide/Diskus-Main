@@ -8,7 +8,6 @@ let newClient;
 export const mqttConnection = (subscribeID, dispatch) => {
   try {
     if (!subscribeID) {
-      console.error("No subscribeID provided for MQTT connection.");
       return;
     }
 
@@ -27,36 +26,30 @@ export const mqttConnection = (subscribeID, dispatch) => {
     }
 
     newClient.onConnectionLost = (responseObject) => {
-      console.error("MQTT Connection lost:", responseObject.errorMessage);
       setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Reconnect after 6 seconds
     };
 
     const options = {
       onSuccess: () => {
-        console.log("Connected to MQTT broker");
         try {
           newClient.subscribe(subscribeID.toString(), {
-            onSuccess: () => console.log(`MQTT Subscribed to ${subscribeID}`),
-            onFailure: (error) =>
-              console.error(`MQTT Subscription failed: ${error.errorMessage}`),
+            onSuccess: () => {},
+            onFailure: (error) => console.log(error),
           });
-        } catch (subError) {
-          console.error("Error during subscription:", subError.message);
-        }
+        } catch (subError) {}
       },
       onFailure: (error) => {
-        console.error("Failed to connect to MQTT broker:", error.errorMessage);
         setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Retry connection after 6 seconds
       },
       keepAliveInterval: 30,
       reconnect: true,
       userName: decrypt(
         process.env.REACT_APP_MQTT_User,
-        process.env.REACT_APP_SECERETKEY
+        process.env.REACT_APP_SECERETKEY,
       ),
       password: decrypt(
         process.env.REACT_APP_MQTT_Pass,
-        process.env.REACT_APP_SECERETKEY
+        process.env.REACT_APP_SECERETKEY,
       ),
     };
 
@@ -67,10 +60,9 @@ export const mqttConnection = (subscribeID, dispatch) => {
       setClient({
         clientId: newClient.clientId,
         isConnected: newClient.isConnected(),
-      })
+      }),
     );
   } catch (error) {
-    console.error("Error in MQTT connection:", error.message);
     setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Retry connection after 6 seconds
   }
 };

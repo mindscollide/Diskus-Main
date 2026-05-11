@@ -232,7 +232,7 @@ export const NewMeetingProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      console.log(error, "meetingReminderNotification effect");
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingReminderNotification]);
@@ -262,7 +262,7 @@ export const NewMeetingProvider = ({ children }) => {
           setList([newMeetingData, ...list]);
         }
       } catch (error) {
-        console.log(error, "Meeting Created and Published");
+        
       }
     };
 
@@ -314,7 +314,7 @@ export const NewMeetingProvider = ({ children }) => {
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
     } catch (error) {
-      console.log(error, "MeetingStatusSocket effect");
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
@@ -341,7 +341,7 @@ export const NewMeetingProvider = ({ children }) => {
         ),
       );
     } catch (error) {
-      console.log(error, "MeetingStatusEnded effect");
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
@@ -375,7 +375,7 @@ export const NewMeetingProvider = ({ children }) => {
           setList([newMeetingData, ...list]);
         }
       } catch (error) {
-        console.log(error, "allMeetingsSocketData effect");
+        
       }
     };
 
@@ -396,7 +396,7 @@ export const NewMeetingProvider = ({ children }) => {
 
       updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
     } catch (error) {
-      console.log(error, "CommitteeMeetingMQTT effect");
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [CommitteeMeetingMQTT]);
@@ -414,7 +414,7 @@ export const NewMeetingProvider = ({ children }) => {
 
       updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
     } catch (error) {
-      console.log(error, "GroupMeetingMQTT effect");
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
@@ -467,7 +467,7 @@ export const NewMeetingProvider = ({ children }) => {
         const { list, setList } = getActiveMeetingListAndSetter();
         setList([newData, ...list]);
       } catch (error) {
-        console.log(error, "mqttMeetingPrAdded effect");
+        
       }
     }
 
@@ -479,7 +479,7 @@ export const NewMeetingProvider = ({ children }) => {
           removeMeetingFromAllLists(meetingID);
         }
       } catch (error) {
-        console.log(error, "mqtMeetingPrRemoved effect");
+        
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -543,7 +543,7 @@ export const NewMeetingProvider = ({ children }) => {
           break;
       }
     } catch (error) {
-      console.log(error, "searchMeetings effect");
+      
       setPublishedMeetingData([]);
       setDraftMeetingData([]);
       setProposedMeetingData([]);
@@ -572,7 +572,7 @@ export const NewMeetingProvider = ({ children }) => {
 
       setMeetingTypeFilter(meetingtypeFilter);
     } catch (error) {
-      console.log(error, "meetingTypes filter effect");
+      
     }
   }, [getALlMeetingTypes?.meetingTypes, t]);
 

@@ -73,7 +73,7 @@ const ViewUpdateCommittee = ({ setViewCommitteePage, viewCommitteeTab }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
     return () => {
       localStorage.removeItem("NotificationClickCommitteeOperations");

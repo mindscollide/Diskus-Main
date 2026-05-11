@@ -15,8 +15,8 @@ const PollDetails = () => {
 
   const PollsReducerviewVotess = useSelector((state) => state.PollsReducer);
 
-  console.log(PollsReducerviewVotess, "PollsReducerviewVotes");
-  console.log(PollsReducerviewVotes, "PollsReducerviewVotes");
+  
+  
   const PollsReducerviewVotesDetails = useSelector(
     (state) => state.PollsReducer.viewVotesDetails
   );
@@ -25,15 +25,12 @@ const PollDetails = () => {
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []
   );
-  console.log(
-    pollAttendiesOpptionsVise,
-    "pollAttendiesOpptionsVisepollAttendiesOpptionsVise"
-  );
+  
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
 
   useEffect(() => {
     let vieVotePollDetails = PollsReducerviewVotes;
-    console.log(vieVotePollDetails, "vieVotePollDetailsvieVotePollDetails");
+    
     if (PollsReducerviewVotes !== undefined && PollsReducerviewVotes !== null) {
       const { pollDetails, pollOptions, pollParticipants, selectedAnswers } =
         PollsReducerviewVotes.poll;

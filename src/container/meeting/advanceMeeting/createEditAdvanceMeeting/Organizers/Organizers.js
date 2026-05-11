@@ -249,7 +249,7 @@ const Organizers = () => {
         align: "center",
         ellipsis: "120px",
         render: (text, record, rowIndex) => {
-          console.log(record, "isPrimaryOrganizerisPrimaryOrganizer");
+          
           return (
             <Row>
               <Col
@@ -395,7 +395,7 @@ const Organizers = () => {
         align: "left",
 
         render: (text, record) => {
-          console.log(record, "recordrecordrecord");
+          
           if (
             record.isPrimaryOrganizer ||
             Number(record.userID) === Number(UserID)
@@ -659,7 +659,7 @@ const Organizers = () => {
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeetingInfo.meetingID, StatusID: 1 };
-    console.log("end meeting chaek");
+    
     dispatch(
       UpdateMeetingStatusApi(navigate, t, Data, "publishMeetingFromOrganizer", {
         setEditorRole, // shorthand if variable name matches key
@@ -743,7 +743,7 @@ const Organizers = () => {
       UpdatedUsers: newarry,
     };
     if (findisOrganizerisExist) {
-      console.log(isEditValue, typeof isEditValue, "saveMeetingOrganizer");
+      
       dispatch(
         UpdateMeetingUserApi(navigate, t, Data, "saveMeetingOrganizer", {
           rowsData,

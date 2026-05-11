@@ -1076,7 +1076,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       }
 
       case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
-        console.log("hello", action);
+        
 
         return {
           ...state,
@@ -2100,10 +2100,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       }
 
       case actions.MQTT_MEETING_STATUS_PUBLISHED: {
-        console.log(
-          action,
-          "meetingStatusPublishedMqttmeetingStatusPublishedMqtt"
-        );
+        
 
         return {
           ...state,
@@ -2156,7 +2153,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       //Validate Empty String User Availibility For Meeting
 
       case actions.VALIDATE_EMPTY_STRING_INIT: {
-        // console.log(action, "LoadingLoading");
+        // 
         return {
           ...state,
           Loading: true,
@@ -2482,10 +2479,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
       }
       case actions.GETDASHBOARDMEETINGDATA_SUCCESS: {
-        console.log(
-          action,
-          "GETMEETINGCOUNT_DASHBOARD_MQTTGETMEETINGCOUNT_DASHBOARD_MQTT"
-        );
+        
 
         return {
           ...state,
@@ -2797,7 +2791,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
     }
   } catch (error) {
-    console.log(error, "Checking error in reducer");
+    
   }
 };
 

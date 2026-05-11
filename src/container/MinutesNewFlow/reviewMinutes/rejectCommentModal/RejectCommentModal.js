@@ -87,7 +87,7 @@ const RejectCommentModal = ({
     setMinuteDataToReject(updatedMinuteData);
     dispatch(rejectCommentModal(false));
     setMinutesToReview(minutesToReview - 1);
-    console.log("Updated Minute Data to Reject:", MinutesReducer);
+    
   };
 
   return (

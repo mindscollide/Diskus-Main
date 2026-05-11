@@ -263,14 +263,14 @@ const Polls = ({ committeeStatus }) => {
     try {
       if (newPollCommittees !== null) {
         let PollData = newPollCommittees;
-        console.log("New Poll Added", PollData);
+        
         if (Number(PollData.committeeID) === Number(ViewCommitteeID)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
         dispatch(createPollCommitteesMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollCommittees]);
 
@@ -298,7 +298,7 @@ const Polls = ({ committeeStatus }) => {
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [pollingSocket]);
 
@@ -316,7 +316,7 @@ const Polls = ({ committeeStatus }) => {
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollDelete]);
 
@@ -375,7 +375,7 @@ const Polls = ({ committeeStatus }) => {
         <Menu.Item
           key={filter.value}
           onClick={() => {
-            console.log(filter, "filterfilterfilter");
+            
             handleMenuClick(filter.value);
           }}
           className="d-flex align-items-center justify-content-between"

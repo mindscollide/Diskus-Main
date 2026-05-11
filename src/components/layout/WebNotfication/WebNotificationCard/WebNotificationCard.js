@@ -86,7 +86,7 @@ const WebNotificationCard = ({
 }) => {
   const { t } = useTranslation();
   //Test work
-  console.log(NotificationMessege, "PayLoadMessage");
+  
   //Current Language
   let Lang = localStorage.getItem("i18nextLng");
   //Local States
@@ -308,13 +308,10 @@ const WebNotificationCard = ({
           setTruncatedMessage(message);
         }
       } else {
-        console.warn(
-          "NotificationMessege is not a valid object:",
-          NotificationMessege
-        );
+        
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [NotificationMessege, NotificaitonID, maxCharacters]);
 

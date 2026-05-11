@@ -117,7 +117,7 @@ const DraftMeetingList = () => {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
           } catch (error) {
-            console.log(error, "getDatagetDatagetData");
+            
           }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -127,7 +127,7 @@ const DraftMeetingList = () => {
       };
       callAddAgendaContributor();
     } catch (error) {
-      console.log(error);
+      
     }
   }, [mqttMeetingAcAdded]);
 
@@ -158,7 +158,7 @@ const DraftMeetingList = () => {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
           } catch (error) {
-            console.log(error, "getDatagetDatagetData");
+            
           }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -168,7 +168,7 @@ const DraftMeetingList = () => {
       };
       callAddOrganizer();
     } catch (error) {
-      console.error(error);
+      
     }
   }, [mqttMeetingOrgAdded]);
 
@@ -255,7 +255,7 @@ const DraftMeetingList = () => {
     };
 
     const handleCancel = () => {
-      console.log("Cancel Meeting", record);
+      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -266,7 +266,7 @@ const DraftMeetingList = () => {
     };
 
     const handleClickPublish = () => {
-      console.log("Talk", record);
+      
       dispatch(
         UpdateMeetingStatusApi(
           navigate,
@@ -309,7 +309,7 @@ const DraftMeetingList = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 

@@ -174,7 +174,7 @@ const TwoFactorMultipleDevices = () => {
   }, [Helper.socket]);
 
   const handleGoback = () => {
-    console.log("goback");
+    
 
     localStorage.setItem("LoginFlowPageRoute", 2);
     dispatch(LoginFlowRoutes(2));

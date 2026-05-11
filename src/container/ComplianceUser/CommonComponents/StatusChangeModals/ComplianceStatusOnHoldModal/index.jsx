@@ -24,13 +24,13 @@ const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
     statusChangeType,
   } = useComplianceContext();
 
-  console.log(selectOptions, "selectOptionsselectOptions");
+  
   const handleCloseButton = () => {
     setSelectOption(0);
     resetModalStates();
   };
   const handleProceedButton = () => {
-    console.log(selectOptions, "selectOptionsvalue");
+    
     setSelectOption(0);
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);

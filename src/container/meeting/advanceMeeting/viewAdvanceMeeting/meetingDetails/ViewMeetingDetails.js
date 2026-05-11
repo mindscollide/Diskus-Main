@@ -284,7 +284,7 @@ const ViewMeetingDetails = () => {
         ),
       );
     } else {
-      console.log("Notes to be handled");
+      
       let Data = {
         MeetingID:
           meetingID === "0" ||
@@ -380,7 +380,7 @@ const ViewMeetingDetails = () => {
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingStatus = MeetingData.meetingStatus.status;
-        // console.log("meetingStatus", getmeetingStatus);
+        // 
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
         setMeetingDetailsData({
@@ -466,7 +466,7 @@ const ViewMeetingDetails = () => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -512,7 +512,7 @@ const ViewMeetingDetails = () => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -582,7 +582,7 @@ const ViewMeetingDetails = () => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
-          console.log("No Need To Hit");
+          
         }
       }
     }
@@ -637,7 +637,7 @@ const ViewMeetingDetails = () => {
   //   }
   // };
   const groupChatInitiation = async (data) => {
-    console.log(data, "datadatadata");
+    
     if (data.TalkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -791,7 +791,7 @@ const ViewMeetingDetails = () => {
                     text={t("End-meeting")}
                     className={styles["LeaveMeetinButton"]}
                     onClick={() => {
-                      console.log("end meeting chaek");
+                      
                       setEndMeetingConfirmationModal(true);
                     }}
                   />
@@ -857,13 +857,7 @@ const ViewMeetingDetails = () => {
                 <Row>
                   {rows.length > 0 &&
                     rows.map((data, index) => {
-                      console.log(
-                        {
-                          data,
-                          rows,
-                        },
-                        "formattedDate",
-                      );
+                      
                       if (
                         !data?.selectedOption ||
                         !data?.startDate ||
@@ -873,18 +867,12 @@ const ViewMeetingDetails = () => {
                       }
                       let formattedStartDate1 = `${data.selectedOption}${data.startDate}`;
                       let formattedEndDate1 = `${data.selectedOption}${data.endDate}`;
-                      console.log(data, "convertGMT");
+                      
                       const formattedStartDate =
                         forRecentActivity(formattedStartDate1);
                       const formattedEndDate =
                         forRecentActivity(formattedEndDate1);
-                      console.log(
-                        {
-                          formattedEndDate,
-                          formattedStartDate,
-                        },
-                        "formattedDate",
-                      );
+                      
                       if (!formattedStartDate || !formattedEndDate) {
                         return null;
                       }
@@ -897,14 +885,7 @@ const ViewMeetingDetails = () => {
 
                       const formattedDate =
                         moment(formattedEndDate).format("DD MMM YYYY");
-                      console.log(
-                        {
-                          formattedStartedDate,
-                          formattedEndedDate,
-                          formattedDate,
-                        },
-                        "formattedDate",
-                      );
+                      
                       return (
                         <Col key={index} lg={12} md={12} sm={12}>
                           {formattedStartedDate &&

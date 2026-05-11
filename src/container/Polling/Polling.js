@@ -97,7 +97,7 @@ const Polling = () => {
     (state) => state.PollsReducer.viewVotesDetails,
   );
 
-  console.log(PollsReducerviewVotesDetails, "PollsReducerviewVotes");
+  
   const PollsReducerdeletePollsModal = useSelector(
     (state) => state.PollsReducer.deletePollsModal,
   );
@@ -137,7 +137,7 @@ const Polling = () => {
   const [isTotalRecords, setTotalRecords] = useState(0);
 
   const [searchpoll, setSearchpoll] = useState(false);
-  console.log(searchpoll, "searchpollsearchpoll");
+  
   const [idForDelete, setIdForDelete] = useState(0);
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
@@ -220,7 +220,7 @@ const Polling = () => {
           await dispatch(getPollsByPollIdApi(navigate, data, 5, t));
         })
         .catch((error) => {
-          console.log(error, "result");
+          
         });
     }
   }, [pollPub]);
@@ -236,7 +236,7 @@ const Polling = () => {
           await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
         })
         .catch((error) => {
-          console.log(error, "result");
+          
         });
     }
   }, [pollExpire]);
@@ -253,7 +253,7 @@ const Polling = () => {
           localStorage.removeItem("poUpda");
         })
         .catch((error) => {
-          console.log(error, "result");
+          
         });
     }
   }, [pollUpda]);
@@ -321,7 +321,7 @@ const Polling = () => {
           dispatch(notifyPollingSocket(null));
         }
       } catch (error) {
-        console.error("Error in useEffect:", error);
+        
       }
     }
   }, [PollsReducerpollingSocket]);
@@ -339,7 +339,7 @@ const Polling = () => {
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [PollsReducernewPollDelete]);
 
@@ -389,7 +389,7 @@ const Polling = () => {
       PollID: record.pollID,
       UserID: parseInt(userID),
     };
-    console.log(check, "PollsReducerviewVotes");
+    
     if (Object.keys(record).length > 0) {
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
@@ -485,7 +485,7 @@ const Polling = () => {
         <Menu.Item
           key={filter.value}
           onClick={() => {
-            console.log(filter, "filterfilterfilter");
+            
             handleMenuClick(filter.value);
           }}
           className="d-flex align-items-center justify-content-between"
@@ -574,8 +574,8 @@ const Polling = () => {
         },
       }),
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
-        console.log(text, "recordrecordrecord");
+        
+        
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
         if (
@@ -594,7 +594,7 @@ const Polling = () => {
             </span>
           );
         } else {
-          console.log(text, "recordrecordrecord");
+          
           return (
             <span
               className={styles["Ellipses_Class"]}
@@ -735,15 +735,11 @@ const Polling = () => {
       width: "69px",
       align: "center",
       render: (text, record) => {
-        console.log(record, "centercentercentercenter");
+        
 
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        console.log(
-          currentDate,
-          convertIntoGmt,
-          "convertIntoGmtconvertIntoGmtconvertIntoGmt",
-        );
+        
 
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {

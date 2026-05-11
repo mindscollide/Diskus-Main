@@ -57,13 +57,10 @@ const ViewParticipantsDates = ({
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
 
-  console.log(
-    userWiseMeetingProposed,
-    "userWiseMeetingProposeduserWiseMeetingProposed"
-  );
+  
 
   const [prposedData, setPrposedData] = useState([]);
-  console.log(prposedData, "prposedData");
+  
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
@@ -78,7 +75,7 @@ const ViewParticipantsDates = ({
   );
 
   // const changeDateStartHandler2 = (date, value) => {
-  //   console.log(date, "changeDateStartHandler2");
+  //   
   //   let newDate;
   //   if (date?.length >= 4) {
   //     let newDate2 = forRecentActivity(date);
@@ -86,20 +83,20 @@ const ViewParticipantsDates = ({
   //   } else {
   //     newDate = moment(date).format("DD MMMM YYYY");
   //   }
-  //   console.log(newDate, "changeDateStartHandler2");
+  //   
 
   //   return newDate;
   // };
 
   const changeDateStartHandler2 = (date, value) => {
-    console.log(date, "changeDateStartHandler2");
+    
     let cleanedDate = date;
     if (typeof date === "string" && /^\d{8}/.test(date)) {
       cleanedDate = date.substring(0, 8);
     }
     const parsed = moment(cleanedDate, "YYYYMMDD");
     const newDate = parsed.isValid() ? parsed.format("DD MMMM YYYY") : "";
-    console.log(newDate, "changeDateStartHandler2");
+    
     return newDate;
   };
 
@@ -115,7 +112,7 @@ const ViewParticipantsDates = ({
       let Data = {
         MeetingID: Number(NotificationClickMeetingID),
       };
-      console.log("Check Kr Bhaii K Tourrr");
+      
       await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
       await dispatch(
         GetAllMeetingDetailsApiFunc(
@@ -132,7 +129,7 @@ const ViewParticipantsDates = ({
       let Data = {
         MeetingID: Number(currentMeetingID),
       };
-      console.log("Check Kr Bhaii K Tourrr");
+      
       await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
       await dispatch(
         GetAllMeetingDetailsApiFunc(
@@ -148,7 +145,7 @@ const ViewParticipantsDates = ({
     }
   };
 
-  console.log(meetingDeatils, "meetingDeatilsmeetingDeatils");
+  
 
   useEffect(() => {
     callApis();
@@ -266,7 +263,7 @@ const ViewParticipantsDates = ({
       } else {
       }
     } catch (error) {
-      console.log(error, "catchError");
+      
     }
   }, [userWiseMeetingProposed]);
 
@@ -436,16 +433,10 @@ const ViewParticipantsDates = ({
             PublishedMeetings: false,
             ProposedMeetings: true,
           };
-          console.log("chek search meeting");
+          
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
-        console.log(
-          MeetingStatusSocket,
-          meetingStatusID,
-          meetingID,
-          meetingDeatils.MeetingID,
-          "MeetingStatusSocketMeetingStatusSocket"
-        );
+        
       } catch (error) {}
     }
   }, [MeetingStatusSocket]);
@@ -510,7 +501,7 @@ const ViewParticipantsDates = ({
                     className={styles["Scroller_Prposed_Meeting_date"]}>
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(data, "prposedData");
+                          
 
                           const isChecked =
                             data.isSelected &&

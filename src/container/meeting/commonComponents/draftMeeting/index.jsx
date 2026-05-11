@@ -118,7 +118,7 @@ const DraftMeeting = () => {
   let currentView = localStorage.getItem("MeetingCurrentView");
   let userID = localStorage.getItem("userID");
 
-  console.log(rows, "rows");
+  
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
 
@@ -139,7 +139,7 @@ const DraftMeeting = () => {
               return agenda.objMeetingAgenda.canView === true;
             });
           });
-          console.log("handleViewMeeting", copyMeetingData);
+          
           setRow(copyMeetingData);
           // setDublicatedrows(copyMeetingData);
         }
@@ -148,13 +148,13 @@ const DraftMeeting = () => {
         setDublicatedrows([]);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [searchMeetings]);
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
-    console.log("Table change:", { pagination, filters, sorter });
+    
 
     // Reset all sort states first
     setMeetingTitleSort(null);
@@ -206,7 +206,7 @@ const DraftMeeting = () => {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
           } catch (error) {
-            console.log(error, "getDatagetDatagetData");
+            
           }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -216,7 +216,7 @@ const DraftMeeting = () => {
       };
       callAddAgendaContributor();
     } catch (error) {
-      console.log(error);
+      
     }
   }, [mqttMeetingAcAdded]);
 
@@ -244,9 +244,9 @@ const DraftMeeting = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
-            console.log(getData, "getDatagetDatagetData");
+            
           } catch (error) {
-            console.log(error, "getDatagetDatagetData");
+            
           }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -256,7 +256,7 @@ const DraftMeeting = () => {
       };
       callAddOrganizer();
     } catch (error) {
-      console.error(error);
+      
     }
   }, [mqttMeetingOrgAdded]);
 
@@ -355,7 +355,7 @@ const DraftMeeting = () => {
     };
 
     const handleCancel = () => {
-      console.log("Cancel Meeting", record);
+      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -366,7 +366,7 @@ const DraftMeeting = () => {
     };
 
     const handleClickPublish = () => {
-      console.log("Talk", record);
+      
       let Data = { MeetingID: record.pK_MDID, StatusID: 1 };
       dispatch(UpdateOrganizersMeeting(false, navigate, t, 5, Data));
     };
@@ -610,7 +610,7 @@ const DraftMeeting = () => {
 
         // ⭐ REQUIRED: actual filtering logic
         onFilter: (value, record) => {
-          console.log(value, record, "onFilteronFilter");
+          
           return Number(record.meetingType) === Number(value);
         },
 
@@ -692,7 +692,7 @@ const DraftMeeting = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (

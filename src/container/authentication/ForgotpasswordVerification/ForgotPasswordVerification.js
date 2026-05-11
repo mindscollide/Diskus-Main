@@ -59,7 +59,7 @@ const ForgotPasswordVerification = () => {
     let data = {
       Email: email,
     };
-    console.log("UserEmail", data);
+    
     setErrorMessage("");
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
@@ -142,7 +142,7 @@ const ForgotPasswordVerification = () => {
 
   const SubmitOTP = (e) => {
     e.preventDefault();
-    console.log("changeHandler", verifyOTP);
+    
 
     if (verifyOTP.length !== 6) {
       setErrorBar(true);

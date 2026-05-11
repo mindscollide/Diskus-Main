@@ -45,7 +45,7 @@ const AddEditViewAuthorityModal = () => {
   const [isAuthorityExist, setIsAuthorityExist] = useState(null);
   const [isShortCodeExist, setIsShortCodeExist] = useState(null);
   const authorityNameRef = useRef(null);
-  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
+  
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
 
@@ -78,7 +78,7 @@ const AddEditViewAuthorityModal = () => {
     website: "",
   });
 
-  console.log({ authorityDetails, errors }, "authorityDetailsauthorityDetails");
+  
   const navigate = useNavigate();
 
   //   let userID = localStorage.getItem("userID");
@@ -87,11 +87,11 @@ const AddEditViewAuthorityModal = () => {
   const countryNamesReducerCountryNamesData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData,
   );
-  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
+  
   // Initial useEffect
   useEffect(() => {
     if (authorityViewState !== 3) {
-      console.log(authorityNameRef);
+      
       authorityNameRef.current &&
         authorityNameRef.current.focus({
           cursor: "start",
@@ -130,7 +130,7 @@ const AddEditViewAuthorityModal = () => {
     ) {
       try {
         const { authority } = GetAuthorityByAuthorityId;
-        console.log(authority, "authorityauthority");
+        
 
         // Split phone only if it exists
         let phoneCode = "";
@@ -167,7 +167,7 @@ const AddEditViewAuthorityModal = () => {
         }
         setSelectCountry(getCountryObj);
 
-        console.log(getCountryObj, "getCountryObjgetCountryObj");
+        
 
         setAuthorityDetails({
           ...authorityDetails,
@@ -185,13 +185,13 @@ const AddEditViewAuthorityModal = () => {
           authorityId: authority.authorityId,
         });
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
 
   const handleSelect = (country) => {
-    console.log({ country }, "CountrySelect");
+    
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
@@ -200,7 +200,7 @@ const AddEditViewAuthorityModal = () => {
       ...authorityDetails,
       phoneCode: a.secondary,
     });
-    console.log({ a, country }, "CountryIDCountryID");
+    
   };
 
   const handleCancelButton = () => {
@@ -224,7 +224,7 @@ const AddEditViewAuthorityModal = () => {
     setAddViewAuthorityDetails(true);
   };
   const handleChangeSwitchValue = (checked) => {
-    console.log("Switch value:", checked); // true or false
+     // true or false
 
     setAuthorityDetails((prev) => ({
       ...prev,
@@ -239,7 +239,7 @@ const AddEditViewAuthorityModal = () => {
     errors.shortCode === "" &&
     errors.name === "" &&
     selectCountry !== null;
-  console.log(isAllValid, "isAllValidisAllValid");
+  
   const handleAddAuthority = () => {
     if (isAllValid) {
       const Data = {
@@ -254,7 +254,7 @@ const AddEditViewAuthorityModal = () => {
         email: authorityDetails.email.trim(),
         phone: `${authorityDetails.phoneCode}_${authorityDetails.phone.trim()}`,
       };
-      console.log(Data, "add authority");
+      
 
       dispatch(
         AddAuthorityAPI(
@@ -291,7 +291,7 @@ const AddEditViewAuthorityModal = () => {
               ? 1
               : 2,
       };
-      console.log(Data, "Update authority");
+      
 
       dispatch(
         UpdateAuthorityAPI(
@@ -315,7 +315,7 @@ const AddEditViewAuthorityModal = () => {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
-    console.log("handleValueChange", name, value);
+    
     let error = "";
 
     switch (name) {
@@ -469,7 +469,7 @@ const AddEditViewAuthorityModal = () => {
   };
 
   const handleSelectCountry = (event) => {
-    console.log(event, "selected country");
+    
     setSelectCountry(event);
 
     // Setting the country in Phone code aswell
@@ -483,7 +483,7 @@ const AddEditViewAuthorityModal = () => {
       phoneCode: a.secondary,
       phone: "",
     });
-    console.log({ a, shortCode }, "CountryIDCountryID");
+    
   };
 
   return (
@@ -832,7 +832,7 @@ const AddEditViewAuthorityModal = () => {
                                 labelInValue={t("Country")}
                                 // onChange={(event) => {
 
-                                //   console.log(event, "eventevent");
+                                //   
                                 //   setSelectCountry(event);
                                 // }}
                                 onChange={handleSelectCountry}

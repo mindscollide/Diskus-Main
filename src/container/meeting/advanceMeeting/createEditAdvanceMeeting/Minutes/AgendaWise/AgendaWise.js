@@ -127,7 +127,7 @@ const AgendaWise = ({
       if (AllAgendas !== null && AllAgendas !== undefined) {
         let NewData = [];
         AllAgendas.agendaList.forEach((agenda, index) => {
-          console.log(agenda, "agendaListagendaList");
+          
           NewData.push({
             value: agenda.id,
             label: agenda.title,
@@ -185,7 +185,7 @@ const AgendaWise = ({
 
         // Convert groupedData object to an array of values
         const combinedDataArray = Object.values(groupedData).flat();
-        console.log(combinedDataArray, "groupedDatagroupedDatagroupedData");
+        
 
         // Store combined data in the messages state
         setMessages(combinedDataArray);
@@ -194,7 +194,7 @@ const AgendaWise = ({
       }
     } catch (error) {
       // Handle any errors here
-      console.error(error);
+      
     }
   }, [agendaWiseMinutesReducer, getallDocumentsForAgendaWiseMinutes]);
 
@@ -232,7 +232,7 @@ const AgendaWise = ({
       });
     }
 
-    console.log(acc, "returnreturnreturn");
+    
     return acc;
   }, {});
 
@@ -240,7 +240,7 @@ const AgendaWise = ({
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
+  
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -348,11 +348,6 @@ const AgendaWise = ({
       });
     } else {
       if (source === "user" && String(content).length >= 501) {
-        console.log(
-          removeHTMLTagsAndTruncate(String(content)),
-          removeHTMLTagsAndTruncate(String(content)).length,
-          "Test String",
-        );
         // Update state only if no image is detected in the content
         setAgendaWiseFields({
           ...addAgendaWiseFields,
@@ -505,7 +500,7 @@ const AgendaWise = ({
   // For getting the MinuteID
   useEffect(() => {
     if (agendaWiseMinuteID !== 0) {
-      console.log(agendaWiseMinuteID, "agendaWiseMinuteIDagendaWiseMinuteID");
+      
       documentUploadingFunc(agendaWiseMinuteID);
     }
   }, [agendaWiseMinuteID]);
@@ -586,7 +581,7 @@ const AgendaWise = ({
       });
       setisEdit(true);
     } else {
-      console.log("data.minutesDetails is undefined or null");
+      
     }
   };
 
@@ -878,7 +873,7 @@ const AgendaWise = ({
                     <Row className="mt-1">
                       {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
-                            console.log(data, "datadatadata");
+                            
                             return (
                               <>
                                 <Col lg={4} md={4} sm={4}>
@@ -938,7 +933,7 @@ const AgendaWise = ({
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
           {Object.values(groupedMessages).map((data, index) => {
-            console.log(data, "groupedMessagesgroupedMessages");
+            
             return (
               <>
                 {/* Display agendaTitle once */}
@@ -982,10 +977,7 @@ const AgendaWise = ({
                           >
                             <section className={styles["Sizing_Saved_Minutes"]}>
                               {data.items.map((Itemsdata, detailIndex) => {
-                                console.log(
-                                  data,
-                                  "groupedMessagesgroupedMessages",
-                                );
+                                
                                 return (
                                   <>
                                     <div key={detailIndex}>

@@ -5,10 +5,10 @@ const clientId =
 
 function GoogleLoginFunction() {
   const responseGoogle = (response) => {
-    console.log(response);
+    
   };
   const responseError = (error) => {
-    console.log("error: ", error);
+    
   };
   return (
     <div>

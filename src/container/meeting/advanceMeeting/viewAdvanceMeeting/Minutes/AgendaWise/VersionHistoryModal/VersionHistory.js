@@ -102,7 +102,7 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                   ?.minuteAttachmentFiles.length > 0
                                   ? newVersionHistoryData?.mainVersionHistory?.minuteAttachmentFiles.map(
                                       (data, index) => {
-                                        console.log(data, "datadatadata");
+                                        
                                         return (
                                           <>
                                             <Col lg={3} md={3} sm={3}>

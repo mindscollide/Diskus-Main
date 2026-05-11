@@ -39,7 +39,7 @@ import { useMeetingContext } from "../../context/MeetingContext";
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   const { editorRole, viewAdvanceMeetingModal, advanceMeetingModalID } = useMeetingContext();
-  console.log(editorRole, viewAdvanceMeetingModal, advanceMeetingModalID, "editorRoleeditorRole")
+  
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -103,7 +103,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const todoComments = useRef();
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
+  
   const [todoCreator, setTodoCreator] = useState(null);
   const [taskAssignedToDesignation, setTaskAssignedToDesignation] =
     useState("");
@@ -156,7 +156,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.forEach((data, index) => {
-          console.log(data, "taskAssignedTotaskAssignedTo");
+          
           setTaskAssignedToDesignation(data.designation);
         });
       }
@@ -464,7 +464,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
                     {TaskAssignedTo.map((assgineeData, index) => {
-                      console.log(assgineeData, "assgineeDataassgineeData");
+                      
                       if (
                         Number(TodoListReducerData.taskCreator.pK_UID) ===
                         Number(createrID)

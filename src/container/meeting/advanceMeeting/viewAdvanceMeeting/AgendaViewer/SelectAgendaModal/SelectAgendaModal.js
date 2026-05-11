@@ -25,7 +25,7 @@ const SelectAgendaModal = ({
 
   const handleRadioChange = (value) => {
     setRadioValue(value);
-    console.log("valuevaluevalue", value);
+    
   };
 
   const printFlag = useSelector(

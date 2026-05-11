@@ -40,7 +40,7 @@ const NewCancelAgendaBuilderModal = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     dispatch(toggleViewMeetingModal(false));
     localStorage.setItem("folderDataRoomMeeting", 0);

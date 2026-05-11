@@ -140,7 +140,7 @@ const ExpandedMenu = ({
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
 
     localStorage.setItem("navigateLocation", "groups");
     SideBarGlobalNavigationFunctionNew(
@@ -186,7 +186,7 @@ const ExpandedMenu = ({
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
     localStorage.setItem("navigateLocation", "polling");
     SideBarGlobalNavigationFunctionNew(
       dispatch,
@@ -232,7 +232,7 @@ const ExpandedMenu = ({
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
 
     localStorage.setItem("navigateLocation", "calendar");
     SideBarGlobalNavigationFunctionNew(
@@ -278,7 +278,7 @@ const ExpandedMenu = ({
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
     localStorage.setItem("navigateLocation", "todolist");
     SideBarGlobalNavigationFunctionNew(
       dispatch,
@@ -322,7 +322,7 @@ const ExpandedMenu = ({
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
     localStorage.setItem("navigateLocation", "Notes");
     SideBarGlobalNavigationFunctionNew(
       dispatch,
@@ -359,20 +359,20 @@ const ExpandedMenu = ({
   }) => {
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
-    console.log("Check Route scenario's");
-    console.log(createEditCompliance, "Check Route scenario's");
-    console.log(targetPath, "Check Route scenario's");
+    
+    
+    
     if (createEditCompliance) {
-      console.log("createEditComplaince");
+      
       setPendingNavigation(targetPath);
       setCloseConfirmationModal(true);
       return true;
     }
 
     if (isMeeting) {
-      console.log("Check Route scenario's");
+      
       if (location.pathname !== targetPath && isViewMeetingModal) {
-        console.log("Check Route scenario's");
+        
         navigate(targetPath);
         dispatch(resetCurrentMeetingInfo());
         dispatch(toggleViewMeetingModal(false));
@@ -380,14 +380,14 @@ const ExpandedMenu = ({
         return "";
       }
 
-      console.log("Check Route scenario's");
+      
 
       if (!isMeetingVideo) {
-        console.log("Check Route scenario's");
+        
         // show Modal in which when anyone is not in the meeting Video
         dispatch(showEndMeetingModal(true));
       } else {
-        console.log("Check Route scenario's");
+        
         if (
           (activeCall === false ||
             activeCall === undefined ||
@@ -395,11 +395,11 @@ const ExpandedMenu = ({
           isMeetingVideo
         ) {
           //this will open when activeCall is false and this come from Host side
-          console.log("Check Route scenario's");
+          
           handleNoCall();
         } else {
           if (isMeetingVideo) {
-            console.log("Check Route scenario's");
+            
             //this will open when activeCall is true and this come from participant side
             handleWithCall();
           }
@@ -407,7 +407,7 @@ const ExpandedMenu = ({
       }
 
       if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
-        console.log("Check Route scenario's");
+        
         localStorage.removeItem("navigateLocation");
       }
 
@@ -416,8 +416,8 @@ const ExpandedMenu = ({
     }
 
     if (endMeetingModal) {
-      console.log("Check Route scenario's");
-      console.log("End Meeting Modal is open — blocking navigation.");
+      
+      
       return true;
     }
 
@@ -431,10 +431,10 @@ const ExpandedMenu = ({
       !viewMeetingFlagReducer;
 
     if (shouldRedirectToMeeting) {
-      console.log("Check Route scenario's");
+      
       navigate("/Diskus/Meeting");
     } else {
-      console.log("Check Route scenario's");
+      
       navigate(targetPath);
     }
 

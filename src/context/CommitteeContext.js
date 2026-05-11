@@ -196,7 +196,7 @@ export const CommitteeProvider = ({ children }) => {
           break;
       }
     } catch (error) {
-      console.log("CommitteeContext Error", error);
+      
     }
   }, [getMeetingByCommitteeID, currentCommitteeMeetingTabActive]);
 
@@ -234,7 +234,7 @@ export const CommitteeProvider = ({ children }) => {
 
       dispatch(createCommitteeMeeting(null));
     } catch (error) {
-      console.log("Committee MQTT Error", error);
+      
     }
   }, [CommitteeMeetingMQTT]);
 
@@ -256,7 +256,7 @@ export const CommitteeProvider = ({ children }) => {
         }));
       }
     } catch (error) {
-      console.log("MeetingStatusEnded Error", error);
+      
     }
   }, [MeetingStatusEnded]);
 
@@ -271,7 +271,7 @@ export const CommitteeProvider = ({ children }) => {
 
       updateMeetingInAllLists(meetingID, () => meetingData);
     } catch (error) {
-      console.log("allMeetingsSocketData Error", error);
+      
     }
   }, [allMeetingsSocketData]);
 
@@ -320,7 +320,7 @@ export const CommitteeProvider = ({ children }) => {
       // Reset MQTT
       dispatch(meetingNotConductedMQTT(null));
     } catch (error) {
-      console.log("meetingStatusNotConductedMqttData Error", error);
+      
     }
   }, [meetingStatusNotConductedMqttData]);
 
@@ -334,7 +334,7 @@ export const CommitteeProvider = ({ children }) => {
             let getData = await mqttMeetingData(newObj, 2);
             setCommitteeDraftMeetingData((prevData) => [getData, ...prevData]);
           } catch (error) {
-            console.log(error, "getDatagetDatagetData");
+            
           }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -344,7 +344,7 @@ export const CommitteeProvider = ({ children }) => {
       };
       callAddAgendaContributor();
     } catch (error) {
-      console.log(error);
+      
     }
   }, [mqttMeetingAcAdded]);
 
@@ -375,7 +375,7 @@ export const CommitteeProvider = ({ children }) => {
             let getData = await mqttMeetingData(newObj, 2);
             setCommitteeDraftMeetingData((prevData) => [getData, ...prevData]);
           } catch (error) {
-            console.log(error, "getDatagetDatagetData");
+            
           }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -385,7 +385,7 @@ export const CommitteeProvider = ({ children }) => {
       };
       callAddOrganizer();
     } catch (error) {
-      console.error(error);
+      
     }
   }, [mqttMeetingOrgAdded]);
 
@@ -414,39 +414,39 @@ export const CommitteeProvider = ({ children }) => {
       try {
         const updateMeetingData = async () => {
           let meetingData = meetingStatusProposedMqttData;
-          console.log(meetingData, "meetingDatameetingData");
+          
 
           const indexToUpdate = committeeProposedMeetingData.findIndex(
             (obj) => obj.pK_MDID === meetingData.pK_MDID,
           );
-          console.log(indexToUpdate, "meetingDatameetingData");
+          
 
           // Fetching unpublished meeting data
           let getMeetingDataArray = await getAllUnpublishedMeetingData(
             [meetingData],
             1,
           );
-          console.log(getMeetingDataArray, "meetingDatameetingData");
+          
 
           // Assuming getMeetingDataArray is an array with a single object
           const getMeetingData = getMeetingDataArray[0];
           // Check if the meeting exists in the current meetingsRecords
 
-          console.log(getMeetingData, "meetingDatameetingData");
+          
 
           if (indexToUpdate !== -1) {
             let updatedRows = [...committeeProposedMeetingData];
-            console.log(updatedRows, "meetingDatameetingData");
+            
 
             updatedRows[indexToUpdate] = getMeetingData;
-            console.log(updatedRows, "meetingDatameetingData");
+            
 
             setCommitteeProposedMeetingData(updatedRows);
           } else {
-            console.log(getMeetingData, "meetingDatameetingData");
+            
 
             let updatedRows = [getMeetingData, ...committeeProposedMeetingData];
-            console.log(updatedRows, "meetingDatameetingData");
+            
 
             setCommitteeProposedMeetingData(updatedRows);
             setCommitteeProposedMeetingDataRecord((prev) => prev + 1);
@@ -455,10 +455,7 @@ export const CommitteeProvider = ({ children }) => {
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
       } catch (error) {
-        console.log(
-          error,
-          "meetingStatusProposedMqttDatameetingStatusProposedMqttData",
-        );
+        
       }
     }
   }, [meetingStatusProposedMqttData]);
@@ -482,7 +479,7 @@ export const CommitteeProvider = ({ children }) => {
   //           dispatch(toggleIsParticipantProposedMeetingDates(true));
   //         }
   //       } catch (error) {
-  //         console.error("Error in API call:", error);
+  //         
   //         localStorage.removeItem("meetingprop");
   //       }
   //     };
@@ -512,7 +509,7 @@ export const CommitteeProvider = ({ children }) => {
   //             dispatch(toggleIsOrganizerProposedMeetingDates(true));
   //           }
   //         } catch (error) {
-  //           console.error("Error in API call:", error);
+  //           
   //           localStorage.removeItem("UserMeetPropoDatPoll");
   //         }
   //       };

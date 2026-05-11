@@ -50,7 +50,7 @@ const CreateEditViewComplianceTask = () => {
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
   const [taskView, setTaskView] = useState(false);
-  console.log("ComplianceChecklistData", ComplianceChecklistData);
+  
 
   const [open, setOpen] = useState({
     open: false,
@@ -79,8 +79,8 @@ const CreateEditViewComplianceTask = () => {
     });
   };
 
-  console.log(newChecklistIds, "newChecklistIds");
-  console.log(complianceAddEditViewState, "complianceAddEditViewState");
+  
+  
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
@@ -92,10 +92,7 @@ const CreateEditViewComplianceTask = () => {
       );
     }
   }, [complianceInfo]);
-  console.log(
-    ComplianceChecklistData,
-    "ComplianceChecklistDataComplianceChecklistData",
-  );
+  
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
@@ -108,7 +105,7 @@ const CreateEditViewComplianceTask = () => {
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
-  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
+  
 
   useEffect(() => {
     if (
@@ -151,23 +148,20 @@ const CreateEditViewComplianceTask = () => {
 
         setTaskCount(totalTaskCount);
       } catch (error) {
-        console.log(error);
+        
       }
     } else {
       //  CLEAR UI when API returns null
-      console.log("Check Check");
+      
       setComplianceCheckListData([]);
       setTaskCount(0);
       return;
     }
   }, [getAllComplianceChecklistTask]);
 
-  console.log(
-    GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId",
-  );
+  
   const handleDeleteTask = (TaskId) => {
-    console.log(TaskId, "TaskId");
+    
 
     let complianceId = complianceInfo?.complianceId;
     const Data = {
@@ -202,7 +196,7 @@ const CreateEditViewComplianceTask = () => {
   };
 
   const handleClickTitle = (id) => {
-    console.log(id, "CheckID resolved");
+    
     let Data = { ToDoListID: id };
     dispatch(ViewToDoList(navigate, Data, t, setTaskView));
   };
@@ -224,7 +218,7 @@ const CreateEditViewComplianceTask = () => {
       <div className={styles["checklistAccordian"]}>
         {ComplianceChecklistData && ComplianceChecklistData?.length > 0
           ? ComplianceChecklistData.map((data, index) => {
-              console.log(data, "Cajhsaksbhab");
+              
               const isExpanded = expandedCheckListIds.find(
                 (data2, index) => data2 === data.checklistId,
               );
@@ -248,7 +242,7 @@ const CreateEditViewComplianceTask = () => {
                         <div className={styles["TaskList"]}>
                           {data.taskList.length > 0 &&
                             data.taskList.map((data2, index) => {
-                              console.log(data2, "data2data2");
+                              
                               return (
                                 <div
                                   className={styles["TaskStyle"]}

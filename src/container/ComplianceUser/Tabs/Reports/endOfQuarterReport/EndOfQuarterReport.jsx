@@ -410,7 +410,7 @@ const EndOfQuarterReport = () => {
       const fullData = GetQuarterReport?.compliances || [];
 
       if (!fullData.length) {
-        console.error("No data to generate PDF");
+        
         setIsGenerating(false);
         return;
       }
@@ -450,7 +450,7 @@ const EndOfQuarterReport = () => {
         window.__PDF_CHUNK_DATA__ = null;
       }
     } catch (err) {
-      console.error(err);
+      
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -466,7 +466,7 @@ const EndOfQuarterReport = () => {
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
-      console.error(error);
+      
     } finally {
       setIsGenerating(false);
     }

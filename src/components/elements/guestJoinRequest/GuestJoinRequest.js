@@ -36,15 +36,12 @@ const GuestJoinRequest = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
-  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
+  
 
   const [getRoomId, setGetRoomId] = useState("");
 
   // let roomID = localStorage.getItem("activeRoomID");
-  console.log(
-    GuestVideoReducer?.admitGuestUserRequestData,
-    "waitingOnParticipantwaitingOnParticipant"
-  );
+  
   const {
     name = "",
     meetingID = "",
@@ -57,19 +54,8 @@ const GuestJoinRequest = () => {
     isGuest = true,
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
 
-  console.log(GuestVideoReducer?.admitGuestUserRequestData, "Datatatacatcas");
-  console.log(
-    name,
-    meetingID,
-    guid,
-    UserID,
-    email,
-    hideCamera,
-    raiseHand,
-    mute,
-    isGuest,
-    "Datatatacatcas"
-  );
+  
+  
 
   useEffect(() => {
     if (GuestVideoReducer?.admitGuestUserRequestData !== null) {
@@ -154,7 +140,7 @@ const GuestJoinRequest = () => {
     const playAudio = () => {
       audioElement.loop = false;
       audioElement.play().catch((error) => {
-        console.error("Audio playback failed:", error);
+        
       });
       document.removeEventListener("click", playAudio); // Remove event listener after playing
     };

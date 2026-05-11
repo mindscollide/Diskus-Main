@@ -46,7 +46,7 @@ const AdminHome = () => {
   });
   let newClient = Helper.socket;
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
-    "TrialExpireSelectPac"
+    "TrialExpireSelectPac",
   );
   const closeNotification = () => {
     setNotification({
@@ -63,10 +63,7 @@ const AdminHome = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    console.log(
-      "Connected to MQTT broker onMessageArrived",
-      JSON.parse(msg.payloadString)
-    );
+
     if (data.action.toLowerCase() === "Notification".toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
@@ -134,54 +131,41 @@ const AdminHome = () => {
         let getToken =
           localStorage.getItem("token") !== null &&
           localStorage.getItem("token");
-        console.log(
-          getToken,
-          data.payload.authToken.token,
-          "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
-        );
+
         if (getToken !== data?.payload?.authToken?.token) {
           dispatch(userLogOutApiFunc(navigate, t));
         }
       }
     }
     if (data.action.toLowerCase() === "Authority".toLowerCase()) {
-      console.log("Authority", data.action);
       if (data.message.toLowerCase() === "AUTHORITY_INACTIVE".toLowerCase()) {
-        console.log("AUTHORITY_INACTIVE", data);
         dispatch(setInactiveStatusData(data.payload));
       }
       if (data.message.toLowerCase() === "AUTHORITY_ACTIVE".toLowerCase()) {
-        console.log("AUTHORITY_ACTIVE", data);
         dispatch(setActiveStatusData(data.payload));
       }
       if (data.message.toLowerCase() === "AUTHORITY_DELETED".toLowerCase()) {
-        console.log("AUTHORITY_DELETED", data);
         dispatch(setDeleteStatusData(data.payload));
       }
       if (data.message.toLowerCase() === "AUTHORITY_CREATED".toLowerCase()) {
-        console.log("AUTHORITY_CREATED", data);
         dispatch(setAuthorityCreatedData(data.payload));
       }
       if (data.message.toLowerCase() === "AUTHORITY_UPDATED".toLowerCase()) {
-        console.log("AUTHORITY_UPDATED", data);
         dispatch(setAuthorityUpdatedData(data.payload));
       }
     }
 
     // Settings
     if (data.action.toLowerCase() === "Settings".toLowerCase()) {
-      console.log("MQTT Settings", data.action);
       if (
         data.message.toLowerCase() ===
         "ORGANIZATION_SETTINGS_UPDATED".toLowerCase()
       ) {
-        console.log("ORGANIZATION_SETTINGS_UPDATED", data);
         dispatch(setOrganizationSettingUpdateData(data.payload));
       }
     }
   };
   const onConnectionLost = () => {
-    console.log("Connected to MQTT broker onConnectionLost");
     setTimeout(mqttConnection, 3000);
   };
 
@@ -226,7 +210,7 @@ const AdminHome = () => {
         ) : null}
         <NavbarAdmin />
         <NotificationBar
-          iconName={<img draggable="false" src={IconMetroAttachment} alt="" />}
+          iconName={<img draggable='false' src={IconMetroAttachment} alt='' />}
           notificationMessage={notification.message}
           notificationState={notification.notificationShow}
           setNotification={setNotification}

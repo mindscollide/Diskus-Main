@@ -139,7 +139,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
   useEffect(() => {
     todoComments.current?.scrollIntoView({ behavior: "smooth" });
   }, [todoComments, taskAssigneeComments]);
-  console.log(TodoListReducerData, "TodoListReducerData");
+  
   useEffect(() => {
     if (Object.keys(TodoListReducerData).length > 0) {
       dispatch(taskFromDashboardAction(0));
@@ -158,7 +158,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.forEach((data, index) => {
-          console.log(data, "taskAssignedTotaskAssignedTo");
+          
           setTaskAssignedToDesignation(data.designation);
         });
       }
@@ -464,7 +464,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
                     {TaskAssignedTo.map((assgineeData, index) => {
-                      console.log(assgineeData, "assgineeDataassgineeData");
+                      
                       if (
                         Number(TodoListReducerData.taskCreator.pK_UID) ===
                         Number(createrID)

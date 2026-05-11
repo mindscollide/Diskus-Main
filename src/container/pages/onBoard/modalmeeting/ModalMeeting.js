@@ -43,28 +43,28 @@ const ModalMeeting = ({ ModalTitle }) => {
     dispatch(showIsDetailOnboard(true));
     dispatch(showIsAgendaOnboard(false));
     dispatch(showIsAttendeesOnboard(false));
-    console.log("Pehla Buton");
+    
   };
 
   const changeSelectAgenda = () => {
     dispatch(showIsDetailOnboard(false));
     dispatch(showIsAgendaOnboard(true));
     dispatch(showIsAttendeesOnboard(false));
-    console.log("Dusra Buton");
+    
   };
 
   const changeSelectAttendees = () => {
     dispatch(showIsDetailOnboard(false));
     dispatch(showIsAgendaOnboard(false));
     dispatch(showIsAttendeesOnboard(true));
-    console.log("3 Buton");
+    
   };
 
   const navigateToAttendees = () => {
     dispatch(showIsDetailOnboard(false));
     dispatch(showIsAgendaOnboard(false));
     dispatch(showIsAttendeesOnboard(true));
-    console.log("agayaattendee");
+    
   };
   const finishTOurButton = () => {
     setCurrentStep(4);

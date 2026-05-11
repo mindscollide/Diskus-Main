@@ -35,10 +35,7 @@ const createWorkflow_init = () => {
 };
 
 const createWorkflow_success = (response, message) => {
-  console.log(
-    { response, message },
-    "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS",
-  );
+  
   return {
     type: actions.CREATESIGNATUREFLOW_SUCCESS,
     response: response,
@@ -76,10 +73,7 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
                   "WorkFlow_WorkFlowServiceManager_CreateSignatureFlow_01".toLowerCase(),
                 )
             ) {
-              console.log(
-                response.data.responseResult,
-                "createWorkflow_successcreateWorkflow_successcreateWorkflow_success",
-              );
+              
               let reponseData = JSON.stringify(
                 response.data.responseResult.signatureDocument.documentID,
               );
@@ -215,14 +209,7 @@ const saveWorkflowApi = (
   status,
   sendDocumentData,
 ) => {
-  console.log(
-    Data,
-    value,
-    updateFieldValueData,
-    addAnnoatationofFilesAttachment,
-    saveSignatureDocument,
-    "saveWorkflowApisaveWorkflowApi",
-  );
+  
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(saveWorkflow_init());
@@ -426,7 +413,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t, route) => {
                   ),
                 );
               } catch (error) {
-                console.log(error, "errorerrorerror");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -654,7 +641,7 @@ const saveSignatureDocumentApi = (
                 )
             ) {
               if (Number(status) === 2) {
-                console.log({ status }, "statusstatusValue");
+                
 
                 dispatch(sendDocumentIdApi(sendDocumentData, navigate, t));
               } else {
@@ -665,7 +652,7 @@ const saveSignatureDocumentApi = (
                   ),
                 );
               }
-              console.log({ status }, "statusstatusValue");
+              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -845,7 +832,7 @@ const addAnnoationSignatrueFlow = (
   sendDocumentData,
   UpdateActorBundle,
 ) => {
-  console.log(status, "statusstatusstatus");
+  
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(addAnnotationDataRoom_init());
@@ -915,7 +902,7 @@ const addAnnoationSignatrueFlow = (
                   UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle),
                 );
               } else {
-                console.log(status, "statusstatusstatusstatusstatusstatus");
+                
                 dispatch(
                   saveSignatureDocumentApi(
                     saveSignatureDocument,
@@ -1528,10 +1515,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   loaderFlag,
                 ),
               );
-              console.log(
-                Data.IsCreator,
-                "isCreatorisCreatorisCreatorisCreator",
-              );
+              
               if (Data.IsCreator) {
                 let Data = {
                   sRow: 0,
@@ -1545,7 +1529,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                 );
               } else {
                 let Data2 = { sRow: 0, Length: 10 };
-                console.log(Data, "handleScrollhandleScrollhandleScroll");
+                
                 await dispatch(
                   getAllPendingApprovalsSignaturesApi(navigate, t, Data2),
                 );

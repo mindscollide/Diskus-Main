@@ -162,10 +162,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [attachmentsList, setattachmentsList] = useState([]);
   //all Meeting details
   const [allMeetingDetails, setAllMeetingDetails] = useState(null);
-  console.log(
-    allMeetingDetails,
-    "allMeetingDetailsallMeetingDetailsallMeetingDetails",
-  );
+  
   const [meetingDifference, setMeetingDifference] = useState(0);
   // for meatings  Attendees List
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
@@ -301,7 +298,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     try {
       if (Object.keys(assigneesViewMeetingDetails).length > 0) {
         let viewData = assigneesViewMeetingDetails;
-        console.log(viewData, "viewDataviewDataviewData");
+        
         let reminder = [];
         let meetingAgenAtc = [];
         let minutesOfMeeting = [];
@@ -756,10 +753,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             remainsData?.configKey?.toLowerCase() ===
             "Join_Meeting_Before_Minutes".toLowerCase(),
         );
-        console.log(
-          findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo",
-        );
+        
         if (findReminingMinutesAgo !== undefined) {
           setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
         }
@@ -808,10 +802,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       alert("heloo");
       if (isMeeting) {
         dispatch(presenterViewGlobalState(0, false, false, false));
-        console.log("cacacacacacacacacc");
+        
         setEndMeetingConfirmationModal(false);
         dispatch(setAudioControlHost(false));
-        console.log("videoHideUnHideForHost");
+        
         dispatch(setVideoControlHost(false));
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, false);
@@ -846,9 +840,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      console.log("cacacacacacacacacc");
+      
       dispatch(setAudioControlHost(false));
-      console.log("videoHideUnHideForHost");
+      
       dispatch(setVideoControlHost(false));
       localStorage.removeItem("presenterViewFlag");
       localStorage.setItem("CallType", 0);
@@ -903,10 +897,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       checkMeetingID =
         calendarReducereventsDetails.diskusCalendarEvent.meetingDetails.pK_MDID;
     }
-    console.log(
-      "meetingDetails",
-      allMeetingDetails.meetingDetails.videoCallURL,
-    );
+    
     const startMeetingRequest = {
       VideoCallURL: allMeetingDetails.meetingDetails.videoCallURL,
       MeetingID: Number(allMeetingDetails.meetingDetails.pK_MDID),
@@ -1002,7 +993,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       StatusID: 9,
     };
-    console.log("end meeting chaek");
+    
     await dispatch(
       endMeetingStatusApi(
         navigate,
@@ -1022,7 +1013,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     try {
       if (endMeetingStatusForQuickMeetingModalFlag) {
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-        console.log("mqtt mqmqmqmqmqmq");
+        
         leaveMeeting(currentMeetingID, true, false);
       }
     } catch (error) {}
@@ -1031,7 +1022,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (leaveMeetingOnLogoutResponse) {
-        console.log("mqtt mqmqmqmqmqmq");
+        
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, true);
       }
@@ -1097,7 +1088,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag),
       );
     } else if (String(typeOfMeeting) === "isQuickMeeting") {
-      console.log("mqtt mqmqmqmqmqmq");
+      
       let leaveMeetingData = {
         FK_MDID: Number(id),
         DateTime: getCurrentDateTimeUTC(),
@@ -1109,11 +1100,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(minimizeVideoPanelFlag(false));
     }
     if (flag) {
-      console.log("mqtt mqmqmqmqmqmq");
+      
       await dispatch(endMeetingStatusForQuickMeetingModal(false));
     }
     if (flag2) {
-      console.log("mqtt mqmqmqmqmqmq");
+      
       await dispatch(leaveMeetingOnlogout(false));
       dispatch(userLogOutApiFunc(navigate, t));
     }
@@ -1143,7 +1134,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       fileName: record.DisplayAttachmentName,
       attachmentID: Number(record.OriginalAttachmentName),
     };
-    console.log(pdfData, ext, "pdfDatapdfData");
+    
     const pdfDataJson = JSON.stringify(pdfData);
     try {
       if (Number(meetStatus) === 10) {
@@ -1174,11 +1165,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const joinMeetingCall = () => {
-    // console.log("Agenda View Full");
+    // 
     // let meetingVideoData = {
     //   roleID: editorRole.role === "Participant" ? 2 : 10,
     // };
-    // console.log(meetingVideoData, "meetingVideoData");
+    // 
 
     // if (meetingVideoData.roleID === 2) {
     //   dispatch(maxParticipantVideoCallPanel(true));
@@ -1186,10 +1177,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     let findRoleId = createMeeting.MeetingAttendees.find(
       (attendee, index) => attendee.User.PK_UID === parseInt(createrID),
     );
-    console.log(findRoleId, "gadgetgadgetgadgetgadget");
+    
     if (findRoleId !== undefined) {
       let isParticipant = findRoleId.MeetingAttendeeRole.PK_MARID === 2;
-      console.log(isParticipant, "gadgetgadgetgadgetgadget");
+      
 
       let getMeetingVideoHost = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck"),
@@ -1215,7 +1206,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
-          console.log("No Need To Hit");
+          
         }
       }
     }
@@ -1259,7 +1250,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [meetingIdReducerMeetingStatusEnded]);
 
@@ -1509,10 +1500,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                             MeetingAgendaAttachmentsData,
                                             index,
                                           ) => {
-                                            console.log(
-                                              MeetingAgendaAttachmentsData,
-                                              "MeetingAgendaAttachmentsDataMeetingAgendaAttachmentsData",
-                                            );
+                                            
                                             return (
                                               <Col sm={6} md={6} lg={6}>
                                                 <AttachmentViewer
@@ -1687,10 +1675,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Row className="mt-2">
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
-                          console.log(
-                            data,
-                            "attachmentsListattachmentsListattachmentsList",
-                          );
+                          
                           return (
                             <Col sm={6} lg={6} md={6}>
                               <AttachmentViewer

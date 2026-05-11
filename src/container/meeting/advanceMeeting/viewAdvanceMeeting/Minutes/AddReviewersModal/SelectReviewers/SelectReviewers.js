@@ -81,8 +81,8 @@ const SelectReviewers = ({
     setSelectReviewersArray(newCheckedList);
     setCheckAll(e.target.checked);
   };
-  console.log("selectReviewersArray ", selectReviewersArray);
-  console.log("selectReviewersArray currentReviewers", currentReviewers);
+  
+  
   const handleCheckboxChange = (userID) => {
     const newCheckedList = selectReviewersArray.includes(userID)
       ? selectReviewersArray.filter((id) => id !== userID)
@@ -424,10 +424,7 @@ const SelectReviewers = ({
                   </Col>
                 </Row>
                 {reviewersGeneral.map((data, index) => {
-                  console.log(
-                    "reviewersGeneralreviewersGeneral",
-                    reviewersGeneral
-                  );
+                  
                   const isTruncated = !expandedItems[data.minuteID];
                   return (
                     <div className={styles["agendaTitleCheckbox"]}>

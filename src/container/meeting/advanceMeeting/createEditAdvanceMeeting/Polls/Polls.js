@@ -185,7 +185,7 @@ const Polls = ({
         dispatch(createPollMeetingMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollMeeting]);
 
@@ -213,7 +213,7 @@ const Polls = ({
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [pollingSocket]);
 
@@ -231,7 +231,7 @@ const Polls = ({
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollDelete]);
 

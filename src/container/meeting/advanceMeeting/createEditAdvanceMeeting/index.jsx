@@ -62,8 +62,8 @@ const CreateEditAdvanceMeeting = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  console.log(committeeInfo, "committeeInfo");
-  console.log(groupInfo, "committeeInfo");
+  
+  
 
   // Fix: read all tab states from Redux MeetingModalsReducer instead of
   // individual NewMeetingreducer global flags
@@ -84,7 +84,7 @@ const CreateEditAdvanceMeeting = () => {
 
   const { editorRole, setEditorRole, currentMeeting } = useMeetingContext();
 
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
+  
 
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
@@ -107,7 +107,7 @@ const CreateEditAdvanceMeeting = () => {
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     } catch (error) {
-      console.error("An error occurred during API calls:", error);
+      
     }
   };
 
@@ -195,7 +195,7 @@ const CreateEditAdvanceMeeting = () => {
           );
         }
       } catch (error) {
-        console.error(error);
+        
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
@@ -240,7 +240,7 @@ const CreateEditAdvanceMeeting = () => {
           );
         }
       } catch (error) {
-        console.error(error);
+        
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);

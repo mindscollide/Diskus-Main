@@ -39,7 +39,7 @@ const ViewPollsCancelModal = ({ setSceduleMeeting }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 

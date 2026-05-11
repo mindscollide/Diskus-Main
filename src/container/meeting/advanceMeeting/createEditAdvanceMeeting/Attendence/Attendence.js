@@ -157,7 +157,7 @@ const Attendence = () => {
               sm={12}
               className="d-flex align-items-center gap-4"
             >
-              {console.log("attendanceStatusID:", text)}
+              {}
               {/* Add this line for debugging */}
               {text === 1 ? (
                 <>
@@ -308,7 +308,7 @@ const Attendence = () => {
       }
     } catch (error) {
       handleSaveNotification();
-      console.error("Error saving attendance:", error);
+      
     }
   };
 
@@ -352,7 +352,7 @@ const Attendence = () => {
     //     ProposedMeetings:
     //       currentView && Number(currentView) === 2 ? true : false,
     //   };
-    //   console.log("chek search meeting");
+    //   
     //   dispatch(searchNewUserMeeting(navigate, searchData, t));
     //   localStorage.removeItem("folderDataRoomMeeting");
     //   setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });

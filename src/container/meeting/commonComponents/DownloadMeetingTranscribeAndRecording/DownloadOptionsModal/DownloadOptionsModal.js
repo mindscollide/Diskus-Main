@@ -37,12 +37,7 @@ const DownloadOptionsModal = ({
     (state) => state.DataRoomReducer.meetingVideoRecording
   );
   const [meetingData, setMeetingData] = useState(null);
-  console.log(
-    MeetingRecord,
-    meetingData,
-    meetingVideoRecordingState,
-    "downloadMeetingRecorddownloadMeetingRecord"
-  );
+  
   //Board Deck Onclick function
   const boardDeckOnClick = () => {
     if (MeetingRecord !== null) {
@@ -66,11 +61,7 @@ const DownloadOptionsModal = ({
   useEffect(() => {
     if (MeetingRecord !== null) {
       setMeetingData(MeetingRecord);
-      console.log(
-        MeetingRecord,
-        meetingData,
-        "downloadMeetingRecorddownloadMeetingRecord"
-      );
+      
     }
   }, [MeetingRecord]);
   useEffect(() => {
@@ -85,11 +76,7 @@ const DownloadOptionsModal = ({
         }
 
         // setMeetingData()
-        console.log(
-          MeetingRecord,
-          meetingData,
-          "downloadMeetingRecorddownloadMeetingRecord"
-        );
+        
       }
       dispatch(meetingVideoRecording(null));
     }

@@ -87,12 +87,7 @@ const MeetingDetails = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  console.log(
-    committeeInfo,
-    editorRole,
-    currentMeetingInfo,
-    "committeeInfocommitteeInfo",
-  );
+  
 
   // const cancelModalMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
@@ -347,7 +342,7 @@ const MeetingDetails = () => {
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   };
 
@@ -570,10 +565,7 @@ const MeetingDetails = () => {
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      console.log(
-        { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime",
-      );
+      
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -877,7 +869,7 @@ const MeetingDetails = () => {
         }));
       }
     } catch (error) {
-      console.error("Error setting meeting types:", error);
+      
     }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 

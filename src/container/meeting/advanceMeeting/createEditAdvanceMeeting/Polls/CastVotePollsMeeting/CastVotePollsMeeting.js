@@ -48,7 +48,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         UserID: parseInt(userID),
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
-      console.log(data, "submitvotesubmitvotesubmitvote");
+      
       dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, meetingID));
     } else {
       // open sncak bar for atleast select one option

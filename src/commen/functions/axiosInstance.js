@@ -22,18 +22,18 @@ axiosInstance.interceptors.request.use(
 // ------------------- RESPONSE -------------------
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("SUCCESS:", response.data);
+    
 
     const code = Number(response?.data?.responseCode);
     const message = (response?.data?.errorMessage || "").toLowerCase().trim();
 
-    console.log("SUCCESS →", code, message);
+    
 
     if (
       code === 400 &&
       (message.toLowerCase() === "Token is required".toLowerCase() )
     ) {
-      console.warn("Unauthorized - redirecting to login...");
+      
       signOut("Session expired", store.dispatch);
       return;
     }
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
       code === 401 &&
       (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
     ) {
-      console.warn("Unauthorized - redirecting to login...");
+      
       signOut("Session expired", store.dispatch);
       return;
     }
@@ -50,20 +50,20 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("ERROR:", error);
+    
 
     const code = Number(error?.response?.data?.responseCode);
     const message = (error?.response?.data?.errorMessage || "")
       .toLowerCase()
       .trim();
 
-    console.log("ERROR →", code, message);
+    
 
     if (
       code === 400 &&
       (message.toLowerCase() === "Token is required".toLowerCase() )
     ) {
-      console.warn("Unauthorized - redirecting to login...");
+      
       signOut("Session expired", store.dispatch);
       return;
     }
@@ -72,7 +72,7 @@ axiosInstance.interceptors.response.use(
       code === 401 &&
       (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
     ) {
-      console.warn("Unauthorized - redirecting to login...");
+      
       signOut("Session expired", store.dispatch);
     }
 

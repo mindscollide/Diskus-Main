@@ -43,7 +43,7 @@ const VideoMeetingBoardDeck = () => {
     severity: "error",
   });
 
-  console.log(videoLink, "videoLinkvideoLinkvideoLink");
+  
 
   //Calling ValidateInput String Api
   useEffect(() => {
@@ -52,9 +52,9 @@ const VideoMeetingBoardDeck = () => {
         localStorage.setItem("VideoURl", code);
         window.close();
       } else if (getString !== "") {
-        console.log("Payment_actionPayment_action");
+        
         const videoStringValue = currentUrl.split("action=")[1];
-        console.log(videoStringValue, "videoStringValuevideoStringValue");
+        
         let data = {
           EncryptedString: videoStringValue,
         };
@@ -70,7 +70,7 @@ const VideoMeetingBoardDeck = () => {
         setVideoLink(VideoURLdata.filePath);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [VideoURLdata]);
 
@@ -97,7 +97,7 @@ const VideoMeetingBoardDeck = () => {
         return () => clearInterval(interval);
       } catch (error) {}
     }
-    console.log(typeof videoLink, "current videoLink");
+    
   }, [videoLink]);
 
   //Response meesege

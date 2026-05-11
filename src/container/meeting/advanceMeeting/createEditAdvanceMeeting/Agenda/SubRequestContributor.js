@@ -27,7 +27,7 @@ const SubRequestContributor = ({
   const handleSubAgendaRequestContributorEnterNote = (index, subIndex, e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(value, name, "valuevaluevalue");
+    
 
     const updatedRows = [...rows];
 
@@ -36,7 +36,7 @@ const SubRequestContributor = ({
         subIndex
       ].subAgendarequestContributorEnterNotes = value;
     }
-    console.log(updatedRows, "SubAgendaRequestContributorEnterNotesFiled");
+    
     setRows(updatedRows);
   };
 
@@ -60,7 +60,7 @@ const SubRequestContributor = ({
   }, [getAllAgendaContributors]);
 
   const handleSelectChange = (index, subIndex, value) => {
-    console.log(value, "valuevaluevalue");
+    
     const updatedAgendaItems = [...rows];
     let SelectValue = {
       value: value.value,

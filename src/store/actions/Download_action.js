@@ -247,7 +247,7 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
             let resData = JSON.parse(
               new TextDecoder().decode(new Uint8Array(response))
             );
-            console.log(resData, "resData");
+            
           } catch {}
         }
         if (response.data.responseCode === 417) {

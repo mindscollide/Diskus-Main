@@ -57,7 +57,7 @@ const DocumentViewer = () => {
     return JSON.parse(params || "{}");
   }, [location.search]);
 
-  console.log(pdfData, "pdfDatapdfData");
+  
 
   const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
 
@@ -91,7 +91,7 @@ const DocumentViewer = () => {
 
       return clearLocalStorage;
     } catch (error) {
-      console.log({ error }, "pdfDatapdfData");
+      
     }
   }, [attachmentID]);
 
@@ -236,10 +236,7 @@ const DocumentViewer = () => {
 
           const mimeType = getMimeTypeFromFileName(fileName);
 
-          console.log(
-            { mimeType, extension, CLIENT },
-            "mimeTypemimeTypemimeType",
-          );
+          
 
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
@@ -308,7 +305,7 @@ const DocumentViewer = () => {
           // });
         })
         .catch((error) => {
-          console.error("WebViewer initialization error:", error);
+          
         });
     }
   }, [pdfResponseData.attachmentBlob]);
@@ -358,13 +355,13 @@ const DocumentViewer = () => {
           break;
 
         default:
-          console.error("Invalid 'commingFrom' value:", commingFrom);
+          
           break;
       }
 
-      console.log("Annotations saved successfully!");
+      
     } catch (error) {
-      console.error("Failed to save annotations:", error);
+      
     }
   };
 

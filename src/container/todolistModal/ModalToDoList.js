@@ -41,10 +41,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const { currentTime, current_Date, dateObject, current_value } =
     get_CurrentDateTime();
-  console.log(
-    { currentTime, current_Date, dateObject, current_value },
-    "get_CurrentDateTime"
-  );
+  
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
 
@@ -105,14 +102,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     IsMainTask: true,
     creationDate: "",
   });
-  console.log(task, "tasktasktask");
+  
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
 
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
+  
 
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
@@ -152,11 +149,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setTasksAttachments({ TasksAttachments: [] });
       };
     } catch (error) {
-      console.log(error, "toDoListReducerAllAssigneesData");
+      
     }
   }, []);
 
-  console.log(task, "tasktask");
+  
 
   //To Set task Creater ID
   useEffect(() => {
@@ -228,7 +225,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setAllPresenters(PresenterData);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [toDoListReducerAllAssigneesData]);
 
@@ -438,9 +435,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
       }
-      console.log(newFolder, "newFoldernewFoldernewFolder");
+      
       let newAttachmentData = newFolder.map((data, index) => {
-        console.log(data, "newFoldernewFoldernewFolder");
+        
         return {
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.pK_FileID.toString(),

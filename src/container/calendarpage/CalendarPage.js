@@ -158,11 +158,11 @@ const CalendarPage = () => {
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
-    console.log(value, "valuevaluevaluevalues");
+    
     if (value.calendarTypeId === 2) {
-      console.log(value, "valuevaluevaluevalues");
+      
       if (value.isQuickMeeting === false) {
-        console.log(value, "valuevaluevaluevalues");
+        
         let advancemeetingData = {
           id: value.id,
           isQuickMeeting: value.isQuickMeeting,
@@ -176,7 +176,7 @@ const CalendarPage = () => {
           isVideoCall: value.isVideoCall,
           talkGroupID: value.talkGroupID,
         };
-        console.log(advancemeetingData, "valuevaluevaluevalues");
+        
         navigate("/Diskus/Meeting", {
           state: { advancemeetingData, CalendaradvanceMeeting: true },
         });
@@ -228,7 +228,7 @@ const CalendarPage = () => {
         await dispatch(getEventsTypes(navigate, t));
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      
     }
   };
 
@@ -338,7 +338,7 @@ const CalendarPage = () => {
       localStorage.getItem("diskusEventColor") !== null
         ? localStorage.getItem("diskusEventColor")
         : "#000";
-    console.log(Data, "DataDataDataData");
+    
     let newList;
     if (Object.keys(calenderData).length > 0) {
       if (defaultState) {
@@ -471,7 +471,7 @@ const CalendarPage = () => {
         setCalenderDatae([...calenderData, newData]);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [googleEventCreate]);
 
@@ -524,7 +524,7 @@ const CalendarPage = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [googleEventUpdate]);
 
@@ -542,7 +542,7 @@ const CalendarPage = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [googleEventDelete]);
 
@@ -586,7 +586,7 @@ const CalendarPage = () => {
         setCalenderDatae([...calenderData, newData]);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [microsoftEventCreate]);
 
@@ -638,7 +638,7 @@ const CalendarPage = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [microsoftEventUpdate]);
 
@@ -656,14 +656,14 @@ const CalendarPage = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [microsoftEventDelete]);
 
   useEffect(() => {
     try {
       if (MeetingPublishData !== null) {
-        console.log(MeetingPublishData, "MeetingPublishDataMeetingPublishData");
+        
         let StartingTime = forMainCalendar(
           MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
         );
@@ -713,10 +713,10 @@ const CalendarPage = () => {
         dispatch(meetingStatusPublishedMqtt(null));
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   }, [MeetingPublishData]);
-  console.log(calenderData, "calenderDatacalenderData");
+  
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };

@@ -464,12 +464,12 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                 )
               );
               try {
-                console.log(typeof setRows, "typeoftypeof");
+                
 
                 if (isMainAgenda) {
                   setRows((rowData) => {
                     return rowData.map((newData) => {
-                      console.log(newData, "setDatasetDatasetData");
+                      
                       if (String(newData.id) === String(Data.AgendaID)) {
                         return {
                           ...newData,
@@ -482,7 +482,7 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   });
                 } else {
                   setRows((rowData) => {
-                    console.log(rowData, "setDatasetDatasetData");
+                    
                     return rowData.map((dataItem) => {
                       if (dataItem.subAgenda && dataItem.subAgenda.length > 0) {
                         return {
@@ -507,7 +507,7 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   });
                 }
               } catch (error) {
-                console.log(error);
+                
               }
 
               dispatch(showCastVoteAgendaModal(false));
@@ -821,7 +821,7 @@ const CreateUpdateMeetingDataRoomMap = (
               )
             );
             if (checkFlag !== null && checkFlag !== undefined) {
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
+              
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
@@ -866,7 +866,7 @@ const CreateUpdateMeetingDataRoomMap = (
                         ? true
                         : false,
                   };
-                  console.log("chek search meeting");
+                  
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else if (checkFlag === 5) {
                   //  Create Committee Meeting 5
@@ -915,10 +915,7 @@ const CreateUpdateMeetingDataRoomMap = (
                 }
               }
 
-              console.log(
-                moveFilesandFolders,
-                "moveFilesandFoldersmoveFilesandFolders"
-              );
+              
             }
 
             localStorage.setItem("MeetingID", data.MeetingID);
@@ -942,7 +939,7 @@ const CreateUpdateMeetingDataRoomMap = (
               )
             );
             if (checkFlag !== null && checkFlag !== undefined) {
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
+              
 
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
@@ -1125,7 +1122,7 @@ const uploadDocument_fail = (message) => {
 //               //   fileSizeOnDisk: Number(response.data.responseResult.fileSize),
 //               // };
 //               // await newfile.push(dummyData);
-//               // console.log("newfilenewfile", newfile);
+//               // 
 //               // dispatch(
 //               //   uploadDocument_success(response.data.responseResult, "")
 //               // );
@@ -1325,9 +1322,9 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               let fileIds = response.data.responseResult.fileID;
-              console.log(fileIds, "newFileID");
+              
               fileIds.forEach((newFileID, index) => {
-                console.log(newFileID, "newFileID");
+                
                 return newFolder.push({
                   pK_FileID: newFileID.pK_FileID,
                   displayAttachmentName: newFileID.displayFileName,
@@ -1451,7 +1448,7 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                         ? true
                         : false,
                   };
-                  console.log("chek search meeting");
+                  
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else if (checkFlag === 5) {
                   //  Create Committee Meeting 5
@@ -2095,7 +2092,7 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
           dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
           dispatch(setLoaderFalse());
         } else if (response.status === 200) {
-          console.log("ExportAgendaPDFExportAgendaPDF", response);
+          
 
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: "application/zip" }) // ✅ change type

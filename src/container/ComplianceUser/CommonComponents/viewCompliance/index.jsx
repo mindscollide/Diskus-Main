@@ -58,16 +58,16 @@ const ViewCompliance = () => {
     setViewComplianceTasksContextData,
   } = useComplianceContext();
 
-  console.log(complianceDetailsState, "complianceDetailsState");
-  console.log(mainComplianceTabs, "mainComplianceTabs");
-  console.log(complianceInfo, "complianceInfocomplianceInfo");
+  
+  
+  
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
 
-  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+  
 
   useEffect(() => {
     if (viewComplianceByMeDetails !== null) {
@@ -100,10 +100,7 @@ const ViewCompliance = () => {
         //   complianceTitle,
         //   complianceDescription: description,
         // });
-        console.log(
-          viewComplianceByMeDetails,
-          "complianceDetailscomplianceDetails",
-        );
+        
         setComplianceDetailsState({
           complianceTitle: complianceTitle,
           complianceId: complianceId,
@@ -171,7 +168,7 @@ const ViewCompliance = () => {
   // To Show Reopen View Detail Bar when Reopen or Hold status coming
   const shouldShowReopenSection = useMemo(() => {
     const history = complianceDetailsState?.complianceStatusChangeHistory;
-    console.log(history, "historyhistory");
+    
 
     if (!Array.isArray(history) || history.length === 0) return false;
 
@@ -181,7 +178,7 @@ const ViewCompliance = () => {
     );
   }, [complianceDetailsState?.complianceStatusChangeHistory]);
 
-  console.log(shouldShowReopenSection, "historyhistory");
+  
 
   useEffect(() => {
     if (
@@ -209,7 +206,7 @@ const ViewCompliance = () => {
       complianceId: Number(complianceInfo?.complianceId),
       viewType: mainComplianceTabs === 2 ? 1 : mainComplianceTabs === 3 ? 2 : 0,
     };
-    console.log(Data, "DataDataDataData");
+    
     dispatch(
       ViewComplianceDetailsByViewTypeAPI(
         navigate,

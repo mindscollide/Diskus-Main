@@ -20,7 +20,7 @@ import "./Tooltip.css";
  */
 const Tooltip = ({ text, children }) => {
   let currentLang = localStorage.getItem("i18nextLng");
-  console.log(JSON.stringify(currentLang), "currentLangcurrentLangcurrentLang");
+  , "currentLangcurrentLangcurrentLang");
   return (
     <div className="tooltip-container">
       {children}

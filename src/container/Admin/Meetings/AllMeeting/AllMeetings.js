@@ -331,7 +331,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       width: "120px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         return (
           <>
             <div

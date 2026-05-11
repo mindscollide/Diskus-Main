@@ -400,7 +400,7 @@ const ComplianceStandingReport = () => {
         window.__PDF_CHUNK_DATA__ = null;
       }
     } catch (err) {
-      console.error(err);
+      
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);

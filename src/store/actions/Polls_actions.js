@@ -638,7 +638,7 @@ const getAllPollsByPollsIDInit = () => {
 };
 
 const getAllPollsByPollsIDSuccess = (response, message) => {
-  console.log(response, "PollsReducerviewVotes");
+  
   return {
     type: actions.GET_POLLS_BY_POLLID_SUCCESS,
     response: response,
@@ -662,7 +662,7 @@ const AccessDeniedPolls = (response) => {
 };
 
 const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
-  console.log("Checking");
+  
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -731,17 +731,14 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               dispatch(
                 getAllPollsByPollsIDSuccess(response.data.responseResult, "")
               );
-              console.log(
-                response.data.responseResult,
-                "PollsReducerviewVotes"
-              );
+              
               if (typeof setEditPolls === "function") {
                 setEditPolls(true);
               }
 
               dispatch(showunsavedEditPollsMeetings(false));
             } catch (error) {
-              console.log(error, "errorerrorerror");
+              
             }
           } else if (
             response.data.responseResult.responseMessage
@@ -759,7 +756,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            console.log("AccessDeniedGlobalState");
+            
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
             //trigger the global access modal
           } else if (
@@ -830,7 +827,7 @@ const viewVotesApi = (
           ) {
             if (check) {
               if (Number(check) === 1) {
-                console.log(check, "NumberNumberNumberNumber");
+                
                 isFunction(setviewVotes) && setviewVotes(true);
                 setViewPublishedPoll(false);
                 await dispatch(
@@ -2170,7 +2167,7 @@ const getPollsByPollIdforCommitteeApi = (
   setViewPublishedPoll
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("Checking");
+  
 
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -2231,7 +2228,7 @@ const getPollsByPollIdforCommitteeApi = (
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            console.log("AccessDeniedGlobalState");
+            
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2263,7 +2260,7 @@ const getPollByPollIdforGroups = (
   setviewVotes
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("Checking");
+  
 
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -2324,7 +2321,7 @@ const getPollByPollIdforGroups = (
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            console.log("AccessDeniedGlobalState");
+            
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2355,7 +2352,7 @@ const getPollByPollIdforMeeting = (
   setViewPublishedPoll
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("Checking");
+  
 
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -2416,7 +2413,7 @@ const getPollByPollIdforMeeting = (
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            console.log("AccessDeniedGlobalState");
+            
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2446,7 +2443,7 @@ const createPollMeetingMQTT = (response) => {
   return { type: actions.POLL_CREATE_ADVANCED_MEETING, response: response };
 };
 const deletePollsMQTT = (response) => {
-  console.log(response, "responseresponseresponse");
+  
   return { type: actions.DELETE_POLLS_MQTT, deleteData: response };
 };
 const validateStringPoll_init = () => {

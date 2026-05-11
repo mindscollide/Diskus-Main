@@ -85,9 +85,9 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               let fileIds = response.data.responseResult.fileID;
-              console.log(fileIds, "newFileID");
+              
               fileIds.map((newFileID, index) => {
-                console.log(newFileID, "newFileID");
+                
                 return newFolder.push({
                   DisplayFileName: newFileID.displayFileName,
                   DiskusFileName: newFileID.diskusFileNameString,
@@ -903,7 +903,7 @@ const updateResolution = (
     Attachments: tasksAttachments,
   };
 
-  console.log(tasksAttachments, "tasksAttachments");
+  
 
   return (dispatch) => {
     dispatch(updateResolution_Init());
@@ -945,7 +945,7 @@ const updateResolution = (
               let newArr = [];
               if (tasksAttachments.length > 0) {
                 tasksAttachments.forEach((data, index) => {
-                  console.log(data, "PK_FileIDPK_FileIDPK_FileID");
+                  
                   newArr.push({
                     PK_FileID: Number(data.PK_FileID),
                   });
@@ -974,11 +974,11 @@ const updateResolution = (
                   t("Resolution-details-updated-successfully")
                 )
               );
-              console.log(tasksAttachments, "tasksAttachments");
+              
               let newArr = [];
               if (tasksAttachments.length > 0) {
                 tasksAttachments.forEach((data, index) => {
-                  console.log(data, "tasksAttachments");
+                  
                   newArr.push({
                     PK_FileID: Number(data.PK_FileID),
                   });
@@ -1096,12 +1096,12 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
               "Resolution_ResolutionServiceManager_GetResolutionByID_02".toLowerCase()
             ) {
               if (no === 2) {
-                console.log("ResolutionAccessDenied");
+                
                 if (
                   JSON.parse(localStorage.getItem("ResolutionAccessDenied")) ===
                   true
                 ) {
-                  console.log("ResolutionAccessDenied");
+                  
                   dispatch(AccessDeniedPolls(true));
                 }
               } else if (no === 3) {

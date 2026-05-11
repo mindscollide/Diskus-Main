@@ -8,9 +8,9 @@ import { TextField } from "../../../../../components/elements";
 const DueDateAlert = ({ organizationSettingData, setOrganizationSetting }) => {
   const { t } = useTranslation();
   const handleChangeDueDate = (event) => {
-    console.log(event);
+    
     const { name, value } = event.target;
-    console.log(name, value, "handleChangeDueDatehandleChangeDueDate");
+    
     if (name === "FYStartDateOne") {
       setOrganizationSetting((organizationSettings) => {
         return {

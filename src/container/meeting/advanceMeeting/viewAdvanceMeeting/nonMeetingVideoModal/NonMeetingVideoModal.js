@@ -105,7 +105,7 @@ const NonMeetingVideoModal = () => {
    */
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("Stopping Recording from iframe");
+      
 
       // Reset recording states
       setStartRecordingState(true);

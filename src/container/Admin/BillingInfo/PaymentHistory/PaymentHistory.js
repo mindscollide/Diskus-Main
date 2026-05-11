@@ -31,7 +31,7 @@ const EditUser = ({ ModalTitle }) => {
   const { OrganizationBillingReducer, adminReducer } = useSelector(
     (state) => state
   );
-  console.log(adminReducer, "adminReduceradminReduceradminReducer");
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [paymentMethods, setPaymentMethods] = useState([]);

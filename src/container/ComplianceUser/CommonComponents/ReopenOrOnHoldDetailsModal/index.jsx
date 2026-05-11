@@ -16,10 +16,7 @@ const ReopenOrOnHoldDetailsModal = () => {
 
   const { isViewDetailsOpen, setIsViewDetailsOpen, complianceDetailsState } =
     useComplianceContext();
-  console.log(
-    complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState",
-  );
+  
 
   const handleCloseButton = () => {
     setIsViewDetailsOpen(false);

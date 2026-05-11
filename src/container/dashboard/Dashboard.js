@@ -253,13 +253,13 @@ import { useComplianceContext } from "../../context/ComplianceContext";
 const Dashboard = () => {
   const location = useLocation();
   const { Sider, Content } = Layout;
-  
+
   const navigate = useNavigate();
-  
+
   const { t } = useTranslation();
-  
+
   const dispatch = useDispatch();
-  
+
   const {
     editorRole,
     cancelConfirmationModal,
@@ -295,12 +295,10 @@ const Dashboard = () => {
   let currentUserName = localStorage.getItem("name");
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
-  
+
   const meetingId = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo.meetingID,
   );
-
-  console.log(meetingId, "meetingIDmeetingID");
 
   const cancelModalMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
@@ -314,40 +312,40 @@ const Dashboard = () => {
   const IncomingVideoCallFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
   );
-  
+
   const VideoMainReducerResponseMessage = useSelector(
     (state) => state.VideoMainReducer.ResponseMessage,
   );
-  
+
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
-  
+
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag,
   );
-  
+
   const getJoinMeetingParticipantorHostrequest = useSelector(
     (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
   );
-  
+
   const maximizeParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
-  
+
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
-  
+
   const ShowGuestPopup = useSelector(
     (state) => state.videoFeatureReducer.ShowGuestPopup,
   );
-  
+
   const VideoChatMessagesFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
   );
   const meetingIdRef = useRef(meetingId);
-  
+
   const MinimizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
@@ -399,8 +397,6 @@ const Dashboard = () => {
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
-
-  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   console.log(
     {
@@ -553,7 +549,6 @@ const Dashboard = () => {
   // For End QUick Meeting
 
   const meetingEnded = (payload) => {
-
     const currentMeetingId = meetingIdRef.current;
     console.log(
       "mqtt mqmqmqmqmqmq",
@@ -8096,12 +8091,11 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -8109,7 +8103,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -8120,8 +8114,7 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -8147,7 +8140,7 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -8156,7 +8149,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+                <img src={IconMetroAttachment} alt='' draggable='false' />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -8174,8 +8167,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -8201,24 +8194,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
-                  <Row className="mb-1">
+                  <Row className='mb-1'>
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className="d-flex justify-content-center">
+                        <Col className='d-flex justify-content-center'>
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
+                            alt=''
+                            draggable='false'
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="text-center mt-4">
+                        <Col className='text-center mt-4'>
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -8231,13 +8224,12 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

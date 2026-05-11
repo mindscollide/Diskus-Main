@@ -1,8 +1,8 @@
 // this is for get index of the url
 export const endIndexUrl = (dynamicUrl) => {
-  console.log("iframeiframe", dynamicUrl);
+  
   const endIndex = dynamicUrl.indexOf(".html") + ".html".length;
-  console.log("iframeiframe", endIndex);
+  
 
   return endIndex;
 };
@@ -22,11 +22,11 @@ export const generateURLCaller = (
 ) => {
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let queryParams;
-  console.log("iframeiframe", baseURL);
-  console.log("iframeiframe", roomID);
+  
+  
   if (isZoomEnabled) {
     queryParams = `userName=${callerFullName}&sessionKey=${roomID}&userGuid=${UserGuid}&isHideCamera=false&isMute=false`;
-    console.log("iframeiframe", queryParams);
+    
   } else {
     queryParams = new URLSearchParams({
       UserName: callerFullName,
@@ -47,23 +47,23 @@ export const generateURLParticipant = (
 ) => {
   let queryParams;
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-  console.log("iframeiframe", UserGuid);
-  console.log("iframeiframe", roomID);
-  console.log("iframeiframe", participantFullName);
+  
+  
+  
   if (isZoomEnabled) {
     let presenterViewvideoURL = localStorage.getItem("presenterViewvideoURL");
-    console.log("iframeiframe", presenterViewvideoURL);
+    
     if (presenterViewvideoURL) {
       return presenterViewvideoURL;
     } else {
       queryParams = `userName=${participantFullName}&sessionKey=${roomID}&userGuid=${UserGuid}&isHideCamera=false&isMute=false`;
-      console.log("iframeiframe", queryParams);
+      
     }
-    console.log("iframeiframe", isZoomEnabled);
+    
 
-    console.log("iframeiframe", queryParams);
+    
   } else {
-    console.log("iframeiframe");
+    
     queryParams = new URLSearchParams({
       UserName: participantFullName,
       Type: "Join",
@@ -71,7 +71,7 @@ export const generateURLParticipant = (
     });
   }
 
-  console.log("iframeiframe");
+  
   return `${baseURL}?${queryParams.toString()}`;
 };
 

@@ -60,11 +60,7 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.complianceCreatedMqttData,
   );
 
-  console.log(
-    changeCheckListStatus,
-    viewComplianceByMeDetails,
-    "Check Compliance Coming",
-  );
+  
 
   const complianceCheckListMqttData = useSelector(
     (state) =>
@@ -99,7 +95,7 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.taskStatusChangeUserMqtt,
   );
 
-  console.log(taskStatusChangedMqttData, "taskStatusChangedMqttData");
+  
 
   const [createEditCompliance, setCreateEditComplaince] = useState(false);
   const [complianceInfo, setComplianceInfo] = useState({
@@ -115,10 +111,7 @@ export const ComlianceProvider = ({ children }) => {
   const [complianceAddEditViewState, setComplianceAddEditViewState] =
     useState(0);
 
-  console.log(
-    complianceAddEditViewState,
-    "complianceAddEditViewStatecomplianceAddEditViewState",
-  );
+  
 
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
@@ -305,11 +298,7 @@ export const ComlianceProvider = ({ children }) => {
   /** Controlled filter values for the Report Type column (("End-of-Compliance-Reports") === value: 1, ("Quarterly-reports") === value: 2, ("Accumulative-reports") === value: 3 ). */
   const [reportTypeFilter, setReportTypeFilter] = useState([1, 2, 3]);
 
-  console.log(
-    complianceCreatedMqttData,
-    complianceByMeList,
-    "complianceCreatedMqttDatacomplianceCreatedMqttData",
-  );
+  
 
   const resetModalStates = () => {
     setSubmitForApprovalModal(false);
@@ -334,7 +323,7 @@ export const ComlianceProvider = ({ children }) => {
   };
 
   const emptyComplianceState = () => {
-    console.log("cleared");
+    
     dispatch(clearComplianceDetailsData());
     setComplianceInfo({
       complianceId: 0,
@@ -444,12 +433,9 @@ export const ComlianceProvider = ({ children }) => {
     [],
   );
 
-  console.log(
-    allCheckListByComplianceId,
-    "allCheckListByComplianceIdallCheckListByComplianceId",
-  );
+  
 
-  console.log(complianceForMeList, "complianceForMeListcomplianceForMeList");
+  
   const [searchbox, setsearchbox] = useState(false);
 
   // View Type for Compliance Dashboard Manager View Type is 1 which is by default User View is 2
@@ -535,7 +521,7 @@ export const ComlianceProvider = ({ children }) => {
       viewComplianceByMeDetails !== null &&
       complianceAddEditViewState === 3
     ) {
-      console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+      
       try {
         const {
           allowedComplianceStatuses,
@@ -642,7 +628,7 @@ export const ComlianceProvider = ({ children }) => {
           setCheckAnyTaskInProgress(false);
         }
       } catch (error) {
-        console.error("Error in useEffect:", error);
+        
       }
     }
   }, [viewComplianceByMeDetails, complianceAddEditViewState]);
@@ -692,7 +678,7 @@ export const ComlianceProvider = ({ children }) => {
           setComplianceByMeTotal((prev) => prev + 1);
         }
       } catch (error) {
-        console.error("Error processing complianceCreatedMqttData:", error);
+        
       }
     }
   }, [complianceCreatedMqttData]);
@@ -739,7 +725,7 @@ export const ComlianceProvider = ({ children }) => {
         ]);
       }
     } catch (error) {
-      console.error("MQTT Checklist Error:", error);
+      
     }
   }, [complianceCheckListMqttData]);
 
@@ -768,7 +754,7 @@ export const ComlianceProvider = ({ children }) => {
         ),
       );
     } catch (error) {
-      console.error("Checklist Update MQTT Error:", error);
+      
     }
   }, [complianceCheckListUpdatedMqttData]);
 
@@ -778,18 +764,18 @@ export const ComlianceProvider = ({ children }) => {
 
     try {
       const data = complianceCheckListDeletedMqttData;
-      console.log(data, "datadatadatadata");
+      
 
       const { checklistId } = data || {};
       if (!checklistId) return;
-      console.log(checklistId, "datadatadatadata");
+      
 
       // 🔥 Remove checklist from state
       setAllCheckListByComplianceId((prev) =>
         prev.filter((item) => Number(item.checklistId) !== Number(checklistId)),
       );
     } catch (error) {
-      console.error("Checklist Delete MQTT Error:", error);
+      
     }
   }, [complianceCheckListDeletedMqttData]);
 
@@ -832,7 +818,7 @@ export const ComlianceProvider = ({ children }) => {
           totalTasks,
           newStatusId,
         } = requestData || {};
-        console.log(requestData, "requestDatarequestData");
+        
         setComplianceInfo({
           complianceId: complianceId,
           complianceName: complianceTitle,
@@ -842,7 +828,7 @@ export const ComlianceProvider = ({ children }) => {
           (item) => item.value === criticality,
         );
 
-        console.log(selectedCriticality, "requestDatarequestData");
+        
 
         const { currentStatus, allowedStatuses } =
           getAllowedStatuses(newStatusId);
@@ -853,7 +839,7 @@ export const ComlianceProvider = ({ children }) => {
             )
           : [];
 
-        console.log(formattedTags, "formattedTagsformattedTags");
+        
 
         // Set state directly, no remap
         setComplianceDetailsViewState((prev) => ({
@@ -944,18 +930,18 @@ export const ComlianceProvider = ({ children }) => {
         };
       });
     } catch (error) {
-      console.error("Error processing complianceUpdateMqttData:", error);
+      
     }
   }, [complianceUpdateMqttData]);
 
   // WHEN COMPLIANCE_REOPEN_MQTT comes
   useEffect(() => {
     if (!complianceReopenMqttData) return;
-    console.log(complianceReopenMqttData, "REOPENCOMPLIANCE");
+    
     try {
       const data = complianceReopenMqttData;
       const { complianceId, complianceStatusChangeHistory } = data || {};
-      console.log(data, "REOPENCOMPLIANCE");
+      
 
       if (!complianceId || !complianceStatusChangeHistory) return;
 
@@ -975,7 +961,7 @@ export const ComlianceProvider = ({ children }) => {
         };
       });
     } catch (error) {
-      console.error("Error processing complianceReopenMqttData:", error);
+      
     }
   }, [complianceReopenMqttData]);
 
@@ -984,7 +970,7 @@ export const ComlianceProvider = ({ children }) => {
     if (!taskStatusChangedMqttData) return;
 
     try {
-      console.log(taskStatusChangedMqttData, "MQTT TASK UPDATE IN CONTEXT");
+      
 
       const checklistList = taskStatusChangedMqttData?.checklistList;
 
@@ -1005,7 +991,7 @@ export const ComlianceProvider = ({ children }) => {
         });
       });
     } catch (error) {
-      console.error("MQTT Task Update Error:", error);
+      
     }
   }, [taskStatusChangedMqttData]);
 

@@ -196,7 +196,7 @@ const SignInUserManagement = () => {
     // 🚀 Main logic wrapped in async IIFE
     (async () => {
       const browser = await detectBrowser();
-      console.log("Detected Browser:", browser);
+      
   
       const isIncognito =
         browser === "Chrome" ? await checkIncognito() : false;
@@ -205,8 +205,8 @@ const SignInUserManagement = () => {
         setBestExperienceBox(true);
       }
   
-      console.log("Incognito Mode:", isIncognito);
-      console.log("onChangeAllowMicrosoftCalenderSync", code);
+      
+      
   
       if (code) {
         localStorage.setItem("Ms", code);
@@ -231,10 +231,7 @@ const SignInUserManagement = () => {
 
   useEffect(() => {
     if (adminReducerDeleteOrganizationResponseMessageData !== "") {
-      console.log(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "DeleteOrganizationResponseMessage"
-      );
+      
       showMessage(
         adminReducerDeleteOrganizationResponseMessageData,
         "error",

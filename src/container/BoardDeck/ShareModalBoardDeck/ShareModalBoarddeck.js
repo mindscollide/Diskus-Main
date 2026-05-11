@@ -23,7 +23,7 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
   );
   const handleRadioChange = (value) => {
     setRadioValue(value);
-    console.log("valuevaluevalue", value);
+    
   };
 
   useEffect(() => {

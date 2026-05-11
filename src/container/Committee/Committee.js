@@ -238,7 +238,7 @@ const Committee = () => {
         callApi(); // Invoke the API call
       }
     } catch (error) {
-      console.error("Error in useEffect:", error); // Log any errors for debugging
+       // Log any errors for debugging
     }
 
     // Cleanup logic for unmount
@@ -288,7 +288,7 @@ const Committee = () => {
             t,
           ),
         );
-        console.log(getResponse, "getResponse");
+        
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           localStorage.removeItem("CoArcurrentPage");
           localStorage.setItem("CocurrentPage", 1);
@@ -336,10 +336,7 @@ const Committee = () => {
   // useEffect(() => {
   //   try {
   //     if (CommitteeReducerrealtimeCommitteeStatus !== null) {
-  //       console.log(
-  //         CommitteeReducerrealtimeCommitteeStatus,
-  //         "CommitteeReducerrealtimeCommitteeStatus"
-  //       );
+  //       
   //       const {
   //         committeeStatusID,
   //         commmitteeID,
@@ -359,10 +356,7 @@ const Committee = () => {
   //           talkGroupID,
   //         },
   //       } = CommitteeReducerrealtimeCommitteeStatus;
-  //       console.log(
-  //         CommitteeReducerrealtimeCommitteeStatus,
-  //         "CommitteeReducerrealtimeCommitteeStatus"
-  //       );
+  //       
 
   //       const committeeData = {
   //         committeesTitle: committeeTitle,
@@ -380,19 +374,12 @@ const Committee = () => {
   //         listOfGroups: [...listOfGroups],
   //         committeeMembers: [...committeMembers],
   //       };
-  //       console.log(
-  //         CommitteeReducerrealtimeCommitteeStatus,
-  //         "CommitteeReducerrealtimeCommitteeStatus"
-  //       );
+  //       
 
   //       const committeeExists = getcommitteedata.some(
   //         (data) => data.committeeID === commmitteeID
   //       );
-  //       console.log(
-  //         committeeExists,
-  //         committeeStatusID,
-  //         "CommitteeReducerrealtimeCommitteeStatus"
-  //       );
+  //       
 
   //       if (committeeStatusID === 2) {
   //         // Archive => remove from list if exists
@@ -402,11 +389,7 @@ const Committee = () => {
   //           );
   //         }
   //       } else if (committeeStatusID === 1 || committeeStatusID === 3) {
-  //         console.log(
-  //           committeeExists,
-  //           committeeStatusID,
-  //           "CommitteeReducerrealtimeCommitteeStatus"
-  //         );
+  //         
 
   //         if (!committeeExists) {
   //           // Add new group if not already present
@@ -420,17 +403,13 @@ const Committee = () => {
   //                 : data3
   //             )
   //           );
-  //           console.log(
-  //             committeeExists,
-  //             committeeStatusID,
-  //             "CommitteeReducerrealtimeCommitteeStatus"
-  //           );
+  //           
   //         }
   //       }
   //       dispatch(realtimeCommitteeStatusResponse(null));
   //     }
   //   } catch (error) {
-  //     console.log(error, "error");
+  //     
   //   }
   // }, [CommitteeReducerrealtimeCommitteeStatus]);
 
@@ -505,11 +484,11 @@ const Committee = () => {
         dispatch(realtimeCommitteeStatusResponse(null));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
-  console.log(getcommitteedata, "getcommitteedatagetcommitteedata");
+  
 
   useEffect(() => {
     try {
@@ -531,7 +510,7 @@ const Committee = () => {
         dispatch(realtimeCommitteeResponse(null));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducerrealtimeCommitteeCreateResponse]);
 
@@ -558,7 +537,7 @@ const Committee = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [CommitteeReducerremoveCommitteeMember]);
 
@@ -759,7 +738,7 @@ const Committee = () => {
         dispatch(getallcommitteebyuserid_clear());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducerResponseMessage]);
 

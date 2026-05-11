@@ -130,7 +130,7 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
           // dispatch(getCalendarDataInit(false));
         });
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 };
@@ -228,7 +228,7 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
           // dispatch(calendarLoader(false));
         });
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 };

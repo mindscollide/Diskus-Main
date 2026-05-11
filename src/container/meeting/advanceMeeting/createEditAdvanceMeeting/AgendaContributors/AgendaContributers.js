@@ -634,7 +634,7 @@ const AgendaContributers = ({
         {setEditorRole},
       ),
     );
-    console.log("end meeting chaek");
+    
     // dispatch(
     //   UpdateOrganizersMeeting(
     //     false,

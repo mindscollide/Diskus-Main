@@ -101,11 +101,11 @@ const Participants = () => {
 
         // IsParticipantsAddFlow;
       }
-      console.log(getAllData, "getAllDatagetAllDatagetAllData");
+      
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
-  console.log(rowsData, "getAllDatagetAllDatagetAllData");
+  
 
   let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
   let ParticipantsViewColoumn = [];

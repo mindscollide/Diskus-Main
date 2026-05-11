@@ -146,7 +146,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
         PublishedMeetings: false,
         ProposedMeetings: true,
       };
-      console.log("chek search meeting");
+      
       dispatch(searchNewUserMeeting(navigate, searchData, t));
     }
   };

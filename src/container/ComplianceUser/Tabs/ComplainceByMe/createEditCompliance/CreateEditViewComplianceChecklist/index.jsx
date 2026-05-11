@@ -70,7 +70,7 @@ const CreateEditViewComplianceChecklist = () => {
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
-  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
+  
 
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
@@ -101,11 +101,11 @@ const CreateEditViewComplianceChecklist = () => {
     setNewChecklistIds,
     setTaskCount,
   } = useComplianceContext();
-  console.log(checkListData, "checkListData");
-  console.log(newChecklistIds, "newChecklistIds");
-  console.log(complianceDetailsState, "complianceDetailsState");
-  console.log(complianceAddEditViewState, "complianceAddEditViewState");
-  console.log(isChecklistTitleExist, "isChecklistTitleExist");
+  
+  
+  
+  
+  
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
@@ -113,10 +113,7 @@ const CreateEditViewComplianceChecklist = () => {
         .GetComplianceChecklistsByComplianceId,
   );
 
-  console.log(
-    GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId",
-  );
+  
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -129,7 +126,7 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
-    console.log("handleValueChange", name, value);
+    
     let error = "";
 
     switch (name) {
@@ -185,7 +182,7 @@ const CreateEditViewComplianceChecklist = () => {
             checkListData.checklistDueDate,
           ),
         };
-        console.log(Data, "handleClickSaveBtn");
+        
         dispatch(
           AddComplianceChecklistAPI(
             navigate,
@@ -201,7 +198,7 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleDeleteChecklist = (checklistID) => {
-    console.log(checklistID, "checklistID");
+    
     if (checklistID) {
       setDeleteChecklistId(checklistID);
       setDeleteChecklistConfirmationModalState(true);
@@ -209,7 +206,7 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleEditChecklist = (checklistData) => {
-    console.log(checklistData, "checklistData");
+    
     if (checklistData)
       try {
         setAddChecklistCloseState(false);
@@ -449,7 +446,7 @@ const CreateEditViewComplianceChecklist = () => {
     complianceDetailsState?.status?.value === 5 ||
     complianceDetailsState?.status?.value === 3;
 
-  console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
+  
 
   const isReopendCompliance = complianceDetailsState?.status?.value === 6;
 
@@ -494,10 +491,7 @@ const CreateEditViewComplianceChecklist = () => {
   const isComplianceEditable =
     statusValue !== undefined && editableStatuses.has(statusValue);
 
-  console.log(
-    { isComplianceEditable, editableStatuses, statusValue },
-    "isComplianceEditable",
-  );
+  
 
   return (
     <>

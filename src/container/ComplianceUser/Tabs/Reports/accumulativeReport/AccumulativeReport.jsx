@@ -44,19 +44,13 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
     ["Pending or Overdue Tasks", reportData?.tasksPending || 0],
   ];
 
-  console.log(
-    formatDateToYMDLong(reportData?.generatedOn).split(""),
-    "Formatedd date",
-  );
-
   return (
-    <div id="content-id">
+    <div id='content-id'>
       <Row>
         <Col
           lg={12}
-          xs="auto"
-          className={`${styles.ComplianceMainHeading} mt-4`}
-        >
+          xs='auto'
+          className={`${styles.ComplianceMainHeading} mt-4`}>
           <div>
             <label>{t("Quarter")}:</label>
             <p className={styles.longTitleDownload}>
@@ -68,13 +62,12 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
 
       <Row className={`${styles.ComplianceSection} mt-4`}>
         <Col lg={8}>
-          <Row className="align-items-center justify-content-between mx-2">
+          <Row className='align-items-center justify-content-between mx-2'>
             <Col
               lg={6}
-              xs="auto"
-              className={`${styles.iconTextWrapperDownload}`}
-            >
-              <img src={Verification} alt="Verification" />
+              xs='auto'
+              className={`${styles.iconTextWrapperDownload}`}>
+              <img src={Verification} alt='Verification' />
               <div>
                 <label>{t("Report-type")}:</label>
                 <p>{reportData?.reportTypeName}</p>
@@ -82,10 +75,9 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
             </Col>
             <Col
               lg={5}
-              xs="auto"
-              className={`${styles.iconTextWrapperDownload}`}
-            >
-              <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+              xs='auto'
+              className={`${styles.iconTextWrapperDownload}`}>
+              <img src={ComplianceCalendar} alt='ComplianceCalendar' />
               <div>
                 <label>{t("Generated-date")}:</label>
                 <p>
@@ -99,10 +91,9 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
           <Row className={`${styles.iconTextWrapperDownload} mx-2 mt-4`}>
             <Col
               lg={5}
-              xs="auto"
-              className={`${styles.iconTextWrapperDownload} d-flex gap-2`}
-            >
-              <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+              xs='auto'
+              className={`${styles.iconTextWrapperDownload} d-flex gap-2`}>
+              <img src={ComplianceCalendar} alt='ComplianceCalendar' />
               <div>
                 <label>{t("Start-dates")}:</label>
                 <p>
@@ -112,7 +103,7 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
                 </p>
               </div>
             </Col>
-            <Col lg={5} xs="auto">
+            <Col lg={5} xs='auto'>
               <div>
                 <label>{t("End-dates")}:</label>
                 <p>
@@ -129,9 +120,9 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
           <div className={styles.chartFlexDownloadedPdf}>
             <div className={styles.chartBoxDownloadedPdf}>
               <Chart
-                chartType="PieChart"
-                width="91%"
-                height="185px"
+                chartType='PieChart'
+                width='91%'
+                height='185px'
                 data={donutData}
                 options={{ ...donutOptions, legend: "none" }}
               />
@@ -170,21 +161,18 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
       <Row>
         <Col
           lg={12}
-          xs="auto"
-          className={`${styles.ComplianceMainHeading} mt-3`}
-        >
+          xs='auto'
+          className={`${styles.ComplianceMainHeading} mt-3`}>
           <p>{t("Compliances-in-this-report")}</p>
         </Col>
         <Col
           lg={12}
-          xs="auto"
-          className={`${styles.ComplianceMainHeading} mt-3`}
-        >
+          xs='auto'
+          className={`${styles.ComplianceMainHeading} mt-3`}>
           {data?.map((comp, index) => (
             <p
               key={comp.complianceID}
-              className={styles.complianceTitleListDownload}
-            >
+              className={styles.complianceTitleListDownload}>
               {index + 1 + "."} {comp.complianceTitle}
             </p>
           ))}
@@ -194,9 +182,8 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
           <Col
             key={compliance.complianceID}
             lg={12}
-            xs="auto"
-            className={styles.checklist_report}
-          >
+            xs='auto'
+            className={styles.checklist_report}>
             <div className={styles.titleSectionDownload}>
               <label>{t("Compliance-title")}:</label>
               <p className={styles.longTitle}>
@@ -257,8 +244,7 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
                 compliance?.checklists.map((checklist) => (
                   <div
                     key={checklist.checklistID}
-                    className={styles.panelContentDownload}
-                  >
+                    className={styles.panelContentDownload}>
                     <div className={styles.titleSectionDownload}>
                       <label className={styles.ChecklistTitleDownload}>
                         {t("Checklists-title")}:
@@ -278,13 +264,11 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
                       checklist?.tasks?.map((task) => (
                         <div
                           key={task.taskID}
-                          className={styles.insideAccordianTableDownload}
-                        >
+                          className={styles.insideAccordianTableDownload}>
                           <Row>
-                            <Col lg={12} xs="auto">
+                            <Col lg={12} xs='auto'>
                               <div
-                                className={styles.insideAccordianMainHeading}
-                              >
+                                className={styles.insideAccordianMainHeading}>
                                 <label>{t("Task-title")}:</label>
                                 <Tooltip title={task.taskTitle}>
                                   <p>{task.taskTitle}</p>
@@ -293,44 +277,39 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
                             </Col>
                           </Row>
                           <Row>
-                            <Col lg={4} xs="auto">
+                            <Col lg={4} xs='auto'>
                               <div
-                                className={styles.insideAccordianMainHeading}
-                              >
+                                className={styles.insideAccordianMainHeading}>
                                 <label>{t("Assignee")}:</label>
                                 <p>{task.assigneeName || "-"}</p>
                               </div>
                             </Col>
-                            <Col lg={2} xs="auto">
+                            <Col lg={2} xs='auto'>
                               <div
-                                className={styles.insideAccordianMainHeading}
-                              >
+                                className={styles.insideAccordianMainHeading}>
                                 <label>{t("Due-date")}:</label>
                                 <p>{formatDateToYMD(task.taskDueDate)}</p>
                               </div>
                             </Col>
-                            <Col lg={2} xs="auto">
+                            <Col lg={2} xs='auto'>
                               <div
-                                className={styles.insideAccordianMainHeading}
-                              >
+                                className={styles.insideAccordianMainHeading}>
                                 <label>{t("Completed-on")}:</label>
                                 <p>
                                   {formatDateToYMD(task.taskCompletedOn) || "-"}
                                 </p>
                               </div>
                             </Col>
-                            <Col lg={2} xs="auto">
+                            <Col lg={2} xs='auto'>
                               <div
-                                className={styles.insideAccordianMainHeading}
-                              >
+                                className={styles.insideAccordianMainHeading}>
                                 <label>{t("Completed")}:</label>
                                 <p>{task.completionStatus}</p>
                               </div>
                             </Col>
-                            <Col lg={2} xs="auto">
+                            <Col lg={2} xs='auto'>
                               <div
-                                className={styles.insideAccordianMainHeading}
-                              >
+                                className={styles.insideAccordianMainHeading}>
                                 <label>{t("Status")}:</label>
                                 <p>{task.taskStatus}</p>
                               </div>
@@ -417,7 +396,6 @@ const AccumulativeReport = () => {
       const fullData = GetAccumulativeReport?.compliances || [];
 
       if (!fullData.length) {
-        console.error("No data to generate PDF");
         setIsGenerating(false);
         return;
       }
@@ -457,7 +435,6 @@ const AccumulativeReport = () => {
         window.__PDF_CHUNK_DATA__ = null;
       }
     } catch (err) {
-      console.error(err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -473,7 +450,6 @@ const AccumulativeReport = () => {
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
-      console.error(error);
     } finally {
       setIsGenerating(false);
     }
@@ -494,26 +470,25 @@ const AccumulativeReport = () => {
       <div className={styles.mainDivComplianceStanding}>
         <Spin
           spinning={isGenerating}
-          size="large"
+          size='large'
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
-          className="d-flex justify-content-center align-items-center"
-        >
+          className='d-flex justify-content-center align-items-center'>
           {!showPdfLayout && (
             <div>
-              <Row className="align-items-center">
+              <Row className='align-items-center'>
                 {/* Back Button */}
-                <Col xs="auto">
+                <Col xs='auto'>
                   <img
                     src={BackButton}
-                    alt="BackButton"
+                    alt='BackButton'
                     className={styles.goBackButton}
                     onClick={() => setAccumulativeReport(false)}
                   />
                 </Col>
 
                 {/* Report Type */}
-                <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
-                  <img src={Verification} alt="Verification" />
+                <Col lg={2} xs='auto' className={styles.iconTextWrapper}>
+                  <img src={Verification} alt='Verification' />
                   <div>
                     <label>{t("Report-type")}:</label>
                     <p>
@@ -526,10 +501,9 @@ const AccumulativeReport = () => {
                 {/* Generated Date */}
                 <Col
                   lg={8}
-                  xs="auto"
-                  className={`${styles.iconTextWrapper} d-flex justify-content-center`}
-                >
-                  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                  xs='auto'
+                  className={`${styles.iconTextWrapper} d-flex justify-content-center`}>
+                  <img src={ComplianceCalendar} alt='ComplianceCalendar' />
                   <div>
                     <label>{t("Generated-date")}:</label>
                     <p>
@@ -541,9 +515,9 @@ const AccumulativeReport = () => {
                 </Col>
 
                 {/* Download Button */}
-                <Col lg={1} xs="auto">
+                <Col lg={1} xs='auto'>
                   <CustomButton
-                    text="Download"
+                    text='Download'
                     loading={isGenerating}
                     onClick={handleDownloadPDF}
                     className={styles.complianceDownloadBtn}
@@ -586,9 +560,9 @@ const AccumulativeReport = () => {
                   <div className={styles.chartFlex}>
                     <div className={styles.chartBox}>
                       <Chart
-                        chartType="PieChart"
-                        width="100%"
-                        height="200px"
+                        chartType='PieChart'
+                        width='100%'
+                        height='200px'
                         data={donutData}
                         options={{ ...donutOptions, legend: "none" }}
                       />
@@ -637,22 +611,21 @@ const AccumulativeReport = () => {
               <div className={styles.tableWrapper}>
                 <div className={styles.tableHeader}>
                   <div>{t("Compliance-name")}</div>
-                  <div className="text-center">{t("Due-date")}</div>
-                  <div className="text-center">{t("Total-checklists")}</div>
-                  <div className="text-center">{t("No-of-tasks")}</div>
-                  <div className="text-center">{t("Completed-tasks")}</div>
-                  <div className="text-center">{t("Overdue-tasks")}</div>
-                  <div className="text-center">{t("Progress")}</div>
+                  <div className='text-center'>{t("Due-date")}</div>
+                  <div className='text-center'>{t("Total-checklists")}</div>
+                  <div className='text-center'>{t("No-of-tasks")}</div>
+                  <div className='text-center'>{t("Completed-tasks")}</div>
+                  <div className='text-center'>{t("Overdue-tasks")}</div>
+                  <div className='text-center'>{t("Progress")}</div>
                 </div>
 
                 <Collapse
                   bordered={false}
-                  expandIconPosition="end"
+                  expandIconPosition='end'
                   expandIcon={({ isActive }) => (
                     <DownOutlined rotate={isActive ? 180 : 0} />
                   )}
-                  className={styles.collapseWrapper}
-                >
+                  className={styles.collapseWrapper}>
                   {!GetAccumulativeReport?.compliances?.length ? (
                     <div className={styles.NoDataFoundTable}>
                       <div className={`${styles.nodatafound_subHeading}`}>
@@ -670,29 +643,27 @@ const AccumulativeReport = () => {
                                 {item.complianceTitle}
                               </Tooltip>
                             </div>
-                            <div className="text-center">
+                            <div className='text-center'>
                               {formatDateToYMD(item.complianceDueDate)}
                             </div>
-                            <div className="text-center">
+                            <div className='text-center'>
                               {item.totalChecklists}
                             </div>
-                            <div className="text-center">{item.totalTasks}</div>
-                            <div className="text-center">
+                            <div className='text-center'>{item.totalTasks}</div>
+                            <div className='text-center'>
                               {item.completedTasks}
                             </div>
-                            <div className="text-center">
+                            <div className='text-center'>
                               {item.tasksOverdue}
                             </div>
-                            <div className="text-center">{`${item.progressPercent}%`}</div>
+                            <div className='text-center'>{`${item.progressPercent}%`}</div>
                           </div>
-                        }
-                      >
+                        }>
                         <div className={styles.MainAccordianTable}>
                           {!item?.checklists?.length ? (
                             <div className={styles.NoDataFoundTable}>
                               <div
-                                className={`${styles.nodatafound_subHeading}`}
-                              >
+                                className={`${styles.nodatafound_subHeading}`}>
                                 {t("No-Checklist-Found")}
                               </div>
                             </div>
@@ -700,8 +671,7 @@ const AccumulativeReport = () => {
                             item?.checklists?.map((checklistItem) => (
                               <div
                                 key={checklistItem.checklistID}
-                                className={styles.panelContent}
-                              >
+                                className={styles.panelContent}>
                                 <div className={styles.titleSection}>
                                   <label className={styles.ChecklistTitle}>
                                     {t("Checklists-title")}:
@@ -713,8 +683,7 @@ const AccumulativeReport = () => {
                                 {!checklistItem?.tasks?.length ? (
                                   <div className={styles.NoDataFoundTable}>
                                     <div
-                                      className={`${styles.nodatafound_subHeading}`}
-                                    >
+                                      className={`${styles.nodatafound_subHeading}`}>
                                       {t("No-Checklist-Task")}
                                     </div>
                                   </div>
@@ -722,15 +691,13 @@ const AccumulativeReport = () => {
                                   checklistItem?.tasks?.map((taskItem) => (
                                     <div
                                       key={taskItem.taskID}
-                                      className={styles.insideAccordianTable}
-                                    >
+                                      className={styles.insideAccordianTable}>
                                       <Row>
-                                        <Col lg={12} xs="auto">
+                                        <Col lg={12} xs='auto'>
                                           <div
                                             className={
                                               styles.insideAccordianMainHeading
-                                            }
-                                          >
+                                            }>
                                             <label>{t("Task-title")}:</label>
                                             <Tooltip title={taskItem.taskTitle}>
                                               <p>{taskItem.taskTitle || "-"}</p>
@@ -739,24 +706,22 @@ const AccumulativeReport = () => {
                                         </Col>
                                       </Row>
                                       <Row>
-                                        <Col lg={4} xs="auto">
+                                        <Col lg={4} xs='auto'>
                                           <div
                                             className={
                                               styles.insideAccordianSubHeading
-                                            }
-                                          >
+                                            }>
                                             <label>{t("Assignee")}:</label>
                                             <p>
                                               {taskItem.assigneeName || "-"}
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col lg={2} xs="auto">
+                                        <Col lg={2} xs='auto'>
                                           <div
                                             className={
                                               styles.insideAccordianSubHeading
-                                            }
-                                          >
+                                            }>
                                             <label>{t("Due-date")}:</label>
                                             <p>
                                               {formatDateToYMD(
@@ -765,12 +730,11 @@ const AccumulativeReport = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col lg={2} xs="auto">
+                                        <Col lg={2} xs='auto'>
                                           <div
                                             className={
                                               styles.insideAccordianSubHeading
-                                            }
-                                          >
+                                            }>
                                             <label>{t("Completed-on")}:</label>
                                             <p>
                                               {formatDateToYMD(
@@ -779,22 +743,20 @@ const AccumulativeReport = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col lg={2} xs="auto">
+                                        <Col lg={2} xs='auto'>
                                           <div
                                             className={
                                               styles.insideAccordianSubHeading
-                                            }
-                                          >
+                                            }>
                                             <label>{t("Status")}:</label>
                                             <p>{taskItem.taskStatus || ""}</p>
                                           </div>
                                         </Col>
-                                        <Col lg={2} xs="auto">
+                                        <Col lg={2} xs='auto'>
                                           <div
                                             className={
                                               styles.insideAccordianSubHeading
-                                            }
-                                          >
+                                            }>
                                             <label>{t("Completed")}:</label>
                                             <p>
                                               {taskItem.completionStatus || "-"}

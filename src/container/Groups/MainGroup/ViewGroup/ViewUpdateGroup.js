@@ -22,14 +22,14 @@ import { maxFileSize } from "../../../../commen/functions/utils";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
-  console.log(groupStatus, "groupStatus");
+  
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [fileAttachments, setFileAttachments] = useState([]);
 
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+  
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
 
   const [folderID, setFolderID] = useState(0);
@@ -83,7 +83,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [GroupsReducer]);
 

@@ -195,7 +195,7 @@ const ProposedMeeting = () => {
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
-    console.log("Table change:", { pagination, filters, sorter });
+    
 
     // Reset all sort states first
     setMeetingTitleSort(null);
@@ -216,7 +216,7 @@ const ProposedMeeting = () => {
     }
   };
   const handleCLickView = (record) => {
-    console.log("Edit Meeting", record);
+    
     if (record.isOrganizer) {
       dispatch(
         getMeetingDetailsByMeetingIdApi(
@@ -231,7 +231,7 @@ const ProposedMeeting = () => {
   };
   const moreButtons = (record) => {
     const handleEdit = () => {
-      console.log("Edit Meeting", record);
+      
       if (record.isOrganizer) {
         dispatch(
           getMeetingDetailsByMeetingIdApi(
@@ -246,7 +246,7 @@ const ProposedMeeting = () => {
     };
 
     const handleDelete = () => {
-      console.log("Cancel Meeting", record);
+      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -320,7 +320,7 @@ const ProposedMeeting = () => {
                 //     GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
                 //   );
                 // } catch (error) {
-                //   console.log(error, "apis call Error");
+                //   
                 // }
               }}
               className={styles.tableRow}>
@@ -631,39 +631,39 @@ const ProposedMeeting = () => {
       try {
         const updateMeetingData = async () => {
           let meetingData = meetingStatusProposedMqttData;
-          console.log(meetingData, "meetingDatameetingData");
+          
 
           const indexToUpdate = proposedMeetingData.findIndex(
             (obj) => obj.pK_MDID === meetingData.pK_MDID,
           );
-          console.log(indexToUpdate, "meetingDatameetingData");
+          
 
           // Fetching unpublished meeting data
           let getMeetingDataArray = await getAllUnpublishedMeetingData(
             [meetingData],
             1,
           );
-          console.log(getMeetingDataArray, "meetingDatameetingData");
+          
 
           // Assuming getMeetingDataArray is an array with a single object
           const getMeetingData = getMeetingDataArray[0];
           // Check if the meeting exists in the current meetingsRecords
 
-          console.log(getMeetingData, "meetingDatameetingData");
+          
 
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingData];
-            console.log(updatedRows, "meetingDatameetingData");
+            
 
             updatedRows[indexToUpdate] = getMeetingData;
-            console.log(updatedRows, "meetingDatameetingData");
+            
 
             setProposedMeetingData(updatedRows);
           } else {
-            console.log(getMeetingData, "meetingDatameetingData");
+            
 
             let updatedRows = [getMeetingData, ...proposedMeetingData];
-            console.log(updatedRows, "meetingDatameetingData");
+            
 
             setProposedMeetingData(updatedRows);
             setProposedMeetingDataRecord((prev) => prev + 1);
@@ -672,10 +672,7 @@ const ProposedMeeting = () => {
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
       } catch (error) {
-        console.log(
-          error,
-          "meetingStatusProposedMqttDatameetingStatusProposedMqttData",
-        );
+        
       }
     }
   }, [meetingStatusProposedMqttData]);
@@ -699,7 +696,7 @@ const ProposedMeeting = () => {
             dispatch(toggleIsParticipantProposedMeetingDates(true));
           }
         } catch (error) {
-          console.error("Error in API call:", error);
+          
           localStorage.removeItem("meetingprop");
         }
       };
@@ -729,7 +726,7 @@ const ProposedMeeting = () => {
               dispatch(toggleIsOrganizerProposedMeetingDates(true));
             }
           } catch (error) {
-            console.error("Error in API call:", error);
+            
             localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };

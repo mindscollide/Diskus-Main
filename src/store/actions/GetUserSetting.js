@@ -107,8 +107,8 @@ const getUserSetting = (navigate, t, loader) => {
                   ? true
                   : false;
 
-              console.log("configValue", Boolean(configValue)); // Outputs the configValue or null if not found
-              console.log("configValue", configValue); // Outputs the configValue or null if not found
+              // Outputs the configValue or null if not found
+              // Outputs the configValue or null if not found
 
               localStorage.setItem("isZoomEnabled", configValue);
               const microsoftClientId =
@@ -131,11 +131,6 @@ const getUserSetting = (navigate, t, loader) => {
                   "officeEventColor",
                   response.data.responseResult.userSettings.officeEventColor,
                 );
-
-                console.log(
-                  "Client ID",
-                  response.data.responseResult.userSettings.configurations,
-                );
               } else {
                 localStorage.removeItem("officeEventColor");
               }
@@ -149,10 +144,6 @@ const getUserSetting = (navigate, t, loader) => {
                 localStorage.setItem(
                   "googleEventColor",
                   response.data.responseResult.userSettings.googleEventColor,
-                );
-                console.log(
-                  "Client ID",
-                  response.data.responseResult.userSettings.configurations,
                 );
               } else {
                 localStorage.removeItem("googleEventColor");

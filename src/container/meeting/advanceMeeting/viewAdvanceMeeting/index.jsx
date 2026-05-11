@@ -158,7 +158,7 @@ const ViewMeetingModal = ({
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
 
-  console.log(meetingID, "meetingIDmeetingIDmeetingID");
+  
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
   );
@@ -573,7 +573,7 @@ const ViewMeetingModal = ({
           ),
         );
       } catch (error) {
-        console.error(error);
+        
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
@@ -606,7 +606,7 @@ const ViewMeetingModal = ({
           ),
         );
       } catch (error) {
-        console.error(error);
+        
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
@@ -646,7 +646,7 @@ const ViewMeetingModal = ({
           localStorage.setItem("folderDataRoomMeeting", 0);
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
@@ -713,7 +713,7 @@ const ViewMeetingModal = ({
         }
       }
     } catch (error) {
-      console.error(error);
+      
     }
   }, [AgendaVotingModalStartedData]);
 
@@ -748,7 +748,7 @@ const ViewMeetingModal = ({
         dispatch(webnotificationGlobalFlag(false));
       }
     } catch (error) {
-      console.error(error);
+      
     }
   }, [globalFunctionWebnotificationFlag]);
 

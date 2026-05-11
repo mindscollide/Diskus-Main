@@ -1391,19 +1391,16 @@ const getMinuteReviewFlowByMeetingId_Init = () => {
 };
 
 const getMinuteReviewFlowByMeetingId_Success = (response, message) => {
-  console.log("GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId");
+  
   try {
-    console.log("GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId");
+    
     return {
       type: actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS,
       response: response,
       message: message,
     };
   } catch (error) {
-    console.log(
-      "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-      error
-    );
+    
   }
 };
 
@@ -1439,10 +1436,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_01".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 try {
                   dispatch(
                     getMinuteReviewFlowByMeetingId_Success(
@@ -1451,10 +1445,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     )
                   );
                 } catch (error) {
-                  console.log(
-                    "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                    error
-                  );
+                  
                 }
               } else if (
                 response.data.responseResult.responseMessage
@@ -1463,10 +1454,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_02".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
@@ -1480,10 +1468,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_03".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
@@ -1498,52 +1483,37 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_04".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
                 );
               } else {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
                 );
               }
             } else {
-              console.log(
-                "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                response
-              );
+              
               dispatch(
                 getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
               );
             }
           } else {
-            console.log(
-              "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-              response
-            );
+            
             dispatch(
               getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
             );
           }
         })
         .catch((response) => {
-          console.log(
-            "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-            response
-          );
+          
           dispatch(
             getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
           );
         });
     } catch (error) {
-      console.log("GetMinuteReviewFlowByMeetingId", error);
+      
     }
   };
 };
@@ -1648,7 +1618,7 @@ const MeetingPublishedMinutesApi = (
       })
       .catch((response) => {
         dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
-        console.log("MeetingPublishedMinutesApi", response);
+        
       });
   };
 };
@@ -1977,7 +1947,7 @@ const GetDataForResendMinuteReview = (
   setEditMinute,
   Editdata
 ) => {
-  console.log(setEditMinute, "setEditMinutesetEditMinutesetEditMinute");
+  
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getDataForResendMinuteReview_Init());

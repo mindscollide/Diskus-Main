@@ -195,7 +195,7 @@ const GroupProposedMeetings = () => {
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
-    console.log("Table change:", { pagination, filters, sorter });
+    
 
     // Reset all sort states first
     setMeetingTitleSort(null);
@@ -216,7 +216,7 @@ const GroupProposedMeetings = () => {
     }
   };
   const handleCLickView = (record) => {
-    console.log("Edit Meeting", record);
+    
     if (record.isOrganizer) {
       dispatch(
         getMeetingDetailsByMeetingIdApi(
@@ -231,7 +231,7 @@ const GroupProposedMeetings = () => {
   };
   const moreButtons = (record) => {
     const handleEdit = () => {
-      console.log("Edit Meeting", record);
+      
       if (record.isOrganizer) {
         dispatch(
           getMeetingDetailsByMeetingIdApi(
@@ -246,7 +246,7 @@ const GroupProposedMeetings = () => {
     };
 
     const handleDelete = () => {
-      console.log("Cancel Meeting", record);
+      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -320,7 +320,7 @@ const GroupProposedMeetings = () => {
                 //     GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
                 //   );
                 // } catch (error) {
-                //   console.log(error, "apis call Error");
+                //   
                 // }
               }}
               className={styles.tableRow}>
@@ -589,7 +589,7 @@ const GroupProposedMeetings = () => {
             dispatch(toggleIsParticipantProposedMeetingDates(true));
           }
         } catch (error) {
-          console.error("Error in API call:", error);
+          
           localStorage.removeItem("meetingprop");
         }
       };
@@ -619,7 +619,7 @@ const GroupProposedMeetings = () => {
               dispatch(toggleIsOrganizerProposedMeetingDates(true));
             }
           } catch (error) {
-            console.error("Error in API call:", error);
+            
             localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };

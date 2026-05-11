@@ -10,7 +10,7 @@ const xmlToJson = (xmlString) => {
     const result = xmljs.xml2json(xmlString, options);
     return JSON.parse(result);
   } catch (error) {
-    console.error("Error converting XML to JSON:", error);
+    
   }
 };
 
@@ -21,7 +21,7 @@ const jsonToXml = (jsonObject) => {
     const xmlString = xmljs.json2xml(JSON.stringify(jsonObject), options);
     return xmlString;
   } catch (error) {
-    console.error("Error converting JSON to XML:", error);
+    
   }
 };
 
@@ -223,7 +223,7 @@ export const readOnlyFreetextElements = (xmlString, userDataRead) => {
   freetextElements.forEach((freetextElement) => {
     const subject = freetextElement.getAttribute("subject");
     const userIdIndex = subject.lastIndexOf("-");
-    console.log(userIdIndex, subject, userDataRead, "userIdIndex");
+    
     if (userIdIndex !== -1) {
       const userId = subject.substring(userIdIndex + 1);
       if (userDataRead.includes(Number(userId))) {
@@ -317,7 +317,7 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
       removedHideFreetextElements,
     };
   } catch (error) {
-    console.error("Error in hideFreetextElements:", error);
+    
     // Ensure to return a consistent structure even in case of error
     return {
       hideFreetextXmlString: xmlString, // or null, depending on how you handle errors
@@ -362,7 +362,7 @@ export const revertHideFreetextElements = (
     );
     return restoredXmlString;
   } catch (error) {
-    console.error("Error in revertHiddenFreetextElements:", error);
+    
     // Handle errors gracefully, return original XML string if revert fails
     return originalXmlString;
   }
@@ -399,7 +399,7 @@ export const sanitizeXFDF = (xfdfString, documentViewer) => {
 
     // drop invalid pages
     if (isNaN(pageIndex) || pageIndex >= pageCount) {
-      console.warn(`Dropping invalid annotation on page ${pageIndex}`);
+      
       annot.parentNode.removeChild(annot);
     }
   });

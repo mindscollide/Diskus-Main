@@ -45,7 +45,7 @@ const revertXmlField = (data) =>
             try {
               return JSON.parse(str);
             } catch (err) {
-              console.error("revertXmlField parse error:", err, str);
+              
               return null;
             }
           })
@@ -550,7 +550,7 @@ const PendingSignatureViewer = () => {
         setUserAnnotationsCopy(reverted);
       }
     } catch (err) {
-      console.error("getAllFieldsByWorkflowID handler:", err);
+      
     }
   }, [getAllFieldsByWorkflowID]);
 
@@ -610,7 +610,7 @@ const PendingSignatureViewer = () => {
         isCreator: workFlow.isCreator,
       }));
     } catch (err) {
-      console.error("getWorkfFlowByFileId handler:", err);
+      
     }
   }, [getWorkfFlowByFileId, fieldsData]);
 
@@ -671,7 +671,7 @@ const PendingSignatureViewer = () => {
         attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
       }));
     } catch (err) {
-      console.error("getSignatureFileAnnotationResponse handler:", err);
+      
     }
   }, [getSignatureFileAnnotationResponse]);
 
@@ -769,7 +769,7 @@ const PendingSignatureViewer = () => {
           ),
         );
       } catch (err) {
-        console.error("handleSave:", err);
+        
       }
     },
     [docWorkflowID, dispatch, navigate, t],
@@ -887,7 +887,7 @@ const PendingSignatureViewer = () => {
                 currentUserFieldNamesRef.current,
               );
             } catch (err) {
-              console.error("importAnnotations:", err);
+              
             }
           }
 
@@ -972,7 +972,7 @@ const PendingSignatureViewer = () => {
 
         topHeader.setItems([...existingItems, actionGroup]);
       } catch (err) {
-        console.error("WebViewer init error:", err);
+        
       }
     };
 
@@ -1007,7 +1007,7 @@ const PendingSignatureViewer = () => {
         mergeXFDFIntoAnnotations(xfdfString, selectedUserRef.current, snapshot);
         setUserAnnotations(snapshot);
       } catch (err) {
-        console.error("annotationChanged snapshot:", err);
+        
       }
 
       // Re-apply locks after every change in case Apryse overwrites them
@@ -1068,7 +1068,7 @@ const PendingSignatureViewer = () => {
           annotationManager.redrawAnnotation(annot);
         });
       } catch (err) {
-        console.error("fieldChanged:", err);
+        
       }
     };
 

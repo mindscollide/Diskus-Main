@@ -142,12 +142,12 @@ const VerificationEmailAndNumber = () => {
     let email = localStorage.getItem("email");
     let phoneNumber = localStorage.getItem("phoneNumber");
     let worldCountryID = localStorage.getItem("worldCountryID");
-    console.log("first1", worldCountryID);
+    
 
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return parseInt(obj.id) === parseInt(worldCountryID);
     });
-    console.log("first2", a);
+    
     setValue(JSON.parse(value));
     setEmail(email);
     setPhoneNumber(phoneNumber);
@@ -186,7 +186,7 @@ const VerificationEmailAndNumber = () => {
     let s = localStorage.getItem("seconds");
     let m = localStorage.getItem("minutes");
     window.addEventListener("beforeunload ", (e) => {
-      console.log("ttt");
+      
       e.preventDefault();
       if (m != undefined && s != undefined) {
         if (s === 1) {
@@ -215,7 +215,7 @@ const VerificationEmailAndNumber = () => {
   }, [Helper.socket]);
 
   const handleGoBackButton = () => {
-    console.log("goback");
+    
 
     localStorage.setItem("LoginFlowPageRoute", 4);
     dispatch(LoginFlowRoutes(4));

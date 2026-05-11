@@ -33,7 +33,7 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
         newRows[index].subAgenda[subIndex].subfiles.push(fileData);
       });
       setRows(newRows);
-      console.log("Dropped files", e.dataTransfer.files);
+      
     },
     customRequest() {},
   };

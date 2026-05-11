@@ -58,14 +58,14 @@ const PakageDetailsUserManagement = () => {
         dispatch(getAllUserTypePackagesApi(navigate, t, false));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
   useEffect(() => {
     try {
       const pakageDetails = UserMangementReducergetAllUserTypePackagesData;
-      console.log(pakageDetails, "avjshvdjhasvd");
+      
 
       // Check if the package details object and its packages array exist and are not empty
       if (
@@ -87,7 +87,7 @@ const PakageDetailsUserManagement = () => {
       }
     } catch (error) {
       // Log any errors that occur
-      console.log(error, "error");
+      
     }
   }, [UserMangementReducergetAllUserTypePackagesData]);
 
@@ -190,7 +190,7 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, row) => {
         const { Numberoflicenses } = calculateTotals(tableData);
-        console.log(Numberoflicenses, "datadtadtatdt");
+        
 
         if (row.shouldDisplayTextField) {
           return;
@@ -247,10 +247,10 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, row) => {
         const { MonthCharges } = calculateTotals(tableData);
-        console.log(MonthCharges, "pricepricepriceprice");
+        
         // apply nullish operator for code exploiting it will show 0 when value get null or undefined
         const monthlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0);
-        console.log(monthlyCharges, "monthlyChargesmonthlyCharges");
+        
         if (row.shouldDisplayTextField) {
           return (
             <>

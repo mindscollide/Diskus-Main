@@ -33,13 +33,12 @@ const PollsCastVoteInitimationModal = () => {
     setAttendees,
   } = useMeetingContext();
   const castYourVotePollModalState = useSelector(
-    (state) => state.PollsReducer.castPollVoteModal
+    (state) => state.PollsReducer.castPollVoteModal,
   );
-  console.log(castYourVotePollModalState);
+
   const newPollMeeting = useSelector(
-    (state) => state.PollsReducer.newPollMeeting
+    (state) => state.PollsReducer.newPollMeeting,
   );
-  console.log(newPollMeeting, "PollsCastVoteInitimationModal");
 
   useEffect(() => {
     try {
@@ -62,9 +61,7 @@ const PollsCastVoteInitimationModal = () => {
           setPollDetails(pollData);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [newPollMeeting]);
 
   const handleClickCastYourVote = () => {
@@ -81,14 +78,7 @@ const PollsCastVoteInitimationModal = () => {
       setPolls(true);
       setMeetingMaterial(false);
       setAttendees(false);
-      console.log(
-        localStorage.getItem("isMeeting") === "true" &&
-          localStorage.getItem("isMeetingVideo") === "true",
-        localStorage.getItem("isMeeting") === "true",
-        localStorage.getItem("isMeetingVideo") === "true",
-        typeof localStorage.getItem("isMeeting") === "true",
-        typeof localStorage.getItem("isMeetingVideo") === "true"
-      );
+
       if (
         localStorage.getItem("isMeeting") === "true" &&
         localStorage.getItem("isMeetingVideo") === "true"
@@ -97,12 +87,9 @@ const PollsCastVoteInitimationModal = () => {
         dispatch(minimizeVideoPanelFlag(true));
         dispatch(normalizeVideoPanelFlag(false));
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
-  console.log(pollDetails, "pollDetailspollDetailspollDetails");
   return (
     <Modal
       show={castYourVotePollModalState}

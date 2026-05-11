@@ -24,12 +24,12 @@ const CustomMiscellaneous = () => {
       try {
         setFAQsStateData(fAQsAllData);
       } catch (error) {
-        console.log(error, "error in setFAQsStateData");
+        
       }
     }
   }, [fAQsAllData]);
 
-  console.log(currentLanguage, "currentLanguagecurrentLanguage");
+  
 
   return (
     <>

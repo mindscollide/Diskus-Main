@@ -36,7 +36,7 @@ const DefaultDragger = ({
     showUploadList: false,
     onChange(data) {
       const { fileList } = data;
-      console.log(fileList, "fileListfileList");
+      
       let sizezero = true;
       let newRows = [...rows];
       let size = true;
@@ -46,7 +46,7 @@ const DefaultDragger = ({
         return; // Skip processing if it's the same fileList
       }
 
-      console.log(newRows[index], "checkingIndex");
+      
       let getRowData = newRows[index];
 
       // Check the total number of files, including new uploads
@@ -135,7 +135,7 @@ const DefaultDragger = ({
 
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  console.log(rows, "rowsInSubDefaultDragger");
+  
 
   return (
     <>

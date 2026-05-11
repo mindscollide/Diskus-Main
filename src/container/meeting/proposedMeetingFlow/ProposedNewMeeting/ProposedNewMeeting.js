@@ -166,7 +166,7 @@ const ProposedNewMeeting = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [getAllMeetingDetails, isProposedMeetingRoute]);
 
@@ -178,12 +178,12 @@ const ProposedNewMeeting = () => {
         getAllParticipants.length > 0 &&
         getAllParticipants !== undefined
       ) {
-        console.log(getAllParticipants, "getAllParticipantsgetAllParticipants");
+        
         setDropdowndata(getAllParticipants);
         setMembersParticipants(getAllParticipants);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [getAllParticipants]);
 
@@ -203,7 +203,7 @@ const ProposedNewMeeting = () => {
   const [sendResponseBy, setSendResponseBy] = useState({
     date: newDateValue,
   });
-  console.log(sendResponseBy, newDateValue, "sendResponseBy");
+  
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
@@ -276,7 +276,7 @@ const ProposedNewMeeting = () => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [getAllProposedDatesEditFlow, isProposedMeetingRoute]);
 
@@ -440,7 +440,7 @@ const ProposedNewMeeting = () => {
         }));
       }
     } catch (error) {
-      console.error("Error setting meeting types:", error);
+      
     }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
@@ -598,7 +598,7 @@ const ProposedNewMeeting = () => {
       updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
     } catch (error) {
-      console.log(error, "error");
+      
     }
   };
 
@@ -701,7 +701,7 @@ const ProposedNewMeeting = () => {
         });
       });
 
-      console.log(Dates, "ProposedDatesProposedDatesProposedDates");
+      
 
       let ProposedDates = [];
       rows.forEach((data, index) => {
@@ -721,7 +721,7 @@ const ProposedNewMeeting = () => {
         });
       });
 
-      console.log(ProposedDates, "ProposedDatesProposedDatesProposedDates");
+      
 
       // Sorting the Dates array
       let sortedDates = ProposedDates.sort((a, b) => {
@@ -772,7 +772,7 @@ const ProposedNewMeeting = () => {
             MeetingStatusID: 11,
           },
         };
-        console.log(sendResponseBtDateVal, "sendResponseByate");
+        
         dispatch(
           SaveMeetingDetailsApi(navigate, t, data, "updateProposedMeeting", {
             proposedMeetingDetails,
@@ -960,9 +960,9 @@ const ProposedNewMeeting = () => {
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = gellAllCommittesandGroups;
-    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+    
     let tem = [...membersParticipants];
-    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+    
 
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
@@ -1273,10 +1273,7 @@ const ProposedNewMeeting = () => {
                       <Row className='mt-2'>
                         {membersParticipants.length > 0
                           ? membersParticipants.map((participant, index) => {
-                              console.log(
-                                membersParticipants,
-                                "membersParticipants",
-                              );
+                              
                               return (
                                 <>
                                   <Col

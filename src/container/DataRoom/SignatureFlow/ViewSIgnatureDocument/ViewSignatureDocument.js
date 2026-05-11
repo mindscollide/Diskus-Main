@@ -75,7 +75,7 @@ const ViewSignatureDocument = () => {
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
 
-  console.log(signerDataRef, "signerDataRefsignerDataRef");
+  
 
   // ===== this use for current state update get =====//
 
@@ -169,12 +169,7 @@ const ViewSignatureDocument = () => {
                     try {
                       return JSON.parse(str);
                     } catch (error) {
-                      console.error(
-                        "Error parsing JSON:",
-                        error,
-                        "Input:",
-                        str,
-                      );
+                      
                       return null; // or handle the error as needed
                     }
                   })
@@ -355,7 +350,7 @@ const ViewSignatureDocument = () => {
         }));
       }
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, [getSignatureFileAnnotationResponse]);
   // === End === //
@@ -451,7 +446,7 @@ const ViewSignatureDocument = () => {
                 field.flags.set("ReadOnly", true);
               });
             } catch (error) {
-              console.error("Error importing annotations:", error);
+              
             }
           }
 
@@ -472,11 +467,7 @@ const ViewSignatureDocument = () => {
     // Event Listener for annotation changes
     const handleAnnotationChange = (annotations) => {
       annotations.forEach((annot) => {
-        console.log(
-          annot,
-          annot instanceof Annotations.FreeHandAnnotation,
-          "annotannotannot",
-        );
+        
         if (annot.ToolName === "AnnotationCreateRubberStamp") {
           annot.NoMove = true; // Prevent dragging
           annot.NoResize = true; // Prevent resizing

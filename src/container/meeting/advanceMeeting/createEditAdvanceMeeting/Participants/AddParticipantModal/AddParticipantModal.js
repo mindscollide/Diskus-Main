@@ -76,7 +76,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
   // ADD PARTICIPANTS (FIXED + SAFE)
   // ===============================
   const handleAddUsers = () => {
-    console.log("🔥 ADD CLICKED");
+    
   
     const data = MeetingOrganizersReducer.AllUserCommitteesGroupsData;
   
@@ -84,30 +84,30 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
       ? selectedsearch
       : [];
   
-    console.log("selectedsearch:", safeSelected);
-    console.log("data:", data);
+    
+    
   
     if (!safeSelected.length) {
-      console.log("❌ No selection");
+      
       return;
     }
   
     if (!data) {
-      console.log("❌ No data from reducer");
+      
       return;
     }
   
     let tem = [...membersParticipants];
   
     safeSelected.forEach((item) => {
-      console.log("Processing:", item);
+      
   
       if (item.type === 3) {
         const user = data.organizationUsers?.find(
           (u) => u.userID === item.value
         );
   
-        console.log("Found user:", user);
+        
   
         if (user) {
           tem.push({
@@ -129,7 +129,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
       }
     });
   
-    console.log("FINAL LIST:", tem);
+    
   
     setMembersParticipants([...tem]);
     setSelectedsearch([]);

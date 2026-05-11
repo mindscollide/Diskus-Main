@@ -215,7 +215,7 @@ const MainMeeting = () => {
       await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
-    console.log("chek search meeting");
+    
     await dispatch(
       listOfMeetingsApi(
         navigate,
@@ -269,7 +269,7 @@ const MainMeeting = () => {
       await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
-    console.log("chek search meeting");
+    
     await dispatch(
       listOfMeetingsApi(
         navigate,
@@ -324,7 +324,7 @@ const MainMeeting = () => {
       await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
-    console.log("chek search meeting");
+    
     await dispatch(
       listOfMeetingsApi(
         navigate,
@@ -424,7 +424,7 @@ const MainMeeting = () => {
           ? true
           : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(listOfMeetingsApi(navigate, t, searchData));
     setSearchText("");
     setentereventIcon(false);

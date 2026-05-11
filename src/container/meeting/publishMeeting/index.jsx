@@ -165,7 +165,7 @@ const PublishedMeetingList = () => {
     setIsCreateEditMeeting,
   } = useNewMeetingContext();
 
-  console.log(minutesAgo, "minutesAgominutesAgo");
+  
 
   // ─── Local state ──────────────────────────────────────────────────────────
 
@@ -325,7 +325,7 @@ const PublishedMeetingList = () => {
         }),
       );
     } catch (error) {
-      console.error("handleViewMeeting:", error);
+      
     }
   };
 

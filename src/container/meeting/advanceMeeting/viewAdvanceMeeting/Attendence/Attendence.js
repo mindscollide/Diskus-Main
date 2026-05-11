@@ -171,7 +171,7 @@ const Attendence = () => {
               md={12}
               sm={12}
               className='d-flex align-items-center gap-4'>
-              {console.log("attendanceStatusID:", text)}
+              {}
               {/* Add this line for debugging */}
               {text === 1 ? (
                 <>
@@ -321,7 +321,7 @@ const Attendence = () => {
       }
     } catch (error) {
       handleSaveNotification();
-      console.error("Error saving attendance:", error);
+      
     }
   };
 
@@ -364,7 +364,7 @@ const Attendence = () => {
         ProposedMeetings:
           currentView && Number(currentView) === 2 ? true : false,
       };
-      console.log("chek search meeting");
+      
       dispatch(searchNewUserMeeting(navigate, searchData, t));
     } else {
       dispatch(showAttendanceConfirmationModal(true));

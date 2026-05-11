@@ -67,7 +67,7 @@ const MeetingMaterial = ({
 
   const { editorRole, setEditorRole ,setGoBackCancelModal} = useContext(MeetingContext);
 
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
+  
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData,
   );
@@ -149,7 +149,7 @@ const MeetingMaterial = ({
   };
   //  handle Click download a file
   const handleClickDownload = (record) => {
-    console.log("editorRoleeditorRole", editorRole, record);
+    
     if (
       (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
         editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
@@ -346,7 +346,7 @@ const MeetingMaterial = ({
     setIsPublishedState(isPublishedGlobal);
   }, [meetingMaterialData, isPublishedGlobal]);
 
-  console.log("isPublishedGlobalisPublishedGlobal", isPublishedGlobal);
+  
 
   const handleCancelButton = async () => {
     setGoBackCancelModal(true);
@@ -368,7 +368,7 @@ const MeetingMaterial = ({
     //       ? true
     //       : false,
     // };
-    // console.log("chek search meeting");
+    // 
     // dispatch(searchNewUserMeeting(navigate, searchData, t));
     // dispatch(toggleCreateEditMeetingModal(false));
     // dispatch(setAdvanceMeetingRoute(1));
@@ -392,7 +392,7 @@ const MeetingMaterial = ({
     dispatch(uploadGlobalFlag(false));
   };
   const handlePublish = () => {
-    console.log("end meeting chaek");
+    
     dispatch(
       UpdateMeetingStatusApi(
         navigate,

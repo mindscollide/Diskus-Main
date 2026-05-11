@@ -120,7 +120,7 @@ const NotifyOrganizers = ({
       ...member,
       NotificationMessage: notifyOrganizerData.Messege,
     }));
-    console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
+    
     dispatch(meetingOrganizers(updatedMembersOrganizers));
   };
 

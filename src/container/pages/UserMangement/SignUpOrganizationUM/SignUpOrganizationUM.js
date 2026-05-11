@@ -147,7 +147,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
-    console.log("aaaa", a);
+    
     if (a !== undefined) {
       setSelect(code);
       setSignUpDetails({
@@ -429,7 +429,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   };
 
   const handlerSignup = async () => {
-    console.log("handlerSignup", isFreeTrail);
+    
     if (isFreeTrail === true) {
       if (
         signUpDetails.CompanyName.value !== "" &&

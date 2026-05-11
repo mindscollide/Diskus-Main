@@ -87,7 +87,7 @@ const userLogOutApiFunc = (navigate, t) => {
               dispatch(showUpgradeNowModal(true));
             }
           } else {
-            console.log("CHecing");
+            
             dispatch(userlogOutFailed(t("Something-went-wrong")));
             await signOut(t("Successful"), dispatch);
             dispatch(showUpgradeNowModal(false));
@@ -98,7 +98,7 @@ const userLogOutApiFunc = (navigate, t) => {
           await signOut(t("Successful"), dispatch);
         });
     } catch (error) {
-      console.log(error);
+      
     }
   };
 };

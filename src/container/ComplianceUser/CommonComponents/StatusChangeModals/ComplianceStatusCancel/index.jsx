@@ -23,7 +23,7 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
     statusChangeType,
   } = useComplianceContext();
 
-  console.log(selectOptions, "selectOptionsselectOptions");
+  
 
   const handleCloseButton = () => {
     setSelectOption(0);
@@ -31,7 +31,7 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
   };
 
   const handleProceedButton = () => {
-    console.log(selectOptions, "selectOptionsvalue");
+    
     setSelectOption(0);
     setComplianceCancelModal(false);
     setComplianceStatusChangeReasonModal(true);

@@ -49,7 +49,7 @@ const CastVoteAgendaModal = () => {
     );
     setSelectedAnswer(selectedObject);
 
-    console.log("selectedAnswer", selectedAnswer);
+    
   };
 
   const castVoteHandler = () => {
@@ -63,12 +63,12 @@ const CastVoteAgendaModal = () => {
         },
       ],
     };
-    console.log("Cast Vote Data castVoteData", Data);
+    
     // dispatch(CasteVoteForAgenda(Data, navigate, t));
     // dispatch(showCastVoteAgendaModal(false));
   };
 
-  console.log("Cast Vote Data", castVoteData);
+  
 
   return (
     <section>

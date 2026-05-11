@@ -118,11 +118,8 @@ const GeneralSetting = () => {
     (state) =>
       state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated
   );
-  console.log(MqttOrganizationSettingUpdated, "MqttOrganizationSettingUpdated");
-  console.log(
-    userOrganizationSetting,
-    "settingReducerGetOrganizationLevelSettingResponseData"
-  );
+  
+  
   useEffect(() => {
     dispatch(getOrganizationLevelSetting(navigate, t));
   }, []);
@@ -269,7 +266,7 @@ const GeneralSetting = () => {
 
         dispatch(setOrganizationSettingUpdateData(null));
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [MqttOrganizationSettingUpdated]);
@@ -285,10 +282,7 @@ const GeneralSetting = () => {
       ) {
         let organizationSettings =
           settingReducerGetOrganizationLevelSettingResponseData;
-        console.log(
-          organizationSettings,
-          "organizationSettingsorganizationSettings"
-        );
+        
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
@@ -565,10 +559,7 @@ const GeneralSetting = () => {
       ) {
         let organizationSettings =
           settingReducerGetOrganizationLevelSettingResponseData;
-        console.log(
-          organizationSettings,
-          "organizationSettingsorganizationSettings"
-        );
+        
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,

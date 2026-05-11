@@ -124,7 +124,7 @@ const ParticipantVideoCallComponent = () => {
   // local state for Video Html Tag event state
   const [canVideoPlay, setCanVideoPlay] = useState(false);
 
-  console.log(minimizeState, "minimizeState");
+  
 
   useEffect(() => {
     // Enable webcam and microphone when isWebCamEnabled is true
@@ -318,7 +318,7 @@ const ParticipantVideoCallComponent = () => {
             videoRef.current.srcObject = videoStream;
             videoRef.current.muted = true;
             videoRef.current.play().catch((error) => {
-              console.error("Error playing video:", error);
+              
             });
           }
           setStream(videoStream);
@@ -376,21 +376,21 @@ const ParticipantVideoCallComponent = () => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
       videoRef.current.play().catch((error) => {
-        console.error("Error playing video:", error);
+        
       });
     }
   }, [minimizeState]);
 
   useEffect(() => {
-    console.log("maximizeParticipantVideoFlag", closeVideoStreamForParticipant);
+    
     if (closeVideoStreamForParticipant && stream) {
-      console.log("maximizeParticipantVideoFlag");
+      
       if (stream) {
-        console.log("maximizeParticipantVideoFlag");
+        
         stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
         if (videoRef.current) {
-          console.log("maximizeParticipantVideoFlag");
+          
           videoRef.current.srcObject = null; // Clear the video source
         }
 
@@ -398,7 +398,7 @@ const ParticipantVideoCallComponent = () => {
         sessionStorage.removeItem("videoStreamId");
       }
       if (streamAudio) {
-        console.log("maximizeParticipantVideoFlag");
+        
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
       }
@@ -407,7 +407,7 @@ const ParticipantVideoCallComponent = () => {
       dispatch(participantVideoButtonState(false));
 
       setIsMicEnabled(false);
-      console.log("maximizeParticipantVideoFlag");
+      
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let currentMeetingVideoURL = JSON.parse(
         sessionStorage.getItem("currentMeetingVideoURL")
@@ -422,7 +422,7 @@ const ParticipantVideoCallComponent = () => {
       let newName = localStorage.getItem("name");
       let currentMeetingID = localStorage.getItem("currentMeetingID");
       sessionStorage.removeItem("isWaiting");
-      console.log("maximizeParticipantVideoFlag");
+      
 
       let Data = {
         RoomID: leaveRoomId,
@@ -431,7 +431,7 @@ const ParticipantVideoCallComponent = () => {
         IsHost: false,
         MeetingID: Number(currentMeetingID),
       };
-      console.log("maximizeParticipantVideoFlag");
+      
 
       let data = {
         VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -439,7 +439,7 @@ const ParticipantVideoCallComponent = () => {
         WasInVideo: Boolean(isMeetingVideo),
       };
       dispatch(closeWaitingParticipantVideoStream(false));
-      console.log("maximizeParticipantVideoFlag");
+      
       dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
     }
   }, [closeVideoStreamForParticipant]);
@@ -548,7 +548,7 @@ const ParticipantVideoCallComponent = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

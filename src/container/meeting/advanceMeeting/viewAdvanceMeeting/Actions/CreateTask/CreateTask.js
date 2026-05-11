@@ -343,7 +343,7 @@ const CreateTask = ({
             );
           }
         }
-        console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+        
         let sortAssginersArr = newmembersArray.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
@@ -353,7 +353,7 @@ const CreateTask = ({
         setTaskMemberSelect([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [getMeetingusers]);
 
@@ -369,7 +369,7 @@ const CreateTask = ({
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
 
@@ -380,10 +380,7 @@ const CreateTask = ({
     meetingDateValueFormat2.setMinutes(59)
     meetingDateValueFormat2.setSeconds(58)
     setAgendaDueDate(meetingDateValueFormat2);
-    console.log(
-      { meetingDateValueFormat, meetingDateValueFormat2 },
-      "changeDateActionCreate"
-    );
+    
     // setAgendaDueDate(meetingDateValueFormat);
     // setcreateTaskDetails({
     //   ...createTaskDetails,
@@ -391,7 +388,7 @@ const CreateTask = ({
     //   DeadLineTime: convertGMTDateintoUTC(meetingDateValueFormat2).slice(8, 14),
     // });
   };
-  console.log(agendaDueDate, "agendaDueDateagendaDueDate")
+  
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
@@ -415,7 +412,7 @@ const CreateTask = ({
       seterror(true);
     }
   };
-  console.log(createTaskDetails.date, "creatercreatercreater");
+  
 
   const props = {
     name: "file",
@@ -423,7 +420,7 @@ const CreateTask = ({
     showUploadList: false,
     onChange(data) {
       const { fileList } = data;
-      console.log(fileList, "fileListfileListfileList");
+      
       // Check if the fileList is the same as the previous one
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
@@ -567,10 +564,7 @@ const CreateTask = ({
           FK_TID: Number(createTaskID),
         };
       });
-      console.log(
-        { newAttachmentData },
-        "uploadPromisesuploadPromisesuploadPromises"
-      );
+      
     }
 
     let Data = {
@@ -579,7 +573,7 @@ const CreateTask = ({
       TaskID: Number(createTaskID),
       TasksAttachments: newAttachmentData,
     };
-    console.log({ Data }, "uploadPromisesuploadPromisesuploadPromises");
+    
 
     let newData = {
       TaskID: Number(createTaskID),
@@ -589,7 +583,7 @@ const CreateTask = ({
           ? createTaskDetails.AgendaID.toString()
           : "-1",
     };
-    console.log({ newData }, "uploadPromisesuploadPromisesuploadPromises");
+    
 
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(
@@ -648,7 +642,7 @@ const CreateTask = ({
 
   // for selecting Data
   const handleSelectMemberValue = (e) => {
-    console.log(e, "valuevaluevaluevaluevalue");
+    
     setcreateTaskDetails({
       ...createTaskDetails,
       AssignedTo: [e.value],
@@ -842,7 +836,7 @@ const CreateTask = ({
                         <Col className={styles["Scroller_Actions_Page"]}>
                           <Row className='ps-3'>
                             {taskAttachments.map((data, index) => {
-                              console.log(data, "datadatadata");
+                              
                               return (
                                 <>
                                   <Col lg={2} md={2} sm={2}>

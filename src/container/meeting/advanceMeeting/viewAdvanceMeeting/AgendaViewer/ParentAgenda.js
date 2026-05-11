@@ -171,7 +171,7 @@ const ParentAgenda = ({
   };
 
   const downloadDocument = (record) => {
-    console.log("filesDatafilesData", record);
+    
 
     let data = {
       FileID: Number(record.originalAttachmentName),

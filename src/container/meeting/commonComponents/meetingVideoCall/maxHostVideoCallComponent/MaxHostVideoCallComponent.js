@@ -38,7 +38,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const NormalHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalHostVideoFlag
   );
-  console.log("maxHostTrueeeee");
+  
 
   let meetingId = localStorage.getItem("currentMeetingID");
   let newVideoUrl = localStorage.getItem("videoCallURL");
@@ -110,7 +110,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   }, [isWebCamEnabled]);
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
-    console.log("toggleAudio", enable);
+    
     dispatch(setMicState(enable));
     dispatch(setAudioControlHost(enable));
     localStorage.setItem("isMicEnabled", enable);
@@ -140,10 +140,10 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    console.log("toggleAudio", enable);
+    
     dispatch(setVideoState(enable));
     localStorage.setItem("isWebCamEnabled", enable);
-    console.log("videoHideUnHideForHost");
+    
     dispatch(setVideoControlHost(enable));
 
     if (!enable) {
@@ -159,7 +159,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
             videoRef.current.srcObject = videoStream;
             videoRef.current.muted = true;
             videoRef.current.play().catch((error) => {
-              console.error("Error playing video:", error);
+              
             });
           }
           setStream(videoStream);
@@ -181,8 +181,8 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
 
   const joinNewApiVideoCallOnClick = () => {
-    console.log("toggleAudio", isMicEnabled);
-    console.log("toggleAudio", isWebCamEnabled);
+    
+    
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),

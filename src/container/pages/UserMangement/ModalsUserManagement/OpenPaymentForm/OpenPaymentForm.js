@@ -26,7 +26,7 @@ const OpenPaymentForm = () => {
         setSourceLink(apiResponse.paymentRedirectionLink);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [UserMangementReducerpaymentInitiateDataData]);
 

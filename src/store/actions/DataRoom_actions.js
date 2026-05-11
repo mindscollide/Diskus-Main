@@ -286,11 +286,7 @@ const uploadDocumentsApi = (
       form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
       form.append("File", newJsonCreateFile.File);
 
-      console.log(
-        newJsonCreateFile.File,
-        newJsonCreateFile,
-        "newJsonCreateFile",
-      );
+      
       axiosInstance
         .post(dataRoomApi, form, {
           onUploadProgress: (progressEvent) => {
@@ -604,7 +600,7 @@ const getFolderDocumentsApi = (
                 ),
               );
               try {
-                console.log(BreadCrumbsListArr, "BreadCrumbsListArr");
+                
 
                 if (
                   BreadCrumbsListArr !== null &&
@@ -647,7 +643,7 @@ const getFolderDocumentsApi = (
                   }
                 }
               } catch (error) {
-                console.log(error);
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1358,7 +1354,7 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                   ),
                 );
               } catch (error) {
-                console.log(error);
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -3082,7 +3078,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
       })
 
       .then(async (response) => {
-        console.log(response, "responseresponseresponse");
+        
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3099,7 +3095,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
         }
       })
       .catch((response) => {
-        console.log(response, "responseresponseresponse");
+        
 
         dispatch(DownloadMessage(0));
 
@@ -3334,7 +3330,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
       }
     } catch (err) {
       // Server 500 or any processing error — fall back to direct download
-      console.error("Footer download failed, falling back to direct download:", err);
+      
       dispatch(DownloadMessage(0));
       dispatch(DownloadFileForDataRoomEnded(false));
       dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3769,7 +3765,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
         localStorage.removeItem("DataRoomEmail");
       }
     } catch (error) {
-      console.log(error);
+      
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
       localStorage.removeItem("DataRoomEmail");
     }
@@ -4100,7 +4096,7 @@ const DataRoomFileSharingPermissionAPI = (
               isPermission: Number(response.data.responseResult.permissionID),
             };
 
-            console.log(pdfData, "stringifypdfData");
+            
             const pdfDataJson = JSON.stringify(pdfData);
             let ext = FileName.split(".").pop();
             openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, FileID);

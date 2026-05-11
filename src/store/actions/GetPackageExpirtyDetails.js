@@ -55,7 +55,7 @@ const getPackageExpiryDetail = (navigate, id, t) => {
       const message = result.responseMessage.toLowerCase();
       await handleResponseMessage(result, dispatch, t, message);
     } catch (error) {
-      console.error("Error fetching package expiry details:", error);
+      
       dispatch(getExpiryDetailFail(t("Something-went-wrong")));
     }
   };
@@ -100,7 +100,7 @@ const handleResponseMessage = async (result, dispatch, t, message) => {
       dispatch(getExpiryDetailFail(t("Something-went-wrong")));
     }
   } catch (error) {
-    console.error("Error handling response message:", error);
+    
     dispatch(getExpiryDetailFail(t("Something-went-wrong")));
   }
 };

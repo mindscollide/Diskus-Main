@@ -38,7 +38,7 @@ const ImportPrevious = () => {
 
   const handleRadioChange = (record) => {
     setSelectedRow(record);
-    console.log("Selected Row: ", record);
+    
   };
 
   const MeetingColoumns = [
@@ -129,7 +129,7 @@ const ImportPrevious = () => {
   }, []);
 
   const handelChangePagination = async (current, PageSize) => {
-    console.log(current, PageSize, "PageSizePageSizePageSize");
+    
     let Data = {
       PageNumber: current,
       Length: PageSize,
@@ -168,9 +168,9 @@ const ImportPrevious = () => {
     dispatch(showImportPreviousAgendaModal(false));
   };
 
-  console.log("Rows Data", rowsData);
+  
 
-  console.log("Imported Agendas", MeetingAgendaReducer);
+  
 
   return (
     <section>

@@ -358,10 +358,7 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_01".toLowerCase()
                 )
             ) {
-              console.log(
-                response.data.responseResult.getNotes,
-                "Notes_NotesServiceManager_GetNotesByNotesID_01"
-              );
+              
               dispatch(notesFromDashboardAction(0));
 
               dispatch(
@@ -397,7 +394,7 @@ const GetNotesByIdAPI = (
               dispatch(GetNotesById_Fail(""));
               dispatch(notesFromDashboardAction(0));
 
-              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -405,31 +402,31 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_03".toLowerCase()
                 )
             ) {
-              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+              
               dispatch(notesFromDashboardAction(0));
 
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             } else {
-              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+              
               dispatch(notesFromDashboardAction(0));
 
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             }
           } else {
-            console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+            
             dispatch(notesFromDashboardAction(0));
 
             dispatch(GetNotesById_Fail(t("Something-went-wrong")));
           }
         } else {
-          console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+          
           dispatch(notesFromDashboardAction(0));
 
           dispatch(GetNotesById_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "Notes_NotesServiceManager_GetNotesByNotesID_01");
+        
         dispatch(notesFromDashboardAction(0));
 
         dispatch(GetNotesById_Fail(t("Something-went-wrong")));
@@ -769,7 +766,7 @@ const SaveNotesDocumentAPI = (
                 };
                 dispatch(GetNotes(navigate, Data, t));
               } else if (flag === 2) {
-                console.log("Coming");
+                
                 let Data = {
                   UserID: parseInt(UserID),
                   OrganizationID: JSON.parse(OrganizationID),
@@ -968,17 +965,17 @@ const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
                 )
             ) {
-              console.log(response.data.responseResult, "consoleconsole");
+              
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "newFileID");
+                
                 fileIds.map((newFileID, index) => {
-                  console.log(newFileID, "newFileID");
+                  
 
                   return newFolder.push({ pK_FileID: newFileID.pK_FileID });
                 });
               } catch (error) {
-                console.log(error, "newFileID");
+                
               }
               await dispatch(
                 saveFilesNotes_success(response.data.responseResult, "")

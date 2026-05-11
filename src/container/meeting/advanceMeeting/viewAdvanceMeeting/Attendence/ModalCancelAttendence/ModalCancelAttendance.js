@@ -59,7 +59,7 @@ const ModalCancelAttendance = ({
           ProposedMeetings:
             currentView && Number(currentView) === 2 ? true : false,
         };
-        console.log("chek search meeting");
+        
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }

@@ -8,14 +8,14 @@ export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
     // Try to find either .ant-table-body or .gridviewDataroom
     const scrollContainer =
       document.querySelector(".ant-table-body")
-    console.log(scrollContainer, "scrollContainerscrollContainer");
+    
     if (scrollContainer) {
       containerRef.current = scrollContainer;
 
       const handleScroll = async () => {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
         const isBottom = scrollTop + clientHeight >= scrollHeight - threshold;
-        console.log(isBottom, "scrollContainerscrollContainer");
+        
 
         if (isBottom && !hasReachedBottom) {
           setHasReachedBottom(true);

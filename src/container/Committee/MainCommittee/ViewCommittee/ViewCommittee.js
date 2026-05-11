@@ -25,7 +25,7 @@ import {
   maxFileSize,
 } from "../../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
-  console.log(committeeStatus, "committeeStatus");
+  
   const { Dragger } = Upload;
   const previousFileListRef = useRef([]);
 
@@ -46,10 +46,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
   const [fileForSend, setFileForSend] = useState([]);
   let currentUserID = localStorage.getItem("userID");
 
-  console.log(
-    { fileAttachments, fileForSend, filesSending },
-    "fileAttachmentsfileAttachments"
-  );
+  
 
   const [open, setOpen] = useState({
     open: false,
@@ -196,11 +193,11 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
             committeeMembers: committeedetails.committeMembers,
           });
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
     return () => {};
   }, [getCommitteeByCommitteeID]);

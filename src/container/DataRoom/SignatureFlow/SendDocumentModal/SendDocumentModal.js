@@ -24,7 +24,7 @@ const SendDocumentModal = ({
   setSendMessage,
   setPdfResponceData,
 }) => {
-  console.log(signersData, "pdfResponceDatapdfResponceData");
+  
   const [showCcUserInput, setShowCcUserInput] = useState(false);
   const [documenttitle, setDocumentTitle] = useState("")
   const [validEmail, setValidEmail] = useState(false);
@@ -55,7 +55,7 @@ const SendDocumentModal = ({
   // };
 
   const handleChangeMessage = (event) => {
-    console.log(event, "eventeventeventevent");
+    
     const { value } = event.target;
     if (value !== "") {
       setSendMessage(value.trimStart());

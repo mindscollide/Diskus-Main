@@ -423,7 +423,7 @@ const SignatureViewer = () => {
         setUserAnnotations(revertXmlField(listOfFields));
       }
     } catch (err) {
-      console.error("getAllFieldsByWorkflowID handler:", err);
+      
     }
   }, [getAllFieldsByWorkflowID, getWorkfFlowByFileId]);
 
@@ -488,7 +488,7 @@ const SignatureViewer = () => {
         isCreator: workFlow.isCreator,
       }));
     } catch (err) {
-      console.error("getWorkfFlowByFileId handler:", err);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getWorkfFlowByFileId]);
@@ -547,7 +547,7 @@ const SignatureViewer = () => {
       setSelectedUser(listOfUsers[0]?.pk_UID ?? null);
       setUserAnnotations(selectedList);
     } catch (err) {
-      console.error("saveWorkFlowResponse handler:", err);
+      
     }
   }, [saveWorkFlowResponse]);
 
@@ -638,7 +638,7 @@ const SignatureViewer = () => {
         await annotationManager.importAnnotations(modified);
         annotationManager.redrawAnnotation();
       } catch (err) {
-        console.error("removeDeletedAnnotations:", err);
+        
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -699,9 +699,9 @@ const SignatureViewer = () => {
   // ─── Action handlers ─────────────────────────────────────────────────────
 
   const handleSave = useCallback(async () => {
-    console.log("handleSave");
+    
     const payload = await collectPayload();
-    console.log("handleSave", payload);
+    
 
     if (!payload) return;
     dispatch(
@@ -988,7 +988,7 @@ const SignatureViewer = () => {
           try {
             await annotationManager.importAnnotations(pdfXfdfRef.current);
           } catch (err) {
-            console.error("importAnnotations:", err);
+            
           }
         }
       });
@@ -1024,7 +1024,7 @@ const SignatureViewer = () => {
               }
             });
           } catch (err) {
-            console.error("annotation colour update:", err);
+            
           }
 
           const xfdfString = await annotationManager.exportAnnotations();

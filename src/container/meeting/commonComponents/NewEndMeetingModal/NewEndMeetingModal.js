@@ -68,7 +68,7 @@ const NewEndMeetingModal = () => {
 
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {
-    console.log("RecordingStopMsgFromIframe");
+    
     setStartRecordingState(true);
     setPauseRecordingState(false);
     setResumeRecordingState(false);
@@ -88,11 +88,11 @@ const NewEndMeetingModal = () => {
         (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
         (presenterViewFlag && presenterViewHostFlag)
       ) {
-        console.log("RecordingStopMsgFromIframe");
+        
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-          console.log("RecordingStopMsgFromIframe");
+          
         }
       } else {
         if (isCaller) {
@@ -103,7 +103,7 @@ const NewEndMeetingModal = () => {
                 "RecordingStopMsgFromIframe",
                 "*",
               );
-              console.log("RecordingStopMsgFromIframe");
+              
             }
           }
         }
@@ -148,7 +148,7 @@ const NewEndMeetingModal = () => {
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
       // if (presenterMeetingId === currentMeeting) {
-      console.log("Check Stop");
+      
       if (presenterViewHostFlag) {
         if (presenterStartedFlag) {
           let data = {
@@ -156,7 +156,7 @@ const NewEndMeetingModal = () => {
             RoomID: RoomID,
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
-          console.log(data, "presenterViewJoinFlag");
+          
           await dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
         } else {
           let data = {
@@ -179,12 +179,12 @@ const NewEndMeetingModal = () => {
     if (isMeeting) {
       if (isMeetingVideo && isMeetingVideoHostCheck) {
         onHandleClickForStopRecording();
-        console.log("busyCall");
+        
 
         // For Stop Screen Share If Host Stop in Meeting Video
         if (isZoomEnabled) {
           if (isSharedSceenEnable && !globallyScreenShare) {
-            console.log("busyCall");
+            
             let data = {
               RoomID: newRoomID,
               ShareScreen: false,
@@ -194,7 +194,7 @@ const NewEndMeetingModal = () => {
             dispatch(isSharedScreenTriggeredApi(navigate, t, data));
           }
         }
-        console.log("busyCall");
+        
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(UID),
@@ -204,12 +204,12 @@ const NewEndMeetingModal = () => {
         };
         await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
       } else if (isMeetingVideo) {
-        console.log("busyCall");
+        
 
         // For Stop Screen Share If Non Host Stop in Meeting Video
         if (isZoomEnabled) {
           if (isSharedSceenEnable && !globallyScreenShare) {
-            console.log("busyCall");
+            
             let data = {
               RoomID: participantRoomId,
               ShareScreen: false,
@@ -230,9 +230,9 @@ const NewEndMeetingModal = () => {
         await dispatch(setRaisedUnRaisedParticiant(false));
         await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
       }
-      console.log("busyCall");
+      
     }
-    console.log("busyCall");
+    
     let leaveMeetingData = {
       FK_MDID: Number(meetingID),
       DateTime: getCurrentDateTimeUTC(),
@@ -254,7 +254,7 @@ const NewEndMeetingModal = () => {
     sessionStorage.removeItem("isMeeting");
   };
   const handleClickDiscard = () => {
-    console.log("NewEndLeaveMeeting");
+    
     localStorage.setItem("navigateLocation", "Meeting");
     dispatch(showEndMeetingModal(false));
   };

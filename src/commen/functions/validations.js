@@ -9,11 +9,8 @@ export const validationEmail = (value) => {
   var mailformat = /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (mailformat.test(value)) {
-    console.log(mailformat.test(value), mailformat, "mailformatmailformat");
     return true;
   } else {
-    console.log(mailformat.test(value), mailformat, "mailformatmailformat");
-
     return false;
   }
 };
@@ -45,7 +42,7 @@ export const validateEmailEnglishAndArabicFormat = (email) => {
   ^
   [\\p{L}0-9._%+-]+@[\\p{L}0-9.-]+\\.[\\p{L}]{2,}$
 `,
-    "xi"
+    "xi",
   );
   return emailRegex.test(email);
 };
@@ -115,20 +112,18 @@ export const isBase64 = (str) => {
   return base64Regex.test(str);
 };
 
-
 export const getFiscalQuarterDetails = ({
   fiscalStartMonth,
   fiscalStartDay = 1,
   currentDate = new Date(),
 }) => {
-
   const date = new Date(currentDate);
 
   // Step 1: Get fiscal year start for current year
   let fiscalYearStart = new Date(
     date.getFullYear(),
     fiscalStartMonth - 1,
-    fiscalStartDay
+    fiscalStartDay,
   );
 
   // If current date is before fiscal start → go to previous year
@@ -136,7 +131,7 @@ export const getFiscalQuarterDetails = ({
     fiscalYearStart = new Date(
       date.getFullYear() - 1,
       fiscalStartMonth - 1,
-      fiscalStartDay
+      fiscalStartDay,
     );
   }
 
@@ -155,9 +150,7 @@ export const getFiscalQuarterDetails = ({
 
   // Step 4: Quarter start date
   const quarterStart = new Date(fiscalYearStart);
-  quarterStart.setMonth(
-    fiscalYearStart.getMonth() + (quarter - 1) * 3
-  );
+  quarterStart.setMonth(fiscalYearStart.getMonth() + (quarter - 1) * 3);
 
   // Step 5: Quarter end date
   const quarterEnd = new Date(quarterStart);

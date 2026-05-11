@@ -80,8 +80,8 @@ const NormalHostVideoCallComponent = () => {
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
-    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
-    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    
+    
     dispatch(setAudioControlHost(!enable));
     if (enable) {
       localStorage.setItem("isMicEnabled", true);
@@ -130,7 +130,7 @@ const NormalHostVideoCallComponent = () => {
             videoRef.current.srcObject = videoStream;
             videoRef.current.muted = true;
             videoRef.current.play().catch((error) => {
-              console.error("Error playing video:", error);
+              
             });
           }
           setStream(videoStream);
