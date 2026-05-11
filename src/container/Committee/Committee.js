@@ -23,6 +23,7 @@ import {
   validateEncryptedStringViewCommitteeDetailLinkApi,
   validateEncryptedStringViewCommitteeListLinkApi,
   viewCommitteeDetails,
+  resetViewCommitteeDetails,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -55,14 +56,15 @@ import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
 import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
 import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
+import { useCommitteeContext } from "../../context/CommitteeContext";
 
 const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let currentPage = localStorage.getItem("CocurrentPage");
-  const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
-    useGroupsContext();
+  const { ViewCommitteePage, setViewCommitteePage, showModal, setShowModal } =
+    useCommitteeContext();
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   const CommitteeReducerGetAllCommitteesByUserIDResponse = useSelector(
@@ -177,7 +179,7 @@ const Committee = () => {
         localStorage.getItem("NotificationClickCommitteeOperations"),
       );
       if (notificationClickCommitteeOperations === true) {
-        setViewGroupPage(true); // Navigate to group page
+        setViewCommitteePage(true); // Navigate to group page
         dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
       }
 
@@ -204,7 +206,7 @@ const Committee = () => {
               "ViewCommitteeID",
               getResponse.response.committeeID,
             ); // Save the committee ID in localStorage
-            setViewGroupPage(true); // Navigate to group page
+            setViewCommitteePage(true); // Navigate to group page
             dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
           }
           localStorage.removeItem("committeeView_Id"); // Cleanup the localStorage key
@@ -243,7 +245,7 @@ const Committee = () => {
     return () => {
       localStorage.removeItem("committeeView_Id");
       localStorage.removeItem("committeeList");
-
+      dispatch(resetViewCommitteeDetails());
       localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
       setShowModal(false); // Reset modal visibility
     };
@@ -267,7 +269,7 @@ const Committee = () => {
             "ViewCommitteeID",
             getResponse.response.committeeID,
           ); // Save the committee ID in localStorage
-          setViewGroupPage(true); // Navigate to group page
+          setViewCommitteePage(true); // Navigate to group page
           dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
         }
         localStorage.removeItem("committeeView_Id"); // Cleanup the localStorage key
@@ -543,11 +545,14 @@ const Committee = () => {
             return commiteeData.committeeID !== committeeDataR.committeeID;
           });
         });
-        if (ViewGroupPage && CommitteeReducerviewCommitteePageFlag === true) {
+        if (
+          ViewCommitteePage &&
+          CommitteeReducerviewCommitteePageFlag === true
+        ) {
           if (
             Number(committeeDataR.committeeID) === Number(ViewCommitteeIDOpened)
           ) {
-            setViewGroupPage(false);
+            setViewCommitteePage(false);
             dispatch(viewCommitteePageFlag(false));
           }
         }
@@ -587,7 +592,7 @@ const Committee = () => {
     );
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-    setViewGroupPage(true);
+    setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
   };
 
@@ -601,7 +606,7 @@ const Committee = () => {
     );
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-    setViewGroupPage(true);
+    setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
   };
 
@@ -615,7 +620,7 @@ const Committee = () => {
       );
       setViewCommitteeViewTab(1);
       localStorage.setItem("ViewCommitteeID", CommitteeStatusID);
-      setViewGroupPage(true);
+      setViewCommitteePage(true);
       dispatch(viewCommitteePageFlag(true));
     } else {
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -628,7 +633,7 @@ const Committee = () => {
           navigate,
           Data,
           t,
-          setViewGroupPage,
+          setViewCommitteePage,
           setUpdateComponentpage,
           CommitteeStatusID,
         ),
@@ -713,7 +718,7 @@ const Committee = () => {
     );
     setViewCommitteeViewTab(4);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-    setViewGroupPage(true);
+    setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
   };
   const handlePollsClickTab = (data) => {
@@ -725,7 +730,7 @@ const Committee = () => {
     );
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewCommitteeViewTab(3);
-    setViewGroupPage(true);
+    setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
   };
   const handleTasksClickTab = (data) => {
@@ -736,7 +741,7 @@ const Committee = () => {
       }),
     );
     setViewCommitteeViewTab(2);
-    setViewGroupPage(true);
+    setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
     localStorage.setItem("ViewCommitteeID", data.committeeID);
   };
@@ -776,7 +781,7 @@ const Committee = () => {
   };
 
   if (createEditMeetingModal) {
-    return <CreateEditAdvanceMeeting  />;
+    return <CreateEditAdvanceMeeting />;
   }
   if (isViewMeetingModal) {
     return <ViewMeetingModal />;
@@ -803,10 +808,11 @@ const Committee = () => {
           <>
             <UpdateCommittee setUpdateComponentpage={setUpdateComponentpage} />
           </>
-        ) : ViewGroupPage && CommitteeReducerviewCommitteePageFlag === true ? (
+        ) : ViewCommitteePage &&
+          CommitteeReducerviewCommitteePageFlag === true ? (
           <>
             <ViewUpdateCommittee
-              setViewGroupPage={setViewGroupPage}
+              setViewCommitteePage={setViewCommitteePage}
               viewCommitteeTab={viewCommitteeTab}
               ViewcommitteeID={ViewcommitteeID}
             />
@@ -1059,8 +1065,6 @@ const Committee = () => {
         <ModalArchivedCommittee
           archivedCommittee={showModal}
           setArchivedCommittee={setShowModal}
-          setViewGroupPage={setViewGroupPage}
-          setUpdateComponentpage={setUpdateComponentpage}
         />
       ) : null}
       {showActiveGroup ? (

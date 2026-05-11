@@ -180,7 +180,7 @@ const GroupDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          {},
+          {setEditorRole}
         ),
       );
     };

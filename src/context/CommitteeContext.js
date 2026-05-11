@@ -27,6 +27,10 @@ export const CommitteeContext = createContext();
 export const CommitteeProvider = ({ children }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const [ViewCommitteePage, setViewCommitteePage] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [viewVotes, setviewVotes] = useState(false);
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const dispatch = useDispatch();
@@ -459,64 +463,64 @@ export const CommitteeProvider = ({ children }) => {
     }
   }, [meetingStatusProposedMqttData]);
 
-  useEffect(() => {
-    if (MeetingProp !== null) {
-      const callApi = async () => {
-        try {
-          let getApiResponse = await validateStringParticipantProposedApi(
-            MeetingProp,
-            navigate,
-            t,
-          )(dispatch); // Ensure you're passing dispatch here
-          if (getApiResponse) {
-            localStorage.setItem(
-              "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID,
-            );
-            localStorage.removeItem("meetingprop");
-            // setResponseByDate(getApiResponse.deadline);
-            dispatch(toggleIsParticipantProposedMeetingDates(true));
-          }
-        } catch (error) {
-          console.error("Error in API call:", error);
-          localStorage.removeItem("meetingprop");
-        }
-      };
+  // useEffect(() => {
+  //   if (MeetingProp !== null) {
+  //     const callApi = async () => {
+  //       try {
+  //         let getApiResponse = await validateStringParticipantProposedApi(
+  //           MeetingProp,
+  //           navigate,
+  //           t,
+  //         )(dispatch); // Ensure you're passing dispatch here
+  //         if (getApiResponse) {
+  //           localStorage.setItem(
+  //             "viewProposeDatePollMeetingID",
+  //             getApiResponse.meetingID,
+  //           );
+  //           localStorage.removeItem("meetingprop");
+  //           // setResponseByDate(getApiResponse.deadline);
+  //           dispatch(toggleIsParticipantProposedMeetingDates(true));
+  //         }
+  //       } catch (error) {
+  //         console.error("Error in API call:", error);
+  //         localStorage.removeItem("meetingprop");
+  //       }
+  //     };
 
-      callApi();
-    }
-  }, [MeetingProp]); // Add `dispatch` to the dependency array
+  //     callApi();
+  //   }
+  // }, [MeetingProp]); // Add `dispatch` to the dependency array
 
-  useEffect(() => {
-    if (UserMeetPropoDatPoll !== null) {
-      try {
-        const callApi1 = async () => {
-          try {
-            let getApiResponse =
-              await validateStringUserMeetingProposedDatesPollsApi(
-                UserMeetPropoDatPoll,
-                navigate,
-                t,
-              )(dispatch); // Ensure you're passing dispatch here
+  // useEffect(() => {
+  //   if (UserMeetPropoDatPoll !== null) {
+  //     try {
+  //       const callApi1 = async () => {
+  //         try {
+  //           let getApiResponse =
+  //             await validateStringUserMeetingProposedDatesPollsApi(
+  //               UserMeetPropoDatPoll,
+  //               navigate,
+  //               t,
+  //             )(dispatch); // Ensure you're passing dispatch here
 
-            if (getApiResponse) {
-              localStorage.setItem(
-                "viewProposeDatePollMeetingID",
-                getApiResponse.meetingID,
-              );
-              localStorage.removeItem("UserMeetPropoDatPoll");
-              dispatch(toggleIsOrganizerProposedMeetingDates(true));
-            }
-          } catch (error) {
-            console.error("Error in API call:", error);
-            localStorage.removeItem("UserMeetPropoDatPoll");
-          }
-        };
+  //           if (getApiResponse) {
+  //             localStorage.setItem(
+  //               "viewProposeDatePollMeetingID",
+  //               getApiResponse.meetingID,
+  //             );
+  //             localStorage.removeItem("UserMeetPropoDatPoll");
+  //             dispatch(toggleIsOrganizerProposedMeetingDates(true));
+  //           }
+  //         } catch (error) {
+  //           console.error("Error in API call:", error);
+  //           localStorage.removeItem("UserMeetPropoDatPoll");
+  //         }
+  //       };
 
-        callApi1();
-      } catch (error) {}
-    }
-  }, [UserMeetPropoDatPoll]);
+  //       callApi1();
+  //     } catch (error) {}
+  //   }
+  // }, [UserMeetPropoDatPoll]);
 
   // =========================
   // CONTEXT VALUE
@@ -554,6 +558,11 @@ export const CommitteeProvider = ({ children }) => {
         isCommitteeCreateQuickMeeting,
         setIsCommitteeCreateQuickMeeting,
         startMeetingButton,
+
+        ViewCommitteePage,
+        setViewCommitteePage,
+        showModal,
+        setShowModal,
       }}>
       {children}
     </CommitteeContext.Provider>

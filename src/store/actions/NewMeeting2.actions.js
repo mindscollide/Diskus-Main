@@ -60,10 +60,12 @@ import {
 } from "./ModalStates_actions";
 import {
   getMeetingByCommitteeIdApi,
+  resetViewCommitteeDetails,
   setMeetingbyCommitteeIdApi,
 } from "./Committee_actions";
 import {
   getMeetingbyGroupIdApi,
+  resetViewGroupDetails,
   setMeetingByGroupIdApi,
 } from "./Groups_actions";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
@@ -73,7 +75,7 @@ import {
   presenterViewGlobalState,
   videoIconOrButtonState,
 } from "./VideoFeature_actions";
-import { switchOnMessage } from "../../commen/functions/utils";
+import { isFunction, switchOnMessage } from "../../commen/functions/utils";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 
@@ -226,6 +228,33 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   case "committeePublishedMeeting":
+                    const { setEditorRole } = object;
+                    dispatch(setAdvanceMeetingRoute(null));
+                    dispatch(resetCreateEditTabs());
+                    dispatch(toggleCreateEditMeetingModal(false));
+                    dispatch(resetViewCommitteeDetails());
+                    dispatch(resetViewGroupDetails());
+                    isFunction(setEditorRole) &&
+                      setEditorRole({
+                        status: null,
+                        role: "",
+                        isPrimaryOrganizer: false,
+                      });
+                    const committeeInfo =
+                      store.getState().CommitteeReducer?.viewCommitteeDetails;
+                    // let searchData = {
+                    //   CommitteeID: Number(committeeInfo.committeeID),
+                    //   Date: "",
+                    //   Title: "",
+                    //   HostName: "",
+                    //   UserID: Number(localStorage.getItem("userID")),
+                    //   PageNumber: 1,
+                    //   Length: 30,
+                    //   PublishedMeetings: true,
+                    // };
+                    // dispatch(
+                    //   getMeetingByCommitteeIdApi(navigate, t, searchData),
+                    // );
                     break;
                   case "groupSaveMeeting":
                     dispatch(
@@ -2206,6 +2235,7 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                           "publishMeetingFromAgendaTab",
                           {
                             route: 5,
+                            ...object,
                           },
                         ),
                       );
@@ -2458,25 +2488,7 @@ export const UpdateMeetingStatusApi = (
   routePath,
   object,
 ) => {
-  const {
-    route,
-    setEditorRole,
-    setAdvanceMeetingModalID,
-    setDataroomMapFolderId,
-    setSceduleMeeting,
-    setViewFlag,
-    setEditFlag,
-    setCalendarViewModal,
-    setEndMeetingConfirmationModal,
-    isQuickMeeting,
-    videoCallURL,
-  } = object;
-
-  const leaveMeetingData = {
-    VideoCallURL: videoCallURL,
-    FK_MDID: Number(Data.MeetingID),
-    DateTime: getCurrentDateTimeUTC(),
-  };
+  const { route, setEndMeetingConfirmationModal } = object;
 
   return async (dispatch) => {
     dispatch(updateOrganizerMeetingStatus_init());
@@ -2526,7 +2538,7 @@ export const UpdateMeetingStatusApi = (
                       store.getState().CommitteeReducer?.viewCommitteeDetails;
                     const groupInfo =
                       store.getState().GroupsReducer?.viewGroupDetails;
-
+                    const { setEditorRole } = object;
                     switch (routePath) {
                       case "publishMeetingFromdraftTable":
                       case "publishMeetingFromParticipant":
@@ -2534,8 +2546,15 @@ export const UpdateMeetingStatusApi = (
                       case "publishMeetingFromOrganizer":
                       case "PublishMeetingFromMeetingMaterial":
                       case "publishMeetingFromAgendaTab": {
+                        isFunction(setEditorRole) &&
+                          setEditorRole({
+                            status: null,
+                            role: "",
+                            isPrimaryOrganizer: false,
+                          });
                         dispatch(toggleCreateEditMeetingModal(false));
                         dispatch(resetCreateEditTabs());
+                        dispatch(resetViewCommitteeDetails());
                         if (committeeInfo !== null) {
                           let searchData = {
                             CommitteeID: Number(committeeInfo.committeeID),

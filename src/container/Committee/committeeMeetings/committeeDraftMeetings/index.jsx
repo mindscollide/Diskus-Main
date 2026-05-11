@@ -95,7 +95,6 @@ const CommitteeDraftMeetings = () => {
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
 
-
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
     setMeetingTitleSort(null);
@@ -180,7 +179,7 @@ const CommitteeDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          {},
+          { setEditorRole },
         ),
       );
     };
@@ -364,7 +363,6 @@ const CommitteeDraftMeetings = () => {
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
       },
-
 
       // More Popover
       {

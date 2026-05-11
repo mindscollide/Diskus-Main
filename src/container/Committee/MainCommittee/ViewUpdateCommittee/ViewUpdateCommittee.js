@@ -16,7 +16,7 @@ import { XLg } from "react-bootstrap-icons";
 import CommitteeMeetingTab from "../../committeeMeetings";
 import { useSelector } from "react-redux";
 import { usePollsContext } from "../../../../context/PollsContext.js";
-const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
+const ViewUpdateCommittee = ({ setViewCommitteePage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { setviewVotes } = usePollsContext();
@@ -82,7 +82,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   }, [ViewCommitteeID]);
 
   const handleClose = () => {
-    setViewGroupPage(false);
+    setViewCommitteePage(false);
     setviewVotes(false);
     dispatch(viewCommitteePageFlag(false));
     localStorage.removeItem("ViewCommitteeID");
@@ -167,7 +167,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
 
           {currentView === 1 ? (
             <ViewCommitteeDetails
-              setViewGroupPage={setViewGroupPage}
+              setViewCommitteePage={setViewCommitteePage}
               committeeStatus={committeeStatus}
             />
           ) : currentView === 2 ? (

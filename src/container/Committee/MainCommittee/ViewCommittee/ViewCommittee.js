@@ -24,7 +24,7 @@ import {
   fileFormatforSignatureFlow,
   maxFileSize,
 } from "../../../../commen/functions/utils";
-const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
+const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
   console.log(committeeStatus, "committeeStatus");
   const { Dragger } = Upload;
   const previousFileListRef = useRef([]);
@@ -67,7 +67,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   });
 
   const closebtn = async () => {
-    setViewGroupPage(false);
+    setViewCommitteePage(false);
     localStorage.removeItem("ViewCommitteeID");
     dispatch(viewCommitteePageFlag(false));
   };

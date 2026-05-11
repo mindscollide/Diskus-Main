@@ -399,7 +399,7 @@ const MeetingMaterial = ({
         t,
         { MeetingID: meetingID, StatusID: 1 },
         "PublishMeetingFromMeetingMaterial",
-        {},
+        {setEditorRole},
       ),
     );
     // dispatch(

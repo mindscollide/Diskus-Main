@@ -631,7 +631,7 @@ const AgendaContributers = ({
         t,
         { MeetingID: currentMeeting, StatusID: 1 },
         "publishMeetingFromAgendaContributor",
-        {},
+        {setEditorRole},
       ),
     );
     console.log("end meeting chaek");

@@ -11,8 +11,8 @@ const initialState = {
 
   // ─── Advance Meeting Route ───────────────────────────────────────────────
   // 1 = Create Main Advance Meeting, 2 = Edit Main Advance Meeting
-  isAdvanceMeetingRoute: 1,
-  isProposedMeetingRoute: 1,
+  isAdvanceMeetingRoute: null,
+  isProposedMeetingRoute: null,
 
   // ─── Unsaved Changes Modal ───────────────────────────────────────────────
   isUnsavedChangesModal: false,

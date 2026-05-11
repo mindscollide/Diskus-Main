@@ -310,6 +310,7 @@ const Agenda = () => {
     isAgendaUpdateWhenMeetingActive,
     editorRole,
     setGoBackCancelModal,
+    setEditorRole,
   } = useContext(MeetingContext);
 
   /* --------------------------------------------------------------------------
@@ -567,7 +568,9 @@ const Agenda = () => {
         : "saveAgendaAndPublishMeeting";
 
     await dispatch(
-      AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {}),
+      AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {
+        setEditorRole,
+      }),
     );
   };
 
@@ -654,7 +657,7 @@ const Agenda = () => {
       MeetingAgendaData.agendaList.length === 0
     ) {
       setRows([buildEmptyAgendaRow(allSavedPresenters[0], meetingTime)]);
-      setIsPublishedState(false)
+      setIsPublishedState(false);
       return;
     }
 
@@ -1045,16 +1048,14 @@ const Agenda = () => {
                 onClick={() => saveAgendaData(SAVE_FLAG.SAVE_ONLY)}
               />
             )}
-              <Button
-                // Can't publish until the meeting has an ID and the agenda
-                // has actually been saved at least once.
-                disableBtn={
-                  Number(meetingId) === 0 || isPublishedState === false
-                }
-                text={t("Publish")}
-                className={styles["Save_Agenda_btn"]}
-                onClick={() => saveAgendaData(SAVE_FLAG.SAVE_AND_PUBLISH)}
-              />
+            <Button
+              // Can't publish until the meeting has an ID and the agenda
+              // has actually been saved at least once.
+              disableBtn={Number(meetingId) === 0 || isPublishedState === false}
+              text={t("Publish")}
+              className={styles["Save_Agenda_btn"]}
+              onClick={() => saveAgendaData(SAVE_FLAG.SAVE_AND_PUBLISH)}
+            />
           </Col>
         </Row>
       </section>
