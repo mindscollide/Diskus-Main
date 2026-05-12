@@ -10,35 +10,11 @@ import {
   currentMeetingStatus,
   LeaveCurrentMeetingOtherMenus,
   LeaveMeetingVideo,
-  proposedMeetingDatesGlobalFlag,
-  proposeNewMeetingPageFlag,
-  scheduleMeetingPageFlag,
-  searchNewUserMeeting,
   showCancelModalmeetingDeitals,
   viewAdvanceMeetingPublishPageFlag,
-  viewProposeDateMeetingPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import {
-  createGroupPageFlag,
-  updateGroupPageFlag,
-  viewGroupPageFlag,
-} from "../../../../../store/actions/Groups_actions";
-import {
-  createCommitteePageFlag,
-  updateCommitteePageFlag,
-  viewCommitteePageFlag,
-} from "../../../../../store/actions/Committee_actions";
-import {
-  resultResolutionFlag,
-  voteResolutionFlag,
-  viewAttachmentFlag,
-  createResolutionModal,
-  viewResolutionModal,
-} from "../../../../../store/actions/Resolution_actions";
-import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
@@ -60,12 +36,6 @@ const { t } = useTranslation();
   const navigate = useNavigate();
 
   const location = useLocation();
-
-  //LocalStorage Entiites
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let userID = localStorage.getItem("userID");
   let NavigationLocation = localStorage.getItem("navigateLocation");
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -105,9 +75,6 @@ const { t } = useTranslation();
   );
   const viewProposeDateMeetingsPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
-  );
-  const viewAdvanceMeetingsPublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
   const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag

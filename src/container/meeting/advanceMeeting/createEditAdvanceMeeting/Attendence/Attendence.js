@@ -21,12 +21,7 @@ import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import { useSelector } from "react-redux";
-import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
-import {
-  searchNewUserMeeting,
-  showAttendanceConfirmationModal,
-} from "../../../../../store/actions/NewMeetingActions";
-import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
+
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { resetCreateEditTabs, toggleCreateEditMeetingModal } from "../../../../../store/actions/ModalStates_actions";
@@ -47,14 +42,7 @@ const Attendence = () => {
   const attendanceMeetings = useSelector(
     (state) => state.attendanceMeetingReducer.attendanceMeetings,
   );
-  const attendanceConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.attendanceConfirmationModal,
-  );
-  const [useCase, setUseCase] = useState(0);
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let userID = localStorage.getItem("userID");
+ 
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -157,7 +145,7 @@ const Attendence = () => {
               sm={12}
               className="d-flex align-items-center gap-4"
             >
-              {}
+              
               {/* Add this line for debugging */}
               {text === 1 ? (
                 <>

@@ -10,6 +10,7 @@ import {
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { listOfMeetingsApi } from "../../../../../../store/actions/NewMeeting2.actions";
 
 const ModalCancelAttendance = ({
   setAttendance,
@@ -55,7 +56,7 @@ const ModalCancelAttendance = ({
             currentView && Number(currentView) === 2 ? true : false,
         };
         
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(listOfMeetingsApi(navigate, t,searchData));
       }
     }
   };

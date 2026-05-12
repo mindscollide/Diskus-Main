@@ -33,7 +33,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
   let meetingTitle = localStorage.getItem("meetingTitle");
 
   const { MeetingOrganizersReducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const [open, setOpen] = useState({
@@ -175,8 +175,6 @@ const ShareEmailModal = ({ setShareEmailView }) => {
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
-
-  
 
   return (
     <section>

@@ -327,7 +327,7 @@ const muteUnmuteFail = (message) => {
 };
 
 const muteUnMuteParticipantMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(muteUnmuteInit());
@@ -437,7 +437,7 @@ const hideUnHideParticipantGuestFail = (message) => {
 };
 
 const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   
   return (dispatch) => {
     dispatch(hideUnHideParticipantGuestInit());
@@ -589,7 +589,7 @@ const getParticipantMeetingJoinMainApi = (
   setGetReady,
   setJoinButton,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getParticipantMeetingJoinInit());
     let form = new FormData();
@@ -889,7 +889,7 @@ const participantListAndWaitingListFail = (message) => {
 };
 
 const participantListWaitingListMainApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(participantListAndWaitingListInit());
     let form = new FormData();
@@ -1330,7 +1330,7 @@ const openPresenterViewMainApi = (
   currentMeeting,
   actiontype,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let videoCallURL = String(localStorage.getItem("videoCallURL"));
   let newData = {
     VideoCallURL: videoCallURL,
@@ -1510,7 +1510,7 @@ const startPresenterFail = (message) => {
 };
 
 const startPresenterViewMainApi = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(startPresenterInit());
     let form = new FormData();
@@ -1640,7 +1640,7 @@ const stopPresenterViewMainApi = (
   setLeavePresenterViewToJoinOneToOne,
   stopApiCalledRef,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   
   let videoCallURL = Number(localStorage.getItem("videoCallURL"));
   let newdata = {
@@ -1996,7 +1996,7 @@ const joinPresenterFail = (message) => {
 };
 
 const joinPresenterViewMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(joinPresenterInit());
     let form = new FormData();
@@ -2168,7 +2168,7 @@ const leavePresenterViewMainApi = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeavePresenterViewToJoinOneToOne,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(leavePresenterInit());
     let form = new FormData();
@@ -2412,7 +2412,7 @@ const leavePresenterViewMainApiTest = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeavePresenterViewToJoinOneToOne,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return async (dispatch) => {
     return new Promise(async (resolve, reject) => {
@@ -2656,7 +2656,7 @@ const getGroupCallParticipantsFail = (message) => {
 };
 
 const getGroupCallParticipantsMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(getGroupCallParticipantsInit());

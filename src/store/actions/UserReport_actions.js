@@ -26,7 +26,7 @@ const userLoginHistory_Fail = (message) => {
 };
 
 const userLoginHistory_Api = (navigate, t, Data, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(userLoginHistory_Init(loader));
     let form = new FormData();

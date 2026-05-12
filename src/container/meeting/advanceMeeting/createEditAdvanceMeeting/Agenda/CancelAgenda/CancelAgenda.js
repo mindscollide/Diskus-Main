@@ -10,6 +10,7 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../../components/elements";
+import { listOfMeetingsApi } from "../../../../../../store/actions/NewMeeting2.actions";
 
 const CancelAgenda = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
           : false,
     };
     
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    await dispatch(listOfMeetingsApi(navigate, searchData, t));
     setSceduleMeeting(false);
     localStorage.setItem("folderDataRoomMeeting", 0);
   };

@@ -52,6 +52,7 @@ import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 import { meetingIdReducer } from "../../../../../store/reducers";
+import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
 
 const Minutes = ({
   setMinutes,
@@ -661,7 +662,7 @@ const Minutes = ({
             currentView && Number(currentView) === 2 ? true : false,
         };
 
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(listOfMeetingsApi(navigate, t, searchData));
       }
     } else if (general) {
       if (
@@ -689,7 +690,7 @@ const Minutes = ({
             currentView && Number(currentView) === 2 ? true : false,
         };
 
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(listOfMeetingsApi(navigate, t, searchData));
       }
     }
   };

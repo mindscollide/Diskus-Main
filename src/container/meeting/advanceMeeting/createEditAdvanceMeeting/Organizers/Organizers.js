@@ -23,7 +23,6 @@ import {
   showAddUserModal,
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
-  showCancelModalOrganizers,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -1031,11 +1030,7 @@ const Organizers = () => {
       {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
         <SendNotificationOrganizer />
       ) : null}
-      {NewMeetingreducer.cancelModalOrganizer && (
-        <CancelModalOrganizer
-        // setSceduleMeeting={setSceduleMeeting}
-        />
-      )}
+   
 
       {NewMeetingreducer.ShowPreviousModal && (
         <PreviousModal

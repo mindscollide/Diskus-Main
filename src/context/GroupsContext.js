@@ -18,7 +18,10 @@ import {
   meetingOrganizerRemoved,
 } from "../store/actions/NewMeetingActions";
 import { createGroupMeeting } from "../store/actions/GetMeetingUserId";
-import { getAllUnpublishedMeetingData, mqttMeetingData } from "../hooks/meetingResponse/response";
+import {
+  getAllUnpublishedMeetingData,
+  mqttMeetingData,
+} from "../hooks/meetingResponse/response";
 
 /**
  * @context GroupContext
@@ -69,14 +72,15 @@ export const GroupsProvider = ({ children }) => {
 
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
 
-
   // ─── Tab State ───
   const [currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive] =
     useState(1);
   const [minutesAgo, setMinutesAgo] = useState(0);
 
   // ─── Meeting Lists ───
-  const [groupPublishedMeetingData, setGroupPublishedMeetingData] = useState([]);
+  const [groupPublishedMeetingData, setGroupPublishedMeetingData] = useState(
+    [],
+  );
   const [groupPublishedMeetingDataRecord, setGroupPublishedMeetingDataRecord] =
     useState(0);
 
@@ -87,13 +91,6 @@ export const GroupsProvider = ({ children }) => {
   const [groupDraftMeetingData, setGroupDraftMeetingData] = useState([]);
   const [groupDraftMeetingDataRecord, setGroupDraftMeetingDataRecord] =
     useState(0);
-
-  // ─── Quick Meeting State ───
-  const [isGroupCreateQuickMeeting, setIsGroupCreateQuickMeeting] =
-    useState(false);
-  const [isGroupUpdateQuickMeeting, setIsGroupUpateQuickMeeting] =
-    useState(false);
-  const [isGroupViewQuickMeeting, setIsGroupViewQuickMeeting] = useState(false);
 
   const [startMeetingButton, setStartMeetingButton] = useState([]);
   const ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -174,9 +171,7 @@ export const GroupsProvider = ({ children }) => {
         default:
           break;
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getMeetingbyGroupID, currentGroupMeetingTabActive]);
 
   // =========================
@@ -214,9 +209,7 @@ export const GroupsProvider = ({ children }) => {
       }
 
       dispatch(createGroupMeeting(null));
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
 
@@ -239,9 +232,7 @@ export const GroupsProvider = ({ children }) => {
           status: "9",
         }));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
 
@@ -256,9 +247,7 @@ export const GroupsProvider = ({ children }) => {
       if (!meetingID) return;
 
       updateMeetingInAllLists(meetingID, () => allMeetingsSocketData);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMeetingsSocketData]);
 
@@ -273,9 +262,7 @@ export const GroupsProvider = ({ children }) => {
       if (!meetingDetails?.pK_MDID) return;
 
       // Filter by group
-      const incomingGroupID = Number(
-        meetingStatusNotConductedMqttData.groupID,
-      );
+      const incomingGroupID = Number(meetingStatusNotConductedMqttData.groupID);
       const currentGroupID = Number(groupInfo?.groupID ?? ViewGroupID);
 
       if (
@@ -309,9 +296,7 @@ export const GroupsProvider = ({ children }) => {
       });
 
       dispatch(meetingNotConductedMQTT(null));
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusNotConductedMqttData]);
 
@@ -329,7 +314,6 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
-        
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -352,7 +336,6 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingAcRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -376,7 +359,6 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
-        
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -399,7 +381,6 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingOrgRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -445,7 +426,6 @@ export const GroupsProvider = ({ children }) => {
         //   return prev;
         // });
       } catch (error) {
-        
       } finally {
         dispatch(meetingStatusProposedMqtt(null));
       }
@@ -478,7 +458,7 @@ export const GroupsProvider = ({ children }) => {
   //         dispatch(toggleIsParticipantProposedMeetingDates(true));
   //       }
   //     } catch (error) {
-  //       
+  //
   //       localStorage.removeItem("meetingprop");
   //     }
   //   };
@@ -511,7 +491,7 @@ export const GroupsProvider = ({ children }) => {
   //         dispatch(toggleIsOrganizerProposedMeetingDates(true));
   //       }
   //     } catch (error) {
-  //       
+  //
   //       localStorage.removeItem("UserMeetPropoDatPoll");
   //     }
   //   };
@@ -551,14 +531,6 @@ export const GroupsProvider = ({ children }) => {
         setGroupDraftMeetingData,
         groupDraftMeetingDataRecord,
         setGroupDraftMeetingDataRecord,
-
-        // Quick Meeting
-        isGroupCreateQuickMeeting,
-        setIsGroupCreateQuickMeeting,
-        isGroupUpdateQuickMeeting,
-        setIsGroupUpateQuickMeeting,
-        isGroupViewQuickMeeting,
-        setIsGroupViewQuickMeeting,
 
         // Buttons
         startMeetingButton,

@@ -26,7 +26,6 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import {
-  searchNewUserMeeting,
   showEndMeetingModal,
 } from "../../../../store/actions/NewMeetingActions";
 import { useComplianceContext } from "../../../../context/ComplianceContext";

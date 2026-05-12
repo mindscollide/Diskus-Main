@@ -122,7 +122,7 @@ const initiateVideoCallFail = (message) => {
 };
 
 const InitiateVideoCall = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(initiateVideoCallInitial());
     let form = new FormData();
@@ -374,7 +374,7 @@ const getUserRecentCallsFail = (message) => {
 };
 
 const GetUserRecentCalls = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(getUserRecentCallsInitial());
     let form = new FormData();
@@ -437,7 +437,7 @@ const ScrollRecentCalls = (response) => {
 };
 
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", getUserRecentCalls.RequestMethod);
@@ -603,7 +603,7 @@ const getUserMissedCallCountFail = (message) => {
 };
 
 const GetUserMissedCallCount = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(getUserMissedCallCountInitial());
     let form = new FormData();

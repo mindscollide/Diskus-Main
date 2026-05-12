@@ -80,41 +80,24 @@ import { useGroupsContext } from "../../../context/GroupsContext";
 import GroupProposedMeetings from "./groupProposedMeetings";
 import GroupDraftMeetings from "./groupDraftMeetings";
 import GroupPublishedMeetingList from "./groupPublishMeetings";
+import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 
 const GroupMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive } =
+    useGroupsContext();
+  // Context for meeting state management
   const {
-    currentGroupMeetingTabActive,
-    setCurrentGroupMeetingTabActive,
-    minutesAgo,
-
-    // Lists
-    groupPublishedMeetingData,
-    setGroupPublishedMeetingData,
-    groupPublishedMeetingDataRecord,
-    setGroupPublishedMeetingDataRecord,
-
-    groupProposedMeetingData,
-    setGroupProposedMeetingData,
-    groupProposedMeetingDataRecord,
-    setGroupProposedMeetingDataRecord,
-
-    groupDraftMeetingData,
-    setGroupDraftMeetingData,
-    groupDraftMeetingDataRecord,
-    setGroupDraftMeetingDataRecord,
-
-    // Quick Meeting
-    isGroupCreateQuickMeeting,
-    setIsGroupCreateQuickMeeting,
-    isGroupUpdateQuickMeeting,
-    setIsGroupUpateQuickMeeting,
-    isGroupViewQuickMeeting,
-    setIsGroupViewQuickMeeting,
-  } = useGroupsContext();
+    isQuickMeetingCreate,
+    setIsQuickMeetingCreate,
+    isQuickMeetingUpdate,
+    setIsQuickMeetingUpdate,
+    isQuickMeetingView,
+    setIsQuickMeetingView,
+  } = useNewMeetingContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
   let userID = localStorage.getItem("userID");
@@ -175,7 +158,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
   }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
   const handelCreateMeeting = () => {
-    setIsGroupCreateQuickMeeting(true);
+    setIsQuickMeetingCreate(true);
   };
 
   const handleCreateAdvanceMeeting = () => {
@@ -190,24 +173,24 @@ const GroupMeetingTab = ({ groupStatus }) => {
 
   return (
     <>
-      {isGroupCreateQuickMeeting && (
+      {isQuickMeetingCreate && (
         <CreateQuickMeeting
-          show={isGroupCreateQuickMeeting}
-          setShow={setIsGroupCreateQuickMeeting}
+          show={isQuickMeetingCreate}
+          setShow={setIsQuickMeetingCreate}
           // this is check from where its called 6 is from group create
           checkFlag={7}
         />
       )}
-      {isGroupViewQuickMeeting && (
+      {isQuickMeetingView && (
         <ViewModal
-          viewFlag={isGroupViewQuickMeeting}
-          setViewFlag={setIsGroupViewQuickMeeting}
+          viewFlag={isQuickMeetingView}
+          setViewFlag={setIsQuickMeetingView}
         />
       )}
-      {isGroupUpdateQuickMeeting && (
+      {isQuickMeetingUpdate && (
         <UpdateQuickMeeting
-          editFlag={isGroupUpdateQuickMeeting}
-          setEditFlag={setIsGroupUpateQuickMeeting}
+          editFlag={isQuickMeetingUpdate}
+          setEditFlag={setIsQuickMeetingUpdate}
           // this is check from where its called 6 is from group create
           checkFlag={8}
         />

@@ -195,8 +195,6 @@ const ProposedMeeting = () => {
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
-    
-
     // Reset all sort states first
     setMeetingTitleSort(null);
     setMeetingDateSort(null);
@@ -216,7 +214,6 @@ const ProposedMeeting = () => {
     }
   };
   const handleCLickView = (record) => {
-    
     if (record.isOrganizer) {
       dispatch(
         getMeetingDetailsByMeetingIdApi(
@@ -231,7 +228,6 @@ const ProposedMeeting = () => {
   };
   const moreButtons = (record) => {
     const handleEdit = () => {
-      
       if (record.isOrganizer) {
         dispatch(
           getMeetingDetailsByMeetingIdApi(
@@ -246,7 +242,6 @@ const ProposedMeeting = () => {
     };
 
     const handleDelete = () => {
-      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -320,7 +315,7 @@ const ProposedMeeting = () => {
                 //     GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
                 //   );
                 // } catch (error) {
-                //   
+                //
                 // }
               }}
               className={styles.tableRow}>
@@ -449,24 +444,43 @@ const ProposedMeeting = () => {
               ? null
               : record.meetingPoll?.totalNoOfDirectors ===
                 record.meetingPoll?.totalNoOfDirectorsVoted;
-          if (record.meetingPoll) {
-            return (
-              allVoterVotedCompleted && (
-                <>
-                  {" "}
-                  <img
-                    src={rspvGreenIcon}
-                    height='17.06px'
-                    width='17.06px'
-                    alt=''
-                    draggable='false'
+
+          const isResponseDateGone = forRecentActivity(
+            `${record.responseDeadLine}000000`,
+          );
+          const currentDateObj = new Date();
+          const isViewPollShown = getDifferentisDateisPassed(
+            currentDateObj,
+            isResponseDateGone,
+          );
+          // if (record.meetingPoll) {
+          //   return (
+          //     allVoterVotedCompleted && (
+          //       <img
+          //         src={rspvGreenIcon}
+          //         height="17.06px"
+          //         width="17.06px"
+          //         alt=""
+          //         draggable="false"
+          //       />
+          //     )
+          //   );
+          // }
+          return (
+            record.isParticipant && (
+              <div className='d-flex justify-content-center align-items-center gap-2'>
+                <div>
+                  <CustomButton
+                    className={styles.VoteMeetingButton}
+                    text={t("Vote")}
+                    disableBtn={isViewPollShown ? true : false}
+                    onClick={() => handleClickActions(record)}
                   />
-                </>
-              )
-            );
-          } else {
-            return "-";
-          }
+                </div>
+              </div>
+            )
+          );
+   
         },
       },
       {
@@ -524,57 +538,19 @@ const ProposedMeeting = () => {
         width: 130,
         key: "meetingAction",
         render: (text, record) => {
-          const isResponseDateGone = forRecentActivity(
-            `${record.responseDeadLine}000000`,
-          );
-          const currentDateObj = new Date();
-
-          const isViewPollShown = getDifferentisDateisPassed(
-            currentDateObj,
-            isResponseDateGone,
-          );
-
-          return record.isParticipant ? (
-            <div className='d-flex justify-content-center align-items-center gap-2'>
-              <div>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text='Send Reply'
-                  disableBtn={isViewPollShown ? true : false}
-                  onClick={
-                    () => handleClickActions(record)
-                    // viewProposeDatePollHandler(
-                    //   true,
-                    //   false,
-                    //   false,
-                    //   record.pK_MDID,
-                    //   record.responseDeadLine,
-                    // )
-                  }
-                />
+          return (
+            record.isOrganizer && (
+              <div className='d-flex justify-content-center align-items-center gap-2'>
+                <div>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("View-poll")}
+                    onClick={() => handleClickActions(record)}
+                  />
+                </div>
               </div>
-            </div>
-          ) : record.isOrganizer ? (
-            <div className='d-flex justify-content-center align-items-center gap-2'>
-              <div>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("View-poll")}
-                  onClick={
-                    () => handleClickActions(record)
-
-                    // onClick={() =>
-                    //   viewProposeDatePollHandler(
-                    //     false,
-                    //     false,
-                    //     true,
-                    //     record.pK_MDID,
-                    //   )
-                  }
-                />
-              </div>
-            </div>
-          ) : null;
+            )
+          );
         },
       },
       {
@@ -631,39 +607,29 @@ const ProposedMeeting = () => {
       try {
         const updateMeetingData = async () => {
           let meetingData = meetingStatusProposedMqttData;
-          
 
           const indexToUpdate = proposedMeetingData.findIndex(
             (obj) => obj.pK_MDID === meetingData.pK_MDID,
           );
-          
 
           // Fetching unpublished meeting data
           let getMeetingDataArray = await getAllUnpublishedMeetingData(
             [meetingData],
             1,
           );
-          
 
           // Assuming getMeetingDataArray is an array with a single object
           const getMeetingData = getMeetingDataArray[0];
           // Check if the meeting exists in the current meetingsRecords
 
-          
-
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingData];
-            
 
             updatedRows[indexToUpdate] = getMeetingData;
-            
 
             setProposedMeetingData(updatedRows);
           } else {
-            
-
             let updatedRows = [getMeetingData, ...proposedMeetingData];
-            
 
             setProposedMeetingData(updatedRows);
             setProposedMeetingDataRecord((prev) => prev + 1);
@@ -671,9 +637,7 @@ const ProposedMeeting = () => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [meetingStatusProposedMqttData]);
 
@@ -696,7 +660,6 @@ const ProposedMeeting = () => {
             dispatch(toggleIsParticipantProposedMeetingDates(true));
           }
         } catch (error) {
-          
           localStorage.removeItem("meetingprop");
         }
       };
@@ -726,7 +689,6 @@ const ProposedMeeting = () => {
               dispatch(toggleIsOrganizerProposedMeetingDates(true));
             }
           } catch (error) {
-            
             localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };

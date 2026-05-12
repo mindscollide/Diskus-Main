@@ -2,14 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import {  Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
-  searchNewUserMeeting,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
@@ -31,24 +28,20 @@ import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgenda
 import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import {
-  MeetingContext,
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 
-const Agenda = ({}) => {
+const Agenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     editorRole,
-    setEditorRole,
     setAgenda,
-    setMeetingMaterial,
     setViewAdvanceMeetingModal,
     setPolls,
     setMinutes,
     advanceMeetingModalID,
-    setAdvanceMeetingModalID,
   } = useMeetingContext();
   const agendaItemRemoved = useSelector(
     (state) => state.NewMeetingreducer.agendaItemRemoved
@@ -89,11 +82,7 @@ const Agenda = ({}) => {
     severity: "error",
   });
 
-  // For cancel with no modal Open
-  let userID = localStorage.getItem("userID");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let currentView = localStorage.getItem("MeetingCurrentView");
+;
 
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
@@ -453,7 +442,7 @@ const Agenda = ({}) => {
       {cancelAgenda && (
         <CancelAgenda setSceduleMeeting={setViewAdvanceMeetingModal} />
       )}
-      {cancelModalView && (
+      {/* {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}
           cancelModalView={cancelModalView}
@@ -462,7 +451,7 @@ const Agenda = ({}) => {
           setPolls={setPolls}
           setMinutes={setMinutes}
         />
-      )}
+      )} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

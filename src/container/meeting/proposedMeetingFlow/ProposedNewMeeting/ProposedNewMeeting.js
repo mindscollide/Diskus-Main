@@ -1193,7 +1193,6 @@ const ProposedNewMeeting = () => {
                     <Col lg={6} md={6} sm={6}>
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Meeting-type")}
-                        <span className={styles["steric"]}>*</span>
                       </span>
                       <div className={styles["meetingType_Value"]}>
                         {" "}

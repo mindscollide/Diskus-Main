@@ -16,7 +16,7 @@ import {
   resetViewTabs,
   toggleViewMeetingModal,
 } from "../../../../../../store/actions/ModalStates_actions";
-import { resetCurrentMeetingInfo } from "../../../../../../store/actions/NewMeeting2.actions";
+import { listOfMeetingsApi, resetCurrentMeetingInfo } from "../../../../../../store/actions/NewMeeting2.actions";
 const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
@@ -50,7 +50,7 @@ const CancelButtonModal = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(cleareAllState());
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate,t, searchData));
     setCancelModalView(false);
     setEditorRole({ status: null, role: null });
     dispatch(resetCurrentMeetingInfo());

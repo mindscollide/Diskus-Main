@@ -44,7 +44,7 @@ const calendarLoader = (loader) => {
   };
 };
 const getCalendarDataResponse = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     try {
       // dispatch(getCalendarDataInit(flag));
@@ -136,7 +136,7 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
 };
 
 const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     try {
       // dispatch(getCalendarDataInit(flag));
@@ -257,7 +257,7 @@ const getEventsType_fail = (message) => {
   };
 };
 const getEventsTypes = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return async (dispatch) => {
     await dispatch(getEventsType_init());

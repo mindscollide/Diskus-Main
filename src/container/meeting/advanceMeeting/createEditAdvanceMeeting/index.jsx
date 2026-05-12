@@ -33,7 +33,7 @@ import {
   setAdvanceMeetingRoute,
   setCreateEditTab,
 } from "../../../../store/actions/ModalStates_actions";
-import { getMeetingDetailsByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
+import { getMeetingDetailsByMeetingIdApi, listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
 import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
 import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
 const CreateEditAdvanceMeeting = () => {
@@ -175,8 +175,9 @@ const CreateEditAdvanceMeeting = () => {
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           localStorage.removeItem("folderDataRoomMeeting");
           dispatch(
-            searchNewUserMeeting(
+            listOfMeetingsApi(
               navigate,
+              t,
               {
                 Date: "",
                 Title: "",
@@ -190,7 +191,6 @@ const CreateEditAdvanceMeeting = () => {
                 ProposedMeetings:
                   Number(localStorage.getItem("MeetingCurrentView")) === 2,
               },
-              t,
             ),
           );
         }
@@ -220,8 +220,9 @@ const CreateEditAdvanceMeeting = () => {
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           localStorage.removeItem("folderDataRoomMeeting");
           dispatch(
-            searchNewUserMeeting(
+            listOfMeetingsApi(
               navigate,
+              t,
               {
                 Date: "",
                 Title: "",
@@ -235,7 +236,6 @@ const CreateEditAdvanceMeeting = () => {
                 ProposedMeetings:
                   Number(localStorage.getItem("MeetingCurrentView")) === 2,
               },
-              t,
             ),
           );
         }

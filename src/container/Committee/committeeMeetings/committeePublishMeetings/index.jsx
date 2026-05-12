@@ -27,14 +27,9 @@ import {
 
 // Redux actions
 import {
-  scheduleMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
-  viewMeetingFlag,
-  JoinCurrentMeeting,
   emailRouteID,
   boardDeckModal,
   getMeetingRecordingFilesApi,
-  searchNewUserMeeting,
 } from "@/store/actions/NewMeetingActions";
 import { ViewMeeting } from "@/store/actions/Get_List_Of_Assignees";
 import { downloadAttendanceReportApi } from "@/store/actions/Download_action";
@@ -77,8 +72,7 @@ import DoubleArrowIcon from "@/assets/images/sortingIcons/Double Arrow2.svg";
 
 import styles from "./committeePublishMeeting.module.css";
 
-import { ChevronDown, Record } from "react-bootstrap-icons";
-import CustomPagination from "@/commen/functions/customPagination/Paginations";
+import { ChevronDown,} from "react-bootstrap-icons";
 import BoardDeckModal from "@/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal";
 import BoardDeckSendEmail from "@/container/meeting/commonComponents/BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
 import ShareModalBoarddeck from "@/container/meeting/commonComponents/BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";

@@ -75,7 +75,7 @@ const saveFilesApi = (
   setTasksAttachments,
   tasksAttachments,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -267,7 +267,7 @@ const uploadDocumentsApi = (
   setShowbarupload,
   showbarupload,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   // Set Uploading to true when starting the upload
   setTasksAttachments((prevTasks) => ({
     ...prevTasks,
@@ -484,7 +484,7 @@ const getFolderDocumentsApi = (
   sortValue,
   isDescending,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
 
   let OrganizationID = localStorage.getItem("organizationID");
@@ -706,7 +706,7 @@ const createFolderApi = (
 ) => {
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
   let Data = {
@@ -899,7 +899,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   filterValue,
   order,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -993,7 +993,7 @@ const getFolderDocumentsApiScrollBehaviour = (
   SortBy,
   order,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -1103,7 +1103,7 @@ const shareFiles_fail = (message) => {
 
 // Share Files Api
 const shareFilesApi = (navigate, FileData, t, setShareFile) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(shareFiles_init());
     let form = new FormData();
@@ -1188,7 +1188,7 @@ const shareFolders_fail = (message) => {
 
 // Share Folders Api
 const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
 
@@ -1294,7 +1294,7 @@ const deleteFileDataroom_fail = (message) => {
 
 // Delete file API
 const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -1426,7 +1426,7 @@ const FileisExist = (
   setShowbarupload,
   showbarupload,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let folderId = localStorage.getItem("folderID");
   let Data = {
@@ -1544,7 +1544,7 @@ const FolderisExist = (
   Type,
   setIsExistFolder,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let Data = {
@@ -1657,7 +1657,7 @@ const deleteFolder_fail = (message) => {
 };
 
 const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let folderId = localStorage.getItem("folderID");
@@ -1759,7 +1759,7 @@ const FolderisExistrename_fail = (message) => {
 
 // Folder Exist API
 const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
 
@@ -1846,7 +1846,7 @@ const renameFolder_fail = (message) => {
   };
 };
 const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
 
@@ -1937,7 +1937,7 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
 };
 
 const FileisExist2 = (navigate, fileData, t, setShowRenameFile) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let Data = {
     UserID: JSON.parse(createrID),
@@ -2018,7 +2018,7 @@ const renameFile_fail = (message) => {
   };
 };
 const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -2158,7 +2158,7 @@ const searchDocumentsAndFoldersApi_fail = (message) => {
 
 // Get Documents And Folder API
 const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     if (no !== 1) {
@@ -2241,7 +2241,7 @@ const recentDocuments_fail = (message) => {
 };
 
 const getRecentDocumentsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(recentDocuments_init());
@@ -2321,7 +2321,7 @@ const getSharedFileUser_fail = (message) => {
 };
 
 const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(getSharedFileUser_init());
@@ -2397,7 +2397,7 @@ const getSharedFolderUser_fail = (message) => {
 };
 
 const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(getSharedFolderUser_init());
@@ -2477,7 +2477,7 @@ const createFolderLink_fail = (message) => {
 };
 
 // const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+// 
 
 //   return (dispatch) => {
 //     dispatch(createFolderLink_init());
@@ -2540,7 +2540,7 @@ const createFolderLink_fail = (message) => {
 //Same Api Newly Implemented
 
 const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(createFolderLink_init());
@@ -2616,7 +2616,7 @@ const createFileLink_fail = (message) => {
   };
 };
 const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(createFileLink_init());
@@ -2689,7 +2689,7 @@ const checkFileLink_fail = (message) => {
   };
 };
 const checkFileLinkApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(checkFileLink_init());
@@ -2810,7 +2810,7 @@ const requestAccess_fail = (message) => {
 };
 
 const requestAccessApi = (navigate, t, data, setRequestAccept) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(requestAccess_init());
@@ -2876,7 +2876,7 @@ const updateGeneralAccess_fail = (message) => {
   };
 };
 const updateGeneralAccessApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(updateGeneralAccess_init());
@@ -2949,7 +2949,7 @@ const updateFolderGeneralAccess_fail = (message) => {
   };
 };
 const updateFolderGeneralAccessApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(updateFolderGeneralAccess_init());
@@ -3035,7 +3035,7 @@ const downloadFail = (response) => {
 
 // DownloadFile
 const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let form = new FormData();
   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -3339,7 +3339,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 };
 
 // const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+// 
 
 //
 //   let form = new FormData();
@@ -3404,7 +3404,7 @@ const downloadFolderFail = (response) => {
 };
 
 const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   let form = new FormData();
   form.append("RequestMethod", dataRoomFolderDownloadService.RequestMethod);
@@ -3484,7 +3484,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
   setShareFileModal,
   setRequestFile,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(validateUserDataRoomInit());
     let form = new FormData();
@@ -3797,7 +3797,7 @@ const deleteSharedFileDataroom_fail = (message) => {
 
 // Delete file API
 const deleteSharedFileDataroom = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -3909,7 +3909,7 @@ const deleteSharedFolderDataroom_fail = (message) => {
 
 // Delete file API
 const deleteSharedFolderDataroom = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -4053,7 +4053,7 @@ const DataRoomFileSharingPermissionAPI = (
   FileID,
   FileName,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(DataRoomFileSharingPermissionInit());

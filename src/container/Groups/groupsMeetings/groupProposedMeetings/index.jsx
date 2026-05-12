@@ -53,13 +53,7 @@ const GroupProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const {
-    isMeetingTypeFilter,
-    setProposedMeetingData,
-    proposedMeetingData,
-    setProposedMeetingDataRecord,
-    setResponseByDate,
-  } = useNewMeetingContext();
+  const { setResponseByDate } = useNewMeetingContext();
   const { committeeProposedMeetingData, committeeProposedMeetingDataRecord } =
     useCommitteeContext();
   //Current User ID
@@ -89,8 +83,6 @@ const GroupProposedMeetings = () => {
 
   const handleClickActions = (record) => {
     if (record.isParticipant) {
-      // record.responseDeadLine
-      // record.pK_MDID
       dispatch(
         getMeetingDetailsByMeetingIdApi(
           navigate,
@@ -122,81 +114,13 @@ const GroupProposedMeetings = () => {
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
-  const [duplicatedRows, setDuplicatedRows] = useState([]);
 
-  // Meeting Type Filter State
-  const [meetingTypeFilterVisible, setMeetingTypeFilterVisible] =
-    useState(false);
-  const [selectedMeetingTypeValues, setSelectedMeetingTypeValues] = useState([
-    "1",
-    "2",
-    "3",
-  ]);
-  // Meeting Type Filter Handlers
-  const handleMeetingTypeMenuClick = (filterValue) => {
-    setSelectedMeetingTypeValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
-    );
-  };
-
-  const handleApplyMeetingTypeFilter = () => {
-    const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
-    );
-    setProposedMeetingData(filteredData);
-    setMeetingTypeFilterVisible(false);
-  };
-
-  const resetMeetingTypeFilter = () => {
-    setSelectedMeetingTypeValues(["1", "2", "3"]);
-    setProposedMeetingData(duplicatedRows);
-    setMeetingTypeFilterVisible(false);
-  };
-
-  const handleClickMeetingTypeChevron = () => {
-    setMeetingTypeFilterVisible((prevVisible) => !prevVisible);
-  };
   // Meeting Type Filter Options
-  const meetingTypeFilters = [
-    { value: "1", text: "Board Meeting" },
-    { value: "2", text: "Committee Meeting" },
-    { value: "3", text: "Group Meeting" },
-  ];
+
   // Meeting Type Filter Menu
-  const meetingTypeMenu = (
-    <Menu>
-      {meetingTypeFilters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
-          <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className='d-flex align-items-center justify-content-between p-1'>
-        <Button
-          text={"Reset"}
-          className={"FilterResetBtn"}
-          onClick={resetMeetingTypeFilter}
-        />
-        <Button
-          text={"Ok"}
-          disableBtn={selectedMeetingTypeValues.length === 0}
-          className={"ResetOkBtn"}
-          onClick={handleApplyMeetingTypeFilter}
-        />
-      </div>
-    </Menu>
-  );
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
-    
-
     // Reset all sort states first
     setMeetingTitleSort(null);
     setMeetingDateSort(null);
@@ -216,7 +140,6 @@ const GroupProposedMeetings = () => {
     }
   };
   const handleCLickView = (record) => {
-    
     if (record.isOrganizer) {
       dispatch(
         getMeetingDetailsByMeetingIdApi(
@@ -231,7 +154,6 @@ const GroupProposedMeetings = () => {
   };
   const moreButtons = (record) => {
     const handleEdit = () => {
-      
       if (record.isOrganizer) {
         dispatch(
           getMeetingDetailsByMeetingIdApi(
@@ -246,7 +168,6 @@ const GroupProposedMeetings = () => {
     };
 
     const handleDelete = () => {
-      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -298,30 +219,6 @@ const GroupProposedMeetings = () => {
             <span
               onClick={() => {
                 handleCLickView(record);
-                // try {
-                //   let Data = {
-                //     MeetingID: Number(record.pK_MDID),
-                //   };
-                //   dispatch(
-                //     GetAllMeetingDetailsApiFunc(
-                //       navigate,
-                //       t,
-                //       Data,
-                //       false,
-                //       setCurrentMeetingID,
-                //       setSceduleMeeting,
-                //       setDataroomMapFolderId,
-                //       0,
-                //       6 /*When User click on title from proposed Tab  */,
-                //     ),
-                //   );
-                //   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
-                //   dispatch(
-                //     GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
-                //   );
-                // } catch (error) {
-                //   
-                // }
               }}
               className={styles.tableRow}>
               {text}
@@ -396,24 +293,42 @@ const GroupProposedMeetings = () => {
               ? null
               : record.meetingPoll?.totalNoOfDirectors ===
                 record.meetingPoll?.totalNoOfDirectorsVoted;
-          if (record.meetingPoll) {
-            return (
-              allVoterVotedCompleted && (
-                <>
-                  {" "}
-                  <img
-                    src={rspvGreenIcon}
-                    height='17.06px'
-                    width='17.06px'
-                    alt=''
-                    draggable='false'
+
+          const isResponseDateGone = forRecentActivity(
+            `${record.responseDeadLine}000000`,
+          );
+          const currentDateObj = new Date();
+          const isViewPollShown = getDifferentisDateisPassed(
+            currentDateObj,
+            isResponseDateGone,
+          );
+          // if (record.meetingPoll) {
+          //   return (
+          //     allVoterVotedCompleted && (
+          //       <img
+          //         src={rspvGreenIcon}
+          //         height="17.06px"
+          //         width="17.06px"
+          //         alt=""
+          //         draggable="false"
+          //       />
+          //     )
+          //   );
+          // }
+          return (
+            record.isParticipant && (
+              <div className='d-flex justify-content-center align-items-center gap-2'>
+                <div>
+                  <CustomButton
+                    className={styles.VoteMeetingButton}
+                    text={t("Vote")}
+                    disableBtn={isViewPollShown ? true : false}
+                    onClick={() => handleClickActions(record)}
                   />
-                </>
-              )
-            );
-          } else {
-            return "-";
-          }
+                </div>
+              </div>
+            )
+          );
         },
       },
       {
@@ -561,12 +476,7 @@ const GroupProposedMeetings = () => {
         },
       },
     ];
-  }, [
-    meetingTitleSort,
-    meetingDateSort,
-    selectedMeetingTypeValues,
-    isMeetingTypeFilter,
-  ]);
+  }, [meetingTitleSort, meetingDateSort]);
 
   //
 
@@ -589,7 +499,6 @@ const GroupProposedMeetings = () => {
             dispatch(toggleIsParticipantProposedMeetingDates(true));
           }
         } catch (error) {
-          
           localStorage.removeItem("meetingprop");
         }
       };
@@ -619,7 +528,6 @@ const GroupProposedMeetings = () => {
               dispatch(toggleIsOrganizerProposedMeetingDates(true));
             }
           } catch (error) {
-            
             localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };

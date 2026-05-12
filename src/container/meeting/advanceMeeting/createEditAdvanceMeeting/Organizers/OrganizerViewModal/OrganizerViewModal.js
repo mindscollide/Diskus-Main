@@ -18,6 +18,7 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect, useState } from "react";
 import SceduleProposedmeeting from "../../meetingDetails/ProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
+import { listOfMeetingsApi } from "../../../../../../store/actions/NewMeeting2.actions";
 
 const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const { t } = useTranslation();
@@ -147,7 +148,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
         ProposedMeetings: true,
       };
       
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      dispatch(listOfMeetingsApi(navigate,t, searchData));
     }
   };
 

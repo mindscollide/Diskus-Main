@@ -3715,7 +3715,7 @@ export const saveParcipantsProposeMeetingApi = (
   // setProposedNewMeeting,
   // setSceduleMeeting,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(saveParcipantsProposeMeetingInit());
     let form = new FormData();

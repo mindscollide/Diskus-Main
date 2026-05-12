@@ -20,6 +20,7 @@ import {
   resetCreateEditTabs,
   toggleViewMeetingModal,
 } from "../../store/actions/ModalStates_actions";
+import { listOfMeetingsApi } from "../../store/actions/NewMeeting2.actions";
 import {
   actionsGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -1959,7 +1960,7 @@ export const SideBarGlobalNavigationFunctionNew = async (
         localStorage.setItem("MeetingPageRows", 30);
         localStorage.setItem("MeetingPageCurrent", 1);
 
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        await dispatch(listOfMeetingsApi(navigate, t, searchData));
       } else {
         setCancelConfirmationModal(true);
       }
@@ -1995,7 +1996,7 @@ export const SideBarGlobalNavigationFunctionNew = async (
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
 
-          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          await dispatch(listOfMeetingsApi(navigate, searchData, t));
 
           dispatch(toggleViewMeetingModal(false));
 
@@ -2253,7 +2254,7 @@ const handleMeetingCase = (navigate, dispatch, t) => {
         currentView && Number(currentView) === 1 ? true : false,
       ProposedMeetings: currentView && Number(currentView) === 3 ? true : false,
     };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate, searchData, t));
   } else {
     const searchData = {
       Date: "",
@@ -2268,7 +2269,7 @@ const handleMeetingCase = (navigate, dispatch, t) => {
     };
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate, t, searchData));
   }
 
   dispatch(resetCreateEditTabs());

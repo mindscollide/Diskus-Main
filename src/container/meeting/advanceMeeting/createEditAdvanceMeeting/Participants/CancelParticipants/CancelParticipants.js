@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import {
-  searchNewUserMeeting,
   showCancelModalPartipants,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
+import { listOfMeetingsApi } from "../../../../../../store/actions/NewMeeting2.actions";
 
 export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
         currentView && Number(currentView) === 1 ? true : false,
     };
     
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate, searchData, t));
   };
   return (
     <section>

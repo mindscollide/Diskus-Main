@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
+import { listOfMeetingsApi } from "../../../../../../store/actions/NewMeeting2.actions";
 
 const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
         currentView && Number(currentView) === 1 ? true : false,
     };
     
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate,t, searchData));
   };
 
   return (

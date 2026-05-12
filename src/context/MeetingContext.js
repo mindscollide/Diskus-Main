@@ -6,9 +6,6 @@ import React, {
   useState,
 } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { NewJoinCurrentMeeting } from "../store/actions/NewMeetingActions";
-import { UpdateMeetingStatus } from "../store/actions/MeetingOrganizers_action";
 
 /**
  * @context MeetingContext
@@ -85,7 +82,9 @@ export const MeetingProvider = ({ children }) => {
   const viewAdvanceMeetingModal = useSelector(
     (state) => state.ModalStatesReducer.isViewMeetingModal,
   );
-
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -93,6 +92,7 @@ export const MeetingProvider = ({ children }) => {
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
+  const [meetingTitle, setMeetingTitle] = useState("");
 
   // State for managing the schedule advanced meeting modal
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
@@ -164,7 +164,8 @@ export const MeetingProvider = ({ children }) => {
   const [maximizeMeetingVideo, setMaximizeMeetingVideo] = useState(false);
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
-  const [unSaveChangesModalForMeeting, setUnSaveChangesModalForMeeting] = useState(false)
+  const [unSaveChangesModalForMeeting, setUnSaveChangesModalForMeeting] =
+    useState(false);
 
   const [viewMeetingAgendaBuilderRowData, setViewMeetingAgendaBuilderRowData] =
     useState([]);
@@ -286,13 +287,22 @@ export const MeetingProvider = ({ children }) => {
     }
   }, [UserProfileData]);
 
-  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
-    
-  };
+  useEffect(() => {
+    if (currentMeetingInfo !== null) {
+      try {
+        const { meetingID, meetingTitle, mapFolderId } = currentMeetingInfo;
+        setAdvanceMeetingModalID(meetingID);
+        setDataroomMapFolderId(mapFolderId);
+        setMeetingTitle(meetingTitle);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [currentMeetingInfo]);
 
-  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
-    
-  };
+  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {};
+
+  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {};
 
   const leaveMeetingFunction = () => {};
 
@@ -511,7 +521,8 @@ export const MeetingProvider = ({ children }) => {
     setEditFlag,
     downloadVideoRecordingModal,
     setDownloadVideoRecordingModal,
-    unSaveChangesModalForMeeting, setUnSaveChangesModalForMeeting
+    unSaveChangesModalForMeeting,
+    setUnSaveChangesModalForMeeting,
   };
 
   // Provide the state data to the context

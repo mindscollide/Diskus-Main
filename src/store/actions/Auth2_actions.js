@@ -2864,7 +2864,7 @@ const changePasswordFail = (message) => {
 };
 
 const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let userID = JSON.parse(localStorage.getItem("userID"));
   let data = {
     UserID: userID,
@@ -3232,7 +3232,7 @@ const getInvoiceHTML_Fail = (message) => {
 };
 
 const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(getInvoiceHTML_Init());
@@ -3313,7 +3313,7 @@ const DownlaodInvoice_Fail = (message) => {
 };
 
 const DownlaodInvoiceLApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(DownlaodInvoice_Init());

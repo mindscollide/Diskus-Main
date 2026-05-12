@@ -47,6 +47,7 @@ import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png"
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import AccessDeniedModal from "../../../../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
+import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
 const Actions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -59,29 +60,28 @@ const Actions = () => {
     dataroomMapFolderId,
   } = useMeetingContext();
 
-  
   const cancelActions = useSelector(
-    (state) => state.NewMeetingreducer.cancelActions
+    (state) => state.NewMeetingreducer.cancelActions,
   );
   const removeTableModal = useSelector(
-    (state) => state.NewMeetingreducer.removeTableModal
+    (state) => state.NewMeetingreducer.removeTableModal,
   );
   const todoListMeetingTask = useSelector(
-    (state) => state.actionMeetingReducer.todoListMeetingTask
+    (state) => state.actionMeetingReducer.todoListMeetingTask,
   );
   const Response = useSelector((state) => state.todoStatus.Response);
   const UpdateTodoStatusMessage = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage,
   );
   const socketTodoStatusData = useSelector(
-    (state) => state.toDoListReducer.socketTodoStatusData
+    (state) => state.toDoListReducer.socketTodoStatusData,
   );
   const createTaskMeeting = useSelector(
-    (state) => state.toDoListReducer.createTaskMeeting
+    (state) => state.toDoListReducer.createTaskMeeting,
   );
 
   const AccessDeniedGlobalState = useSelector(
-    (state) => state.PollsReducer.AccessDeniedPolls
+    (state) => state.PollsReducer.AccessDeniedPolls,
   );
 
   let userID = localStorage.getItem("userID");
@@ -102,7 +102,7 @@ const Actions = () => {
   const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
   const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
   const [taskDeadlineSort, setDeadlineSort] = useState(null);
-  
+
   const [actionState, setActionState] = useState({
     Title: "",
     Date: "",
@@ -126,7 +126,6 @@ const Actions = () => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       if (JSON.parse(localStorage.getItem("viewadvanceMeetingTask")) === true) {
-        
         let Data = {
           ToDoListID: Number(localStorage.getItem("NotificationClickTaskID")),
         };
@@ -225,7 +224,7 @@ const Actions = () => {
       ) {
         let copyData = [...actionsRows];
         let removeDeleteTodo = copyData.filter(
-          (todoData, index) => todoData.pK_TID !== removeTodo
+          (todoData, index) => todoData.pK_TID !== removeTodo,
         );
         setActionsRows(removeDeleteTodo);
         setRemoveTodo(0);
@@ -246,8 +245,8 @@ const Actions = () => {
         t,
         false,
         3,
-        advanceMeetingModalID
-      )
+        advanceMeetingModalID,
+      ),
     );
   };
 
@@ -276,13 +275,13 @@ const Actions = () => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.pK_TSID.toString())
+      selectedValues.includes(item.status.pK_TSID.toString()),
     );
     setActionsRows(filteredData);
     setVisible(false);
@@ -519,7 +518,6 @@ const Actions = () => {
         utcConvertintoGMT(b.deadlineDateTime),
 
       render: (text, record) => {
-        
         return (
           <span className='text-nowrap text-center'>
             {_justShowDateformatBilling(record.deadlineDateTime)}
@@ -562,14 +560,14 @@ const Actions = () => {
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending  custom-class "
-                    : text.pK_TSID === 3
-                    ? "Upcoming  custom-class "
-                    : text.pK_TSID === 4
-                    ? "Cancelled  custom-class "
-                    : text.pK_TSID === 5
-                    ? "Completed  custom-class "
-                    : null
+                      ? "Pending  custom-class "
+                      : text.pK_TSID === 3
+                        ? "Upcoming  custom-class "
+                        : text.pK_TSID === 4
+                          ? "Cancelled  custom-class "
+                          : text.pK_TSID === 5
+                            ? "Completed  custom-class "
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue) => {
@@ -589,14 +587,14 @@ const Actions = () => {
                 text.pK_TSID === 1
                   ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 3
-                  ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 4
-                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 5
-                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
-                  : null
+                    ? "Pending  custom-class color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                      ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 4
+                        ? "Cancelled   custom-class color-5a5a5a text-center my-1"
+                        : text.pK_TSID === 5
+                          ? "Completed   custom-class color-5a5a5a  text-center my-1"
+                          : null
               }>
               {text.status}
             </p>
@@ -644,8 +642,8 @@ const Actions = () => {
         setCreateaTask,
         newData,
         0,
-        advanceMeetingModalID
-      )
+        advanceMeetingModalID,
+      ),
     );
   };
 
@@ -656,7 +654,6 @@ const Actions = () => {
         todoListMeetingTask !== undefined &&
         todoListMeetingTask.toDoLists.length > 0
       ) {
-        
         setTotalRecords(todoListMeetingTask.totalRecords);
         setActionsRows(todoListMeetingTask.toDoLists);
         setOriginalData(todoListMeetingTask.toDoLists);
@@ -675,7 +672,7 @@ const Actions = () => {
         let taskInfo = createTaskMeeting.todoList;
         if (Number(taskData.meetingID) === Number(advanceMeetingModalID)) {
           let findisAlreadExist = actionsRows.findIndex(
-            (data, index) => data.pK_TID === taskData.todoList.pK_TID
+            (data, index) => data.pK_TID === taskData.todoList.pK_TID,
           );
           if (findisAlreadExist !== -1) {
           } else {
@@ -684,9 +681,7 @@ const Actions = () => {
         }
         dispatch(createTaskMeetingMQTT(null));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [createTaskMeeting]);
 
   // for pagination in Create Task
@@ -716,8 +711,8 @@ const Actions = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+    dispatch(listOfMeetingsApi(navigate, t, searchData));
     localStorage.removeItem("folderDataRoomMeeting");
     dispatch(toggleViewMeetingModal(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -817,7 +812,7 @@ const Actions = () => {
                                 className='d-flex justify-content-center'>
                                 <span className={"EmptyState_SubHeading"}>
                                   {t(
-                                    "Assign-tasks-in-real-time-while-the-meeting-is-underway"
+                                    "Assign-tasks-in-real-time-while-the-meeting-is-underway",
                                   )}
                                 </span>
                               </Col>
@@ -897,9 +892,7 @@ const Actions = () => {
         />
       )}
       {removeTableModal && <RemoveTableModal />}
-      {cancelActions && (
-        <CancelActions />
-      )}
+      {cancelActions && <CancelActions />}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
     </section>
   );

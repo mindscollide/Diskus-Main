@@ -24,14 +24,6 @@ import EditIcon from "@/assets/images/New Meeting Listing Icons/EditMeeting.png"
 
 // Redux actions
 import { ViewMeeting } from "@/store/actions/Get_List_Of_Assignees";
-import {
-  meetingAgendaContributorAdded,
-  meetingAgendaContributorRemoved,
-  meetingOrganizerAdded,
-  meetingOrganizerRemoved,
-  searchNewUserMeeting,
-} from "@/store/actions/NewMeetingActions";
-import { mqttMeetingData } from "@/hooks/meetingResponse/response";
 
 // Styles (reuse DraftMeeting styles from existing component)
 import styles from "./committeeDraftMeeting.module.css";
@@ -47,6 +39,7 @@ import {
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -82,10 +75,6 @@ const CommitteeDraftMeetings = () => {
     setEditorRole,
     setVideoTalk,
   } = useMeetingContext();
-
-  const committeeInfo = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteeDetails,
-  );
 
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -161,7 +150,6 @@ const CommitteeDraftMeetings = () => {
     };
 
     const handleCancel = () => {
-      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -172,7 +160,6 @@ const CommitteeDraftMeetings = () => {
     };
 
     const handleClickPublish = () => {
-      
       dispatch(
         UpdateMeetingStatusApi(
           navigate,
@@ -215,8 +202,8 @@ const CommitteeDraftMeetings = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+    await dispatch(listOfMeetingsApi(navigate, t, searchData));
   };
 
   const handleClickTitle = (record) => {

@@ -34,7 +34,6 @@ const SetLoaderFalseDownload = () => {
 
 // DownloadFile
 const DownloadFile = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", downloadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -113,7 +112,7 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
         form,
         {
           responseType: "blob",
-        }
+        },
       );
 
       if (response.status === 417) {
@@ -160,7 +159,6 @@ const downlooadUserloginHistory_fail = (message) => {
   };
 };
 const downlooadUserloginHistoryApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", LoginHistoryReportExporttoExcel.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -169,7 +167,6 @@ const downlooadUserloginHistoryApi = (navigate, t, Data) => {
     axiosInstance
       .post(reportDownload, form, {
         headers: {
-          _token: token,
           "Content-Disposition": "attachment; filename=template.xlsx",
           "Content-Type":
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -192,8 +189,8 @@ const downlooadUserloginHistoryApi = (navigate, t, Data) => {
           dispatch(
             downlooadUserloginHistory_success(
               response.data.responseResult,
-              t("Download-successffuly")
-            )
+              t("Download-successffuly"),
+            ),
           );
         }
       })
@@ -224,7 +221,6 @@ const downloadAuditTrialReport_fail = (message) => {
   };
 };
 const downloadAuditTrialReportApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", AuditTrialReportExporttoExcel.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -233,7 +229,6 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
     axiosInstance
       .post(reportDownload, form, {
         headers: {
-          _token: token,
           "Content-Disposition": "attachment; filename=template.xlsx",
           "Content-Type":
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -245,9 +240,8 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
         if (response instanceof ArrayBuffer) {
           try {
             let resData = JSON.parse(
-              new TextDecoder().decode(new Uint8Array(response))
+              new TextDecoder().decode(new Uint8Array(response)),
             );
-            
           } catch {}
         }
         if (response.data.responseCode === 417) {
@@ -264,8 +258,8 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
           dispatch(
             downloadAuditTrialReport_success(
               response.data.responseResult,
-              t("Download-successffuly")
-            )
+              t("Download-successffuly"),
+            ),
           );
         }
       })

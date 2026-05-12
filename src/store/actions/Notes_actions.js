@@ -38,7 +38,7 @@ const getNotes_Fail = (message, response) => {
   };
 };
 const GetNotes = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getNotes_Init());
     let form = new FormData();
@@ -111,7 +111,7 @@ const saveNotes_Fail = (message) => {
   };
 };
 const SaveNotesAPI = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(notesFromDashboardAction(1))
     dispatch(saveNotes_Init());
@@ -206,7 +206,7 @@ const UpdateNotesAPI = (
   setIsDeleteNote,
   setUpdateNotes
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let notesPage = parseInt(localStorage.getItem("notesPage"));
@@ -323,7 +323,7 @@ const GetNotesByIdAPI = (
   setUpdateNotesModalHomePage,
   no
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let Data = {
     NotesID: JSON.parse(NotesID),
   };
@@ -452,7 +452,7 @@ const deleteNotes_Fail = (message) => {
   };
 };
 const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let notesPage = parseInt(localStorage.getItem("notesPage"));
@@ -556,7 +556,7 @@ const CreateUpadateNotesDataRoomMapFail = (message) => {
 };
 
 const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(CreateUpadateNotesDataRoomMapInit());
     let form = new FormData();
@@ -703,7 +703,7 @@ const SaveNotesDocumentAPI = (
   setUpdateNotes,
   flag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let UserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -851,7 +851,7 @@ const RetrieveNotesDocumentFailed = (message) => {
 };
 
 const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(RetrieveNotesDocumentInit());
     let form = new FormData();
@@ -937,7 +937,7 @@ const saveFilesNotes_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -1040,7 +1040,7 @@ const uploadDocumentsNotesApi = (
   // newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -1139,7 +1139,7 @@ const DeleteNotesDocumentsFailed = (message) => {
 };
 
 const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(DeleteNotesDocumentsInit());

@@ -10,6 +10,7 @@ import {
   searchNewUserMeeting,
   showCancelModalAgendaContributor,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { listOfMeetingsApi } from "../../../../../../store/actions/NewMeeting2.actions";
 
 const CancelAgendaContributor = ({ setSceduleMeeting, setRowsData }) => {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ const CancelAgendaContributor = ({ setSceduleMeeting, setRowsData }) => {
         currentView && Number(currentView) === 1 ? true : false,
     };
     
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate,t, searchData));
   };
 
   return (

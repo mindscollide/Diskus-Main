@@ -43,7 +43,6 @@ const getAllCommitteesUsersandGroups_fail = (message) => {
   };
 };
 const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllCommitteesUsersandGroups_init());
     let form = new FormData();
@@ -157,7 +156,6 @@ const saveMeetingOrganizers_fail = (message) => {
 
 // Save Meeting Organizers Api
 const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let Data2 = { MeetingID: currentMeeting };
 
   return async (dispatch) => {
@@ -266,8 +264,6 @@ const UpdateOrganizersMeeting = (
   dashboardFlag,
   setEndMeetingConfirmationModal,
 ) => {
-  
-  let token = JSON.parse(localStorage.getItem("token"));
   let leaveMeetingData = {
     VideoCallURL: Data.VideoCallURL ? Data.VideoCallURL : Data.videoCallURL,
     FK_MDID: Number(Data.MeetingID),
@@ -312,7 +308,6 @@ const UpdateOrganizersMeeting = (
                   "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase(),
                 )
             ) {
-              
               // For Quick Meeting start Meeting from the modal view route id will be 11
               // For Quick Meeting end Meeting from the modal view route id will be 12
 
@@ -338,11 +333,9 @@ const UpdateOrganizersMeeting = (
                   ),
                 );
                 if (route !== 4 && Data.StatusID !== 9) {
-                  
                   dispatch(setLoaderFalse(false));
                 }
                 if (route === 3) {
-                  
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
                   };
@@ -377,10 +370,9 @@ const UpdateOrganizersMeeting = (
                     ),
                   );
                 } else if (route === 4) {
-                  
                   if (Data.StatusID === 9) {
                     setEndMeetingConfirmationModal(false);
-                    
+
                     // dispatch(
                     //   LeaveCurrentMeeting(
                     //     navigate,
@@ -396,10 +388,9 @@ const UpdateOrganizersMeeting = (
                     // );
                   } else {
                     if (isQuickMeeting) {
-                      
                     } else {
                       setAdvanceMeetingModalID(Data.MeetingID);
-                      
+
                       setEditorRole({
                         status: "10",
                         role: "Organizer",
@@ -422,14 +413,13 @@ const UpdateOrganizersMeeting = (
                     );
                   }
                 } else if (route === 5) {
-                  
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent =
                     localStorage.getItem("MeetingPageCurrent");
 
                   let userID = localStorage.getItem("userID");
-                  
+
                   let searchData = {
                     Date: "",
                     Title: "",
@@ -446,14 +436,12 @@ const UpdateOrganizersMeeting = (
                     ProposedMeetings:
                       currentView && Number(currentView) === 2 ? true : false,
                   };
-                  
+
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                 isFunction(setSceduleMeeting) && setSceduleMeeting(false);
+                  isFunction(setSceduleMeeting) && setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (route === 6) {
-                  
                   if (Data.StatusID === 10) {
-                    
                     dispatch(
                       JoinCurrentMeeting(
                         true,
@@ -471,7 +459,6 @@ const UpdateOrganizersMeeting = (
                     let ViewCommitteeID =
                       localStorage.getItem("ViewCommitteeID");
                     let userID = localStorage.getItem("userID");
-                    
 
                     let searchData = {
                       CommitteeID: Number(ViewCommitteeID),
@@ -490,9 +477,7 @@ const UpdateOrganizersMeeting = (
 
                   // setPublishState(Data.MeetingID);
                 } else if (route === 7) {
-                  
                   if (Data.StatusID === 10) {
-                    
                     dispatch(
                       JoinCurrentMeeting(
                         true,
@@ -519,12 +504,11 @@ const UpdateOrganizersMeeting = (
                       Length: 50,
                       PublishedMeetings: true,
                     };
-                    
+
                     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
                   }
                 } else if (route === 11) {
                   if (Data.StatusID === 10) {
-                    
                     dispatch(
                       JoinCurrentMeeting(
                         true,
@@ -540,9 +524,7 @@ const UpdateOrganizersMeeting = (
                     );
                   }
                 }
-              } catch (error) {
-                
-              }
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -669,7 +651,6 @@ const getAllMeetingOrganizers_fail = (message) => {
   };
 };
 const GetAllMeetingOrganizers = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllMeetingOrganizers_init());
     let form = new FormData();
@@ -779,7 +760,6 @@ const sendNotificationOrganizerFail = (message) => {
 
 //Send Notification API Function
 const sendNotificationOrganizer = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendNotificationOrganizerInit());
     let form = new FormData();
@@ -835,382 +815,6 @@ const sendNotificationOrganizer = (Data, navigate, t) => {
   };
 };
 
-// Save Meeting Organizers Api
-const UpdateMeetingStatus = (
-  isQuickMeeting,
-  navigate,
-  t,
-  route,
-  Data,
-  setEditorRole,
-  setAdvanceMeetingModalID,
-  setDataroomMapFolderId,
-  // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
-  setSceduleMeeting,
-  // THIS IS FOR QUICK MEETINGS CHECK
-  setViewFlag,
-  setEditFlag,
-  setCalendarViewModal,
-  dashboardFlag,
-  setEndMeetingConfirmationModal,
-) => {
-  
-  let token = JSON.parse(localStorage.getItem("token"));
-  let leaveMeetingData = {
-    VideoCallURL: Data.VideoCallURL ? Data.VideoCallURL : Data.videoCallURL,
-    FK_MDID: Number(Data.MeetingID),
-    DateTime: getCurrentDateTimeUTC(),
-  };
-  return async (dispatch) => {
-    dispatch(updateOrganizerMeetingStatus_init());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", meetingStatusUpdate.RequestMethod);
-    await axiosInstance
-      .post(meetingApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            UpdateOrganizersMeeting(
-              isQuickMeeting,
-              navigate,
-              t,
-              route,
-              Data,
-              setEditorRole,
-              setAdvanceMeetingModalID,
-              setDataroomMapFolderId,
-              // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
-              setSceduleMeeting,
-              // THIS IS FOR QUICK MEETINGS CHECK
-              setViewFlag,
-              setEditFlag,
-              setCalendarViewModal,
-              dashboardFlag,
-              setEndMeetingConfirmationModal,
-            ),
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase(),
-                )
-            ) {
-              
-
-              try {
-                await dispatch(
-                  updateOrganizerMeetingStatus_success(
-                    response.data.responseResult,
-                    route === 5
-                      ? t("Meeting-published-successfully")
-                      : (route === 4 || route === 6 || route === 7) &&
-                          Data.StatusID === 10
-                        ? t("Meeting-started-successfully")
-                        : (route === 4 || route === 6 || route === 7) &&
-                            Data.StatusID === 9
-                          ? t("Meeting-ended-successfully")
-                          : "",
-                  ),
-                );
-                if (route !== 4 && Data.StatusID !== 9) {
-                  
-                  dispatch(setLoaderFalse(false));
-                }
-                if (route === 3) {
-                  
-                  let requestDataForMeetingDetails = {
-                    MeetingID: Number(Data.MeetingID),
-                  };
-                  await dispatch(
-                    GetAllMeetingDetailsApiFunc(
-                      navigate,
-                      t,
-                      requestDataForMeetingDetails,
-                      true,
-                      // setAdvanceMeetingModalID,
-                      setSceduleMeeting,
-                      setDataroomMapFolderId,
-                    ),
-                  );
-                  // setSceduleMeeting(false);
-                  // setEdiorRole({
-                  //   status: "10",
-                  //   role: "Organizer",
-                  //   isPrimaryOrganizer: true,
-                  // });
-                  dispatch(
-                    JoinCurrentMeeting(
-                      false,
-                      navigate,
-                      t,
-                      leaveMeetingData,
-                      setViewFlag,
-                      setEditFlag,
-                      setSceduleMeeting,
-                      1,
-                      setAdvanceMeetingModalID,
-                    ),
-                  );
-                } else if (route === 4) {
-                  
-                  if (Data.StatusID === 9) {
-                    setEndMeetingConfirmationModal(false);
-                    
-                    // dispatch(
-                    //   LeaveCurrentMeeting(
-                    //     navigate,
-                    //     t,
-                    //     leaveMeetingData,
-                    //     false,
-                    //     setViewFlag,
-                    //     setEditorRole,
-                    //     setAdvanceMeetingModalID,
-                    //     setViewAdvanceMeetingModal,
-                    //     setEndMeetingConfirmationModal
-                    //   )
-                    // );
-                  } else {
-                    if (isQuickMeeting) {
-                      
-                    } else {
-                      setAdvanceMeetingModalID(Data.MeetingID);
-                      
-                      setEditorRole({
-                        status: "10",
-                        role: "Organizer",
-                        isPrimaryOrganizer: false,
-                      });
-                    }
-
-                    dispatch(
-                      JoinCurrentMeeting(
-                        true,
-                        navigate,
-                        t,
-                        leaveMeetingData,
-                        setViewFlag,
-                        setEditFlag,
-                        setSceduleMeeting,
-                        1,
-                        setAdvanceMeetingModalID,
-                      ),
-                    );
-                  }
-                } else if (route === 5) {
-                  
-                  let currentView = localStorage.getItem("MeetingCurrentView");
-                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                  let meetingPageCurrent =
-                    localStorage.getItem("MeetingPageCurrent");
-
-                  let userID = localStorage.getItem("userID");
-                  
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber:
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1,
-                    Length:
-                      meetingpageRow !== null ? Number(meetingpageRow) : 30,
-                    PublishedMeetings:
-                      currentView && Number(currentView) === 1 ? true : false,
-                    ProposedMeetings:
-                      currentView && Number(currentView) === 2 ? true : false,
-                  };
-                  
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                  setSceduleMeeting(false);
-                  dispatch(scheduleMeetingPageFlag(false));
-                } else if (route === 6) {
-                  
-                  if (Data.StatusID === 10) {
-                    
-                    dispatch(
-                      JoinCurrentMeeting(
-                        true,
-                        navigate,
-                        t,
-                        leaveMeetingData,
-                        setViewFlag,
-                        setEditFlag,
-                        setSceduleMeeting,
-                        1,
-                        setAdvanceMeetingModalID,
-                      ),
-                    );
-                  } else {
-                    let ViewCommitteeID =
-                      localStorage.getItem("ViewCommitteeID");
-                    let userID = localStorage.getItem("userID");
-                    
-
-                    let searchData = {
-                      CommitteeID: Number(ViewCommitteeID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: 1,
-                      Length: 50,
-                      PublishedMeetings: true,
-                    };
-                    dispatch(
-                      getMeetingByCommitteeIdApi(navigate, t, searchData),
-                    );
-                  }
-
-                  // setPublishState(Data.MeetingID);
-                } else if (route === 7) {
-                  
-                  if (Data.StatusID === 10) {
-                    
-                    dispatch(
-                      JoinCurrentMeeting(
-                        true,
-                        navigate,
-                        t,
-                        leaveMeetingData,
-                        setViewFlag,
-                        setEditFlag,
-                        setSceduleMeeting,
-                        1,
-                        setAdvanceMeetingModalID,
-                      ),
-                    );
-                  } else {
-                    let ViewGroupID = localStorage.getItem("ViewGroupID");
-                    let userID = localStorage.getItem("userID");
-                    let searchData = {
-                      GroupID: Number(ViewGroupID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: 1,
-                      Length: 50,
-                      PublishedMeetings: true,
-                    };
-                    
-                    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
-                  }
-                }
-              } catch (error) {
-                
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(t("Record-not-updated")),
-              );
-              dispatch(setLoaderFalse(false));
-              setEditorRole({
-                status: null,
-                role: null,
-                isPrimaryOrganizer: false,
-              });
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-              );
-              dispatch(setLoaderFalse(false));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-agenda-to-publish"),
-                ),
-              );
-              dispatch(setLoaderFalse(false));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-organizers-to-publish"),
-                ),
-              );
-              dispatch(setLoaderFalse(false));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-participants-to-publish"),
-                ),
-              );
-              dispatch(setLoaderFalse(false));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(
-                  t("Meeting-cannot-be-published-after-time-has-elapsed"),
-                ),
-              );
-              dispatch(setLoaderFalse(false));
-            } else {
-              dispatch(
-                updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-              );
-              dispatch(setLoaderFalse(false));
-            }
-          } else {
-            dispatch(
-              updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-            );
-            dispatch(setLoaderFalse(false));
-          }
-        } else {
-          dispatch(
-            updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-          );
-          dispatch(setLoaderFalse(false));
-        }
-      })
-      .catch((response) => {
-        dispatch(updateOrganizerMeetingStatus_fail(t("Something-went-wrong")));
-        dispatch(setLoaderFalse(false));
-      });
-  };
-};
-
 export {
   GetAllCommitteesUsersandGroups,
   meetingOrganizers,
@@ -1225,5 +829,4 @@ export {
   sendNotificationOrganizer,
   notificationUpdateData,
   getAllMeetingOrganizers_fail,
-  UpdateMeetingStatus,
 };

@@ -107,7 +107,7 @@ const setLastSelectedLanguageFail = (message) => {
 };
 
 const changeNewLanguage = (data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(setLastSelectedLanguageInitial());
     let form = new FormData();
@@ -203,7 +203,7 @@ const getSelectedLanguageFail = (message) => {
 };
 
 const getSelectedLanguage = (data, navigate, t, flag, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let organzataionID = localStorage.getItem("OrganizationID");
   
   return (dispatch) => {

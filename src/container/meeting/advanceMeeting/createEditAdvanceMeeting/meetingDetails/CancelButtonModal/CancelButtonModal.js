@@ -3,11 +3,9 @@ import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { MeetingContext } from "../../../../../../context/MeetingContext";
 import { useNavigate } from "react-router-dom";
-import { useNewMeetingContext } from "../../../../../../context/NewMeetingContext";
 import {
   resetCreateEditTabs,
   toggleCreateEditMeetingModal,
