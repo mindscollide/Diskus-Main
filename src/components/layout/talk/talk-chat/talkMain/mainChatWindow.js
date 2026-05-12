@@ -12,6 +12,7 @@ import PrivateGroups from "../privateGroups/privateGroups";
 import StarredMessagesList from "../starredMessages/starredMessagesList";
 import ShoutAll from "../shoutAll/shoutAll";
 import BlockedUsersList from "../blockedUsers/blockedUsersList";
+import "../Talk-Chat.css"
 
 const MainChatWindow = () => {
   const ChatBoxActiveFlag = useSelector(

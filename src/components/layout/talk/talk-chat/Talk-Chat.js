@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import moment from "moment";
-import "./Talk-Chat.css";
+
 import enUS from "antd/es/date-picker/locale/en_US";
 import {
   GetAllUserChats,
@@ -98,7 +98,7 @@ import { useNavigate } from "react-router-dom";
 import { filesUrlTalk } from "../../../../commen/apis/Api_ends_points";
 import PrintPage from "./printScript";
 import MainWindow from "./talkMain/mainChatWindow";
-
+import "./Talk-Chat.css"
 /**
  * @component TalkChat
  * @description The primary Talk module chat component. Renders the full chat
