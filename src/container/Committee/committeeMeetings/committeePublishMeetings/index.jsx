@@ -163,7 +163,8 @@ const CommitteePublishedMeetingList = () => {
     setIsCommitteeCreateQuickMeeting,
   } = useCommitteeContext();
 
-  const { setIsQuickMeetingView } = useNewMeetingContext();
+  const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
+    useNewMeetingContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
@@ -326,12 +327,12 @@ const CommitteePublishedMeetingList = () => {
 
     if (record.isQuickMeeting) {
       await dispatch(
-        ViewMeeting(
+        getViewMeetingByMeetingIdApi(
           navigate,
           t,
           { MeetingID: meetingId },
-          "EditMeetingFromMainListing",
-          {},
+          "EditQuickMeetingFromMainListing",
+          { setIsQuickMeetingUpdate },
         ),
       );
       return;
@@ -365,7 +366,6 @@ const CommitteePublishedMeetingList = () => {
       ? "Agenda Contributor"
       : "Organizer";
     const meetingId = Number(record.pK_MDID);
-    const context = "JoinMeetingFromMainListing";
 
     if (record.isQuickMeeting) {
       dispatch(
@@ -386,13 +386,13 @@ const CommitteePublishedMeetingList = () => {
           },
         ),
       );
-      await dispatch(
-        ViewMeeting(navigate, t, { MeetingID: meetingId }, context, {
-          setViewFlag,
-          setEditFlag,
-          no: 2,
-        }),
-      );
+      // await dispatch(
+      //   getViewMeetingByMeetingIdApi(navigate, t, { MeetingID: meetingId }, context, {
+      //     setViewFlag,
+      //     setEditFlag,
+      //     no: 2,
+      //   }),
+      // );
       return;
     }
 
@@ -495,7 +495,8 @@ const CommitteePublishedMeetingList = () => {
         (status === STATUS.ENDED ||
           status === STATUS.UPCOMING ||
           status === STATUS.ACTIVE) &&
-        (isOrganizer || isAgendaContributor || isParticipant) && !record.isQuickMeeting,
+        (isOrganizer || isAgendaContributor || isParticipant) &&
+        !record.isQuickMeeting,
       attendance: status === STATUS.ENDED && isOrganizer,
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
@@ -589,6 +590,15 @@ const CommitteePublishedMeetingList = () => {
         break;
 
       case "START_MEETING": {
+        setVideoTalk(buildVideoTalk(record));
+        // dispatch(setViewTab("meetingDetails"));
+        setMeetingLocalStorage(record);
+        // localStorage.setItem("currentMeetingID", record.pK_MDID);
+        setEditorRole({
+          status: "10",
+          role: "Organizer",
+          isPrimaryOrganizer: record.isPrimaryOrganizer,
+        });
         if (!record.isQuickMeeting) {
           dispatch(
             UpdateMeetingStatusApi(
@@ -604,16 +614,24 @@ const CommitteePublishedMeetingList = () => {
               },
             ),
           );
-          // dispatch(setViewTab("meetingDetails"));
-          setVideoTalk(buildVideoTalk(record));
-          setMeetingLocalStorage(record);
-          // localStorage.setItem("currentMeetingID", record.pK_MDID);
-          setEditorRole({
-            status: "10",
-            role: "Organizer",
-            isPrimaryOrganizer: record.isPrimaryOrganizer,
-          });
+
           return;
+        } else {
+          dispatch(
+            UpdateMeetingStatusApi(
+              navigate,
+              t,
+              {
+                MeetingID: Number(record.pK_MDID),
+                StatusID: 10,
+              },
+              "startQuickMeetingFromMainListing",
+              {
+                record,
+                setIsQuickMeetingView,
+              },
+            ),
+          );
         }
 
         break;

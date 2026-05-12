@@ -2617,16 +2617,15 @@ export const UpdateMeetingStatusApi = (
                               DateTime: getCurrentDateTimeUTC(),
                               VideoCallURL: record.videoCallURL,
                             },
-                            "startMeetingFromMainListing",
+                            "JoinQuickMeetingFromListing",
                             object,
                           ),
                         );
                         // here we need to call Join Meeting API
                         break;
                       }
-                      case "startMeetingFromQuickMeeting":
+                      case "startQuickMeetingFromMainListing":
                         const {
-                          setIsQuickMeetingView,
                           VideoCallURL,
                           meetingID,
                         } = object;
@@ -2640,7 +2639,7 @@ export const UpdateMeetingStatusApi = (
                               DateTime: getCurrentDateTimeUTC(),
                               VideoCallURL: VideoCallURL,
                             },
-                            "startMeetingFromQuickMeetingView",
+                            "startQuickMeetingFromMainListing",
                             object,
                           ),
                         );
@@ -3323,16 +3322,16 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   }
-                  case "startMeetingFromQuickMeetingView": {
-                    const { setIsQuickMeetingView } = object;
-                    setIsQuickMeetingView(true);
+                  case "JoinQuickMeetingFromListing": {
+                    // const { setIsQuickMeetingView } = object;
+                    // setIsQuickMeetingView(true);
                     await dispatch(
                       getViewMeetingByMeetingIdApi(
                         navigate,
                         t,
                         { MeetingID: Number(Data.FK_MDID) },
-                        "viewMeetingAfterStartAndJoinMeeting",
-                        {},
+                        "JoinQuickMeetingFromListing",
+                        object,
                       ),
                     );
                     break;
@@ -3429,6 +3428,13 @@ export const getViewMeetingByMeetingIdApi = (
                   try {
                     switch (routePath) {
                       case "ViewQuickMeetingFromListing":
+                        setIsQuickMeetingView(true);
+                        break;
+                      case "EditQuickMeetingFromMainListing":
+                        const { setIsQuickMeetingUpdate } = object;
+                        setIsQuickMeetingUpdate(true);
+                        break;
+                      case "JoinQuickMeetingFromListing":
                         setIsQuickMeetingView(true);
                         break;
                       default:

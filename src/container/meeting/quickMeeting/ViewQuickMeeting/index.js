@@ -895,7 +895,7 @@ const ModalView = ({ ModalTitle }) => {
         navigate,
         t,
         startMeetingRequest,
-        "startMeetingFromQuickMeeting",
+        "startQuickMeetingFromMainListing",
         {
           setIsQuickMeetingView,
           VideoCallURL: allMeetingDetails.meetingDetails.videoCallURL,
@@ -938,7 +938,7 @@ const ModalView = ({ ModalTitle }) => {
       HostName: "",
       UserID: parseInt(createrID),
       PageNumber: 1,
-      Length: 50,
+      Length: 30,
       PublishedMeetings: true,
       ProposedMeetings: false,
     };
