@@ -24,7 +24,7 @@ import {
   AttachmentViewer,
 } from "@/components/elements";
 import { useTranslation } from "react-i18next";
-import crossicon from "../../../assets/images/BlackCrossIconModals.svg";
+import crossicon from "@/assets/images/BlackCrossIconModals.svg";
 import { Row, Col, Container } from "react-bootstrap";
 import CustomUpload from "@/components/elements/upload/Upload";
 import { useSelector, useDispatch } from "react-redux";
