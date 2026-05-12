@@ -75,7 +75,6 @@ const saveFilesApi = (
   setTasksAttachments,
   tasksAttachments,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -267,7 +266,6 @@ const uploadDocumentsApi = (
   setShowbarupload,
   showbarupload,
 ) => {
-
   // Set Uploading to true when starting the upload
   setTasksAttachments((prevTasks) => ({
     ...prevTasks,
@@ -286,7 +284,6 @@ const uploadDocumentsApi = (
       form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
       form.append("File", newJsonCreateFile.File);
 
-      
       axiosInstance
         .post(dataRoomApi, form, {
           onUploadProgress: (progressEvent) => {
@@ -484,7 +481,6 @@ const getFolderDocumentsApi = (
   sortValue,
   isDescending,
 ) => {
-
   let createrID = localStorage.getItem("userID");
 
   let OrganizationID = localStorage.getItem("organizationID");
@@ -600,8 +596,6 @@ const getFolderDocumentsApi = (
                 ),
               );
               try {
-                
-
                 if (
                   BreadCrumbsListArr !== null &&
                   BreadCrumbsListArr !== undefined &&
@@ -642,9 +636,7 @@ const getFolderDocumentsApi = (
                     dispatch(BreadCrumbsList(newFolderRecord));
                   }
                 }
-              } catch (error) {
-                
-              }
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -899,7 +891,6 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   filterValue,
   order,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -993,7 +984,6 @@ const getFolderDocumentsApiScrollBehaviour = (
   SortBy,
   order,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -1103,7 +1093,6 @@ const shareFiles_fail = (message) => {
 
 // Share Files Api
 const shareFilesApi = (navigate, FileData, t, setShareFile) => {
-
   return (dispatch) => {
     dispatch(shareFiles_init());
     let form = new FormData();
@@ -1127,7 +1116,7 @@ const shareFilesApi = (navigate, FileData, t, setShareFile) => {
               dispatch(
                 shareFiles_success(
                   response.data.responseResult,
-                  t("Files-shared-successfully"),
+                  t("File-shared"),
                 ),
               );
               setShareFile(false);
@@ -1188,7 +1177,6 @@ const shareFolders_fail = (message) => {
 
 // Share Folders Api
 const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
-
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
 
@@ -1294,7 +1282,6 @@ const deleteFileDataroom_fail = (message) => {
 
 // Delete file API
 const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -1353,9 +1340,7 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                     t("File-deleted"),
                   ),
                 );
-              } catch (error) {
-                
-              }
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1372,6 +1357,16 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                 )
             ) {
               dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_DeleteFile_04".toLowerCase(),
+                )
+            ) {
+              dispatch(
+                deleteFileDataroom_fail(t("Not-authorized-to-delete-the-file")),
+              );
             } else {
               dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
             }
@@ -1426,7 +1421,6 @@ const FileisExist = (
   setShowbarupload,
   showbarupload,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let folderId = localStorage.getItem("folderID");
   let Data = {
@@ -1544,7 +1538,6 @@ const FolderisExist = (
   Type,
   setIsExistFolder,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let Data = {
@@ -1657,7 +1650,6 @@ const deleteFolder_fail = (message) => {
 };
 
 const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
-
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let folderId = localStorage.getItem("folderID");
@@ -1759,7 +1751,6 @@ const FolderisExistrename_fail = (message) => {
 
 // Folder Exist API
 const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
-
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
 
@@ -1846,7 +1837,6 @@ const renameFolder_fail = (message) => {
   };
 };
 const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
 
@@ -1937,7 +1927,6 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
 };
 
 const FileisExist2 = (navigate, fileData, t, setShowRenameFile) => {
-
   let createrID = localStorage.getItem("userID");
   let Data = {
     UserID: JSON.parse(createrID),
@@ -2018,7 +2007,6 @@ const renameFile_fail = (message) => {
   };
 };
 const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
-
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -2158,8 +2146,6 @@ const searchDocumentsAndFoldersApi_fail = (message) => {
 
 // Get Documents And Folder API
 const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
-
-
   return (dispatch) => {
     if (no !== 1) {
       dispatch(searchDocumentsAndFoldersApi_init());
@@ -2241,8 +2227,6 @@ const recentDocuments_fail = (message) => {
 };
 
 const getRecentDocumentsApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(recentDocuments_init());
     let form = new FormData();
@@ -2321,8 +2305,6 @@ const getSharedFileUser_fail = (message) => {
 };
 
 const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
-
-
   return (dispatch) => {
     dispatch(getSharedFileUser_init());
     let form = new FormData();
@@ -2397,8 +2379,6 @@ const getSharedFolderUser_fail = (message) => {
 };
 
 const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
-
-
   return (dispatch) => {
     dispatch(getSharedFolderUser_init());
     let form = new FormData();
@@ -2477,7 +2457,7 @@ const createFolderLink_fail = (message) => {
 };
 
 // const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
-// 
+//
 
 //   return (dispatch) => {
 //     dispatch(createFolderLink_init());
@@ -2540,8 +2520,6 @@ const createFolderLink_fail = (message) => {
 //Same Api Newly Implemented
 
 const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
-
-
   return (dispatch) => {
     dispatch(createFolderLink_init());
     let form = new FormData();
@@ -2616,8 +2594,6 @@ const createFileLink_fail = (message) => {
   };
 };
 const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
-
-
   return (dispatch) => {
     dispatch(createFileLink_init());
     let form = new FormData();
@@ -2689,8 +2665,6 @@ const checkFileLink_fail = (message) => {
   };
 };
 const checkFileLinkApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(checkFileLink_init());
     let form = new FormData();
@@ -2810,8 +2784,6 @@ const requestAccess_fail = (message) => {
 };
 
 const requestAccessApi = (navigate, t, data, setRequestAccept) => {
-
-
   return (dispatch) => {
     dispatch(requestAccess_init());
     let form = new FormData();
@@ -2876,8 +2848,6 @@ const updateGeneralAccess_fail = (message) => {
   };
 };
 const updateGeneralAccessApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(updateGeneralAccess_init());
     let form = new FormData();
@@ -2949,8 +2919,6 @@ const updateFolderGeneralAccess_fail = (message) => {
   };
 };
 const updateFolderGeneralAccessApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(updateFolderGeneralAccess_init());
     let form = new FormData();
@@ -3035,7 +3003,6 @@ const downloadFail = (response) => {
 
 // DownloadFile
 const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
-
   let form = new FormData();
   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -3078,7 +3045,6 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
       })
 
       .then(async (response) => {
-        
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3095,8 +3061,6 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
         }
       })
       .catch((response) => {
-        
-
         dispatch(DownloadMessage(0));
 
         dispatch(downloadFail(response));
@@ -3129,7 +3093,7 @@ const getPDFNet = async () => {
       licenseKey: process.env.REACT_APP_APRYSEKEY,
       fullAPI: true, // required to access PDFNet
     },
-    container
+    container,
   );
 
   const { PDFNet } = instance.Core;
@@ -3160,7 +3124,7 @@ const flattenAnnotationsIntoPdf = async (pdfBase64, xfdfString) => {
   await pdfDoc.flattenAnnotations();
 
   const savedBuffer = await pdfDoc.saveMemoryBuffer(
-    PDFNet.SDFDoc.SaveOptions.e_linearized
+    PDFNet.SDFDoc.SaveOptions.e_linearized,
   );
   return new Uint8Array(savedBuffer);
 };
@@ -3174,7 +3138,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
     const form = new FormData();
     form.append(
       "RequestMethod",
-      getAnnotationOfDataroomAttachment.RequestMethod
+      getAnnotationOfDataroomAttachment.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
 
@@ -3183,7 +3147,9 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, Name));
+        dispatch(
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, Name),
+        );
         return;
       }
 
@@ -3193,7 +3159,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
         response.data.responseResult.responseMessage
           .toLowerCase()
           .includes(
-            "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase()
+            "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase(),
           )
       ) {
         const attachmentBlob = response.data.responseResult.attachmentBlob;
@@ -3216,12 +3182,12 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
             // Step 1: flatten annotations (XFDF) into the PDF using Apryse
             pdfBytes = await flattenAnnotationsIntoPdf(
               attachmentBlob,
-              annotationString
+              annotationString,
             );
           } else {
             // No annotations — decode base64 directly
             pdfBytes = Uint8Array.from(atob(attachmentBlob), (c) =>
-              c.charCodeAt(0)
+              c.charCodeAt(0),
             );
           }
 
@@ -3240,7 +3206,9 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
           try {
             const logoResponse = await fetch(diskusLogo);
             const logoArrayBuffer = await logoResponse.arrayBuffer();
-            embeddedLogo = await pdfDoc.embedPng(new Uint8Array(logoArrayBuffer));
+            embeddedLogo = await pdfDoc.embedPng(
+              new Uint8Array(logoArrayBuffer),
+            );
             // Scale proportionally to the target height
             const scaled = embeddedLogo.scaleToFit(9999, logoPdfHeight);
             logoPdfWidth = scaled.width;
@@ -3330,7 +3298,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
       }
     } catch (err) {
       // Server 500 or any processing error — fall back to direct download
-      
+
       dispatch(DownloadMessage(0));
       dispatch(DownloadFileForDataRoomEnded(false));
       dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3339,7 +3307,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 };
 
 // const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
-// 
+//
 
 //
 //   let form = new FormData();
@@ -3404,8 +3372,6 @@ const downloadFolderFail = (response) => {
 };
 
 const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
-
-
   let form = new FormData();
   form.append("RequestMethod", dataRoomFolderDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -3484,7 +3450,6 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
   setShareFileModal,
   setRequestFile,
 ) => {
-
   return async (dispatch) => {
     dispatch(validateUserDataRoomInit());
     let form = new FormData();
@@ -3765,7 +3730,6 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
         localStorage.removeItem("DataRoomEmail");
       }
     } catch (error) {
-      
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
       localStorage.removeItem("DataRoomEmail");
     }
@@ -3797,7 +3761,6 @@ const deleteSharedFileDataroom_fail = (message) => {
 
 // Delete file API
 const deleteSharedFileDataroom = (navigate, Data, t) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -3909,7 +3872,6 @@ const deleteSharedFolderDataroom_fail = (message) => {
 
 // Delete file API
 const deleteSharedFolderDataroom = (navigate, Data, t) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -4053,8 +4015,6 @@ const DataRoomFileSharingPermissionAPI = (
   FileID,
   FileName,
 ) => {
-
-
   return (dispatch) => {
     dispatch(DataRoomFileSharingPermissionInit());
     let form = new FormData();
@@ -4096,7 +4056,6 @@ const DataRoomFileSharingPermissionAPI = (
               isPermission: Number(response.data.responseResult.permissionID),
             };
 
-            
             const pdfDataJson = JSON.stringify(pdfData);
             let ext = FileName.split(".").pop();
             openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, FileID);

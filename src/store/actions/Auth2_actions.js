@@ -581,7 +581,11 @@ const enterPasswordvalidation = (
           await dispatch(
             enterPasswordSuccess(response.data.responseResult, "")
           );
-
+          // Store userPackageID in localStorage
+          localStorage.setItem(
+            "userPackageID",
+            response.data.responseResult.userPackageID,
+          );
           handleNavigation(
             navigate,
             response.data.responseResult.authToken.isFirstLogIn,

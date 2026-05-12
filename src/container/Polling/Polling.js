@@ -975,6 +975,7 @@ const Polling = () => {
   };
 
   const ResetSearchBtn = () => {
+    HandleCloseSearchModal();
     setsearchBoxState({
       ...searchBoxState,
       searchByName: "",

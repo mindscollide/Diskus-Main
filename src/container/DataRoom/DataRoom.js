@@ -250,6 +250,8 @@ const DataRoom = () => {
 
   
 
+  console.log(BreadCrumbsListArr, "BreadCrumbsListArr");
+
   // ─── localStorage session values ─────────────────────────────────────────
   /** Currently authenticated user's ID. */
   let userID = localStorage.getItem("userID");
@@ -261,6 +263,7 @@ const DataRoom = () => {
   let viewFolderID = localStorage.getItem("folderID");
   /** Non-null when the user arrived via a "document signed" notification link. */
   const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+  console.log(currentView, "BreadCrumbsListArr");
 
   // ─── DOM refs ─────────────────────────────────────────────────────────────
   /** Ref for the search bar container — used for outside-click detection. */
@@ -423,6 +426,8 @@ const DataRoom = () => {
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
 
+  console.log(getAllData, "CheckgetAll");
+
   // ─── Snack-bar notification state ────────────────────────────────────────
   const [open, setOpen] = useState({
     open: false,
@@ -584,6 +589,11 @@ const DataRoom = () => {
       localStorage.setItem("setTableView", 5);
     }
   }, [docSignedCrAction]);
+
+  useEffect(() => {
+    // Close the breadcrumb popover when view changes
+    setIsPopoverVisible(false);
+  }, [gridbtnactive, listviewactive]);
 
   // ─── Mount: initial load + deep-link handling ─────────────────────────────
   /**
@@ -1134,7 +1144,7 @@ const DataRoom = () => {
         FileID: Number(record.id),
       };
       dispatch(
-        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name),
       );
     }
   };
@@ -1290,6 +1300,8 @@ const DataRoom = () => {
    * @param {object} record - Full row record (used for breadcrumb construction).
    */
   const getFolderDocuments = async (folderid, record) => {
+    console.log("Main getFolderDocuments - record:", record);
+    console.log("Main getFolderDocuments - folderid:", folderid);
     localStorage.setItem("folderID", folderid);
     await dispatch(
       getFolderDocumentsApi(
@@ -1353,12 +1365,14 @@ const DataRoom = () => {
           ID: record.id,
           isFolder: true,
         };
+        console.log("Data Room Three Dots");
         dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       } else {
         let Data = {
           ID: record.id,
           isFolder: false,
         };
+        console.log("Data Room Three Dots");
         dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       }
     } else if (data.value === 5) {
@@ -1373,7 +1387,7 @@ const DataRoom = () => {
           FileID: Number(record.id),
         };
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name)
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name),
         );
       }
     } else if (data.value === 6) {
@@ -3550,6 +3564,10 @@ const DataRoom = () => {
   // api call onscroll
 
   useScrollerAuditBottom(async () => {
+    if (currentView === 5) {
+      return;
+    }
+
     if (getAllData.length !== totalRecords) {
       if (sRowsData <= totalRecords) {
         await dispatch(dataBehaviour(true));
@@ -3736,8 +3754,10 @@ const DataRoom = () => {
    * @param {number} index  - Position of the crumb in the breadcrumb array.
    */
   const handleClickGetFolderData = async (id, record, index) => {
+    console.log("Check Yaha");
     if (record?.main !== undefined && record?.main !== null && record?.main) {
       let currentView = localStorage.getItem("setTableView");
+      console.log(currentView, "BreadCrumbsListArr");
       if (currentView && Number(currentView) === 4) {
         let Data = {
           UserID: Number(userID),
@@ -3774,6 +3794,10 @@ const DataRoom = () => {
    * Returns early if the full dataset is already loaded.
    */
   const handleScroll = () => {
+    if (currentView === 5) {
+      return;
+    }
+
     if (getAllData.length >= totalRecords) return; // No more data
 
     dispatch(dataBehaviour(true));
@@ -4170,6 +4194,7 @@ const DataRoom = () => {
                                                       "breadCrumbsThreeDotsDiv_Row"
                                                     ]
                                                   }
+                                                  onClick={togglePopover}
                                                 >
                                                   <img
                                                     src={folderColor}
@@ -4191,12 +4216,44 @@ const DataRoom = () => {
                                       defaultOpen={false}
                                       showArrow={false}
                                     >
-                                      <img
-                                        src={ThreeDotsBreadCrumbs}
-                                        style={{ cursor: "pointer" }}
-                                        alt="More Breadcrumbs"
-                                        onClick={togglePopover}
-                                      />
+                                      {/* Make the trigger area larger and more clickable */}
+                                      <span
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          setIsPopoverVisible(
+                                            !isPopoverVisible,
+                                          );
+                                        }}
+                                        style={{
+                                          cursor: "pointer",
+                                          display: "inline-flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          minWidth: "32px",
+                                          minHeight: "25px",
+                                          borderRadius: "4px",
+                                          transition: "background-color 0.2s",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                          e.currentTarget.style.backgroundColor =
+                                            "#ecefff";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          e.currentTarget.style.backgroundColor =
+                                            "transparent";
+                                        }}
+                                      >
+                                        <img
+                                          src={ThreeDotsBreadCrumbs}
+                                          style={{
+                                            pointerEvents: "none",
+                                            userSelect: "none",
+                                          }}
+                                          alt="More Breadcrumbs"
+                                          onClick={togglePopover}
+                                        />
+                                      </span>
                                     </Popover>
                                   </Breadcrumb.Item>
                                 )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./ApprovalSend.module.css";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -37,6 +37,7 @@ import { useTableScrollBottom } from "../../../../commen/functions/useTableScrol
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
+  const hasFetchedInitially = useRef(false);
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const SignatureWorkFlowReducer = useSelector(
     (state) => state.SignatureWorkFlowReducer,
@@ -75,11 +76,11 @@ const ApprovalSend = () => {
   const [signatoriesSort, setSignatoriesSort] = useState(null);
 
   useEffect(() => {
-    const apiFunc = async () => {
+    const fetchStatusOptions = async () => {
       let newData = { IsCreator: true };
       await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     };
-    apiFunc();
+    fetchStatusOptions();
   }, []);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const ApprovalSend = () => {
   const resetFilter = async () => {
     setSortingData({
       ...sortingData,
-      statusID: [],
+      statusID: defaultreviewAndSignatureStatus,
       sentOn: 0,
       title: 0,
     });
@@ -105,7 +106,7 @@ const ApprovalSend = () => {
       sRow: 0,
       Length: 10,
       SentOnSort: 0,
-      StatusIDs: [],
+      StatusIDs: defaultreviewAndSignatureStatus,
       TitleSort: 0,
     };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
@@ -476,7 +477,8 @@ const ApprovalSend = () => {
   useEffect(() => {
     if (
       SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== null &&
-      SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== undefined
+      SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== undefined &&
+      !hasFetchedInitially.current
     ) {
       try {
         const { statusList } =
@@ -493,6 +495,22 @@ const ApprovalSend = () => {
           });
           setReviewAndSignatureStatus(statusValues);
           setDefaultReviewAndSignatureStatus(defaultStatus);
+          // ✅ ADD THIS: Set all statuses as selected by default
+          setSortingData((prev) => ({
+            ...prev,
+            statusID: defaultStatus, // All statuses selected by default
+          }));
+          // ✅ Mark as fetched before API call
+          hasFetchedInitially.current = true;
+          // ✅ Fetch documents with all statuses immediately
+          let Data = {
+            sRow: 0,
+            Length: 10,
+            SentOnSort: 0,
+            StatusIDs: defaultStatus, // All statuses
+            TitleSort: 0,
+          };
+          dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
         }
       } catch (error) {
         

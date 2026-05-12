@@ -35,7 +35,6 @@ import { Notification } from "../index";
 import { showMessage } from "../snack_bar/utill";
 import "./meetingDocumentViewer.css";
 
-
 const MeetingDocumentViewer = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
@@ -59,10 +58,10 @@ const MeetingDocumentViewer = () => {
 
   // Redux Selectors
   const FileRemoveMQTT = useSelector(
-    (state) => state.DataRoomReducer.FileRemoveMQTT
+    (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
   const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
-    (state) => state.webViewer
+    (state) => state.webViewer,
   );
 
   // Memoized PDF Data
@@ -88,7 +87,7 @@ const MeetingDocumentViewer = () => {
       [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
       {
         type: mimeType,
-      }
+      },
     );
   };
 
@@ -208,7 +207,7 @@ const MeetingDocumentViewer = () => {
 
     annotationManager.addEventListener(
       "annotationChanged",
-      handleAnnotationChange
+      handleAnnotationChange,
     );
 
     // Warn when closing tab
@@ -224,7 +223,7 @@ const MeetingDocumentViewer = () => {
     return () => {
       annotationManager.removeEventListener(
         "annotationChanged",
-        handleAnnotationChange
+        handleAnnotationChange,
       );
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -236,13 +235,12 @@ const MeetingDocumentViewer = () => {
       WebViewer(
         {
           path: "/webviewer/lib",
-          licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // Replace with your key
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
           fullAPI: true,
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion
         },
-        viewer.current
+        viewer.current,
       )
         .then((instance) => {
           setInstance(instance);
@@ -260,8 +258,6 @@ const MeetingDocumentViewer = () => {
 
           const mimeType = getMimeTypeFromFileName(fileName);
 
-          
-
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
           // Check if the extension exists in the array (case-insensitive)
@@ -273,7 +269,7 @@ const MeetingDocumentViewer = () => {
             showMessage(
               t("file_format_not_supported_for_preview"),
               "error",
-              setOpen
+              setOpen,
             );
             return;
           }
@@ -312,9 +308,7 @@ const MeetingDocumentViewer = () => {
             });
           });
         })
-        .catch((error) => {
-          
-        });
+        .catch((error) => {});
     }
   }, [pdfResponseData.attachmentBlob]);
 
@@ -363,14 +357,9 @@ const MeetingDocumentViewer = () => {
           break;
 
         default:
-          
           break;
       }
-
-      
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // Set Permissions

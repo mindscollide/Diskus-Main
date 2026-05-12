@@ -1915,7 +1915,7 @@
   "Password-verified-and-subscription-not-active-and-this-is-an-admin-user": "تمَّ التَّحقق من كلمة المرور والاشتراك غير نشط وهذا هو المُستخدم الإداريّ",
   "Password-verified-and-subscription-not-active-and-this-is-an-admin": "تمَّ التَّحقق من كلمة المرور والاشتراك غير نشط وهذا هو المُشرِف.",
   "Password-verified-and-subscription-not-active-and-this-is-an-user": "تمَّ التَّحقق من كلمة المُرور والاشتراك غير نشط وهذا مُستخدِم.",
-  "The-organization-trial-has-expired": "لقد انتهت صلاحيَّة تجربة المؤسسة وهذا هو مُنشِئ المُؤسسة",
+  "The-organization-trial-has-expired": "انتهت الفترة التجريبية للمنظمة",
   "Organization-trial-has-expired-and-this-is-admin-user": "انتهت صلاحيَّة النسخة التَّجريبية للمؤسسة وهذا هو المُستخدم الإداري",
   "Organization-trial-has-expired-and-this-is-admin": "انتهت صلاحيَّة النسخة التجريبية للمؤسسة وهذا هو المسؤول",
   "Organization-trial-has-expired-and-this-is-user": "انتهت صلاحيَّة النسخة التَّجريبيَّة للمؤسسة وهذا هو المُستخدم",
@@ -2575,7 +2575,9 @@
   "All-participants-must-have-at-least-one-field-assigned": "يجب أن يكون لجميع المشاركين حقل واحد على الأقل معيَّن",
   "Document-save-successfully": "تم حفظ المستند بنجاح",
   "Propose-new-committee-meeting": "Propose New Committee Meeting",
-  "Propose-new-group-meeting": "Propose New Group Meeting"
-
-  
+  "Propose-new-group-meeting": "Propose New Group Meeting",
+  "File-shared": "File Shared",
+  "Not-authorized-to-delete-the-file": "Not authorized to delete the file",
+  "Are-you-sure-you-want-to-continue": "Are you sure you want to continue?",
+  "The-recording-is-started": "The video call is being recorded."
 }

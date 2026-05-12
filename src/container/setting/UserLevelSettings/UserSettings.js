@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Button } from "../../../components/elements";
+import { Button, Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +23,11 @@ import {
   getMicrosoftValidToken,
   revokeMicrosoftTokenApi,
   revokeToken,
+  updateUserMessageCleare,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UserSettings = ({ googleClientIDs }) => {
   const { t } = useTranslation();
@@ -33,10 +35,18 @@ const UserSettings = ({ googleClientIDs }) => {
   const navigate = useNavigate();
 
   const settingReducerData = useSelector(
-    (state) => state.settingReducer.UserProfileData
+    (state) => state.settingReducer.UserProfileData,
   );
   const microsoftClientID = useSelector(
-    (state) => state.settingReducer.microsoftClientID
+    (state) => state.settingReducer.microsoftClientID,
+  );
+
+  // Add these selectors
+  const userSettingsResponseMessagesData = useSelector(
+    (state) => state.settingReducer.UpdateUserSettingResponseMessage,
+  );
+  const userSettingsResponseSeverity = useSelector(
+    (state) => state.settingReducer.severity,
   );
 
   const [securitystate, setSecuritystate] = useState(true);
@@ -48,6 +58,12 @@ const UserSettings = ({ googleClientIDs }) => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+    severity: "success",
+  });
 
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
@@ -118,7 +134,6 @@ const UserSettings = ({ googleClientIDs }) => {
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -243,6 +258,23 @@ const UserSettings = ({ googleClientIDs }) => {
       }
     }
   }, [settingReducerData]);
+
+  // Add this useEffect for showing toast
+  useEffect(() => {
+    if (
+      userSettingsResponseMessagesData &&
+      userSettingsResponseMessagesData !== "" &&
+      userSettingsResponseMessagesData !== null &&
+      userSettingsResponseMessagesData !== undefined
+    ) {
+      showMessage(
+        userSettingsResponseMessagesData,
+        userSettingsResponseSeverity || "success",
+        setOpen,
+      );
+      dispatch(updateUserMessageCleare());
+    }
+  }, [userSettingsResponseMessagesData, userSettingsResponseSeverity]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -416,7 +448,6 @@ const UserSettings = ({ googleClientIDs }) => {
         if (googleClientIDs !== null) {
           signIn();
         } else {
-          
         }
       } else {
         setUserOptionsSettings({
@@ -432,9 +463,9 @@ const UserSettings = ({ googleClientIDs }) => {
       const baseUrl = process.env.REACT_APP_MS_LOGIN_URL;
       const url = baseUrl.replace(
         /client_id=[^&]+/,
-        `client_id=${microsoftClientID}`
+        `client_id=${microsoftClientID}`,
       );
-      
+
       const windowFeatures = "width=600,height=400,top=100,left=100";
       const popup = window.open(url, "Microsoft Login", windowFeatures);
 
@@ -452,12 +483,12 @@ const UserSettings = ({ googleClientIDs }) => {
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
-    
+
     if (value) {
       await redirectToUrl();
     }
     let code = localStorage.getItem("Ms");
-    
+
     if (code) {
       await setUserOptionsSettings({
         ...userOptionsSettings,
@@ -732,7 +763,7 @@ const UserSettings = ({ googleClientIDs }) => {
   };
 
   const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated = (
-    e
+    e,
   ) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -783,12 +814,12 @@ const UserSettings = ({ googleClientIDs }) => {
             userOptionsSettings,
             t,
             userOptionsSettings.AllowGoogleCalenderSync,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
         // revoke token api hit
-        
       } else {
+        console.log("CHeck Is Calling Here");
         AllowMicrosoftCalenderSyncCall = true;
         await dispatch(
           updateUserSettingFunc(
@@ -796,86 +827,77 @@ const UserSettings = ({ googleClientIDs }) => {
             userOptionsSettings,
             t,
             true,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
     } else if (userOptionsSettings.AllowMicrosoftCalenderSync) {
-      
       if (authMicrosoftAccessCode !== "") {
-        
         AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
             navigate,
             authMicrosoftAccessCode,
             userOptionsSettings,
             userOptionsSettings.AllowMicrosoftCalenderSync,
-            t
-          )
+            t,
+          ),
         );
       }
     }
     if (signUpCodeToken !== "") {
-      
       if (userOptionsSettings.AllowGoogleCalenderSync) {
-        
         await dispatch(
           getGoogleValidToken(
             navigate,
             signUpCodeToken,
             userOptionsSettings,
             t,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       } else {
-        
         await dispatch(
           updateUserSettingFunc(
             navigate,
             userOptionsSettings,
             t,
             true,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
       setSignUpCodeToken("");
     } else {
       if (settingReducerData.userAllowGoogleCalendarSynch) {
-        
         if (userOptionsSettings.AllowGoogleCalenderSync) {
-          
           await dispatch(
             updateUserSettingFunc(
               navigate,
               userOptionsSettings,
               t,
               true,
-              AllowMicrosoftCalenderSyncCall
-            )
+              AllowMicrosoftCalenderSyncCall,
+            ),
           );
         } else {
-          
           await dispatch(
             revokeToken(
               navigate,
               userOptionsSettings,
               t,
-              AllowMicrosoftCalenderSyncCall
-            )
+              AllowMicrosoftCalenderSyncCall,
+            ),
           );
         }
       } else {
-        
         await dispatch(
           updateUserSettingFunc(
             navigate,
             userOptionsSettings,
             t,
             false,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
     }
@@ -963,13 +985,12 @@ const UserSettings = ({ googleClientIDs }) => {
   return (
     <>
       <section className={styles["UserConfigsContainer"]}>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex gap-3 align-items-center"
-          >
+            className='d-flex gap-3 align-items-center'>
             <span className={styles["UserLevelConfig_Heading"]}>
               {t("User-level-configurations")}
             </span>
@@ -980,24 +1001,22 @@ const UserSettings = ({ googleClientIDs }) => {
             lg={12}
             md={12}
             sm={12}
-            className={styles["Padding_around_class"]}
-          >
-            <Row className="mt-3">
+            className={styles["Padding_around_class"]}>
+            <Row className='mt-3'>
               <Col lg={3} md={3} sm={3}>
-                <div onClick={openSecurityTab} className="cursor-pointer">
-                  <Row className="mt-3">
+                <div onClick={openSecurityTab} className='cursor-pointer'>
+                  <Row className='mt-3'>
                     <Col
                       lg={2}
                       md={2}
                       sm={12}
-                      className="d-flex align-items-center"
-                    >
+                      className='d-flex align-items-center'>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={SecurityIcon}
-                        width="25.51px"
-                        height="30.69px"
-                        alt=""
+                        width='25.51px'
+                        height='30.69px'
+                        alt=''
                       />
                     </Col>
                     <Col lg={10} md={10} sm={12}>
@@ -1006,8 +1025,7 @@ const UserSettings = ({ googleClientIDs }) => {
                           securitystate
                             ? styles["Options_headings_active"]
                             : styles["Options_headings"]
-                        }
-                      >
+                        }>
                         {t("Security-settings")}
                       </span>
                     </Col>
@@ -1017,20 +1035,19 @@ const UserSettings = ({ googleClientIDs }) => {
                 <hr />
                 {checkFeatureIDAvailability(14) ? (
                   <>
-                    <div onClick={opentodo} className="cursor-pointer">
-                      <Row className="mt-3">
+                    <div onClick={opentodo} className='cursor-pointer'>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={TodoIcon}
-                            alt=""
-                            width="30px"
-                            height="30px"
+                            alt=''
+                            width='30px'
+                            height='30px'
                           />
                         </Col>
                         <Col lg={10} md={10} sm={12}>
@@ -1039,8 +1056,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               todo
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Tasks")}
                           </span>
                         </Col>
@@ -1054,20 +1070,19 @@ const UserSettings = ({ googleClientIDs }) => {
                 checkFeatureIDAvailability(12) ||
                 checkFeatureIDAvailability(9) ? (
                   <>
-                    <div onClick={openMeetingTab} className="cursor-pointer">
-                      <Row className="mt-3">
+                    <div onClick={openMeetingTab} className='cursor-pointer'>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={MeetingIcon}
-                            alt=""
-                            width="35.79px"
-                            height="27.3px"
+                            alt=''
+                            width='35.79px'
+                            height='27.3px'
                           />
                         </Col>
                         <Col lg={10} md={10} ms={12}>
@@ -1076,8 +1091,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               meetingsState
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Meetings")}
                           </span>
                         </Col>
@@ -1089,20 +1103,19 @@ const UserSettings = ({ googleClientIDs }) => {
 
                 {checkFeatureIDAvailability(7) ? (
                   <>
-                    <div className="cursor-pointer" onClick={openCalenderTab}>
-                      <Row className="mt-3">
+                    <div className='cursor-pointer' onClick={openCalenderTab}>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={Calender}
-                            alt=""
-                            width="28.47px"
-                            height="28.47px"
+                            alt=''
+                            width='28.47px'
+                            height='28.47px'
                           />
                         </Col>
                         <Col lg={10} md={10} ms={12}>
@@ -1111,8 +1124,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               calender
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Calendar")}
                           </span>
                         </Col>
@@ -1124,20 +1136,19 @@ const UserSettings = ({ googleClientIDs }) => {
 
                 {checkFeatureIDAvailability(48) ? (
                   <>
-                    <div onClick={openCommitteTab} className="cursor-pointer">
-                      <Row className="mt-3">
+                    <div onClick={openCommitteTab} className='cursor-pointer'>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={Committee}
-                            alt=""
-                            width="35.8px"
-                            height="34.63px"
+                            alt=''
+                            width='35.8px'
+                            height='34.63px'
                           />
                         </Col>
                         <Col lg={10} md={10} ms={12}>
@@ -1146,8 +1157,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               committee
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Committees")}
                           </span>
                         </Col>
@@ -1159,20 +1169,19 @@ const UserSettings = ({ googleClientIDs }) => {
 
                 {checkFeatureIDAvailability(17) ? (
                   <>
-                    <div onClick={openGroupTab} className="cursor-pointer">
-                      <Row className="mt-3">
+                    <div onClick={openGroupTab} className='cursor-pointer'>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={GroupIcon}
-                            width="29px"
-                            height="26.04px"
-                            alt=""
+                            width='29px'
+                            height='26.04px'
+                            alt=''
                           />
                         </Col>
                         <Col lg={10} md={10} ms={12}>
@@ -1181,8 +1190,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               group
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Groups")}
                           </span>
                         </Col>
@@ -1194,20 +1202,19 @@ const UserSettings = ({ googleClientIDs }) => {
 
                 {checkFeatureIDAvailability(18) ? (
                   <>
-                    <div onClick={openResolutionTab} className="cursor-pointer">
-                      <Row className="mt-3">
+                    <div onClick={openResolutionTab} className='cursor-pointer'>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={ResolutionIcon}
                             width={"30px"}
-                            height="31.18px"
-                            alt=""
+                            height='31.18px'
+                            alt=''
                           />
                         </Col>
                         <Col lg={10} md={10} ms={12}>
@@ -1216,8 +1223,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               resolution
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Resolutions")}
                           </span>
                         </Col>
@@ -1229,20 +1235,19 @@ const UserSettings = ({ googleClientIDs }) => {
 
                 {checkFeatureIDAvailability(15) ? (
                   <>
-                    <div onClick={openPollsTab} className="cursor-pointer">
-                      <Row className="mt-3">
+                    <div onClick={openPollsTab} className='cursor-pointer'>
+                      <Row className='mt-3'>
                         <Col
                           lg={2}
                           md={2}
                           sm={12}
-                          className="d-flex align-items-center"
-                        >
+                          className='d-flex align-items-center'>
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={pollsIcon}
-                            alt=""
-                            width="33.52px"
-                            height="34.59px"
+                            alt=''
+                            width='33.52px'
+                            height='34.59px'
                           />
                         </Col>
                         <Col lg={10} md={10} ms={12}>
@@ -1251,8 +1256,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               polls
                                 ? styles["Options_headings_active"]
                                 : styles["Options_headings"]
-                            }
-                          >
+                            }>
                             {t("Polls")}
                           </span>
                         </Col>
@@ -1265,29 +1269,26 @@ const UserSettings = ({ googleClientIDs }) => {
                 lg={1}
                 md={1}
                 sm={1}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={line}
                   className={styles["user-setting-row"]}
-                  alt=""
+                  alt=''
                 />
               </Col>
               <Col
                 lg={4}
                 md={4}
                 sm={4}
-                className="m-0 p-0 justify-content-start"
-              >
+                className='m-0 p-0 justify-content-start'>
                 {securitystate ? (
                   <>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeIsTwoFaceEnabled}
-                          checked={userOptionsSettings.Is2FAEnabled}
-                        >
+                          checked={userOptionsSettings.Is2FAEnabled}>
                           <span className={styles["Class_CheckBox"]}>
                             {t("2FA-is-enabled-heading")}
                           </span>
@@ -1298,130 +1299,124 @@ const UserSettings = ({ googleClientIDs }) => {
                 ) : null}
                 {todo ? (
                   <>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailWhenNewTODOAssigned}
-                          checked={userOptionsSettings.EmailWhenNewTODOAssigned}
-                        >
+                          checked={
+                            userOptionsSettings.EmailWhenNewTODOAssigned
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-todo-assigned")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationWhenNewTODOAssigned}
                           checked={
                             userOptionsSettings.PushNotificationWhenNewTODOAssigned
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-todo-assigned")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailWhenNewTODOEdited}
-                          checked={userOptionsSettings.EmailWhenNewTODOEdited}
-                        >
+                          checked={userOptionsSettings.EmailWhenNewTODOEdited}>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-todo-edited")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationWhenNewTODOEdited}
                           checked={
                             userOptionsSettings.PushNotificationWhenNewTODOEdited
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-todo-edited")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailWhenNewTODODeleted}
-                          checked={userOptionsSettings.EmailWhenNewTODODeleted}
-                        >
+                          checked={userOptionsSettings.EmailWhenNewTODODeleted}>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationWhenNewTODODeleted}
                           checked={
                             userOptionsSettings.PushNotificationWhenNewTODODeleted
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailWhenNewCommentAdded}
-                          checked={userOptionsSettings.EmailWhenNewCommentAdded}
-                        >
+                          checked={
+                            userOptionsSettings.EmailWhenNewCommentAdded
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-comment-added")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationWhenNewCommentAdded}
                           checked={
                             userOptionsSettings.PushNotificationWhenNewCommentAdded
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-comment-added")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailWhenCommentDeleted}
-                          checked={userOptionsSettings.EmailWhenCommentDeleted}
-                        >
+                          checked={userOptionsSettings.EmailWhenCommentDeleted}>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-comment-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationWhenCommentDeleted}
                           checked={
                             userOptionsSettings.PushNotificationWhenCommentDeleted
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-comment-deleted")}
                           </span>
@@ -1432,73 +1427,68 @@ const UserSettings = ({ googleClientIDs }) => {
                 ) : null}
                 {meetingsState ? (
                   <>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailOnNewMeeting}
-                          checked={userOptionsSettings.EmailOnNewMeeting}
-                        >
+                          checked={userOptionsSettings.EmailOnNewMeeting}>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-on-new-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationonNewMeeting}
                           checked={
                             userOptionsSettings.PushNotificationonNewMeeting
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-on-new-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailOnEditMeeting}
-                          checked={userOptionsSettings.EmailEditMeeting}
-                        >
+                          checked={userOptionsSettings.EmailEditMeeting}>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-on-edit-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangePushNotificationOnEditMeeting}
                           checked={
                             userOptionsSettings.PushNotificationEditMeeting
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-on-edit-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailOnCancelledOrDeletedMeeting}
                           checked={
                             userOptionsSettings.EmailCancelOrDeleteMeeting
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-on-cancelled-or-deleted-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -1506,17 +1496,16 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationCancelledOrDeleteMeeting
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-on-cancelled-or-deleted-meeting"
+                              "Push-notification-on-cancelled-or-deleted-meeting",
                             )}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className='mt-3'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -1524,8 +1513,7 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.ShowNotificationOnParticipantJoining
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Show-notification-on-joining-participant")}
                           </span>
@@ -1540,14 +1528,13 @@ const UserSettings = ({ googleClientIDs }) => {
                     googleClientIDs !== null &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={(e) => onChangeAllowCalenderSync(e)}
                             checked={
                               userOptionsSettings.AllowGoogleCalenderSync
-                            }
-                          >
+                            }>
                             <span className={styles["Class_CheckBox"]}>
                               {t("Allow-calendar-sync")}
                             </span>
@@ -1559,14 +1546,13 @@ const UserSettings = ({ googleClientIDs }) => {
                     microsoftClientID !== null &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeAllowMicrosoftCalenderSync}
                             checked={
                               userOptionsSettings.AllowMicrosoftCalenderSync
-                            }
-                          >
+                            }>
                             <span className={styles["Class_CheckBox"]}>
                               {t("Allow-microsoft-calendar-sync")}
                             </span>
@@ -1583,23 +1569,21 @@ const UserSettings = ({ googleClientIDs }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Committee_material"]}
-                      >
-                        <Row className="mt-4">
+                        className={styles["Committee_material"]}>
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeEmailWhenAddedToCommittee}
                               checked={
                                 userOptionsSettings.EmailWhenAddedToCommittee
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-added-to-committee")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1607,29 +1591,27 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenAddedToCommittee
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-added-to-committee")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeEmailWhenRemovedFromCommittee}
                               checked={
                                 userOptionsSettings.EmailWhenRemovedFromCommittee
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-removed-from-committee")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1637,17 +1619,16 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenRemovedFromCommittee
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-removed-from-committee"
+                                  "Push-notification-when-removed-from-committee",
                                 )}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1655,17 +1636,16 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Email-when-committee-is-dissolved-or-archived"
+                                  "Email-when-committee-is-dissolved-or-archived",
                                 )}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1673,31 +1653,29 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-dissolved-or-archived"
+                                  "Push-notification-when-committee-is-dissolved-or-archived",
                                 )}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeEmailWhenCommitteeIsInActive}
                               checked={
                                 userOptionsSettings.EmailWhenCommitteeIsSetInactive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-committee-is-set-inactive")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1705,31 +1683,29 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenCommitteeIsInActive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-inActive"
+                                  "Push-notification-when-committee-is-inActive",
                                 )}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeEmailWhenCommitteeIsActive}
                               checked={
                                 userOptionsSettings.EmailWhenCommitteeIsActive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-committee-is-set-active")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1737,11 +1713,10 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationwhenCommitteeissetActive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-set-active"
+                                  "Push-notification-when-committee-is-set-active",
                                 )}
                               </span>
                             </Checkbox>
@@ -1758,23 +1733,21 @@ const UserSettings = ({ googleClientIDs }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Committee_material"]}
-                      >
-                        <Row className="mt-4">
+                        className={styles["Committee_material"]}>
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeEmailWhenAddedToGroup}
                               checked={
                                 userOptionsSettings.EmailWhenAddedToGroup
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-added-to-group")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1782,29 +1755,27 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenAddedToGroup
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-added-to-group")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeEmailWhenRemovedFromGroup}
                               checked={
                                 userOptionsSettings.EmailWhenRemovedFromGroup
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-removed-from-group")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1812,15 +1783,14 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenRemovedFromGroup
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-removed-from-group")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1828,15 +1798,14 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-group-is-dissolved-or-archived")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1844,31 +1813,29 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-group-is-dissolved-or-archived"
+                                  "Push-notification-when-group-is-dissolved-or-archived",
                                 )}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeWhenGroupIsSetInactive}
                               checked={
                                 userOptionsSettings.EmailWhenGroupisSetInactive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-group-is-set-inactive")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1876,29 +1843,27 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationWhenGroupIsInActive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Notify-when-group-becomes-in-active")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={onChangeWhenEmailWhenGroupIsActive}
                               checked={
                                 userOptionsSettings.EmailWhenGroupIsActive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-group-is-set-active")}
                               </span>
                             </Checkbox>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
@@ -1906,8 +1871,7 @@ const UserSettings = ({ googleClientIDs }) => {
                               }
                               checked={
                                 userOptionsSettings.PushNotificationwhenGroupissetActive
-                              }
-                            >
+                              }>
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Notify-when-group-becomes-active")}
                               </span>
@@ -1920,21 +1884,20 @@ const UserSettings = ({ googleClientIDs }) => {
                 ) : null}
                 {resolution ? (
                   <>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeWhenResolutionIsCirculated}
                           checked={
                             userOptionsSettings.EmailWhenResolutionIsCirculated
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-resolution-is-circulated")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -1942,17 +1905,16 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-new-resolution-is-circulated"
+                              "Push-notification-when-new-resolution-is-circulated",
                             )}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -1960,17 +1922,16 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Email-when-new-resolution-is-cancelled-after-circulation"
+                              "Email-when-new-resolution-is-cancelled-after-circulation",
                             )}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -1978,31 +1939,29 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-new-resolution-is-cancelled-after-circulated"
+                              "Push-notification-when-new-resolution-is-cancelled-after-circulated",
                             )}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailWhenResolutionisClosed}
                           checked={
                             userOptionsSettings.EmailWhenResolutionIsClosed
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-resolution-is-closed")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -2010,8 +1969,7 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenResolutionISClosed
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-resolution-is-closed")}
                           </span>
@@ -2022,21 +1980,20 @@ const UserSettings = ({ googleClientIDs }) => {
                 ) : null}
                 {polls ? (
                   <>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeWhenNewPollIsPublished}
                           checked={
                             userOptionsSettings.EmailWhenNewPollIsPublished
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-poll-is-published")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -2044,29 +2001,27 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenNewPollIsPublished
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-poll-is-published")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeWhenPollsDueDateIsPassed}
                           checked={
                             userOptionsSettings.EmailWhenPollDueDateIsPassed
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-poll-duedate-is-passed")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -2074,29 +2029,27 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenPollDueDateIsPassed
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-poll-duedate-is-passed")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeWhenPublishedPollIsDeleted}
                           checked={
                             userOptionsSettings.EmailWhenPublishedPollIsDeleted
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-published-poll-is-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -2104,31 +2057,29 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-published-poll-is-deleted"
+                              "Push-notification-when-published-poll-is-deleted",
                             )}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeWhenPublishedPollIsUpdated}
                           checked={
                             userOptionsSettings.EmailWhenPublishedPollIsUpdated
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-published-poll-is-updated")}
                           </span>
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
@@ -2136,11 +2087,10 @@ const UserSettings = ({ googleClientIDs }) => {
                           }
                           checked={
                             userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated
-                          }
-                        >
+                          }>
                           <span className={styles["Class_CheckBox"]}>
                             {t(
-                              "Push-notification-when-published-poll-is--updated"
+                              "Push-notification-when-published-poll-is--updated",
                             )}
                           </span>
                         </Checkbox>
@@ -2153,32 +2103,29 @@ const UserSettings = ({ googleClientIDs }) => {
                 lg={1}
                 md={1}
                 sm={1}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={line}
                   className={styles["user-setting-row"]}
-                  alt=""
+                  alt=''
                 />
               </Col>
               <Col lg={3} md={3} sm={3}>
                 {calender ? (
                   <>
-                    <Row className="mt-4">
+                    <Row className='mt-4'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["BackGround_Calender_color_box"]}
-                      >
-                        <Row className="mt-4">
+                        className={styles["BackGround_Calender_color_box"]}>
+                        <Row className='mt-4'>
                           <Col
                             lg={8}
                             md={8}
                             sm={12}
-                            className="d-flex align-items-center justify-content-center"
-                          >
+                            className='d-flex align-items-center justify-content-center'>
                             <span className={styles["Diskus_calender"]}>
                               {t("Diskus-calendar")}
                             </span>
@@ -2187,11 +2134,10 @@ const UserSettings = ({ googleClientIDs }) => {
                             lg={4}
                             md={4}
                             sm={12}
-                            className="d-flex  justify-content-start"
-                          >
+                            className='d-flex  justify-content-start'>
                             <input
-                              type="color"
-                              className=" m-0 p-0 circle-color-picker"
+                              type='color'
+                              className=' m-0 p-0 circle-color-picker'
                               value={userOptionsSettings.DiskusCalenderColor}
                               onChange={onChangeDiskusCalenderColor}
                             />
@@ -2203,20 +2149,18 @@ const UserSettings = ({ googleClientIDs }) => {
                     userOptionsSettings.AllowGoogleCalenderSync !== false &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["BackGround_Calender_color_box"]}
-                        >
-                          <Row className="mt-4">
+                          className={styles["BackGround_Calender_color_box"]}>
+                          <Row className='mt-4'>
                             <Col
                               lg={8}
                               md={8}
                               sm={12}
-                              className="d-flex align-items-center justify-content-center"
-                            >
+                              className='d-flex align-items-center justify-content-center'>
                               <span className={styles["Diskus_calender"]}>
                                 {t("Google-calendar")}
                               </span>
@@ -2225,11 +2169,10 @@ const UserSettings = ({ googleClientIDs }) => {
                               lg={4}
                               md={4}
                               sm={12}
-                              className="d-flex  justify-content-start"
-                            >
+                              className='d-flex  justify-content-start'>
                               <input
-                                type="color"
-                                className="m-0 p-0 circle-color-picker"
+                                type='color'
+                                className='m-0 p-0 circle-color-picker'
                                 value={userOptionsSettings.GoogleCalenderColor}
                                 onChange={onChangeGoogleCalenderColor}
                               />
@@ -2242,28 +2185,26 @@ const UserSettings = ({ googleClientIDs }) => {
                     userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["BackGround_Calender_color_box"]}
-                        >
-                          <Row className="mt-4">
+                          className={styles["BackGround_Calender_color_box"]}>
+                          <Row className='mt-4'>
                             <Col
                               lg={9}
                               md={9}
                               sm={9}
-                              className="d-flex align-items-center justify-content-center"
-                            >
+                              className='d-flex align-items-center justify-content-center'>
                               <span className={styles["Diskus_calender"]}>
                                 {t("Microsoft-calendar")}
                               </span>
                             </Col>
-                            <Col lg={3} md={3} sm={3} className="">
+                            <Col lg={3} md={3} sm={3} className=''>
                               <input
-                                type="color"
-                                className="circle-color-picker"
+                                type='color'
+                                className='circle-color-picker'
                                 value={
                                   userOptionsSettings.MicrosoftCalenderColor
                                 }
@@ -2285,8 +2226,7 @@ const UserSettings = ({ googleClientIDs }) => {
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end mb-2"
-          >
+            className='d-flex justify-content-end mb-2'>
             <Button
               text={t("Update")}
               className={styles["New_settings_Update_Button"]}
@@ -2295,6 +2235,7 @@ const UserSettings = ({ googleClientIDs }) => {
           </Col>
         </Row>
       </section>
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

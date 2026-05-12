@@ -52,17 +52,21 @@ const ReviewSignature = () => {
   const globalState = useSelector((state) => state);
   
   const workflowsignaturedocument = useSelector(
-    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument
+    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,
   );
 
   const workflowsignaturedocumentActionByMe = useSelector(
     (state) =>
-      state.SignatureWorkFlowReducer.workflowsignaturedocumentActionByMe
+      state.SignatureWorkFlowReducer.workflowsignaturedocumentActionByMe,
   );
 
   const signatureDocumentStatusChangeForSignees = useSelector(
     (state) =>
-      state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees
+      state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees,
+  );
+
+  const signeeCounterData = useSelector(
+    (state) => state.SignatureWorkFlowReducer.signeeCounterData,
   );
 
   const navigate = useNavigate();
@@ -114,6 +118,13 @@ const ReviewSignature = () => {
   ];
 
   useEffect(() => {
+    if (signeeCounterData) {
+      // MQTT data has arrived – update the approvalStats state with the live counts
+      setApprovalStats(signeeCounterData);
+    }
+  }, [signeeCounterData]);
+
+  useEffect(() => {
     const callFunc = async () => {
       await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
       let newData = { IsCreator: false };
@@ -146,16 +157,16 @@ const ReviewSignature = () => {
       window.open(
         `/Diskus/signeddocument?documentID=${encodeURIComponent(reponseData)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
         `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
-          reponseData
+          reponseData,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -166,7 +177,7 @@ const ReviewSignature = () => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
@@ -174,7 +185,7 @@ const ReviewSignature = () => {
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.toString())
+      selectedValues.includes(item.status.toString()),
     );
     setReviewSignature(filteredData);
     setVisible(false);
@@ -225,7 +236,7 @@ const ReviewSignature = () => {
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
     dispatch(
-      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList)
+      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList),
     );
   };
 
@@ -409,21 +420,21 @@ const ReviewSignature = () => {
               status?.toLowerCase() === "Pending Signature".toLowerCase()
                 ? styles["pendingStatus"]
                 : status?.toLowerCase() === "Signed".toLowerCase()
-                ? styles["signedStatus"]
-                : status?.toLowerCase() === "Declined".toLowerCase()
-                ? styles["declineStatus"]
-                : styles["draftStatus"]
+                  ? styles["signedStatus"]
+                  : status?.toLowerCase() === "Declined".toLowerCase()
+                    ? styles["declineStatus"]
+                    : styles["draftStatus"]
             }
           >
             {status?.toLowerCase() === "Pending Signature".toLowerCase()
               ? t("Signature-pending")
               : status?.toLowerCase() === "Signed".toLowerCase()
-              ? t("Signed")
-              : status?.toLowerCase() === "Declined".toLowerCase()
-              ? t("Declined")
-              : status?.toLowerCase() === "draftStatus".toLowerCase()
-              ? t("draftStatus")
-              : null}
+                ? t("Signed")
+                : status?.toLowerCase() === "Declined".toLowerCase()
+                  ? t("Declined")
+                  : status?.toLowerCase() === "draftStatus".toLowerCase()
+                    ? t("draftStatus")
+                    : null}
           </p>
         );
       },
@@ -521,7 +532,7 @@ const ReviewSignature = () => {
         const { data } = workflowsignaturedocument;
         let findIfExist = reviewSignature.find(
           (reviewSignatureData, index) =>
-            reviewSignatureData.workFlowID === data.workFlowID
+            reviewSignatureData.workFlowID === data.workFlowID,
         );
         
         if (findIfExist === undefined) {
@@ -548,8 +559,8 @@ const ReviewSignature = () => {
                   status: data.status,
                   actorStatusID: data.actorStatusID,
                 }
-              : data2
-          )
+              : data2,
+          ),
         );
       }
     } catch (error) {
@@ -568,8 +579,8 @@ const ReviewSignature = () => {
                   status: data.status,
                   workFlowStatusID: data.workFlowStatusID,
                 }
-              : data2
-          )
+              : data2,
+          ),
         );
       }
     } catch (error) {
@@ -606,7 +617,7 @@ const ReviewSignature = () => {
                     }}
                     label={`${convertToArabicNumerals(
                       approvalStats.signedPercentage,
-                      currentLanguage
+                      currentLanguage,
                     )}%`}
                     now={approvalStats.signedPercentage}
                     key={1}
@@ -617,7 +628,7 @@ const ReviewSignature = () => {
                     }}
                     label={`${convertToArabicNumerals(
                       approvalStats.pendingPercentage,
-                      currentLanguage
+                      currentLanguage,
                     )}%`}
                     now={approvalStats.pendingPercentage}
                     key={2}
@@ -628,7 +639,7 @@ const ReviewSignature = () => {
                     }}
                     label={`${convertToArabicNumerals(
                       approvalStats.declinedPercentage,
-                      currentLanguage
+                      currentLanguage,
                     )}%`}
                     now={approvalStats.declinedPercentage}
                     key={3}
@@ -641,7 +652,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {convertToArabicNumerals(
                       approvalStats.signed,
-                      currentLanguage
+                      currentLanguage,
                     )}
                   </span>
                   <span className={styles["value"]}>{t("Signed")}</span>
@@ -651,7 +662,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {convertToArabicNumerals(
                       approvalStats.pending,
-                      currentLanguage
+                      currentLanguage,
                     )}
                   </span>
                   <span className={styles["value"]}>{t("Pending")}</span>
@@ -661,7 +672,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {convertToArabicNumerals(
                       approvalStats.declined,
-                      currentLanguage
+                      currentLanguage,
                     )}
                   </span>
                   <span className={styles["value"]}>{t("Declined")}</span>

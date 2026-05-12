@@ -30,18 +30,19 @@ const AddUsers = () => {
   const dispatch = useDispatch();
 
   const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
-    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph,
   );
 
   const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
     useSelector(
       (state) =>
         state.UserMangementReducer
-          .organizationSelectedPakagesByOrganizationIDData
+          .organizationSelectedPakagesByOrganizationIDData,
     );
 
   let organizationID = localStorage.getItem("organizationID");
   let organizationNames = localStorage.getItem("organizatioName");
+  let getUserPackageID = Number(localStorage.getItem("userPackageID"));
 
   // get IsTrial from LocalStorage
   let isFreeTrial = localStorage.getItem("isTrial");
@@ -147,27 +148,26 @@ const AddUsers = () => {
   }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
   //Data from  GetOrganizationSelectedPackagesByOrganizationID
-  useEffect(() => {
-    if (
-      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData &&
-      Object.keys(
-        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
-      ).length > 0
-    ) {
-      setWorldCountryID(
-        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
-          .organization.fK_NumberWorldCountryID
-      );
-      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
-        (data) => {
-          data.organizationSelectedPackages?.map((packageData) => {
-            
-            setPakageID(packageData.pK_OrganizationsSelectedPackageID);
-          });
-        }
-      );
-    }
-  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
+useEffect(() => {
+  const response =
+    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
+
+  if (response && Object.keys(response).length > 0) {
+    setWorldCountryID(
+      response.organization?.fK_NumberWorldCountryID || 0,
+    );
+
+    const packageIDs = [];
+
+    response.organizationSubscriptions?.forEach((subscription) => {
+      subscription.organizationSelectedPackages?.forEach((packageData) => {
+        packageIDs.push(packageData.pK_OrganizationsSelectedPackageID);
+      });
+    });
+
+    setPakageID(packageIDs);
+  }
+}, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   //Handle Change For TextFields
   const handleAddUsersFreeTrial = (e) => {
@@ -285,8 +285,8 @@ const AddUsers = () => {
             setCompanyEmailValidateError,
             addUserFreeTrial,
             t,
-            setEmailUnique
-          )
+            setEmailUnique,
+          ),
         );
       } else {
         setEmailUnique(false);
@@ -343,14 +343,14 @@ const AddUsers = () => {
         UserDataList: [
           {
             UserName: addUserFreeTrial.Name.value,
-            OrganizationName:organizationNames,
+            OrganizationName: organizationNames,
             Designation: addUserFreeTrial.Desgination.value,
             MobileNumber: addUserFreeTrial.Contact.value,
             UserEmail: addUserFreeTrial.Email.value,
             OrganizationID: Number(organizationID),
             RoleID: addUserFreeTrial.isAdmin,
             FK_NumberWorldCountryID: Number(addUserFreeTrial.CountyCode),
-            PackageID: 4,
+            PackageID: getUserPackageID,
           },
         ],
       };
