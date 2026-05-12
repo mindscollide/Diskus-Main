@@ -23,6 +23,7 @@ import { isFunction } from "../../commen/functions/utils";
 import { toggleViewMeetingModal } from "./ModalStates_actions";
 import { getMeetingByCommitteeIdApi } from "./Committee_actions";
 import { getMeetingbyGroupIdApi } from "./Groups_actions";
+import { listOfMeetingsApi } from "./NewMeeting2.actions";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -437,7 +438,7 @@ const UpdateOrganizersMeeting = (
                       currentView && Number(currentView) === 2 ? true : false,
                   };
 
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  await dispatch(listOfMeetingsApi(navigate, t, searchData));
                   isFunction(setSceduleMeeting) && setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (route === 6) {

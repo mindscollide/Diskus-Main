@@ -36,7 +36,6 @@ import {
   getMeetingRecordingFilesApi,
   searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
-import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 

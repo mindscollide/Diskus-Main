@@ -72,7 +72,7 @@ import DoubleArrowIcon from "@/assets/images/sortingIcons/Double Arrow2.svg";
 
 import styles from "./committeePublishMeeting.module.css";
 
-import { ChevronDown,} from "react-bootstrap-icons";
+import { ChevronDown } from "react-bootstrap-icons";
 import BoardDeckModal from "@/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal";
 import BoardDeckSendEmail from "@/container/meeting/commonComponents/BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
 import ShareModalBoarddeck from "@/container/meeting/commonComponents/BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
@@ -162,6 +162,8 @@ const CommitteePublishedMeetingList = () => {
     isCommitteeCreateQuickMeeting,
     setIsCommitteeCreateQuickMeeting,
   } = useCommitteeContext();
+
+  const { setIsQuickMeetingView } = useNewMeetingContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
@@ -287,14 +289,8 @@ const CommitteePublishedMeetingList = () => {
             { MeetingID: record.pK_MDID },
             "ViewQuickMeetingFromListing",
             {
-              setIsCommitteeCreateQuickMeeting,
-              setIsCommitteeViewQuickMeeting,
-              setIsCommitteeUpateQuickMeeting,
+              setIsQuickMeetingView,
             },
-            // setViewFlag,
-            // setEditFlag,
-            // // setIsCreateEditMeeting,
-            // 1,
           ),
         );
         return;
@@ -372,6 +368,24 @@ const CommitteePublishedMeetingList = () => {
     const context = "JoinMeetingFromMainListing";
 
     if (record.isQuickMeeting) {
+      dispatch(
+        joinMeetingApi(
+          navigate,
+          t,
+          {
+            VideoCallURL: record.videoCallURL,
+            FK_MDID: Number(meetingId),
+            DateTime: getCurrentDateTimeUTC(),
+          },
+          "JoinQuickMeetingFromListing",
+          {
+            role,
+            isQuickMeeting: record.isQuickMeeting,
+            record,
+            setIsQuickMeetingView,
+          },
+        ),
+      );
       await dispatch(
         ViewMeeting(navigate, t, { MeetingID: meetingId }, context, {
           setViewFlag,
@@ -481,7 +495,7 @@ const CommitteePublishedMeetingList = () => {
         (status === STATUS.ENDED ||
           status === STATUS.UPCOMING ||
           status === STATUS.ACTIVE) &&
-        (isOrganizer || isAgendaContributor || isParticipant),
+        (isOrganizer || isAgendaContributor || isParticipant) && !record.isQuickMeeting,
       attendance: status === STATUS.ENDED && isOrganizer,
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,

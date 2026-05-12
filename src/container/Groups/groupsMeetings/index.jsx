@@ -11,7 +11,6 @@ import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
 import member from "../../../assets/images/member.svg";
 import addmore from "../../../assets/images/addmore.png";
-import ViewModal from "../../modalView/ModalView";
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -29,7 +28,6 @@ import { useDispatch } from "react-redux";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
-import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 import { truncateString } from "../../../commen/functions/regex";
 import {
   createCommitteeMeeting,
@@ -40,8 +38,9 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
-import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
-import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import UpdateQuickMeeting from "../../meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
+import CreateQuickMeeting from "../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import ViewModal from "../../meeting/quickMeeting/ViewQuickMeeting";
 import {
   activeChatBoxGS,
   addNewChatScreen,

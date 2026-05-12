@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import TalkHeader from "./talkHeader";
-import { Triangle } from "react-bootstrap-icons";
 import { Container } from "react-bootstrap";
 import TalkFooter from "./talkFooter";
 import AddNewChat from "../recentChats/addNewChats";

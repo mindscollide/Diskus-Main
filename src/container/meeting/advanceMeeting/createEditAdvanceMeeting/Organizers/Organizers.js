@@ -43,7 +43,6 @@ import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
 import SendNotificationOrganizer from "./NotifyOrganizers/SendRecentNotification";
 import {
   clearResponseMessage,
-  UpdateOrganizersMeeting,
   GetAllMeetingOrganizers,
   meetingOrganizers,
   selectedMeetingOrganizers,

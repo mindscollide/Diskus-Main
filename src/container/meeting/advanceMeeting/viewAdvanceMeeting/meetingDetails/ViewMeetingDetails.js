@@ -27,7 +27,6 @@ import {
   getCurrentDateTimeUTC,
   forRecentActivity,
 } from "../../../../../commen/functions/date_formater";
-import { UpdateOrganizersMeeting } from "@/store/actions/MeetingOrganizers_action";
 import {
   GetAllUsers,
   GetAllUserChats,
@@ -746,25 +745,7 @@ const ViewMeetingDetails = () => {
         { setEndMeetingConfirmationModal },
       ),
     );
-    // await dispatch(
-    //   UpdateOrganizersMeeting(
-    //     false,
-    //     navigate,
-    //     t,
-    //     4,
-    //     endMeetingRequest,
-    //     setEditorRole,
-    //     setAdvanceMeetingModalID,
-    //     setDataroomMapFolderId,
-    //     setViewAdvanceMeetingModal,
-    //     "",
-    //     "",
-    //     "",
-    //     "",
-    //     "",
-    //     setEndMeetingConfirmationModal,
-    //   ),
-    // );
+   
 
     localStorage.removeItem("NotificationAdvanceMeetingID");
     localStorage.removeItem("QuickMeetingCheckNotification");

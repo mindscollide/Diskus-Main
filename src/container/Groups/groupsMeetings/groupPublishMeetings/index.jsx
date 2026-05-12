@@ -88,6 +88,7 @@ import {
 } from "@/store/actions/NewMeeting2.actions";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { useGroupsContext } from "../../../../context/GroupsContext";
+import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -149,7 +150,7 @@ const GroupPublishedMeetingList = () => {
     setBoardDeckMeetingTitle,
     downloadVideoRecordingModal,
   } = useMeetingContext();
-
+  const { setIsQuickMeetingView } = useNewMeetingContext();
   const {
     isMeetingTypeFilter,
     minutesAgo,
@@ -312,9 +313,7 @@ const GroupPublishedMeetingList = () => {
           meetingID: record.pK_MDID,
         }),
       );
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
@@ -328,11 +327,19 @@ const GroupPublishedMeetingList = () => {
 
     if (record.isQuickMeeting) {
       await dispatch(
-        ViewMeeting(navigate, t, { MeetingID: meetingId }, context, {
-          setViewFlag,
-          setEditFlag,
-          setSceduleMeeting,
-          no: 2,
+        getViewMeetingByMeetingIdApi(
+          navigate,
+          t,
+          { MeetingID: record.pK_MDID },
+          "ViewQuickMeetingFromListing",
+          {
+            setIsQuickMeetingView,
+          },
+        ),
+      );
+      dispatch(
+        setCurrentMeetingInfo({
+          meetingID: record.pK_MDID,
         }),
       );
       return;
@@ -864,7 +871,7 @@ const GroupPublishedMeetingList = () => {
               isOrganizer &&
               minutesDifference < minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
-          
+
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 

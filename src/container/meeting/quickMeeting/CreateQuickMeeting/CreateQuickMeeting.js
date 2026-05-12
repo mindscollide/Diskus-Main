@@ -33,7 +33,6 @@ import {
   allAssignessList,
 } from "@/store/actions/Get_List_Of_Assignees";
 import {
-  FileUploadToDo,
   ResetAllFilesUpload,
   uploaddocumentloader,
 } from "@/store/actions/Upload_action";
@@ -63,30 +62,35 @@ import {
   uploadDocumentsQuickMeetingApi,
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
-const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
+import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
+const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
   // checkFlag 5 is for Create Meeting
 
   //For Localization
-  
+
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    isQuickMeetingCreate,
+    setIsQuickMeetingCreate,
+  } = useNewMeetingContext();
 
   const assigneesRemindersData = useSelector(
-    (state) => state.assignees.RemindersData
+    (state) => state.assignees.RemindersData,
   );
   const assigneesuser = useSelector((state) => state.assignees?.user);
   const CommitteeReducergetCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID
+    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID,
   );
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
-    (state) => state.GroupsReducer?.getGroupByGroupIdResponse
+    (state) => state.GroupsReducer?.getGroupByGroupIdResponse,
   );
   const UserProfileData = useSelector(
-    (state) => state.settingReducer?.UserProfileData
+    (state) => state.settingReducer?.UserProfileData,
   );
   const {
     userName = "",
@@ -127,7 +131,6 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     PK_MAID: 0,
   });
 
-  
   const [defaultMeetingAgenda, setDefaultObjMeetingAgenda] = useState({
     Title: "",
     PresenterName: "",
@@ -163,7 +166,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
-  
+
   const getStartTime = getStartTimeWithCeilFunction();
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState({
@@ -175,16 +178,16 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [attachments, setAttachments] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [createMeetingTime, setCreateMeetingTime] = useState(
-    getStartTime.newFormatTime
+    getStartTime.newFormatTime,
   );
   const getCurrentDateforMeeting = getCurrentDate();
   // for Participant options
   const [meetingDate, setMeetingDate] = useState(
-    getCurrentDateforMeeting.DateGMT
+    getCurrentDateforMeeting.DateGMT,
   );
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
-  
+
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
   const [reminderOptValue, setReminderOptValue] = useState({
@@ -226,7 +229,6 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
   });
-  
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -242,7 +244,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   function urlPatternValidation(URL) {
     const regex = new RegExp(
-      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
+      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?",
     );
     return regex.test(URL);
   }
@@ -370,7 +372,6 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // Reminder handler
   const ReminderNameHandler = (event) => {
-    
     setReminderOptValue(event);
     setCreateMeeting({
       ...createMeeting,
@@ -426,7 +427,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         const getFormattedTime = getHoursMinutesSec(newDate);
         const getformattedDateTIme = getCurrentDateTime(new Date());
         const dateTimeFormat = convertDateTimeObject(
-          `${createMeeting.MeetingDate}${getFormattedTime}`
+          `${createMeeting.MeetingDate}${getFormattedTime}`,
         );
         const currentDateTime = convertDateTimeObject(getformattedDateTIme);
 
@@ -434,7 +435,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           showMessage(
             t("Time-should-be-greater-then-system-time"),
             "error",
-            setOpen
+            setOpen,
           );
           setTimeout(() => {
             setCreateMeeting({
@@ -516,14 +517,14 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       const getformattedDateTIme = getCurrentDateTime(new Date());
 
       const dateTimeFormat = convertDateTimeObject(
-        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
+        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`,
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
         showMessage(
           t("Date-and-time-should-be-greater-than-current-system-time"),
           "error",
-          setOpen
+          setOpen,
         );
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
@@ -592,7 +593,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       let { isMorethan } = isFileSizeValid(uploadedFile.size);
 
       let fileExists = attachments.some(
-        (filename) => filename.DisplayAttachmentName === uploadedFile.name
+        (filename) => filename.DisplayAttachmentName === uploadedFile.name,
       );
 
       if (!isMorethan) {
@@ -607,7 +608,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         showMessage(
           t("File-size-should-not-be-more-than-1-5GB"),
           "error",
-          setOpen
+          setOpen,
         );
       } else if (!sizezero) {
         showMessage(t("File-size-is-0mb"), "error", setOpen);
@@ -683,7 +684,6 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for add another agenda main inputs handler
   const addAnOtherAgenda = async (e) => {
-    
     e.preventDefault();
     let previousAdendas = createMeeting.MeetingAgendas;
     if (editRecordFlag !== null && editRecordFlag === true) {
@@ -694,12 +694,18 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           let newfile = [];
           for (const newData of fileForSend) {
             await dispatch(
-              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile)
+              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile),
             );
           }
           let newFolder = [];
           const getSaveFilesRepsonse = await dispatch(
-            saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)
+            saveFilesQuickMeetingApi(
+              navigate,
+              t,
+              newfile,
+              undefined,
+              newFolder,
+            ),
           );
           if (
             getSaveFilesRepsonse.isExecuted &&
@@ -708,7 +714,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             getSaveFilesRepsonse.newFolder.forEach((fileData) => {
               let isFileNameAlreadyExist = fileforSend.findIndex(
                 (isExist) =>
-                  isExist.DisplayAttachmentName === fileData.displayFileName
+                  isExist.DisplayAttachmentName === fileData.displayFileName,
               );
               if (isFileNameAlreadyExist !== -1) {
                 // Update the OriginalAttachmentName for the existing entry
@@ -774,14 +780,20 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           // Upload all files first
           const uploadPromises = fileForSend.map(async (newData) => {
             return await dispatch(
-              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile)
+              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile),
             );
           });
           await Promise.all(uploadPromises);
 
           let newFolder = [];
           const getSaveFilesResponse = await dispatch(
-            saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)
+            saveFilesQuickMeetingApi(
+              navigate,
+              t,
+              newfile,
+              undefined,
+              newFolder,
+            ),
           );
 
           // Prepare attachments
@@ -875,7 +887,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   useEffect(() => {
     try {
       let valueOfReminder = assigneesRemindersData;
-      
+
       let reminderOptions = [];
 
       valueOfReminder.forEach((reminderData, index) => {
@@ -897,9 +909,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         });
       });
       setReminderOptions(reminderOptions);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [assigneesRemindersData]);
 
   // for attendies Role handler
@@ -928,7 +938,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     callApi();
     return () => {
       setModalField(false);
-      setShow(false);
+      setIsQuickMeetingCreate(false);
       setIsDetails(true);
       setCurrentStep(1);
 
@@ -1104,11 +1114,11 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //         setAllPresenters(PresenterData);
   //         setAddedParticipantNameList(newMemberData);
   //       } catch (error) {
-  //         
+  //
   //       }
   //     }
   //   } catch (error) {
-  //     
+  //
   //   }
   // }, [assigneesuser, checkFlag]);
 
@@ -1123,7 +1133,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //       // Committees MembersData
   //       let CommitteeMembers =
   //         CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
-  //       
+  //
   //       if (
   //         CommitteeMembers !== null &&
   //         CommitteeMembers !== undefined &&
@@ -1132,7 +1142,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //         let findisCreatorFind = CommitteeMembers.find(
   //           (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
   //         );
-  //         
+  //
   //         if (findisCreatorFind === undefined) {
   //           setDefaultPresenter({
   //             label: (
@@ -1659,7 +1669,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         if (sourceData && sourceData.length > 0) {
           // Check if creator is in the member list
           const isCreatorInList = sourceData.some(
-            (userInfo) => Number(userInfo.pK_UID) === Number(createrID)
+            (userInfo) => Number(userInfo.pK_UID) === Number(createrID),
           );
 
           // Add creator if not found in the list
@@ -1735,9 +1745,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           setAddedParticipantNameList(newMemberData);
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [
     assigneesuser,
     checkFlag,
@@ -1885,14 +1893,13 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for add Attendees handler
   const addAttendees = () => {
-    
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
     let found =
       user1.length > 0
         ? user1.find((element) => element?.User?.PK_UID === taskAssignedTo)
         : undefined;
-    
+
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
         showMessage(t("User-already-exists"), "error", setOpen);
@@ -2009,7 +2016,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       return;
     }
     let finalDateTime = createConvert(
-      createMeeting.MeetingDate + createMeeting.MeetingStartTime
+      createMeeting.MeetingDate + createMeeting.MeetingStartTime,
     );
     let finalDateTimeWithoutUTC =
       createMeeting.MeetingDate + createMeeting.MeetingStartTime;
@@ -2037,21 +2044,27 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    
+
     await dispatch(
-      ScheduleNewMeeting(navigate, t, checkFlag, newData, setShow)
+      ScheduleNewMeeting(
+        navigate,
+        t,
+        checkFlag,
+        newData,
+        setIsQuickMeetingCreate,
+      ),
     );
   };
 
   const deleteFilefromAttachments = (data, index) => {
     setFileForSend((prevFileForSend) =>
       prevFileForSend.filter(
-        (newData, index) => newData.name !== data.DisplayAttachmentName
-      )
+        (newData, index) => newData.name !== data.DisplayAttachmentName,
+      ),
     );
     let newAttachments = attachments.filter(
       (fileData, index) =>
-        fileData.DisplayAttachmentName !== data.DisplayAttachmentName
+        fileData.DisplayAttachmentName !== data.DisplayAttachmentName,
     );
     setAttachments(newAttachments);
   };
@@ -2106,7 +2119,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
 
   const handleCloseUpdateMeeting = () => {
-    setShow(false);
+    setIsQuickMeetingCreate(false);
   };
 
   const handleChangePresenter = (value) => {
@@ -2134,7 +2147,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       fileName: record.DisplayAttachmentName,
       attachmentID: Number(record.OriginalAttachmentName),
     };
-    
+
     const pdfDataJson = JSON.stringify(pdfData);
     openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
   };
@@ -2148,17 +2161,17 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         navigate,
         dataRoomData,
         t,
-        record.DisplayAttachmentName
-      )
+        record.DisplayAttachmentName,
+      ),
     );
   };
 
   return (
     <>
       <Modal
-        show={show}
+        show={isQuickMeetingCreate}
         onHide={onHideHandleModal}
-        setShow={setShow}
+        setShow={setIsQuickMeetingCreate}
         className={
           closeConfirmationModal === true
             ? null
@@ -2579,7 +2592,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                         applyClass='form-control2'
                                         type='text'
                                         placeholder={t(
-                                          "Presenter-Title-Placeholder"
+                                          "Presenter-Title-Placeholder",
                                         )}
                                       />
                                     </Col>
@@ -2601,7 +2614,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                       ? data.MeetingAgendaAttachments.map(
                                           (
                                             MeetingAgendaAttachmentsData,
-                                            index
+                                            index,
                                           ) => {
                                             return (
                                               <Col
@@ -2611,16 +2624,16 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                                 key={index}>
                                                 <AttachmentViewer
                                                   id={Number(
-                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName
+                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName,
                                                   )}
                                                   handleEyeIcon={() =>
                                                     handeClickView(
-                                                      MeetingAgendaAttachmentsData
+                                                      MeetingAgendaAttachmentsData,
                                                     )
                                                   }
                                                   handleClickDownload={() =>
                                                     downloadClick(
-                                                      MeetingAgendaAttachmentsData
+                                                      MeetingAgendaAttachmentsData,
                                                     )
                                                   }
                                                   data={
@@ -2632,7 +2645,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                                 />
                                               </Col>
                                             );
-                                          }
+                                          },
                                         )
                                       : null}
                                   </Row>

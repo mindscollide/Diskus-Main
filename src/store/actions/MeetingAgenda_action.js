@@ -1,6 +1,5 @@
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
-import { UpdateOrganizersMeeting } from "./MeetingOrganizers_action";
 import {
   getAgendaVotingDetails,
   getAllVotingResultDisplay,

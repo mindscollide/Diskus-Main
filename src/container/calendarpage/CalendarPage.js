@@ -30,14 +30,14 @@ import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos
 import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
-import MeetingViewModalCalendar from "../modalView/ModalView";
+import MeetingViewModalCalendar from "../meeting/quickMeeting/ViewQuickMeeting";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import {
   JoinCurrentMeeting,
   meetingStatusPublishedMqtt,
 } from "../../store/actions/NewMeetingActions";
-import CreateQuickMeeting from "../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import CreateQuickMeeting from "../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const CalendarPage = () => {
   const { t } = useTranslation();

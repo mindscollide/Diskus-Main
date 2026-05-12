@@ -35,7 +35,6 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import NextModal from "../meetingDetails/NextModal/NextModal";
-import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
@@ -402,21 +401,7 @@ const MeetingMaterial = ({
         {setEditorRole},
       ),
     );
-    // dispatch(
-    //   UpdateOrganizersMeeting(
-    //     false,
-    //     navigate,
-    //     t,
-    //     5,
-    //     Data,
-    //     setEditorRole,
-    //     setAdvanceMeetingModalID,
-    //     setDataroomMapFolderId,
-    //     setSceduleMeeting,
-    //     setPublishState,
-    //     setCalendarViewModal
-    //   )
-    // );
+
   };
 
   return (

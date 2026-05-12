@@ -56,7 +56,7 @@ import {
 } from "../../../store/actions/VideoFeature_actions.js";
 import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { useNotesContext } from "../../../context/NotesContext.js";
-import CreateQuickMeeting from "../../../container/QuickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
+import CreateQuickMeeting from "../../../container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
 import { useMeetingContext } from "../../../context/MeetingContext.js";
 import { convertToArabicNumerals } from "../../../commen/functions/regex.js";
 import { convertToArabicNumber } from "../../../commen/functions/customPagination/utils.js";

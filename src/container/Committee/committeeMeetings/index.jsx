@@ -1,47 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, ResultMessage, Table } from "../../../components/elements";
-import {
-  getCurrentDateTimeUTC,
-  newTimeFormaterAsPerUTCFullDate,
-  utcConvertintoGMT,
-} from "../../../commen/functions/date_formater";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import ClipIcon from "../../../assets/images/ClipIcon.png";
-import CommentIcon from "../../../assets/images/Comment-Icon.png";
-import VideoIcon from "../../../assets/images/Video-Icon.png";
-import member from "../../../assets/images/member.svg";
-import addmore from "../../../assets/images/addmore.png";
-import ViewModal from "../../modalView/ModalView";
+import { Button } from "../../../components/elements";
+
+import ViewModal from "../../meeting/quickMeeting/ViewQuickMeeting";
 import { Col, Row } from "react-bootstrap";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { Plus } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
-import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import ReactBootstrapDropdown from "react-bootstrap/Dropdown";
 
-import {
-  JoinCurrentMeeting,
-  meetingNotConductedMQTT,
-} from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
-import CustomPagination from "../../../commen/functions/customPagination/Paginations";
-import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
-import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
-import { truncateString } from "../../../commen/functions/regex";
-import {
-  createCommitteeMeeting,
-  getMeetingStatusfromSocket,
-} from "../../../store/actions/GetMeetingUserId";
-import { Checkbox, Dropdown, Menu } from "antd";
-import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
-import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
-import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
-import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
-import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
-import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+
+import UpdateQuickMeeting from "../../meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
+import CreateQuickMeeting from "../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import {
   activeChatBoxGS,
   addNewChatScreen,
@@ -53,14 +25,6 @@ import {
   headerShowHideStatus,
   recentChatFlag,
 } from "../../../store/actions/Talk_Feature_actions";
-import {
-  GetAllUserChats,
-  GetAllUsers,
-  GetAllUsersGroupsRoomsList,
-  GetGroupMessages,
-  activeChat,
-} from "../../../store/actions/Talk_action";
-import { StatusValue } from "@/container/meeting/commonComponents/statusJson";
 import { getMeetingByCommitteeIdApi } from "../../../store/actions/Committee_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
@@ -69,43 +33,31 @@ import {
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
 } from "../../../store/actions/ModalStates_actions";
-import CreateEditAdvanceMeeting from "../../meeting/advanceMeeting/createEditAdvanceMeeting";
-import ViewMeetingModal from "../../meeting/advanceMeeting/viewAdvanceMeeting";
 import CommitteePublishedMeetingList from "./committeePublishMeetings";
 import CommitteeProposedMeetings from "./committeeProposedMeetings";
 import CommitteeDraftMeetings from "./committeeDraftMeetings";
 import { useCommitteeContext } from "../../../context/CommitteeContext";
+import { activeChat } from "../../../store/actions/Talk_action";
+import { useMeetingContext } from "../../../context/MeetingContext";
+import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const getMeetingByCommitteeID = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingByCommitteeID,
-  );
-  const committeeInfo = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteeDetails,
-  );
 
   const {
     currentCommitteeMeetingTabActive,
     setCurrentCommitteeMeetingTabActive,
-    isCommitteeViewQuickMeeting,
-    setIsCommitteeViewQuickMeeting,
-    isCommitteeUpdateQuickMeeting,
-    setIsCommitteeUpateQuickMeeting,
-    isCommitteeCreateQuickMeeting,
-    setIsCommitteeCreateQuickMeeting,
   } = useCommitteeContext();
+  const {
+    isQuickMeetingCreate,
+    isQuickMeetingUpdate,
+    isQuickMeetingView,
+    setIsQuickMeetingCreate,
+  } = useNewMeetingContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
-
-  const createEditMeetingModal = useSelector(
-    (state) => state.ModalStatesReducer.isCreateEditMeetingModal,
-  );
-  const isViewMeetingModal = useSelector(
-    (state) => state.ModalStatesReducer.isViewMeetingModal,
-  );
 
   let userID = localStorage.getItem("userID");
 
@@ -165,7 +117,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
   const handelCreateMeeting = () => {
-    setIsCommitteeCreateQuickMeeting(true);
+    setIsQuickMeetingCreate(true);
   };
 
   const handleCreateAdvanceMeeting = () => {
@@ -180,24 +132,17 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
 
   return (
     <>
-      {isCommitteeCreateQuickMeeting && (
+      {isQuickMeetingCreate && (
         <CreateQuickMeeting
-          show={isCommitteeCreateQuickMeeting}
-          setShow={setIsCommitteeCreateQuickMeeting}
+          show={isQuickMeetingCreate}
           // this is check from where its called 6 is from committee create
           checkFlag={5}
         />
       )}
-      {isCommitteeViewQuickMeeting && (
-        <ViewModal
-          viewFlag={isCommitteeViewQuickMeeting}
-          setViewFlag={setIsCommitteeViewQuickMeeting}
-        />
-      )}
-      {isCommitteeUpdateQuickMeeting && (
+      {isQuickMeetingView && <ViewModal viewFlag={isQuickMeetingView} />}
+      {isQuickMeetingUpdate && (
         <UpdateQuickMeeting
-          editFlag={isCommitteeUpdateQuickMeeting}
-          setEditFlag={setIsCommitteeUpateQuickMeeting}
+          editFlag={isQuickMeetingUpdate}
           // this is check from where its called 6 is from committee create
           checkFlag={6}
         />

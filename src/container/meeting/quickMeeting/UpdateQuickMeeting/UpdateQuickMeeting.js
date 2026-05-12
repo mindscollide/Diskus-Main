@@ -64,10 +64,9 @@ import {
   uploadDocumentsQuickMeetingApi,
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
+import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 
 const UpdateQuickMeeting = ({
-  editFlag,
-  setEditFlag,
   ModalTitle,
   checkFlag,
 }) => {
@@ -82,7 +81,11 @@ const UpdateQuickMeeting = ({
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {
 
+    isQuickMeetingUpdate,
+    setIsQuickMeetingUpdate,
+  } = useNewMeetingContext();
   const assigneesViewMeetingDetails = useSelector(
     (state) => state.assignees.ViewMeetingDetails
   );
@@ -406,7 +409,7 @@ const UpdateQuickMeeting = ({
   };
 
   const navigateToPublish = async () => {
-    await setEditFlag(false);
+    await setIsQuickMeetingUpdate(false);
     await seteditRecordIndex(null);
     await seteditRecordFlag(false);
     // await
@@ -1127,7 +1130,7 @@ const UpdateQuickMeeting = ({
     // setAddedParticipantNameList(List);
     // } else {
     return () => {
-      setEditFlag(false);
+      setIsQuickMeetingUpdate(false);
       seteditRecordIndex(null);
       seteditRecordFlag(false);
       dispatch(cleareAssigneesState());
@@ -2174,7 +2177,7 @@ const UpdateQuickMeeting = ({
     );
 
     if (hasOrganizer) {
-      await setEditFlag(false);
+      await setIsQuickMeetingUpdate(false);
       await seteditRecordIndex(null);
       await seteditRecordFlag(false);
       // await
@@ -2213,7 +2216,7 @@ const UpdateQuickMeeting = ({
       };
       
       await dispatch(
-        UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
+        UpdateMeeting(navigate, t, checkFlag, newData, setIsQuickMeetingUpdate)
       );
     } else {
       showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
@@ -2222,7 +2225,7 @@ const UpdateQuickMeeting = ({
 
   // For Cancelling Meeting
   const cancelMeeting = async () => {
-    await setEditFlag(false);
+    await setIsQuickMeetingUpdate(false);
     await seteditRecordIndex(null);
     await seteditRecordFlag(false);
     await await setIsDetails(true);
@@ -2286,7 +2289,7 @@ const UpdateQuickMeeting = ({
     setTaskAssignedToInput("");
   };
   const goBack = () => {
-    setEditFlag(true);
+    setIsQuickMeetingUpdate(true);
     seteditRecordIndex(null);
     seteditRecordFlag(false);
 
@@ -2299,7 +2302,7 @@ const UpdateQuickMeeting = ({
   };
   // For Discard Meeting
   const discardMeeting = () => {
-    setEditFlag(false);
+    setIsQuickMeetingUpdate(false);
     seteditRecordIndex(null);
     seteditRecordFlag(false);
 
@@ -2366,7 +2369,7 @@ const UpdateQuickMeeting = ({
         await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
-        await setEditFlag(false);
+        await setIsQuickMeetingUpdate(false);
         await seteditRecordIndex(null);
         await seteditRecordFlag(false);
         await await setIsDetails(false);
@@ -2427,7 +2430,7 @@ const UpdateQuickMeeting = ({
         await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
-        await setEditFlag(false);
+        await setIsQuickMeetingUpdate(false);
         await seteditRecordIndex(null);
         await seteditRecordFlag(false);
         await await setIsDetails(true);
@@ -2615,7 +2618,7 @@ const UpdateQuickMeeting = ({
     }
   };
   const handleCloseUpdateMeeting = () => {
-    setEditFlag(false);
+    setIsQuickMeetingUpdate(false);
   };
   const handleDeleteAgenda = (data, indexValue) => {
     let copyMeetingAgenda = [...createMeeting.MeetingAgendas];
@@ -2694,8 +2697,8 @@ const UpdateQuickMeeting = ({
       <Container>
         <Modal
           onHide={onHideHandleModal}
-          show={editFlag}
-          setShow={setEditFlag}
+          show={isQuickMeetingUpdate}
+          setShow={setIsQuickMeetingUpdate}
           className={
             closeConfirmationModal || isCancelMeetingModal
               ? null

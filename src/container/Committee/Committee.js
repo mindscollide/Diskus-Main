@@ -246,6 +246,7 @@ const Committee = () => {
       localStorage.removeItem("committeeView_Id");
       localStorage.removeItem("committeeList");
       dispatch(resetViewCommitteeDetails());
+      localStorage.removeItem("ViewCommitteeID")
       localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
       setShowModal(false); // Reset modal visibility
     };

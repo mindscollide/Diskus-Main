@@ -2607,8 +2607,6 @@ export const UpdateMeetingStatusApi = (
                         break;
                       }
                       case "startMeetingFromMainListing": {
-                        dispatch(toggleViewMeetingModal(true));
-                        dispatch(setViewTab("agendaViewer"));
                         const { record } = object;
                         dispatch(
                           joinMeetingApi(
@@ -2626,6 +2624,27 @@ export const UpdateMeetingStatusApi = (
                         // here we need to call Join Meeting API
                         break;
                       }
+                      case "startMeetingFromQuickMeeting":
+                        const {
+                          setIsQuickMeetingView,
+                          VideoCallURL,
+                          meetingID,
+                        } = object;
+                        // setIsQuickMeetingView(true);
+                        dispatch(
+                          joinMeetingApi(
+                            navigate,
+                            t,
+                            {
+                              FK_MDID: Number(meetingID),
+                              DateTime: getCurrentDateTimeUTC(),
+                              VideoCallURL: VideoCallURL,
+                            },
+                            "startMeetingFromQuickMeetingView",
+                            object,
+                          ),
+                        );
+                        break;
                       case "EndMeetingFromMeetingDetailsModal": {
                         setEndMeetingConfirmationModal(false);
                         break;
@@ -3215,22 +3234,22 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                   ),
                 );
 
-                if (isQuickMeeting === true && routeNo !== 11) {
-                  await dispatch(
-                    getViewMeetingByMeetingIdApi(
-                      navigate,
-                      t,
-                      { MeetingID: Number(Data.FK_MDID) },
-                      "viewMeeting",
-                      {
-                        setViewFlag,
-                        setEditFlag,
-                        setSceduleMeeting,
-                        no: routeNo,
-                      },
-                    ),
-                  );
-                }
+                // if (isQuickMeeting === true && routeNo !== 11) {
+                //   await dispatch(
+                //     getViewMeetingByMeetingIdApi(
+                //       navigate,
+                //       t,
+                //       { MeetingID: Number(Data.FK_MDID) },
+                //       "viewMeeting",
+                //       {
+                //         setViewFlag,
+                //         setEditFlag,
+                //         setSceduleMeeting,
+                //         no: routeNo,
+                //       },
+                //     ),
+                //   );
+                // }
 
                 if (NotificationCheckQuickMeet) {
                   dispatch(
@@ -3304,6 +3323,20 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   }
+                  case "startMeetingFromQuickMeetingView": {
+                    const { setIsQuickMeetingView } = object;
+                    setIsQuickMeetingView(true);
+                    await dispatch(
+                      getViewMeetingByMeetingIdApi(
+                        navigate,
+                        t,
+                        { MeetingID: Number(Data.FK_MDID) },
+                        "viewMeetingAfterStartAndJoinMeeting",
+                        {},
+                      ),
+                    );
+                    break;
+                  }
                   default:
                     break;
                 }
@@ -3366,15 +3399,6 @@ export const getViewMeetingByMeetingIdApi = (
   routePath,
   object,
 ) => {
-  const {
-    setViewFlag,
-    setEditFlag,
-    setCalendarViewModal,
-    no,
-    setViewMeetingModal,
-    setEditMeetingModal,
-  } = object;
-
   return (dispatch) => {
     dispatch(ViewMeetingInit());
     const form = new FormData();
@@ -3393,7 +3417,7 @@ export const getViewMeetingByMeetingIdApi = (
           if (response.data.responseResult.isExecuted === true) {
             const responseMessage =
               response.data.responseResult.responseMessage.toLowerCase();
-              const {setIsCommitteeViewQuickMeeting} = object;
+            const { setIsQuickMeetingView } = object;
 
             switchOnMessage(responseMessage, {
               // _01: Meeting fetched — trigger view/edit based on `no`
@@ -3405,36 +3429,11 @@ export const getViewMeetingByMeetingIdApi = (
                   try {
                     switch (routePath) {
                       case "ViewQuickMeetingFromListing":
-                        setIsCommitteeViewQuickMeeting(true)
+                        setIsQuickMeetingView(true);
                         break;
                       default:
                         break;
                     }
-                    // switch (no) {
-                    //   case 1:
-                    //     setViewFlag(true);
-                    //     localStorage.setItem("typeOfMeeting", "isQuickMeeting");
-                    //     break;
-                    //   case 2:
-                    //     setEditFlag(true);
-                    //     break;
-                    //   case 3:
-                    //   case 10:
-                    //     setViewFlag(true);
-                    //     setCalendarViewModal(true);
-                    //     break;
-                    //   case 4:
-                    //     setViewMeetingModal(true);
-                    //     break;
-                    //   case 5:
-                    //     setEditMeetingModal(true);
-                    //     break;
-                    //   case 6:
-                    //     setViewFlag(true);
-                    //     break;
-                    //   default:
-                    //     break;
-                    // }
                   } catch (error) {}
                 },
               // _02: No records found
@@ -3715,7 +3714,6 @@ export const saveParcipantsProposeMeetingApi = (
   // setProposedNewMeeting,
   // setSceduleMeeting,
 ) => {
-
   return (dispatch) => {
     dispatch(saveParcipantsProposeMeetingInit());
     let form = new FormData();

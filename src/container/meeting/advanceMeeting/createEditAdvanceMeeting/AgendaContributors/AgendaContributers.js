@@ -42,7 +42,6 @@ import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   UpdateMeetingStatusApi,
@@ -635,21 +634,7 @@ const AgendaContributers = ({
       ),
     );
     
-    // dispatch(
-    //   UpdateOrganizersMeeting(
-    //     false,
-    //     navigate,
-    //     t,
-    //     5,
-    //     Data,
-    //     setEditorRole,
-    //     setAdvanceMeetingModalID,
-    //     setDataroomMapFolderId,
-    //     setSceduleMeeting,
-    //     setPublishState,
-    //     setCalendarViewModal
-    //   )
-    // );
+
   };
 
   const openAddAgendaModal = () => {

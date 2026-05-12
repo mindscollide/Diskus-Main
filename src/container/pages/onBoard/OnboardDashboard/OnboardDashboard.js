@@ -24,7 +24,7 @@ import { HideNotificationUserNotificationData } from "../../../../store/actions/
 import { HideNotification } from "../../../../store/actions/Get_List_Of_Assignees";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
-import CreateQuickMeeting from "../../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import CreateQuickMeeting from "../../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();
