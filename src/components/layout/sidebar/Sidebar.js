@@ -26,7 +26,12 @@ import { useMeetingContext } from "../../../context/MeetingContext";
 import { useComplianceContext } from "../../../context/ComplianceContext";
 import CancelButtonModal from "../../../container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/CancelButtonModal/CancelButtonModal";
 import { toggleViewMeetingModal } from "../../../store/actions/ModalStates_actions";
-import { resetCurrentMeetingInfo } from "../../../store/actions/NewMeeting2.actions";
+import {
+  listOfMeetingsApi,
+  resetCurrentMeetingInfo,
+} from "../../../store/actions/NewMeeting2.actions";
+import { useGroupsContext } from "../../../context/GroupsContext";
+import { useCommitteeContext } from "../../../context/CommitteeContext";
 const Sidebar = () => {
   const location = useLocation();
   const { t } = useTranslation();
@@ -45,6 +50,9 @@ const Sidebar = () => {
     createEditCompliance,
     setPendingNavigation,
   } = useComplianceContext();
+
+  const { ViewGroupPage, setViewGroupPage } = useGroupsContext();
+  const { ViewCommitteePage, setViewCommitteePage } = useCommitteeContext();
 
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
@@ -121,7 +129,7 @@ const Sidebar = () => {
 
   const handleMoreOptions = () => {
     setShowMore(!showMore);
-    
+
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
@@ -129,7 +137,6 @@ const Sidebar = () => {
     );
     if (isMeeting && isMeetingVideo) {
       if (isMeetingVideoHostCheck) {
-        
         dispatch(maximizeVideoPanelFlag(false));
         dispatch(minimizeVideoPanelFlag(true));
         dispatch(normalizeVideoPanelFlag(false));
@@ -139,7 +146,7 @@ const Sidebar = () => {
 
   const handleMoreOptionActiveCall = () => {
     setShowMore(!showMore);
-    
+
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
@@ -155,10 +162,8 @@ const Sidebar = () => {
 
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
-    
     localStorage.setItem("navigateLocation", "Meeting");
     if (CurrentMeetingStatus === 10) {
-      
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
@@ -172,7 +177,7 @@ const Sidebar = () => {
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "Meeting");
-    
+
     SideBarGlobalNavigationFunctionNew(
       dispatch,
       navigate,
@@ -187,9 +192,8 @@ const Sidebar = () => {
 
   //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
-    
     localStorage.setItem("navigateLocation", "dataroom");
-    
+
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -203,7 +207,6 @@ const Sidebar = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    
 
     localStorage.setItem("navigateLocation", "dataroom");
     SideBarGlobalNavigationFunctionNew(
@@ -265,7 +268,6 @@ const Sidebar = () => {
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "committee");
-    
 
     SideBarGlobalNavigationFunctionNew(
       dispatch,
@@ -294,8 +296,8 @@ const Sidebar = () => {
   //   const activeCall = JSON.parse(localStorage.getItem("activeCall"));
   //   const isHost = JSON.parse(localStorage.getItem("isHost"));
   //   localStorage.setItem("navigateLocation", navigateLocationKey);
-  //   
-  //   
+  //
+  //
 
   //   if (proposedMeetingViewFlag) {
   //     let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -312,25 +314,25 @@ const Sidebar = () => {
   //       ProposedMeetings: true,
   //     };
 
-  //     
+  //
   //     await dispatch(searchNewUserMeeting(navigate, searchData, t, 1));
 
   //     return;
   //   }
 
   //   if (isMeeting) {
-  //     
+  //
   //     if (location.pathname !== targetPath) {
-  //       
+  //
   //       navigate(targetPath);
   //       return "";
   //     }
 
   //     if (!isMeetingVideo) {
-  //       
+  //
   //       dispatch(showEndMeetingModal(true));
   //     } else {
-  //       
+  //
 
   //       if (
   //         (activeCall === false ||
@@ -338,17 +340,17 @@ const Sidebar = () => {
   //           activeCall === null) &&
   //         isMeetingVideo
   //       ) {
-  //         
+  //
 
-  //         
+  //
   //         if (typeof handleNoCall === "function") {
   //           handleNoCall();
   //         }
   //       } else {
-  //         
+  //
 
   //         if (isMeetingVideo && typeof handleWithCall === "function") {
-  //           
+  //
   //           handleWithCall();
   //         }
   //       }
@@ -363,7 +365,7 @@ const Sidebar = () => {
   //   }
 
   //   if (endMeetingModal) {
-  //     
+  //
   //     return true;
   //   }
 
@@ -377,7 +379,7 @@ const Sidebar = () => {
   //     navigate("/Diskus/Meeting");
   //   } else {
   //     if (viewAdvanceMeetingModal || viewAdvanceMeetingModalUnpublish) {
-  //       
+  //
   //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
   //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
   //       let searchData = {
@@ -396,7 +398,7 @@ const Sidebar = () => {
   //             ? true
   //             : false,
   //       };
-  //       
+  //
   //       dispatch(searchNewUserMeeting(navigate, searchData, t));
   //     }
   //     localStorage.removeItem("AdvanceMeetingOperations");
@@ -418,7 +420,6 @@ const Sidebar = () => {
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
     if (createEditCompliance) {
-      
       setPendingNavigation(targetPath);
       setCloseConfirmationModal(true);
       return true;
@@ -426,14 +427,66 @@ const Sidebar = () => {
 
     if (location.pathname !== targetPath) {
       // if (isMeetingLocation) {
-      
 
       if (advanceMeetingViewModal) {
-        
-
         if (Number(editorRole.status) !== 10) {
-          
+          if (ViewGroupPage || ViewCommitteePage) {
+            setViewGroupPage(false);
+            setViewCommitteePage(false);
+          }
+          // Close modal first, then navigate
+          dispatch(resetCurrentMeetingInfo());
+          dispatch(toggleViewMeetingModal(false));
+          setEditorRole({
+            status: null,
+            role: null,
+            isPrimaryOrganizer: false,
+          });
+          // navigate(targetPath);
+          return;
+        } else {
+          if (!isMeetingVideo) {
+            dispatch(showEndMeetingModal(true));
+          } else {
+            if (
+              (activeCall === false ||
+                activeCall === undefined ||
+                activeCall === null) &&
+              !isMeetingVideo
+            ) {
+              handleNoCall();
+            } else {
+              if (isMeetingVideo) {
+                handleWithCall();
+              }
+            }
+          }
 
+          if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
+            localStorage.removeItem("navigateLocation");
+          }
+
+          localStorage.setItem("navigateLocation", navigateLocationKey);
+        }
+        return;
+      } else if (
+        advanceMeetingCreateEditModal &&
+        !unSaveChangesModalForMeeting
+      ) {
+        localStorage.setItem("navigateLocation", navigateLocationKey);
+        setUnSaveChangesModalForMeeting(true);
+        return;
+      } else {
+        navigate(targetPath);
+        return;
+      }
+
+      // }
+
+      // navigate(targetPath);
+    } else {
+      if (advanceMeetingViewModal) {
+        if (Number(editorRole.status) !== 10) {
           // Close modal first, then navigate
           dispatch(resetCurrentMeetingInfo());
           dispatch(toggleViewMeetingModal(false));
@@ -443,53 +496,62 @@ const Sidebar = () => {
             isPrimaryOrganizer: false,
           });
           navigate(targetPath);
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(localStorage.getItem("userID")),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
+          };
+
+          dispatch(listOfMeetingsApi(navigate, t, searchData));
           return;
         } else {
           if (!isMeetingVideo) {
-            
             dispatch(showEndMeetingModal(true));
           } else {
-            
             if (
               (activeCall === false ||
                 activeCall === undefined ||
                 activeCall === null) &&
-              isMeetingVideo
+              !isMeetingVideo
             ) {
-              
               handleNoCall();
             } else {
-              
               if (isMeetingVideo) {
-                
                 handleWithCall();
               }
             }
           }
 
           if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
-            
             localStorage.removeItem("navigateLocation");
           }
 
           localStorage.setItem("navigateLocation", navigateLocationKey);
         }
         return;
-      }else if (advanceMeetingCreateEditModal && !unSaveChangesModalForMeeting) {
+      } else if (
+        advanceMeetingCreateEditModal &&
+        !unSaveChangesModalForMeeting
+      ) {
         localStorage.setItem("navigateLocation", navigateLocationKey);
         setUnSaveChangesModalForMeeting(true);
         return;
       } else {
         navigate(targetPath);
-      return;
-
+        return;
       }
-
-      // }
-
-      // navigate(targetPath);
-    } else {
-      navigate(location.pathname);
+      // navigate(location.pathname);
     }
   };
 
@@ -930,7 +992,7 @@ const Sidebar = () => {
                       });
                       if (handled) {
                         e.preventDefault();
-                        
+
                         return;
                       }
                     }}>

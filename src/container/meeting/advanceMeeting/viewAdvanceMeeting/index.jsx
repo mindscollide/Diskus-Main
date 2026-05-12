@@ -358,7 +358,6 @@ const ViewMeetingModal = ({
 
           localStorage.setItem("isMeeting", false);
           sessionStorage.removeItem("isMeeting");
-          let currentMeeting = localStorage.getItem("currentMeetingID");
           dispatch(
             LeaveCurrentMeeting(
               navigate,
@@ -409,7 +408,6 @@ const ViewMeetingModal = ({
 
           localStorage.setItem("isMeeting", false);
           sessionStorage.removeItem("isMeeting");
-          let currentMeeting = localStorage.getItem("currentMeetingID");
           dispatch(
             LeaveCurrentMeeting(
               navigate,

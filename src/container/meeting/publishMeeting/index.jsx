@@ -322,6 +322,7 @@ const PublishedMeetingList = () => {
       dispatch(
         setCurrentMeetingInfo({
           meetingID: record.pK_MDID,
+          meetingTitle: record.title,
         }),
       );
     } catch (error) {

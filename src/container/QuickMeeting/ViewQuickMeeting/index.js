@@ -309,7 +309,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let meetingStatus = assigneesViewMeetingDetails.meetingStatus.status;
         let StatusCheck = assigneesViewMeetingDetails.meetingStatus.pK_MSID;
         setMeetStatus(StatusCheck);
-        const found = rightsButtons.find(
+        const found = rightsButtons.filter(
           (element) => element.user.pK_UID === parseInt(createrID),
         );
 
@@ -317,8 +317,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           const found2 = found.meetingAttendeeRole.pK_MARID;
           if (parseInt(found2) === 1 || parseInt(found2) === 3) {
             setOrganizer(true);
+            setIsParticipant(false);
+
           } else if (parseInt(found2) === 2) {
             setIsParticipant(true);
+            setOrganizer(false);
+
           } else {
             setOrganizer(false);
             setIsParticipant(false);

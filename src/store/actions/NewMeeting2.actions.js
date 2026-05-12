@@ -232,8 +232,9 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     dispatch(setAdvanceMeetingRoute(null));
                     dispatch(resetCreateEditTabs());
                     dispatch(toggleCreateEditMeetingModal(false));
-                    dispatch(resetViewCommitteeDetails());
-                    dispatch(resetViewGroupDetails());
+                    dispatch(resetCurrentMeetingInfo());
+                    // dispatch(resetViewCommitteeDetails());
+                    // dispatch(resetViewGroupDetails());
                     isFunction(setEditorRole) &&
                       setEditorRole({
                         status: null,
@@ -374,7 +375,6 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
         }
       })
       .catch((error) => {
-        
         dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
       });
   };
@@ -642,7 +642,6 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(
           showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong")),
         );
@@ -845,9 +844,7 @@ export const UpdateMeetingUserApi = (
                     default:
                       break;
                   }
-                } catch (error) {
-                  
-                }
+                } catch (error) {}
               },
               // _02: Update failed
               DataRoom_DataRoomManager_UpdateMeetingUsers_02: () =>
@@ -863,7 +860,6 @@ export const UpdateMeetingUserApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
       });
   };
@@ -973,7 +969,6 @@ export const SaveParticipantsApi = (navigate, t, Data, routePath, object) => {
         }
       })
       .catch((error) => {
-        
         dispatch(showSaveParticipantsFailed(t("Something-went-wrong")));
       });
   };
@@ -1142,7 +1137,6 @@ export const setProposedMeetingDateApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
       });
   };
@@ -1278,7 +1272,6 @@ export const GetAllSavedparticipantsApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(showAllMeetingParticipantsFailed(t("Something-went-wrong")));
       });
   };
@@ -1373,7 +1366,6 @@ export const SaveMeetingOrganizersApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
       });
   };
@@ -1454,7 +1446,6 @@ export const GetAllMeetingOrganizersApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
       });
   };
@@ -1561,7 +1552,6 @@ export const saveAgendaContributorsApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
       });
   };
@@ -1677,7 +1667,6 @@ export const getAllAgendaContributorsApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(getAllAgendaContributor_fail(t("Something-went-wrong")));
       });
   };
@@ -1796,7 +1785,6 @@ export const GetAdvanceMeetingAgendabyMeetingIdApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(
           getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong")),
         );
@@ -1883,7 +1871,6 @@ export const GetAllUserAgendaRightsApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(showGetAllUserAgendaRightsFailed(t("Something-went-wrong")));
       });
   };
@@ -1977,7 +1964,6 @@ export const UploadDocumentsMeetingAgendaApi = (
         dispatch(uploadDocument_fail(t("Something-went-wrong")));
       }
     } catch (error) {
-      
       dispatch(uploadDocument_fail(t("Something-went-wrong")));
     }
   };
@@ -2070,7 +2056,6 @@ export const SaveMeetingAgendaFilesApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(saveFiles_fail(t("Something-went-wrong")));
       });
   };
@@ -2276,7 +2261,6 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")));
       });
   };
@@ -2449,7 +2433,6 @@ const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
         }
       })
       .catch((error) => {
-        
         dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
       });
   };
@@ -2546,29 +2529,30 @@ export const UpdateMeetingStatusApi = (
                       case "publishMeetingFromOrganizer":
                       case "PublishMeetingFromMeetingMaterial":
                       case "publishMeetingFromAgendaTab": {
+                        dispatch(setAdvanceMeetingRoute(null));
+                        dispatch(resetCreateEditTabs());
+                        dispatch(toggleCreateEditMeetingModal(false));
+                        dispatch(resetCurrentMeetingInfo());
                         isFunction(setEditorRole) &&
                           setEditorRole({
                             status: null,
                             role: "",
                             isPrimaryOrganizer: false,
                           });
-                        dispatch(toggleCreateEditMeetingModal(false));
-                        dispatch(resetCreateEditTabs());
-                        dispatch(resetViewCommitteeDetails());
                         if (committeeInfo !== null) {
-                          let searchData = {
-                            CommitteeID: Number(committeeInfo.committeeID),
-                            Date: "",
-                            Title: "",
-                            HostName: "",
-                            UserID: Number(localStorage.getItem("userID")),
-                            PageNumber: 1,
-                            Length: 30,
-                            PublishedMeetings: true,
-                          };
-                          dispatch(
-                            getMeetingByCommitteeIdApi(navigate, t, searchData),
-                          );
+                          // let searchData = {
+                          //   CommitteeID: Number(committeeInfo.committeeID),
+                          //   Date: "",
+                          //   Title: "",
+                          //   HostName: "",
+                          //   UserID: Number(localStorage.getItem("userID")),
+                          //   PageNumber: 1,
+                          //   Length: 30,
+                          //   PublishedMeetings: true,
+                          // };
+                          // dispatch(
+                          //   getMeetingByCommitteeIdApi(navigate, t, searchData),
+                          // );
                           return;
                         }
                         if (groupInfo !== null) {
@@ -2643,7 +2627,6 @@ export const UpdateMeetingStatusApi = (
                         break;
                       }
                       case "EndMeetingFromMeetingDetailsModal": {
-                        
                         setEndMeetingConfirmationModal(false);
                         break;
                       }
@@ -2696,9 +2679,7 @@ export const UpdateMeetingStatusApi = (
                       default:
                         break;
                     }
-                  } catch (error) {
-                    
-                  }
+                  } catch (error) {}
                 },
               // _02: Record not updated
               Meeting_MeetingServiceManager_MeetingStatusUpdate_02: () =>
@@ -2755,7 +2736,6 @@ export const UpdateMeetingStatusApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(updateOrganizerMeetingStatus_fail(t("Something-went-wrong")));
       });
   };
@@ -2897,6 +2877,17 @@ export const getMeetingDetailsByMeetingIdApi = (
                 );
 
                 break;
+              case "ViewMeetingFromTitle":
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedFolderIdApi(
+                    navigate,
+                    t,
+                    mappedFolderPayload,
+                    "ViewMeetingFromTitle",
+                    {},
+                  ),
+                );
+                break;
               default:
                 break;
             }
@@ -2915,7 +2906,6 @@ export const getMeetingDetailsByMeetingIdApi = (
         default: failGeneric,
       });
     } catch (error) {
-      
       failGeneric();
     }
   };
@@ -2990,7 +2980,6 @@ export const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
       }
     } catch (error) {
-      
       dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
     }
   };
@@ -3068,7 +3057,6 @@ export const GetAllMeetingRemindersFrequencyApi = (navigate, t) => {
         );
       }
     } catch (error) {
-      
       dispatch(handlegetallReminderFrequencyFailed(t("Something-went-wrong")));
     }
   };
@@ -3145,7 +3133,6 @@ export const GetAllMeetingRecurringApi = (navigate, t, loader) => {
         }
       })
       .catch((error) => {
-        
         dispatch(handleReucrringFailed(t("Something-went-wrong"), loader));
       });
   };
@@ -3344,7 +3331,6 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
         }
       })
       .catch((error) => {
-        
         dispatch(joinMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -3407,6 +3393,7 @@ export const getViewMeetingByMeetingIdApi = (
           if (response.data.responseResult.isExecuted === true) {
             const responseMessage =
               response.data.responseResult.responseMessage.toLowerCase();
+              const {setIsCommitteeViewQuickMeeting} = object;
 
             switchOnMessage(responseMessage, {
               // _01: Meeting fetched — trigger view/edit based on `no`
@@ -3417,37 +3404,8 @@ export const getViewMeetingByMeetingIdApi = (
                   );
                   try {
                     switch (routePath) {
-                      case "EditMeetingFromMainListing":
-                        const { role } = object;
-                        if (role === "Agenda Contributor") {
-                          dispatch(setCreateEditTab("agenda"));
-                        } else {
-                          dispatch(setCreateEditTab("meetingDetails"));
-                        }
-                        dispatch(setAdvanceMeetingRoute(2));
-                        dispatch(toggleCreateEditMeetingModal(true));
-
-                        dispatch(
-                          CreateUpdateMeetingDataRoomMapeedFolderIdApi(
-                            navigate,
-                            t,
-                            {
-                              MeetingID:
-                                response.data.responseResult
-                                  .advanceMeetingDetails.meetingID,
-                              MeetingTitle:
-                                response.data.responseResult
-                                  .advanceMeetingDetails.meetingTitle,
-                              IsUpdateFlow: true,
-                            },
-                            "EditMeetingFromMainListing",
-                            {},
-                          ),
-                        );
-                        break;
-                      case "EditProposedMeetingFromListing":
-                        dispatch(setProposedMeetingRoute(2));
-                        dispatch(toggleCreateEditProposedMeetingModal(true));
+                      case "ViewQuickMeetingFromListing":
+                        setIsCommitteeViewQuickMeeting(true)
                         break;
                       default:
                         break;
@@ -3477,9 +3435,7 @@ export const getViewMeetingByMeetingIdApi = (
                     //   default:
                     //     break;
                     // }
-                  } catch (error) {
-                    
-                  }
+                  } catch (error) {}
                 },
               // _02: No records found
               Meeting_MeetingServiceManager_GetMeetingsByMeetingID_02:
@@ -3500,7 +3456,6 @@ export const getViewMeetingByMeetingIdApi = (
         }
       })
       .catch((error) => {
-        
         dispatch(ViewMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -3569,9 +3524,7 @@ export const listOfMeetingsApi = (navigate, t, Data, routePath, object) => {
                 if (webNotifactionDataRoutecheckFlag) {
                   dispatch(webnotificationGlobalFlag(true));
                 }
-              } catch (error) {
-                
-              }
+              } catch (error) {}
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
@@ -3580,11 +3533,10 @@ export const listOfMeetingsApi = (navigate, t, Data, routePath, object) => {
                   JSON.parse(localStorage.getItem("MeetingStatusID")) === 12
                 ) {
                   //Notification Work
-                  
+
                   //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
                   dispatch(showSceduleProposedMeeting(true));
                 } else {
-                  
                   //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
                   localStorage.removeItem("MeetingStatusID");
                   localStorage.removeItem("ProposedMeetingOrganizer");
@@ -4326,7 +4278,6 @@ export const SetMeetingResponseApi = (
               localStorage.setItem("MeetingCurrentView", 2);
               // setViewProposeDatePoll(false);
 
-              
               dispatch(
                 listOfMeetingsApi(
                   navigate,
@@ -4396,9 +4347,9 @@ export const SetMeetingResponseApi = (
 };
 
 export const setCurrentMeetingInfo = ({
-  meetingID,
-  meetingTitle,
-  mapFolderId,
+  meetingID = 0,
+  meetingTitle = "",
+  mapFolderId = 0,
 }) => {
   return {
     type: actions.CURRENT_MEETING_INFO,

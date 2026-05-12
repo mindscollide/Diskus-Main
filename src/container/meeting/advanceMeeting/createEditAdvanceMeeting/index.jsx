@@ -116,8 +116,8 @@ const CreateEditAdvanceMeeting = () => {
       apiCallsForComponentMound();
     }
     return () => {
-      dispatch(resetViewGroupDetails());
-      dispatch(resetViewCommitteeDetails());
+      // dispatch(resetViewGroupDetails());
+      // dispatch(resetViewCommitteeDetails());
       setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
       dispatch(setAdvanceMeetingRoute(1));
       dispatch(resetCreateEditTabs());

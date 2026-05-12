@@ -92,6 +92,7 @@ import {
   UpdateMeetingStatusApi,
 } from "@/store/actions/NewMeeting2.actions";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -160,6 +161,12 @@ const CommitteePublishedMeetingList = () => {
     startMeetingButton,
     committeePublishedMeetingData,
     committeePublishedMeetingDataRecord,
+    isCommitteeViewQuickMeeting,
+    setIsCommitteeViewQuickMeeting,
+    isCommitteeUpdateQuickMeeting,
+    setIsCommitteeUpateQuickMeeting,
+    isCommitteeCreateQuickMeeting,
+    setIsCommitteeCreateQuickMeeting,
   } = useCommitteeContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
@@ -268,15 +275,9 @@ const CommitteePublishedMeetingList = () => {
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
 
-  const handleViewMeeting = async (
-    videoCallURL,
-    id,
-    isQuickMeeting,
-    status,
-    record,
-  ) => {
+  const handleViewMeeting = async (record) => {
     try {
-      const statusNum = Number(status);
+      const statusNum = Number(record.status);
 
       if (statusNum === STATUS.ACTIVE) {
         handleJoinMeeting(record);
@@ -284,26 +285,36 @@ const CommitteePublishedMeetingList = () => {
         return;
       }
 
-      if (isQuickMeeting) {
+      if (record.isQuickMeeting) {
         await dispatch(
-          ViewMeeting(
+          getViewMeetingByMeetingIdApi(
             navigate,
-            { MeetingID: id },
             t,
-            setViewFlag,
-            setEditFlag,
-            // setIsCreateEditMeeting,
-            1,
+            { MeetingID: record.pK_MDID },
+            "ViewQuickMeetingFromListing",
+            {
+              setIsCommitteeCreateQuickMeeting,
+              setIsCommitteeViewQuickMeeting,
+              setIsCommitteeUpateQuickMeeting,
+            },
+            // setViewFlag,
+            // setEditFlag,
+            // // setIsCreateEditMeeting,
+            // 1,
           ),
         );
         return;
       }
-
+      dispatch(
+        setCurrentMeetingInfo({
+          meetingID: record.pK_MDID,
+        }),
+      );
       dispatch(toggleViewMeetingModal(true));
       dispatch(setViewTab("meetingDetails"));
       setEditorRole((prev) => ({
         ...prev,
-        status: status,
+        status: record.status,
         role: record.isParticipant
           ? "Participant"
           : record.isAgendaContributor
@@ -311,14 +322,7 @@ const CommitteePublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-      dispatch(
-        setCurrentMeetingInfo({
-          meetingID: record.pK_MDID,
-        }),
-      );
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
@@ -332,12 +336,13 @@ const CommitteePublishedMeetingList = () => {
 
     if (record.isQuickMeeting) {
       await dispatch(
-        ViewMeeting(navigate, t, { MeetingID: meetingId }, context, {
-          setViewFlag,
-          setEditFlag,
-          setSceduleMeeting,
-          no: 2,
-        }),
+        ViewMeeting(
+          navigate,
+          t,
+          { MeetingID: meetingId },
+          "EditMeetingFromMainListing",
+          {},
+        ),
       );
       return;
     }
@@ -447,13 +452,7 @@ const CommitteePublishedMeetingList = () => {
   };
 
   const handleClickViewAgenda = (record) => {
-    handleViewMeeting(
-      record.videoCallURL,
-      record.pK_MDID,
-      record.isQuickMeeting,
-      record.status,
-      record,
-    );
+    handleViewMeeting(record);
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
     dispatch(emailRouteID(3));
@@ -622,13 +621,7 @@ const CommitteePublishedMeetingList = () => {
         break;
 
       case "VIEW_MEETING":
-        handleViewMeeting(
-          record.videoCallURL,
-          record.pK_MDID,
-          record.isQuickMeeting,
-          record.status,
-          record,
-        );
+        handleViewMeeting(record);
         setVideoTalk(buildVideoTalk(record));
         setEditorRole(buildEditorRole(record));
         setMeetingLocalStorage(record);
@@ -679,13 +672,7 @@ const CommitteePublishedMeetingList = () => {
           <span
             className={styles.tableRow}
             onClick={() => {
-              handleViewMeeting(
-                record.videoCallURL,
-                record.pK_MDID,
-                record.isQuickMeeting,
-                record.status,
-                record,
-              );
+              handleViewMeeting(record);
               setMeetingLocalStorage(record);
               setVideoTalk(buildVideoTalk(record));
               setEditorRole(buildEditorRole(record));
@@ -868,7 +855,7 @@ const CommitteePublishedMeetingList = () => {
               isOrganizer &&
               minutesDifference < minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
-          
+
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 

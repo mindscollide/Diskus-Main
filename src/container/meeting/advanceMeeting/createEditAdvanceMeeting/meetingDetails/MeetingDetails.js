@@ -1101,7 +1101,7 @@ const MeetingDetails = () => {
                   lg={committeeInfo === null && groupInfo === null ? 6 : 12}
                   md={committeeInfo === null && groupInfo === null ? 6 : 12}
                   sm={committeeInfo === null && groupInfo === null ? 6 : 12}
-                  className='mb-2'>
+                className='my-2'>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>

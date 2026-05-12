@@ -28,7 +28,7 @@ export const CommitteeProvider = ({ children }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [ViewCommitteePage, setViewCommitteePage] = useState(true);
+  const [ViewCommitteePage, setViewCommitteePage] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [viewVotes, setviewVotes] = useState(false);
   let MeetingProp = localStorage.getItem("meetingprop");

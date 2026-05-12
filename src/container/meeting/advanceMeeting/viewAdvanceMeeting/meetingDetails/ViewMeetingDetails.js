@@ -85,6 +85,7 @@ import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonCompo
 import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
 import {
+  getMeetingDetailsByMeetingIdApi,
   UpdateMeetingStatusApi,
   UpdateMeetingUserApi,
 } from "../../../../../store/actions/NewMeeting2.actions";
@@ -265,14 +266,16 @@ const ViewMeetingDetails = () => {
             : Number(meetingID),
       };
       await dispatch(
-        GetAllMeetingDetailsApiFunc(
+        getMeetingDetailsByMeetingIdApi(
           navigate,
           t,
           Data,
-          true,
-          setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal,
-          setDataroomMapFolderId,
+          "ViewMeetingFromTitle",
+          {}
+          // true,
+          // setAdvanceMeetingModalID,
+          // setViewAdvanceMeetingModal,
+          // setDataroomMapFolderId,
         ),
       );
       dispatch(
@@ -291,18 +294,20 @@ const ViewMeetingDetails = () => {
           meetingID === 0 ||
           meetingID === null ||
           meetingID === undefined
-            ? currentMeetingID
+            ? 0
             : Number(meetingID),
       };
       await dispatch(
-        GetAllMeetingDetailsApiFunc(
+        getMeetingDetailsByMeetingIdApi(
           navigate,
           t,
           Data,
-          true,
-          setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal,
-          setDataroomMapFolderId,
+          "ViewMeetingFromTitle",
+          {}
+          // true,
+          // setAdvanceMeetingModalID,
+          // setViewAdvanceMeetingModal,
+          // setDataroomMapFolderId,
         ),
       );
       dispatch(
