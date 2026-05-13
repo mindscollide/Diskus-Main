@@ -14,6 +14,7 @@ import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/
 import {
   handleBlobFiles,
   processXmlForReadOnly,
+  processXmlToHideFields,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
@@ -310,48 +311,56 @@ const ViewSignatureDocument = () => {
   // === End === //
 
   // === Get  the file details by Id from API and Set it === //
+
+  //  CRITICAL: Get file details and process XFDF - Hide ALL signature fields completely
   useEffect(() => {
     try {
       if (
         getSignatureFileAnnotationResponse !== null &&
         getSignatureFileAnnotationResponse !== undefined
       ) {
-        let currentUserID =
+        const currentUserID =
           localStorage.getItem("userID") !== null
             ? Number(localStorage.getItem("userID"))
             : 0;
 
-        let HideArray = [];
-        let ReadArray = [];
+        console.log("=== Processing XFDF for View Only ===");
+        console.log("Current User ID:", currentUserID);
+        console.log("All Users with fields:", userAnnotationsRef.current);
 
-        // Iterate over each object in the data array
+        // 🔥 CRITICAL: HIDE ALL SIGNATURE FIELDS - No one should see "Sign Here"
+        // Because this is a VIEW ONLY document viewer
+        const allFieldNames = [];
+
         userAnnotationsRef.current.forEach((obj) => {
-          // Check if userID does not match currentID
-          // Iterate over xml array in the current object
           obj.xml.forEach((item) => {
-            // Extract all 'name' attributes from ffield excluding font tag
             let ffield = item.ffield;
             let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
             if (matches) {
               matches.forEach((match) => {
-                // Extract the name value and push into nameArray
                 let name = match.match(/name="([^"]+)"/)[1];
-                if (hiddenUsersRef.current.includes(obj.userID)) {
-                  HideArray.push(name);
-                } else if (readOnlyUsersRef.current.includes(obj.userID)) {
-                  ReadArray.push(name);
-                }
+                allFieldNames.push(name);
+                console.log(
+                  `Field to hide: "${name}" (belongs to user ${obj.userID})`,
+                );
               });
             }
           });
         });
-        let newProcessXmlForReadOnly = processXmlForReadOnly(
+
+        // 🔥 STEP 1: Completely hide ALL signature form fields
+        const { updatedXmlString, removedItems } = processXmlToHideFields(
           getSignatureFileAnnotationResponse.annotationString,
-          ReadArray,
+          allFieldNames, // All fields - sab hide
         );
 
+        console.log(`Hidden ${removedItems?.fields?.length || 0} fields`);
+        console.log(`Hidden ${removedItems?.ffields?.length || 0} ffields`);
+        console.log(`Hidden ${removedItems?.widgets?.length || 0} widgets`);
+
+        // 🔥 STEP 2: Make freetext annotations read-only (but keep them visible)
         const readonlyFreetextXmlString = readOnlyFreetextElements(
-          newProcessXmlForReadOnly,
+          updatedXmlString,
           readOnlyUsersRef.current,
         );
 
@@ -362,7 +371,10 @@ const ViewSignatureDocument = () => {
         }));
       }
     } catch (error) {
-      console.log("error", error);
+      console.log(
+        "Error in getSignatureFileAnnotationResponse handler:",
+        error,
+      );
     }
   }, [getSignatureFileAnnotationResponse]);
   // === End === //

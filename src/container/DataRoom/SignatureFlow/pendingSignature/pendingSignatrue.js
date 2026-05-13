@@ -208,11 +208,12 @@ const getAnnotationOwnerIDFromSubject = (annot) => {
  *   • clear PDF field-level ReadOnly so the widget is clickable (re-sign support)
  *   • annotation-level flags left unlocked
  */
+// ✅ UPDATED: Stronger locks for non-owner fields
 const applyAnnotationLocks = (
   annotationManager,
   annotations,
   currentUserID,
-  currentUserFieldNames, // Set<string>
+  currentUserFieldNames,
 ) => {
   annotations.forEach((annot) => {
     const isWidget =
@@ -230,26 +231,40 @@ const applyAnnotationLocks = (
         isOwner = false;
       }
     } else {
-      // FreeText or other annotation types — use Subject
       const ownerID = getAnnotationOwnerIDFromSubject(annot);
       isOwner = ownerID === currentUserID;
     }
 
-    // Apply annotation-level lock state
-    annot.Locked = !isOwner;
-    annot.ReadOnly = !isOwner;
-    annot.NoResize = true;
-    annot.NoMove = true;
-    annot.NoRotate = true;
+    if (!isOwner) {
+      // Non-owner: Completely disable the field
+      annot.Locked = true;
+      annot.ReadOnly = true;
+      annot.NoResize = true;
+      annot.NoMove = true;
+      annot.NoRotate = true;
 
-    // For the owner's widget fields clear the PDF field-level ReadOnly flag
-    // so clicking opens the appropriate tool (signature panel, text editor…)
-    if (isOwner && isWidget) {
-      try {
-        const field = annot.getField?.();
-        if (field) field.flags.set("ReadOnly", false);
-      } catch {
-        /* getField not available on every subtype */
+      if (isWidget) {
+        try {
+          const field = annot.getField?.();
+          if (field) {
+            field.flags.set("ReadOnly", true);
+            field.flags.set("NoToggleToOff", true);
+          }
+        } catch {}
+      }
+    } else {
+      // Owner: Unlock the field
+      annot.Locked = false;
+      annot.ReadOnly = false;
+      annot.NoResize = false;
+      annot.NoMove = false;
+      annot.NoRotate = false;
+
+      if (isWidget) {
+        try {
+          const field = annot.getField?.();
+          if (field) field.flags.set("ReadOnly", false);
+        } catch {}
       }
     }
 
@@ -433,6 +448,9 @@ const PendingSignatureViewer = () => {
    * without needing the effect to re-run.
    */
   const currentUserFieldNamesRef = useRef(new Set());
+
+  // ✅ Store original mouseLeftUp function to restore if needed
+  const originalMouseLeftUpRef = useRef(null);
 
   /**
    * Set of field names that the current user has already filled / signed during
@@ -777,6 +795,7 @@ const PendingSignatureViewer = () => {
 
   // ─── WebViewer initialisation ─────────────────────────────────────────────
 
+  // ✅ WebViewer initialisation with signature tool override
   useEffect(() => {
     if (
       !pdfData.attachmentBlob ||
@@ -800,13 +819,12 @@ const PendingSignatureViewer = () => {
         webViewerInitialized.current = true;
 
         const { UI, Core } = inst;
-        const { documentViewer, annotationManager } = Core;
+        const { documentViewer, annotationManager, Tools } = Core;
 
         UI.loadDocument(handleBlobFiles(pdfData.attachmentBlob), {
           filename: pdfData.title,
         });
 
-        // Disable all authoring / editing toolbar elements
         UI.disableElements([
           "linkButton",
           "annotationStyleEditButton",
@@ -864,7 +882,6 @@ const PendingSignatureViewer = () => {
           "toolbarGroup-Forms",
         ]);
 
-        // ── documentLoaded ────────────────────────────────────────────────────
         documentViewer.addEventListener("documentLoaded", async () => {
           await documentViewer.getAnnotationsLoadedPromise();
           UI.setFitMode(UI.FitMode.FitWidth);
@@ -877,15 +894,63 @@ const PendingSignatureViewer = () => {
               );
               await annotationManager.importAnnotations(cleanedXFDF);
 
-              // Apply locks immediately after import so the UI reflects
-              // the correct editable / read-only state from the start.
               const currentUserID = getCurrentUserID();
+
+              // Apply locks to all annotations
               applyAnnotationLocks(
                 annotationManager,
                 annotationManager.getAnnotationsList(),
                 currentUserID,
                 currentUserFieldNamesRef.current,
               );
+
+              // ✅ CRITICAL: Override SignatureCreateTool to block clicks on non-owner fields
+              const SignatureCreateTool = Tools.SignatureCreateTool;
+              if (SignatureCreateTool && !originalMouseLeftUpRef.current) {
+                // Store original function
+                originalMouseLeftUpRef.current =
+                  SignatureCreateTool.prototype.mouseLeftUp;
+
+                // Override with our custom logic
+                SignatureCreateTool.prototype.mouseLeftUp = function (e) {
+                  const widget = annotationManager.getAnnotationByMouseEvent(e);
+
+                  // Check if clicked on a signature widget
+                  if (
+                    widget &&
+                    widget.getField &&
+                    typeof widget.getField === "function"
+                  ) {
+                    const field = widget.getField();
+                    const fieldName = field?.name;
+                    const isOwner =
+                      currentUserFieldNamesRef.current.has(fieldName);
+
+                    console.log(
+                      `Widget clicked: ${fieldName}, isOwner: ${isOwner}`,
+                    );
+
+                    // Only allow click if:
+                    // 1. Field belongs to current user
+                    // 2. Field is not already signed
+                    // 3. Field is not read-only
+                    if (
+                      isOwner &&
+                      !widget.getAssociatedSignatureAnnotation() &&
+                      !widget.ReadOnly
+                    ) {
+                      console.log("✅ Allowing signature on owner field");
+                      originalMouseLeftUpRef.current.call(this, e);
+                    } else {
+                      console.log("❌ Blocking signature on non-owner field");
+                      // Do nothing - field is blocked
+                    }
+                  } else {
+                    // Not a signature widget, proceed normally
+                    originalMouseLeftUpRef.current.call(this, e);
+                  }
+                };
+              }
             } catch (err) {
               console.error("importAnnotations:", err);
             }
@@ -895,7 +960,7 @@ const PendingSignatureViewer = () => {
           documentViewer.updateView();
         });
 
-        // ── Header buttons ─────────────────────────────────────────────────────
+        // Header buttons
         const topHeader = UI.getModularHeader("default-top-header");
         const existingItems = topHeader.getItems();
         const currentUserID = getCurrentUserID();
@@ -924,7 +989,6 @@ const PendingSignatureViewer = () => {
             dataElement: "submitButton",
             label: t("Submit"),
             title: t("Submit"),
-            // handleSave reads from refs — always uses latest data
             onClick: () => handleSave(annotationManager),
             style: {
               background: "#6172d6",
@@ -945,7 +1009,6 @@ const PendingSignatureViewer = () => {
             items: [declineButton, submitButton],
           });
         } else {
-          // Non-signatory viewers get a read-only Close button
           const closeButton = new UI.Components.CustomButton({
             dataElement: "closeButton",
             label: t("Close"),
@@ -977,7 +1040,6 @@ const PendingSignatureViewer = () => {
     };
 
     init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfData.attachmentBlob]);
 
   // ── annotationChanged + fieldChanged event listeners ──────────────────────
@@ -989,6 +1051,7 @@ const PendingSignatureViewer = () => {
   //   This is the only reliable place to clear the field-level ReadOnly that
   //   Apryse sets after a signature is committed, so the user can re-sign.
   //
+  // ✅ Annotation Changed handler with locks
   useEffect(() => {
     if (!instance) return;
     const { annotationManager } = instance.Core;
@@ -997,7 +1060,6 @@ const PendingSignatureViewer = () => {
     const annotHandler = async (annotations, action, { imported }) => {
       if (imported) return;
 
-      // ── Sync XFDF snapshot ────────────────────────────────────────────────
       try {
         const xfdfString = await annotationManager.exportAnnotations();
         const snapshot = userAnnotationsRef.current.map((u) => ({
@@ -1010,7 +1072,7 @@ const PendingSignatureViewer = () => {
         console.error("annotationChanged snapshot:", err);
       }
 
-      // Re-apply locks after every change in case Apryse overwrites them
+      // Re-apply locks after changes
       applyAnnotationLocks(
         annotationManager,
         annotations,
@@ -1019,33 +1081,28 @@ const PendingSignatureViewer = () => {
       );
     };
 
-    // fieldChanged fires AFTER Apryse finishes all internal post-commit work.
-    // It receives (field, newValue) — the only reliable hook for two jobs:
-    //
-    //  1. Track filled state in filledFieldsRef so validation works correctly.
-    //     Apryse stores signature appearances as PDF streams, NOT as XFDF values,
-    //     so XFDF parsing always returns "" for signed signature fields.
-    //     Instead we trust fieldChanged: if it fired for a Sig field, it was signed.
-    //
-    //  2. Clear the field-level ReadOnly flag that Apryse sets after committing
-    //     a signature, so the widget stays clickable for re-signing.
+    // ✅ Updated fieldHandler with proper ownership check
     const fieldHandler = (field, newValue) => {
       try {
         const fieldName = field.name;
-        if (!currentUserFieldNamesRef.current.has(fieldName)) return;
 
-        // ── 1. Track filled state ───────────────────────────────────────────
+        // 🔥 CRITICAL: Block non-owner fields immediately
+        if (!currentUserFieldNamesRef.current.has(fieldName)) {
+          console.warn(
+            `🚫 Blocked: Field "${fieldName}" doesn't belong to current user`,
+          );
+          return;
+        }
+
+        console.log(`✅ Field changed allowed for: ${fieldName}`);
+
         const fieldType = field.type || "";
 
         if (fieldType === "Sig") {
-          // Any fieldChanged on a signature field = the user completed signing.
-          // Do NOT check newValue — Apryse passes "" for appearance-based sigs.
           filledFieldsRef.current.add(fieldName);
         } else if (fieldType === "Btn") {
-          // Checkbox / radio — always valid; mark filled unconditionally.
           filledFieldsRef.current.add(fieldName);
         } else {
-          // Text / Choice fields: filled only when the value is non-empty.
           const strValue = String(newValue ?? "").trim();
           if (strValue) {
             filledFieldsRef.current.add(fieldName);
@@ -1054,8 +1111,7 @@ const PendingSignatureViewer = () => {
           }
         }
 
-        // ── 2. Re-sign unlock ───────────────────────────────────────────────
-        // Clear the PDF field-level ReadOnly that Apryse applies post-commit.
+        // Clear ReadOnly flag for re-sign support
         field.flags.set("ReadOnly", false);
 
         field.widgets?.forEach((annot) => {

@@ -97,14 +97,14 @@ const SearchBarComponent = ({
     value: user.pK_UID,
     label: (
       <>
-        <span className='d-flex align-items-center gap-2'>
+        <span className="d-flex align-items-center gap-2">
           <img
-            draggable='false'
+            draggable="false"
             width={"25px"}
-            height='25px'
-            className='rounded-circle  '
+            height="25px"
+            className="rounded-circle  "
             src={`data:image/jpeg;base64,${user.displayProfilePictureName}`}
-            alt=''
+            alt=""
           />
           {user.name}
         </span>
@@ -117,7 +117,7 @@ const SearchBarComponent = ({
     try {
       if (user) {
         const filteredApiResponse = user.filter(
-          (user) => !userID.includes(user.pK_UID)
+          (user) => !userID.includes(user.pK_UID),
         );
         setAssignessList(filteredApiResponse);
       }
@@ -160,7 +160,8 @@ const SearchBarComponent = ({
         isDescending: false,
       };
       dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-      setSearchDataFields({
+      setSearchDataFields((prev) => ({
+        ...prev,
         UserID: userID ? parseInt(userID) : 0,
         OrganizationID: organizationID
           ? parseInt(organizationID)
@@ -183,7 +184,7 @@ const SearchBarComponent = ({
         Length: 10,
         SortBy: 1,
         isDescending: false,
-      });
+      }));
     }
   };
 
@@ -200,7 +201,8 @@ const SearchBarComponent = ({
     setSearchTabOpen(false);
     setSearchbarsearchoptions(false);
     setSearchbarshow(true);
-    setSearchDataFields({
+     setSearchDataFields((prev) => ({
+        ...prev,
       UserID: userID ? parseInt(userID) : 0,
       OrganizationID: organizationID
         ? parseInt(organizationID)
@@ -226,7 +228,7 @@ const SearchBarComponent = ({
       Length: 10,
       SortBy: 1,
       isDescending: false,
-    });
+    }));
     setSearchResultFields({
       Date: null,
       Type: null,
@@ -740,7 +742,7 @@ const SearchBarComponent = ({
 
     // Replace Promise with simple find
     const selectedOption = OptionsDocument(t).find(
-      (option) => option.value === documentID
+      (option) => option.value === documentID,
     );
     console.log(selectedOption, "handleChangeDocuments");
 
@@ -1173,11 +1175,11 @@ const SearchBarComponent = ({
   // this is search button handler of serach modal
   console.log(
     searchDataFields.LastModifiedStartDate,
-    "searchDocumentsAndFoldersApi"
+    "searchDocumentsAndFoldersApi",
   );
   console.log(
     searchDataFields.LastModifiedEndDate,
-    "searchDocumentsAndFoldersApi"
+    "searchDocumentsAndFoldersApi",
   );
   const handleSearch = async () => {
     let data = {
@@ -1240,44 +1242,44 @@ const SearchBarComponent = ({
   }, [searchbarshow]);
 
   return (
-    <div className='position-relative'>
+    <div className="position-relative">
       <TextField
         value={searchDataFields.Title}
         change={handleTitleSearch}
         placeholder={t("Search-on-file-and-folder-name")}
         applyClass={"dataRoomSearchInput"}
-        labelclass='d-none'
+        labelclass="d-none"
         onClick={searchbardropdownShow}
         onKeyDown={handleOnEnterTitleSearch}
         inputicon={
           searchTabOpen ? (
             <>
-              <span className='d-flex gap-2'>
+              <span className="d-flex gap-2">
                 <img
-                  draggable='false'
+                  draggable="false"
                   src={blackCrossIcon}
-                  alt=''
-                  className='cursor-pointer'
+                  alt=""
+                  className="cursor-pointer"
                   onClick={resteFunctionality}
                 />
-                <Tooltip placement='bottomLeft' title={t("Search-filters")}>
+                <Tooltip placement="bottomLeft" title={t("Search-filters")}>
                   <img
-                    draggable='false'
+                    draggable="false"
                     src={searchicon}
-                    alt=''
-                    className='cursor-pointer'
+                    alt=""
+                    className="cursor-pointer"
                     onClick={SearchiconClickOptions}
                   />
                 </Tooltip>
               </span>
             </>
           ) : (
-            <Tooltip placement='bottomLeft' title={t("Search-filters")}>
+            <Tooltip placement="bottomLeft" title={t("Search-filters")}>
               <img
-                draggable='false'
+                draggable="false"
                 src={searchicon}
-                alt=''
-                className='cursor-pointer'
+                alt=""
+                className="cursor-pointer"
                 onClick={SearchiconClickOptions}
               />
             </Tooltip>
@@ -1296,35 +1298,38 @@ const SearchBarComponent = ({
               lg={12}
               md={12}
               sm={12}
-              className={styles["Drop_Down_searchBar_Options"]}>
+              className={styles["Drop_Down_searchBar_Options"]}
+            >
               <Row>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-end position-relative'>
+                  className="d-flex justify-content-end position-relative"
+                >
                   <Button
                     className={styles["CrossButton"]}
                     icon={
                       <img
-                        draggable='false'
-                        className='cursor-pointer'
+                        draggable="false"
+                        className="cursor-pointer"
                         src={Cross}
-                        width='10.35px'
-                        height='10.01px'
-                        alt=''
+                        width="10.35px"
+                        height="10.01px"
+                        alt=""
                       />
                     }
                     onClick={SearchiconClickOptionsHide}
                   />
                 </Col>
               </Row>
-              <Row className='mt-1'>
+              <Row className="mt-1">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='select-dropdowns-height'>
+                  className="select-dropdowns-height"
+                >
                   <Select
                     options={OptionsDocument(t)}
                     placeholder={t("Documents")}
@@ -1334,12 +1339,13 @@ const SearchBarComponent = ({
                   />
                 </Col>
               </Row>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='select-dropdowns-height'>
+                  className="select-dropdowns-height"
+                >
                   <Select
                     options={OptionsOwner(t).concat(transformedOptions)}
                     placeholder={t("People")}
@@ -1348,25 +1354,26 @@ const SearchBarComponent = ({
                   />
                 </Col>
               </Row>
-              <Row className='mt-2 Inputfield_for_data_room'>
+              <Row className="mt-2 Inputfield_for_data_room">
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    labelclass='textFieldSearch d-none'
+                    labelclass="textFieldSearch d-none"
                     placeholder={t(
-                      "Enter-a-team-the-matches-part-of-the-file-name"
+                      "Enter-a-team-the-matches-part-of-the-file-name",
                     )}
                     value={searchResultBoxFields.itemname}
-                    name='Enterfilename'
+                    name="Enterfilename"
                     change={handleChangeInputFieldinSearchBox}
                   />
                 </Col>
               </Row>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='select-dropdowns-height'>
+                  className="select-dropdowns-height"
+                >
                   <Select
                     options={optionsLocations(t)}
                     placeholder={t("Location")}
@@ -1375,12 +1382,13 @@ const SearchBarComponent = ({
                   />
                 </Col>
               </Row>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='select-dropdowns-height'>
+                  className="select-dropdowns-height"
+                >
                   <Select
                     options={optionsLastmodified(t)}
                     placeholder={t("Date-modified")}
@@ -1390,12 +1398,13 @@ const SearchBarComponent = ({
                 </Col>
               </Row>
               {customRangeVisible && (
-                <Row className='mt-2'>
+                <Row className="mt-2">
                   <Col
                     lg={6}
                     md={6}
                     sm={12}
-                    className={styles["datePickerTodoCreate2"]}>
+                    className={styles["datePickerTodoCreate2"]}
+                  >
                     <DatePicker
                       format={"DD MMM, YYYY"}
                       render={
@@ -1407,9 +1416,9 @@ const SearchBarComponent = ({
                       onOpenPickNewDate={false}
                       editable={false}
                       containerClassName={styles["datePicker_Container"]}
-                      className='datePickerTodoCreate2'
+                      className="datePickerTodoCreate2"
                       onChange={handleStartDatePickerChange}
-                      inputMode=''
+                      inputMode=""
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
@@ -1420,7 +1429,8 @@ const SearchBarComponent = ({
                     lg={6}
                     md={6}
                     sm={6}
-                    className={styles["datePickerTodoCreate2"]}>
+                    className={styles["datePickerTodoCreate2"]}
+                  >
                     {" "}
                     <DatePicker
                       format={"DD MMM, YYYY"}
@@ -1433,8 +1443,8 @@ const SearchBarComponent = ({
                       }
                       editable={false}
                       containerClassName={styles["datePicker_Container"]}
-                      className='datePickerTodoCreate2'
-                      inputMode=''
+                      className="datePickerTodoCreate2"
+                      inputMode=""
                       onChange={handleEndDatePickerChange}
                       calendar={calendarValue}
                       locale={localValue}
@@ -1445,12 +1455,13 @@ const SearchBarComponent = ({
                 </Row>
               )}
 
-              <Row className='mt-5'>
+              <Row className="mt-5">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-end gap-3'>
+                  className="d-flex justify-content-end gap-3"
+                >
                   <Button
                     text={t("Cancel")}
                     className={styles["cancell_Search_button_Dataroom"]}
@@ -1475,26 +1486,29 @@ const SearchBarComponent = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["Drop_Down_searchBar"]}>
-                <Row className='mt-3'>
+                className={styles["Drop_Down_searchBar"]}
+              >
+                <Row className="mt-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className=' d-flex gap-5 justify-content-center text-center'>
+                    className=" d-flex gap-5 justify-content-center text-center"
+                  >
                     {OptionsDocument2(t).map((data, index) => {
                       return (
                         <>
                           <span
                             key={index}
                             onClick={() => handleChangeDocuments(data.value)}
-                            className='cursor-pointer'>
+                            className="cursor-pointer"
+                          >
                             <img
-                              draggable='false'
+                              draggable="false"
                               src={data.imgSrc}
-                              height='19.25px'
-                              alt=''
-                              width='16.85px'
+                              height="19.25px"
+                              alt=""
+                              width="16.85px"
                             />
                             <span className={styles["DropDown_name"]}>
                               {data.label}
@@ -1505,21 +1519,24 @@ const SearchBarComponent = ({
                     })}
                   </Col>
                 </Row>
-                <Row className='mt-4'>
+                <Row className="mt-4">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Show_more_options"]}>
+                    className={styles["Show_more_options"]}
+                  >
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex align-items-center mt-2'>
+                        className="d-flex align-items-center mt-2"
+                      >
                         <span
                           className={styles["Search_option_text_span"]}
-                          onClick={showSearchResultsOptions}>
+                          onClick={showSearchResultsOptions}
+                        >
                           {t("Show-search-options")}
                         </span>
                       </Col>
