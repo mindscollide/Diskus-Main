@@ -23,7 +23,6 @@ const GuestJoinRequest = () => {
   const navigate = useNavigate();
 
   let roomID = localStorage.getItem("newRoomId");
-  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   const [waitingOnParticipant, setWaitingOnParticipant] = useState([]);
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(

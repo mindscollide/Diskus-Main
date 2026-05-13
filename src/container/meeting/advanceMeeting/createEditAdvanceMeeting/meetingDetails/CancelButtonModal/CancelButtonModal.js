@@ -16,12 +16,18 @@ import {
   resetCurrentMeetingInfo,
 } from "../../../../../../store/actions/NewMeeting2.actions";
 import { getMeetingByCommitteeIdApi } from "../../../../../../store/actions/Committee_actions";
+import { getMeetingbyGroupIdApi } from "../../../../../../store/actions/Groups_actions";
+import { useCommitteeContext } from "../../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../../context/GroupsContext";
 const CancelButtonModal = ({ setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { goBackCancelModal, setGoBackCancelModal, setEditorRole } =
     useContext(MeetingContext);
+
+  const { currentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { currentGroupMeetingTabActive } = useGroupsContext();
 
   const committeeInfo = useSelector(
     (state) => state.CommitteeReducer.viewCommitteeDetails,
@@ -73,22 +79,35 @@ const CancelButtonModal = ({ setRows }) => {
       commonReset();
 
       if (committeeInfo !== null) {
-        dispatch(
-          getMeetingByCommitteeIdApi(navigate, t, {
-            CommitteeID: committeeInfo.CommitteeID,
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(localStorage.getItem("userID")),
-            PageNumber: 1,
-            Length: 30,
-            PublishedMeetings: true,
-            ProposedMeetings: false,
-          }),
-        );
+        // dispatch(
+        //   getMeetingByCommitteeIdApi(navigate, t, {
+        //     CommitteeID: committeeInfo.CommitteeID,
+        //     Date: "",
+        //     Title: "",
+        //     HostName: "",
+        //     UserID: Number(localStorage.getItem("userID")),
+        //     PageNumber: 1,
+        //     Length: 30,
+        //     PublishedMeetings: true,
+        //     ProposedMeetings: false,
+        //   }),
+        // );
         return;
       }
       if (groupInfo !== null) {
+        // dispatch(
+        //   getMeetingbyGroupIdApi(navigate, t, {
+        //     GroupID: Number(groupInfo.GroupID),
+        //     Date: "",
+        //     Title: "",
+        //     HostName: "",
+        //     UserID: Number(userID),
+        //     PageNumber: 1,
+        //     Length: 30,
+        //     PublishedMeetings: true,
+        //     ProposedMeetings: false,
+        //   }),
+        // );
         return;
       }
 

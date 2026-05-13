@@ -18,6 +18,7 @@ import {
   getUserWiseProposeDate,
   getUserWiseProposeDateOrganizer,
   joinMeeting,
+  leaveMeeting,
   meetingStatusUpdate,
   ProposeNewMeetingSaveParticipants,
   saveAgendaContributorsRM,
@@ -36,8 +37,10 @@ import {
 import axiosInstance from "../../commen/functions/axiosInstance";
 
 import {
+  currentMeetingStatus,
   ProposedMeetingViewFlagAction,
   searchNewUserMeeting,
+  showEndMeetingModal,
   showSceduleProposedMeeting,
 } from "./NewMeetingActions";
 import { RefreshToken } from "./Auth_action";
@@ -47,6 +50,7 @@ import { editMeetingFlag, saveMeetingFlag } from "./MeetingOrganizers_action";
 // Fix: import Redux tab actions to replace individual xxxGlobalFlag dispatches
 import {
   resetCreateEditTabs,
+  resetViewTabs,
   setAdvanceMeetingRoute,
   setCreateEditTab,
   setProposedMeetingRoute,
@@ -509,7 +513,7 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
                   break;
                 }
                 case "EditMeetingFromMainListing": {
-                  dispatch(setCreateEditTab("organizers"));
+                  // dispatch(setCreateEditTab("organizers"));
 
                   break;
                 }
@@ -2617,7 +2621,7 @@ export const UpdateMeetingStatusApi = (
                               DateTime: getCurrentDateTimeUTC(),
                               VideoCallURL: record.videoCallURL,
                             },
-                            "JoinQuickMeetingFromListing",
+                            "startMeetingFromMainListing",
                             object,
                           ),
                         );
@@ -2625,10 +2629,7 @@ export const UpdateMeetingStatusApi = (
                         break;
                       }
                       case "startQuickMeetingFromMainListing":
-                        const {
-                          VideoCallURL,
-                          meetingID,
-                        } = object;
+                        const { VideoCallURL, meetingID } = object;
                         // setIsQuickMeetingView(true);
                         dispatch(
                           joinMeetingApi(
@@ -3923,10 +3924,6 @@ export const scheduleMeetingFromProposedMeetingApi = (
               Data,
               routePath,
               object,
-              // setDataroomMapFolderId,
-              // setCurrentMeetingID,
-              // setSceduleMeeting,
-              // MeetingID,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -3953,13 +3950,6 @@ export const scheduleMeetingFromProposedMeetingApi = (
                     MeetingID: Number(Data.MeetingID),
                   },
                   "EditMeetingFromScheduleProposed",
-                  object,
-                  // false,
-                  // setCurrentMeetingID,
-                  // setSceduleMeeting,
-                  // setDataroomMapFolderId,
-                  // 0,
-                  // 1,
                 ),
                 setEditorRole({
                   status: 11,
@@ -3967,7 +3957,7 @@ export const scheduleMeetingFromProposedMeetingApi = (
                   isPrimaryOrganizer: true,
                 }),
                 dispatch(toggleIsOrganizerProposedMeetingDates(false)),
-              ); //         GetAllMeetingDetailsApiFunc(
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4346,6 +4336,307 @@ export const SetMeetingResponseApi = (
       })
       .catch((response) => {
         dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Leave meeting new Api
+const leaveMeetingInit = () => {
+  return {
+    type: actions.LEAVE_MEETING_INIT,
+  };
+};
+
+const leaveMeetingQuickSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_MEETING_SUCCESS_QUICK,
+    response: response,
+    message: message,
+  };
+};
+
+const leaveMeetingAdvancedSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_MEETING_SUCCESS_ADVANCED,
+    response: response,
+    message: message,
+  };
+};
+
+const leaveMeetingFail = (message) => {
+  return {
+    type: actions.LEAVE_MEETING_FAIL,
+    message: message,
+  };
+};
+
+export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
+  return async (dispatch) => {
+    await dispatch(leaveMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", leaveMeeting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(LeaveMeetingApi(navigate, t, Data, routePath, object));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase(),
+                )
+            ) {
+              const committeeInfo =
+                store.getState().CommitteeReducer?.viewCommitteeDetails;
+              const groupInfo =
+                store.getState().GroupsReducer?.viewGroupDetails;
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber: Number(meetingPageCurrent),
+                Length: Number(meetingpageRow),
+                PublishedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    ? true
+                    : false,
+                ProposedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    ? true
+                    : false,
+              };
+              const {
+                setEditorRole,
+                isQuickMeeting = false,
+                setEndMeetingConfirmationModal,
+              } = object;
+              switch (routePath) {
+                case "FromMeetingDetaislTabLeaveMeeting":
+                  setEditorRole({
+                    status: null,
+                    role: null,
+                    isPrimaryOrganizer: null,
+                  });
+                  dispatch(toggleViewMeetingModal(false));
+                  dispatch(resetCurrentMeetingInfo());
+                  dispatch(resetViewTabs());
+                  if (!committeeInfo && !groupInfo) {
+                    await dispatch(listOfMeetingsApi(navigate, t, searchData));
+                  }
+                  break;
+                case "FromEndMeetingModal":
+                  setEditorRole({
+                    status: null,
+                    role: null,
+                    isPrimaryOrganizer: null,
+                  });
+                  dispatch(toggleViewMeetingModal(false));
+                  dispatch(resetCurrentMeetingInfo());
+                  dispatch(resetViewTabs());
+                  if (!committeeInfo && !groupInfo) {
+                    await dispatch(listOfMeetingsApi(navigate, t, searchData));
+                  }
+                  break;
+                case "formLeaveMeetingModal":
+                  setEditorRole({
+                    status: null,
+                    role: null,
+                    isPrimaryOrganizer: null,
+                  });
+                  dispatch(toggleViewMeetingModal(false));
+                  dispatch(resetCurrentMeetingInfo());
+                  dispatch(resetViewTabs());
+                  if (!committeeInfo && !groupInfo) {
+                    await dispatch(listOfMeetingsApi(navigate, t, searchData));
+                  }
+                  break;
+                default:
+                  break;
+              }
+              localStorage.removeItem("meetingTitle");
+              localStorage.removeItem("typeOfMeeting");
+              localStorage.removeItem("currentMeetingID");
+              localStorage.removeItem("currentMeetingLS");
+              localStorage.setItem("AdvanceMeetingOpen", false);
+              localStorage.setItem("isMeetingVideoHostCheck", false);
+              dispatch(showEndMeetingModal(false));
+              dispatch(toggleViewMeetingModal(false));
+              try {
+                dispatch(currentMeetingStatus(0));
+
+                if (isQuickMeeting) {
+                  dispatch(
+                    leaveMeetingQuickSuccess(
+                      response.data.responseResult,
+                      t("Successful"),
+                    ),
+                  );
+
+                  if (typeof setEndMeetingConfirmationModal === "function") {
+                    setEndMeetingConfirmationModal(false);
+                  }
+                  if (ViewCommitteeID !== null) {
+                    let userID = localStorage.getItem("userID");
+
+                    let searchData = {
+                      CommitteeID: Number(ViewCommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(
+                      getMeetingByCommitteeIdApi(navigate, t, searchData),
+                    );
+                  } else if (ViewGroupID !== null) {
+                    let searchData = {
+                      GroupID: Number(ViewGroupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+                  }
+                } else {
+                  dispatch(
+                    leaveMeetingAdvancedSuccess(
+                      response.data.responseResult,
+                      t("Successful"),
+                    ),
+                  );
+                  if (typeof setEndMeetingConfirmationModal === "function") {
+                    setEndMeetingConfirmationModal(false);
+                  }
+                  if (
+                    localStorage.getItem("navigateLocation") === "resolution"
+                  ) {
+                    navigate("/Diskus/resolution");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "dataroom"
+                  ) {
+                    navigate("/Diskus/dataroom");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "committee"
+                  ) {
+                    navigate("/Diskus/committee");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "groups"
+                  ) {
+                    navigate("/Diskus/groups");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "polling"
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "polling"
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "calendar"
+                  ) {
+                    navigate("/Diskus/calendar");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "todolist"
+                  ) {
+                    navigate("/Diskus/todolist");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "Notes"
+                  ) {
+                    navigate("/Diskus/Notes");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "MainDashBoard"
+                  ) {
+                    navigate("/Diskus/");
+                  } else {
+                    await dispatch(
+                      listOfMeetingsApi(navigate, t, searchData, "", {}),
+                    );
+                  }
+                }
+
+                // let newName = localStorage.getItem("name");
+                // let Data = {
+                //   RoomID: roomID,
+                //   UserGUID: userGUID,
+                //   Name: String(newName),
+                // };
+                // if (roomID !== "0" && userGUID !== null) {
+                //   dispatch(normalizeVideoPanelFlag(false));
+                //   dispatch(maximizeVideoPanelFlag(false));
+                //   dispatch(minimizeVideoPanelFlag(false));
+
+                //   localStorage.setItem("activeCall", false);
+
+                //       localStorage.setItem("isMeeting", false);
+                sessionStorage.removeItem("isMeeting");
+                //   localStorage.setItem("meetingTitle", "");
+                //   localStorage.setItem("acceptedRecipientID", 0);
+                //   localStorage.setItem("acceptedRoomID", 0);
+                //   localStorage.setItem("activeRoomID", 0);
+                //   localStorage.setItem("meetingVideoID", 0);
+                //   localStorage.setItem("MicOff", true);
+                //   localStorage.setItem("VidOff", true);
+                //   dispatch(LeaveMeetingVideo(Data, navigate, t));
+                // }
+              } catch (error) {}
+
+              // setViewFlag(false);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_02".toLowerCase(),
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_04".toLowerCase(),
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Join-Log-Not-Found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase(),
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            } else {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(leaveMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(leaveMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(leaveMeetingFail(t("Something-went-wrong")));
       });
   };
 };

@@ -66,7 +66,10 @@ import { openDocumentViewer } from "@/commen/functions/utils";
 // import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { getMeetingStatusfromSocket } from "@/store/actions/GetMeetingUserId";
-import { UpdateMeetingStatusApi } from "../../../../store/actions/NewMeeting2.actions";
+import {
+  listOfMeetingsApi,
+  UpdateMeetingStatusApi,
+} from "../../../../store/actions/NewMeeting2.actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 
 const ModalView = ({ ModalTitle }) => {
@@ -144,9 +147,7 @@ const ModalView = ({ ModalTitle }) => {
     (state) => state.videoFeatureReducer.ResponseMessage,
   );
 
-  const {
-    setEndMeetingConfirmationModal,
-  } = useContext(MeetingContext);
+  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
 
   const [getMeetID, setMeetID] = useState(0);
   const [isDetails, setIsDetails] = useState(true);
@@ -198,7 +199,6 @@ const ModalView = ({ ModalTitle }) => {
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
 
-  let currentMeeting = localStorage.getItem("currentMeetingID");
 
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
   let now = new Date();
@@ -493,7 +493,7 @@ const ModalView = ({ ModalTitle }) => {
         setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }, [assigneesViewMeetingDetails]);
 
@@ -942,7 +942,7 @@ const ModalView = ({ ModalTitle }) => {
       PublishedMeetings: true,
       ProposedMeetings: false,
     };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    await dispatch(listOfMeetingsApi(navigate, t, searchData));
     setIsQuickMeetingView(false);
   };
 
@@ -1198,7 +1198,7 @@ const ModalView = ({ ModalTitle }) => {
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
           let data = {
-            MeetingId: Number(currentMeeting),
+            MeetingId: Number(createMeeting.MeetingID),
             VideoCallURL: String(currentMeetingVideoURL),
             IsMuted: false,
             HideVideo: false,

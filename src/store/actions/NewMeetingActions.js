@@ -8731,8 +8731,9 @@ const LeaveMeetingVideo = (
 
               try {
                 // for closed waiting an start presenting
-
-                let currentMeeting = localStorage.getItem("currentMeetingID");
+                const meetingId =
+                  store.getState().NewMeetingreducer?.currentMeetingInfo
+                    ?.meetingID;
                 if (flag === 1) {
                   await dispatch(videoIconOrButtonState(false));
                   await dispatch(participantVideoButtonState(false));
@@ -8741,7 +8742,7 @@ const LeaveMeetingVideo = (
                       t,
                       navigate,
                       organizerData,
-                      currentMeeting,
+                      meetingId,
                       4,
                     ),
                   );
@@ -8813,7 +8814,9 @@ const LeaveMeetingVideo = (
               await dispatch(setVideoControlHost(false));
 
               if (flag === 1) {
-                let currentMeeting = localStorage.getItem("currentMeetingID");
+                const meetingId =
+                  store.getState().NewMeetingreducer?.currentMeetingInfo
+                    ?.meetingID;
 
                 await dispatch(videoIconOrButtonState(false));
                 await dispatch(participantVideoButtonState(false));
@@ -8822,7 +8825,7 @@ const LeaveMeetingVideo = (
                     t,
                     navigate,
                     organizerData,
-                    currentMeeting,
+                    meetingId,
                     4,
                   ),
                 );

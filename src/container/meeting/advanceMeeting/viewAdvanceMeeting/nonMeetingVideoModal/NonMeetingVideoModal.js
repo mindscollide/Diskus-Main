@@ -58,6 +58,7 @@ const NonMeetingVideoModal = () => {
     setStopRecordingState,
     iframeRef,
     setIsVisible,
+    advanceMeetingModalID,
   } = useMeetingContext();
 
   /**
@@ -83,7 +84,6 @@ const NonMeetingVideoModal = () => {
    * LocalStorage values
    * These are used to determine current video session type and behavior
    */
-  let currentMeeting = localStorage.getItem("currentMeetingID");
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
@@ -165,11 +165,11 @@ const NonMeetingVideoModal = () => {
 
     if (JoinpresenterForonetoone) {
       localStorage.removeItem("JoinpresenterForonetoone");
-      dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
+      dispatch(presenterViewGlobalState(advanceMeetingModalID, true, false, false));
     } else if (joinPresenterForOneToOneOrGroup) {
-      dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
+      dispatch(presenterViewGlobalState(advanceMeetingModalID, true, false, false));
     } else if (presenterViewFlag && !presenterViewHostFlag) {
-      dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
+      dispatch(presenterViewGlobalState(advanceMeetingModalID, true, false, false));
     }
   };
 

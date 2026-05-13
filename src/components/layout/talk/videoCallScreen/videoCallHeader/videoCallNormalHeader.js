@@ -112,6 +112,7 @@ const VideoCallNormalHeader = ({
     groupCallParticipantList,
     setGroupCallParticipantList,
     unansweredCallParticipant,
+    advanceMeetingModalID,
     setUnansweredCallParticipant,
     handRaiseCounter,
     setHandRaiseCounter,
@@ -1163,7 +1164,6 @@ const VideoCallNormalHeader = ({
         } else if (flag === 3) {
           setLeaveOneToOne(false);
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-          let currentMeeting = localStorage.getItem("currentMeetingID");
           setStartPresenterViewOrLeaveOneToOne(false);
           dispatch(maxParticipantVideoCallPanel(false));
           let data = {
@@ -1173,7 +1173,7 @@ const VideoCallNormalHeader = ({
           };
 
           dispatch(
-            openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
+            openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
           );
         }
       } else {

@@ -75,10 +75,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    isQuickMeetingCreate,
-    setIsQuickMeetingCreate,
-  } = useNewMeetingContext();
+  const { isQuickMeetingCreate, setIsQuickMeetingCreate } =
+    useNewMeetingContext();
 
   const assigneesRemindersData = useSelector(
     (state) => state.assignees.RemindersData,
@@ -638,14 +636,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
+                  className='d-flex gap-2 align-items-center'>
                   <img
                     src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
+                    height='16.45px'
+                    width='18.32px'
+                    draggable='false'
+                    alt=''
                   />
                   <span>{user.name}</span>
                 </Col>
@@ -1614,14 +1611,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{user.name}</span>
                   </Col>
@@ -1691,14 +1687,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${userProfile.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{member.userName}</span>
                     </Col>
@@ -1766,14 +1761,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <img
                 src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                height="16.45px"
-                width="18.32px"
-                draggable="false"
-                alt=""
+                height='16.45px'
+                width='18.32px'
+                draggable='false'
+                alt=''
               />
               <span>{user?.name}</span>
             </Col>
@@ -1806,14 +1800,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <img
                 src={`data:image/jpeg;base64,${userProfile.displayProfilePictureName}`}
-                height="16.45px"
-                width="18.32px"
-                draggable="false"
-                alt=""
+                height='16.45px'
+                width='18.32px'
+                draggable='false'
+                alt=''
               />
               <span>{member?.userName}</span>
             </Col>
@@ -1845,14 +1838,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <img
                 src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
-                height="16.45px"
-                width="18.32px"
-                draggable="false"
-                alt=""
+                height='16.45px'
+                width='18.32px'
+                draggable='false'
+                alt=''
               />
               <span>{userName}</span>
             </Col>
@@ -2089,7 +2081,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className="input-with-icon"
+        className='input-with-icon'
       />
     );
   }
@@ -2210,22 +2202,21 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-end mb-2"
-                >
+                  className='d-flex justify-content-end mb-2'>
                   <img
                     src={crossicon}
-                    alt="Close"
+                    alt='Close'
                     onClick={handleCloseModal}
-                    className="cursor-pointer"
-                    width="10px"
-                    height="10px"
+                    className='cursor-pointer'
+                    width='10px'
+                    height='10px'
                   />
                 </Col>
               </Row>
             )}
             {closeConfirmationModal === true ? null : (
               <Row>
-                <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
+                <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
                   <Button
                     className={
                       isDetails
@@ -2243,7 +2234,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     }
                     text={t("Agenda")}
                     onClick={changeSelectAgenda}
-                    datatut="show-agenda"
+                    datatut='show-agenda'
                   />
                   <Button
                     className={
@@ -2252,7 +2243,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         : "isAttendee-Schedule-top-btn-NonActive"
                     }
                     text={t("Attendees")}
-                    datatut="show-meeting-attendees"
+                    datatut='show-meeting-attendees'
                     onClick={changeSelectAttendees}
                   />
                 </Col>
@@ -2261,24 +2252,23 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
             {isDetails ? (
               <>
-                <Row className="createmeetingtime-row-1">
+                <Row className='createmeetingtime-row-1'>
                   <Col
                     lg={3}
                     md={3}
                     sm={3}
                     xs={12}
-                    className="CreateMeetingTime"
-                  >
+                    className='CreateMeetingTime'>
                     <DatePicker
-                      arrowClassName="arrowClass"
+                      arrowClassName='arrowClass'
                       value={createMeetingTime}
-                      containerClassName="containerClassTimePicker"
-                      className="timePicker"
+                      containerClassName='containerClassTimePicker'
+                      className='timePicker'
                       disableDayPicker
-                      inputClass="inputTImeMeeting"
+                      inputClass='inputTImeMeeting'
                       calendar={calendarValue}
                       locale={localValue}
-                      format="hh:mm A"
+                      format='hh:mm A'
                       selected={createMeetingTime}
                       render={<CustomInput />}
                       plugins={[<TimePicker hideSeconds />]}
@@ -2286,7 +2276,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       onChange={handleTimeChange}
                     />
 
-                    <div className="height-10">
+                    <div className='height-10'>
                       {modalField === true &&
                       createMeeting.MeetingStartTime === null ? (
                         <>
@@ -2296,8 +2286,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                               createMeeting.MeetingStartTime === null
                                 ? "errorMessage"
                                 : "errorMessage_hidden"
-                            }
-                          >
+                            }>
                             {t("Select-time")}
                           </p>
                         </>
@@ -2310,30 +2299,29 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     md={4}
                     sm={4}
                     xs={12}
-                    className="CreateMeetingDate "
-                  >
-                    <div className="datepicker align-items-center ">
+                    className='CreateMeetingDate '>
+                    <div className='datepicker align-items-center '>
                       <DatePicker
                         format={"DD/MM/YYYY"}
                         minDate={new Date()}
-                        placeholder="DD/MM/YYYY"
+                        placeholder='DD/MM/YYYY'
                         render={
                           <InputIcon
-                            placeholder="DD/MM/YYYY"
-                            className="datepicker_input"
+                            placeholder='DD/MM/YYYY'
+                            className='datepicker_input'
                           />
                         }
                         editable={false}
-                        className="datePickerTodoCreate2"
+                        className='datePickerTodoCreate2'
                         onOpenPickNewDate={true}
-                        inputMode=""
+                        inputMode=''
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
                         onFocusedDateChange={meetingDateHandler}
                       />
                     </div>
-                    <div className="height-10">
+                    <div className='height-10'>
                       {modalField === true &&
                       createMeeting.MeetingDate === "" ? (
                         <p
@@ -2342,8 +2330,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                             createMeeting.MeetingDate === ""
                               ? "errorMessage"
                               : "errorMessage_hidden"
-                          }
-                        >
+                          }>
                           {t("Select-date")}
                         </p>
                       ) : null}
@@ -2355,8 +2342,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     md={4}
                     sm={4}
                     xs={12}
-                    className="createmeeting-schedule-reminder CreateMeetingReminder"
-                  >
+                    className='createmeeting-schedule-reminder CreateMeetingReminder'>
                     <Select
                       options={reminderOptions}
                       maxMenuHeight={160}
@@ -2364,37 +2350,34 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       onChange={ReminderNameHandler}
                       placeholder={t("Reminder")}
                     />
-                    <div className="height-10"></div>
+                    <div className='height-10'></div>
                   </Col>
                 </Row>
 
-                <Row className="createmeetingInput-row mt-1">
+                <Row className='createmeetingInput-row mt-1'>
                   <Col
                     lg={1}
                     md={1}
                     sm={12}
                     xs={12}
-                    className="CreateMeetingInput"
-                  >
+                    className='CreateMeetingInput'>
                     <Button
                       text={
                         createMeeting.IsVideoCall === false ? (
                           <Tooltip
-                            placement="bottomLeft"
-                            title={t("Enable-video-call")}
-                          >
-                            <img src={MeetingVideoChatIcon} alt="" />
+                            placement='bottomLeft'
+                            title={t("Enable-video-call")}>
+                            <img src={MeetingVideoChatIcon} alt='' />
                           </Tooltip>
                         ) : (
                           <Tooltip
-                            placement="bottomLeft"
-                            title={t("Disable-video-call")}
-                          >
-                            <img src={MeetingVideoChatIconActive} alt="" />
+                            placement='bottomLeft'
+                            title={t("Disable-video-call")}>
+                            <img src={MeetingVideoChatIconActive} alt='' />
                           </Tooltip>
                         )
                       }
-                      name="IsVideoCall"
+                      name='IsVideoCall'
                       className={
                         createMeeting.IsVideoCall === false
                           ? "cameraButton"
@@ -2408,13 +2391,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     md={7}
                     sm={12}
                     xs={12}
-                    className="location-textbox CreateMeetingInput"
-                  >
+                    className='location-textbox CreateMeetingInput'>
                     <TextField
                       change={detailsHandler}
-                      name="MeetingLocation"
-                      applyClass="form-control2"
-                      type="text"
+                      name='MeetingLocation'
+                      applyClass='form-control2'
+                      type='text'
                       placeholder={t("Location-Videourl")}
                       value={createMeeting.MeetingLocation}
                       required={true}
@@ -2426,33 +2408,30 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     md={4}
                     sm={4}
                     xs={12}
-                    className="UpdateCheckbox mt-2 "
-                  >
+                    className='UpdateCheckbox mt-2 '>
                     <Checkbox
-                      className="SearchCheckbox "
-                      name="IsChat"
+                      className='SearchCheckbox '
+                      name='IsChat'
                       label={t("Group-chat")}
                       checked={createMeeting.IsChat}
                       onChange={onChange}
-                      classNameDiv="checkboxParentClass"
-                    ></Checkbox>
+                      classNameDiv='checkboxParentClass'></Checkbox>
                   </Col>
                 </Row>
 
-                <Row className="createmeetingInput-row ">
+                <Row className='createmeetingInput-row '>
                   <Col
                     lg={12}
                     md={12}
                     xs={12}
-                    className="location-textbox CreateMeetingInput"
-                  >
+                    className='location-textbox CreateMeetingInput'>
                     <TextField
                       change={detailsHandler}
                       value={createMeeting.MeetingTitle}
-                      name="MeetingTitle"
+                      name='MeetingTitle'
                       applyClass={"form-control2"}
-                      type="text"
-                      size="small"
+                      type='text'
+                      size='small'
                       placeholder={t("Meeting-title")}
                       required={true}
                       maxLength={245}
@@ -2460,20 +2439,19 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   </Col>
                 </Row>
 
-                <Row className="createmeetingtextarea-row">
+                <Row className='createmeetingtextarea-row'>
                   <Col
                     lg={12}
                     md={12}
                     xs={12}
-                    className="CreateMeetingInput textAreaDiv"
-                  >
+                    className='CreateMeetingInput textAreaDiv'>
                     <TextField
                       change={detailsHandler}
-                      name="MeetingDescription"
-                      applyClass="form-control2 createmeetingtextarea"
-                      type="text"
+                      name='MeetingDescription'
+                      applyClass='form-control2 createmeetingtextarea'
+                      type='text'
                       as={"textarea"}
-                      rows="7"
+                      rows='7'
                       placeholder={t("Description")}
                       value={createMeeting.MeetingDescription}
                       required={true}
@@ -2483,26 +2461,25 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               </>
             ) : isAgenda ? (
               <>
-                <div className="agenda_container">
+                <div className='agenda_container'>
                   <Form onSubmit={addAnOtherAgenda}>
                     <Row>
                       <Col
                         lg={7}
                         md={7}
                         xs={12}
-                        className="agenda-title-field CreateMeetingAgenda"
-                      >
+                        className='agenda-title-field CreateMeetingAgenda'>
                         <TextField
                           change={agendaHandler}
                           name={"Title"}
                           value={objMeetingAgenda.Title}
-                          applyClass="form-control2"
-                          type="text"
+                          applyClass='form-control2'
+                          type='text'
                           maxLength={300}
                           placeholder={t("Agenda-title") + "*"}
                         />
                       </Col>
-                      <Col lg={5} md={5} xs={12} className="agenda-title-field">
+                      <Col lg={5} md={5} xs={12} className='agenda-title-field'>
                         <Select
                           options={allPresenters}
                           maxMenuHeight={140}
@@ -2511,7 +2488,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           value={
                             presenterValue?.value === 0 ? null : presenterValue
                           }
-                          placeholder="Select Presenter"
+                          placeholder='Select Presenter'
                           filterOption={filterFunc}
                         />
                       </Col>
@@ -2522,37 +2499,35 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="agenda-title-field CreateMeetingAgenda"
-                      >
+                        className='agenda-title-field CreateMeetingAgenda'>
                         <TextField
                           change={agendaHandler}
                           name={"URLs"}
                           value={objMeetingAgenda.URLs}
-                          applyClass="form-control2"
-                          type="text"
+                          applyClass='form-control2'
+                          type='text'
                           placeholder={t("Url")}
                         />
                       </Col>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-start flex-column "
-                      >
-                        <label className="MontserratRegular ">
+                        className='d-flex justify-content-start flex-column '>
+                        <label className='MontserratRegular '>
                           {t("Attachement")}
                         </label>
-                        <span className="custom-upload-input">
+                        <span className='custom-upload-input'>
                           <CustomUpload
                             change={uploadFilesAgenda}
                             multiple={true}
                             onClick={(event) => {
                               event.target.value = null;
                             }}
-                            className="UploadFileButton"
+                            className='UploadFileButton'
                           />
                         </span>
                       </Col>
@@ -2588,11 +2563,11 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       : null}
                   </Row>
                 </div>
-                <div className="modalmeeting-participant-scroll">
+                <div className='modalmeeting-participant-scroll'>
                   {createMeeting.MeetingAgendas.length > 0
                     ? createMeeting.MeetingAgendas.map((data, index) => {
                         return (
-                          <div className="margin-top-20" key={index}>
+                          <div className='margin-top-20' key={index}>
                             <Accordian
                               AccordioonHeader={data.ObjMeetingAgenda.Title}
                               className={`Setting ${currentLanguage}`}
@@ -2605,7 +2580,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                         variant={"Primary"}
                                         text={t("Edit")}
                                         onClick={() => editGrid(data, index)}
-                                        datatut="show-agenda"
+                                        datatut='show-agenda'
                                       />
                                     </Col>
                                     <Col lg={2} md={2} xs={6}>
@@ -2623,8 +2598,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                         disable={true}
                                         name={"Title"}
                                         value={data.ObjMeetingAgenda.Title}
-                                        applyClass="form-control2"
-                                        type="text"
+                                        applyClass='form-control2'
+                                        type='text'
                                         placeholder={t("Agenda-title")}
                                       />
                                     </Col>
@@ -2635,8 +2610,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                         value={
                                           data.ObjMeetingAgenda.PresenterName
                                         }
-                                        applyClass="form-control2"
-                                        type="text"
+                                        applyClass='form-control2'
+                                        type='text'
                                         placeholder={t(
                                           "Presenter-Title-Placeholder",
                                         )}
@@ -2649,8 +2624,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                         disable={true}
                                         name={"URLs"}
                                         value={data.ObjMeetingAgenda.URLs}
-                                        applyClass="form-control2"
-                                        type="text"
+                                        applyClass='form-control2'
+                                        type='text'
                                         placeholder={t("URL-Title-Placeholder")}
                                       />
                                     </Col>
@@ -2667,8 +2642,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                                 sm={4}
                                                 lg={4}
                                                 md={4}
-                                                key={index}
-                                              >
+                                                key={index}>
                                                 <AttachmentViewer
                                                   id={Number(
                                                     MeetingAgendaAttachmentsData.OriginalAttachmentName,
@@ -2708,13 +2682,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               </>
             ) : isAttendees ? (
               <>
-                <Row className=" mt-4">
+                <Row className=' mt-4'>
                   <Col lg={6} md={6} sm={12} xs={12}>
                     <Select
                       options={attendeesParticipant}
                       classNamePrefix={"ModalOrganizerSelect"}
                       filterOption={filterFunc}
-                      placeholder="Please Select"
+                      placeholder='Please Select'
                       onChange={handleChangeAttenddes}
                       isSearchable={true}
                       value={
@@ -2741,16 +2715,15 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     />
                   </Col>
                 </Row>
-                <section className="participant-scroll-creatingmeeting">
+                <section className='participant-scroll-creatingmeeting'>
                   <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
-                      className="participant-heading-creatingmeeting"
-                    >
-                      <label className="">{t("Organizer")}</label>
+                      className='participant-heading-creatingmeeting'>
+                      <label className=''>{t("Organizer")}</label>
                     </Col>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       {addedParticipantNameList ? (
@@ -2794,9 +2767,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className="participant-heading-creatingmeeting"
-                    >
-                      <label className="">{t("Participants")}</label>
+                      className='participant-heading-creatingmeeting'>
+                      <label className=''>{t("Participants")}</label>
                     </Col>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       {addedParticipantNameList ? (
@@ -2836,8 +2808,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="Confirmationmodal_body_text_meeting_update"
-                  >
+                    className='Confirmationmodal_body_text_meeting_update'>
                     {t("Are-you-sure-you-want-to-continue")}
                   </Col>
                 </Row>
@@ -2854,14 +2825,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <Button
                       onClick={navigateToAgenda}
                       className={"createmeeting_details_footer_NextBtn"}
                       variant={"Primary"}
                       text={t("Next")}
-                      type="submit"
+                      type='submit'
                     />
                   </Col>
                 </Row>
@@ -2874,8 +2844,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     md={12}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-between"
-                  >
+                    className='d-flex justify-content-between'>
                     <Button
                       onClick={addAnOtherAgenda}
                       className={
@@ -2895,7 +2864,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         "btn btn-primary modal-createMeeting-addagendaBtn_Next"
                       }
                       text={t("Next")}
-                      type="submit"
+                      type='submit'
                     />
                   </Col>
                 </Row>
@@ -2908,13 +2877,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     md={12}
                     xs={12}
                     sm={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <Button
                       className={"btn btn-primary modal-createMeeting-publish"}
                       text={t("Publish")}
                       onClick={handleSubmit}
-                      type="submit"
+                      type='submit'
                     />
                   </Col>
                 </Row>
@@ -2926,8 +2894,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center gap-3"
-                  >
+                    className='d-flex justify-content-center gap-3'>
                     <Button
                       onClick={onHideCancelButton}
                       className={"Confirmationmodal_cancel_btn_meeting_update_"}

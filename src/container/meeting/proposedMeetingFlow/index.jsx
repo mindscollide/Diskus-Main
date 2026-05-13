@@ -293,30 +293,6 @@ const ProposedMeeting = () => {
             <span
               onClick={() => {
                 handleCLickView(record);
-                // try {
-                //   let Data = {
-                //     MeetingID: Number(record.pK_MDID),
-                //   };
-                //   dispatch(
-                //     GetAllMeetingDetailsApiFunc(
-                //       navigate,
-                //       t,
-                //       Data,
-                //       false,
-                //       setCurrentMeetingID,
-                //       setSceduleMeeting,
-                //       setDataroomMapFolderId,
-                //       0,
-                //       6 /*When User click on title from proposed Tab  */,
-                //     ),
-                //   );
-                //   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
-                //   dispatch(
-                //     GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
-                //   );
-                // } catch (error) {
-                //
-                // }
               }}
               className={styles.tableRow}>
               {text}
@@ -480,7 +456,6 @@ const ProposedMeeting = () => {
               </div>
             )
           );
-   
         },
       },
       {

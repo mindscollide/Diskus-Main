@@ -155,7 +155,6 @@ const AgendaViewer = () => {
   let callerID = Number(localStorage.getItem("callerID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
 
-  let currentMeeting = localStorage.getItem("currentMeetingID");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -323,7 +322,7 @@ const AgendaViewer = () => {
           advanceMeetingModalID === 0 ||
           advanceMeetingModalID === null ||
           advanceMeetingModalID === undefined
-            ? Number(currentMeeting)
+            ?0
             : Number(advanceMeetingModalID),
       };
       dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
@@ -693,7 +692,7 @@ const AgendaViewer = () => {
         let Data = {
           MeetingID:
             advanceMeetingModalID === "0" || advanceMeetingModalID === 0
-              ? Number(currentMeeting)
+              ? 0
               : Number(advanceMeetingModalID),
         };
         dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
@@ -754,7 +753,7 @@ const AgendaViewer = () => {
         if (!enableDisableVideoState) {
           
           let data = {
-            MeetingId: Number(currentMeeting),
+            MeetingId: Number(advanceMeetingModalID),
             VideoCallURL: String(currentMeetingVideoURL),
             IsMuted: false,
             HideVideo: false,
@@ -826,7 +825,7 @@ const AgendaViewer = () => {
         };
 
         dispatch(
-          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
+          openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
         );
       } else {
         
@@ -838,7 +837,7 @@ const AgendaViewer = () => {
         };
 
         dispatch(
-          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
+          openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
         );
       }
     }
@@ -852,7 +851,6 @@ const AgendaViewer = () => {
       setResumeRecordingState(false);
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
-      // if (presenterMeetingId === currentMeeting) {
       
       if (value === 1) {
         if (presenterStartedFlag) {

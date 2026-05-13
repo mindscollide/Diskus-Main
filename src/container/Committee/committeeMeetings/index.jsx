@@ -72,8 +72,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       UserID: Number(userID),
       PageNumber: 1,
       Length: 30,
-      PublishedMeetings: true,
-      ProposedMeetings: false,
+      PublishedMeetings: currentCommitteeMeetingTabActive === 2 ? false : currentCommitteeMeetingTabActive === 1 ? true : false,
+      ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
     };
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
   }, []);

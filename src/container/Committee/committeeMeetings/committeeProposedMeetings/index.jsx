@@ -195,8 +195,6 @@ const CommitteeProposedMeetings = () => {
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
-    
-
     // Reset all sort states first
     setMeetingTitleSort(null);
     setMeetingDateSort(null);
@@ -216,7 +214,6 @@ const CommitteeProposedMeetings = () => {
     }
   };
   const handleCLickView = (record) => {
-    
     if (record.isOrganizer) {
       dispatch(
         getMeetingDetailsByMeetingIdApi(
@@ -231,7 +228,6 @@ const CommitteeProposedMeetings = () => {
   };
   const moreButtons = (record) => {
     const handleEdit = () => {
-      
       if (record.isOrganizer) {
         dispatch(
           getMeetingDetailsByMeetingIdApi(
@@ -246,7 +242,6 @@ const CommitteeProposedMeetings = () => {
     };
 
     const handleDelete = () => {
-      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -298,30 +293,6 @@ const CommitteeProposedMeetings = () => {
             <span
               onClick={() => {
                 handleCLickView(record);
-                // try {
-                //   let Data = {
-                //     MeetingID: Number(record.pK_MDID),
-                //   };
-                //   dispatch(
-                //     GetAllMeetingDetailsApiFunc(
-                //       navigate,
-                //       t,
-                //       Data,
-                //       false,
-                //       setCurrentMeetingID,
-                //       setSceduleMeeting,
-                //       setDataroomMapFolderId,
-                //       0,
-                //       6 /*When User click on title from proposed Tab  */,
-                //     ),
-                //   );
-                //   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
-                //   dispatch(
-                //     GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
-                //   );
-                // } catch (error) {
-                //   
-                // }
               }}
               className={styles.tableRow}>
               {text}
@@ -589,7 +560,6 @@ const CommitteeProposedMeetings = () => {
             dispatch(toggleIsParticipantProposedMeetingDates(true));
           }
         } catch (error) {
-          
           localStorage.removeItem("meetingprop");
         }
       };
@@ -619,7 +589,6 @@ const CommitteeProposedMeetings = () => {
               dispatch(toggleIsOrganizerProposedMeetingDates(true));
             }
           } catch (error) {
-            
             localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };
