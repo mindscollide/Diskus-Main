@@ -31,7 +31,6 @@ import {
   boardDeckModal,
   getMeetingRecordingFilesApi,
 } from "@/store/actions/NewMeetingActions";
-import { ViewMeeting } from "@/store/actions/Get_List_Of_Assignees";
 import { downloadAttendanceReportApi } from "@/store/actions/Download_action";
 
 import {
@@ -72,8 +71,7 @@ import DoubleArrowIcon from "@/assets/images/sortingIcons/Double Arrow2.svg";
 
 import styles from "./groupPublishMeetings.module.css";
 
-import { ChevronDown, Record } from "react-bootstrap-icons";
-import CustomPagination from "@/commen/functions/customPagination/Paginations";
+import { ChevronDown } from "react-bootstrap-icons";
 import BoardDeckModal from "@/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal";
 import BoardDeckSendEmail from "@/container/meeting/commonComponents/BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
 import ShareModalBoarddeck from "@/container/meeting/commonComponents/BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
@@ -82,13 +80,12 @@ import ShareViaDataRoomPathModal from "@/container/meeting/commonComponents/Boar
 import MeetingRecording from "@/container/meeting/commonComponents/MeetingRecording/MeetingRecording";
 import {
   getMeetingDetailsByMeetingIdApi,
+  getViewMeetingByMeetingIdApi,
   joinMeetingApi,
   setCurrentMeetingInfo,
   UpdateMeetingStatusApi,
 } from "@/store/actions/NewMeeting2.actions";
-import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { useGroupsContext } from "../../../../context/GroupsContext";
-import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -139,9 +136,6 @@ const GroupPublishedMeetingList = () => {
     editorRole,
     setEditorRole,
     setVideoTalk,
-    setSceduleMeeting,
-    setViewFlag,
-    setEditFlag,
     setDownloadMeeting,
     setDownloadVideoRecordingModal,
     boardDeckMeetingID,
@@ -150,13 +144,12 @@ const GroupPublishedMeetingList = () => {
     setBoardDeckMeetingTitle,
     downloadVideoRecordingModal,
   } = useMeetingContext();
-  const { setIsQuickMeetingView } = useNewMeetingContext();
+  const { setIsQuickMeetingView, setIsQuickMeetingUpdate } = useNewMeetingContext();
   const {
     isMeetingTypeFilter,
     minutesAgo,
     startMeetingButton,
     groupPublishedMeetingData,
-    groupPublishedMeetingDataRecord,
   } = useGroupsContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
@@ -186,8 +179,6 @@ const GroupPublishedMeetingList = () => {
 
   // ─── localStorage reads ───────────────────────────────────────────────────
 
-  const meetingpageRow = localStorage.getItem("MeetingPageRows");
-  const meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   const userID = localStorage.getItem("userID");
   const currentOrganizationId = localStorage.getItem("organizationID");
 
@@ -265,15 +256,9 @@ const GroupPublishedMeetingList = () => {
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
 
-  const handleViewMeeting = async (
-    videoCallURL,
-    id,
-    isQuickMeeting,
-    status,
-    record,
-  ) => {
+  const handleViewMeeting = async (record) => {
     try {
-      const statusNum = Number(status);
+      const statusNum = Number(record.status);
 
       if (statusNum === STATUS.ACTIVE) {
         handleJoinMeeting(record);
@@ -281,26 +266,31 @@ const GroupPublishedMeetingList = () => {
         return;
       }
 
-      if (isQuickMeeting) {
+      if (record.isQuickMeeting) {
         await dispatch(
-          ViewMeeting(
+          getViewMeetingByMeetingIdApi(
             navigate,
-            { MeetingID: id },
             t,
-            setViewFlag,
-            setEditFlag,
-            // setIsCreateEditMeeting,
-            1,
+            { MeetingID: record.pK_MDID },
+            "ViewQuickMeetingFromListing",
+            {
+              setIsQuickMeetingView,
+            },
           ),
         );
         return;
       }
 
+      dispatch(
+        setCurrentMeetingInfo({
+          meetingID: record.pK_MDID,
+        }),
+      );
       dispatch(toggleViewMeetingModal(true));
       dispatch(setViewTab("meetingDetails"));
       setEditorRole((prev) => ({
         ...prev,
-        status: status,
+        status: record.status,
         role: record.isParticipant
           ? "Participant"
           : record.isAgendaContributor
@@ -308,11 +298,6 @@ const GroupPublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-      dispatch(
-        setCurrentMeetingInfo({
-          meetingID: record.pK_MDID,
-        }),
-      );
     } catch (error) {}
   };
 
@@ -330,17 +315,10 @@ const GroupPublishedMeetingList = () => {
         getViewMeetingByMeetingIdApi(
           navigate,
           t,
-          { MeetingID: record.pK_MDID },
-          "ViewQuickMeetingFromListing",
-          {
-            setIsQuickMeetingView,
-          },
+          { MeetingID: meetingId },
+          "EditQuickMeetingFromMainListing",
+          { setIsQuickMeetingUpdate },
         ),
-      );
-      dispatch(
-        setCurrentMeetingInfo({
-          meetingID: record.pK_MDID,
-        }),
       );
       return;
     }
@@ -373,15 +351,25 @@ const GroupPublishedMeetingList = () => {
       ? "Agenda Contributor"
       : "Organizer";
     const meetingId = Number(record.pK_MDID);
-    const context = "JoinMeetingFromMainListing";
 
     if (record.isQuickMeeting) {
-      await dispatch(
-        ViewMeeting(navigate, t, { MeetingID: meetingId }, context, {
-          setViewFlag,
-          setEditFlag,
-          no: 2,
-        }),
+      dispatch(
+        joinMeetingApi(
+          navigate,
+          t,
+          {
+            VideoCallURL: record.videoCallURL,
+            FK_MDID: Number(meetingId),
+            DateTime: getCurrentDateTimeUTC(),
+          },
+          "JoinQuickMeetingFromListing",
+          {
+            role,
+            isQuickMeeting: record.isQuickMeeting,
+            record,
+            setIsQuickMeetingView,
+          },
+        ),
       );
       return;
     }
@@ -450,13 +438,7 @@ const GroupPublishedMeetingList = () => {
   };
 
   const handleClickViewAgenda = (record) => {
-    handleViewMeeting(
-      record.videoCallURL,
-      record.pK_MDID,
-      record.isQuickMeeting,
-      record.status,
-      record,
-    );
+    handleViewMeeting(record);
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
     dispatch(emailRouteID(3));
@@ -491,7 +473,8 @@ const GroupPublishedMeetingList = () => {
         (status === STATUS.ENDED ||
           status === STATUS.UPCOMING ||
           status === STATUS.ACTIVE) &&
-        (isOrganizer || isAgendaContributor || isParticipant),
+        (isOrganizer || isAgendaContributor || isParticipant) &&
+        !record.isQuickMeeting,
       attendance: status === STATUS.ENDED && isOrganizer,
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
@@ -585,6 +568,13 @@ const GroupPublishedMeetingList = () => {
         break;
 
       case "START_MEETING": {
+        setVideoTalk(buildVideoTalk(record));
+        setMeetingLocalStorage(record);
+        setEditorRole({
+          status: "10",
+          role: "Organizer",
+          isPrimaryOrganizer: record.isPrimaryOrganizer,
+        });
         if (!record.isQuickMeeting) {
           dispatch(
             UpdateMeetingStatusApi(
@@ -600,16 +590,23 @@ const GroupPublishedMeetingList = () => {
               },
             ),
           );
-          // dispatch(setViewTab("meetingDetails"));
-          setVideoTalk(buildVideoTalk(record));
-          setMeetingLocalStorage(record);
-          // localStorage.setItem("currentMeetingID", record.pK_MDID);
-          setEditorRole({
-            status: "10",
-            role: "Organizer",
-            isPrimaryOrganizer: record.isPrimaryOrganizer,
-          });
           return;
+        } else {
+          dispatch(
+            UpdateMeetingStatusApi(
+              navigate,
+              t,
+              {
+                MeetingID: Number(record.pK_MDID),
+                StatusID: 10,
+              },
+              "startQuickMeetingFromMainListing",
+              {
+                record,
+                setIsQuickMeetingView,
+              },
+            ),
+          );
         }
 
         break;
@@ -625,13 +622,7 @@ const GroupPublishedMeetingList = () => {
         break;
 
       case "VIEW_MEETING":
-        handleViewMeeting(
-          record.videoCallURL,
-          record.pK_MDID,
-          record.isQuickMeeting,
-          record.status,
-          record,
-        );
+        handleViewMeeting(record);
         setVideoTalk(buildVideoTalk(record));
         setEditorRole(buildEditorRole(record));
         setMeetingLocalStorage(record);
@@ -682,13 +673,7 @@ const GroupPublishedMeetingList = () => {
           <span
             className={styles.tableRow}
             onClick={() => {
-              handleViewMeeting(
-                record.videoCallURL,
-                record.pK_MDID,
-                record.isQuickMeeting,
-                record.status,
-                record,
-              );
+              handleViewMeeting(record);
               setMeetingLocalStorage(record);
               setVideoTalk(buildVideoTalk(record));
               setEditorRole(buildEditorRole(record));

@@ -140,8 +140,6 @@ const AgendaViewer = () => {
     setViewMeetingAgendaViewerRowData,
   } = useMeetingContext();
 
-  
-
   const [talkGroupID, setTalkGroupID] = useState(0);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -177,10 +175,7 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterStartedFlag,
   );
 
-  
-
   let newRoomID = localStorage.getItem("newRoomId");
-  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
   let participantRoomId = localStorage.getItem("participantRoomId");
 
@@ -201,6 +196,11 @@ const AgendaViewer = () => {
       ? newRoomID
       : participantRoomId;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+
+  const { meetingID, mapFolderId } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
     (state) =>
       state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData,
@@ -267,9 +267,6 @@ const AgendaViewer = () => {
     (state) => state.UserManagementModals.UpgradeNowModal,
   );
 
-  
-  
-
   const [menuAgenda, setMenuAgenda] = useState(false);
 
   const closeMenuAgenda = useRef(null);
@@ -322,7 +319,7 @@ const AgendaViewer = () => {
           advanceMeetingModalID === 0 ||
           advanceMeetingModalID === null ||
           advanceMeetingModalID === undefined
-            ?0
+            ? Number(meetingID)
             : Number(advanceMeetingModalID),
       };
       dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
@@ -410,7 +407,7 @@ const AgendaViewer = () => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
-    
+
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -451,7 +448,7 @@ const AgendaViewer = () => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
-    
+
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -484,7 +481,6 @@ const AgendaViewer = () => {
   };
 
   const groupChatInitiation = async (talkChatID) => {
-    
     if (talkChatID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -543,7 +539,6 @@ const AgendaViewer = () => {
       const foundRecord = allChatMessages.allMessages.find(
         (item) => item.id === talkGroupID,
       );
-      
 
       if (foundRecord) {
         dispatch(chatBoxActiveFlag(true));
@@ -587,7 +582,6 @@ const AgendaViewer = () => {
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
           ) {
-            
             return {
               ...item,
               voteOwner: {
@@ -702,11 +696,9 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (joinMeetingVideoParticipant) {
-      
       dispatch(participantVideoButtonState(true));
       // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
       if (!participantEnableVideoState) {
-        
         // if(isMeetingVideoHostCheck){
 
         // }else{
@@ -726,7 +718,6 @@ const AgendaViewer = () => {
     setStopRecordingState(false);
     dispatch(disableZoomBeforeJoinSession(true));
 
-    
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck"),
     );
@@ -735,23 +726,18 @@ const AgendaViewer = () => {
     );
 
     if (nonMeetingCheck) {
-      
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
       if (!isMeetingVideoHostCheck) {
-        
         dispatch(participantVideoButtonState(true));
         // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
         if (!participantEnableVideoState) {
-          
           dispatch(maxParticipantVideoCallPanel(true));
         }
       } else {
-        
         localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
-          
           let data = {
             MeetingId: Number(advanceMeetingModalID),
             VideoCallURL: String(currentMeetingVideoURL),
@@ -761,8 +747,6 @@ const AgendaViewer = () => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
-          
-          
         }
       }
     }
@@ -776,15 +760,11 @@ const AgendaViewer = () => {
     dispatch(participantWaitingListBox(false));
     dispatch(toggleParticipantsVisibility(false));
     if (activeCallState && !isMeetingVideo) {
-      
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {
-      
       if (raisedUnRaisedParticipant) {
-        
         if (!isZoomEnabled || !disableBeforeJoinZoom) {
-          
           let data = {
             RoomID: String(RoomID),
             UID: String(UID),
@@ -795,10 +775,8 @@ const AgendaViewer = () => {
       }
 
       if (isWaiting) {
-        
         dispatch(closeWaitingParticipantVideoStream(true));
       } else {
-        
         localStorage.setItem("acceptedRoomID", RoomID);
         await sessionStorage.setItem("alreadyInMeetingVideo", true);
         await sessionStorage.setItem(
@@ -808,13 +786,9 @@ const AgendaViewer = () => {
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
     } else {
-      
-      
       if (isWaiting) {
-        
         dispatch(closeWaitingParticipantVideoStream(true));
       } else if (maximizeParticipantVideoFlag) {
-        
         dispatch(videoIconOrButtonState(false));
         dispatch(participantVideoButtonState(false));
         dispatch(maxParticipantVideoCallPanel(false));
@@ -828,7 +802,6 @@ const AgendaViewer = () => {
           openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
         );
       } else {
-        
         dispatch(maxParticipantVideoCallPanel(false));
         let data = {
           VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -844,22 +817,21 @@ const AgendaViewer = () => {
   };
 
   const onClickStopPresenter = async (value) => {
-    
     try {
       setStartRecordingState(false);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
-      
+
       if (value === 1) {
         if (presenterStartedFlag) {
           let data = {
-            MeetingID: currentMeetingID,
+            MeetingID: advanceMeetingModalID,
             RoomID: RoomID,
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
-          
+
           dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
         } else {
           let data = {
@@ -876,17 +848,15 @@ const AgendaViewer = () => {
           activeCallState &&
           (currentCallType === 1 || currentCallType === 2)
         ) {
-          
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
-          
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
           let data = {
             VideoCallURL: String(currentMeetingVideoURL),
             WasInVideo: isMeetingVideo ? true : false,
           };
-          
+
           dispatch(joinPresenterViewMainApi(navigate, t, data));
         }
       } else if (value === 3) {
@@ -920,14 +890,13 @@ const AgendaViewer = () => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center mt-3"
-            >
+              className='d-flex justify-content-center mt-3'>
               <img
                 draggable={false}
                 src={emptyContributorState}
-                width="274.05px"
-                alt=""
-                height="230.96px"
+                width='274.05px'
+                alt=''
+                height='230.96px'
                 className={styles["Image-Add-Agenda"]}
               />
             </Col>
@@ -937,8 +906,7 @@ const AgendaViewer = () => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center mt-3"
-            >
+              className='d-flex justify-content-center mt-3'>
               <span className={styles["Empty_state_heading"]}>
                 {t("No-agenda-availabe-to-discuss").toUpperCase()}
               </span>
@@ -958,18 +926,16 @@ const AgendaViewer = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
-                  >
+                    className='d-flex justify-content-end align-items-center text-end gap-2 mt-3'>
                     <div className={styles["icons-block"]}>
                       {videoTalk?.isChat ? (
-                        <Tooltip placement="topRight" title={t("Start-chat")}>
+                        <Tooltip placement='topRight' title={t("Start-chat")}>
                           <div
                             className={styles["box-agendas-leave"]}
                             onClick={() =>
                               groupChatInitiation(videoTalk?.talkGroupID)
-                            }
-                          >
-                            <img src={TalkInactiveIcon} alt="" />
+                            }>
+                            <img src={TalkInactiveIcon} alt='' />
                           </div>
                         </Tooltip>
                       ) : null}
@@ -992,8 +958,7 @@ const AgendaViewer = () => {
                                           ? 3
                                           : 2,
                                     )
-                                  }
-                                >
+                                  }>
                                   <img src={StopImage} />
                                   <p>
                                     {presenterViewHostFlag
@@ -1010,8 +975,7 @@ const AgendaViewer = () => {
                                   className={
                                     styles["Start-presenter-view-class"]
                                   }
-                                  onClick={onClickStartPresenter}
-                                >
+                                  onClick={onClickStartPresenter}>
                                   <img src={PresenterView} />
                                   <p>{t("Start-presentation")}</p>
                                 </div>
@@ -1024,9 +988,8 @@ const AgendaViewer = () => {
                         editorRole.status === 10) &&
                         videoTalk?.isVideoCall && (
                           <Tooltip
-                            placement="topRight"
-                            title={t("Join-meeting-video")}
-                          >
+                            placement='topRight'
+                            title={t("Join-meeting-video")}>
                             <div
                               className={
                                 enableDisableVideoState ||
@@ -1039,11 +1002,10 @@ const AgendaViewer = () => {
                                 presenterViewFlag === false
                                   ? onClickVideoIconOpenVideo
                                   : undefined
-                              }
-                            >
+                              }>
                               <img
                                 src={VideocameraIcon}
-                                alt=""
+                                alt=''
                                 // onClick={
                                 //   presenterViewFlag === false
                                 //     ? onClickVideoIconOpenVideo
@@ -1056,10 +1018,9 @@ const AgendaViewer = () => {
                       <div
                         onClick={menuPopupAgenda}
                         className={styles["box-agendas"]}
-                        ref={closeMenuAgenda}
-                      >
-                        <Tooltip placement="topRight" title={t("More")}>
-                          <img src={MenuIcon} alt="" />
+                        ref={closeMenuAgenda}>
+                        <Tooltip placement='topRight' title={t("More")}>
+                          <img src={MenuIcon} alt='' />
                         </Tooltip>
                         <div
                           className={
@@ -1070,8 +1031,7 @@ const AgendaViewer = () => {
                               : `${
                                   styles["popup-agenda-menu"]
                                 } ${"opacity-0 pe-none"}`
-                          }
-                        >
+                          }>
                           <span
                             className={
                               editorRole.status === 9 ||
@@ -1084,8 +1044,7 @@ const AgendaViewer = () => {
                               editorRole.status === "9"
                                 ? participantModal
                                 : null
-                            }
-                          >
+                            }>
                             <img
                               width={20}
                               src={
@@ -1094,21 +1053,21 @@ const AgendaViewer = () => {
                                   ? ParticipantsInfo
                                   : ParticipantsInfoDisabled
                               }
-                              alt=""
+                              alt=''
                             />
                             {t("Participants-info")}
                           </span>
                           <span onClick={printModal}>
-                            <img width={20} src={PrintIcon} alt="" />
+                            <img width={20} src={PrintIcon} alt='' />
                             {t("Print")}
                           </span>
                           <span onClick={exportModal}>
-                            <img width={20} src={ExportIcon} alt="" />
+                            <img width={20} src={ExportIcon} alt='' />
 
                             {t("Export-pdf")}
                           </span>
-                          <span onClick={shareEmailModal} className="border-0">
-                            <img width={20} src={ShareIcon} alt="" />
+                          <span onClick={shareEmailModal} className='border-0'>
+                            <img width={20} src={ShareIcon} alt='' />
                             {t("Share-email")}
                           </span>
                         </div>
@@ -1124,21 +1083,18 @@ const AgendaViewer = () => {
                     viewMeetingAgendaViewerRowData,
                     setViewMeetingAgendaViewerRowData,
                   )
-                }
-              >
+                }>
                 <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Agenda"]}
-                  >
-                    <Droppable droppableId="board" type="PARENT">
+                    className={styles["Scroller_Agenda"]}>
+                    <Droppable droppableId='board' type='PARENT'>
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
-                          {...provided.droppableProps}
-                        >
+                          {...provided.droppableProps}>
                           {viewMeetingAgendaViewerRowData.length > 0 ? (
                             viewMeetingAgendaViewerRowData.map(
                               (data, index) => {
@@ -1184,14 +1140,13 @@ const AgendaViewer = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center mt-3"
-                                >
+                                  className='d-flex justify-content-center mt-3'>
                                   <img
                                     draggable={false}
                                     src={emptyContributorState}
-                                    width="274.05px"
-                                    alt=""
-                                    height="230.96px"
+                                    width='274.05px'
+                                    alt=''
+                                    height='230.96px'
                                   />
                                 </Col>
                               </Row>
@@ -1200,11 +1155,9 @@ const AgendaViewer = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center mt-3"
-                                >
+                                  className='d-flex justify-content-center mt-3'>
                                   <span
-                                    className={styles["Empty_state_heading"]}
-                                  >
+                                    className={styles["Empty_state_heading"]}>
                                     {t("Add-agenda").toUpperCase()}
                                   </span>
                                 </Col>
@@ -1214,11 +1167,11 @@ const AgendaViewer = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <span
-                                    className={styles["Empty_state_Subheading"]}
-                                  >
+                                    className={
+                                      styles["Empty_state_Subheading"]
+                                    }>
                                     {t(
                                       "Add-some-purpose-start-by-creating-your-agenda",
                                     )}

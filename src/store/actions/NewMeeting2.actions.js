@@ -2560,19 +2560,19 @@ export const UpdateMeetingStatusApi = (
                           return;
                         }
                         if (groupInfo !== null) {
-                          let searchData = {
-                            GroupID: Number(groupInfo.groupID),
-                            Date: "",
-                            Title: "",
-                            HostName: "",
-                            UserID: Number(localStorage.getItem("userID")),
-                            PageNumber: 1,
-                            Length: 30,
-                            PublishedMeetings: true,
-                          };
-                          dispatch(
-                            getMeetingbyGroupIdApi(navigate, t, searchData),
-                          );
+                          // let searchData = {
+                          //   GroupID: Number(groupInfo.groupID),
+                          //   Date: "",
+                          //   Title: "",
+                          //   HostName: "",
+                          //   UserID: Number(localStorage.getItem("userID")),
+                          //   PageNumber: 1,
+                          //   Length: 30,
+                          //   PublishedMeetings: true,
+                          // };
+                          // dispatch(
+                          //   getMeetingbyGroupIdApi(navigate, t, searchData),
+                          // );
                           return;
                         }
                         const currentView =
@@ -2612,6 +2612,13 @@ export const UpdateMeetingStatusApi = (
                       }
                       case "startMeetingFromMainListing": {
                         const { record } = object;
+                        await dispatch(
+                          setCurrentMeetingInfo({
+                            meetingID: Data.FK_MDID,
+                            meetingTitle: record.title,
+                            // mapFolderId: 0,
+                          }),
+                        );
                         dispatch(
                           joinMeetingApi(
                             navigate,
@@ -3314,13 +3321,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     dispatch(setViewTab("agendaViewer"));
                     dispatch(toggleViewMeetingModal(true));
                     localStorage.setItem("meetingTitle", record.title);
-                    dispatch(
-                      setCurrentMeetingInfo({
-                        meetingID: Data.FK_MDID,
-                        meetingTitle: record.title,
-                        // mapFolderId: 0,
-                      }),
-                    );
+
                     break;
                   }
                   case "JoinQuickMeetingFromListing": {
