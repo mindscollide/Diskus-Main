@@ -7938,9 +7938,11 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       HostName: "",
                       UserID: Number(userID),
                       PageNumber: 1,
-                      Length: 50,
+                      Length: 30,
                       PublishedMeetings: true,
+                      ProposedMeetings: false,
                     };
+
                     dispatch(
                       getMeetingByCommitteeIdApi(navigate, t, searchData),
                     );
@@ -7952,8 +7954,9 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       HostName: "",
                       UserID: Number(userID),
                       PageNumber: 1,
-                      Length: 50,
+                      Length: 30,
                       PublishedMeetings: true,
+                      ProposedMeetings: false,
                     };
                     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
                   } else {

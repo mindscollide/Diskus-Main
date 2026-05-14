@@ -388,7 +388,7 @@ export const NewMeetingProvider = ({ children }) => {
    * all lists with the freshly received payload.
    */
   useEffect(() => {
-    if (CommitteeMeetingMQTT == null) return;
+    if (CommitteeMeetingMQTT === null) return;
 
     try {
       const meetingData = CommitteeMeetingMQTT.meeting;

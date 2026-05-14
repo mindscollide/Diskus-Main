@@ -64,19 +64,10 @@ import {
   resetViewTabs,
   toggleViewMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
-import { resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
+import { LeaveMeetingApi, resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
 import NewEndMeetingModal from "../../commonComponents/NewEndMeetingModal/NewEndMeetingModal";
 
-const ViewMeetingModal = ({
-  advanceMeetingModalID,
-  setAdvanceMeetingModalID,
-  unPublish,
-  dataroomMapFolderId,
-  setDataroomMapFolderId,
-  setCurrentMeetingID,
-  videoTalk,
-  setVideoTalk,
-}) => {
+const ViewMeetingModal = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -125,7 +116,7 @@ const ViewMeetingModal = ({
     iframeRef,
   } = useContext(MeetingContext);
 
-  const { editorRole, setEditorRole } = useMeetingContext();
+  const { editorRole, setEditorRole,setVideoTalk,setAdvanceMeetingModalID } = useMeetingContext();
 
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
@@ -359,13 +350,14 @@ const ViewMeetingModal = ({
           localStorage.setItem("isMeeting", false);
           sessionStorage.removeItem("isMeeting");
           dispatch(
-            LeaveCurrentMeeting(
+            LeaveMeetingApi(
               navigate,
               t,
               {
                 FK_MDID: Number(meetingID),
                 DateTime: getCurrentDateTimeUTC(),
               },
+              "",
               setEditorRole,
             ),
           );
@@ -409,13 +401,14 @@ const ViewMeetingModal = ({
           localStorage.setItem("isMeeting", false);
           sessionStorage.removeItem("isMeeting");
           dispatch(
-            LeaveCurrentMeeting(
+            LeaveMeetingApi(
               navigate,
               t,
               {
                 FK_MDID: Number(meetingID),
                 DateTime: getCurrentDateTimeUTC(),
               },
+              "",
               { setEditorRole },
             ),
           );
@@ -442,7 +435,7 @@ const ViewMeetingModal = ({
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       dispatch(
-        LeaveCurrentMeeting(
+        LeaveMeetingApi(
           navigate,
           t,
           {
@@ -658,7 +651,7 @@ const ViewMeetingModal = ({
       callBeforeLeave();
     } else {
       await dispatch(
-        LeaveCurrentMeeting(
+        LeaveMeetingApi(
           navigate,
           t,
           {
@@ -953,7 +946,7 @@ const ViewMeetingModal = ({
                         }
                         onClick={showAttendance}
                         disableBtn={
-                          unPublish
+                          Number(editorRole.status) === 11
                             ? true
                             : Number(editorRole.status) === 10 &&
                                 editorRole.role === "Organizer"
@@ -999,7 +992,7 @@ const ViewMeetingModal = ({
               {agenda && <Agenda />}
               {agendaViewer && <AgendaViewer />}
 
-              {!unPublish && (
+              {Number(editorRole.status) === 11 && (
                 <>
                   {minutes && <Minutes />}
                   {actionsPage && <Actions />}

@@ -75,6 +75,9 @@ export const GroupsProvider = ({ children }) => {
   // ─── Tab State ───
   const [currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive] =
     useState(1);
+  const [currentGroupMeetingPage, setCurrentGroupMeetingPage] = useState(1);
+  const [currentGroupMeetingLength, setCurrentGroupMeetingLength] =
+    useState(30);
   const [minutesAgo, setMinutesAgo] = useState(0);
 
   // ─── Meeting Lists ───
@@ -94,6 +97,10 @@ export const GroupsProvider = ({ children }) => {
 
   const [startMeetingButton, setStartMeetingButton] = useState([]);
   const ViewGroupID = localStorage.getItem("ViewGroupID");
+
+  const meetingStatusPublishedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
+  );
 
   // =========================
   // HELPERS
@@ -173,6 +180,52 @@ export const GroupsProvider = ({ children }) => {
       }
     } catch (error) {}
   }, [getMeetingbyGroupID, currentGroupMeetingTabActive]);
+
+  useEffect(() => {
+    if (meetingStatusPublishedMqttData == null) return;
+
+    const callMQTT = async () => {
+      try {
+        const meetingData = meetingStatusPublishedMqttData;
+        const newMeetingData = await mqttMeetingData(meetingData, 1);
+
+        const { list, setList } = getActiveListAndSetter();
+
+        const indexToUpdate = list.findIndex(
+          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+        );
+
+        // IF MEETING EXISTS IN DRAFT LIST THEN REMOVE IT
+        const isExistInDraft = groupDraftMeetingData.some(
+          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+        );
+
+        if (isExistInDraft) {
+          if (indexToUpdate !== -1) {
+            const updated = [...list];
+            updated.splice(indexToUpdate, 1);
+            setList(updated);
+          }
+
+          return;
+        }
+
+        // UPDATE EXISTING
+        if (indexToUpdate !== -1) {
+          const updated = [...list];
+          updated[indexToUpdate] = newMeetingData;
+          setList(updated);
+        } else {
+          // ADD NEW
+          setList([newMeetingData, ...list]);
+        }
+      } catch (error) {}
+    };
+
+    callMQTT();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meetingStatusPublishedMqttData]);
 
   // =========================
   // EFFECT: GroupMeetingMQTT — handles new / updated meeting via MQTT
@@ -535,6 +588,12 @@ export const GroupsProvider = ({ children }) => {
         // Buttons
         startMeetingButton,
         setStartMeetingButton,
+
+        // Pagination
+        currentGroupMeetingPage,
+        setCurrentGroupMeetingPage,
+        currentGroupMeetingLength,
+        setCurrentGroupMeetingLength,
       }}>
       {children}
     </GroupContext.Provider>

@@ -1,12 +1,11 @@
 import moment from "moment";
-import React, { useEffect, useMemo, useState } from "react";
+import React, {  useMemo, useState } from "react";
 import { forRecentActivity } from "@/commen/functions/date_formater";
-import { ChevronDown } from "react-bootstrap-icons";
-import { Checkbox, Menu, Popover } from "antd";
+import { Popover } from "antd";
 import CustomButton from "@/components/elements/button/Button";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "@/components/elements";
+import {Table } from "@/components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
@@ -22,8 +21,6 @@ import CancelMeetingIcon from "@/assets/images/New Meeting Listing Icons/CancelM
 import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
 import EditIcon from "@/assets/images/New Meeting Listing Icons/EditMeeting.png";
 
-// Redux actions
-import { ViewMeeting } from "@/store/actions/Get_List_Of_Assignees";
 
 // Styles (reuse DraftMeeting styles from existing component)
 import styles from "./groupDraftMeetings.module.css";
@@ -37,8 +34,9 @@ import {
   toggleViewMeetingModal,
 } from "@/store/actions/ModalStates_actions";
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
-import { useCommitteeContext } from "../../../../context/CommitteeContext";
-import { listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
+import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
+import { useGroupsContext } from "../../../../context/GroupsContext";
+import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -59,34 +57,36 @@ const GroupDraftMeetings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { committeeDraftMeetingData, committeeDraftMeetingDataRecord } =
-    useCommitteeContext();
+  const {
+    groupDraftMeetingData,
+    setGroupDraftMeetingData,
+    groupDraftMeetingDataRecord,
+    setGroupDraftMeetingDataRecord,
+    currentGroupMeetingPage,
+    setCurrentGroupMeetingPage,
+    currentGroupMeetingLength,
+    setCurrentGroupMeetingLength,
+  } = useGroupsContext();
 
   // ─── Context ───
   const { isMeetingTypeFilter } = useNewMeetingContext();
   const {
-    setViewFlag,
-    setSceduleMeeting,
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
     deleteMeetingConfirmationModal,
-    setEditFlag,
     setEditorRole,
     setVideoTalk,
   } = useMeetingContext();
 
-  const committeeInfo = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   // ─── Local state ───
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
-
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -124,14 +124,16 @@ const GroupDraftMeetings = () => {
         : "Organizer";
       if (record.isQuickMeeting) {
         await dispatch(
-          ViewMeeting(
+          getViewMeetingByMeetingIdApi(
             navigate,
-            Data,
             t,
-            setViewFlag,
-            setEditFlag,
-            setSceduleMeeting,
-            2,
+            Data,
+            "",
+            {}
+            // setViewFlag,
+            // setEditFlag,
+            // setSceduleMeeting,
+            // 2,
           ),
         );
       } else if (record.isQuickMeeting === false) {
@@ -154,7 +156,6 @@ const GroupDraftMeetings = () => {
     };
 
     const handleCancel = () => {
-      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -165,14 +166,13 @@ const GroupDraftMeetings = () => {
     };
 
     const handleClickPublish = () => {
-      
       dispatch(
         UpdateMeetingStatusApi(
           navigate,
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          {setEditorRole}
+          { setEditorRole },
         ),
       );
     };
@@ -206,10 +206,9 @@ const GroupDraftMeetings = () => {
       PublishedMeetings: false,
       ProposedMeetings: false,
     };
-    localStorage.setItem("MeetingPageRows", PageSize);
-    localStorage.setItem("MeetingPageCurrent", current);
-    
-    await dispatch(listOfMeetingsApi(navigate, searchData, t));
+    setCurrentGroupMeetingPage(current);
+    setCurrentGroupMeetingLength(PageSize);
+    await dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
   };
 
   const handleClickTitle = (record) => {
@@ -357,7 +356,6 @@ const GroupDraftMeetings = () => {
         },
       },
 
-
       // More Popover
       {
         title: "",
@@ -377,7 +375,7 @@ const GroupDraftMeetings = () => {
                 <CustomButton
                   className={styles.MoreMeetingButton}
                   text='More'
-                  icon2={<img src={ChevronDownIcon} width={10} />}
+                  icon2={<img src={ChevronDownIcon} alt="Chevron Down" width={10} />}
                 />
               </Popover>
             </div>
@@ -407,7 +405,7 @@ const GroupDraftMeetings = () => {
               className='MeetingTable'
               column={columns}
               size={"small"}
-              rows={committeeDraftMeetingData}
+              rows={groupDraftMeetingData}
               sticky={true}
               pagination={false}
               scroll={{
@@ -415,7 +413,7 @@ const GroupDraftMeetings = () => {
               }}
             />
           </Col>
-          {committeeDraftMeetingData.length > 0 && (
+          {groupDraftMeetingData.length > 0 && (
             <Col className={styles["Meeting_Pagination"]}>
               <div className='d-flex justify-content-center mt-2 '>
                 <Row className={styles["PaginationStyle-Meeting"]}>
@@ -425,16 +423,10 @@ const GroupDraftMeetings = () => {
                     md={12}
                     lg={12}>
                     <CustomPagination
-                      current={
-                        meetingPageCurrent !== null
-                          ? Number(meetingPageCurrent)
-                          : 1
-                      }
-                      pageSize={
-                        meetingpageRow !== null ? Number(meetingpageRow) : 30
-                      }
+                      current={currentGroupMeetingPage}
+                      pageSize={currentGroupMeetingLength}
                       onChange={handelChangePagination}
-                      total={committeeDraftMeetingDataRecord}
+                      total={groupDraftMeetingDataRecord}
                       showSizer={true}
                       pageSizeOptionsValues={["30", "50", "100", "200"]}
                     />
