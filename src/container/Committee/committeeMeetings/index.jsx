@@ -136,7 +136,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         <CreateQuickMeeting
           show={isQuickMeetingCreate}
           // this is check from where its called 6 is from committee create
-          checkFlag={5}
+          checkFlag={6}
         />
       )}
       {isQuickMeetingView && <ViewModal viewFlag={isQuickMeetingView} />}

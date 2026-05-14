@@ -832,7 +832,7 @@ const CreateUpdateMeetingDataRoomMap = (
               } else {
                 let createrID = localStorage.getItem("userID");
                 setShow(false);
-                if (checkFlag === 4) {
+                if (checkFlag === 5) {
                   dispatch(meetingLoaderDashboard(false));
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent =
@@ -859,7 +859,7 @@ const CreateUpdateMeetingDataRoomMap = (
                   };
 
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                } else if (checkFlag === 5) {
+                } else if (checkFlag === 6) {
                   //  Create Committee Meeting 5
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                   let Data = {

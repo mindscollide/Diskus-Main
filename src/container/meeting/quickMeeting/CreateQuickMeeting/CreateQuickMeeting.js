@@ -64,6 +64,7 @@ import {
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
+import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -1582,291 +1583,331 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //     }
   //   } catch {}
   // }, [checkFlag]);
-
+  console.log(assigneesuser, checkFlag, "checkFlagcheckFlag");
   // for api response of list of all assignees
-  useEffect(() => {
-    try {
-      let usersList = [];
-      let PresenterData = [];
-      let newMemberData = [];
-      let userData;
-      let membersData = [];
-      let usersData = [];
+useEffect(() => {
+  try {
+    let presenterList = [];
+    let newMemberData = [];
+    let attendeesUsersData = [];
+    let userData = null;
 
-      // Handle assigneesuser data (original first useEffect logic)
-      if (
-        Object.keys(assigneesuser).length > 0 &&
-        checkFlag !== 5 &&
-        checkFlag !== 7
-      ) {
-        usersList = assigneesuser;
-        setMeetingAttendeesList(usersList);
+    const currentUserID = Number(
+      localStorage.getItem("userID"),
+    );
 
-        usersList.forEach((user, index) => {
-          const userItem = {
-            label: (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className='d-flex gap-2 align-items-center'>
-                    <img
-                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height='16.45px'
-                      width='18.32px'
-                      draggable='false'
-                      alt=''
-                    />
-                    <span>{user.name}</span>
-                  </Col>
-                </Row>
-              </>
-            ),
-            value: user?.pK_UID,
-            name: user?.name,
-          };
+    // =========================================
+    // Common Presenter Dropdown Item
+    // =========================================
+    const createPresenterItem = (
+      id,
+      name,
+      displayProfilePictureName,
+    ) => ({
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex gap-2 align-items-center'>
+              <img
+                src={`data:image/jpeg;base64,${displayProfilePictureName}`}
+                height='16.45px'
+                width='18.32px'
+                draggable='false'
+                alt=''
+              />
+              <span>{name}</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      value: id,
+      name,
+    });
 
-          PresenterData.push(userItem);
+    // =========================================
+    // Update Presenter
+    // =========================================
+    const updatePresenter = (
+      id,
+      name,
+      displayProfilePictureName,
+    ) => {
+      const presenterItem = createPresenterItem(
+        id,
+        name,
+        displayProfilePictureName,
+      );
 
-          if (Number(user.pK_UID) === Number(createrID)) {
-            setUserAsPresenter(user);
-            newMemberData.push({
-              name: user.name,
-              designation: user.designation,
-              profilePicture: user.orignalProfilePictureName,
-              organization: user.organization,
-              role: 3,
-              displayProfilePic: user.displayProfilePictureName,
-            });
-            userData = createUserDataObject(user.pK_UID);
-          }
-        });
+      setDefaultPresenter(presenterItem);
+      setPresenterValue(presenterItem);
 
-        setAllPresenters(PresenterData);
-        setAttendeesParticipant(PresenterData);
-        setCreateMeeting({
-          ...createMeeting,
-          MeetingAttendees: userData ? [userData] : [],
-        });
-        setAddedParticipantNameList(newMemberData);
+      setDefaultObjMeetingAgenda((prev) => ({
+        ...prev,
+        PresenterName: name,
+      }));
+
+      setObjMeetingAgenda((prev) => ({
+        ...prev,
+        PresenterName: name,
+      }));
+    };
+
+    // =========================================
+    // Create Meeting Attendee Object
+    // =========================================
+    const createUserDataObject = (userId) => ({
+      User: {
+        PK_UID: parseInt(userId),
+      },
+      MeetingAttendeeRole: {
+        PK_MARID: 3,
+      },
+      AttendeeAvailability: {
+        PK_AAID: 1,
+      },
+    });
+
+    // =========================================
+    // Committee / Group Members
+    // =========================================
+    if (Number(checkFlag) === 6 || Number(checkFlag) === 7) {
+      let sourceData = [];
+
+      if (Number(checkFlag) === 6) {
+        sourceData =
+          CommitteeReducergetCommitteeByCommitteeID
+            ?.committeMembers || [];
+      } else {
+        sourceData =
+          GroupsReducergetGroupByGroupIdResponse
+            ?.groupMembers || [];
       }
 
-      // Handle Committees and Groups data (original second useEffect logic)
-      if (Number(checkFlag) === 5 || Number(checkFlag) === 7) {
-        let sourceData = null;
+      if (sourceData.length > 0) {
+        // Check if creator exists
+        const isCreatorExist = sourceData.some(
+          (member) =>
+            Number(member?.pK_UID) ===
+            Number(createrID),
+        );
 
-        if (Number(checkFlag) === 5) {
-          sourceData =
-            CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
-        } else if (Number(checkFlag) === 7) {
-          sourceData = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
-        }
-
-        if (sourceData && sourceData.length > 0) {
-          // Check if creator is in the member list
-          const isCreatorInList = sourceData.some(
-            (userInfo) => Number(userInfo.pK_UID) === Number(createrID),
+        // If creator not exists in members
+        if (!isCreatorExist) {
+          updatePresenter(
+            fK_UID,
+            userName,
+            userProfilePicture?.displayProfilePictureName,
           );
 
-          // Add creator if not found in the list
-          if (!isCreatorInList) {
-            addCreatorAsPresenter();
-            userData = createUserDataObject(createrID);
+          userData = createUserDataObject(
+            createrID,
+          );
+
+          newMemberData.push({
+            name: userName,
+            designation: "",
+            profilePicture:
+              userProfilePicture?.displayProfilePictureName,
+            organization:
+              localStorage.getItem(
+                "organizatioName",
+              ),
+            role: 3,
+            displayProfilePic:
+              userProfilePicture?.displayProfilePictureName,
+          });
+        }
+
+        sourceData.forEach((member) => {
+          const userProfile =
+            member?.userProfilePicture || {};
+
+          // Exclude logged-in user and creator from dropdown
+          if (
+            Number(member?.pK_UID) !==
+              currentUserID &&
+            Number(member?.pK_UID) !==
+              Number(createrID)
+          ) {
+            presenterList.push(
+              createPresenterItem(
+                member?.pK_UID,
+                member?.userName,
+                userProfile?.displayProfilePictureName,
+              ),
+            );
           }
 
-          // Process committee/group members
-          sourceData.forEach((member, index) => {
-            const userProfile = member.userProfilePicture || {};
-            const memberItem = {
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${userProfile.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{member.userName}</span>
-                    </Col>
-                  </Row>
-                </>
+          // Meeting attendees list
+          attendeesUsersData.push({
+            creationDate: "",
+            creationTime: "",
+            designation:
+              member?.designation || "",
+            displayProfilePictureName:
+              userProfile?.displayProfilePictureName,
+            emailAddress: member?.email,
+            mobileNumber: "",
+            name: member?.userName,
+            organization:
+              localStorage.getItem(
+                "organizatioName",
               ),
-              value: member?.pK_UID,
+            orignalProfilePictureName:
+              userProfile?.orignalProfilePictureName,
+            pK_UID: member?.pK_UID,
+          });
+
+          // Creator presenter logic
+          if (
+            Number(member?.pK_UID) ===
+            Number(createrID)
+          ) {
+            updatePresenter(
+              member?.pK_UID,
+              member?.userName,
+              userProfile?.displayProfilePictureName,
+            );
+
+            newMemberData.push({
               name: member?.userName,
-            };
-
-            membersData.push(memberItem);
-
-            usersData.push({
-              creationDate: "",
-              creationTime: "",
-              designation: "",
-              displayProfilePictureName: userProfile.displayProfilePictureName,
-              emailAddress: member.email,
-              mobileNumber: "",
-              name: member.userName,
-              organization: localStorage.getItem("organizatioName"),
-              orignalProfilePictureName: userProfile.orignalProfilePictureName,
-              pK_UID: member.pK_UID,
+              designation:
+                member?.designation,
+              profilePicture:
+                userProfile?.displayProfilePictureName,
+              organization:
+                localStorage.getItem(
+                  "organizatioName",
+                ),
+              role: 3,
+              displayProfilePic:
+                userProfile?.displayProfilePictureName,
             });
 
-            if (Number(member.pK_UID) === Number(createrID)) {
-              setUserAsPresenterFromMember(member);
-              newMemberData.push({
-                name: member.userName,
-                designation: member.designation,
-                profilePicture: userProfile.displayProfilePictureName,
-                organization: localStorage.getItem("organizatioName"),
-                role: 3,
-                displayProfilePic: userProfile.displayProfilePictureName,
-              });
-              userData = createUserDataObject(member.pK_UID);
-            }
-          });
+            userData = createUserDataObject(
+              member?.pK_UID,
+            );
+          }
+        });
 
-          setAllPresenters(membersData);
-          setAttendeesParticipant(membersData);
-          setCreateMeeting({
-            ...createMeeting,
-            MeetingAttendees: userData ? [userData] : [],
-          });
-          setMeetingAttendeesList(usersData);
-          setAddedParticipantNameList(newMemberData);
-        }
+        setAllPresenters(presenterList);
+        setAttendeesParticipant(
+          presenterList,
+        );
+        setMeetingAttendeesList(
+          attendeesUsersData,
+        );
+        setAddedParticipantNameList(
+          newMemberData,
+        );
+
+        setCreateMeeting((prev) => ({
+          ...prev,
+          MeetingAttendees: userData
+            ? [userData]
+            : [],
+        }));
       }
-    } catch (error) {}
-  }, [
-    assigneesuser,
-    checkFlag,
-    CommitteeReducergetCommitteeByCommitteeID,
-    GroupsReducergetGroupByGroupIdResponse,
-  ]);
 
-  // Helper functions
-  const setUserAsPresenter = (user) => {
-    const presenterItem = {
-      label: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className='d-flex gap-2 align-items-center'>
-              <img
-                src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                height='16.45px'
-                width='18.32px'
-                draggable='false'
-                alt=''
-              />
-              <span>{user?.name}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      value: user?.pK_UID,
-      name: user?.name,
-    };
+      return;
+    }
 
-    setDefaultPresenter(presenterItem);
-    setPresenterValue(presenterItem);
-    setDefaultObjMeetingAgenda((prev) => ({
-      ...prev,
-      PresenterName: user?.name,
-    }));
-    setObjMeetingAgenda((prev) => ({
-      ...prev,
-      PresenterName: user?.name,
-    }));
-  };
+    // =========================================
+    // Assignees User Data
+    // =========================================
+    if (
+      assigneesuser &&
+      Object.keys(assigneesuser).length > 0
+    ) {
+      const usersList = assigneesuser;
 
-  const setUserAsPresenterFromMember = (member) => {
-    const userProfile = member.userProfilePicture || {};
-    const presenterItem = {
-      label: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className='d-flex gap-2 align-items-center'>
-              <img
-                src={`data:image/jpeg;base64,${userProfile.displayProfilePictureName}`}
-                height='16.45px'
-                width='18.32px'
-                draggable='false'
-                alt=''
-              />
-              <span>{member?.userName}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      value: member?.pK_UID,
-      name: member?.userName,
-    };
+      setMeetingAttendeesList(usersList);
 
-    setDefaultPresenter(presenterItem);
-    setPresenterValue(presenterItem);
-    setDefaultObjMeetingAgenda((prev) => ({
-      ...prev,
-      PresenterName: member?.userName,
-    }));
-    setObjMeetingAgenda((prev) => ({
-      ...prev,
-      PresenterName: member?.userName,
-    }));
-  };
+      usersList.forEach((user) => {
+        // Exclude logged-in user and creator from dropdown
+        if (
+          Number(user?.pK_UID) !==
+            currentUserID &&
+          Number(user?.pK_UID) !==
+            Number(createrID)
+        ) {
+          presenterList.push(
+            createPresenterItem(
+              user?.pK_UID,
+              user?.name,
+              user?.displayProfilePictureName,
+            ),
+          );
+        }
 
-  const addCreatorAsPresenter = () => {
-    const presenterItem = {
-      label: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className='d-flex gap-2 align-items-center'>
-              <img
-                src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
-                height='16.45px'
-                width='18.32px'
-                draggable='false'
-                alt=''
-              />
-              <span>{userName}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      value: fK_UID,
-      name: userName,
-    };
+        // Creator presenter logic
+        if (
+          Number(user?.pK_UID) ===
+          Number(createrID)
+        ) {
+          updatePresenter(
+            user?.pK_UID,
+            user?.name,
+            user?.displayProfilePictureName,
+          );
 
-    setDefaultPresenter(presenterItem);
-    setPresenterValue(presenterItem);
-    setDefaultObjMeetingAgenda((prev) => ({
-      ...prev,
-      PresenterName: userName,
-    }));
-    setObjMeetingAgenda((prev) => ({
-      ...prev,
-      PresenterName: userName,
-    }));
-  };
+          newMemberData.push({
+            name: user?.name,
+            designation: user?.designation,
+            profilePicture:
+              user?.orignalProfilePictureName,
+            organization:
+              user?.organization,
+            role: 3,
+            displayProfilePic:
+              user?.displayProfilePictureName,
+          });
 
+          userData = createUserDataObject(
+            user?.pK_UID,
+          );
+        }
+      });
+
+      setAllPresenters(presenterList);
+      setAttendeesParticipant(
+        presenterList,
+      );
+      setAddedParticipantNameList(
+        newMemberData,
+      );
+
+      setCreateMeeting((prev) => ({
+        ...prev,
+        MeetingAttendees: userData
+          ? [userData]
+          : [],
+      }));
+    }
+  } catch (error) {
+    console.error(
+      "Error in attendees useEffect:",
+      error,
+    );
+  }
+}, [
+  assigneesuser,
+  checkFlag,
+  createrID,
+  fK_UID,
+  userName,
+  userProfilePicture,
+  CommitteeReducergetCommitteeByCommitteeID,
+  GroupsReducergetGroupByGroupIdResponse,
+]);
+
+  // =========================================
+  // Helper Function
+  // =========================================
   const createUserDataObject = (userId) => ({
     User: {
       PK_UID: parseInt(userId),
@@ -1878,7 +1919,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       PK_AAID: 1,
     },
   });
-
   const handleChangeAttenddes = (attendeeData) => {
     setTaskAssignedToInput({
       ...taskAssignedToInput,
