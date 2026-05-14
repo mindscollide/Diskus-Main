@@ -1217,11 +1217,7 @@ export const WebNotificationExportRoutFunc = (
   } else if (NotificationData.notificationActionID === 15) {
     //Notification that Proposed Meeting Date Organizer work
     if (currentURL.includes("/Diskus/Meeting")) {
-      localStorage.setItem("ProposedMeetingOrganizer", true);
-      localStorage.setItem(
-        "ProposedMeetingOrganizerMeetingID",
-        PayLoadData.MeetingID,
-      );
+ 
       let Data = { MeetingID: Number(PayLoadData.MeetingID) };
       dispatch(
         GetMeetingStatusDataAPI(
@@ -1229,8 +1225,8 @@ export const WebNotificationExportRoutFunc = (
           t,
           Data,
           setEditorRole,
-          false,
-          false,
+          true,
+          setViewAdvanceMeetingModal,
           2,
           setVideoTalk,
         ),

@@ -3412,7 +3412,7 @@ const NewMeeting = () => {
             3,
             startMeetingRequest,
             setEditorRole,
-            // setAdvanceMeetingModalID,
+            setAdvanceMeetingModalID,
             setDataroomMapFolderId,
             setViewAdvanceMeetingModal,
             setAdvanceMeetingModalID,

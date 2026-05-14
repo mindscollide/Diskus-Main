@@ -643,7 +643,7 @@ const MeetingDetails = ({
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: currentMeetingStatus,
+          MeetingStatusID: currentMeetingStatus === 8 ? 11: currentMeetingStatus,
         },
       };
       dispatch(
@@ -1455,48 +1455,7 @@ const MeetingDetails = ({
                 </Col>
               </Row>
 
-              {/* {(Number(editorRole.status) === 9 ||
-                Number(editorRole.status) === 8 ||
-                Number(editorRole.status) === 10) &&
-              editorRole.role === "Organizer" &&
-              isEditMeeting === true ? (
-                <></>
-              ) : editorRole.role === "Agenda Contributor" &&
-                isEditMeeting === true ? null : (
-                <Row className="mt-1">
-                  <Col lg={12} md={12} sm={12}>
-                    {/* <Button
-                      text={
-                        <>
-                          <Row className="mt-1">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="d-flex justify-content-center gap-2 align-items-center"
-                            >
-                              <img
-                                draggable={false}
-                                src={plusFaddes}
-                                width="15.87px"
-                                alt=""
-                                height="15.87px"
-                              />
-                              <span className={styles["Add_dates_label"]}>
-                                {t("Add-dates")}
-                              </span>
-                            </Col>
-                          </Row>
-                        </>
-                      }
-                      className={styles["Add_Dates_Btn_Class"]}
-                      onClick={addRow}
-                      disableBtn={
-                        !isValidRow(rows[rows.length - 1]) || rows.length === 5
-                      }
-                    /> */}
-              {/* </Col> */}
-              {/* </Row> */}
+             
             </Col>
             {/* Second Half */}
             <Col lg={5} md={5} sm={12} className='mt-3'>

@@ -106,17 +106,17 @@ const WebNotfication = ({
 
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
-    (state) => state.settingReducer.NotificationSpinner
+    (state) => state.settingReducer.NotificationSpinner,
   );
 
   //Global Data State
   const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
-    (state) => state.settingReducer.realTimeNotificationCountGlobalData
+    (state) => state.settingReducer.realTimeNotificationCountGlobalData,
   );
 
   //Extracting Current Meeting Status
   const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
+    (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
   console.log(CurrentMeetingStatus, "CurrentMeetingStatus");
   //Spinner Styles in Lazy Loading
@@ -142,8 +142,8 @@ const WebNotfication = ({
             t,
             data,
             setUnReadCountNotification,
-            setwebNotificationData
-          )
+            setwebNotificationData,
+          ),
         );
       }
     };
@@ -158,7 +158,7 @@ const WebNotfication = ({
       ) {
         // Iterate over each notification object in the array
         const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
-          (notification) => notification.notificationData
+          (notification) => notification.notificationData,
         );
 
         // Prepending the new notifications to the state while ensuring uniqueness
@@ -168,8 +168,8 @@ const WebNotfication = ({
               !prevData.some(
                 (existingNotification) =>
                   existingNotification.notificationID ===
-                  newNotification.notificationID
-              )
+                  newNotification.notificationID,
+              ),
           );
           return [...newData, ...prevData]; // Add new unique notifications to the front of the list
         });
@@ -185,8 +185,8 @@ const WebNotfication = ({
       if (Object.keys(webNotificationData).length > 0) {
         const uniqueNotifications = Array.from(
           new Map(
-            webNotificationData.map((item) => [item.notificationID, item])
-          ).values()
+            webNotificationData.map((item) => [item.notificationID, item]),
+          ).values(),
         );
 
         const groupNotificationsData = uniqueNotifications.reduce(
@@ -199,7 +199,7 @@ const WebNotfication = ({
             }
             return acc;
           },
-          { today: [], previous: [] }
+          { today: [], previous: [] },
         );
         setGroupedNotifications(groupNotificationsData);
       }
@@ -242,8 +242,8 @@ const WebNotfication = ({
               setEditPolls,
               setvotePolls,
               setUnPublished,
-              setViewPublishedPoll
-            )
+              setViewPublishedPoll,
+            ),
           );
         } else if (!polls) {
           setMeetingMaterial(false);
@@ -262,14 +262,14 @@ const WebNotfication = ({
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
-            PayLoadData.MeetingID
+            PayLoadData.MeetingID,
           );
           localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
         } else {
           await dispatch(
-            webNotificationDataLeaveVideoIntiminationModal(NotificationData)
+            webNotificationDataLeaveVideoIntiminationModal(NotificationData),
           );
           localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
           await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
@@ -281,13 +281,13 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -299,8 +299,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           } else {
@@ -310,7 +310,7 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             } else {
               //Advance Meeting
@@ -318,7 +318,7 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -330,8 +330,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           }
@@ -342,7 +342,7 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -356,14 +356,14 @@ const WebNotfication = ({
                   setViewAdvanceMeetingModal,
                   4,
                   setVideoTalk,
-                  setViewFlag
-                )
+                  setViewFlag,
+                ),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
@@ -373,8 +373,8 @@ const WebNotfication = ({
                   Data,
                   setEditorRole,
                   true,
-                  setViewAdvanceMeetingModal
-                )
+                  setViewAdvanceMeetingModal,
+                ),
               );
             }
           } else {
@@ -384,18 +384,18 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             } else {
               navigate("/Diskus/Meeting");
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole)
+                GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole),
               );
             }
           }
@@ -406,7 +406,7 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -420,14 +420,14 @@ const WebNotfication = ({
                   false,
                   4,
                   false,
-                  setViewFlag
-                )
+                  setViewFlag,
+                ),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -440,8 +440,8 @@ const WebNotfication = ({
                   true,
                   setViewAdvanceMeetingModal,
                   1,
-                  setVideoTalk
-                )
+                  setVideoTalk,
+                ),
               );
             }
           } else {
@@ -450,7 +450,7 @@ const WebNotfication = ({
               navigate("/Diskus/Meeting");
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -464,8 +464,8 @@ const WebNotfication = ({
                   false,
                   4,
                   false,
-                  setViewFlag
-                )
+                  setViewFlag,
+                ),
               );
             } else {
               navigate("/Diskus/Meeting");
@@ -473,11 +473,11 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem(
                 "QuickMeetingCheckNotification",
-                PayLoadData.IsQuickMeeting
+                PayLoadData.IsQuickMeeting,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -490,8 +490,8 @@ const WebNotfication = ({
                   false,
                   false,
                   1,
-                  setVideoTalk
-                )
+                  setVideoTalk,
+                ),
               );
             }
           }
@@ -500,13 +500,13 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
@@ -516,8 +516,8 @@ const WebNotfication = ({
                   Data,
                   setEditorRole,
                   true,
-                  setViewAdvanceMeetingModal
-                )
+                  setViewAdvanceMeetingModal,
+                ),
               );
             }
           } else {
@@ -527,18 +527,18 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             } else {
               navigate("/Diskus/Meeting");
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole)
+                GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole),
               );
             }
           }
@@ -552,7 +552,7 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             }
           }
@@ -572,11 +572,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           } else {
             //Notification for being added as a minute reviewer
@@ -585,11 +593,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 8) {
@@ -604,13 +620,13 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -622,8 +638,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           } else {
@@ -633,7 +649,7 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             } else {
               navigate("/Diskus/Meeting");
@@ -641,7 +657,7 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -653,8 +669,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           }
@@ -663,13 +679,13 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -681,8 +697,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           } else {
@@ -692,7 +708,7 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             } else {
               navigate("/Diskus/Meeting");
@@ -700,7 +716,7 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -712,8 +728,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           }
@@ -722,13 +738,13 @@ const WebNotfication = ({
             if (PayLoadData.IsQuickMeeting === true) {
               let Data = { MeetingID: Number(PayLoadData.MeetingID) };
               dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
               );
             } else {
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               setAdvanceMeetingModalID(PayLoadData.MeetingID);
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -741,8 +757,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           } else {
@@ -752,7 +768,7 @@ const WebNotfication = ({
               localStorage.setItem("QuicMeetingOperations", true);
               localStorage.setItem(
                 "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
             } else {
               navigate("/Diskus/Meeting");
@@ -760,7 +776,7 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               setAdvanceMeetingModalID(PayLoadData.MeetingID);
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -773,8 +789,8 @@ const WebNotfication = ({
                   setEditorRole,
                   true,
                   setViewAdvanceMeetingModal,
-                  1
-                )
+                  1,
+                ),
               );
             }
           }
@@ -784,7 +800,7 @@ const WebNotfication = ({
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
@@ -801,8 +817,8 @@ const WebNotfication = ({
                 true,
                 setViewAdvanceMeetingModal,
                 1,
-                setVideoTalk
-              )
+                setVideoTalk,
+              ),
             );
           } else {
             navigate("/Diskus/Meeting");
@@ -810,7 +826,7 @@ const WebNotfication = ({
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             //set Local storage flag for identification for polls
@@ -826,8 +842,8 @@ const WebNotfication = ({
                 false,
                 false,
                 1,
-                setVideoTalk
-              )
+                setVideoTalk,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 13) {
@@ -839,7 +855,7 @@ const WebNotfication = ({
             localStorage.setItem("BeforeProposedDateSelectedCheck", true);
             localStorage.setItem(
               "NotificationClickMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             // dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
             setViewProposeDatePoll(true);
@@ -856,7 +872,7 @@ const WebNotfication = ({
             localStorage.setItem("BeforeProposedDateSelectedCheck", true);
             localStorage.setItem(
               "NotificationClickMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
           }
         } else if (NotificationData.notificationActionID === 14) {
@@ -864,20 +880,20 @@ const WebNotfication = ({
             localStorage.setItem("ProposedMeetingOperations", true);
             localStorage.setItem(
               "NotificationClickMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             localStorage.setItem(
               "NotificationClickSendResponseByDate",
-              PayLoadData.DeadlineDate
+              PayLoadData.DeadlineDate,
             );
             //Here i will apply that if polls are not expired i will redirect it to the voting page
             // Get the current date in "YYYYMMDD" format
             const currentDate = new Date();
             const formattedCurrentDate = `${currentDate.getFullYear()}${String(
-              currentDate.getMonth() + 1
+              currentDate.getMonth() + 1,
             ).padStart(2, "0")}${String(currentDate.getDate()).padStart(
               2,
-              "0"
+              "0",
             )}`;
 
             // Compare stored date with the current date
@@ -895,7 +911,7 @@ const WebNotfication = ({
               dispatch(viewProposeDateMeetingPageFlag(false));
               //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
               localStorage.removeItem(
-                "ProposedMeetOperationsDateSelectedSendResponseByDate"
+                "ProposedMeetOperationsDateSelectedSendResponseByDate",
               );
             }
           } else {
@@ -904,11 +920,11 @@ const WebNotfication = ({
             localStorage.setItem("ProposedMeetingOperations", true);
             localStorage.setItem(
               "NotificationClickMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             localStorage.setItem(
               "NotificationClickSendResponseByDate",
-              PayLoadData.DeadlineDate
+              PayLoadData.DeadlineDate,
             );
           }
         } else if (NotificationData.notificationActionID === 15) {
@@ -917,7 +933,7 @@ const WebNotfication = ({
             localStorage.setItem("ProposedMeetingOrganizer", true);
             localStorage.setItem(
               "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
@@ -926,19 +942,20 @@ const WebNotfication = ({
                 t,
                 Data,
                 setEditorRole,
-                false,
-                false,
+                true,
+                setViewAdvanceMeetingModal,
                 2,
-                setVideoTalk
-              )
+                setVideoTalk,
+              ),
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           } else {
             //Call Status API to see what is the status of the meeting eighter proposed or published
             navigate("/Diskus/Meeting");
             localStorage.setItem("ProposedMeetingOrganizer", true);
             localStorage.setItem(
               "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -948,7 +965,7 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedGroups", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             //Here we will be calling the api to cover the scenario that the user dose not belong to this group
             dispatch(
@@ -959,8 +976,8 @@ const WebNotfication = ({
                 false,
                 false,
                 4,
-                false
-              )
+                false,
+              ),
             );
           } else {
             //Notificaiton For Added in Group
@@ -968,7 +985,7 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedGroups", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             dispatch(
               getbyGroupID(
@@ -978,8 +995,8 @@ const WebNotfication = ({
                 false,
                 false,
                 4,
-                false
-              )
+                false,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 17) {
@@ -1004,7 +1021,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             // For Notification Added in the Group
             setViewGroupPage(true);
@@ -1016,7 +1033,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
           }
         } else if (NotificationData.notificationActionID === 20) {
@@ -1024,7 +1041,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             // For Notification Added in the Group
             setViewGroupPage(true);
@@ -1036,7 +1053,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
           }
         } else if (NotificationData.notificationActionID === 21) {
@@ -1044,11 +1061,11 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedCommittee", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
             let OrganizationID = JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             );
             let Data = {
               CommitteeID: JSON.parse(PayLoadData.CommitteeID),
@@ -1063,8 +1080,8 @@ const WebNotfication = ({
                 false,
                 false,
                 false,
-                1
-              )
+                1,
+              ),
             );
           } else {
             //Notification for being Added in the Committee
@@ -1072,11 +1089,11 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedCommittee", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
             let OrganizationID = JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             );
             let Data = {
               CommitteeID: JSON.parse(PayLoadData.CommitteeID),
@@ -1091,8 +1108,8 @@ const WebNotfication = ({
                 false,
                 false,
                 false,
-                1
-              )
+                1,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 22) {
@@ -1116,7 +1133,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             setViewGroupPage(true);
             dispatch(viewCommitteePageFlag(true));
@@ -1126,7 +1143,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
           }
         } else if (NotificationData.notificationActionID === 25) {
@@ -1134,7 +1151,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             setViewGroupPage(true);
             dispatch(viewCommitteePageFlag(true));
@@ -1144,7 +1161,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
           }
         } else if (NotificationData.notificationActionID === 26) {
@@ -1155,8 +1172,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           } else {
             //Notification for Added as Voter in the resolution
@@ -1167,8 +1184,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 27) {
@@ -1179,8 +1196,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           } else {
             //Notification for Added as Non-Voter in the resolution
@@ -1191,8 +1208,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 28) {
@@ -1248,8 +1265,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           } else {
             //Notification For Being File shared to you as viewer
@@ -1264,8 +1281,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 34) {
@@ -1284,8 +1301,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           } else {
             //Notification For Being File shared to you as Editor
@@ -1299,8 +1316,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 35) {
@@ -1310,18 +1327,18 @@ const WebNotfication = ({
               .includes("/Diskus/dataroom".toLowerCase())
           ) {
             dispatch(
-              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t),
             );
           } else {
             //Notification for sharing folder as a viewer
             navigate("/Diskus/dataroom");
             localStorage.setItem(
               "DataRoomOperationsForFolderViewerRights",
-              true
+              true,
             );
             localStorage.setItem(
               "NotificationClickFolderID",
-              PayLoadData.FolderID
+              PayLoadData.FolderID,
             );
           }
         } else if (NotificationData.notificationActionID === 36) {
@@ -1331,18 +1348,18 @@ const WebNotfication = ({
               .includes("/Diskus/dataroom".toLowerCase())
           ) {
             dispatch(
-              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t),
             );
           } else {
             //Notification for sharing folder as a Editor
             navigate("/Diskus/dataroom");
             localStorage.setItem(
               "DataRoomOperationsForFolderViewerRights",
-              true
+              true,
             );
             localStorage.setItem(
               "NotificationClickFolderID",
-              PayLoadData.FolderID
+              PayLoadData.FolderID,
             );
           }
         } else if (NotificationData.notificationActionID === 37) {
@@ -1378,11 +1395,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           } else {
             //Notification for being added as a minute reviewer
@@ -1391,11 +1416,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 42) {
@@ -1404,7 +1437,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             // For Notification Added in the Group
             setViewGroupPage(true);
@@ -1416,7 +1449,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
           }
         } else if (NotificationData.notificationActionID === 43) {
@@ -1425,7 +1458,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             setViewGroupPage(true);
             dispatch(viewCommitteePageFlag(true));
@@ -1435,7 +1468,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
           }
         } else if (NotificationData.notificationActionID === 44) {
@@ -1450,12 +1483,12 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               localStorage.setItem(
                 "NotificationClickPollID",
-                PayLoadData.PollID
+                PayLoadData.PollID,
               );
               //set Local storage flag for identification for polls
               localStorage.setItem("viewadvanceMeetingPolls", true);
@@ -1470,19 +1503,19 @@ const WebNotfication = ({
                   true,
                   setViewAdvanceMeetingModal,
                   1,
-                  setVideoTalk
-                )
+                  setVideoTalk,
+                ),
               );
             } else {
               navigate("/Diskus/Meeting");
               localStorage.setItem(
                 "NotificationClickPollID",
-                PayLoadData.PollID
+                PayLoadData.PollID,
               );
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               //set Local storage flag for identification for polls
@@ -1498,8 +1531,8 @@ const WebNotfication = ({
                   false,
                   false,
                   1,
-                  setVideoTalk
-                )
+                  setVideoTalk,
+                ),
               );
             }
           }
@@ -1531,12 +1564,12 @@ const WebNotfication = ({
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               localStorage.setItem(
                 "NotificationClickPollID",
-                PayLoadData.PollID
+                PayLoadData.PollID,
               );
               //set Local storage flag for identification for polls
               localStorage.setItem("viewadvanceMeetingPolls", true);
@@ -1551,19 +1584,19 @@ const WebNotfication = ({
                   true,
                   setViewAdvanceMeetingModal,
                   1,
-                  setVideoTalk
-                )
+                  setVideoTalk,
+                ),
               );
             } else {
               navigate("/Diskus/Meeting");
               localStorage.setItem(
                 "NotificationClickPollID",
-                PayLoadData.PollID
+                PayLoadData.PollID,
               );
               localStorage.setItem("AdvanceMeetingOperations", true);
               localStorage.setItem(
                 "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
+                PayLoadData.MeetingID,
               );
               localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
               //set Local storage flag for identification for polls
@@ -1579,8 +1612,8 @@ const WebNotfication = ({
                   false,
                   false,
                   1,
-                  setVideoTalk
-                )
+                  setVideoTalk,
+                ),
               );
             }
           }
@@ -1592,7 +1625,7 @@ const WebNotfication = ({
             localStorage.setItem("ProposedMeetingOrganizer", true);
             localStorage.setItem(
               "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
@@ -1604,8 +1637,8 @@ const WebNotfication = ({
                 false,
                 false,
                 2,
-                setVideoTalk
-              )
+                setVideoTalk,
+              ),
             );
           } else {
             //Call Status API to see what is the status of the meeting eighter proposed or published
@@ -1613,7 +1646,7 @@ const WebNotfication = ({
             localStorage.setItem("ProposedMeetingOrganizer", true);
             localStorage.setItem(
               "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -1624,7 +1657,7 @@ const WebNotfication = ({
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             localStorage.setItem("viewadvanceMeetingTask", true);
             localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -1640,15 +1673,15 @@ const WebNotfication = ({
                 true,
                 setViewAdvanceMeetingModal,
                 1,
-                setVideoTalk
-              )
+                setVideoTalk,
+              ),
             );
           } else {
             navigate("/Diskus/Meeting");
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             localStorage.setItem("viewadvanceMeetingTask", true);
             localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
@@ -1664,8 +1697,8 @@ const WebNotfication = ({
                 false,
                 false,
                 1,
-                setVideoTalk
-              )
+                setVideoTalk,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 50) {
@@ -1676,8 +1709,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.Resolution_ID),
                 t,
-                setResultresolution
-              )
+                setResultresolution,
+              ),
             );
           } else {
             //Notification for Added as Voter in the resolution
@@ -1687,8 +1720,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.Resolution_ID),
                 t,
-                setResultresolution
-              )
+                setResultresolution,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 51) {
@@ -1704,7 +1737,7 @@ const WebNotfication = ({
 
   return (
     <section className={styles["WebNotificationOuterBox"]}>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         {groupedNotifications.today.length > 0 && (
           <Col lg={12} md={12} sm={12}>
             <span className={styles["NotificationCategories"]}>
@@ -1726,16 +1759,14 @@ const WebNotfication = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center my-3"
-                  >
+                    className='d-flex justify-content-center my-3'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
             }
-            height="50vh"
-            style={{ overflowX: "hidden" }}
-          >
+            height='50vh'
+            style={{ overflowX: "hidden" }}>
             {/* Render "Today" Notifications */}
             {groupedNotifications.today.length > 0 &&
               groupedNotifications.today
@@ -1754,8 +1785,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}
-                  >
+                    onClick={() => HandleClickNotfication(data)}>
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1788,8 +1818,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}
-                  >
+                    onClick={() => HandleClickNotfication(data)}>
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1808,12 +1837,12 @@ const WebNotfication = ({
             {webNotificationData.length === 0 && (
               <Row>
                 <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
-                  <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                  <div className='d-flex flex-column flex-wrap justify-content-center align-items-center'>
                     <img
                       src={BellIconNotificationEmptyState}
-                      width="155.35px"
-                      height="111px"
-                      alt=""
+                      width='155.35px'
+                      height='111px'
+                      alt=''
                     />
                     <span className={styles["NotificationEmptyState"]}>
                       {t("You-have-no-notifications")}

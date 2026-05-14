@@ -130,34 +130,34 @@ const UnpublishedProposedMeeting = ({
     viewAdvanceMeetingModal,
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
+    (state) => state.NewMeetingreducer.searchMeetings,
   );
   const sceduleproposedMeeting = useSelector(
-    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting,
   );
   const deleteMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.deleteMeetingModal
+    (state) => state.NewMeetingreducer.deleteMeetingModal,
   );
   const allMeetingsSocketData = useSelector(
-    (state) => state.meetingIdReducer.allMeetingsSocketData
+    (state) => state.meetingIdReducer.allMeetingsSocketData,
   );
   const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
   );
   const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
   );
   const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
   );
   const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
   );
   const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
   );
 
   const [dublicatedrows, setDublicatedrows] = useState([]);
@@ -173,7 +173,7 @@ const UnpublishedProposedMeeting = ({
     isAgendaContributor,
     isOrganiser,
     id,
-    responseDeadLine
+    responseDeadLine,
   ) => {
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
@@ -234,8 +234,8 @@ const UnpublishedProposedMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          2
-        )
+          2,
+        ),
       );
       await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
       await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
@@ -255,8 +255,8 @@ const UnpublishedProposedMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          1
-        )
+          1,
+        ),
       );
       dispatch(scheduleMeetingPageFlag(true));
     }
@@ -858,13 +858,13 @@ const UnpublishedProposedMeeting = ({
     setSelectedMeetingTypeValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyMeetingTypeFilter = () => {
     const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString())
+      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
     );
     setProposedMeetingsData(filteredData);
     setMeetingTypeFilterVisible(false);
@@ -938,42 +938,28 @@ const UnpublishedProposedMeeting = ({
   };
 
   const moreButtons = (record) => {
-    const handleEdit = () => {
-      console.log("Edit Meeting", record);
-      if (record.isAgendaContributor) {
-        dispatch(agendaGlobalFlag(true));
-        dispatch(meetingDetailsGlobalFlag(false));
-      } else if (record.isOrganizer) {
-        dispatch(agendaGlobalFlag(false));
-        dispatch(meetingDetailsGlobalFlag(true));
-      }
-      setEditorRole({
-        status: record.status,
-        role: record.isAgendaContributor ? "Agenda Contributor" : "Organizer",
-        isPrimaryOrganizer: record.isPrimaryOrganizer,
-      });
-      handleEditMeeting(record.pK_MDID, record.isAgendaContributor, record);
-      setVideoTalk({
-        isChat: record.isChat,
-        isVideoCall: record.isVideoCall,
-        talkGroupID: record.talkGroupID,
-      });
-      localStorage.setItem("videoCallURL", record.videoCallURL);
+    const handleEdit = async () => {
+      let Data = {
+        MeetingID: Number(record.pK_MDID),
+      };
 
-      setEditMeeting(true);
-      dispatch(viewMeetingFlag(true));
-
-      dispatch(meetingDetailsGlobalFlag(false));
-      dispatch(organizersGlobalFlag(false));
-      dispatch(agendaContributorsGlobalFlag(false));
-      dispatch(participantsGlobalFlag(false));
-      dispatch(meetingMaterialGlobalFlag(false));
-      dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(false));
-      dispatch(actionsGlobalFlag(false));
-      dispatch(pollsGlobalFlag(false));
-      dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId,
+          0,
+          2,
+        ),
+      );
+      await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
+      await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
+      setIsProposedMeetEdit(true);
+      setProposedNewMeeting(true);
     };
 
     const handleDelete = () => {
@@ -1043,12 +1029,12 @@ const UnpublishedProposedMeeting = ({
                       setSceduleMeeting,
                       setDataroomMapFolderId,
                       0,
-                      6 /*When User click on title from proposed Tab  */
-                    )
+                      6 /*When User click on title from proposed Tab  */,
+                    ),
                   );
                   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
                   dispatch(
-                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true)
+                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
                   );
                 } catch (error) {
                   console.log(error, "apis call Error");
@@ -1084,23 +1070,23 @@ const UnpublishedProposedMeeting = ({
           const dateA = new Date(
             a.dateOfMeeting.substring(0, 4),
             parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8)
+            a.dateOfMeeting.substring(6, 8),
           );
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8)
+            b.dateOfMeeting.substring(6, 8),
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           return (
             <span className={styles.columnValue}>{`${moment(meetingDate).format(
-              "Do MMM, YYYY"
+              "Do MMM, YYYY",
             )}`}</span>
           );
         },
@@ -1145,7 +1131,7 @@ const UnpublishedProposedMeeting = ({
         render: (_, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType
+            (f) => Number(f.value) === meetingType,
           );
 
           if (record.isQuickMeeting && meetingType === 1) {
@@ -1237,9 +1223,9 @@ const UnpublishedProposedMeeting = ({
                   {currentLanguage === "en"
                     ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                     : `${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectorsVoted
+                        record.meetingPoll?.totalNoOfDirectorsVoted,
                       )} / ${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectors
+                        record.meetingPoll?.totalNoOfDirectors,
                       )}`}
                 </span>
               </>
@@ -1256,13 +1242,13 @@ const UnpublishedProposedMeeting = ({
         key: "meetingAction",
         render: (text, record) => {
           const isResponseDateGone = forRecentActivity(
-            `${record.responseDeadLine}000000`
+            `${record.responseDeadLine}000000`,
           );
           const currentDateObj = new Date();
 
           const isViewPollShown = getDifferentisDateisPassed(
             currentDateObj,
-            isResponseDateGone
+            isResponseDateGone,
           );
 
           return record.isParticipant ? (
@@ -1278,7 +1264,7 @@ const UnpublishedProposedMeeting = ({
                       false,
                       false,
                       record.pK_MDID,
-                      record.responseDeadLine
+                      record.responseDeadLine,
                     )
                   }
                 />
@@ -1295,7 +1281,7 @@ const UnpublishedProposedMeeting = ({
                       false,
                       false,
                       true,
-                      record.pK_MDID
+                      record.pK_MDID,
                     )
                   }
                 />
@@ -1378,7 +1364,7 @@ const UnpublishedProposedMeeting = ({
   useEffect(() => {
     if (publishState) {
       const filteredArray = proposedMeetingsData.filter(
-        (item) => item.pK_MDID !== publishState
+        (item) => item.pK_MDID !== publishState,
       );
       setProposedMeetingsData(filteredArray);
       setPublishState(null);
@@ -1396,14 +1382,14 @@ const UnpublishedProposedMeeting = ({
           console.log(meetingData, "meetingDatameetingData");
 
           const indexToUpdate = proposedMeetingsData.findIndex(
-            (obj) => obj.pK_MDID === meetingData.pK_MDID
+            (obj) => obj.pK_MDID === meetingData.pK_MDID,
           );
           console.log(indexToUpdate, "meetingDatameetingData");
 
           // Fetching unpublished meeting data
           let getMeetingDataArray = await getAllUnpublishedMeetingData(
             [meetingData],
-            1
+            1,
           );
           console.log(getMeetingDataArray, "meetingDatameetingData");
 
@@ -1436,7 +1422,7 @@ const UnpublishedProposedMeeting = ({
       } catch (error) {
         console.log(
           error,
-          "meetingStatusProposedMqttDatameetingStatusProposedMqttData"
+          "meetingStatusProposedMqttDatameetingStatusProposedMqttData",
         );
       }
     }
@@ -1449,12 +1435,12 @@ const UnpublishedProposedMeeting = ({
           let getApiResponse = await validateStringParticipantProposedApi(
             MeetingProp,
             navigate,
-            t
+            t,
           )(dispatch); // Ensure you're passing dispatch here
           if (getApiResponse) {
             localStorage.setItem(
               "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID
+              getApiResponse.meetingID,
             );
             localStorage.removeItem("meetingprop");
             setResponseByDate(getApiResponse.deadline);
@@ -1492,13 +1478,13 @@ const UnpublishedProposedMeeting = ({
               await validateStringUserMeetingProposedDatesPollsApi(
                 UserMeetPropoDatPoll,
                 navigate,
-                t
+                t,
               )(dispatch); // Ensure you're passing dispatch here
 
             if (getApiResponse) {
               localStorage.setItem(
                 "viewProposeDatePollMeetingID",
-                getApiResponse.meetingID
+                getApiResponse.meetingID,
               );
               localStorage.removeItem("UserMeetPropoDatPoll");
               dispatch(showSceduleProposedMeeting(true));
