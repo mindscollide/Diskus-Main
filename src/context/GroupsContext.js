@@ -296,10 +296,14 @@ export const GroupsProvider = ({ children }) => {
     if (!allMeetingsSocketData) return;
 
     try {
-      const meetingID = allMeetingsSocketData.pK_MDID;
-      if (!meetingID) return;
+      const updateMeetingSocket = async () => {
+        const meetingID = allMeetingsSocketData.pK_MDID;
+        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
 
-      updateMeetingInAllLists(meetingID, () => allMeetingsSocketData);
+        if (!meetingID) return;
+        updateMeetingInAllLists(meetingID, () => newMeetingData);
+      };
+      updateMeetingSocket();
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMeetingsSocketData]);
