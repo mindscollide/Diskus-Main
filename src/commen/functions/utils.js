@@ -2054,7 +2054,7 @@ export const SideBarGlobalNavigationFunction = async (
       console.log("Check Route Meeting");
 
       dispatch(viewMeetingFlag(false));
-      setViewAdvanceMeetingModalUnpublish(false);
+      // setViewAdvanceMeetingModalUnpublish(false);
       setViewAdvanceMeetingModal(false);
       navigate(navigateValue);
     } else {

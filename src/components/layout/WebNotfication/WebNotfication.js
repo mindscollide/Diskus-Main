@@ -930,11 +930,6 @@ const WebNotfication = ({
         } else if (NotificationData.notificationActionID === 15) {
           //Notification that Proposed Meeting Date Organizer work
           if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("ProposedMeetingOrganizer", true);
-            localStorage.setItem(
-              "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID,
-            );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -946,19 +941,32 @@ const WebNotfication = ({
                 setViewAdvanceMeetingModal,
                 2,
                 setVideoTalk,
+                setAdvanceMeetingModalID,
               ),
             );
             localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           } else {
             //Call Status API to see what is the status of the meeting eighter proposed or published
             navigate("/Diskus/Meeting");
-            localStorage.setItem("ProposedMeetingOrganizer", true);
-            localStorage.setItem(
-              "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID,
-            );
+            // localStorage.setItem("ProposedMeetingOrganizer", true);
+            // localStorage.setItem(
+            //   "ProposedMeetingOrganizerMeetingID",
+            //   PayLoadData.MeetingID,
+            // );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal,
+                2,
+                setVideoTalk,
+                setAdvanceMeetingModalID,
+              ),
+            );
           }
         } else if (NotificationData.notificationActionID === 16) {
           if (currentURL.includes("/Diskus/groups")) {

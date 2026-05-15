@@ -9891,6 +9891,8 @@ const GetMeetingStatusDataAPI = (
                       "NotificationClickMeetingID",
                       Data.MeetingID,
                     );
+                    // setViewFlag is for setAdvanceMeetingModalID set meeting ID
+                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID)
                     isFunction(setViewAdvanceMeetingModal) &&
                       setViewAdvanceMeetingModal(true);
                     dispatch(viewAdvanceMeetingPublishPageFlag(true));

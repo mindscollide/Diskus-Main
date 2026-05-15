@@ -590,6 +590,7 @@ const SubAgendaMappingDragging = ({
                                                                     filesData
                                                                   )
                                                                 }
+                                                                id={Number(filesData.originalAttachmentName)}
                                                                 name={
                                                                   filesData.displayAttachmentName
                                                                 }

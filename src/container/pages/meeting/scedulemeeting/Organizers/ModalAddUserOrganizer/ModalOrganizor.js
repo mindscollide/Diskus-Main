@@ -72,7 +72,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                         gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
                       isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
+                      isOrganizerNotified: true,
                       organizerTitle: "",
                       rsvp: false,
                       isDeletable: true,
@@ -86,7 +86,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     };
                     let newUserSave = {
                       isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
+                      isOrganizerNotified: true,
                       organizerTitle: "",
                       UserID: gUser.userID,
                     };
@@ -119,7 +119,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                         cUser.profilePicture.displayProfilePictureName,
                       email: cUser.emailAddress,
                       isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
+                      isOrganizerNotified: true,
                       organizerTitle: "",
                       rsvp: false,
                       isDeletable: true,
@@ -133,7 +133,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     };
                     let newUserSave = {
                       isPrimaryOrganizer: false,
-                      isOrganizerNotified: false,
+                      isOrganizerNotified: true,
                       organizerTitle: "",
                       UserID: cUser.userID,
                     };
@@ -160,7 +160,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     check2.profilePicture.displayProfilePictureName,
                   email: check2.emailAddress,
                   isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
+                  isOrganizerNotified: true,
                   organizerTitle: "",
                   rsvp: false,
                   isDeletable: true,
@@ -174,7 +174,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                 };
                 let newUserSave = {
                   isPrimaryOrganizer: false,
-                  isOrganizerNotified: false,
+                  isOrganizerNotified: true,
                   organizerTitle: "",
                   UserID: check2.userID,
                 };
