@@ -9202,9 +9202,26 @@ const GetMeetingStatusDataAPI = (
                   );
                 } else if (Check === 2) {
                   if (
-                    Number(response.data.responseResult.meetingStatusID) !== 1
+                    Number(response.data.responseResult.meetingStatusID) === 12
                   ) {
+                    localStorage.setItem("ProposedMeetingOrganizer", true);
+                    localStorage.setItem(
+                      "ProposedMeetingOrganizerMeetingID",
+                      Data.MeetingID,
+                    );
                     dispatch(showSceduleProposedMeeting(true));
+                  } else if (
+                    Number(response.data.responseResult.meetingStatusID) !== 12
+                  ) {
+                    localStorage.setItem(
+                      "NotificationClickMeetingID",
+                      Data.MeetingID,
+                    );
+                    // setViewFlag is for setAdvanceMeetingModalID set meeting ID
+                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID)
+                    isFunction(setViewAdvanceMeetingModal) &&
+                      setViewAdvanceMeetingModal(true);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
                   }
                 } else if (Check === 3) {
                   //Notification for being added as a minute reviewer

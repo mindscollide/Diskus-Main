@@ -129,8 +129,12 @@ const Participants = () => {
         NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.forEach(
-          (data, index) => {
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles
+          .filter(
+            (data, index) =>
+              data.participantRole.toLowerCase() !== "None".toLowerCase(),
+          )
+          .forEach((data, index) => {
             Newdata.push({
               value: data.participantRoleID,
               label: data.participantRole,

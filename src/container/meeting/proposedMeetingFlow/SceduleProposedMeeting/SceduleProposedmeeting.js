@@ -36,14 +36,20 @@ const SceduleProposedmeeting = () => {
     message: "",
     severity: "error",
   });
-  
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {setEditorRole} = useMeetingContext()
   const isOrganizerViewPollProposedMeeting = useSelector(
     (state) => state.ModalStatesReducer.isOrganizerRespondProposedMeeting,
+  )
+    let viewProposeDatePollMeetingID = Number(
+    localStorage.getItem("viewProposeDatePollMeetingID"),
   );
+
+
+
 
   const getUserProposedOrganizerData = useSelector(
     (state) => state.NewMeetingreducer.getUserProposedOrganizerData,
@@ -201,7 +207,8 @@ const SceduleProposedmeeting = () => {
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}>
+                title={record.userName}
+              >
                 {record.userName}
               </span>
             ) : (
@@ -233,9 +240,14 @@ const SceduleProposedmeeting = () => {
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}>
+            onClick={() => toggleActive(index, record, formattedDate)}
+          >
             <span className={styles["date-time-column"]}>
-              {newTimeFormaterViewPoll(formattedDate)}
+              {record?.proposedDate === "10000101" &&
+              record?.startTime === "000000" &&
+              record?.endTime === "000000"
+                ? t("None-of-the-above")
+                : newTimeFormaterViewPoll(formattedDate)}
             </span>
           </span>
         ),
@@ -243,6 +255,7 @@ const SceduleProposedmeeting = () => {
         key: `selectedProposedDates-${index}`,
         align: "center",
         render: (text, record) => {
+          console.log(text, record, "CheckTextRecordBoth");
           if (record.userName === "Total") {
             const totalDate = record?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0,
@@ -264,9 +277,9 @@ const SceduleProposedmeeting = () => {
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width='20.7px'
-                  height='14.21px'
-                  alt=''
+                  width="20.7px"
+                  height="14.21px"
+                  alt=""
                 />
               );
             }
@@ -307,8 +320,8 @@ const SceduleProposedmeeting = () => {
                 className='d-flex justify-content-end'>
                 <img
                   src={BlackCrossIcon}
-                  alt=''
-                  className='cursor-pointer'
+                  alt=""
+                  className="cursor-pointer"
                   width={15}
                 />
               </Col>
@@ -324,7 +337,7 @@ const SceduleProposedmeeting = () => {
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className='SceduleProposedMeeting'
+                    className="SceduleProposedMeeting"
                     rows={updateTableRows}
                   />
                   <span>
@@ -333,7 +346,8 @@ const SceduleProposedmeeting = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center mt-4'>
+                        className="d-flex justify-content-center mt-4"
+                      >
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}

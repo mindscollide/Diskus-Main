@@ -619,7 +619,7 @@ const MeetingDetails = () => {
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: currentMeetingStatus,
+          MeetingStatusID: currentMeetingStatus === 8 ? 11: currentMeetingStatus,
         },
       };
       dispatch(SaveMeetingDetailsApi(navigate, t, data, context, {}));

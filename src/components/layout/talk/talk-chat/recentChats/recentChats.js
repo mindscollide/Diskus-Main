@@ -90,23 +90,26 @@ const RecentChats = () => {
   useEffect(() => {
     const data = talkStateData.AllUserChats.AllUserChatsData;
 
-    // Sirf tab update karo jab data valid ho
     if (
       data?.allMessages &&
-      Array.isArray(data.allMessages) &&
-      data.allMessages.length > 0
+      Array.isArray(data?.allMessages) &&
+      data?.allMessages?.length > 0
     ) {
-      // CRITICAL CHECK: Sirf tab update karo jab data mein "fullName" ho (recent chat list ka property)
-      // Single chat API response mein "fullName" nahi hota
-      const isRecentChatList = data.allMessages.some(
-        (msg) => msg.fullName && msg.messageType,
+      // Check for additional properties that ONLY exist in the recent chats list
+      const isRecentChatList = data?.allMessages.some(
+        (msg) => msg.fullName && msg.messageType && msg.messageDate,
       );
 
-      if (isRecentChatList) {
-        setAllChatData(data.allMessages);
+      // Also check if other arrays that indicate it's a full chat list are populated
+      const isFullChatList =
+        data?.groupInformation !== undefined ||
+        data?.userInformation !== undefined;
+
+      if (isRecentChatList && isFullChatList) {
+        setAllChatData(data?.allMessages);
         setIsInitialized(true);
       }
-    } else if (!isInitialized && (!data || !data.allMessages)) {
+    } else if (!isInitialized && (!data || !data?.allMessages)) {
       setAllChatData([]);
     }
   }, [talkStateData.AllUserChats.AllUserChatsData, isInitialized]);

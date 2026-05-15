@@ -351,7 +351,7 @@ const CalendarPage = () => {
       newList = [];
     }
     if (Object.keys(Data).length > 0) {
-      Data.map((cData) => {
+      Data.forEach((cData) => {
         let StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
         let EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
         let meetingStartTime = newTimeFormaterAsPerUTC(

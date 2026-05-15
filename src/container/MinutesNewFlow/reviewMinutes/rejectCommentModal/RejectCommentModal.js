@@ -69,26 +69,26 @@ const RejectCommentModal = ({
     }
   }, [MinutesReducer.RejectMinuteData]);
 
-  const RejectButton = () => {
-    // Update state
-    const updatedMinuteData = {
-      ...minuteDataToReject,
-      reason: commentText,
-      actorBundleStatusID: 4,
-      userProfilePicture: {
-        userID: currentUserID,
-        orignalProfilePictureName: "",
-        displayProfilePictureName:
-          MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
-      },
-    };
+  // const RejectButton = () => {
+  //   // Update state
+  //   const updatedMinuteData = {
+  //     ...minuteDataToReject,
+  //     reason: commentText,
+  //     actorBundleStatusID: 4,
+  //     userProfilePicture: {
+  //       userID: currentUserID,
+  //       orignalProfilePictureName: "",
+  //       displayProfilePictureName:
+  //         MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+  //     },
+  //   };
 
-    // Optional: Update local state if needed
-    setMinuteDataToReject(updatedMinuteData);
-    dispatch(rejectCommentModal(false));
-    setMinutesToReview(minutesToReview - 1);
-    
-  };
+  //   // Optional: Update local state if needed
+  //   setMinuteDataToReject(updatedMinuteData);
+  //   dispatch(rejectCommentModal(false));
+  //   setMinutesToReview(minutesToReview - 1);
+  //   console.log("Updated Minute Data to Reject:", MinutesReducer);
+  // };
 
   return (
     <section>
