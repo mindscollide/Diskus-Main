@@ -231,9 +231,7 @@ export const NewMeetingProvider = ({ children }) => {
           ];
         });
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingReminderNotification]);
 
@@ -261,9 +259,7 @@ export const NewMeetingProvider = ({ children }) => {
         } else {
           setList([newMeetingData, ...list]);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     callMQTT();
@@ -313,9 +309,7 @@ export const NewMeetingProvider = ({ children }) => {
       setStartMeetingButton((prev) =>
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 
@@ -340,9 +334,7 @@ export const NewMeetingProvider = ({ children }) => {
           (btn) => Number(btn.meetingID) !== Number(endMeetingData.pK_MDID),
         ),
       );
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
 
@@ -374,9 +366,7 @@ export const NewMeetingProvider = ({ children }) => {
         } else {
           setList([newMeetingData, ...list]);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     updateMeeting();
@@ -395,9 +385,7 @@ export const NewMeetingProvider = ({ children }) => {
       if (!meetingData?.pK_MDID) return;
 
       updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [CommitteeMeetingMQTT]);
 
@@ -413,9 +401,7 @@ export const NewMeetingProvider = ({ children }) => {
       if (!meetingData?.pK_MDID) return;
 
       updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
 
@@ -466,9 +452,7 @@ export const NewMeetingProvider = ({ children }) => {
 
         const { list, setList } = getActiveMeetingListAndSetter();
         setList([newData, ...list]);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
 
     // ---- Participant REMOVED ----
@@ -478,9 +462,7 @@ export const NewMeetingProvider = ({ children }) => {
         if (meetingID != null) {
           removeMeetingFromAllLists(meetingID);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mqttMeetingPrAdded, mqtMeetingPrRemoved]);
@@ -543,7 +525,6 @@ export const NewMeetingProvider = ({ children }) => {
           break;
       }
     } catch (error) {
-      
       setPublishedMeetingData([]);
       setDraftMeetingData([]);
       setProposedMeetingData([]);
@@ -571,9 +552,7 @@ export const NewMeetingProvider = ({ children }) => {
       ];
 
       setMeetingTypeFilter(meetingtypeFilter);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getALlMeetingTypes?.meetingTypes, t]);
 
   // ============================================================

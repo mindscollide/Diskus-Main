@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { forRecentActivity } from "../../../commen/functions/date_formater";
 import { ChevronDown } from "react-bootstrap-icons";
-import { Checkbox, Menu, Popover } from "antd";
+import { Checkbox, Menu, Popover, Tooltip } from "antd";
 import CustomButton from "../../../components/elements/button/Button";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
@@ -51,11 +51,10 @@ const buildEditorRole = (record) => ({
   role: record.isParticipant
     ? "Participant"
     : record.isAgendaContributor
-    ? "Agenda Contributor"
-    : "Organizer",
+      ? "Agenda Contributor"
+      : "Organizer",
   isPrimaryOrganizer: record.isPrimaryOrganizer,
 });
-
 
 const buildVideoTalk = (record) => ({
   isChat: record.isChat,
@@ -88,16 +87,16 @@ const DraftMeetingList = () => {
 
   // ─── Redux selectors ───
   const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
   );
   const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
   );
   const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
   );
   const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
   );
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -116,9 +115,7 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {
-            
-          }
+          } catch (error) {}
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -126,9 +123,7 @@ const DraftMeetingList = () => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -137,7 +132,7 @@ const DraftMeetingList = () => {
       let meetingData = mqttMeetingAcRemoved;
       try {
         const updatedRows = draftMeetingData.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
         );
         setDraftMeetingData(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -157,9 +152,7 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {
-            
-          }
+          } catch (error) {}
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -167,9 +160,7 @@ const DraftMeetingList = () => {
         }
       };
       callAddOrganizer();
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -178,7 +169,7 @@ const DraftMeetingList = () => {
       let meetingData = mqttMeetingOrgRemoved;
       try {
         const updatedRows = draftMeetingData.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
         );
         setDraftMeetingData(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -232,8 +223,8 @@ const DraftMeetingList = () => {
             setViewFlag,
             setEditFlag,
             setSceduleMeeting,
-            2
-          )
+            2,
+          ),
         );
       } else if (record.isQuickMeeting === false) {
         // Set state synchronously BEFORE dispatch — no stale closure issue
@@ -248,14 +239,13 @@ const DraftMeetingList = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} }
-          )
+            { role, callFunc: () => {} },
+          ),
         );
       }
     };
 
     const handleCancel = () => {
-      
       let Data = {
         MeetingID: record.pK_MDID,
         StatusID: 4,
@@ -266,15 +256,14 @@ const DraftMeetingList = () => {
     };
 
     const handleClickPublish = () => {
-      
       dispatch(
         UpdateMeetingStatusApi(
           navigate,
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          {setEditorRole}
-        )
+          { setEditorRole },
+        ),
       );
     };
 
@@ -309,24 +298,26 @@ const DraftMeetingList = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    
+
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   const handleClickTitle = (record) => {
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
-    dispatch(setCurrentMeetingInfo({
-      meetingID: record.pK_MDID,
-    }))
+    dispatch(
+      setCurrentMeetingInfo({
+        meetingID: record.pK_MDID,
+      }),
+    );
     setEditorRole((prev) => ({
       ...prev,
       status: record.status,
       role: record.isParticipant
         ? "Participant"
         : record.isAgendaContributor
-        ? "Agenda Contributor"
-        : "Organizer",
+          ? "Agenda Contributor"
+          : "Organizer",
       isPrimaryOrganizer: record.isPrimaryOrganizer,
     }));
   };
@@ -404,15 +395,15 @@ const DraftMeetingList = () => {
         sortOrder: meetingTimeSort,
         render: (text, record) => {
           let meetingStartTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           let meetingEndTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingEndTime
+            record.dateOfMeeting + record.meetingEndTime,
           );
           if (!meetingStartTime && !meetingEndTime) return;
           return (
             <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime
+              meetingEndTime,
             ).format("hh:mm a")}`}</>
           );
         },
@@ -438,19 +429,19 @@ const DraftMeetingList = () => {
           const dateA = new Date(
             a.dateOfMeeting.substring(0, 4),
             parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8)
+            a.dateOfMeeting.substring(6, 8),
           );
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8)
+            b.dateOfMeeting.substring(6, 8),
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
@@ -485,12 +476,23 @@ const DraftMeetingList = () => {
         render: (_, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType
+            (f) => Number(f.value) === meetingType,
           );
           if (record.isQuickMeeting && meetingType === 1) {
             return t("Quick-meeting");
           }
-          return matchedFilter ? t(matchedFilter.text) : "";
+          return matchedFilter ? (
+            <span className={styles.columnValue}>
+              <Tooltip
+                showArrow={false}
+                 overlayStyle={{ padding: '0px 0px' }}
+                title={t(record.groupAndCommitteeTitle)}>
+                {t(matchedFilter.text)}
+              </Tooltip>
+            </span>
+          ) : (
+            ""
+          );
         },
       },
 

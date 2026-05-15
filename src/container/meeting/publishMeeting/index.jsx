@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Popover } from "antd";
+import { Popover, Tooltip } from "antd";
 import { Col, Row } from "react-bootstrap";
 import moment from "moment";
 
@@ -164,8 +164,6 @@ const PublishedMeetingList = () => {
     setIsCreateEditMeeting,
   } = useNewMeetingContext();
 
-  
-
   // ─── Local state ──────────────────────────────────────────────────────────
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -324,9 +322,7 @@ const PublishedMeetingList = () => {
           meetingTitle: record.title,
         }),
       );
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
@@ -876,7 +872,14 @@ const PublishedMeetingList = () => {
           if (record.isQuickMeeting && meetingType === 1)
             return t("Quick-meeting");
           return matchedFilter ? (
-            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
+            <span className={styles.columnValue}>
+              <Tooltip
+                showArrow={false}
+                overlayStyle={{ padding: "2px 0px" }}
+                title={t(record.groupAndCommitteeTitle)}>
+                {t(matchedFilter.text)}
+              </Tooltip>
+            </span>
           ) : (
             ""
           );

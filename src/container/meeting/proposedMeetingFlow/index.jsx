@@ -26,7 +26,7 @@ import { useEffect } from "react";
 
 import moment from "moment";
 import { convertToArabicNumerals } from "@/commen/functions/regex";
-import { Checkbox, Menu, Popover } from "antd";
+import { Checkbox, Menu, Popover, Tooltip } from "antd";
 import { getAllUnpublishedMeetingData } from "@/hooks/meetingResponse/response";
 import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "@/assets/images/sortingIcons/Arrow-up.png";
@@ -393,7 +393,14 @@ const ProposedMeeting = () => {
           }
 
           return matchedFilter ? (
-            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
+            <span className={styles.columnValue}>
+              <Tooltip
+                showArrow={false}
+                overlayStyle={{ padding: "0px 0px" }}
+                title={t(record.groupAndCommitteeTitle)}>
+                {t(matchedFilter.text)}
+              </Tooltip>
+            </span>
           ) : (
             ""
           );
@@ -693,7 +700,7 @@ const ProposedMeeting = () => {
           />
         </Col>{" "}
         {proposedMeetingData.length > 0 && (
-          <Col className={styles["ProposedMeeting_Pagination"]}>
+          <Col className={styles["Meeting_Pagination"]}>
             <div className='d-flex justify-content-center mt-2 '>
               <Row className={styles["PaginationStyle-Committee"]}>
                 <Col

@@ -9218,9 +9218,9 @@ const GetMeetingStatusDataAPI = (
                       Data.MeetingID,
                     );
                     // setViewFlag is for setAdvanceMeetingModalID set meeting ID
-                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID)
-                    isFunction(setViewAdvanceMeetingModal) &&
-                      setViewAdvanceMeetingModal(true);
+                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID);
+                    dispatch(toggleViewMeetingModal(true));
+
                     dispatch(viewAdvanceMeetingPublishPageFlag(true));
                   }
                 } else if (Check === 3) {
