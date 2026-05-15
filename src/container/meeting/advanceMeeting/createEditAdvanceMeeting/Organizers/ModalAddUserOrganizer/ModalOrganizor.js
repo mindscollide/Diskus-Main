@@ -28,19 +28,19 @@ const ModalOrganizor = () => {
   const navigate = useNavigate();
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const committeeInfo = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteeDetails
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
 
   const groupInfo = useSelector(
-    (state) => state.GroupsReducer.viewGroupDetails
+    (state) => state.GroupsReducer.viewGroupDetails,
   );
 
   const currentMeetingInfo = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
 
   const [membersOrganizers, setMembersOrganizers] = useState([]);
@@ -84,7 +84,7 @@ const ModalOrganizor = () => {
 
     if (committeeInfo) {
       const committee = data.committees?.find(
-        (c) => c.committeeID === committeeInfo.committeeID
+        (c) => c.committeeID === committeeInfo.committeeID,
       );
 
       return (
@@ -123,7 +123,7 @@ const ModalOrganizor = () => {
           </Row>
         ),
         type: 1,
-      })
+      }),
     );
 
     data.committees?.forEach((c) =>
@@ -139,7 +139,7 @@ const ModalOrganizor = () => {
           </Row>
         ),
         type: 2,
-      })
+      }),
     );
 
     data.organizationUsers?.forEach((u) =>
@@ -160,7 +160,7 @@ const ModalOrganizor = () => {
           </Row>
         ),
         type: 3,
-      })
+      }),
     );
 
     return temp;
@@ -189,7 +189,7 @@ const ModalOrganizor = () => {
         displayPicture: user?.profilePicture?.displayProfilePictureName || "",
         email: user.emailAddress,
         isPrimaryOrganizer: false,
-        isOrganizerNotified: false,
+        isOrganizerNotified: true,
         organizerTitle: "",
         rsvp: false,
         isDeletable: true,
@@ -205,7 +205,7 @@ const ModalOrganizor = () => {
       tem2.push({
         UserID: id,
         isPrimaryOrganizer: false,
-        isOrganizerNotified: false,
+        isOrganizerNotified: true,
         organizerTitle: "",
       });
 
@@ -245,8 +245,8 @@ const ModalOrganizor = () => {
         GetAllCommitteesUsersandGroups(
           { MeetingID: currentMeetingInfo.meetingID },
           navigate,
-          t
-        )
+          t,
+        ),
       );
     }
   }, [currentMeetingInfo?.meetingID]);
@@ -267,165 +267,143 @@ const ModalOrganizor = () => {
   // -------------------------
   return (
     <Modal
-    show={NewMeetingreducer.adduserModal}
-    onHide={() => dispatch(showAddUserModal(false))}
-    size="md"
-    modalFooterClassName={"d-block"}
-    ModalBody={
-      <>
-        <Row>
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className={styles["OverAll_styling"]}
-          >
-            {/* HEADER */}
-            <Row>
-              <Col lg={5} md={5} sm={12}>
-                <span className={styles["Add_organization"]}>
-                  {t("Add-organizers")}
-                </span>
-              </Col>
-  
-              <Col
-                lg={7}
-                md={7}
-                sm={12}
-                className="d-flex justify-content-end"
-              >
-                <img
-                  draggable={false}
-                  src={BlackCrossIcon}
-                  alt=""
-                  className="cursor-pointer"
-                  width="16px"
-                  height="16px"
-                  onClick={() => dispatch(showAddUserModal(false))}
-                />
-              </Col>
-            </Row>
-  
-            {/* SELECT ROW */}
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="group-fields d-flex align-items-center gap-2"
-              >
-                <Select
-                  onChange={setSelectedsearch}
-                  value={selectedsearch}
-                  classNamePrefix="selectMember"
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  options={dropdowndata}
-                  isSearchable
-                />
-  
-                <Button
-                  text={t("ADD")}
-                  className={styles["ADD_Btn_CreatePool_Modal"]}
-                  onClick={handleAddUsers}
-                />
-              </Col>
-            </Row>
-  
-            {/* USERS LIST */}
-            <Row className={styles["Scroller_For_CreatePollModal2"]}>
-              {membersOrganizers.map((data, index) => (
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  className="mt-2"
-                  key={data.userID}
-                >
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Padding_Class"]}
-                    >
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <Row className={styles["Card_border2"]}>
-                            
-                            {/* LEFT SIDE USER INFO */}
-                            <Col
-                              sm={10}
-                              md={10}
-                              lg={10}
-                              className="d-flex align-items-center"
-                            >
-                              <img
-                                draggable={false}
-                                src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                width="33px"
-                                height="33px"
-                                alt=""
-                              />
-  
-                              <span className={styles["Name_cards"]}>
-                                {data.userName}
-                              </span>
-                            </Col>
-  
-                            {/* DELETE ICON */}
-                            <Col sm={2} md={2} lg={2}>
-                              <img
-                                src={CrossIcon}
-                                width="14px"
-                                height="14px"
-                                draggable="false"
-                                style={{ cursor: "pointer" }}
-                                alt=""
-                                onClick={() => {
-                                  setMembersOrganizers((prev) =>
-                                    prev.filter((_, i) => i !== index)
-                                  );
-  
-                                  setOrganizersSave((prev) =>
-                                    prev.filter((_, i) => i !== index)
-                                  );
-                                }}
-                              />
-                            </Col>
-  
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
+      show={NewMeetingreducer.adduserModal}
+      onHide={() => dispatch(showAddUserModal(false))}
+      size='md'
+      modalFooterClassName={"d-block"}
+      ModalBody={
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12} className={styles["OverAll_styling"]}>
+              {/* HEADER */}
+              <Row>
+                <Col lg={5} md={5} sm={12}>
+                  <span className={styles["Add_organization"]}>
+                    {t("Add-organizers")}
+                  </span>
                 </Col>
-              ))}
-            </Row>
+
+                <Col
+                  lg={7}
+                  md={7}
+                  sm={12}
+                  className='d-flex justify-content-end'>
+                  <img
+                    draggable={false}
+                    src={BlackCrossIcon}
+                    alt=''
+                    className='cursor-pointer'
+                    width='16px'
+                    height='16px'
+                    onClick={() => dispatch(showAddUserModal(false))}
+                  />
+                </Col>
+              </Row>
+
+              {/* SELECT ROW */}
+              <Row className='mt-3'>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='group-fields d-flex align-items-center gap-2'>
+                  <Select
+                    onChange={setSelectedsearch}
+                    value={selectedsearch}
+                    classNamePrefix='selectMember'
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    options={dropdowndata}
+                    isSearchable
+                  />
+
+                  <Button
+                    text={t("ADD")}
+                    className={styles["ADD_Btn_CreatePool_Modal"]}
+                    onClick={handleAddUsers}
+                  />
+                </Col>
+              </Row>
+
+              {/* USERS LIST */}
+              <Row className={styles["Scroller_For_CreatePollModal2"]}>
+                {membersOrganizers.map((data, index) => (
+                  <Col lg={6} md={6} sm={12} className='mt-2' key={data.userID}>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Padding_Class"]}>
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <Row className={styles["Card_border2"]}>
+                              {/* LEFT SIDE USER INFO */}
+                              <Col
+                                sm={10}
+                                md={10}
+                                lg={10}
+                                className='d-flex align-items-center'>
+                                <img
+                                  draggable={false}
+                                  src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                  width='33px'
+                                  height='33px'
+                                  alt=''
+                                />
+
+                                <span className={styles["Name_cards"]}>
+                                  {data.userName}
+                                </span>
+                              </Col>
+
+                              {/* DELETE ICON */}
+                              <Col sm={2} md={2} lg={2}>
+                                <img
+                                  src={CrossIcon}
+                                  width='14px'
+                                  height='14px'
+                                  draggable='false'
+                                  style={{ cursor: "pointer" }}
+                                  alt=''
+                                  onClick={() => {
+                                    setMembersOrganizers((prev) =>
+                                      prev.filter((_, i) => i !== index),
+                                    );
+
+                                    setOrganizersSave((prev) =>
+                                      prev.filter((_, i) => i !== index),
+                                    );
+                                  }}
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          </Row>
+        </>
+      }
+      ModalFooter={
+        <Row>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+            {membersOrganizers.length > 0 && (
+              <Button
+                text={t("Done")}
+                className={styles["Done_btn_organizor_modal"]}
+                onClick={saveOrganizers}
+              />
+            )}
           </Col>
         </Row>
-      </>
-    }
-    ModalFooter={
-      <Row>
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className="d-flex justify-content-end"
-        >
-          {membersOrganizers.length > 0 && (
-            <Button
-              text={t("Done")}
-              className={styles["Done_btn_organizor_modal"]}
-              onClick={saveOrganizers}
-            />
-          )}
-        </Col>
-      </Row>
-    }
-  />
+      }
+    />
   );
 };
 

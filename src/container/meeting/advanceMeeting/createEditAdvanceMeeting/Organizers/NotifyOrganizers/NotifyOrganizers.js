@@ -53,7 +53,7 @@ const NotifyOrganizers = ({
   const handleCrossIcon = () => {
     setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
-    // dispatch(meetingOrganizers([]));
+    dispatch(meetingOrganizers([]));
     setNotificationMessage("");
   };
 
@@ -130,7 +130,7 @@ const NotifyOrganizers = ({
   const handleCancelButton = () => {
     setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
-    // dispatch(meetingOrganizers([]));
+    dispatch(meetingOrganizers([]));
     setNotificationMessage("");
   };
 
@@ -161,7 +161,7 @@ const NotifyOrganizers = ({
         onHide={() => {
           setIsEdit(true);
           dispatch(showNotifyOrganizors(false));
-          // dispatch(meetingOrganizers([]));
+          dispatch(meetingOrganizers([]));
           setNotificationMessage("");
         }}
         ModalBody={
