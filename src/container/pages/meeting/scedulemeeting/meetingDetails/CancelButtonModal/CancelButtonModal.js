@@ -7,6 +7,7 @@ import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeeting
 import { Col, Row } from "react-bootstrap";
 import { MeetingContext } from "../../../../../../context/MeetingContext";
 import { useNavigate } from "react-router-dom";
+import { getHomeRoute } from "../../../../../../commen/functions/utils";
 const CancelButtonModal = ({
   setSceduleMeeting,
   setMeetingDetails,
@@ -69,7 +70,7 @@ const CancelButtonModal = ({
       setGoBackCancelModal(false);
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
-      navigate("/Diskus/");
+      navigate(getHomeRoute());
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
       localStorage.removeItem("navigateLocation");

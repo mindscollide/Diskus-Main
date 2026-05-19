@@ -115,6 +115,7 @@ import {
 } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import {
+  getHomeRoute,
   handleMeetingNavigation,
   handleNavigationforParticipantVideoFlow,
   isFunction,
@@ -8321,7 +8322,7 @@ const LeaveCurrentMeeting = (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     console.log("navigateLocation");
-                    navigate("/Diskus/");
+                    navigate(getHomeRoute());
                   } else {
                     let searchData = {
                       Date: "",
@@ -8605,7 +8606,7 @@ const newLeaveCurrentMeeting = (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     console.log("navigateLocation");
-                    navigate("/Diskus/");
+                    navigate(getHomeRoute());
                   } else {
                     let searchData = {
                       Date: "",

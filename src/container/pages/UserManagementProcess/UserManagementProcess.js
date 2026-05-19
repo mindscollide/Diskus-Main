@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
+import { getHomeRoute } from "../../../commen/functions/utils";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
@@ -170,7 +171,7 @@ const UserManagementProcess = () => {
               ) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               }
             }
           }

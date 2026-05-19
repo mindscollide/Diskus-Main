@@ -28,6 +28,7 @@ import {
   checkFeatureIDAvailability,
   clearLocalStorageAtloginresponce,
   getFormData,
+  getHomeRoute,
   handleLoginResponse,
   handleNavigation,
   isFunction,
@@ -487,12 +488,7 @@ const enterPasswordvalidation = (
         dispatch(enterPasswordFail("Something-went-wrong"));
         return;
       }
-      await handleLoginResponse(
-        response.data.responseResult,
-        dispatch,
-        navigate,
-        t,
-      );
+
       let packageFeatureIDs = [];
       switch (responseMessage.toLowerCase()) {
         case USERPASSWORDVERIFICATION.VERIFICATION_01:
@@ -558,6 +554,12 @@ const enterPasswordvalidation = (
           // packege detail ki bhi api hit honi hy
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_09:
+          await handleLoginResponse(
+            response.data.responseResult,
+            dispatch,
+            navigate,
+            t,
+          );
           dispatch(
             enterPasswordSuccess(
               response.data.responseResult,
@@ -581,6 +583,12 @@ const enterPasswordvalidation = (
           // clearLocalStorageAtloginresponce(dispatch, 3, navigate);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
+          await handleLoginResponse(
+            response.data.responseResult,
+            dispatch,
+            navigate,
+            t,
+          );
           await dispatch(
             enterPasswordSuccess(response.data.responseResult, ""),
           );
@@ -603,6 +611,12 @@ const enterPasswordvalidation = (
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
+          await handleLoginResponse(
+            response.data.responseResult,
+            dispatch,
+            navigate,
+            t,
+          );
           if (response.data.responseResult.hasAdminRights) {
             mqttConnection(
               response.data.responseResult.authToken.userID,
@@ -618,6 +632,12 @@ const enterPasswordvalidation = (
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
+          await handleLoginResponse(
+            response.data.responseResult,
+            dispatch,
+            navigate,
+            t,
+          );
           dispatch(enterPasswordSuccess(response.data.responseResult, ""));
           mqttConnection(
             response.data.responseResult.authToken.userID,
@@ -635,6 +655,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_17:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -705,6 +731,12 @@ const enterPasswordvalidation = (
         case USERPASSWORDVERIFICATION.VERIFICATION_18:
           // pahly check kergay ga k ussy pay outstanding k rights hy ya nai
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -774,6 +806,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_19:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -863,6 +901,12 @@ const enterPasswordvalidation = (
 
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasUserRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             navigate("/Diskus");
             dispatch(
               enterPasswordSuccess(
@@ -882,7 +926,12 @@ const enterPasswordvalidation = (
         case USERPASSWORDVERIFICATION.VERIFICATION_21:
           // The Organization Trial has expired and This is the Organization Creator. Direct To Billing Flow
           clearLocalStorageAtloginresponce(dispatch, 1, navigate);
-
+          await handleLoginResponse(
+            response.data.responseResult,
+            dispatch,
+            navigate,
+            t,
+          );
           localStorage.removeItem("LocalAdminRoutes");
           localStorage.removeItem("LocalUserRoutes");
           localStorage.setItem("TrialExpireSelectPac", JSON.stringify(true));
@@ -922,6 +971,12 @@ const enterPasswordvalidation = (
 
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (JSON.parse(localStorage.getItem("isExtensionAvailable"))) {
               localStorage.setItem(
                 "TrialExpireSelectPac",
@@ -967,6 +1022,12 @@ const enterPasswordvalidation = (
 
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (JSON.parse(localStorage.getItem("isExtensionAvailable"))) {
               localStorage.setItem(
                 "TrialExpireSelectPac",
@@ -1026,6 +1087,12 @@ const enterPasswordvalidation = (
 
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasUserRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             navigate("/Diskus");
             dispatch(
               enterPasswordSuccess(
@@ -1116,6 +1183,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_32:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1184,6 +1257,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_33:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1251,6 +1330,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_34:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1336,6 +1421,12 @@ const enterPasswordvalidation = (
 
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasUserRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             navigate("/Diskus");
             dispatch(
               enterPasswordSuccess(
@@ -1364,6 +1455,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_37:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1431,6 +1528,12 @@ const enterPasswordvalidation = (
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_38:
           if (response.data.responseResult.hasAdminRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             if (checkFeatureIDAvailability(33)) {
               packageFeatureIDs = [203, 28, 29, 30, 34, 218];
             } else {
@@ -1516,6 +1619,12 @@ const enterPasswordvalidation = (
 
           //yeah pay outstanding per lai jai ga
           if (response.data.responseResult.hasUserRights) {
+            await handleLoginResponse(
+              response.data.responseResult,
+              dispatch,
+              navigate,
+              t,
+            );
             navigate("/Diskus");
             dispatch(
               enterPasswordSuccess(
@@ -1828,7 +1937,7 @@ const createPasswordAction = (value, navigate, t) => {
               navigate("/onboard");
             } else {
               if (response.data.responseResult.hasUserRights) {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               } else {
                 localStorage.removeItem("SignupFlowPageRoute");
                 navigate("/Admin/ManageUsers");
