@@ -534,7 +534,27 @@ export const router = createBrowserRouter(
               <ErrorBoundary
                 FallbackComponent={ErrorFallback}
                 onError={logErrors}>
-                <AdminHome />
+                <NewMeetingProvider>
+                  <TalkProvider>
+                    <MeetingProvider>
+                      <GroupsProvider>
+                        <CommitteeProvider>
+                          <DataroomProvider>
+                            <PollsProvider>
+                              <NotesProvider>
+                                <ResolutionProvider>
+                                  <ComlianceProvider>
+                                    <AdminHome />
+                                  </ComlianceProvider>
+                                </ResolutionProvider>
+                              </NotesProvider>
+                            </PollsProvider>
+                          </DataroomProvider>
+                        </CommitteeProvider>
+                      </GroupsProvider>
+                    </MeetingProvider>
+                  </TalkProvider>
+                </NewMeetingProvider>
               </ErrorBoundary>
             </RouteWrapperAdmin>
           }>

@@ -120,7 +120,7 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
             const responseMessage =
               response.data.responseResult.responseMessage.toLowerCase();
             const meetingID = response.data.responseResult.meetingID;
-                    const { setEditorRole } = object;
+            const { setEditorRole } = object;
 
             switchOnMessage(responseMessage, {
               // _01: Meeting saved — proceed to DataRoom folder mapping
@@ -2417,7 +2417,7 @@ const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                     );
                     break;
                   }
-             
+
                   default:
                     break;
                 }
@@ -2700,7 +2700,6 @@ export const UpdateMeetingStatusApi = (
                         );
                         break;
                       }
-                  
 
                       default:
                         break;
@@ -3299,8 +3298,20 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 // Route-specific extras (runs AFTER the normal _01 flow)
                 switch (routePath) {
                   case "JoinMeetingFromListing": {
-                    const { isQuickMeeting, record } = object;
+                    const { isQuickMeeting, record, setIsQuickMeetingView } =
+                      object;
                     if (isQuickMeeting) {
+                      await dispatch(
+                        getViewMeetingByMeetingIdApi(
+                          navigate,
+                          t,
+                          { MeetingID: Data.FK_MDID },
+                          "JoinMeetingFromListing",
+                          {
+                            setIsQuickMeetingView,
+                          },
+                        ),
+                      );
                       return;
                     }
                     dispatch(setViewTab("agendaViewer"));
@@ -3338,6 +3349,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   }
+
                   default:
                     break;
                 }

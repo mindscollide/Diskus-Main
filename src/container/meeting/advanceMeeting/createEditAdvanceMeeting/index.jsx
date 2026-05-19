@@ -33,7 +33,10 @@ import {
   setAdvanceMeetingRoute,
   setCreateEditTab,
 } from "../../../../store/actions/ModalStates_actions";
-import { getMeetingDetailsByMeetingIdApi, listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
+import {
+  getMeetingDetailsByMeetingIdApi,
+  listOfMeetingsApi,
+} from "../../../../store/actions/NewMeeting2.actions";
 import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
 import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
 const CreateEditAdvanceMeeting = () => {
@@ -62,9 +65,6 @@ const CreateEditAdvanceMeeting = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  
-  
-
   // Fix: read all tab states from Redux MeetingModalsReducer instead of
   // individual NewMeetingreducer global flags
   const {
@@ -83,8 +83,6 @@ const CreateEditAdvanceMeeting = () => {
   // ─── Context ──────────────────────────────────────────────────────────────
 
   const { editorRole, setEditorRole, currentMeeting } = useMeetingContext();
-
-  
 
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
@@ -106,9 +104,7 @@ const CreateEditAdvanceMeeting = () => {
       }
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -175,28 +171,22 @@ const CreateEditAdvanceMeeting = () => {
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           localStorage.removeItem("folderDataRoomMeeting");
           dispatch(
-            listOfMeetingsApi(
-              navigate,
-              t,
-              {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-                PublishedMeetings:
-                  Number(localStorage.getItem("MeetingCurrentView")) === 1,
-                ProposedMeetings:
-                  Number(localStorage.getItem("MeetingCurrentView")) === 2,
-              },
-            ),
+            listOfMeetingsApi(navigate, t, {
+              Date: "",
+              Title: "",
+              HostName: "",
+              UserID: Number(userID),
+              PageNumber:
+                meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+              Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+              PublishedMeetings:
+                Number(localStorage.getItem("MeetingCurrentView")) === 1,
+              ProposedMeetings:
+                Number(localStorage.getItem("MeetingCurrentView")) === 2,
+            }),
           );
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
@@ -220,28 +210,22 @@ const CreateEditAdvanceMeeting = () => {
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           localStorage.removeItem("folderDataRoomMeeting");
           dispatch(
-            listOfMeetingsApi(
-              navigate,
-              t,
-              {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                PublishedMeetings:
-                  Number(localStorage.getItem("MeetingCurrentView")) === 1,
-                ProposedMeetings:
-                  Number(localStorage.getItem("MeetingCurrentView")) === 2,
-              },
-            ),
+            listOfMeetingsApi(navigate, t, {
+              Date: "",
+              Title: "",
+              HostName: "",
+              UserID: Number(userID),
+              PageNumber:
+                meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+              Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+              PublishedMeetings:
+                Number(localStorage.getItem("MeetingCurrentView")) === 1,
+              ProposedMeetings:
+                Number(localStorage.getItem("MeetingCurrentView")) === 2,
+            }),
           );
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
@@ -267,15 +251,14 @@ const CreateEditAdvanceMeeting = () => {
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className="mb-4">
+        <Col lg={12} md={12} sm={12} className='mb-4'>
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="py-2 d-flex gap-2 flex-wrap"
-              >
+                className='py-2 d-flex gap-2 flex-wrap'>
                 <Button
                   text={t("Meeting-details")}
                   className={
@@ -335,7 +318,7 @@ const CreateEditAdvanceMeeting = () => {
                     />
 
                     <Button
-                      text={t("Meeting-material")}
+                      text={t("Agenda-viewer")}
                       className={
                         createEditMeetingMaterialTab
                           ? styles["Schedule_meetings_options_active"]

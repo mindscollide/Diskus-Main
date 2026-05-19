@@ -74,42 +74,19 @@ const CancelButtonModal = ({ setRows }) => {
       MainDashBoard: "/Diskus/",
     };
 
+    if (committeeInfo !== null) {
+      commonReset();
+      return;
+    }
+
+    if (groupInfo !== null) {
+      commonReset();
+      return;
+    }
+
     // 🔁 Handle Meeting Case Separately
     if (location === "Meeting" || !location) {
       commonReset();
-
-      if (committeeInfo !== null) {
-        // dispatch(
-        //   getMeetingByCommitteeIdApi(navigate, t, {
-        //     CommitteeID: committeeInfo.CommitteeID,
-        //     Date: "",
-        //     Title: "",
-        //     HostName: "",
-        //     UserID: Number(localStorage.getItem("userID")),
-        //     PageNumber: 1,
-        //     Length: 30,
-        //     PublishedMeetings: true,
-        //     ProposedMeetings: false,
-        //   }),
-        // );
-        return;
-      }
-      if (groupInfo !== null) {
-        // dispatch(
-        //   getMeetingbyGroupIdApi(navigate, t, {
-        //     GroupID: Number(groupInfo.GroupID),
-        //     Date: "",
-        //     Title: "",
-        //     HostName: "",
-        //     UserID: Number(userID),
-        //     PageNumber: 1,
-        //     Length: 30,
-        //     PublishedMeetings: true,
-        //     ProposedMeetings: false,
-        //   }),
-        // );
-        return;
-      }
 
       dispatch(
         listOfMeetingsApi(

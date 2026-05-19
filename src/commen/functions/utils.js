@@ -2932,10 +2932,20 @@ export const generateRandomPositiveId = () => {
 export const handleNavigation = (
   navigate,
   isFirstLogin,
-  // userRights,
-  // adminRights,
+  userRights,
+  adminRights,
   dispatch,
 ) => {
+  let ComplianceFeature = [3, 13, 14, 77];
+  let OnlyComplianceFeature =
+    Array.isArray(userRights) &&
+    userRights.every((data, index) =>
+      ComplianceFeature.includes(data.packageFeatureID),
+    );
+
+  if (OnlyComplianceFeature) {
+    localStorage.setItem("OnlyComplianceAllowed", OnlyComplianceFeature);
+  }
   const RSVP = localStorage.getItem("RSVP");
   const dataroomValue = localStorage.getItem("DataRoomEmail");
   const AgCont = localStorage.getItem("AgCont");
@@ -3020,6 +3030,10 @@ export const handleNavigation = (
     ) {
       navigate("/Diskus/Minutes");
     } else {
+      if (OnlyComplianceFeature) {
+        navigate("/Diskus/compliance");
+        return;
+      }
       navigate("/Diskus/");
     }
     // }
@@ -3050,19 +3064,8 @@ export const SideBarGlobalNavigationFunctionNew = async (
   let createEditMeetingModal =
     store.getState().ModalStatesReducer.isCreateEditMeetingModal;
 
-  const {
-    meetingDetails,
-    organizers,
-    agendaContributors,
-    agenda,
-    agendaViewer,
-    minutes,
-    attendance,
-    recording,
-    polls,
-    actions,
-    attendees,
-  } = store.getState()?.ModalStatesReducer?.viewTabs;
+  const { minutes, polls, actions } =
+    store.getState()?.ModalStatesReducer?.viewTabs;
 
   if (viewMeetingModal) {
     if (Number(editorRole?.status) === 10) {
