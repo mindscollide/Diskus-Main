@@ -46,10 +46,10 @@ button.dataRoom {
 } */
 
 .modalMeetingViewBody {
-  /* min-height: 70vh !important; */
+  min-height: 80vh !important;
   height: 100%;
-  min-height: 550px;
-  padding: 30px 20px;
+  /* min-height: 550px; */
+  padding: 10px 20px;
 }
 
 .margin-bottom-50 {

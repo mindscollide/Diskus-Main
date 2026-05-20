@@ -3618,7 +3618,7 @@ const NewMeeting = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        align: "center",
+        align: "left",
         width: 120,
         ellipsis: true,
         filters: statusFilters,

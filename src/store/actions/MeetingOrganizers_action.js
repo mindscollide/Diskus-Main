@@ -42,7 +42,7 @@ const getAllCommitteesUsersandGroups_fail = (message) => {
   };
 };
 const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllCommitteesUsersandGroups_init());
     let form = new FormData();
@@ -156,7 +156,7 @@ const saveMeetingOrganizers_fail = (message) => {
 
 // Save Meeting Organizers Api
 const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let Data2 = { MeetingID: currentMeeting };
 
   return async (dispatch) => {
@@ -267,7 +267,7 @@ const UpdateOrganizersMeeting = (
   setEndMeetingConfirmationModal,
 ) => {
   console.log("end meeting chaek");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let leaveMeetingData = {
     VideoCallURL: Data.VideoCallURL ? Data.VideoCallURL : Data.videoCallURL,
     FK_MDID: Number(Data.MeetingID),
@@ -675,7 +675,7 @@ const getAllMeetingOrganizers_fail = (message) => {
   };
 };
 const GetAllMeetingOrganizers = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllMeetingOrganizers_init());
     let form = new FormData();
@@ -785,7 +785,7 @@ const sendNotificationOrganizerFail = (message) => {
 
 //Send Notification API Function
 const sendNotificationOrganizer = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(sendNotificationOrganizerInit());
     let form = new FormData();
@@ -862,7 +862,7 @@ const UpdateMeetingStatus = (
   setEndMeetingConfirmationModal,
 ) => {
   console.log("end meeting chaek");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let leaveMeetingData = {
     VideoCallURL: Data.VideoCallURL ? Data.VideoCallURL : Data.videoCallURL,
     FK_MDID: Number(Data.MeetingID),

@@ -48,7 +48,7 @@ const uploaddocumentloader = (payload) => {
 //File Upload
 const FileUploadToDo = (navigate, data, t, newfile, route) => {
   console.log(route, typeof route, "routerouteroute");
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   let form = new FormData();
   form.append("RequestMethod", uploadDocument.RequestMethod);
@@ -133,7 +133,7 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
 
 //File Upload
 const FileUploadToDo2 = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   let form = new FormData();
   form.append("RequestMethod", uploadDocument.RequestMethod);

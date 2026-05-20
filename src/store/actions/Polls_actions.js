@@ -137,7 +137,7 @@ const LoaderState = () => {
 
 // search Polls
 const searchPollsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(searchPolls_init());
@@ -218,7 +218,7 @@ const deltePollsFailed = (message) => {
 //Delete polls APi
 
 const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = parseInt(localStorage.getItem("userID"));
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
   return (dispatch) => {
@@ -325,7 +325,7 @@ const savePolls_fail = (message) => {
 
 // Save polls Api
 const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(savePolls_init());
     // Check if the browser is online
@@ -477,7 +477,7 @@ const castVoteApi = (
   setvotePolls,
   currnetMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(castVoteInit());
     let form = new FormData();
@@ -663,7 +663,7 @@ const AccessDeniedPolls = (response) => {
 
 const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
   console.log("Checking");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
@@ -810,7 +810,7 @@ const viewVotesApi = (
   setviewVotes,
   setViewPublishedPoll
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(viewVotesInit());
     let form = new FormData();
@@ -898,7 +898,7 @@ const getAllcommittesandGroups_fail = (message) => {
   };
 };
 const getAllCommitteesandGroups = (navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
   let Data = {
     OrganizationID: OrganizationID,
@@ -998,7 +998,7 @@ const updatePollsApi = (
   setEditPolls,
   currentMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(updatePollsInit());
     let form = new FormData();
@@ -1231,7 +1231,7 @@ const searchPollsByCommitteeID_fail = (message) => {
 };
 // search Polls
 const GetPollsByCommitteeIDapi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(searchPollsByCommitteeID_init());
@@ -1324,7 +1324,7 @@ const getPollsByGroupMainApi = (
   setEditPoll,
   setViewPoll
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(getPollsByGroupInit());
@@ -1403,7 +1403,7 @@ const setGroupFail = (message) => {
 };
 
 const setGroupPollsMainApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(setGroupInit());
@@ -1490,7 +1490,7 @@ const setCommitteePolls_fail = (message) => {
 };
 
 const setCommitteePollsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(setCommitteePolls_init());
@@ -1905,7 +1905,7 @@ const deleteCommitteePoll_fail = (message) => {
 };
 
 const deleteCommitteePollApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(deleteCommitteePoll_init());
@@ -1997,7 +1997,7 @@ const deleteGroupPoll_fail = (message) => {
   };
 };
 const deleteGroupPollApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(deleteGroupPoll_init());
@@ -2088,7 +2088,7 @@ const deleteMeetingPoll_fail = (message) => {
   };
 };
 const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(deleteMeetingPoll_init());
@@ -2169,7 +2169,7 @@ const getPollsByPollIdforCommitteeApi = (
   setUnPublished,
   setViewPublishedPoll
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log("Checking");
 
   return async (dispatch) => {
@@ -2262,7 +2262,7 @@ const getPollByPollIdforGroups = (
   setViewPublishedPoll,
   setviewVotes
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log("Checking");
 
   return async (dispatch) => {
@@ -2354,7 +2354,7 @@ const getPollByPollIdforMeeting = (
   setUnPublished,
   setViewPublishedPoll
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log("Checking");
 
   return async (dispatch) => {
@@ -2472,7 +2472,7 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
     let Data = {
       EncryptedString: emailString,
     };
-    let token = JSON.parse(localStorage.getItem("token"));
+  
 
     dispatch(validateStringPoll_init());
 
@@ -2581,7 +2581,7 @@ const UpdatedCastVoteFail = (message) => {
 };
 
 // const UpdatedCastVoteAPI = (navigate, t, data) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+// 
 //   return (dispatch) => {
 //     dispatch(UpdatedCastVoteInit());
 //     let form = new FormData();
@@ -2654,7 +2654,7 @@ const UpdatedCastVoteAPI = (
   setvotePolls,
   currnetMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(UpdatedCastVoteInit());
     let form = new FormData();

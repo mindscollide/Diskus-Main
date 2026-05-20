@@ -54,7 +54,7 @@ const setRecentActivityDataNotification = (response) => {
 };
 
 const getUserSetting = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let userID = localStorage.getItem("userID");
   let userSettingData = {
     UserID: JSON.parse(userID),
@@ -324,7 +324,7 @@ const getUserDetails = (
   OrganizationID,
   setUserProfileModal,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let userSettingData = {
     UserID: JSON.parse(userID),
     OrganizationID: JSON.parse(OrganizationID),
@@ -441,7 +441,7 @@ const updateuserprofile = (
   setNameEanble,
   setUser,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(updateprofileinit());
     let form = new FormData();

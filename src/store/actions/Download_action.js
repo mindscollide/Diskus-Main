@@ -34,7 +34,7 @@ const SetLoaderFalseDownload = () => {
 
 // DownloadFile
 const DownloadFile = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let form = new FormData();
   form.append("RequestMethod", downloadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));

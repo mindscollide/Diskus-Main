@@ -46,7 +46,7 @@ const getGroup_Fail = (message) => {
 };
 
 const getGroups = (navigate, t, currentPage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -172,7 +172,7 @@ const getArchivedGroups_fail = (message) => {
 };
 
 const getArcheivedGroups = (navigate, t, currentPage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -291,7 +291,7 @@ const getbyGroupID = (
   no,
   setArchivedGroups
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     GroupID: Number(GroupId),
@@ -429,7 +429,7 @@ const createGroup_Fail = (message) => {
   };
 };
 const createGroup = (navigate, Data, t, setCreategrouppage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -545,7 +545,7 @@ const getOrganiationGroupRoles_Fail = (message) => {
 };
 
 const getGroupMembersRoles = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getOrganiationGroupRoles_Init());
     let form = new FormData();
@@ -624,7 +624,7 @@ const getOrganizationGroupTypes_Fail = (message) => {
   };
 };
 const getOrganizationGroupTypes = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getOrganizationGroupTypes_Init());
     let form = new FormData();
@@ -703,7 +703,7 @@ const updateGroup_Fail = (message) => {
   };
 };
 const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(updateGroup_Init());
     let form = new FormData();
@@ -815,7 +815,7 @@ const updateGroupStatus_Fail = (message) => {
   };
 };
 const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(updateGroupStatus_Init());
@@ -904,7 +904,7 @@ const getAllGroups_Fail = (message) => {
   };
 };
 const getAllGroups = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = { OrganizationID: JSON.parse(OrganizationID) };
   return (dispatch) => {
@@ -979,7 +979,7 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
     { Data },
     "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
   );
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(methodCreateUpdateDataRoadMapInit());
     let form = new FormData();
@@ -1131,7 +1131,7 @@ const uploadDocumentsGroupsApi = (
   // newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -1232,7 +1232,7 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -1340,7 +1340,7 @@ const SaveGroupsDocumentsApiFunc = (
   setCreategrouppage,
   setViewGroupPage
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentPage =
     localStorage.getItem("groupsCurrent") !== null
       ? Number(localStorage.getItem("groupsCurrent"))
@@ -1439,7 +1439,7 @@ const showRetriveDocumentsFailed = (message) => {
 };
 
 const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showRetriveDocumentsInit());
     let form = new FormData();
@@ -1550,7 +1550,7 @@ const validateEncryptedStringViewGroupsListLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+    
 
       dispatch(validateEncryptedStringViewGroupListLink_Init());
 
@@ -1707,7 +1707,7 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+    
 
       dispatch(validateEncryptedStringViewGroupDetailLink_Init());
 

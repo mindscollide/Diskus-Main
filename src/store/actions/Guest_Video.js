@@ -69,7 +69,7 @@ const getMeetingGuestVideoFail = (message) => {
 };
 
 const getMeetingGuestVideoMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getMeetingGuestVideoInit());
     let form = new FormData();
@@ -410,7 +410,7 @@ const admitRejectAttendeeMainApi = (
   );
   console.log(filterGuids, "filterGuids");
 
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(admitRejectInit());
     let form = new FormData();
@@ -652,7 +652,7 @@ const transferMeetingHostFail = (message) => {
 };
 
 const transferMeetingHostMainApi = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(transferMeetingHostInit());
     let form = new FormData();
@@ -768,7 +768,7 @@ const removeParticipantMeetingFail = (message) => {
 
 const removeParticipantMeetingMainApi = (navigate, t, data) => {
   console.log(data, "datadatadatadatakashan");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(removeParticipantMeetingInit());
     let form = new FormData();
@@ -874,7 +874,7 @@ const guestLeaveMeetingVideoFail = (message) => {
 };
 
 const guestLeaveMeetingVideoApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log(data, "datadatadatadata");
   return (dispatch) => {
     dispatch(guestLeaveMeetingVideoInit());
@@ -1078,7 +1078,7 @@ const hideUnhideSelfFail = (message) => {
 };
 
 const hideUnhideSelfMainApi = (navigate, t, data, check) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(hideUnhideSelfInit());
     let form = new FormData();
