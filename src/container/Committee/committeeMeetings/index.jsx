@@ -76,6 +76,10 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
     };
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      setCurrentCommitteeMeetingTabActive(1)
+    }
   }, []);
 
   const handleClickTabNavigate = (value) => {

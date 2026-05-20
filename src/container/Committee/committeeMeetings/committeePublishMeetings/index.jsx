@@ -272,7 +272,7 @@ const CommitteePublishedMeetingList = () => {
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
 
-  const handleViewMeeting = async (record) => {
+  const handleViewMeeting = async (record, viewer) => {
     try {
       const statusNum = Number(record.status);
 
@@ -302,7 +302,7 @@ const CommitteePublishedMeetingList = () => {
         }),
       );
       dispatch(toggleViewMeetingModal(true));
-      dispatch(setViewTab("meetingDetails"));
+      dispatch(setViewTab(viewer));
       setEditorRole((prev) => ({
         ...prev,
         status: record.status,
@@ -460,11 +460,11 @@ const CommitteePublishedMeetingList = () => {
   };
 
   const handleClickViewAgenda = (record) => {
-    handleViewMeeting(record);
+    handleViewMeeting(record, "agendaViewer");
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
-    dispatch(emailRouteID(3));
-    dispatch(setViewTab("Agenda"));
+    // dispatch(emailRouteID(3));
+    // dispatch(setViewTab("Agenda"));
     setMeetingLocalStorage(record);
   };
 
@@ -647,7 +647,7 @@ const CommitteePublishedMeetingList = () => {
         break;
 
       case "VIEW_MEETING":
-        handleViewMeeting(record);
+        handleViewMeeting(record, "meetingDetails");
         setVideoTalk(buildVideoTalk(record));
         setEditorRole(buildEditorRole(record));
         setMeetingLocalStorage(record);
@@ -698,7 +698,7 @@ const CommitteePublishedMeetingList = () => {
           <span
             className={styles.tableRow}
             onClick={() => {
-              handleViewMeeting(record);
+              handleViewMeeting(record, "meetingDetails");
               setMeetingLocalStorage(record);
               setVideoTalk(buildVideoTalk(record));
               setEditorRole(buildEditorRole(record));
@@ -1060,13 +1060,7 @@ const CommitteePublishedMeetingList = () => {
   };
 
   // ─── Render ───────────────────────────────────────────────────────────────
-  const scroll = {
-    y: "39vh",
-    scrollbar: {
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-    },
-  };
+
   return (
     <>
       <Row className='mt-2'>
@@ -1085,7 +1079,9 @@ const CommitteePublishedMeetingList = () => {
             sticky={true}
             pagination={false}
             locale={{ emptyText: <EmptyTableComponent /> }}
-            scroll={scroll}
+            scroll={{
+              y: 400,
+            }}
           />
         </Col>
         <Col></Col>

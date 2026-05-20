@@ -25,7 +25,6 @@ const SelectAgendaModal = ({
 
   const handleRadioChange = (value) => {
     setRadioValue(value);
-    
   };
 
   const printFlag = useSelector(
@@ -48,7 +47,7 @@ const SelectAgendaModal = ({
         show={true}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        className="SelectAgendaModal"
+        className='SelectAgendaModal'
         onHide={() => {
           setAgendaSelectOptionView(false);
           dispatch(printAgenda(false));
@@ -58,13 +57,13 @@ const SelectAgendaModal = ({
         ModalTitle={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
+              <Col lg={12} md={12} sm={12} className='position-relative'>
                 <p className={styles["FileModalTitle"]}>{t("Select-option")}</p>
                 <img
                   onClick={() => setAgendaSelectOptionView(false)}
                   className={styles["image-close"]}
                   src={CrossIcon}
-                  alt=""
+                  alt=''
                 />
               </Col>
             </Row>
@@ -77,10 +76,10 @@ const SelectAgendaModal = ({
                 <CustomRadioGroup
                   onChange={(e) => handleRadioChange(e.target.value)}
                   value={radioValue}
-                  className="AgendaSelectGroup"
+                  className='AgendaSelectGroup'
                   options={[
-                    { value: 1, label: t("Main-agenda-items") },
-                    { value: 2, label: t("Agenda-with-sub-agenda") },
+                    { value: 1, label: t("Agenda-with-attachment") },
+                    { value: 2, label: t("Agenda-without-attachment") },
                   ]}
                 />
               </Col>
@@ -89,13 +88,12 @@ const SelectAgendaModal = ({
         }
         ModalFooter={
           <>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   onClick={selectAgendaFunction}
                   text={

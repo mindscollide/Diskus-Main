@@ -40,6 +40,7 @@ import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/de
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import { listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
+import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -403,6 +404,7 @@ const CommitteeDraftMeetings = () => {
               rows={committeeDraftMeetingData}
               sticky={true}
               pagination={false}
+              locale={{ emptyText: <EmptyTableComponent /> }}
               scroll={{
                 y: 400,
               }}

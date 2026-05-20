@@ -66,7 +66,6 @@ const uploadDocumentsCommitteesApi = (
   // newFolder,
   newfile,
 ) => {
-
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -199,18 +198,14 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
             ) {
               try {
                 let fileIds = response.data.responseResult.fileID;
-                
-                fileIds.map((newFileID, index) => {
-                  
 
+                fileIds.map((newFileID, index) => {
                   return newFolder.push({
                     pK_FileID: newFileID.pK_FileID,
                     displayFileName: newFileID.displayFileName,
                   });
                 });
-              } catch (error) {
-                
-              }
+              } catch (error) {}
 
               await dispatch(
                 saveFiles_success(
@@ -270,7 +265,6 @@ const getallcommitteebyuserid_fail = (message) => {
 };
 
 const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
-
   let OrganizationID = localStorage.getItem("organizationID");
   let UserID = localStorage.getItem("userID");
   let Data = {
@@ -384,7 +378,6 @@ const getArcheivedCommittees_fail = (message) => {
 };
 
 const getAllArcheivedCommittees = (navigate, t, currentPage) => {
-
   let OrganizationID = localStorage.getItem("organizationID");
   let UserID = localStorage.getItem("userID");
   let Data = {
@@ -513,7 +506,6 @@ const getCommitteesbyCommitteeId = (
   setArchivedCommittee,
   flag,
 ) => {
-
   return (dispatch) => {
     dispatch(getCommitteByCommitteeID_Init());
     let form = new FormData();
@@ -523,8 +515,6 @@ const getCommitteesbyCommitteeId = (
       .post(getCommitteesApi, form)
 
       .then(async (response) => {
-        
-
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -584,9 +574,7 @@ const getCommitteesbyCommitteeId = (
                     setViewGroupPage(true);
                   dispatch(viewCommitteePageFlag(true));
                 }
-              } catch (error) {
-                
-              }
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -665,8 +653,6 @@ const createcommittee_fail = (message) => {
 };
 
 const createcommittee = (navigate, Data, t) => {
-
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
 
@@ -784,7 +770,6 @@ const getCommitteeTypes_Fail = (message) => {
 };
 
 const getCommitteeTypes = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(getCommitteeTypes_Init());
     let form = new FormData();
@@ -864,7 +849,6 @@ const getCommitteeMembersRole_Fail = (message) => {
 };
 
 const getCommitteeMembersRole = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(getCommitteeMembersRole_Init());
     let form = new FormData();
@@ -947,7 +931,6 @@ const updateCommitteeStatus_Fail = (message) => {
 };
 
 const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
-
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
   return (dispatch) => {
@@ -1025,7 +1008,6 @@ const updateCommittee_Fail = (message) => {
 };
 
 const updateCommittee = (navigate, Data, t) => {
-
   // let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(updatecommittee_Init());
@@ -1155,7 +1137,6 @@ const assignGroup_Failt = (message) => {
 };
 
 const assignGroups = (navigate, Data, t, setMarketingTeam) => {
-
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
   return (dispatch) => {
@@ -1231,8 +1212,6 @@ const createUpdateCommitteeDocuments_fail = (message) => {
 
 // Create and Update Committees Api
 const createUpdateCommitteeApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(createUpdateCommitteeDocuments_init());
     let form = new FormData();
@@ -1357,7 +1336,6 @@ const saveCommitteeDocuments_fail = (message) => {
 
 // Save Committee Documents
 const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
-
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
   return (dispatch) => {
@@ -1441,8 +1419,6 @@ const reteriveCommitteeDocuments_fail = (message) => {
 };
 // Reterive Committee Documents
 const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(reteriveCommitteeDocuments_init());
     let form = new FormData();
@@ -1527,7 +1503,6 @@ const viewCommitteePageFlag = (response) => {
 };
 
 const removeCommitteeMemberMQTT = (response) => {
-  
   return {
     type: actions.REMOVE_COMMITTEE_MEMBER,
     response: response,
@@ -1719,7 +1694,6 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-    
 
       dispatch(validateEncryptedStringViewCommitteeDetailLink_Init());
 
@@ -1871,7 +1845,6 @@ const getMeetingByCommitteeID_fail = (message) => {
   };
 };
 const getMeetingByCommitteeIdApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(getMeetingByCommitteeID_init());
     let form = new FormData();
@@ -1989,29 +1962,29 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                   break;
 
                 default:
-                  dispatch(
-                    getMeetingByCommitteeIdApi(navigate, t, {
-                      CommitteeID: Number(
-                        localStorage.getItem("ViewCommitteeID"),
-                      ),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(localStorage.getItem("userID")),
-                      PageNumber: 1,
-                      Length: 30,
-                      PublishedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 1
-                          ? true
-                          : false,
-                      ProposedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 2
-                          ? true
-                          : false,
-                    }),
-                  );
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(
+                  //       localStorage.getItem("ViewCommitteeID"),
+                  //     ),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings:
+                  //       localStorage.getItem("MeetingCurrentView") &&
+                  //       Number(localStorage.getItem("MeetingCurrentView")) === 1
+                  //         ? true
+                  //         : false,
+                  //     ProposedMeetings:
+                  //       localStorage.getItem("MeetingCurrentView") &&
+                  //       Number(localStorage.getItem("MeetingCurrentView")) === 2
+                  //         ? true
+                  //         : false,
+                  //   }),
+                  // );
                   break;
               }
               // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");

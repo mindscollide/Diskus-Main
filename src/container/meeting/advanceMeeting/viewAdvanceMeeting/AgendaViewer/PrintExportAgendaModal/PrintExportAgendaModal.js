@@ -26,19 +26,22 @@ const PrintExportAgendaModal = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { editorRole,   viewMeetingAgendaViewerRowData,
-    setViewMeetingAgendaViewerRowData, } = useMeetingContext();
+  const {
+    editorRole,
+    viewMeetingAgendaViewerRowData,
+    setViewMeetingAgendaViewerRowData,
+  } = useMeetingContext();
 
   const printFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag,
   );
 
   const exportFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag,
   );
 
   const agendaValueFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.AgendaViewFlag
+    (state) => state.MeetingAgendaReducer.AgendaViewFlag,
   );
 
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
@@ -61,7 +64,9 @@ const PrintExportAgendaModal = ({
   useEffect(() => {
     if (viewMeetingAgendaViewerRowData.length !== 0) {
       // Check if any of the canView values is true
-      const anyCanViewTrue = viewMeetingAgendaViewerRowData.some((row) => row.canView);
+      const anyCanViewTrue = viewMeetingAgendaViewerRowData.some(
+        (row) => row.canView,
+      );
 
       // Update the emptyStateRows state based on the condition
       setEmptyStateRows(!anyCanViewTrue);
@@ -106,6 +111,7 @@ const PrintExportAgendaModal = ({
       PK_MDID: currentMeeting,
       MeetingTitle: meetingTitle,
       IsSubAgendaNeeded: agendaValueFlag === 1 ? false : true,
+      WithAttachements: true,
     };
     if (printFlag === true) {
       dispatch(PrintMeetingAgenda(Data, navigate, t));
@@ -136,8 +142,8 @@ const PrintExportAgendaModal = ({
                 {printFlag === true
                   ? t("Print")
                   : exportFlag === true
-                  ? t("Export")
-                  : null}
+                    ? t("Export")
+                    : null}
               </p>
               <img
                 onClick={closePrintExportModal}
@@ -190,7 +196,13 @@ const PrintExportAgendaModal = ({
               editorRole.role === "Participant") ? null : (
               <>
                 <DragDropContext
-                  onDragEnd={(result) => onDragEnd(result, viewMeetingAgendaViewerRowData, setViewMeetingAgendaViewerRowData)}>
+                  onDragEnd={(result) =>
+                    onDragEnd(
+                      result,
+                      viewMeetingAgendaViewerRowData,
+                      setViewMeetingAgendaViewerRowData,
+                    )
+                  }>
                   <Row className={styles["horizontalSpacing"]}>
                     <Col
                       lg={12}
@@ -203,42 +215,45 @@ const PrintExportAgendaModal = ({
                             ref={provided.innerRef}
                             {...provided.droppableProps}>
                             {viewMeetingAgendaViewerRowData.length > 0 ? (
-                              viewMeetingAgendaViewerRowData.map((data, index) => {
-                                return (
-                                  <>
-                                    <ParentAgenda
-                                      data={data}
-                                      index={index}
-                            
-                                      setFileDataAgenda={setFileDataAgenda}
-                                      fileDataAgenda={fileDataAgenda}
-                                      setAgendaName={setAgendaName}
-                                      agendaName={agendaName}
-                                      setAgendaIndex={setAgendaIndex}
-                                      agendaIndex={agendaIndex}
-                                      setSubAgendaIndex={setSubAgendaIndex}
-                                      subAgendaIndex={subAgendaIndex}
-                                      setMainAgendaRemovalIndex={
-                                        setMainAgendaRemovalIndex
-                                      }
-                                      agendaItemRemovedIndex={
-                                        agendaItemRemovedIndex
-                                      }
-                                      setAgendaItemRemovedIndex={
-                                        setAgendaItemRemovedIndex
-                                      }
-                                      setSubajendaRemoval={setSubajendaRemoval}
-                                      editorRole={editorRole}
-                                      advanceMeetingModalID={
-                                        advanceMeetingModalID
-                                      }
-                                      setShowMoreFilesView={
-                                        setShowMoreFilesView
-                                      }
-                                    />
-                                  </>
-                                );
-                              })
+                              viewMeetingAgendaViewerRowData.map(
+                                (data, index) => {
+                                  return (
+                                    <>
+                                      <ParentAgenda
+                                        data={data}
+                                        index={index}
+                                        setFileDataAgenda={setFileDataAgenda}
+                                        fileDataAgenda={fileDataAgenda}
+                                        setAgendaName={setAgendaName}
+                                        agendaName={agendaName}
+                                        setAgendaIndex={setAgendaIndex}
+                                        agendaIndex={agendaIndex}
+                                        setSubAgendaIndex={setSubAgendaIndex}
+                                        subAgendaIndex={subAgendaIndex}
+                                        setMainAgendaRemovalIndex={
+                                          setMainAgendaRemovalIndex
+                                        }
+                                        agendaItemRemovedIndex={
+                                          agendaItemRemovedIndex
+                                        }
+                                        setAgendaItemRemovedIndex={
+                                          setAgendaItemRemovedIndex
+                                        }
+                                        setSubajendaRemoval={
+                                          setSubajendaRemoval
+                                        }
+                                        editorRole={editorRole}
+                                        advanceMeetingModalID={
+                                          advanceMeetingModalID
+                                        }
+                                        setShowMoreFilesView={
+                                          setShowMoreFilesView
+                                        }
+                                      />
+                                    </>
+                                  );
+                                },
+                              )
                             ) : (
                               <>
                                 <Row>
@@ -279,7 +294,7 @@ const PrintExportAgendaModal = ({
                                         styles["Empty_state_Subheading"]
                                       }>
                                       {t(
-                                        "Add-some-purpose-start-by-creating-your-agenda"
+                                        "Add-some-purpose-start-by-creating-your-agenda",
                                       )}
                                     </span>
                                   </Col>
@@ -325,8 +340,8 @@ const PrintExportAgendaModal = ({
                   printFlag === true
                     ? t("Print")
                     : exportFlag === true
-                    ? t("Export")
-                    : null
+                      ? t("Export")
+                      : null
                 }
                 className={styles["Send_Notify"]}
                 onClick={printExportFeature}
