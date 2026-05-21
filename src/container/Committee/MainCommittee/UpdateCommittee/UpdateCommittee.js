@@ -781,7 +781,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     ? true
                                     : false
                                 }
-                                label2={t("Create-talk-group")}
+                                label2={t("Create-committee-chat")}
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 checked={committeeData.isTalkGroup}
                                 onChange={CheckBoxHandler}

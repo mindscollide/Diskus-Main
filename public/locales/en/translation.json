@@ -2772,5 +2772,10 @@
   "File-shared": "File Shared",
   "Not-authorized-to-delete-the-file": "Not authorized to delete the file",
   "Are-you-sure-you-want-to-continue": "Are you sure you want to continue?",
-  "The-recording-is-started": "The video call is being recorded."
+  "The-recording-is-started": "The video call is being recorded.",
+  "Agenda-with-attachment": "Agenda with attachment",
+  "Agenda-without-attachment":"Agenda without attachment",
+  "Create-meeting-chat": "Create Meeting Chat",
+  "Create-committee-chat":"Create Committee Chat",
+  "Meeting-chat":"Meeting Chat"
 }
