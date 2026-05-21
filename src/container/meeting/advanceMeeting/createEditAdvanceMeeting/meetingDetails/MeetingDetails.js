@@ -1691,7 +1691,7 @@ const MeetingDetails = () => {
                         }
                       />
                       <span className={styles["Create_group_chat_heading"]}>
-                        {t("Create-group-chat")}
+                        {t("Create-meeting-chat")}
                       </span>
                     </Col>
                   </Row>

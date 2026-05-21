@@ -165,7 +165,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Checkbox
                         className="SearchCheckbox"
                         name="IsChat"
-                        label={t("Group-chat")}
+                        label={t("Meeting-chat")}
                         checked={true}
                         classNameDiv="checkboxParentClass"
                       ></Checkbox>

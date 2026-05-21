@@ -490,6 +490,7 @@ const CommitteePublishedMeetingList = () => {
       talk:
         status !== STATUS.NOT_CONDUCTED &&
         status !== STATUS.CANCELLED &&
+        record.isChat &&
         record.talkGroupID !== 0,
       viewAgenda:
         (status === STATUS.ENDED ||

@@ -144,13 +144,16 @@ const GroupPublishedMeetingList = () => {
     setBoardDeckMeetingTitle,
     downloadVideoRecordingModal,
   } = useMeetingContext();
-  const { setIsQuickMeetingView, setIsQuickMeetingUpdate } = useNewMeetingContext();
+  const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
+    useNewMeetingContext();
   const {
     isMeetingTypeFilter,
     minutesAgo,
     startMeetingButton,
     groupPublishedMeetingData,
   } = useGroupsContext();
+
+  console.log(groupPublishedMeetingData, "groupPublishedMeetingDatagroupPublishedMeetingData")
 
   // ─── Local state ──────────────────────────────────────────────────────────
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
@@ -468,6 +471,7 @@ const GroupPublishedMeetingList = () => {
       talk:
         status !== STATUS.NOT_CONDUCTED &&
         status !== STATUS.CANCELLED &&
+        record.isChat &&
         record.talkGroupID !== 0,
       viewAgenda:
         (status === STATUS.ENDED ||

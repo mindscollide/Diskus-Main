@@ -27,10 +27,8 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
-  endMeetingStatusApi,
   LeaveCurrentMeeting,
   LeaveMeetingVideo,
-  searchNewUserMeeting,
 } from "@/store/actions/NewMeetingActions";
 import { getMeetingGuestVideoMainApi } from "@/store/actions/Guest_Video";
 import EndMeetingConfirmationModal from "@/container/meeting/commonComponents/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
@@ -198,7 +196,6 @@ const ModalView = ({ ModalTitle }) => {
 
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-
 
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
   let now = new Date();
@@ -988,12 +985,12 @@ const ModalView = ({ ModalTitle }) => {
     };
 
     await dispatch(
-      endMeetingStatusApi(
+      UpdateMeetingStatusApi(
         navigate,
         t,
         newData,
-        setIsQuickMeetingView,
-        setEndMeetingConfirmationModal,
+        "endMeetingFromQuickMeetingView",
+        { setIsQuickMeetingView, setEndMeetingConfirmationModal },
       ),
     );
   }, []);

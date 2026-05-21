@@ -202,36 +202,43 @@ export const CommitteeProvider = ({ children }) => {
     try {
       if (!CommitteeMeetingMQTT) return;
 
-      if (
-        Number(committeeInfo.committeeID) !==
-        Number(CommitteeMeetingMQTT.committeeID)
-      )
-        return;
+      const callAddAndUpdateCommitteeMeeting = async () => {
+        const { committeeID, meeting } = CommitteeMeetingMQTT;
+        if (
+          Number(committeeInfo.committeeID) !==
+          Number(committeeID)
+        )
+          return;
 
-      const meetingData = CommitteeMeetingMQTT.meeting;
+        if (!meeting?.pK_MDID) return;
 
-      if (!meetingData?.pK_MDID) return;
+        const { list, setList } = getActiveListAndSetter();
 
-      const { list, setList } = getActiveListAndSetter();
+        const newMeetingData = await mqttMeetingData(meeting, 1);
 
-      const exists = list.some(
-        (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
-      );
-
-      if (exists) {
-        setList((prev) =>
-          prev.map((item) =>
-            Number(item.pK_MDID) === Number(meetingData.pK_MDID)
-              ? meetingData
-              : item,
-          ),
+        const exists = list.some(
+          (item) => Number(item.pK_MDID) === Number(meeting.pK_MDID),
         );
-      } else {
-        setList((prev) => [meetingData, ...prev]);
-      }
 
-      dispatch(createCommitteeMeeting(null));
-    } catch (error) {}
+        if (exists) {
+          setList((prev) =>
+            prev.map((item) =>
+              Number(item.pK_MDID) === Number(meeting.pK_MDID)
+                ? newMeetingData
+                : item,
+            ),
+          );
+        } else {
+          setList((prev) => [newMeetingData, ...prev]);
+        }
+
+        dispatch(createCommitteeMeeting(null));
+      };
+
+      callAddAndUpdateCommitteeMeeting();
+    } catch (error) {
+      console.log(error)
+    }
   }, [CommitteeMeetingMQTT]);
 
   useEffect(() => {
@@ -254,22 +261,22 @@ export const CommitteeProvider = ({ children }) => {
     } catch (error) {}
   }, [MeetingStatusEnded]);
 
-  useEffect(() => {
-    if (!allMeetingsSocketData) return;
+  // useEffect(() => {
+  //   if (!allMeetingsSocketData) return;
 
-    try {
-      const updateMeetingSocket = async () => {
-        const meetingID = allMeetingsSocketData.pK_MDID;
-        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
+  //   try {
+  //     const updateMeetingSocket = async () => {
+  //       const meetingID = allMeetingsSocketData.pK_MDID;
+  //       const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
 
-        if (!meetingID) return;
-        updateMeetingInAllLists(meetingID, () => newMeetingData);
-      };
-      updateMeetingSocket();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [allMeetingsSocketData]);
+  //       if (!meetingID) return;
+  //       updateMeetingInAllLists(meetingID, () => newMeetingData);
+  //     };
+  //     updateMeetingSocket();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [allMeetingsSocketData]);
 
   useEffect(() => {
     if (!meetingStatusNotConductedMqttData) return;

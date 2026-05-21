@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, ResultMessage, Table } from "../../../components/elements";
+import {
+  Button,
+  Notification,
+  ResultMessage,
+  Table,
+} from "../../../components/elements";
 import {
   getCurrentDateTimeUTC,
   newTimeFormaterAsPerUTCFullDate,
@@ -20,6 +25,7 @@ import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import ReactBootstrapDropdown from "react-bootstrap/Dropdown";
 
 import {
+  clearResponseNewMeetingReducerMessage,
   JoinCurrentMeeting,
   meetingNotConductedMQTT,
 } from "../../../store/actions/NewMeetingActions";
@@ -80,11 +86,30 @@ import GroupProposedMeetings from "./groupProposedMeetings";
 import GroupDraftMeetings from "./groupDraftMeetings";
 import GroupPublishedMeetingList from "./groupPublishMeetings";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { clearMessegesUserManagement } from "../../../store/actions/UserManagementActions";
+import { clearResponseMessage } from "../../../store/actions/MeetingAgenda_action";
 
 const GroupMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const ResponseMessages = useSelector(
+    (state) => state.MeetingOrganizersReducer.ResponseMessage,
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage,
+  );
+  const ResponseMessageUserMangementReducer = useSelector(
+    (state) => state.UserMangementReducer.ResponseMessage,
+  );
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
   const { currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive } =
     useGroupsContext();
@@ -170,6 +195,57 @@ const GroupMeetingTab = ({ groupStatus }) => {
     dispatch(toggleCreateEditProposedMeetingModal(true));
   };
 
+  useEffect(() => {
+    try {
+      if (
+        ResponseMessages !== "" &&
+        ResponseMessages !== undefined &&
+        ResponseMessages !== t("No-records-found") &&
+        ResponseMessages !== t("No-record-found")
+      ) {
+        showMessage(ResponseMessages, "success", setOpen);
+        dispatch(clearResponseMessage(""));
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [ResponseMessages]);
+
+  useEffect(() => {
+    try {
+      if (
+        ResponseMessage !== "" &&
+        ResponseMessage !== t("No-record-found") &&
+        ResponseMessage !== t("No-records-found") &&
+        ResponseMessage !== "" &&
+        ResponseMessage !== t("List-updated-successfully") &&
+        ResponseMessage !== t("No-data-available") &&
+        ResponseMessage !== t("Successful") &&
+        ResponseMessage !== t("Record-updated") &&
+        ResponseMessage !== undefined
+      ) {
+        showMessage(ResponseMessages, "success", setOpen);
+        dispatch(clearResponseNewMeetingReducerMessage(""));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [ResponseMessage]);
+
+  useEffect(() => {
+    try {
+      if (
+        ResponseMessageUserMangementReducer !== "" &&
+        ResponseMessageUserMangementReducer !== undefined
+      ) {
+        showMessage(ResponseMessageUserMangementReducer, "error", setOpen);
+        dispatch(clearMessegesUserManagement());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [ResponseMessageUserMangementReducer]);
   return (
     <>
       {isQuickMeetingCreate && (
@@ -339,6 +415,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
           </Col>
         ) : null}
       </Row> */}
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

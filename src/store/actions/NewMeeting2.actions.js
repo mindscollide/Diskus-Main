@@ -2310,7 +2310,7 @@ const saveMeetingDocuments_fail = (message) => {
 
 // ─── Save Meeting Documents ──────────────────────────────────────────────────
 
-const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
+export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
   return async (dispatch) => {
     dispatch(saveMeetingDocuments_init());
     const form = new FormData();
@@ -2338,86 +2338,9 @@ const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                   ),
                 );
                 const { setShow } = object;
-                const createrID = localStorage.getItem("userID");
                 if (setShow) setShow(false);
 
                 switch (routePath) {
-                  case "checkFlag4": {
-                    const meetingpageRow =
-                      localStorage.getItem("MeetingPageRows");
-                    const meetingPageCurrent =
-                      localStorage.getItem("MeetingPageCurrent") || 1;
-                    dispatch(
-                      searchNewUserMeeting(
-                        navigate,
-                        t,
-                        {
-                          Date: "",
-                          Title: "",
-                          HostName: "",
-                          UserID: Number(createrID),
-                          PageNumber: Number(meetingPageCurrent),
-                          Length: Number(meetingpageRow)
-                            ? Number(meetingpageRow)
-                            : 50,
-                          PublishedMeetings:
-                            localStorage.getItem("MeetingCurrentView") !==
-                              null &&
-                            Number(
-                              localStorage.getItem("MeetingCurrentView"),
-                            ) === 1,
-                          ProposedMeetings:
-                            localStorage.getItem("MeetingCurrentView") !==
-                              null &&
-                            Number(
-                              localStorage.getItem("MeetingCurrentView"),
-                            ) === 2,
-                        },
-                        "",
-                        {},
-                      ),
-                    );
-                    break;
-                  }
-                  case "checkFlag5": {
-                    const ViewCommitteeID =
-                      localStorage.getItem("ViewCommitteeID");
-                    dispatch(
-                      setMeetingbyCommitteeIdApi(navigate, t, {
-                        MeetingID: Number(data.MeetingID),
-                        CommitteeID: Number(ViewCommitteeID),
-                      }),
-                    );
-                    break;
-                  }
-                  case "checkFlag6": {
-                    const ViewCommitteeID =
-                      localStorage.getItem("ViewCommitteeID");
-                    dispatch(
-                      getMeetingByCommitteeIdApi(navigate, t, {
-                        CommitteeID: Number(ViewCommitteeID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(createrID),
-                        PageNumber: 1,
-                        Length: 50,
-                        PublishedMeetings: true,
-                      }),
-                    );
-                    break;
-                  }
-                  case "checkFlag7": {
-                    const ViewGroupID = localStorage.getItem("ViewGroupID");
-                    dispatch(
-                      setMeetingByGroupIdApi(navigate, t, {
-                        MeetingID: Number(data.MeetingID),
-                        GroupID: Number(ViewGroupID),
-                      }),
-                    );
-                    break;
-                  }
-
                   default:
                     break;
                 }
@@ -2442,14 +2365,14 @@ const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
 };
 
 // save meeting organizers Init
-const updateOrganizerMeetingStatus_init = () => {
+const updateMeetingStatus_init = () => {
   return {
     type: actions.UPDATE_ORGANIZERSMEETING_INIT,
   };
 };
 
 // save meeting organizers success
-const updateOrganizerMeetingStatus_success = (response, message) => {
+const updateMeetingStatus_success = (response, message) => {
   return {
     type: actions.UPDATE_ORGANIZERSMEETING_SUCCESS,
     response: response,
@@ -2458,7 +2381,7 @@ const updateOrganizerMeetingStatus_success = (response, message) => {
 };
 
 // save meeting organizers fail
-const updateOrganizerMeetingStatus_fail = (message) => {
+const updateMeetingStatus_fail = (message) => {
   return {
     type: actions.UPDATE_ORGANIZERSMEETING_FAIL,
     message: message,
@@ -2477,7 +2400,7 @@ export const UpdateMeetingStatusApi = (
   const { route, setEndMeetingConfirmationModal } = object;
 
   return async (dispatch) => {
-    dispatch(updateOrganizerMeetingStatus_init());
+    dispatch(updateMeetingStatus_init());
     const form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", meetingStatusUpdate.RequestMethod);
@@ -2501,7 +2424,7 @@ export const UpdateMeetingStatusApi = (
                 async () => {
                   try {
                     await dispatch(
-                      updateOrganizerMeetingStatus_success(
+                      updateMeetingStatus_success(
                         response.data.responseResult,
                         route === 5
                           ? t("Meeting-published-successfully")
@@ -2700,6 +2623,15 @@ export const UpdateMeetingStatusApi = (
                         );
                         break;
                       }
+                      case "endMeetingFromQuickMeetingView": {
+                        const {
+                          setIsQuickMeetingView,
+                          setEndMeetingConfirmationModal,
+                        } = object;
+                        setIsQuickMeetingView(false);
+                        setEndMeetingConfirmationModal(false);
+                        break;
+                      }
 
                       default:
                         break;
@@ -2708,60 +2640,48 @@ export const UpdateMeetingStatusApi = (
                 },
               // _02: Record not updated
               Meeting_MeetingServiceManager_MeetingStatusUpdate_02: () =>
-                dispatch(
-                  updateOrganizerMeetingStatus_fail(t("Record-not-updated")),
-                ),
+                dispatch(updateMeetingStatus_fail(t("Record-not-updated"))),
               // _03: Server-side failure
               Meeting_MeetingServiceManager_MeetingStatusUpdate_03: () =>
-                dispatch(
-                  updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-                ),
+                dispatch(updateMeetingStatus_fail(t("Something-went-wrong"))),
               // _04: Agenda required
               Meeting_MeetingServiceManager_MeetingStatusUpdate_04: () =>
                 dispatch(
-                  updateOrganizerMeetingStatus_fail(
-                    t("Add-meeting-agenda-to-publish"),
-                  ),
+                  updateMeetingStatus_fail(t("Add-meeting-agenda-to-publish")),
                 ),
               // _05: Organizers required
               Meeting_MeetingServiceManager_MeetingStatusUpdate_05: () =>
                 dispatch(
-                  updateOrganizerMeetingStatus_fail(
+                  updateMeetingStatus_fail(
                     t("Add-meeting-organizers-to-publish"),
                   ),
                 ),
               // _06: Participants required
               Meeting_MeetingServiceManager_MeetingStatusUpdate_06: () =>
                 dispatch(
-                  updateOrganizerMeetingStatus_fail(
+                  updateMeetingStatus_fail(
                     t("Add-meeting-participants-to-publish"),
                   ),
                 ),
               // _07: Time elapsed
               Meeting_MeetingServiceManager_MeetingStatusUpdate_07: () =>
                 dispatch(
-                  updateOrganizerMeetingStatus_fail(
+                  updateMeetingStatus_fail(
                     t("Meeting-cannot-be-published-after-time-has-elapsed"),
                   ),
                 ),
               default: () =>
-                dispatch(
-                  updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-                ),
+                dispatch(updateMeetingStatus_fail(t("Something-went-wrong"))),
             });
           } else {
-            dispatch(
-              updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-            );
+            dispatch(updateMeetingStatus_fail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(
-            updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
-          );
+          dispatch(updateMeetingStatus_fail(t("Something-went-wrong")));
         }
       })
       .catch((error) => {
-        dispatch(updateOrganizerMeetingStatus_fail(t("Something-went-wrong")));
+        dispatch(updateMeetingStatus_fail(t("Something-went-wrong")));
       });
   };
 };
@@ -3449,6 +3369,9 @@ export const getViewMeetingByMeetingIdApi = (
                         setIsQuickMeetingUpdate(true);
                         break;
                       case "JoinQuickMeetingFromListing":
+                        setIsQuickMeetingView(true);
+                        break;
+                      case "viewMeetingFromCalendarPage":
                         setIsQuickMeetingView(true);
                         break;
                       default:

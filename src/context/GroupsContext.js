@@ -84,6 +84,12 @@ export const GroupsProvider = ({ children }) => {
   const [groupPublishedMeetingData, setGroupPublishedMeetingData] = useState(
     [],
   );
+
+  console.log(
+    groupPublishedMeetingData,
+    getMeetingbyGroupID,
+    "getMeetingbyGroupIDgetMeetingbyGroupID",
+  );
   const [groupPublishedMeetingDataRecord, setGroupPublishedMeetingDataRecord] =
     useState(0);
 
@@ -235,33 +241,38 @@ export const GroupsProvider = ({ children }) => {
     try {
       if (!GroupMeetingMQTT) return;
 
-      const incomingGroupID = Number(GroupMeetingMQTT.groupID);
-      const currentGroupID = Number(groupInfo?.groupID ?? ViewGroupID);
+      const callAddAndUpdateGroupMeeting = async () => {
+        const { groupID, meeting } = GroupMeetingMQTT;
+        const incomingGroupID = Number(groupID);
+        const currentGroupID = Number(groupInfo?.groupID ?? ViewGroupID);
 
-      if (incomingGroupID !== currentGroupID) return;
+        if (incomingGroupID !== currentGroupID) return;
 
-      const meetingData = GroupMeetingMQTT.meeting;
-      if (!meetingData?.pK_MDID) return;
+        const meetingData = GroupMeetingMQTT.meeting;
+        if (!meetingData?.pK_MDID) return;
 
-      const { list, setList } = getActiveListAndSetter();
+        const { list, setList } = getActiveListAndSetter();
 
-      const exists = list.some(
-        (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
-      );
-
-      if (exists) {
-        setList((prev) =>
-          prev.map((item) =>
-            Number(item.pK_MDID) === Number(meetingData.pK_MDID)
-              ? meetingData
-              : item,
-          ),
+        const exists = list.some(
+          (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
         );
-      } else {
-        setList((prev) => [meetingData, ...prev]);
-      }
+        const newMeetingData = await mqttMeetingData(meeting, 1);
 
-      dispatch(createGroupMeeting(null));
+        if (exists) {
+          setList((prev) =>
+            prev.map((item) =>
+              Number(item.pK_MDID) === Number(meetingData.pK_MDID)
+                ? newMeetingData
+                : item,
+            ),
+          );
+        } else {
+          setList((prev) => [newMeetingData, ...prev]);
+        }
+
+        dispatch(createGroupMeeting(null));
+      };
+      callAddAndUpdateGroupMeeting();
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
@@ -292,21 +303,6 @@ export const GroupsProvider = ({ children }) => {
   // =========================
   // EFFECT: allMeetingsSocketData — update meeting in any list
   // =========================
-  useEffect(() => {
-    if (!allMeetingsSocketData) return;
-
-    try {
-      const updateMeetingSocket = async () => {
-        const meetingID = allMeetingsSocketData.pK_MDID;
-        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
-
-        if (!meetingID) return;
-        updateMeetingInAllLists(meetingID, () => newMeetingData);
-      };
-      updateMeetingSocket();
-    } catch (error) {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allMeetingsSocketData]);
 
   // =========================
   // EFFECT: meetingStatusNotConductedMqttData

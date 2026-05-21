@@ -743,6 +743,7 @@ const MainMeeting = () => {
           <UpdateQuickMeeting
             editFlag={isQuickMeetingUpdate}
             setEditFlag={setIsQuickMeetingUpdate}
+            checkFlag={4}
           />
         )}
         {isQuickMeetingView && (

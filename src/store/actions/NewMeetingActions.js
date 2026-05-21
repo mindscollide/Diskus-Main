@@ -93,10 +93,7 @@ import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
-import {
-  GetAdvanceMeetingAgendabyMeetingID,
-  SaveMeetingDocuments,
-} from "./MeetingAgenda_action";
+import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import {
   MinutesWorkFlowActorStatusNotificationAPI,
   ResendUpdatedMinuteForReview,
@@ -116,6 +113,7 @@ import { resetViewTabs, toggleViewMeetingModal } from "./ModalStates_actions";
 import {
   listOfMeetingsApi,
   resetCurrentMeetingInfo,
+  SaveMeetingDocuments,
 } from "./NewMeeting2.actions";
 
 const boardDeckModal = (response) => {
@@ -7336,244 +7334,6 @@ const uploadGlobalFlag = (response) => {
   };
 };
 
-// end meeting new Api
-const endMeetingInit = () => {
-  return {
-    type: actions.END_MEETING_STATUS_INIT,
-  };
-};
-
-const endMeetingSuccess = (response, message) => {
-  return {
-    type: actions.END_MEETING_STATUS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const endMeetingFail = (message) => {
-  return {
-    type: actions.END_MEETING_STATUS_FAIL,
-    message: message,
-  };
-};
-
-const endMeetingStatusApi = (
-  navigate,
-  t,
-  Data,
-  setViewFlag,
-  setEndMeetingConfirmationModal,
-  route,
-  setDeleteMeetingConfirmationModal,
-) => {
-  let leaveMeetingData = {
-    FK_MDID: Number(Data.MeetingID),
-    DateTime: getCurrentDateTimeUTC(),
-  };
-  return async (dispatch) => {
-    await dispatch(endMeetingInit());
-    let form = new FormData();
-    form.append("RequestMethod", endMeetingStatus.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axiosInstance
-      .post(meetingApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            endMeetingStatusApi(
-              navigate,
-              t,
-              Data,
-              setViewFlag,
-              setEndMeetingConfirmationModal,
-            ),
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                endMeetingSuccess(
-                  response.data.responseResult,
-                  t("Record-updated"),
-                ),
-              );
-              if (route !== null && route !== undefined) {
-                if (route === 5) {
-                  setDeleteMeetingConfirmationModal(false);
-                  let currentView = localStorage.getItem("MeetingCurrentView");
-                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                  let meetingPageCurrent = parseInt(
-                    localStorage.getItem("MeetingPageCurrent"),
-                  );
-                  let userID = localStorage.getItem("userID");
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber:
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1,
-                    Length:
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                    PublishedMeetings:
-                      localStorage.getItem("MeetingCurrentView") &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 1
-                        ? true
-                        : false,
-                    ProposedMeetings:
-                      localStorage.getItem("MeetingCurrentView") &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 2
-                        ? true
-                        : false,
-                  };
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                } else {
-                  dispatch(
-                    LeaveCurrentMeeting(
-                      navigate,
-                      t,
-                      leaveMeetingData,
-                      true,
-                      setViewFlag,
-                      "",
-                      "",
-                      "",
-                      setEndMeetingConfirmationModal,
-                    ),
-                  );
-                }
-              }
-              // }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase(),
-                )
-            ) {
-              dispatch(endMeetingFail(t("No-records-updated")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase(),
-                )
-            ) {
-              dispatch(endMeetingFail(t("Something-went-wrong")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase(),
-                )
-            ) {
-              dispatch(endMeetingFail(t("Add-meeting-agenda-to-publish")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase(),
-                )
-            ) {
-              dispatch(endMeetingFail(t("Add-meeting-organizers-to-publish")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                endMeetingFail(t("Add-meeting-participants-to-publish")),
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                endMeetingFail(
-                  t("Meeting-cannot-be-published-after-time-has-elapsed"),
-                ),
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_08".toLowerCase(),
-                )
-            ) {
-              // dispatch(
-              //   endMeetingFail(
-              //     t("Meeting-cannot-be-published-after-time-has-elapsed")
-              //   )
-              // );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_09".toLowerCase(),
-                )
-            ) {
-              let currentView = localStorage.getItem("MeetingCurrentView");
-              let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = parseInt(
-                localStorage.getItem("MeetingPageCurrent"),
-              );
-              let userID = localStorage.getItem("userID");
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                PublishedMeetings:
-                  localStorage.getItem("MeetingCurrentView") &&
-                  Number(localStorage.getItem("MeetingCurrentView")) === 1
-                    ? true
-                    : false,
-                ProposedMeetings:
-                  localStorage.getItem("MeetingCurrentView") &&
-                  Number(localStorage.getItem("MeetingCurrentView")) === 2
-                    ? true
-                    : false,
-              };
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              // dispatch(
-              //   endMeetingFail(
-              //     t("Meeting-cannot-be-published-after-time-has-elapsed")
-              //   )
-              // );
-            } else {
-              dispatch(endMeetingFail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(endMeetingFail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(endMeetingFail(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(endMeetingFail(t("Something-went-wrong")));
-      });
-  };
-};
-
 const meetingAgendaContributorAdded = (response) => {
   return {
     type: actions.MQTT_MEETING_AC_ADDED,
@@ -9750,13 +9510,10 @@ const moveFilesAndFoldersApi = (
                 ),
               );
               await dispatch(
-                SaveMeetingDocuments(
-                  newAgendas,
-                  navigate,
-                  t,
+                SaveMeetingDocuments(navigate, t, newAgendas, "", {
                   checkFlag,
                   setShow,
-                ),
+                }),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -10177,7 +9934,7 @@ export {
   attendanceGlobalFlag,
   cleareAllProposedMeetingDates,
   uploadGlobalFlag,
-  endMeetingStatusApi,
+  // endMeetingStatusApi,
   deleteSavedPollsMeeting,
   editFlowDeleteSavedPollsMeeting,
   meetingAgendaContributorAdded,

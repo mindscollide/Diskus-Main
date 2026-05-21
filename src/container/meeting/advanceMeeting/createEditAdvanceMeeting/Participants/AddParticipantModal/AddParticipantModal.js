@@ -300,6 +300,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       classNamePrefix="selectMember"
                       components={animatedComponents}
                       filterOption={customFilter}
+                      closeMenuOnSelect={false}
+                      isSearchable={true}
                     />
 
                     <Button
