@@ -117,11 +117,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       // Filter out participants whose meetingID + userID is included in the payload
       const filteredParticipants = state.waitingParticipantsList.filter(
         (participant) =>
-          !payload.some(
-            (p) =>
-              Number(p.userID) === Number(participant.userID) &&
-              Number(p.meetingID) === Number(participant.meetingID)
-          )
+          !payload.some((p) => Number(p.userID) === Number(participant.userID)),
       );
       console.log(filteredParticipants, "payloadpayloadfilteredParticipants");
 
@@ -156,7 +152,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log(action, "actionactionactionactionaction");
       let copyState = [...state.getAllParticipantMain];
       let newData = copyState.filter(
-        (videoParticipants, index) => videoParticipants.guid !== action.payload
+        (videoParticipants, index) => videoParticipants.guid !== action.payload,
       );
       return {
         ...state,
@@ -168,10 +164,10 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log(action, "responseDataDataData");
       let copyState2 = [...state.waitingParticipantsList];
       let newData2 = copyState2.filter(
-        (videoParticipants, index) => videoParticipants.guid !== action.payload
+        (videoParticipants, index) => videoParticipants.guid !== action.payload,
       );
       let updatedList = state.getAllParticipantMain.filter(
-        (guest) => guest.guid !== action.payload
+        (guest) => guest.guid !== action.payload,
       );
 
       return {
@@ -409,7 +405,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.PARTICIPANT_LIST_USERS: {
       console.log(
         action,
-        "PARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERS"
+        "PARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERS",
       );
       return {
         ...state,
@@ -484,7 +480,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log("allUidsallUids Payload:", presenterViewHostFlag);
 
       const meetingHostformeetingHost = JSON.parse(
-        localStorage.getItem("meetinHostInfo")
+        localStorage.getItem("meetinHostInfo"),
       );
 
       // Ensure proper use of isForAll
@@ -514,7 +510,7 @@ const videoFeatureReducer = (state = initialState, action) => {
                 return check === 1
                   ? { ...participant, mute: payload, hideCamera: payload }
                   : { ...participant, mute: payload };
-              }
+              },
             );
           }
         } else {
@@ -523,7 +519,7 @@ const videoFeatureReducer = (state = initialState, action) => {
               (participant) =>
                 participant.isHost
                   ? participant
-                  : { ...participant, mute: payload } // Update only non-host participants
+                  : { ...participant, mute: payload }, // Update only non-host participants
             );
           }
         }
@@ -541,7 +537,7 @@ const videoFeatureReducer = (state = initialState, action) => {
           (participant) =>
             participant.guid === payload.uid
               ? { ...participant, mute: payload.isMuted }
-              : participant
+              : participant,
         );
 
         return {
@@ -564,7 +560,7 @@ const videoFeatureReducer = (state = initialState, action) => {
             };
           }
           return participantData;
-        }
+        },
       );
 
       return {
@@ -591,7 +587,7 @@ const videoFeatureReducer = (state = initialState, action) => {
             };
           }
           return hideUnHideParticipant;
-        }
+        },
       );
       console.log("MQTT onMessageArrived", updateParticipantHideUnHide);
 
@@ -1000,7 +996,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM:
       console.log(
         "CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM",
-        action.response
+        action.response,
       );
       return {
         ...state,
@@ -1013,7 +1009,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         "presenterMeetingIdpresenterMeetingId",
         action.response,
         action.presenterMeetingId,
-        action.presenterViewFlag
+        action.presenterViewFlag,
       );
 
       return {

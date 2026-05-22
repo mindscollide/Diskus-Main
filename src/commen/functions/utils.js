@@ -439,7 +439,7 @@ export const removeHTMLTags = (htmlString) => {
   return htmlString.replace(/<\/?[^>]+(>|$)/g, "");
 };
 
-export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
+export const removeHTMLTagsAndTruncate = (String, maxLength = 1000) => {
   // Truncate the content to the specified length
   if (String.length > maxLength) {
     return String.substring(0, maxLength);

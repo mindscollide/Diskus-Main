@@ -278,8 +278,8 @@ const AgendaWise = ({
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (fileAttachments.length > 4) {
+        showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
         return;
       }
 
@@ -343,7 +343,7 @@ const AgendaWise = ({
         },
       });
     } else {
-      if (source === "user" && String(content).length >= 501) {
+      if (source === "user" && String(content).length >= 1001) {
         console.log(
           removeHTMLTagsAndTruncate(String(content)),
           removeHTMLTagsAndTruncate(String(content)).length,

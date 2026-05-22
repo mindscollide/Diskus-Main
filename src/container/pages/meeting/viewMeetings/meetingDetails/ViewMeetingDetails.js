@@ -998,7 +998,7 @@ const ViewMeetingDetails = ({}) => {
                           <>
                             {" "}
                             <Button
-                              icon={<img src={CopyLinkBtn} />}
+                              icon={<img src={CopyLinkBtn} alt=""/>}
                               text={t("Copy-invite-link")}
                               className={styles["CopyLinkButton"]}
                               onClick={() => copyToClipboardd()}

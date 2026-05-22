@@ -79,8 +79,8 @@ const SelectAgendaModal = ({
                   value={radioValue}
                   className="AgendaSelectGroup"
                   options={[
-                    { value: 1, label: t("Main-agenda-items") },
-                    { value: 2, label: t("Agenda-with-sub-agenda") },
+                    { value: 1, label: t("Agenda-with-attachment") },
+                    { value: 2, label: t("Agenda-without-attachment") },
                   ]}
                 />
               </Col>
