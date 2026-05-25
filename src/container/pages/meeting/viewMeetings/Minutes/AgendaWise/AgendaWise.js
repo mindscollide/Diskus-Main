@@ -1220,7 +1220,7 @@ const AgendaWise = ({
                             <Tooltip
                               placement="top"
                               showArrow={false}
-                              title={`Rejected By ${isRejectedMemberHas[0]?.MinuteStats?.rejected} Members`}
+                              title={`Reviewed By ${isRejectedMemberHas[0]?.MinuteStats?.rejected} Members`}
                             >
                               <img
                                 className={styles["Attachment"]}
@@ -1405,7 +1405,7 @@ const AgendaWise = ({
                                                   styles["Review-declined"]
                                                 }
                                               >
-                                                {t("Rejected")}:
+                                                {t("Reviewed")}:
                                               </span>{" "}
                                               {/* {parentMinutedata?.MinuteStats
                                                 ?.rejectedByUsers?.length > 0 &&
@@ -1896,7 +1896,7 @@ const AgendaWise = ({
                                                       styles["Review-declined"]
                                                     }
                                                   >
-                                                    {t("Rejected")}:
+                                                    {t("Reviewed")}:
                                                   </span>{" "}
                                                   {minuteDataSubminute
                                                     ?.MinuteStats

@@ -80,7 +80,8 @@ const ReviewMinutes = () => {
   );
 
   console.log(
-    WebNotificationClickActorStatusIDMinutes,
+    getallDocumentsForAgendaWiseMinutes,
+    GetMinutesForReviewerByMeetingIdData,
     "currentMeetingMinutesToReviewData",
   );
   //Getting current Language
@@ -401,18 +402,15 @@ const ReviewMinutes = () => {
   };
 
   const acceptMinute = (data) => {
+    // Check if the minute was already reviewed/accepted
+    const wasAlreadyReviewed = data.actorBundleStatusID !== 2;
+
     // Update MinutesAgenda
     const updatedMinutesAgenda = updateAcceptMinutes(minutesAgenda, data);
 
     // Update MinutesGeneral
     const updatedMinutesGeneral = minutesGeneral.map((minute) => {
       if (minute.minuteID === data.minuteID) {
-        console.log(
-          minute.minuteID,
-          data.minuteID,
-          minute,
-          "acceptMinuteacceptMinute minuteminute",
-        );
         return {
           ...minute,
           reason: "",
@@ -425,19 +423,16 @@ const ReviewMinutes = () => {
               : [],
         };
       }
-      console.log(minute, "acceptMinuteacceptMinute minuteminute");
-
       return minute;
     });
-    console.log(
-      { updatedMinutesGeneral },
-      "acceptMinuteacceptMinute minuteminute",
-    );
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
-    // FIX: Use functional update with Math.max to prevent negative values
-    setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+
+    // Only decrease counter if it was pending review (status 2)
+    if (!wasAlreadyReviewed) {
+      setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+    }
   };
 
   const toggleShowHide = (parentMinuteID) => {
@@ -742,6 +737,9 @@ const ReviewMinutes = () => {
 
   const handleClickRejectMinuteBtn = useCallback(
     (commentText) => {
+      // Determine if the minute was already in a reviewed state (not pending)
+      const wasAlreadyReviewed = minuteDataToReject?.actorBundleStatusID !== 2;
+
       if (minuteViewFlag === 0) {
         const updatedMinuteData = {
           ...minuteDataToReject,
@@ -754,17 +752,18 @@ const ReviewMinutes = () => {
               CurrentUserPicture?.displayProfilePictureName,
           },
         };
-        // there should be a for general minute
+
         let updatedMinutesData = updateRejectMinutesGeneral(
           minutesGeneral,
           updatedMinuteData,
         );
-        console.log(
-          { updatedMinutesData },
-          "updatedMinutesAgendaupdatedMinutesAgenda",
-        );
+
         setMinutesGeneral(updatedMinutesData);
-        setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+
+        // Only decrease counter if it was pending review (status 2)
+        if (!wasAlreadyReviewed) {
+          setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+        }
       } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
         const updatedMinuteData = {
           ...minuteDataToReject,
@@ -777,21 +776,29 @@ const ReviewMinutes = () => {
               CurrentUserPicture?.displayProfilePictureName,
           },
         };
-        // there should be for subAgenda Minute
+
         let updatedMinutesAgenda = updateRejectMinutes(
           minutesAgenda,
           updatedMinuteData,
         );
-        console.log(
-          { updatedMinutesAgenda },
-          "updatedMinutesAgendaupdatedMinutesAgenda",
-        );
+
         setMinutesAgenda(updatedMinutesAgenda);
-        setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+
+        // Only decrease counter if it was pending review (status 2)
+        if (!wasAlreadyReviewed) {
+          setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+        }
       }
       dispatch(rejectCommentModal(false));
     },
-    [minuteDataToReject, minuteViewFlag],
+    [
+      minuteDataToReject,
+      minuteViewFlag,
+      minutesGeneral,
+      minutesAgenda,
+      currentUserID,
+      CurrentUserPicture,
+    ],
   );
 
   //Disable Function for Accept All

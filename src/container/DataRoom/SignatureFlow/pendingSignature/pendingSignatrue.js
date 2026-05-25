@@ -16,6 +16,7 @@ import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/
 import {
   handleBlobFiles,
   hideFreetextElements,
+  isUserSigned,
   processXmlForReadOnly,
   processXmlToHideFields,
   readOnlyFreetextElements,
@@ -325,6 +326,12 @@ const validateViaXFDF = (
   });
 
   let unfilledCount = 0;
+  console.log(
+    currentUserFieldNames,
+    fieldTypeMap,
+    unfilledCount,
+    "validateViaXFDFvalidateViaXFDF",
+  );
 
   for (const fieldName of currentUserFieldNames) {
     const fieldType = fieldTypeMap.get(fieldName) || "";
@@ -701,8 +708,19 @@ const PendingSignatureViewer = () => {
         const currentUserID = getCurrentUserID();
         const currentUserFieldNames = currentUserFieldNamesRef.current;
 
+        console.log(
+          currentUserID,
+          currentUserFieldNames,
+          "handleSavehandleSavehandle",
+        );
+
         // Export XFDF once — used for both validation and API payload
         const xfdfString = await annotationManager.exportAnnotations();
+        console.log(xfdfString, "exported XFDF");
+
+        // Usage with your data
+        const isSigned = isUserSigned(xfdfString);
+        console.log("User signed:", isSigned);
 
         // ── Validation: every assigned field must be filled ──────────────────
         // validateViaXFDF inspects the exported XFDF synchronously:
@@ -716,12 +734,10 @@ const PendingSignatureViewer = () => {
           currentUserID,
         );
 
-        if (!valid) {
-          showMessage(
-            t("Please-fill-all-required-fields-before-submitting"),
-            "warning",
-            setNotification,
-          );
+        console.log(valid, "handleSavehandleSavehandle");
+
+        if (!valid || !isSigned) {
+          showMessage(t("Signature-is-required"), "warning", setNotification);
           return;
         }
 

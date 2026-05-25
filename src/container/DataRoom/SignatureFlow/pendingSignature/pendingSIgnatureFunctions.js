@@ -406,3 +406,29 @@ export const sanitizeXFDF = (xfdfString, documentViewer) => {
 
   return new XMLSerializer().serializeToString(xfdfDoc);
 };
+
+
+export const isUserSigned = (xfdfString) => {
+    // Method 1: Check for appearance tag (most reliable)
+    if (xfdfString.includes('<appearance>')) {
+        return true;
+    }
+    
+    // Method 2: Check for ink signature annotations
+    if (xfdfString.includes('<inklist>') && xfdfString.includes('<gesture>')) {
+        return true;
+    }
+    
+    // Method 3: Check if annots section is not empty
+    const annotsMatch = xfdfString.match(/<annots>(.*?)<\/annots>/);
+    if (annotsMatch && annotsMatch[1] && annotsMatch[1].trim() !== '') {
+        return true;
+    }
+    
+    // Method 4: Check for signature field with appearance
+    if (xfdfString.includes('type="Sig"') && xfdfString.includes('<appearance')) {
+        return true;
+    }
+    
+    return false;
+}

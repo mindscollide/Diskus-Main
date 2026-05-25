@@ -2575,5 +2575,7 @@
   "File-shared": "File Shared",
   "Not-authorized-to-delete-the-file": "Not authorized to delete the file",
   "Are-you-sure-you-want-to-continue": "Are you sure you want to continue?",
-  "The-recording-is-started": "The video call is being recorded."
+  "The-recording-is-started": "The video call is being recorded.",
+  "Host-has-been-changed": "Host has been changed",
+  "Total-reviewed": "Total Reviewed"
 }

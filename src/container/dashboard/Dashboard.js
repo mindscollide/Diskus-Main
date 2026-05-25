@@ -69,6 +69,8 @@ import {
   maxParticipantVideoDenied,
   screenShareTriggeredGlobally,
   isSharedScreenTriggeredApi,
+  participantAcceptandReject,
+  notifyParticipantsWhenHostIsTransferred,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -490,7 +492,7 @@ const Dashboard = () => {
           dispatch(leaveMeetingOnlogout(true));
         }
       } else {
-        dispatch(userLogOutApiFunc(navigate, t));
+        // dispatch(userLogOutApiFunc(navigate, t));
       }
     }
   };
@@ -962,14 +964,14 @@ const Dashboard = () => {
         localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
-      const { meetingID, userID } = mqttData.payload;
+      const { meetingID, userID, guid } = mqttData.payload;
 
       if (Number(meetingID) !== currentMeetingID) return;
 
       // ✅ Check for duplicates in the Redux array
       const alreadyRequested = waitingParticipantsList?.some(
         (p) =>
-          Number(p.userID) === Number(userID) &&
+          Number(p.guid) === Number(guid) &&
           Number(p.meetingID) === Number(meetingID),
       );
       console.log(alreadyRequested, "Filtered unique participants");
@@ -981,10 +983,15 @@ const Dashboard = () => {
 
       // ✅ Dispatch to Redux ONLY if not duplicate
       if (isMeetingVideo && isMeetingVideoHostCheck) {
+        // ⭐ ENSURE meetingID IS IN THE PAYLOAD
+        const participantData = {
+          ...mqttData.payload
+        };
+
         if (mqttData.payload.isGuest) {
-          dispatch(admitGuestUserRequest(mqttData.payload));
+          dispatch(admitGuestUserRequest(participantData));
         } else {
-          dispatch(participantWaitingList(mqttData.payload));
+          dispatch(participantWaitingList(participantData));
         }
         dispatch(guestJoinPopup(true));
       }
@@ -1535,11 +1542,16 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
             ) {
-              // localStorage.setItem(
-              //   "isHost",
-              //   data.payload.newParticipants.isHost
-              // );
-              dispatch(getParticipantsNewJoin(data.payload.newParticipants));
+              // Har new participant mein meetingID add karo
+              const newParticipantsWithMeetingID =
+                data.payload.newParticipants.map((p) => ({
+                  ...p,
+                  meetingID: data.payload.meetingID, // ← Payload level se meetingID le kar add karo
+                }));
+
+              // Ab dispatch karo updated participants ke saath
+              dispatch(getParticipantsNewJoin(newParticipantsWithMeetingID));
+
               console.log(data.payload, "JOINEDJOINEDJOINED");
             } else if (
               data.payload.message.toLowerCase() ===
@@ -1978,6 +1990,11 @@ const Dashboard = () => {
                   participantListWaitingListMainApi(Data, navigate, t),
                 );
               }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "HOST_TRANSFERRED_NOTIFICATION".toLowerCase()
+            ) {
+              dispatch(notifyParticipantsWhenHostIsTransferred(true));
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -3207,8 +3224,8 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStopRecording();
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              // await onHandleClickForStopRecording();
+              // await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
 
@@ -3288,8 +3305,8 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStopRecording();
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              // await onHandleClickForStopRecording();
+              // await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
 
@@ -3873,8 +3890,8 @@ const Dashboard = () => {
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
             // Function For Stop Video Recording
-            await sendStopRecordingMessageForMQTT();
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            // await sendStopRecordingMessageForMQTT();
+            // await new Promise((resolve) => setTimeout(resolve, 100));
             flagCheck1 = String(activeRoomID) !== "";
           } else {
             flagCheck1 = Number(activeRoomID) !== 0;
@@ -4104,33 +4121,33 @@ const Dashboard = () => {
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
             // // Condition For Video Recording
-            if (isCaller && CallType === 1) {
-              console.log("Does Check Recording Stop");
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*",
-                );
-              }
-            } else if (
-              isCaller &&
-              CallType === 2 &&
-              existingData.length === 1
-            ) {
-              console.log("Does Check Recording Stop Call Type 2");
+            // if (isCaller && CallType === 1) {
+            //   console.log("Does Check Recording Stop");
+            //   const iframe = iframeRef.current;
+            //   if (iframe && iframe.contentWindow) {
+            //     console.log("Does Check Recording Stop");
+            //     iframe.contentWindow.postMessage(
+            //       "RecordingStopMsgFromIframe",
+            //       "*",
+            //     );
+            //   }
+            // } else if (
+            //   isCaller &&
+            //   CallType === 2 &&
+            //   existingData.length === 1
+            // ) {
+            //   console.log("Does Check Recording Stop Call Type 2");
 
-              // Assuming iframeRef is defined
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop Call Type 2");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*",
-                );
-              }
-            }
+            //   // Assuming iframeRef is defined
+            //   const iframe = iframeRef.current;
+            //   if (iframe && iframe.contentWindow) {
+            //     console.log("Does Check Recording Stop Call Type 2");
+            //     iframe.contentWindow.postMessage(
+            //       "RecordingStopMsgFromIframe",
+            //       "*",
+            //     );
+            //   }
+            // }
 
             RoomID =
               presenterViewFlagRef.current &&

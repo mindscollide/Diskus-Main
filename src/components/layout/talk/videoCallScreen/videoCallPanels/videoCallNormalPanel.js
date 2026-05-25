@@ -34,6 +34,7 @@ import {
   maxParticipantVideoRemoved,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  notifyParticipantsWhenHostIsTransferred,
   participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
@@ -305,9 +306,14 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.startPresenterTriggered,
   );
 
-  console.log(startPresenterTriggered, "startPresenterTriggered");
+  const notifyParticipantHostIsTransfer = useSelector(
+    (state) => state.videoFeatureReducer.notifyParticipantHostIsTransfer,
+  );
 
-  console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
+  console.log(
+    notifyParticipantHostIsTransfer,
+    "notifyParticipantHostIsTransfer",
+  );
 
   const [allParticipant, setAllParticipant] = useState([]);
 
@@ -1038,11 +1044,20 @@ const VideoPanelNormal = () => {
         recordingToastShownRef.current = true;
         showMessage(t("The-recording-is-started"), "info", setOpen);
       }
-
-      // Reset the success flag if needed
-      // dispatch(resetTransferMeetingHostSuccess());
     }
   }, [hostTransferFlag]);
+
+  useEffect(() => {
+    if (notifyParticipantHostIsTransfer) {
+      console.log(
+        "Check Notification for Host Transfer",
+        notifyParticipantHostIsTransfer,
+      );
+      showMessage(t("Host-has-been-changed"), "info", setOpen);
+      // RESET AFTER SHOWING TOAST
+      dispatch(notifyParticipantsWhenHostIsTransferred(false));
+    }
+  }, [notifyParticipantHostIsTransfer]);
 
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
@@ -2067,7 +2082,7 @@ const VideoPanelNormal = () => {
                                 width="100%"
                                 height="100%"
                                 frameBorder="0"
-                                allow="camera;microphone;display-capture"
+                                allow="camera; microphone; fullscreen; display-capture"
                                 // Add these for better cross-browser support
                                 mozallowfullscreen="true"
                                 webkitallowfullscreen="true"
