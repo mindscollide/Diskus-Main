@@ -40,16 +40,13 @@ const SceduleProposedmeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {setEditorRole} = useMeetingContext()
+  const { setEditorRole } = useMeetingContext();
   const isOrganizerViewPollProposedMeeting = useSelector(
     (state) => state.ModalStatesReducer.isOrganizerRespondProposedMeeting,
-  )
-    let viewProposeDatePollMeetingID = Number(
+  );
+  let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID"),
   );
-
-
-
 
   const getUserProposedOrganizerData = useSelector(
     (state) => state.NewMeetingreducer.getUserProposedOrganizerData,
@@ -71,7 +68,6 @@ const SceduleProposedmeeting = () => {
       getUserProposedOrganizerData !== undefined &&
       getUserProposedOrganizerData
     ) {
-      
       let ProposeDates;
 
       getUserProposedOrganizerData.response.forEach((datesData, index) => {
@@ -129,9 +125,7 @@ const SceduleProposedmeeting = () => {
           const formatetDateTime = utcConvertintoGMT(datetimeVal);
 
           return formatetDateTime;
-        } catch (error) {
-          
-        }
+        } catch (error) {}
       });
 
       if (formattedDates) {
@@ -190,8 +184,8 @@ const SceduleProposedmeeting = () => {
             MeetingID: Number(currentMeetingId),
             ProposedDateID: findIsSelected.proposedDateID,
           },
-          "",
-          { role: "Organizer" ,setEditorRole},
+          "EditMeetingFromScheduleProposed",
+          { role: "Organizer", setEditorRole },
         ),
       );
     }
@@ -317,7 +311,8 @@ const SceduleProposedmeeting = () => {
                 onClick={() =>
                   dispatch(toggleIsOrganizerProposedMeetingDates(false))
                 }
-                className='d-flex justify-content-end'>
+                className="d-flex justify-content-end"
+              >
                 <img
                   src={BlackCrossIcon}
                   alt=""

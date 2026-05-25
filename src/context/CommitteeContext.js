@@ -204,11 +204,7 @@ export const CommitteeProvider = ({ children }) => {
 
       const callAddAndUpdateCommitteeMeeting = async () => {
         const { committeeID, meeting } = CommitteeMeetingMQTT;
-        if (
-          Number(committeeInfo.committeeID) !==
-          Number(committeeID)
-        )
-          return;
+        if (Number(committeeInfo.committeeID) !== Number(committeeID)) return;
 
         if (!meeting?.pK_MDID) return;
 
@@ -237,7 +233,7 @@ export const CommitteeProvider = ({ children }) => {
 
       callAddAndUpdateCommitteeMeeting();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }, [CommitteeMeetingMQTT]);
 
@@ -529,19 +525,14 @@ export const CommitteeProvider = ({ children }) => {
         updateMeetingInAllLists,
         removeMeetingFromAllLists,
 
-        isCommitteeViewQuickMeeting,
-        setIsCommitteeViewQuickMeeting,
-        isCommitteeUpdateQuickMeeting,
-        setIsCommitteeUpateQuickMeeting,
-        isCommitteeCreateQuickMeeting,
-        setIsCommitteeCreateQuickMeeting,
         startMeetingButton,
 
         ViewCommitteePage,
         setViewCommitteePage,
         showModal,
         setShowModal,
-      }}>
+      }}
+    >
       {children}
     </CommitteeContext.Provider>
   );

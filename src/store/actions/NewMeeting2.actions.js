@@ -2536,7 +2536,7 @@ export const UpdateMeetingStatusApi = (
                         const { record } = object;
                         await dispatch(
                           setCurrentMeetingInfo({
-                            meetingID: Data.FK_MDID,
+                            meetingID: record.pK_MDID,
                             meetingTitle: record.title,
                             // mapFolderId: 0,
                           }),
@@ -2722,7 +2722,7 @@ export const getMeetingDetailsByMeetingIdApi = (
   t,
   Data,
   routePath,
-  object,
+  object = {},
 ) => {
   return async (dispatch) => {
     dispatch(showGetAllMeetingDetialsInit());
@@ -3902,6 +3902,7 @@ export const scheduleMeetingFromProposedMeetingApi = (
                     MeetingID: Number(Data.MeetingID),
                   },
                   "EditMeetingFromScheduleProposed",
+                  object,
                 ),
                 setEditorRole({
                   status: 11,
@@ -4374,6 +4375,7 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                 setEditorRole,
                 isQuickMeeting = false,
                 setEndMeetingConfirmationModal,
+                setIsQuickMeetingView,
               } = object;
               switch (routePath) {
                 case "FromMeetingDetaislTabLeaveMeeting":
@@ -4415,6 +4417,10 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                     await dispatch(listOfMeetingsApi(navigate, t, searchData));
                   }
                   break;
+                case "leaveQuickMeetingFromViewModal":
+                  setIsQuickMeetingView(false);
+                  break;
+
                 default:
                   break;
               }
@@ -4519,10 +4525,36 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     navigate("/Diskus/");
-                  } else {
+                  } else if (!committeeInfo && !groupInfo) {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
                     );
+                  } else if (committeeInfo !== null) {
+                    let Data = {
+                      CommitteeID: Number(committeeInfo.committeeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings: true,
+                      ProposedMeetings: false,
+                    };
+                    dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
+                  } else if (groupInfo !== null) {
+                    let Data = {
+                      GroupID: Number(groupInfo.groupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings: true,
+                      ProposedMeetings: false,
+                    };
+                    dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
                   }
                 }
 
