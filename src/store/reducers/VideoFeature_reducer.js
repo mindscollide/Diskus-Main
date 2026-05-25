@@ -105,21 +105,33 @@ const initialState = {
   isScreenShare: null,
   globallyScreenShare: false,
   errorSeverity: null, // Added errorSeverity to initialState
+  notifyParticipantHostIsTransfer: false,
   // startOrStopPresenter: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.ACCEPT_AND_REMOVE_PARTICIPANTS: {
-      const { payload } = action; // payload is expected to be an array of uids
-      console.log(payload, state.waitingParticipantsList, "payloadpayload");
+      const { payload } = action;
+      console.log("REDUCER - Payload received:", payload);
+      // Check each participant
+      state.waitingParticipantsList.forEach((participant) => {
+        const shouldRemove = payload.some((p) => {
+          const guidMatch = String(p.guid) === String(participant.guid);
+          return guidMatch;
+        });
+      });
 
-      // Filter out participants whose meetingID + userID is included in the payload
       const filteredParticipants = state.waitingParticipantsList.filter(
         (participant) =>
-          !payload.some((p) => Number(p.userID) === Number(participant.userID)),
+          !payload.some(
+            (p) =>
+              String(p.guid) === String(participant.guid) &&
+              (!p.meetingID ||
+                !participant.meetingID ||
+                Number(p.meetingID) === Number(participant.meetingID)),
+          ),
       );
-      console.log(filteredParticipants, "payloadpayloadfilteredParticipants");
 
       return {
         ...state,
@@ -128,6 +140,19 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_JOINT_REQUESTS: {
+      // Check if participant already exists in waiting list
+      const exists = state.waitingParticipantsList.some(
+        (p) =>
+          Number(p.userID) === Number(action.response.userID) &&
+          Number(p.meetingID) === Number(action.response.meetingID) &&
+          Number(p.guid) !== Number(action.response.guid),
+      );
+
+      // Only add if not already present
+      if (exists) {
+        return state;
+      }
+
       return {
         ...state,
         waitingParticipantsList: [
@@ -1250,6 +1275,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         globallyScreenShare: action.response,
+      };
+    }
+
+    case actions.NOTIFY_PARTICIPANTS_WHEN_HOST_IS_TRANSFERRED: {
+      return {
+        ...state,
+        notifyParticipantHostIsTransfer: action.response,
       };
     }
 

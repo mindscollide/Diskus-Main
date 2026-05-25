@@ -158,6 +158,8 @@ const VideoNewParticipantList = () => {
   const waitingParticipants = useSelector(
     (s) => s.videoFeatureReducer.waitingParticipantsList,
   );
+
+  console.log(waitingParticipants, "waitingParticipantswaitingParticipants");
   const NormalizeVideoFlag = useSelector(
     (s) => s.videoFeatureReducer.NormalizeVideoFlag,
   );
@@ -213,6 +215,8 @@ const VideoNewParticipantList = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
   const [searchValue, setSearchValue] = useState("");
+
+  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
   /**
    * true  → at least one non-self participant is muted → button shows "Unmute All"
    * false → all non-self participants are unmuted      → button shows "Mute All"
@@ -306,13 +310,13 @@ const VideoNewParticipantList = () => {
       return;
     }
 
-    const map = new Map();
-    waitingParticipants.forEach((item) => {
-      const key = `${item.meetingID}_${item.userID}`;
-      if (!map.has(key)) map.set(key, item);
-    });
+    // const map = new Map();
+    // waitingParticipants.forEach((item) => {
+    //   const key = `${item.meetingID}_${item.userID}`;
+    //   if (!map.has(key)) map.set(key, item);
+    // });
 
-    setFilteredWaitingParticipants(Array.from(map.values()));
+    setFilteredWaitingParticipants(waitingParticipants);
   }, [waitingParticipants]);
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -569,13 +573,12 @@ const VideoNewParticipantList = () => {
    */
   const handleClickAllAcceptAndReject = useCallback(
     (flag) => {
-      // Waiting-room bulk actions are not available in presenter view
       if (presenterViewFlag || !filteredWaitingParticipants.length) return;
 
       dispatch(
         admitRejectAttendeeMainApi(
           {
-            MeetingId: filteredWaitingParticipants[0]?.meetingID,
+            MeetingId: session.currentMeetingID, // ⭐ USE session.currentMeetingID
             RoomId: String(session.roomID),
             IsRequestAccepted: flag === 1,
             AttendeeResponseList: filteredWaitingParticipants.map((p) => ({
@@ -591,12 +594,12 @@ const VideoNewParticipantList = () => {
         ),
       );
 
-      // Remove all from the local waiting list immediately
       dispatch(
         participantAcceptandReject(
           filteredWaitingParticipants.map((p) => ({
-            meetingID: p.meetingID,
-            userID: p.userID,
+            ...p,
+            meetingID: session.currentMeetingID, // ⭐ USE session.currentMeetingID
+            guid: p.guid,
           })),
         ),
       );
@@ -609,6 +612,7 @@ const VideoNewParticipantList = () => {
       filteredWaitingParticipants,
       filteredParticipants,
       session.roomID,
+      session.currentMeetingID,
     ],
   );
 
@@ -619,10 +623,13 @@ const VideoNewParticipantList = () => {
    */
   const handleClickAcceptAndReject = useCallback(
     (participantInfo, flag) => {
+      // ⭐ ENSURE meetingID IS NOT UNDEFINED
+      const meetingID = participantInfo.meetingID || session.currentMeetingID;
+
       dispatch(
         admitRejectAttendeeMainApi(
           {
-            MeetingId: session.currentMeetingID,
+            MeetingId: meetingID,
             RoomId: String(session.roomID),
             IsRequestAccepted: flag === 1,
             AttendeeResponseList: [
@@ -643,8 +650,9 @@ const VideoNewParticipantList = () => {
       dispatch(
         participantAcceptandReject([
           {
-            meetingID: participantInfo.meetingID,
-            userID: participantInfo.userID,
+            ...participantInfo,
+            meetingID: meetingID, //  USE meetingID, NOT participantInfo.meetingID
+            guid: participantInfo.guid,
           },
         ]),
       );

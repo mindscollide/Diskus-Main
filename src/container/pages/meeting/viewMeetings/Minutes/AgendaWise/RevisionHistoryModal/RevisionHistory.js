@@ -368,7 +368,7 @@ const RevisionHistory = ({
                                       <span
                                         className={styles["Review-declined"]}
                                       >
-                                        {t("Rejected")}:
+                                        {t("Reviewed")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
                                         ?.reviewStats?.rejectedByUsers?.length >
@@ -677,7 +677,7 @@ const RevisionHistory = ({
                                           </p>
                                           <span>|</span>
                                           <p>
-                                            {t("Rejected")}:{" "}
+                                            {t("Reviewed")}:{" "}
                                             {reviewData.reviewStats.rejected}
                                           </p>
                                         </div>
@@ -749,7 +749,7 @@ const RevisionHistory = ({
                                                 styles["Review-declined"]
                                               }
                                             >
-                                              {t("Rejected")}:
+                                              {t("Reviewed")}:
                                             </span>{" "}
                                             {reviewData.reviewStats
                                               .rejectedByUsers.length > 0 &&

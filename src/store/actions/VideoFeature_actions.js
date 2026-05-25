@@ -2888,6 +2888,14 @@ const screenShareTriggeredGlobally = (response) => {
   };
 };
 
+// Notify Participants when Host is Transferred
+const notifyParticipantsWhenHostIsTransferred = (response) => {
+  return {
+    type: actions.NOTIFY_PARTICIPANTS_WHEN_HOST_IS_TRANSFERRED,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -2991,4 +2999,5 @@ export {
   stopScreenShareOnPresenterStarting,
   isSharedScreenTriggeredApi,
   screenShareTriggeredGlobally,
+  notifyParticipantsWhenHostIsTransferred,
 };
