@@ -2558,16 +2558,18 @@ export const UpdateMeetingStatusApi = (
                         break;
                       }
                       case "startQuickMeetingFromMainListing":
-                        const { VideoCallURL, meetingID } = object;
+                        const {
+                          record: { pK_MDID, videoCallURL },
+                        } = object;
                         // setIsQuickMeetingView(true);
                         dispatch(
                           joinMeetingApi(
                             navigate,
                             t,
                             {
-                              FK_MDID: Number(meetingID),
+                              FK_MDID: Number(pK_MDID),
                               DateTime: getCurrentDateTimeUTC(),
-                              VideoCallURL: VideoCallURL,
+                              VideoCallURL: videoCallURL,
                             },
                             "startQuickMeetingFromMainListing",
                             object,
@@ -3269,6 +3271,17 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   }
+                  case "startQuickMeetingFromMainListing":
+                    await dispatch(
+                      getViewMeetingByMeetingIdApi(
+                        navigate,
+                        t,
+                        { MeetingID: Number(Data.FK_MDID) },
+                        "startQuickMeetingFromMainListing",
+                        object,
+                      ),
+                    );
+                    break;
 
                   default:
                     break;
@@ -3372,6 +3385,9 @@ export const getViewMeetingByMeetingIdApi = (
                         setIsQuickMeetingView(true);
                         break;
                       case "viewMeetingFromCalendarPage":
+                        setIsQuickMeetingView(true);
+                        break;
+                      case "startQuickMeetingFromMainListing":
                         setIsQuickMeetingView(true);
                         break;
                       default:

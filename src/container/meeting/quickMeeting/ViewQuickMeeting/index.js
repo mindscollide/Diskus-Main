@@ -895,8 +895,7 @@ const ModalView = ({ ModalTitle }) => {
         "startQuickMeetingFromMainListing",
         {
           setIsQuickMeetingView,
-          VideoCallURL: allMeetingDetails.meetingDetails.videoCallURL,
-          MeetingID: allMeetingDetails.meetingDetails.pK_MDID,
+          record: allMeetingDetails.meetingDetails,
         },
 
         // startMeetingRequest,
@@ -1078,6 +1077,8 @@ const ModalView = ({ ModalTitle }) => {
           navigate,
           t,
           leaveMeetingData,
+          "",
+          { setIsQuickMeetingView },
           true,
           setIsQuickMeetingView,
         ),
@@ -1092,6 +1093,8 @@ const ModalView = ({ ModalTitle }) => {
           navigate,
           t,
           leaveMeetingData,
+          "",
+          { setIsQuickMeetingView },
           true,
           setIsQuickMeetingView,
         ),
