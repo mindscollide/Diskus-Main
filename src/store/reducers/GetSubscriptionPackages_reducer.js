@@ -4,6 +4,7 @@ const initialState = {
   Loading: false,
   PackageDetails: [],
   ResponseMessage: "",
+  errorSeverity: null,
   getCurrentActiveSubscriptionPackage: null,
   getCurrentActiveSubscriptionPackageResponseMessage: "",
   getSubscriptionPackageforUpgradeResponse: [],
@@ -28,6 +29,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         PackageDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.GETSUBSCRIPTIONPACAKGES_FAIL:
       return {
@@ -35,6 +37,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         PackageDetails: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.GETSUBSCRIBEORGANIZATIONPACKAGE_INIT: {
       return {
@@ -136,6 +139,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getPackageExpiryDetailResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETPACKAGEEXPIRYDETAILS_FAIL: {
@@ -144,6 +148,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getPackageExpiryDetailResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEARE_MESSAGE_SUBSPACK: {
@@ -154,6 +159,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         getCancelSubscriptionResponseMessage: "",
         upgradeSubscriptionPackageResponseMessage: "",
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 

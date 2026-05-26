@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Button, Modal, TextField } from "../../../../components/elements";
+import {
+  Button,
+  Modal,
+  TextField,
+  useSnackbar,
+} from "../../../../components/elements";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import styles from "./deleteMeetingConfirmationModal.module.css";
 import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg";
@@ -15,6 +20,7 @@ const DeleteMeetingConfirmationModal = () => {
     deleteMeetingConfirmationModal,
     deleteMeetingRecord,
   } = useMeetingContext();
+  const [show, SnackBar] = useSnackbar();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,12 +44,12 @@ const DeleteMeetingConfirmationModal = () => {
           deleteMeetingRecord,
           setDeleteMeetingConfirmationModal,
           setShowErrorMessage,
-          setShowError
-        )
+          setShowError,
+        ),
       );
     } else {
       setShowError(true);
-      setShowErrorMessage(t("Password-is-required"));
+      show(t("Password-is-required"), "error");
     }
   };
   return (
@@ -67,11 +73,11 @@ const DeleteMeetingConfirmationModal = () => {
               <Col sm={12} md={12} lg={12}>
                 <span className={styles["delete-meeting-text"]}>
                   {t(
-                    "Please-confirm-your-password-before-deleting-the-meeting"
+                    "Please-confirm-your-password-before-deleting-the-meeting",
                   )}
                 </span>
               </Col>
-              <Col sm={12} md={12} lg={12} className='mt-4'>
+              <Col sm={12} md={12} lg={12} className="mt-4">
                 <TextField
                   type={showPassword ? "text" : "password"}
                   label={"Password"}
@@ -106,7 +112,8 @@ const DeleteMeetingConfirmationModal = () => {
                     showError
                       ? ` ${styles["errorMessage-inLogin"]} `
                       : `${styles["errorMessage-inLogin_hidden"]}`
-                  }>
+                  }
+                >
                   {showErrorMessage}
                 </p>
               </Col>
@@ -115,8 +122,8 @@ const DeleteMeetingConfirmationModal = () => {
         }
         ModalFooter={
           <>
-            <Row className='m-0 p-0'>
-              <Col sm={12} md={12} lg={12} className='m-0 p-0'>
+            <Row className="m-0 p-0">
+              <Col sm={12} md={12} lg={12} className="m-0 p-0">
                 <Button
                   text={t("Confirm-password")}
                   className={styles["ConfirmPasswordBtn"]}
@@ -132,6 +139,7 @@ const DeleteMeetingConfirmationModal = () => {
           </>
         }
       />
+      {SnackBar}
     </>
   );
 };

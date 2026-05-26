@@ -1,11 +1,11 @@
 import moment from "moment";
-import React, {  useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { forRecentActivity } from "@/commen/functions/date_formater";
 import { Popover } from "antd";
 import CustomButton from "@/components/elements/button/Button";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import {Table } from "@/components/elements";
+import { Table } from "@/components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
@@ -20,7 +20,6 @@ import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
 import CancelMeetingIcon from "@/assets/images/New Meeting Listing Icons/CancelMeeting.png";
 import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
 import EditIcon from "@/assets/images/New Meeting Listing Icons/EditMeeting.png";
-
 
 // Styles (reuse DraftMeeting styles from existing component)
 import styles from "./groupDraftMeetings.module.css";
@@ -129,7 +128,7 @@ const GroupDraftMeetings = () => {
             t,
             Data,
             "",
-            {}
+            {},
             // setViewFlag,
             // setEditFlag,
             // setSceduleMeeting,
@@ -180,15 +179,15 @@ const GroupDraftMeetings = () => {
     return (
       <div className={styles.morebuttons}>
         <div className={styles.morebtn} onClick={handleEdit}>
-          <img src={EditIcon} alt='' width='16' height='16' />
+          <img src={EditIcon} alt="" width="16" height="16" />
           <span>{t("Edit-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
           <span>{t("Delete-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleClickPublish}>
-          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
           <span>{t("Publish-meeting")}</span>
         </div>
       </div>
@@ -237,12 +236,12 @@ const GroupDraftMeetings = () => {
       // Meeting Title
       {
         title: (
-          <div className='d-flex align-items-center gap-2'>
+          <div className="d-flex align-items-center gap-2">
             <span>{t("Meeting-title")}</span>
             {meetingTitleSort === "ascend" ? (
-              <img src={SortIconAscend} alt='SortIconAscend' />
+              <img src={SortIconAscend} alt="SortIconAscend" />
             ) : (
-              <img src={SortIconDescend} alt='SortIconDescend' />
+              <img src={SortIconDescend} alt="SortIconDescend" />
             )}
           </div>
         ),
@@ -262,12 +261,12 @@ const GroupDraftMeetings = () => {
       // Organizer
       {
         title: (
-          <div className='d-flex align-items-center justify-content-center gap-2'>
+          <div className="d-flex align-items-center justify-content-center gap-2">
             <span>{t("Organizer")}</span>
             {organizerNameSort === "ascend" ? (
-              <img src={SortIconAscend} alt='SortIconAscend' />
+              <img src={SortIconAscend} alt="SortIconAscend" />
             ) : (
-              <img src={SortIconDescend} alt='SortIconDescend' />
+              <img src={SortIconDescend} alt="SortIconDescend" />
             )}
           </div>
         ),
@@ -283,12 +282,12 @@ const GroupDraftMeetings = () => {
       // Time
       {
         title: (
-          <div className='d-flex align-items-center justify-content-center gap-2'>
+          <div className="d-flex align-items-center justify-content-center gap-2">
             <span>{t("Time")}</span>
             {meetingTimeSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt='ArrowUpIcon' />
+              <img src={ArrowDownIcon} alt="ArrowUpIcon" />
             ) : (
-              <img src={ArrowUpIcon} alt='ArrowDownIcon' />
+              <img src={ArrowUpIcon} alt="ArrowDownIcon" />
             )}
           </div>
         ),
@@ -321,12 +320,12 @@ const GroupDraftMeetings = () => {
       // Date
       {
         title: (
-          <div className='d-flex align-items-center justify-content-center gap-2'>
+          <div className="d-flex align-items-center justify-content-center gap-2">
             <span>{t("Date")}</span>
             {meetingDateSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt='ArrowUpIcon' />
+              <img src={ArrowDownIcon} alt="ArrowUpIcon" />
             ) : (
-              <img src={ArrowUpIcon} alt='ArrowDownIcon' />
+              <img src={ArrowUpIcon} alt="ArrowDownIcon" />
             )}
           </div>
         ),
@@ -363,19 +362,22 @@ const GroupDraftMeetings = () => {
         width: 140,
         key: "meetingAction",
         render: (text, record) => (
-          <div className='d-flex justify-content-center align-items-center gap-2'>
+          <div className="d-flex justify-content-center align-items-center gap-2">
             <div>
               <Popover
                 content={moreButtons(record)}
-                trigger='click'
-                overlayClassName='MoreButtons_overlay'
-                className='moreOptionsPopover'
+                trigger="click"
+                overlayClassName="MoreButtons_overlay"
+                className="moreOptionsPopover"
                 showArrow={false}
-                placement='bottomRight'>
+                placement="bottomRight"
+              >
                 <CustomButton
                   className={styles.MoreMeetingButton}
-                  text='More'
-                  icon2={<img src={ChevronDownIcon} alt="Chevron Down" width={10} />}
+                  text="More"
+                  icon2={
+                    <img src={ChevronDownIcon} alt="Chevron Down" width={10} />
+                  }
                 />
               </Popover>
             </div>
@@ -393,16 +395,17 @@ const GroupDraftMeetings = () => {
 
   return (
     <>
-      <div className='position-relative'>
+      <div className="position-relative">
         <Row>
           <Col
             sm={12}
             md={12}
             lg={12}
-            className={styles["MainMeetingTablePublished"]}>
+            className={styles["MainMeetingTablePublished"]}
+          >
             <Table
               onChange={handleChangeMeetingTable}
-              className='MeetingTable'
+              className="MeetingTable"
               column={columns}
               size={"small"}
               rows={groupDraftMeetingData}
@@ -415,13 +418,14 @@ const GroupDraftMeetings = () => {
           </Col>
           {groupDraftMeetingData.length > 0 && (
             <Col className={styles["Meeting_Pagination"]}>
-              <div className='d-flex justify-content-center mt-2 '>
+              <div className="d-flex justify-content-center mt-2 ">
                 <Row className={styles["PaginationStyle-Meeting"]}>
                   <Col
                     className={"pagination-groups-table"}
                     sm={12}
                     md={12}
-                    lg={12}>
+                    lg={12}
+                  >
                     <CustomPagination
                       current={currentGroupMeetingPage}
                       pageSize={currentGroupMeetingLength}

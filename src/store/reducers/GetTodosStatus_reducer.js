@@ -4,6 +4,7 @@ const initialState = {
   Loading: false,
   Response: [],
   ResponseMessage: "",
+  errorSeverity: null,
   UpdateTodoStatus: "",
   UpdateTodoStatusMessage: "",
 };
@@ -23,6 +24,7 @@ const getTodosStatus = (state = initialState, action) => {
         Loading: false,
         Response: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_TODOSSTATUS_FAIL: {
@@ -31,6 +33,7 @@ const getTodosStatus = (state = initialState, action) => {
         Loading: false,
         Response: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_TODOSTATUS_INIT: {
@@ -71,6 +74,7 @@ const getTodosStatus = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         UpdateTodoStatusMessage: "",
         UpdateTodoStatus: "",
       };

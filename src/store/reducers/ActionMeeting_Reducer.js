@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   todoListMeetingTask: null,
   uploadActionDocument: null,
   mapTaskMeetingAgenda: null,
@@ -24,6 +25,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         todoListMeetingTask: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -33,6 +35,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         todoListMeetingTask: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -49,6 +52,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: true,
         uploadActionDocument: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -58,6 +62,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         uploadActionDocument: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -74,6 +79,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         mapTaskMeetingAgenda: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -83,6 +89,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         mapTaskMeetingAgenda: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -99,6 +106,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         removeTaskMapping: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -108,6 +116,7 @@ const actionMeetingReducer = (state = initialState, action) => {
         Loading: false,
         removeTaskMapping: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

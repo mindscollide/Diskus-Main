@@ -6,6 +6,7 @@ const initialState = {
   Spinner: false,
   Fail: false,
   ResponseMessage: "",
+  errorSeverity: null,
   ToDoDetails: [],
   AllAssigneesData: [],
   AllTodolistData: [],
@@ -61,6 +62,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         viewTaskDetailLink: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_FAIL: {
@@ -69,6 +71,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         viewTaskDetailLink: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -84,6 +87,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         viewTaskList: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_FAIL: {
@@ -92,6 +96,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         viewTaskList: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -114,6 +119,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: true,
         todoDocumentsMapping: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CREATEUPDATETASKDATAROOMMAP_FAIL: {
@@ -122,6 +128,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         todoDocumentsMapping: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     // Upload Documents for Task
@@ -138,6 +145,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         todoDocumentsUpload: [...state.todoDocumentsUpload, action.response],
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPLOAD_DOCUMENTS_TASKS_FAIL: {
@@ -146,6 +154,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         todoDocumentsUpload: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     // Save Documents and Files for Task
@@ -161,6 +170,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: true,
         todoSaveFilesTodo: [...state.todoSaveFilesTodo, action.response],
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVEFILES_TASKS_FAIL: {
@@ -169,6 +179,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         todoSaveFilesTodo: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     // Save Tasks Documents
@@ -184,6 +195,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         saveTodoDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_TASK_DOCUMENTS_FAIL: {
@@ -192,6 +204,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         saveTodoDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     // Save Task and Assignees Information
@@ -207,6 +220,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         saveTaskandAssignees: action.resoponse,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVETASKDOCUMENTSANDASSIGNEES_FAIL: {
@@ -215,6 +229,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         saveTaskandAssignees: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     // OLD WORK
@@ -233,6 +248,7 @@ const toDoListReducer = (state = initialState, action) => {
         TableSpinner: false,
         Fail: true,
         ResponseMessage: action.message,
+        errorSeverity: "error",
         // action.response.responseMessage !== undefined
         //   ? action.response.responseMessage
         //   : action.response.responseResult.recordeMessage,
@@ -254,12 +270,14 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
         ToDoDetails: [],
       };
     case actions.CLEAR_RESPONCE_STATE:
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
 
     case actions.SHOW:
@@ -273,6 +291,7 @@ const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
 
     case actions.GET_ALL_ASSIGNEES_SUCCESS:
@@ -287,6 +306,7 @@ const toDoListReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         AllAssigneesData: GetAllAssigneesArray,
         ShowNotification: true,
+        errorSeverity: "success",
       };
 
     case actions.GET_ALL_ASSIGNEES_FAIL:
@@ -295,6 +315,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         TableSpinner: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage
         //     : action.response.responseMessage,
@@ -322,6 +343,7 @@ const toDoListReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         AllTodolistData: GetAllTodolistArray,
         ShowNotification: true,
+        errorSeverity: "success",
       };
     case actions.SETTODO_RECENT_ACTIVITY_DATA: {
       return {
@@ -385,6 +407,7 @@ const toDoListReducer = (state = initialState, action) => {
         //   ? action.response.responseMessage
         //   : action.response.responseMessage,
         ShowNotification: true,
+        errorSeverity: "error",
       };
 
     case actions.VIEW_TODO_SUCCESS:
@@ -408,6 +431,7 @@ const toDoListReducer = (state = initialState, action) => {
         //     ? action.response.responseMessage
         //     : action.response.responseResult.recordeMessage,
         ToDoDetails: [],
+        errorSeverity: "error",
       };
 
     case actions.GET_TODOCOUNT_SUCCESS:
@@ -420,6 +444,7 @@ const toDoListReducer = (state = initialState, action) => {
         TotalNumberOfUpcommingTodoInWeek:
           action.response.totalNumberOfAssignedToDoListInThisWeek,
         ShowNotification: true,
+        errorSeverity: "success",
       };
 
     case actions.GET_TODOCOUNT_FAIL:
@@ -430,6 +455,7 @@ const toDoListReducer = (state = initialState, action) => {
         TotalTodoCountThisWeek: 0,
         TotalNumberOfUpcommingTodoInWeek: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error",
         // action.response.responseMessage !== undefined
         //   ? action.response.responseMessage
         //   : action.response.responseMessage,
@@ -455,6 +481,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         SearchTodolist: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SEARCH_TODOLIST_FAIL: {
@@ -463,6 +490,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         SearchTodolist: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DELETE_TODO_COMMENT_INIT: {
@@ -477,6 +505,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         deleteComment: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETE_TODO_COMMENT_FAIL: {
@@ -485,6 +514,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         deleteComment: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.TODO_CREATE_GROUP: {
@@ -517,6 +547,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         getDashboardTaskData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETDASHBOARDTASKDATA_FAIL: {
@@ -525,6 +556,7 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         getDashboardTaskData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETTASKCOUNT_DASHBOARD_MQTT: {

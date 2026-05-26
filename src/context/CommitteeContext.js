@@ -437,6 +437,25 @@ export const CommitteeProvider = ({ children }) => {
     }
   }, [meetingStatusProposedMqttData]);
 
+  useEffect(() => {
+    try {
+      if (MeetingStatusSocket !== null) {
+        const { message, meetingStatusID, meetingID } = MeetingStatusSocket;
+
+        if (
+          message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+        ) {
+          const { list, setList } = getActiveListAndSetter();
+          setList((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== Number(meetingID)),
+          );
+        }
+      }
+    } catch (error) {}
+  }, [MeetingStatusSocket]);
+
   // useEffect(() => {
   //   if (MeetingProp !== null) {
   //     const callApi = async () => {

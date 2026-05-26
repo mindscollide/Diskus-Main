@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   createSignatureResponse: null,
   saveWorkFlowResponse: null,
   getWorkfFlowByFileId: null,
@@ -78,6 +79,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         createSignatureResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CREATESIGNATUREFLOW_FAIL: {
@@ -86,6 +88,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         createSignatureResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVE_WORKFLOW_INT: {
@@ -100,6 +103,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loading,
         saveWorkFlowResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_WORKFLOW_FAIL: {
@@ -108,6 +112,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         saveWorkFlowResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETWORKFLOWBYFILEID_INIT: {
@@ -122,6 +127,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loading,
         getWorkfFlowByFileId: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETWORKFLOWBYFILEID_FAIL: {
@@ -130,6 +136,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getWorkfFlowByFileId: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.ADD_UPDATE_FIELD_VALUE_INIT: {
@@ -144,6 +151,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loading,
         addUpdateFieldValue: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADD_UPDATE_FIELD_VALUE_FAIL: {
@@ -152,6 +160,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         addUpdateFieldValue: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVE_SIGNATURE_DOCUMENT_INIT: {
@@ -166,6 +175,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         saveSignatureOocument: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_SIGNATURE_DOCUMENT_FAIL: {
@@ -174,6 +184,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         saveSignatureOocument: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_INIT: {
@@ -188,6 +199,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loading,
         getAllFieldsByWorkflowID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_FAIL: {
@@ -196,6 +208,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllFieldsByWorkflowID: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SEND_DOCUMENT_INIT: {
@@ -210,6 +223,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         sendDocumentResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SEND_DOCUMENT_FAIL: {
@@ -218,6 +232,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         sendDocumentResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_INIT: {
@@ -232,6 +247,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getDataroomAnnotation: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ANNOTATION_FILE_SIGNATUREFLOW_FAIL: {
@@ -240,6 +256,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getDataroomAnnotation: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_INIT: {
@@ -254,6 +271,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loading,
         addAnnotationFilesAttachment: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_FAIL: {
@@ -262,6 +280,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         addAnnotationFilesAttachment: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_INIT: {
@@ -276,6 +295,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllSignatureDocumentsforCreator: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETALLSIGNATUREFLOWDOCUMENTSFORCREATOR_ISFAIL: {
@@ -284,6 +304,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllSignatureDocumentsforCreator: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETALLPENDINGAPPROVALSIGNATURES_INIT: {
@@ -298,6 +319,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         listOfPendingForApprovalSignatures: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETALLPENDINGAPPROVALSIGNATURES_FAIL: {
@@ -306,6 +328,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         listOfPendingForApprovalSignatures: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -321,6 +344,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loader,
         getAllPendingForApprovalStats: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETALLPENDINGAPPROVALSTATS_FAIL: {
@@ -329,6 +353,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllPendingForApprovalStats: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_INIT: {
@@ -343,6 +368,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: action.loader,
         getAllPendingApprovalStatuses: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETPENDINGAPPROVALSTATUSFORSIGNATUREFLOW_FAIL: {
@@ -351,6 +377,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllPendingApprovalStatuses: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DECLINE_REASON_INIT: {
@@ -365,6 +392,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         declineReason: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DECLINE_REASON_FAIL: {
@@ -373,6 +401,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         declineReason: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DELETE_SIGNATURE_DOCUMENT_INIT: {
@@ -387,6 +416,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         deleteSignatureDocument: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETE_SIGNATURE_DOCUMENT_FAIL: {
@@ -395,6 +425,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         deleteSignatureDocument: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETALLSIGNATORIESSTATUS_INIT: {
@@ -409,6 +440,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllSignatoriesStatusWise: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETALLSIGNATORIESSTATUS_FAIL: {
@@ -417,6 +449,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getAllSignatoriesStatusWise: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATEACTORBUNDLESTATUS_INIT: {
@@ -431,6 +464,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         updateActorBundleStatus: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATEACTORBUNDLESTATUS_FAIL: {
@@ -439,6 +473,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         updateActorBundleStatus: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETDASHBOARDPENDINGAPPROVALDATA_INIT: {
@@ -453,6 +488,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getDashboardPendingApprovalData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETDASHBOARDPENDINGAPPROVALDATA_FAIL: {
@@ -461,6 +497,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getDashboardPendingApprovalData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -476,6 +513,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getSignatureFileAnnotationResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETSIGNATUREFILEANNOTATION_FAIL: {
@@ -484,6 +522,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         getSignatureFileAnnotationResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.ADDUPDATESIGNATUREFILEANNOTATION_INIT: {
@@ -498,6 +537,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         addUpdateSignatureFileAnnotationResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADDUPDATESIGNATUREFILEANNOTATION_FAIL: {
@@ -506,6 +546,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         addUpdateSignatureFileAnnotationResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -513,6 +554,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
     case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_INIT: {
@@ -527,6 +569,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         validateEncryptedStringMinuteReviewData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_FAIL: {
@@ -535,6 +578,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         validateEncryptedStringMinuteReviewData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_CLEAR: {
@@ -555,6 +599,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         validateEncryptedStringSignatureDataResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_FAIL: {
@@ -562,8 +607,8 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         validateEncryptedStringSignatureDataResponse: null,
-
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_CLEAR: {
@@ -572,6 +617,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         validateEncryptedStringSignatureDataResponse: null,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 

@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   getBillInformation: null,
   getPayoutStanding: null,
   getInvoiceAndPaymentHistory: null,
@@ -21,6 +22,7 @@ const OrganizationBillingReducer = (state = initialState, action) => {
         Loading: false,
         getBillInformation: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_BLLINGINFORMATION_FAIL: {
@@ -29,6 +31,7 @@ const OrganizationBillingReducer = (state = initialState, action) => {
         Loading: false,
         getBillInformation: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.PAYOUTSTANDING_INIT: {
@@ -43,6 +46,7 @@ const OrganizationBillingReducer = (state = initialState, action) => {
         Loading: false,
         getPayoutStanding: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PAYOUTSTANDING_FAIL: {
@@ -51,6 +55,7 @@ const OrganizationBillingReducer = (state = initialState, action) => {
         Loading: false,
         getPayoutStanding: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.INVOICEANDPAYMENTHISTORY_INIT: {
@@ -65,6 +70,7 @@ const OrganizationBillingReducer = (state = initialState, action) => {
         Loading: false,
         getInvoiceAndPaymentHistory: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -74,6 +80,7 @@ const OrganizationBillingReducer = (state = initialState, action) => {
         Loading: false,
         getInvoiceAndPaymentHistory: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default: {

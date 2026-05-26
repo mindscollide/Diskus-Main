@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   AddMeetingofMinutesResponse: "",
   AddMeetingofMinutesMessage: "",
   UpdateMeetingofMinutesResponse: "",
@@ -15,6 +16,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         AddMeetingofMinutesMessage: "",
         UpdateMeetingofMinutesMessage: "",
       };

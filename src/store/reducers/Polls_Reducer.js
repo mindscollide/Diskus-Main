@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   SearchPolls: null,
   createPollmodal: false,
   editpollmodal: false,
@@ -51,6 +52,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
     case actions.SEARCH_POLLS_INIT: {
@@ -65,6 +67,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         SearchPolls: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.SEARCH_POLLS_FAIL: {
@@ -73,6 +76,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         SearchPolls: null,
+        errorSeverity: "error",
       };
     }
     case actions.SAVEPOLL_INIT: {
@@ -87,6 +91,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         SavePoll: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVEPOLL_FAIL: {
@@ -95,6 +100,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         SavePoll: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETALLCOMMITESANDGROUPSFORPOLLS_INIT: {
@@ -109,6 +115,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: action.loader,
         gellAllCommittesandGroups: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETALLCOMMITESANDGROUPSFORPOLLS_FAIL: {
@@ -117,6 +124,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         gellAllCommittesandGroups: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CREATE_POOL_MODAL: {
@@ -167,6 +175,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         pollOptions: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -175,6 +184,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -198,6 +208,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         Statuspolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -206,6 +217,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -217,12 +229,13 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_POLLID_SUCCESS: {
-      
+
       return {
         ...state,
         Loading: false,
         Allpolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -232,6 +245,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         Allpolls: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -248,6 +262,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         updatedPolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -256,6 +271,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -293,6 +309,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         viewVotes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -301,6 +318,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -316,6 +334,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         deletedPolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -324,6 +343,7 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -345,6 +365,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         getPollByCommitteeID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETPOLLSBYCOMMITEEID_FAIL: {
@@ -353,6 +374,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         getPollByCommitteeID: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -368,6 +390,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         getPollByGroupID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_POLLS_BY_GROUPID_FAIL: {
@@ -376,6 +399,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         getPollByGroupID: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -392,6 +416,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setGroupsPolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -401,6 +426,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setGroupsPolls: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -416,6 +442,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setCommitteePoll: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SETCOMMITTEEPOLL_FAIL: {
@@ -424,6 +451,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setCommitteePoll: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -439,6 +467,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         todoGetGroupTask: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_TASK_BY_GROUPID_FAIL: {
@@ -447,6 +476,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         todoGetGroupTask: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -462,6 +492,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setTodoGroupTask: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SET_TASK_GROUP_FAIL: {
@@ -470,6 +501,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setTodoGroupTask: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_TASK_BY_COMMITTEE_INIT: {
@@ -484,6 +516,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         getTodoCommitteeTask: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_TASK_BY_COMMITTEE_FAIL: {
@@ -492,6 +525,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         getTodoCommitteeTask: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -507,6 +541,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setTodoCommitteeTask: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SET_TASK_COMMITTEE_FAIL: {
@@ -515,6 +550,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         setTodoCommitteeTask: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DELETEMEETINGPOLLS_INIT: {
@@ -529,6 +565,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteMeetingPolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETEMEETINGPOLLS_FAIL: {
@@ -537,6 +574,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteMeetingPolls: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DELETECOMMITTEEPOLLS_INIT: {
@@ -551,6 +589,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteCommitteePolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETECOMMITTEEPOLLS_FAIL: {
@@ -559,6 +598,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteCommitteePolls: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DELETEGROUPPOLLS_INIT: {
@@ -573,6 +613,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteGroupPolls: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETEGROUPPOLLS_FAIL: {
@@ -581,6 +622,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         deleteGroupPolls: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.POLL_CREATE_GROUP: {
@@ -621,6 +663,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         validateEmailString: action.response,
         responseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_POLLS_FAIL: {
@@ -629,6 +672,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         validateEmailString: null,
         responseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CAST_VOTE_POLL_MODAL: {
@@ -658,6 +702,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         UpdateCastVoteData: action.response,
         responseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -667,6 +712,7 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         UpdateCastVoteData: null,
         responseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

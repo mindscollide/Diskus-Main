@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   user: [],
   ResponseMessage: "",
+  errorSeverity: null,
   // ResponseCode: "",
   Loading: false,
   NotificationData: [],
@@ -32,6 +33,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         // Loading: false,
       };
 
@@ -47,6 +49,7 @@ const assigneesReducer = (state = initialState, action) => {
         user: action.response,
         Loading: action.loader,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ASSIGNESS_LIST_FAIL: {
@@ -55,6 +58,7 @@ const assigneesReducer = (state = initialState, action) => {
         user: [],
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -72,6 +76,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: action.message,
+        errorSeverity: "error",
         Loading: false,
         // ResponseMessage:
         //   action.response.responseMessage !== undefined
@@ -99,6 +104,7 @@ const assigneesReducer = (state = initialState, action) => {
         //     : action.response.responseResult.recordeMessage,
         ViewMeetingDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.VIEW_MEETING_FAIL:
@@ -111,12 +117,14 @@ const assigneesReducer = (state = initialState, action) => {
         //     : action.response.responseResult.recordeMessage,
         ViewMeetingDetails: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.CLEARE_STATE:
       return {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
         ViewMeetingDetails: null,
         CancelMeetingData: [],
         StartMeetingData: [],
@@ -137,6 +145,7 @@ const assigneesReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         CancelMeetingData: action.response,
+        errorSeverity: "success",
       };
 
     case actions.CANCEL_MEETING_FAIL:
@@ -145,6 +154,7 @@ const assigneesReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         CancelMeetingData: [],
+        errorSeverity: "error",
       };
 
     case actions.START_MEETING_INIT:
@@ -161,6 +171,7 @@ const assigneesReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         StartMeetingData: action.response,
+        errorSeverity: "success",
       };
 
     case actions.START_MEETING_FAIL:
@@ -168,6 +179,7 @@ const assigneesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.END_MEETING_INIT:
@@ -184,6 +196,7 @@ const assigneesReducer = (state = initialState, action) => {
         // Loading: false,
         ResponseMessage: action.message,
         EndMeetingData: action.response,
+        errorSeverity: "success",
       };
 
     case actions.END_MEETING_FAIL:
@@ -192,6 +205,7 @@ const assigneesReducer = (state = initialState, action) => {
         // Loading: false,
         ResponseMessage: action.message,
         EndMeetingData: action.response,
+        errorSeverity: "error",
       };
 
     case actions.GET_REMINDERS_INIT: {
@@ -207,6 +221,7 @@ const assigneesReducer = (state = initialState, action) => {
         RemindersData: action.response.meetingReminders,
         ResponseMessage: action.message,
         Loading: false,
+        errorSeverity: "success",
       };
     }
     case actions.GET_REMINDERS_FAIL: {
@@ -214,6 +229,7 @@ const assigneesReducer = (state = initialState, action) => {
         ...state,
         RemindersData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
         // Loading: false,
       };
     }
@@ -222,6 +238,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
     case actions.SEARCH_USER_MEETINGS_INIT: {
@@ -236,6 +253,7 @@ const assigneesReducer = (state = initialState, action) => {
         Loading: false,
         SearchMeetingData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SEARCH_USER_MEETINGS_FAIL: {
@@ -244,6 +262,7 @@ const assigneesReducer = (state = initialState, action) => {
         Loading: false,
         SearchMeetingData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default:

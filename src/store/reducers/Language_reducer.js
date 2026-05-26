@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   AllLanguagesData: [],
   SetLanguageData: [],
 };
@@ -22,6 +23,7 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: false,
         AllLanguagesData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -31,6 +33,7 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: false,
         AllLanguagesData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -46,6 +49,7 @@ const LanguageReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -54,6 +58,7 @@ const LanguageReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -70,6 +75,7 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: action.loader,
         SetLanguageData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -79,6 +85,7 @@ const LanguageReducer = (state = initialState, action) => {
         Loading: false,
         SetLanguageData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

@@ -175,16 +175,84 @@ const AppReducer = combineReducers({
   ModalStatesReducer,
 });
 
+// All store slice keys that carry ResponseMessage / responseMessage.
+// Used by the universal CLEAR_RESPONSE_MESSAGE handler below.
+const RESPONSE_MESSAGE_SLICE_KEYS = [
+  "auth",
+  "Authreducer",
+  "adminReducer",
+  "toDoListReducer",
+  "uploadReducer",
+  "settingReducer",
+  "fAQsReducer",
+  "meetingIdReducer",
+  "assignees",
+  "calendarReducer",
+  "downloadReducer",
+  "postAssigneeComments",
+  "videoFeatureReducer",
+  "minuteofMeetingReducer",
+  "countryNamesReducer",
+  "GetSubscriptionPackage",
+  "roleListReducer",
+  "getTodosStatus",
+  "todoStatus",
+  "NotesReducer",
+  "VideoMainReducer",
+  "GuestVideoReducer",
+  "talkStateData",
+  "CommitteeReducer",
+  "GroupsReducer",
+  "ResolutionReducer",
+  "OrganizationBillingReducer",
+  "DataRoomReducer",
+  "DataRoomFileAndFoldersDetailsReducer",
+  "PollsReducer",
+  "NewMeetingreducer",
+  "MeetingOrganizersReducer",
+  "MeetingAgendaReducer",
+  "MinutesReducer",
+  "AgendaWiseAgendaListReducer",
+  "attendanceMeetingReducer",
+  "actionMeetingReducer",
+  "UserReportReducer",
+  "SignatureWorkFlowReducer",
+  "LanguageReducer",
+  "webViewer",
+  "UserManagementModals",
+  "UserMangementReducer",
+  "ManageAuthorityReducer",
+  "ComplainceSettingReducerReducer",
+];
+
 /**
  * Global root reducer
- * Resets entire redux state on logout
+ * Resets entire redux state on logout.
+ * Handles CLEAR_RESPONSE_MESSAGE universally across all slices so that
+ * GlobalSnackbar can clear consumed messages without per-reducer boilerplate.
  */
 const rootReducer = (state, action) => {
   if (action.type === actions.SET_INITIAL_ALLSTATE) {
     state = undefined;
   }
 
-  return AppReducer(state, action);
+  const newState = AppReducer(state, action);
+
+  if (action.type === actions.CLEAR_RESPONSE_MESSAGE) {
+    return RESPONSE_MESSAGE_SLICE_KEYS.reduce((acc, key) => {
+      const slice = acc[key];
+      if (!slice) return acc;
+      const patch = {};
+      if ("ResponseMessage" in slice) patch.ResponseMessage = "";
+      if ("responseMessage" in slice) patch.responseMessage = "";
+      if ("errorSeverity" in slice) patch.errorSeverity = null;
+      return Object.keys(patch).length
+        ? { ...acc, [key]: { ...slice, ...patch } }
+        : acc;
+    }, newState);
+  }
+
+  return newState;
 };
 
 /**

@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Response: "",
   ResponseMessage: "",
+  errorSeverity: null,
   Loading: false,
   Comments: null,
   createCommentID: 0,
@@ -15,6 +16,7 @@ const postAssigneeComments = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 
@@ -34,6 +36,7 @@ const postAssigneeComments = (state = initialState, action) => {
         Loading: false,
         createCommentID: action.response.commmentID,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 

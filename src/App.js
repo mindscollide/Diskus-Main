@@ -41,7 +41,7 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Notification } from "./components/elements";
+import { GlobalSnackbar, Notification } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
@@ -117,7 +117,7 @@ const App = () => {
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
-    (state) => state.UserManagementModals
+    (state) => state.UserManagementModals,
   );
 
   // Detect mobile device function
@@ -236,7 +236,7 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <GlobalSnackbar />
     </>
   );
 };

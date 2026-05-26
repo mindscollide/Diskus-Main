@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Response: "",
   ResponseMessage: "",
+  errorSeverity: null,
   Loading: false,
   OrganaizationName: "",
   UserRolesList: [],

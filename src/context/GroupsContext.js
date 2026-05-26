@@ -40,8 +40,12 @@ export const GroupsProvider = ({ children }) => {
   const [viewVotes, setviewVotes] = useState(false);
 
   // ─── Redux Selectors ───
-  const { GroupMeetingMQTT, allMeetingsSocketData, MeetingStatusEnded } =
-    useSelector((state) => state.meetingIdReducer);
+  const {
+    GroupMeetingMQTT,
+    allMeetingsSocketData,
+    MeetingStatusEnded,
+    MeetingStatusSocket,
+  } = useSelector((state) => state.meetingIdReducer);
 
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData,
@@ -488,6 +492,25 @@ export const GroupsProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusProposedMqttData]);
 
+  useEffect(() => {
+    try {
+      if (MeetingStatusSocket !== null) {
+        const { message, meetingStatusID, meetingID } = MeetingStatusSocket;
+
+        if (
+          message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+        ) {
+          const { list, setList } = getActiveListAndSetter();
+          setList((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== Number(meetingID)),
+          );
+        }
+      }
+    } catch (error) {}
+  }, [MeetingStatusSocket]);
+
   // =========================
   // EFFECT: MeetingProp — participant proposed dates validation
   // =========================
@@ -594,7 +617,8 @@ export const GroupsProvider = ({ children }) => {
         setCurrentGroupMeetingPage,
         currentGroupMeetingLength,
         setCurrentGroupMeetingLength,
-      }}>
+      }}
+    >
       {children}
     </GroupContext.Provider>
   );

@@ -5,6 +5,7 @@ const initialState = {
   Loading: false,
   ResponseMessage: "",
   severity: null, // success | error | ""
+  errorSeverity: null,
   GetAllAuthorities: null,
   GetAuthorityByID: null,
   DeleteAuthority: null,
@@ -84,6 +85,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAllAuthorities: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_ALL_AUTHORITY_FAIL:
@@ -93,6 +95,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAllAuthorities: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ================= INITIAL RESET =================
@@ -118,6 +121,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAuthorityByID: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_AUTHORITY_BY_ID_FAIL:
@@ -127,6 +131,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAuthorityByID: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ================= DELETE AUTHORITY =================
@@ -144,6 +149,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         DeleteAuthority: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.DELETE_AUTHORITY_FAIL:
@@ -153,6 +159,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         DeleteAuthority: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ================= UPDATE AUTHORITY =================
@@ -170,6 +177,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         UpdateAuthority: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.UPDATE_AUTHORITY_FAIL:
@@ -179,6 +187,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         UpdateAuthority: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ================= ADD AUTHORITY =================
@@ -196,6 +205,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddAuthority: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.ADD_AUTHORITY_FAIL:
@@ -205,6 +215,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddAuthority: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ================= IsShortCodeExists =================
@@ -222,6 +233,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         IsShortCodeExists: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.IS_SHORT_CODE_EXIST_FAIL:
@@ -231,6 +243,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         IsShortCodeExists: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
     // ================= IsAuthorityNameExists =================
     case actions.IS_AUTHORITY_NAME_EXIST_INIT:
@@ -247,6 +260,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         IsAuthorityNameExists: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.IS_AUTHORITY_NAME_EXIST_FAIL:
@@ -256,6 +270,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         IsAuthorityNameExists: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // GetAllAuthoritiesDropDown
@@ -273,6 +288,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAllAuthoritiesDropdown: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_ALL_AUTHORITIES_DROPDOWN_FAIL:
@@ -282,6 +298,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAllAuthoritiesDropdown: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // GetAllTagsByOrganizationID
@@ -299,6 +316,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAllTagsByOrganizationID: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_FAIL:
@@ -308,6 +326,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAllTagsByOrganizationID: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // AddCompliance
@@ -325,6 +344,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddCompliance: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.ADD_COMPLIANCE_FAIL:
@@ -334,6 +354,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddCompliance: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // AddComplianceChecklist
@@ -351,6 +372,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddComplianceChecklist: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.ADD_COMPLIANCE_CHECKLIST_FAIL:
@@ -360,6 +382,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddComplianceChecklist: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // GetComplianceChecklistsByComplianceId
@@ -377,6 +400,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsByComplianceId: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIANCE_CHECKLIST_BY_COMPLIANCE_ID_FAIL:
@@ -386,6 +410,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsByComplianceId: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // CheckComplianceTitleExists
@@ -403,6 +428,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         CheckComplianceTitleExists: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.CHECK_COMPLIANCE_TITLE_EXIST_FAIL:
@@ -412,6 +438,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         CheckComplianceTitleExists: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ViewComplianceById
@@ -429,6 +456,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ViewComplianceById: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.VIEW_COMPLIANCE_BY_ID_FAIL:
@@ -438,6 +466,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ViewComplianceById: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // CheckChecklistTitleExists
@@ -455,6 +484,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         CheckChecklistTitleExists: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.CHECK_CHECKLIST_TITLE_EXISTS_FAIL:
@@ -464,6 +494,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         CheckChecklistTitleExists: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // AddTaskMappingToChecklist
@@ -481,6 +512,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddTaskMappingToChecklist: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.ADD_TASK_MAPPIING_TO_CHECKLIST_FAIL:
@@ -490,6 +522,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddTaskMappingToChecklist: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // GetComplianceChecklistsWithTasksByComplianceId
@@ -507,6 +540,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsWithTasksByComplianceId: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_TASK_BY_COMPLIANCE_ID_FAIL:
@@ -516,6 +550,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsWithTasksByComplianceId: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // EditComplianceChecklist
@@ -533,6 +568,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         EditComplianceChecklist: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.EDIT_COMPLIANCE_CHECKLIST_FAIL:
@@ -542,6 +578,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         EditComplianceChecklist: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // GetComplianceChecklistsWithTasksByComplianceId
@@ -559,6 +596,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsWithTasksByComplianceIdForMe: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_FAIL:
@@ -568,6 +606,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //MQTT for Authority Work
@@ -618,6 +657,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: "",
         severity: null,
+        errorSeverity: null,
       };
 
     case actions.CLEAR_COMPLIANCEDETAILS_DATA:
@@ -646,6 +686,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         listOfComplianceByCreator: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.LIST_OF_COMPLIANCE_BY_CREATOR_FAIL:
@@ -655,6 +696,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         listOfComplianceByCreator: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_INIT:
@@ -671,6 +713,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ViewComplianceByMeDetails: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_FAIL:
@@ -680,6 +723,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ViewComplianceByMeDetails: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.SEARCH_COMPLIANCE_FOR_ME_INIT:
@@ -696,6 +740,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         SearchComplianceForMe: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.SEARCH_COMPLIANCE_FOR_ME_FAIL:
@@ -705,6 +750,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         SearchComplianceForMe: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_INIT:
@@ -721,6 +767,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ViewComplianceForMeById: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_FAIL:
@@ -730,6 +777,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ViewComplianceForMeById: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.GET_COMPLIACE_STATUS_INIT:
@@ -746,6 +794,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceAndTaskStatuses: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIACE_STATUS_FAIL:
@@ -755,6 +804,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceAndTaskStatuses: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // Get Quarterly Submitted Compliance Dashboard
@@ -773,6 +823,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetQuarterlySubmittedDashboard: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_FAIL:
@@ -782,6 +833,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetQuarterlySubmittedDashboard: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //GET Compliance Dashboard Upcoming Deadline API
@@ -800,6 +852,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetUpcomingDealineComplianceDashboard: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_FAIL:
@@ -809,6 +862,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetUpcomingDealineComplianceDashboard: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //GET Compliance By Dashboard API
@@ -827,6 +881,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceByDashboardData: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIANCE_BY_DASHBOARD_FAIL:
@@ -836,6 +891,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceByDashboardData: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //GET Compliance Tasks Dashboard API
@@ -853,6 +909,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceTasksDashboardData: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIANCE_TASKS_DASHBOARD_FAIL:
@@ -862,6 +919,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceTasksDashboardData: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //GET Compliance Reopen Dashboard API
@@ -879,6 +937,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceReopenDashboardData: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_FAIL:
@@ -888,6 +947,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceReopenDashboardData: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //GET Compliance Quarterly Tasks Dashboard API
@@ -905,6 +965,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComlianceQuarterlyTasksDashboardData: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_FAIL:
@@ -914,6 +975,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComlianceQuarterlyTasksDashboardData: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //Reducer
@@ -962,6 +1024,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetReportListingData: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.COMPLIANCE_REPORT_LISTING_FAIL:
@@ -971,6 +1034,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetReportListingData: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // Reopen Compliance Step 1
@@ -989,6 +1053,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddReopenCompliance: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.ADD_REOPEN_COMPLIANCE_FAIL:
@@ -998,6 +1063,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         AddReopenCompliance: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // Reopen Complaince Step 2
@@ -1016,6 +1082,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         CreateComplianceDataRoomMap: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.CREATE_COMPLIANCE_DATA_ROOM_MAP_FAIL:
@@ -1027,6 +1094,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ComplianceDataRoomMapFolderId: 0,
 
         severity: "error",
+        errorSeverity: "error",
       };
 
     // Reopen Complaince Step 3
@@ -1048,6 +1116,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         SaveComplianceFiles: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.SAVE_COMPLIANCE_FILES_FAIL:
@@ -1059,6 +1128,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ComplianceDataRoomMapFolderId: 0,
 
         severity: "error",
+        errorSeverity: "error",
       };
 
     // Reopen Complaince Step 5 (After this Edit api will be hit in edit flow)
@@ -1077,6 +1147,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         SaveComplianceDocumentsAndMapping: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.SAVE_COMPLIANCE_DOCUMENTS_AND_MAPPING_FAIL:
@@ -1087,6 +1158,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ComplianceDataRoomMapFolderId: 0,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //----------Reopen Flow ended-----------------
@@ -1105,6 +1177,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         DeleteCheckList: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.DELETE_CHECKLIST_FAIL:
@@ -1114,6 +1187,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         DeleteCheckList: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // ChangeTaskStatus
@@ -1131,6 +1205,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ChangeTaskStatus: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.CHANGE_TASK_STATUS_FAIL:
@@ -1140,6 +1215,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ChangeTaskStatus: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.CREATE_COMPLAINCE_DATAROOM_MAP: {
@@ -1164,6 +1240,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetEndOfComplianceReport: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.Get_END_OF_COMPLIANCE_REPORT_FAIL:
@@ -1173,6 +1250,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetEndOfComplianceReport: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //API For Get Quarter Report
@@ -1190,6 +1268,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetQuarterReport: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.Get_QUARTER_REPORT_FAIL:
@@ -1199,6 +1278,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetQuarterReport: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //API For Get Compliance Standing Report
@@ -1216,6 +1296,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceStandingReport: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.Get_COMPLIANCE_STANDING_REPORT_FAIL:
@@ -1225,6 +1306,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceStandingReport: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     //API For Get Accumulative Report
@@ -1242,6 +1324,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAccumulativeReport: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.Get_ACCUMULATIVE_REPORT_FAIL:
@@ -1251,6 +1334,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetAccumulativeReport: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.COMPLIANCE_CREATED_MQTT: {
@@ -1407,6 +1491,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ComplianceListData: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
 
     case actions.GET_ALL_COMPLIANCE_AUTHORITIES_FAIL:
@@ -1416,6 +1501,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ComplianceListData: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     case actions.CHANGE_CHECKLIST_STATUS_INIT:
@@ -1431,6 +1517,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         changeCheckListStatus: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
     case actions.CHANGE_CHECKLIST_STATUS_FAIL:
       return {
@@ -1439,6 +1526,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         changeCheckListStatus: null,
         ResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
 
     // For TASK STATUS CHANGED FOR USER

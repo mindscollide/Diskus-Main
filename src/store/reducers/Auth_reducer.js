@@ -5,6 +5,7 @@ const initialState = {
   isLoggedIn: false,
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   signUpResponseMessage: "",
   LoginResponseMessage: "",
   isSignUp: false,
@@ -35,6 +36,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: action.message,
+        errorSeverity: "success",
         Token: action.response.token,
         Refresh: action.response.refreshToken,
       };
@@ -67,6 +69,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         pendingError: true,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.SIGN_IN_INIT:
@@ -88,6 +91,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         UserDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.SIGN_IN_FAIL:
@@ -97,6 +101,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         UserDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.FORGOT_PASSWORD_INIT: {
@@ -113,6 +118,7 @@ const authReducer = (state = initialState, action) => {
         ForgotPasswordData: action.response,
         ResponseMessage: action.message,
         messageId: Date.now(),
+        errorSeverity: "success",
       };
     }
     case actions.FORGOT_PASSWORD_FAIL: {
@@ -122,6 +128,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         messageId: Date.now(),
+        errorSeverity: "error",
       };
     }
     case actions.VERIFY_OPT_INIT: {
@@ -211,6 +218,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 
@@ -218,6 +226,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         signUpResponseMessage: "",
         LoginResponseMessage: "",
       };
@@ -289,6 +298,7 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: false,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
         signUpResponseMessage: "",
         LoginResponseMessage: "",
         isSignUp: false,
@@ -312,6 +322,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         SessionExpireResponseMessage: "",
         LoginResponseMessage: "",
         signUpResponseMessage: "",

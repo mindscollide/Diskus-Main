@@ -2583,7 +2583,12 @@ export const UpdateMeetingStatusApi = (
                       case "deleteMeetingFromDraftTab": {
                         const { setDeleteMeetingConfirmationModal } = object;
                         setDeleteMeetingConfirmationModal(false);
-
+                        if (committeeInfo !== null) {
+                          return;
+                        }
+                        if (groupInfo !== null) {
+                          return;
+                        }
                         await dispatch(
                           listOfMeetingsApi(
                             navigate,

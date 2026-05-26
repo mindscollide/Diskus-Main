@@ -5,6 +5,7 @@ const initialState = {
   ShowNotification: false,
   Fail: false,
   ResponseMessage: "",
+  errorSeverity: null,
   uploadDocumentsList: null,
 };
 
@@ -42,10 +43,11 @@ const uploadReducer = (state = initialState, action) => {
         uploadDocumentsList: action.response,
         isExecuted: action.isExecuted,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.UPLOAD_DOCUMNET_FILE_FAIL:
-      return { ...state, Loading: false, ResponseMessage: action.message };
+      return { ...state, Loading: false, ResponseMessage: action.message, errorSeverity: "error" };
 
     case actions.RESET_ALL_FILES_UPLOAD:
       return {
@@ -54,11 +56,12 @@ const uploadReducer = (state = initialState, action) => {
         ShowNotification: false,
         Fail: false,
         ResponseMessage: "",
+        errorSeverity: null,
         uploadDocumentsList: [],
       };
 
     case actions.UPLOAD_RESPONSE_MESSAGE:
-      return { ...state, ResponseMessage: "" };
+      return { ...state, ResponseMessage: "", errorSeverity: null };
 
     case actions.UPLOAD_DOCUMENT_LOADER:
       return {

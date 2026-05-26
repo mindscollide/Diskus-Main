@@ -4,6 +4,7 @@ const initialState = {
   UserProfileData: null,
   ResponseMessage: "",
   severity: null,
+  errorSeverity: null,
   ResponseCode: "",
   Loading: false,
   Spinner: false,
@@ -55,6 +56,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: action.loader ? action.loader : false,
         UserProfileData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -177,6 +179,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationData: newNotificationData,
         RecentActivityData: newRNotificationData,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SET_RECENT_ACTIVITY_NOTIFICATION: {
@@ -193,6 +196,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationData: [],
         RecentActivityData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_TIMEZONE_INIT: {
@@ -242,6 +246,7 @@ const settingReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         CountryCodeResponse: "",
         UpdateResponseMessage: "",
       };
@@ -305,6 +310,7 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserSettingResponse: action.response,
         UpdateUserSettingResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
     }
     case actions.UDPATEUSERSETTING_FAIL: {
@@ -314,6 +320,7 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserSettingResponse: null,
         UpdateUserSettingResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
     }
     case actions.GET_USERS_DETAILS_INIT: {
@@ -370,6 +377,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         UpdateUserSettingResponseMessage: "",
         severity: null,
+        errorSeverity: null,
         ResponseMessage: "",
         UpdateOrganizationLevelSettingResponseMessage: "",
         GetOrganizationLevelSettingResponseMessage: "",
@@ -456,6 +464,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         microsftRevokeToken: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.REVOKE_TOKEN_MICROSOFT_FAIL: {
@@ -464,6 +473,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         microsftRevokeToken: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -480,6 +490,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationSpinner: false,
         diskusWebNotificationData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DISKUS_WEB_NOTIFICATION_FAIL: {
@@ -488,6 +499,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationSpinner: false,
         diskusWebNotificationData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -504,6 +516,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         diskusNotificationMarkAsRead: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -513,6 +526,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         diskusNotificationMarkAsRead: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     //this state will take the previous object also that are currently unread and will accumulate the newly coming objects also

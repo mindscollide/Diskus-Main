@@ -10,6 +10,7 @@ const initialState = {
 
   AllMessagesData: [],
   Loading: false,
+  errorSeverity: null,
 
   ChatSpinner: false,
 
@@ -323,6 +324,7 @@ const talkReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         Token: action.response.token,
         Refresh: action.response.refreshToken,
+        errorSeverity: "success",
       };
     }
 

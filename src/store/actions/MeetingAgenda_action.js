@@ -1353,7 +1353,6 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
   };
 };
 
-
 const agendaVotingStatusUpdate_init = () => {
   return {
     type: actions.START_END_AGENDAVOTING_INIT,
@@ -1910,16 +1909,15 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
   return (dispatch) => {
     dispatch(sendAgendaPDFAsEmail_init());
     axiosInstance
-      .post(DataRoomAllFilesDownloads, form, {
-        responseType: "blob",
-      })
+      .post(DataRoomAllFilesDownloads, form)
 
       .then(async (response) => {
-        if (response.status === 417) {
+        console.log("response", response);
+        if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
           dispatch(setLoaderFalse());
-        } else if (response.status === 200) {
+        } else if (response.data.responseCode === 200) {
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: "application/zip" }), // ✅ change type
           );
@@ -1936,9 +1934,13 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
           window.URL.revokeObjectURL(url);
 
           dispatch(setLoaderFalse());
+        } else {
+          dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {});
+      .catch((response) => {
+        dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+      });
   };
 };
 

@@ -6,6 +6,7 @@ const initialState = {
   Fail: false,
   Spinner: false,
   ResponseMessage: "",
+  errorSeverity: null,
   AllMeetingIdData: [],
   TotalMeetingCountThisWeek: 0,
   TotalNumberOfUpcommingMeetingsInWeek: 0,
@@ -90,6 +91,7 @@ const meetingIdReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         AllMeetingIdData: GetAllMeetinIdArray,
         ShowNotification: true,
+        errorSeverity: "success",
       };
 
     case actions.GET_MEETINGUSERID_FAIL:
@@ -105,6 +107,7 @@ const meetingIdReducer = (state = initialState, action) => {
         //     : action.response.responseMessage,
         ShowNotification: true,
         searchRecordFound: false,
+        errorSeverity: "error",
       };
 
     case actions.GET_MEETINGCOUNT_SUCCESS:
@@ -118,6 +121,7 @@ const meetingIdReducer = (state = initialState, action) => {
         TotalNumberOfUpcommingMeetingsInWeek:
           action.response.totalNumberOfUpcommingMeetingsInWeek,
         ShowNotification: true,
+        errorSeverity: "success",
       };
     case actions.RECENT_MEETINGCOUNTER:
       return {
@@ -139,6 +143,7 @@ const meetingIdReducer = (state = initialState, action) => {
         //   ? action.response.responseMessage
         //   : action.response.responseMessage,
         ShowNotification: true,
+        errorSeverity: "error",
       };
 
     case actions.GET_UPCOMINGEVENTS_SUCCESS:
@@ -167,6 +172,7 @@ const meetingIdReducer = (state = initialState, action) => {
         moreEventsLoader: false,
         showMoreUpcomingData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.SHOWMORE_UPCOMINGEVENTS_FAIL:
       return {
@@ -174,6 +180,7 @@ const meetingIdReducer = (state = initialState, action) => {
         moreEventsLoader: false,
         showMoreUpcomingData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.GET_UPCOMINGEVENTS_FAIL:
@@ -191,6 +198,7 @@ const meetingIdReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
     case actions.SEARCH_MEETING_RESPONSE: {
@@ -221,6 +229,7 @@ const meetingIdReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
     case actions.MEETING_CREATE_COMMITTEE: {

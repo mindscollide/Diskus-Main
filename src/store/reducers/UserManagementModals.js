@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   UpgradeNowModal: false,
   requestExtentionModal: false,
   createAdditionalModals: false,

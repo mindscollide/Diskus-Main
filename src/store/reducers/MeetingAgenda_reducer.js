@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   MeetingAgendaVotingDetailsData: [],
   VotingResultDisplayData: [],
   SaveAgendaVotingData: [],
@@ -48,6 +49,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         // Loading: false,
         MeetingAgendaVotingDetailsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -57,6 +59,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         MeetingAgendaVotingDetailsData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -73,6 +76,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         VotingResultDisplayData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -82,6 +86,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         VotingResultDisplayData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -98,6 +103,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveAgendaVotingData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -107,6 +113,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveAgendaVotingData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -123,6 +130,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         AgendaVotingInfoData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -132,6 +140,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         AgendaVotingInfoData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -155,6 +164,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         CastAgendaVoteData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -164,6 +174,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         CastAgendaVoteData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -180,6 +191,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         ViewAgendaVotingResultData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -189,6 +201,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         ViewAgendaVotingResultData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -205,6 +218,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAdvanceMeetingAgendabyMeetingIDData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -214,6 +228,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAdvanceMeetingAgendabyMeetingIDData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -229,6 +244,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         MeetingAgendaFolderID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CREATEUPDATEMEETINGDATAROOMMAP_FAIL: {
@@ -237,6 +253,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         MeetingAgendaFolderID: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -252,6 +269,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveUpdateAgendaData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_FAIL: {
@@ -260,6 +278,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveUpdateAgendaData: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -275,6 +294,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         // Loading: false,
         SaveFilesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVEFILES_AGENDA_FAIL: {
@@ -283,6 +303,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveFilesResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPLOAD_DOCUMENTS_AGENDA_INIT: {
@@ -297,6 +318,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         // Loading: false,
         UploadDocumentsResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPLOAD_DOCUMENTS_AGENDA_FAIL: {
@@ -305,6 +327,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         // Loading: false,
         UploadDocumentsResponse: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -320,6 +343,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveMeetingFilesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_DOCUMENTS_AGENDA_FAIL: {
@@ -328,6 +352,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SaveMeetingFilesResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -342,6 +367,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.START_END_AGENDAVOTING_FAIL: {
@@ -349,6 +375,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -385,6 +412,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
         MeetingAgendaVotingDetailsData: [],
         VotingResultDisplayData: [],
         SaveAgendaVotingData: [],
@@ -415,6 +443,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAllMeetingForAgendaImportData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALLMEETINGFORAGENDAIMPORT_FAIL: {
@@ -423,6 +452,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAllMeetingForAgendaImportData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -438,6 +468,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAgendaWithMeetingIDForImportData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_AGENDAWITHMEETINGIDFORIMPORT_FAIL: {
@@ -446,6 +477,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAgendaWithMeetingIDForImportData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -503,6 +535,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         MeetingAgendaParticipants: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_GETMEETINGPARTICIPANTSAGENDA_FAIL: {
@@ -511,6 +544,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         MeetingAgendaParticipants: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -526,6 +560,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SendAgendaAsPDFEmail: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SEND_AGENDAPDFASEMAIL_FAIL: {
@@ -534,6 +569,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         SendAgendaAsPDFEmail: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -549,6 +585,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         PrintCurrentAgenda: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PRINT_AGENDA_MEETING_FAIL: {
@@ -557,6 +594,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         PrintCurrentAgenda: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -572,6 +610,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAdvanceMeetingAgendabyMeetingIDForViewData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ADVANCEMEETINGAGENDAFORVIEW_FAIL: {
@@ -580,6 +619,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAdvanceMeetingAgendabyMeetingIDForViewData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
