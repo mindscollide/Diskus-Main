@@ -72,10 +72,6 @@ export const GroupsProvider = ({ children }) => {
     (state) => state.NewMeetingreducer.getMeetingbyGroupID,
   );
 
-  let MeetingProp = localStorage.getItem("meetingprop");
-
-  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
-
   // ─── Tab State ───
   const [currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive] =
     useState(1);
@@ -89,11 +85,6 @@ export const GroupsProvider = ({ children }) => {
     [],
   );
 
-  console.log(
-    groupPublishedMeetingData,
-    getMeetingbyGroupID,
-    "getMeetingbyGroupIDgetMeetingbyGroupID",
-  );
   const [groupPublishedMeetingDataRecord, setGroupPublishedMeetingDataRecord] =
     useState(0);
 
@@ -164,7 +155,10 @@ export const GroupsProvider = ({ children }) => {
         setGroupDraftMeetingData([]);
         return;
       }
-
+      console.log(
+        { getMeetingbyGroupID, currentGroupMeetingTabActive },
+        "getMeetingbyGroupIDgetMeetingbyGroupID",
+      );
       const meetings = getMeetingbyGroupID.meetings || [];
       setMinutesAgo(getMeetingbyGroupID.meetingStartedMinuteAgo || 0);
 
@@ -188,7 +182,9 @@ export const GroupsProvider = ({ children }) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [getMeetingbyGroupID, currentGroupMeetingTabActive]);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Notification } from "../../../components/elements";
+import { Button} from "../../../components/elements";
 
 import ViewModal from "../../meeting/quickMeeting/ViewQuickMeeting";
 import { Col, Row } from "react-bootstrap";
@@ -40,7 +40,6 @@ import { useCommitteeContext } from "../../../context/CommitteeContext";
 import { activeChat } from "../../../store/actions/Talk_action";
 import { useMeetingContext } from "../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { clearMessegesUserManagement } from "../../../store/actions/UserManagementActions";
 import { clearResponseNewMeetingReducerMessage } from "../../../store/actions/NewMeetingActions";
 import { clearResponseMessage } from "../../../store/actions/MeetingAgenda_action";
@@ -72,11 +71,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   } = useNewMeetingContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   let userID = localStorage.getItem("userID");
 
@@ -91,12 +85,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       UserID: Number(userID),
       PageNumber: 1,
       Length: 30,
-      PublishedMeetings:
-        currentCommitteeMeetingTabActive === 2
-          ? false
-          : currentCommitteeMeetingTabActive === 1
-            ? true
-            : false,
+      PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
       ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
     };
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
@@ -153,7 +142,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         ResponseMessages !== t("No-records-found") &&
         ResponseMessages !== t("No-record-found")
       ) {
-        showMessage(ResponseMessages, "success", setOpen);
         dispatch(clearResponseMessage(""));
       } else {
       }
@@ -176,7 +164,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         ResponseMessage !== t("Something-went-wrong") &&
         ResponseMessage !== undefined
       ) {
-        showMessage(ResponseMessages, "success", setOpen);
         dispatch(clearResponseNewMeetingReducerMessage(""));
       }
     } catch (error) {
@@ -190,7 +177,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         ResponseMessageUserMangementReducer !== "" &&
         ResponseMessageUserMangementReducer !== undefined
       ) {
-        showMessage(ResponseMessageUserMangementReducer, "error", setOpen);
         dispatch(clearMessegesUserManagement());
       }
     } catch (error) {
@@ -374,7 +360,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           </Col>
         ) : null}
       </Row> */}
-      <Notification open={open} setOpen={setOpen}  />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ViewParticipantsDates.module.css";
-import { Button, Checkbox, Notification } from "@/components/elements";
+import { Button, Checkbox} from "@/components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -16,20 +16,15 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { resolutionResultTable } from "@/commen/functions/date_formater";
 import moment from "moment";
-import { showMessage } from "@/components/elements/snack_bar/utill";
 import {
   getMeetingDetailsByMeetingIdApi,
   listOfMeetingsApi,
 } from "@/store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "@/context/MeetingContext";
 import { toggleIsParticipantProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
+import { SetMeetingResponseApi } from "@/store/actions/NewMeeting2.actions";
 
-const ViewParticipantsDates = ({
-  setViewProposeDatePoll,
-  setCurrentMeetingID,
-  setSceduleMeeting,
-  setDataroomMapFolderId,
-}) => {
+const ViewParticipantsDates = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,11 +35,6 @@ const ViewParticipantsDates = ({
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails,
@@ -54,10 +44,8 @@ const ViewParticipantsDates = ({
     (state) => state.NewMeetingreducer.userWiseMeetingProposed,
   );
 
-  
-
   const [prposedData, setPrposedData] = useState([]);
-  
+
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
@@ -72,7 +60,7 @@ const ViewParticipantsDates = ({
   );
 
   // const changeDateStartHandler2 = (date, value) => {
-  //   
+  //
   //   let newDate;
   //   if (date?.length >= 4) {
   //     let newDate2 = forRecentActivity(date);
@@ -80,20 +68,19 @@ const ViewParticipantsDates = ({
   //   } else {
   //     newDate = moment(date).format("DD MMMM YYYY");
   //   }
-  //   
+  //
 
   //   return newDate;
   // };
 
   const changeDateStartHandler2 = (date, value) => {
-    
     let cleanedDate = date;
     if (typeof date === "string" && /^\d{8}/.test(date)) {
       cleanedDate = date.substring(0, 8);
     }
     const parsed = moment(cleanedDate, "YYYYMMDD");
     const newDate = parsed.isValid() ? parsed.format("DD MMMM YYYY") : "";
-    
+
     return newDate;
   };
 
@@ -109,7 +96,7 @@ const ViewParticipantsDates = ({
       let Data = {
         MeetingID: Number(NotificationClickMeetingID),
       };
-      
+
       await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
       await dispatch(
         getMeetingDetailsByMeetingIdApi(navigate, t, Data, "", {}),
@@ -118,7 +105,7 @@ const ViewParticipantsDates = ({
       let Data = {
         MeetingID: Number(currentMeetingID),
       };
-      
+
       await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
       await dispatch(
         getMeetingDetailsByMeetingIdApi(navigate, t, Data, "", {}),
@@ -238,9 +225,7 @@ const ViewParticipantsDates = ({
         // });
       } else {
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [userWiseMeetingProposed]);
 
   //Fetching All Saved Data
@@ -335,9 +320,7 @@ const ViewParticipantsDates = ({
             : meetingDeatils.MeetingID,
         ProposedDates: defaultarr,
       };
-      dispatch(
-        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll),
-      );
+      dispatch(SetMeetingResponseApi(navigate, t, Data, "", {}));
     } else if (findIsanySelected) {
       let newarr = [];
       prposedData.forEach((data, index) => {
@@ -357,16 +340,8 @@ const ViewParticipantsDates = ({
             : meetingDeatils.MeetingID,
         ProposedDates: newarr,
       };
-
-      dispatch(
-        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll),
-      );
+      dispatch(SetMeetingResponseApi(navigate, t, Data, "", {}));
     } else if (!selectAll) {
-      showMessage(
-        t("Please-select-any-of-the-given-options"),
-        "error",
-        setOpen,
-      );
     }
   };
 
@@ -395,7 +370,7 @@ const ViewParticipantsDates = ({
           meetingID === meetingDeatils.MeetingID
         ) {
           localStorage.setItem("MeetingCurrentView", 2);
-          setViewProposeDatePoll(false);
+          dispatch(toggleIsParticipantProposedMeetingDates(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
           let searchData = {
             Date: "",
@@ -407,7 +382,7 @@ const ViewParticipantsDates = ({
             PublishedMeetings: false,
             ProposedMeetings: true,
           };
-          
+
           dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
         }
       } catch (error) {}
@@ -416,12 +391,13 @@ const ViewParticipantsDates = ({
 
   return (
     <section>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col
           lg={12}
           md={12}
           sm={12}
-          className='d-flex align-items-center align-items-center gap-3'>
+          className="d-flex align-items-center align-items-center gap-3"
+        >
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Propose-meeting-date")}
           </span>
@@ -449,7 +425,7 @@ const ViewParticipantsDates = ({
                 </span>
               </Col>
             </Row>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <p className={styles["Paragraph_Styles"]}>
                   {meetingDeatils.MeetingDiscription}
@@ -471,22 +447,22 @@ const ViewParticipantsDates = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Prposed_Meeting_date"]}>
+                    className={styles["Scroller_Prposed_Meeting_date"]}
+                  >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          
-
                           const isChecked =
                             data.isSelected &&
                             Number(data.userID) === Number(currentUserId);
                           let currentDate = new Date();
                           return (
-                            <Row className='m-0 p-0 mt-2' key={index}>
+                            <Row className="m-0 p-0 mt-2" key={index}>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["Box_To_Show_Time"]}>
+                                className={styles["Box_To_Show_Time"]}
+                              >
                                 <Row className={styles["Inner_Send_class"]}>
                                   <Col lg={10} md={10} sm={12}>
                                     <span className={styles["Time_Class"]}>
@@ -501,7 +477,7 @@ const ViewParticipantsDates = ({
                                   <Col lg={2} md={2} sm={2}>
                                     <Checkbox
                                       prefixCls={"ProposedMeeting_Checkbox"}
-                                      classNameCheckBoxP='d-none'
+                                      classNameCheckBoxP="d-none"
                                       className={"cursor-pointer"}
                                       disabled={
                                         currentDate > data.startTime
@@ -523,7 +499,7 @@ const ViewParticipantsDates = ({
                   </Col>
                 </Row>
 
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Prposed_On_Heading"]}>
                       {t("Send-response-by")}{" "}
@@ -531,7 +507,7 @@ const ViewParticipantsDates = ({
                   </Col>
                 </Row>
 
-                <Row className='mt-1'>
+                <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Date"]}>
                       {JSON.parse(
@@ -553,17 +529,19 @@ const ViewParticipantsDates = ({
                 lg={2}
                 md={2}
                 sm={2}
-                className='d-flex justify-content-center mt-4'>
+                className="d-flex justify-content-center mt-4"
+              >
                 <span className={styles["OR_Heading"]}>{"OR"}</span>
               </Col>
 
               <Col lg={4} md={4} sm={4}>
-                <Row className='m-0 p-0 mt-4'>
+                <Row className="m-0 p-0 mt-4">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Box_To_Show_Time"]}>
+                    className={styles["Box_To_Show_Time"]}
+                  >
                     <Row className={styles["Inner_Send_class"]}>
                       <Col lg={10} md={10} sm={10}>
                         <span className={styles["Time_Class"]}>
@@ -573,7 +551,7 @@ const ViewParticipantsDates = ({
                       <Col lg={2} md={2} sm={2}>
                         <Checkbox
                           prefixCls={"ProposedMeeting_Checkbox"}
-                          classNameCheckBoxP='d-none'
+                          classNameCheckBoxP="d-none"
                           checked={selectAll}
                           onChange={handleSelectAllChange}
                         />
@@ -588,7 +566,8 @@ const ViewParticipantsDates = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end gap-2'>
+                className="d-flex justify-content-end gap-2"
+              >
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_ProposedMeeting"]}
@@ -605,7 +584,6 @@ const ViewParticipantsDates = ({
           </span>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

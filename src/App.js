@@ -41,24 +41,21 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { GlobalSnackbar, Notification } from "./components/elements";
+import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
-import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
-import { useTranslation } from "react-i18next";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
-  const { t } = useTranslation();
   useEffect(() => {
     const syncSessionAndRedirect = async () => {
       const localToken = localStorage.getItem("token");
@@ -107,13 +104,6 @@ const App = () => {
     };
   }, []);
 
-  const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
-
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
@@ -208,18 +198,6 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
-
-  useEffect(() => {
-    if (
-      SessionExpireResponseMessage !== null &&
-      SessionExpireResponseMessage !== undefined &&
-      SessionExpireResponseMessage !== ""
-    ) {
-      try {
-        showMessage(SessionExpireResponseMessage, "error", setOpen);
-      } catch (error) {}
-    }
-  }, [SessionExpireResponseMessage]);
 
   return (
     <>

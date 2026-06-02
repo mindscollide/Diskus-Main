@@ -4188,9 +4188,9 @@ const showPrposedMeetingReponsneFailed = (message) => {
 };
 
 export const SetMeetingResponseApi = (
-  Data,
   navigate,
   t,
+  Data,
   routePath,
   object = {},
 ) => {
@@ -4205,7 +4205,7 @@ export const SetMeetingResponseApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            SetMeetingResponseApi(Data, navigate, t, routePath, (object = {})),
+            SetMeetingResponseApi(navigate, t, Data, routePath, (object = {})),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -4222,7 +4222,20 @@ export const SetMeetingResponseApi = (
                   t("Your-vote-is-submitted-successfully"),
                 ),
               );
+              const { setViewProposeDatePoll } = object;
+              let committeeInfo =
+                store.getState().CommitteeReducer?.committeeInfo;
+              let groupInfo = store.getState().GroupsReducer?.groupInfo;
+              if (committeeInfo !== null) {
+                dispatch(toggleIsParticipantProposedMeetingDates(false));
 
+                return;
+              }
+              if (groupInfo !== null) {
+                dispatch(toggleIsParticipantProposedMeetingDates(false));
+
+                return;
+              }
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
               let meetingPageCurrent =

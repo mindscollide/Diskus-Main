@@ -8,7 +8,6 @@ import {
   Modal,
   Button,
   Table,
-  Notification,
 } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import {
@@ -31,11 +30,6 @@ import { scheduleMeetingFromProposedMeetingApi } from "../../../../store/actions
 import { useMeetingContext } from "../../../../context/MeetingContext";
 // import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const SceduleProposedmeeting = () => {
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -357,7 +351,6 @@ const SceduleProposedmeeting = () => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };
