@@ -24,7 +24,7 @@ const NotifyOrganizers = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
   const [notifyOrganizerData, setNotifyOrganizerData] = useState({
     Messege: "",
@@ -42,16 +42,19 @@ const NotifyOrganizers = ({
     }));
 
   const [membersOrganizers, setMembersOrganizers] = useState(
-    initialMembersOrganizers
+    initialMembersOrganizers,
   );
 
   // Initialize memberCheckboxes with all checkboxes initially checked
   const [memberCheckboxes, setMemberCheckboxes] = useState(
-    Array(initialMembersOrganizers.length).fill(true)
+    Array(initialMembersOrganizers.length).fill(true),
   );
 
   const handleCrossIcon = () => {
+    setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
+    // dispatch(meetingOrganizers([]));
+    setNotificationMessage("");
   };
 
   const HandleChange = (e, index) => {
@@ -127,7 +130,7 @@ const NotifyOrganizers = ({
   const handleCancelButton = () => {
     setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
-    dispatch(meetingOrganizers([]));
+    // dispatch(meetingOrganizers([]));
     setNotificationMessage("");
   };
 
@@ -142,7 +145,7 @@ const NotifyOrganizers = ({
         (member) => ({
           ...member,
           isOrganizerNotified: true,
-        })
+        }),
       );
 
       setMembersOrganizers(modifiedData);
@@ -156,8 +159,10 @@ const NotifyOrganizers = ({
         setShow={dispatch(showNotifyOrganizors)}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showNotifyOrganizors(false));
           setIsEdit(true);
+          dispatch(showNotifyOrganizors(false));
+          // dispatch(meetingOrganizers([]));
+          setNotificationMessage("");
         }}
         ModalBody={
           <>
@@ -167,14 +172,14 @@ const NotifyOrganizers = ({
                   {t("Notify-organizers")}
                 </span>
               </Col>
-              <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
+              <Col lg={7} md={7} sm={12} className='d-flex justify-content-end'>
                 <img
                   draggable={false}
                   src={BlackCrossIcon}
-                  className="cursor-pointer"
-                  alt=""
-                  width="16px"
-                  height="16px"
+                  className='cursor-pointer'
+                  alt=''
+                  width='16px'
+                  height='16px'
                   onClick={handleCrossIcon}
                 />
               </Col>
@@ -182,26 +187,25 @@ const NotifyOrganizers = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <TextField
-                  applyClass="text-area-create-Notify-organizors"
-                  type="text"
+                  applyClass='text-area-create-Notify-organizors'
+                  type='text'
                   as={"textarea"}
-                  rows="4"
+                  rows='4'
                   placeholder={t("Message-for-organizer")}
                   change={HandleChange}
                   value={notificationMessage}
                   required={true}
-                  name="Message"
+                  name='Message'
                   maxLength={500}
                 />
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col
                 lg={6}
                 md={6}
                 sm={12}
-                className="d-flex align-items-center gap-2"
-              >
+                className='d-flex align-items-center gap-2'>
                 <Checkbox
                   checked={allOrganizersAccept}
                   onChange={handleAllowOrganizerCheck}
@@ -214,14 +218,13 @@ const NotifyOrganizers = ({
                 lg={6}
                 md={6}
                 sm={12}
-                className="d-flex justify-content-end align-items-center cursor-pointer"
-              >
+                className='d-flex justify-content-end align-items-center cursor-pointer'>
                 <img
                   draggable={false}
                   src={membersHide ? downdirect : UpperArrow}
-                  width="18.4px"
-                  height="9.2px"
-                  alt=""
+                  width='18.4px'
+                  height='9.2px'
+                  alt=''
                   className={styles["UparrowClasss"]}
                   onClick={handleHideItems}
                 />
@@ -234,31 +237,28 @@ const NotifyOrganizers = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_notify"]}
-                  >
+                    className={styles["Scroller_notify"]}>
                     <Row>
                       {membersOrganizers.map((data, index) => (
-                        <Col lg={6} md={6} sm={12} className="mt-2" key={index}>
-                          <Row className="m-0 p-0">
+                        <Col lg={6} md={6} sm={12} className='mt-2' key={index}>
+                          <Row className='m-0 p-0'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["Box_for_Assignee"]}
-                            >
+                              className={styles["Box_for_Assignee"]}>
                               <Row>
                                 <Col
                                   lg={10}
                                   md={10}
                                   sm={12}
-                                  className="d-flex gap-2 align-items-center"
-                                >
+                                  className='d-flex gap-2 align-items-center'>
                                   <img
                                     draggable={false}
                                     src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                    width="33px"
-                                    alt=""
-                                    height="33px"
+                                    width='33px'
+                                    alt=''
+                                    height='33px'
                                     className={styles["ProfilePic"]}
                                   />
                                   <span>{data.userName}</span>
@@ -270,7 +270,7 @@ const NotifyOrganizers = ({
                                       handleCheckboxChange(
                                         index,
                                         e.target.checked,
-                                        data
+                                        data,
                                       )
                                     }
                                   />
@@ -294,8 +294,7 @@ const NotifyOrganizers = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_button_Notify"]}

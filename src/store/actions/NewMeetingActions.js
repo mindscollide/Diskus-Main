@@ -115,6 +115,7 @@ import {
 } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import {
+  getHomeRoute,
   handleMeetingNavigation,
   handleNavigationforParticipantVideoFlow,
   isFunction,
@@ -436,7 +437,7 @@ const handlegetAllMeetingTypesFailed = (message, loader) => {
 };
 
 const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
@@ -535,7 +536,7 @@ const SaveMeetingDetialsNewApiFunction = (
   setProposedNewMeeting,
   flag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(handleSaveMeetingInit());
     let form = new FormData();
@@ -835,7 +836,7 @@ const handlegetallReminderFrequencyFailed = (message) => {
 
 //Functions Get All Meeting Reminder Frequency API
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
@@ -927,7 +928,7 @@ const handleReucrringFailed = (message, loader) => {
 
 //Functions Get All Meeting Recurring API
 const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(handleReucrringSInit());
     let form = new FormData();
@@ -1011,7 +1012,7 @@ const SearchMeeting_Fail = (message) => {
   };
 };
 const searchNewUserMeeting = (navigate, Data, t, val) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
@@ -1203,7 +1204,7 @@ const showAddMoreParticipantsFailed = (message) => {
 
 //Function For GetAll Groups And Committeess For Partcipants
 const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showAddMoreParticipantsInit());
     let form = new FormData();
@@ -1295,7 +1296,7 @@ const showParticipantsRolesFailed = (message) => {
 };
 
 const GetAllParticipantsRoleNew = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     await dispatch(showParticipantsRolesInit());
     let form = new FormData();
@@ -1385,7 +1386,7 @@ const FetchMeetingURLApi = (
   currentMeetingTitle,
   meetingID,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
@@ -1553,7 +1554,7 @@ const saveParcipantsProposeMeetingAPI = (
   setProposedNewMeeting,
   setSceduleMeeting,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(saveParcipantsProposeMeetingInit());
     let form = new FormData();
@@ -1707,7 +1708,7 @@ const SaveparticipantsApi = (
   loader,
   setProposedNewMeeting,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showSavedParticipantsInit());
     let form = new FormData();
@@ -1837,7 +1838,7 @@ const getAllAgendaContributor_fail = (message) => {
 };
 
 const getAllAgendaContributorApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllAgendaContributor_init());
     let form = new FormData();
@@ -1937,7 +1938,7 @@ const saveAgendaContributors_fail = (message) => {
 };
 
 const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   let getAllData = {
     MeetingID:
@@ -2064,7 +2065,7 @@ const showAllMeetingParticipantsFailed = (message) => {
 //Get All Saved  participants API Function
 
 const GetAllSavedparticipantsAPI = (Data, navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showAllMeetingParticipantsInit());
     let form = new FormData();
@@ -2181,7 +2182,7 @@ const sendNotificationParticipantsFailed = (message) => {
 
 //Send Notification API Function
 const SendNotificationApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(sendNotificationParticipantsInit());
     let form = new FormData();
@@ -2281,7 +2282,7 @@ const GetAllMeetingDetailsApiFunc = (
   flag,
   role,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     await dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
@@ -2453,7 +2454,7 @@ const showPollsByMeetingIdFailed = (message) => {
 };
 //Api FUnctions For Getting All polls By Meeting ID
 const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showPollsByMeetingIdInit());
     let form = new FormData();
@@ -2535,7 +2536,7 @@ const showGetAllMeetingUsersFailed = (response, message) => {
 
 //get all meeting users Api function
 const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showGetAllMeetingUsersInit());
     let form = new FormData();
@@ -2613,7 +2614,7 @@ const showSetMeetingPollsFailed = (message) => {
 };
 
 const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showSetMeetingPollsInit());
     let form = new FormData();
@@ -2707,7 +2708,7 @@ const cleareAllProposedMeetingDates = () => {
   };
 };
 const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
     let form = new FormData();
@@ -2816,7 +2817,7 @@ const setProposedMeetingDateApiFunc = (
 ) => {
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
-    let token = JSON.parse(localStorage.getItem("token"));
+  
     let form = new FormData();
     form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -2964,7 +2965,7 @@ const SetMeetingResponseApiFunc = (
   t,
   setViewProposeDatePoll,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showPrposedMeetingReponsneInit());
     let form = new FormData();
@@ -3096,7 +3097,7 @@ const meetingMaterialFail = (message) => {
 
 //Aun work on meeting Material Main API
 const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(meetingMaterialInit());
     let form = new FormData();
@@ -3177,7 +3178,7 @@ const showUpdateMeetingAgendaLockStatusFailed = (message) => {
   };
 };
 const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showUpdateMeetingAgendaLockStatusInit());
     let form = new FormData();
@@ -3251,7 +3252,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
   };
 };
 // const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, flag) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+// 
 //   return (dispatch) => {
 //     dispatch(showUpdateMeetingAgendaLockStatusInit());
 //     let form = new FormData();
@@ -3355,7 +3356,7 @@ const showGetAllUserAgendaRightsFailed = (message) => {
 };
 
 const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showGetAllUserAgendaRightsInit());
     let form = new FormData();
@@ -3434,7 +3435,7 @@ const SaveUserAttachmentPermissionsFailed = (message) => {
 };
 
 const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(SaveUserAttachmentPermissionsInit());
     let form = new FormData();
@@ -3517,7 +3518,7 @@ const ShowADDGeneralMinutesFailed = (message) => {
 };
 
 const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
     let form = new FormData();
@@ -3592,7 +3593,7 @@ const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
 };
 
 const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
       let form = new FormData();
@@ -3716,7 +3717,7 @@ const GetAllGeneralMinutesApiFunc = (
   currentMeeting,
   flag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
     let form = new FormData();
@@ -3823,7 +3824,7 @@ const uploadDocumentsMeetingMinutesApi = (
   // newFolder,
   newfile,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -3927,7 +3928,7 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for genral Minutes
 const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
@@ -4040,7 +4041,7 @@ const showSaveMinutesDocsFailed = (message) => {
 //SAVE GROUPS DOCUMENTS API
 
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -4126,7 +4127,7 @@ const showRetriveGeneralMinutesDocsFailed = (message) => {
 };
 
 const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showRetriveGeneralMinutesDocsInit());
     let form = new FormData();
@@ -4225,7 +4226,7 @@ const clearProposedWiseData = () => {
   };
 };
 const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getProposedWiseInit());
     let form = new FormData();
@@ -4316,7 +4317,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
   setAddReviewers,
   clickFlag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4453,7 +4454,7 @@ const UpdateAgendaWiseMinutesApiFunc = (
   setFileForSend,
   setisEdit,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showUpdateAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4617,7 +4618,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
   currentMeeting,
   id,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4738,7 +4739,7 @@ const DeleteGeneralMinutesFailed = (message) => {
 };
 
 const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(DeleteGeneralMinutesInit());
     let form = new FormData();
@@ -4859,7 +4860,7 @@ const AddAgendaWiseMinutesApiFunc = (
   t,
   setAgendaOptionValue,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showAgendaWiseAddMinutesInit());
     let form = new FormData();
@@ -4951,7 +4952,7 @@ const showSavedAgendaWiseDocumentFailed = (message) => {
 };
 
 const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showSavedAgendaWiseDocumentInit());
 
@@ -5059,7 +5060,7 @@ const UpdateMinutesGeneralApiFunc = (
   isAgenda,
   fileUploadFlag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentMeeting = JSON.parse(localStorage.getItem("currentMeetingID"));
   return async (dispatch) => {
     dispatch(showUpdateMinutesInit());
@@ -5221,7 +5222,7 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   // newFolder,
   newfile,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -5331,7 +5332,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
   folderID,
   newFolder,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
@@ -5443,7 +5444,7 @@ const showRetriveAgendaWiseDocumentsFailed = (message) => {
 };
 
 const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showRetriveAgendaWiseDocumentsInit());
     let form = new FormData();
@@ -5542,7 +5543,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
   currentMeeting,
   MinuteData,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
@@ -5663,7 +5664,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   currentMeeting,
   id,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseDocumentInit());
     let form = new FormData();
@@ -5816,7 +5817,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   flag,
   setSceduleMeeting,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(showCreateUpdateMeetingDataRoomInit());
     let form = new FormData();
@@ -6047,7 +6048,7 @@ const getMeetingbyGroup_fail = (message) => {
 
 // Get Meeting by Group ID
 const getMeetingbyGroupApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getMeetingbyGroup_init());
     let form = new FormData();
@@ -6123,7 +6124,7 @@ const setMeetingByGroupID_fail = (message) => {
   };
 };
 const setMeetingByGroupIDApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(setMeetingByGroupID_init());
     let form = new FormData();
@@ -6226,7 +6227,7 @@ const getMeetingByCommitteeID_fail = (message) => {
   };
 };
 const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getMeetingByCommitteeID_init());
     let form = new FormData();
@@ -6304,7 +6305,7 @@ const setMeetingbyCommitteeID_fail = (message) => {
   };
 };
 const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(setMeetingbyCommitteeID_init());
     let form = new FormData();
@@ -6417,7 +6418,7 @@ const scheduleMeetingMainApi = (
   setSceduleMeeting,
   MeetingID,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log(MeetingID, "MeetingIDMeetingIDMeetingID");
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
@@ -6566,7 +6567,7 @@ const UpdateMeetingUserApiFunc = (
   setProposedNewMeeting,
   setSceduleMeeting,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
@@ -6736,7 +6737,7 @@ const UpdateMeetingUserForAgendaContributor = (
   isEditFlag,
   notifyMessageField,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(UpdateMeetingUserAgendaContributorInit());
     let form = new FormData();
@@ -6899,7 +6900,7 @@ const UpdateMeetingUserForOrganizers = (
   notificationMessage,
   setIsEdit,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(UpdateMeetingUserOrganizersInit());
     let form = new FormData();
@@ -7078,7 +7079,7 @@ const showAllDocumentsAgendaWiseMinutesFailed = (message) => {
 };
 
 const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showAllDocumentsAgendaWiseMinutesInit());
     let form = new FormData();
@@ -7180,7 +7181,7 @@ const showIniviteToCollaborateFailed = (message) => {
 };
 
 const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(showIniviteToCollaborateInit());
     let form = new FormData();
@@ -7478,7 +7479,7 @@ const getUserProposedDatesFail = (message) => {
 };
 
 const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getUserProposedDatesInit());
     let form = new FormData();
@@ -7674,7 +7675,7 @@ const endMeetingStatusApi = (
   setDeleteMeetingConfirmationModal,
 ) => {
   console.log("ChecK API HIT");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let leaveMeetingData = {
     FK_MDID: Number(Data.MeetingID),
     DateTime: getCurrentDateTimeUTC(),
@@ -7946,7 +7947,7 @@ const JoinCurrentMeeting = (
   setViewAdvanceMeetingModal,
   NotificationCheckQuickMeet,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
@@ -8152,7 +8153,7 @@ const LeaveCurrentMeeting = (
   setEndMeetingConfirmationModal,
 ) => {
   console.log("ChecK API HIT");
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
@@ -8321,7 +8322,7 @@ const LeaveCurrentMeeting = (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     console.log("navigateLocation");
-                    navigate("/Diskus/");
+                    navigate(getHomeRoute());
                   } else {
                     let searchData = {
                       Date: "",
@@ -8436,7 +8437,7 @@ const newLeaveCurrentMeeting = (
 ) => {
   console.log("ChecK API HIT");
 
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
@@ -8605,7 +8606,7 @@ const newLeaveCurrentMeeting = (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     console.log("navigateLocation");
-                    navigate("/Diskus/");
+                    navigate(getHomeRoute());
                   } else {
                     let searchData = {
                       Date: "",
@@ -8749,7 +8750,7 @@ const LeaveCurrentMeetingOtherMenus = (
     },
     "Coming inside this block scopr",
   );
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
   let NavigationLocation = localStorage.getItem("navigateLocation");
   return async (dispatch) => {
@@ -8948,7 +8949,7 @@ const validateStringEmailApi = (
     let Data = {
       EncryptedString: emailString,
     };
-    let token = JSON.parse(localStorage.getItem("token"));
+  
 
     dispatch(validateStringEmail_init());
 
@@ -9056,7 +9057,7 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
       let Data = {
         EncryptedString: emailString,
       };
-      let token = JSON.parse(localStorage.getItem("token"));
+    
 
       dispatch(validateStringParticipantProposed_init());
 
@@ -9169,7 +9170,7 @@ const getDashboardMeetingCountMQTT = (response) => {
   };
 };
 const getDashbardMeetingDataApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     await dispatch(getDashbardMeetingData_init());
     let form = new FormData();
@@ -9246,7 +9247,7 @@ const getAllMeetingUsersRSVP_fail = (message) => {
   };
 };
 const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     await dispatch(getAllMeetingUsersRSVP_init());
     let form = new FormData();
@@ -9323,7 +9324,7 @@ const LeaveMeetingVideo = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeaveMeetingVideoForOneToOneOrGroup,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
@@ -9619,7 +9620,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
       let Data = {
         EncryptedString: emailString,
       };
-      let token = JSON.parse(localStorage.getItem("token"));
+    
 
       dispatch(validateStringUserMeetingProposedDatesPolls_Init());
 
@@ -9764,7 +9765,7 @@ const GetMeetingStatusDataAPI = (
   setVideoTalk,
   setViewFlag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
@@ -9876,9 +9877,26 @@ const GetMeetingStatusDataAPI = (
                   );
                 } else if (Check === 2) {
                   if (
-                    Number(response.data.responseResult.meetingStatusID) !== 1
+                    Number(response.data.responseResult.meetingStatusID) === 12
                   ) {
+                    localStorage.setItem("ProposedMeetingOrganizer", true);
+                    localStorage.setItem(
+                      "ProposedMeetingOrganizerMeetingID",
+                      Data.MeetingID,
+                    );
                     dispatch(showSceduleProposedMeeting(true));
+                  } else if (
+                    Number(response.data.responseResult.meetingStatusID) !== 12
+                  ) {
+                    localStorage.setItem(
+                      "NotificationClickMeetingID",
+                      Data.MeetingID,
+                    );
+                    // setViewFlag is for setAdvanceMeetingModalID set meeting ID
+                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID)
+                    isFunction(setViewAdvanceMeetingModal) &&
+                      setViewAdvanceMeetingModal(true);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
                   }
                 } else if (Check === 3) {
                   //Notification for being added as a minute reviewer
@@ -9988,7 +10006,7 @@ const validateEncryptedStringViewMeetingLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+    
 
       dispatch(validateEncryptedStringViewMeetingLink_Init());
 
@@ -10144,7 +10162,7 @@ const uploadDocument_fail_quickMeeting = (message) => {
 
 // Upload Documents API for Quick Meeting
 const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -10241,7 +10259,7 @@ const saveFilesQuickMeeting_Fail = (message) => ({
 const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
   return async (dispatch) => {
     try {
-      let token = JSON.parse(localStorage.getItem("token"));
+    
       let creatorID = JSON.parse(localStorage.getItem("userID"));
       let requestData = {
         FolderID:
@@ -10378,7 +10396,7 @@ const moveFilesAndFoldersApi = (
   checkFlag,
   setShow,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
     let form = new FormData();
@@ -10600,7 +10618,7 @@ const requestMeetingRecordingTranscript_clear = () => {
 };
 
 const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(requestMeetingRecordingTranscript_init());
     let form = new FormData();
@@ -10705,7 +10723,7 @@ const NewJoinCurrentMeeting = (
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModal,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return async (dispatch) => {
     await dispatch(joinMeetingInit());

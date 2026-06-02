@@ -2434,7 +2434,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     <Checkbox
                       className="SearchCheckbox "
                       name="IsChat"
-                      label={t("Group-chat")}
+                      label={t("Meeting-chat")}
                       checked={createMeeting.IsChat}
                       onChange={onChange}
                       classNameDiv="checkboxParentClass"

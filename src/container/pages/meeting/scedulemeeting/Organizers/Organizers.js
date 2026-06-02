@@ -108,7 +108,7 @@ const Organizers = ({
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const handleCancelOrganizer = () => {
@@ -227,11 +227,11 @@ const Organizers = ({
                       isEditMeeting === true
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                          isEditMeeting === true
-                        ? true
-                        : record.disabledTitle === true
-                        ? true
-                        : false
+                            isEditMeeting === true
+                          ? true
+                          : record.disabledTitle === true
+                            ? true
+                            : false
                     }
                   />
                 </Col>
@@ -482,11 +482,11 @@ const Organizers = ({
                       isEditMeeting === true
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                          isEditMeeting === true
-                        ? true
-                        : record.disabledTitle === true
-                        ? true
-                        : false
+                            isEditMeeting === true
+                          ? true
+                          : record.disabledTitle === true
+                            ? true
+                            : false
                     }
                   />
                 </Col>
@@ -634,7 +634,7 @@ const Organizers = ({
 
   const deleteRow = (recordToDelete) => {
     let findisPrimary = rowsData.filter(
-      (rowData, index) => rowData.isPrimaryOrganizer === true
+      (rowData, index) => rowData.isPrimaryOrganizer === true,
     );
     if (recordToDelete.isPrimaryOrganizer) {
       if (findisPrimary.length === 1) {
@@ -643,7 +643,7 @@ const Organizers = ({
       }
     } else {
       setRowsData((prevRowsData) =>
-        prevRowsData.filter((record) => record !== recordToDelete)
+        prevRowsData.filter((record) => record !== recordToDelete),
       );
     }
   };
@@ -671,8 +671,8 @@ const Organizers = ({
         setDataroomMapFolderId,
         setSceduleMeeting,
         setPublishState,
-        setCalendarViewModal
-      )
+        setCalendarViewModal,
+      ),
     );
 
     setRowsData([]);
@@ -732,7 +732,7 @@ const Organizers = ({
     const allMeetingOrganizers =
       MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
     setIsPublishedState(
-      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
+      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished,
     );
     const updatedMeetingOrganizers = allMeetingOrganizers.map((organizer) => ({
       ...organizer,
@@ -752,7 +752,7 @@ const Organizers = ({
       newarry.push(organizerData.userID);
     });
     let findisOrganizerisExist = rowsData.some(
-      (data, index) => data.isPrimaryOrganizer === true
+      (data, index) => data.isPrimaryOrganizer === true,
     );
     let Data = {
       MeetingID: currentMeeting,
@@ -760,6 +760,7 @@ const Organizers = ({
       UpdatedUsers: newarry,
     };
     if (findisOrganizerisExist) {
+      console.log(Data, rowsData, "rowsDatarowsDatarowsData");
       dispatch(
         UpdateMeetingUserForOrganizers(
           navigate,
@@ -779,7 +780,7 @@ const Organizers = ({
       showMessage(
         t("At-least-one-primary-organizer-is-required"),
         "error",
-        setOpen
+        setOpen,
       );
     }
   };
@@ -803,13 +804,13 @@ const Organizers = ({
           isDeletable: false,
           NotificationMessage: "",
           isEdit: true,
-        })
+        }),
       );
 
       setRowsData(updatedMeetingOrganizers);
     }
     setIsPublishedState(
-      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished
+      MeetingOrganizersReducer.AllMeetingOrganizersData.isPublished,
     );
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
@@ -822,7 +823,7 @@ const Organizers = ({
       const updatedRowsData = rowsData.map((organizer) => {
         const matchingOrganizer =
           MeetingOrganizersReducer.MeetingOrganizersData.find(
-            (user) => user.userID === organizer.userID
+            (user) => user.userID === organizer.userID,
           );
 
         if (matchingOrganizer) {
@@ -882,7 +883,7 @@ const Organizers = ({
 
     MeetingOrganizersReducer.NotificationUpdateData.forEach((data) => {
       const index = updatedRowsData.findIndex(
-        (rowData) => rowData.userID === data.userID
+        (rowData) => rowData.userID === data.userID,
       );
 
       if (index !== -1) {
@@ -919,7 +920,7 @@ const Organizers = ({
 
   console.log(
     "MeetingOrganizersReducerMeetingOrganizersReducer",
-    MeetingOrganizersReducer
+    MeetingOrganizersReducer,
   );
 
   useEffect(() => {
@@ -939,127 +940,126 @@ const Organizers = ({
 
   return (
     <>
-  
-        <>
-          <section className='position-relative'>
-            <Row className='mt-4 m-0 p-0'>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className='d-flex justify-content-end gap-4'>
-                {isEdit ? (
-                  <>
-                    <Row className='d-flex align-items-center gap-2'>
-                      <Col lg={12} md={12} sm={12}>
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["Cancel_Organization"]}
-                          style={{ marginRight: "10px" }}
-                          onClick={handleCancelEdit}
-                        />
-
-                        <Button
-                          text={t("Save")}
-                          className={styles["Next_Organization"]}
-                          onClick={() => saveMeetingOrganizers(1)}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                ) : (Number(editorRole.status) === 9 ||
-                    Number(editorRole.status) === 8 ||
-                    Number(editorRole.status) === 10) &&
-                  editorRole.role === "Organizer" &&
-                  isEditMeeting === true ? null : editorRole.role ===
-                    "Agenda Contributor" && isEditMeeting === true ? null : (
-                  <>
-                    <Button
-                      text={t("Edit")}
-                      className={styles["Edit_Button_Organizers"]}
-                      icon={
-                        <img
-                          draggable={false}
-                          src={EditIcon}
-                          width='11.75px'
-                          height='11.75px'
-                          alt=''
-                        />
-                      }
-                      onClick={enableEditButton}
-                    />
-                    <Button
-                      text={t("Add-more")}
-                      icon={<img draggable={false} src={addmore} alt='' />}
-                      className={styles["AddMoreBtn"]}
-                      onClick={openAddUserModal}
-                    />
-                  </>
-                )}
-              </Col>
-            </Row>
-            <section className={styles["height2"]}>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <Table
-                    column={MeetingColoumns}
-                    scroll={{ y: "62vh" }}
-                    pagination={false}
-                    className='Polling_table'
-                    rows={rowsData}
-                  />
-                </Col>
-              </Row>
-
-              {!isEdit ? (
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <section className={styles["Footer_button"]}>
+      <>
+        <section className='position-relative'>
+          <Row className='mt-4 m-0 p-0'>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex justify-content-end gap-4'>
+              {isEdit ? (
+                <>
+                  <Row className='d-flex align-items-center gap-2'>
+                    <Col lg={12} md={12} sm={12}>
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
-                        onClick={handleCancelOrganizer}
+                        style={{ marginRight: "10px" }}
+                        onClick={handleCancelEdit}
                       />
 
                       <Button
-                        text={t("Next")}
-                        className={styles["publish_button_Organization"]}
-                        onClick={nextTabOrganizer}
+                        text={t("Save")}
+                        className={styles["Next_Organization"]}
+                        onClick={() => saveMeetingOrganizers(1)}
                       />
+                    </Col>
+                  </Row>
+                </>
+              ) : (Number(editorRole.status) === 9 ||
+                  Number(editorRole.status) === 8 ||
+                  Number(editorRole.status) === 10) &&
+                editorRole.role === "Organizer" &&
+                isEditMeeting === true ? null : editorRole.role ===
+                  "Agenda Contributor" && isEditMeeting === true ? null : (
+                <>
+                  <Button
+                    text={t("Edit")}
+                    className={styles["Edit_Button_Organizers"]}
+                    icon={
+                      <img
+                        draggable={false}
+                        src={EditIcon}
+                        width='11.75px'
+                        height='11.75px'
+                        alt=''
+                      />
+                    }
+                    onClick={enableEditButton}
+                  />
+                  <Button
+                    text={t("Add-more")}
+                    icon={<img draggable={false} src={addmore} alt='' />}
+                    className={styles["AddMoreBtn"]}
+                    onClick={openAddUserModal}
+                  />
+                </>
+              )}
+            </Col>
+          </Row>
+          <section className={styles["height2"]}>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Table
+                  column={MeetingColoumns}
+                  scroll={{ y: "62vh" }}
+                  pagination={false}
+                  className='Polling_table'
+                  rows={rowsData}
+                />
+              </Col>
+            </Row>
 
-                      {Number(editorRole.status) === 11 ||
-                      Number(editorRole.status) === 12 ? (
-                        <Button
-                          disableBtn={
-                            Number(currentMeeting) === 0 ||
-                            isPublishedState === false
-                              ? true
-                              : false
-                          }
-                          text={t("Publish")}
-                          className={styles["Next_Organization"]}
-                          onClick={handlePublishButton}
-                        />
-                      ) : isEditMeeting === true ? null : (
-                        <Button
-                          disableBtn={
-                            Number(currentMeeting) === 0 ||
-                            isPublishedState === false
-                              ? true
-                              : false
-                          }
-                          text={t("Publish")}
-                          className={styles["Next_Organization"]}
-                          onClick={handlePublishButton}
-                        />
-                      )}
-                    </section>
-                  </Col>
-                </Row>
-              ) : null}
-            </section>
+            {!isEdit ? (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <section className={styles["Footer_button"]}>
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_Organization"]}
+                      onClick={handleCancelOrganizer}
+                    />
+
+                    <Button
+                      text={t("Next")}
+                      className={styles["publish_button_Organization"]}
+                      onClick={nextTabOrganizer}
+                    />
+
+                    {Number(editorRole.status) === 11 ||
+                    Number(editorRole.status) === 12 ? (
+                      <Button
+                        disableBtn={
+                          Number(currentMeeting) === 0 ||
+                          isPublishedState === false
+                            ? true
+                            : false
+                        }
+                        text={t("Publish")}
+                        className={styles["Next_Organization"]}
+                        onClick={handlePublishButton}
+                      />
+                    ) : isEditMeeting === true ? null : (
+                      <Button
+                        disableBtn={
+                          Number(currentMeeting) === 0 ||
+                          isPublishedState === false
+                            ? true
+                            : false
+                        }
+                        text={t("Publish")}
+                        className={styles["Next_Organization"]}
+                        onClick={handlePublishButton}
+                      />
+                    )}
+                  </section>
+                </Col>
+              </Row>
+            ) : null}
           </section>
-        </>
+        </section>
+      </>
       <Notification open={open} setOpen={setOpen} />
       {NewMeetingreducer.adduserModal && (
         <ModalOrganizor currentMeeting={currentMeeting} />

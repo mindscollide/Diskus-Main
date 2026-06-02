@@ -50,6 +50,7 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const Minutes = ({
   setMinutes,
@@ -218,7 +219,7 @@ const Minutes = ({
         },
       });
     } else {
-      if (source === "user" && String(content).length >= 501) {
+      if (source === "user" && String(content).length >= 1001) {
         console.log(
           removeHTMLTagsAndTruncate(String(content)),
           removeHTMLTagsAndTruncate(String(content)).length,
@@ -259,12 +260,11 @@ const Minutes = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (fileAttachments.length > 4) {
+        showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
         return;
       }
 
@@ -732,6 +732,15 @@ const Minutes = ({
 
     // dispatch(showPreviousConfirmationModal(true));
   };
+
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: record.pK_FileID,
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+    );
+  };
   console.log(ResponseMessage, "ResponseMessageResponseMessage");
   useEffect(() => {
     try {
@@ -754,8 +763,8 @@ const Minutes = ({
 
   return (
     <section>
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+      <Row className='mt-3'>
+        <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
           <Button
             text={t("General")}
             className={
@@ -801,7 +810,7 @@ const Minutes = ({
               Number(editorRole.status) === 9) ||
             (Number(editorRole.status) === 10 &&
               editorRole.role === "Agenda Contributor") ? (
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col lg={6} md={6} sm={6}>
                 <Row className={styles["Add-note-QuillRow"]}>
                   <Col
@@ -809,11 +818,10 @@ const Minutes = ({
                     md={12}
                     sm={12}
                     xs={12}
-                    className={styles["Arabic_font_Applied"]}
-                  >
+                    className={styles["Arabic_font_Applied"]}>
                     <ReactQuill
                       ref={editorRef}
-                      theme="snow"
+                      theme='snow'
                       value={addNoteFields.Description.value || ""}
                       placeholder={t("Minutes-details")}
                       onChange={onTextChange}
@@ -825,7 +833,7 @@ const Minutes = ({
                     />
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col>
                     <p
                       className={
@@ -833,20 +841,18 @@ const Minutes = ({
                         addNoteFields.Description.value === ""
                           ? ` ${styles["errorNotesMessage"]} `
                           : `${styles["errorNotesMessage_hidden"]}`
-                      }
-                    >
+                      }>
                       {addNoteFields.Description.errorMessage}
                     </p>
                   </Col>
                 </Row>
                 {/* Button For Saving the The Minutes  */}
-                <Row className="mt-0">
+                <Row className='mt-0'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 justify-content-end"
-                  >
+                    className='d-flex gap-2 justify-content-end'>
                     <Button
                       text={t("Reset")}
                       className={styles["Previous_Button"]}
@@ -894,6 +900,9 @@ const Minutes = ({
                                       data={fileAttachments}
                                       id={0}
                                       name={data.DisplayAttachmentName}
+                                      handleClickDownload={() => {
+                                        downloadDocument(data);
+                                      }}
                                     />
                                   </Col>
                                 </>
@@ -905,23 +914,22 @@ const Minutes = ({
                   ) : null}
                 </section>
 
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <Dragger
                       fileList={[]}
                       {...props}
                       className={
                         styles["dragdrop_attachment_create_resolution"]
-                      }
-                    >
-                      <p className="ant-upload-drag-icon">
+                      }>
+                      <p className='ant-upload-drag-icon'>
                         <span className={styles["create_resolution_dragger"]}>
                           <img
                             src={featherupload}
-                            width="18.87px"
-                            height="18.87px"
-                            draggable="false"
-                            alt=""
+                            width='18.87px'
+                            height='18.87px'
+                            draggable='false'
+                            alt=''
                           />
                         </span>
                       </p>
@@ -940,7 +948,7 @@ const Minutes = ({
           ) : null}
 
           {/* Mapping of The Create Minutes */}
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               {messages.length > 0
                 ? messages.map((data, index) => {
@@ -948,16 +956,15 @@ const Minutes = ({
                     return (
                       <>
                         <section className={styles["Sizing_Saved_Minutes"]}>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["Box_Minutes"]}
-                            >
+                              className={styles["Box_Minutes"]}>
                               <Row>
                                 <Col lg={8} md={8} sm={8}>
-                                  <Row className="mt-3">
+                                  <Row className='mt-3'>
                                     <Col lg={12} md={12} sm={12}>
                                       <span className={styles["Title_File"]}>
                                         {expanded ? (
@@ -969,22 +976,19 @@ const Minutes = ({
                                                     0,
                                                     120,
                                                   ),
-                                              }}
-                                            ></span>
+                                              }}></span>
                                             ...
                                           </>
                                         ) : (
                                           <span
                                             dangerouslySetInnerHTML={{
                                               __html: data.minutesDetails,
-                                            }}
-                                          ></span>
+                                            }}></span>
                                         )}
 
                                         <span
                                           className={styles["Show_more_Styles"]}
-                                          onClick={toggleExpansion}
-                                        >
+                                          onClick={toggleExpansion}>
                                           {expanded &&
                                           data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
@@ -998,8 +1002,7 @@ const Minutes = ({
                                       <span
                                         className={
                                           styles["Date_Minutes_And_time"]
-                                        }
-                                      >
+                                        }>
                                         {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
                                             data.lastUpdatedTime,
@@ -1009,31 +1012,29 @@ const Minutes = ({
                                     </Col>
                                   </Row>
                                 </Col>
-                                <Col lg={4} md={4} sm={4} className="mt-4">
-                                  <Row className="d-flex justify-content-end">
+                                <Col lg={4} md={4} sm={4} className='mt-4'>
+                                  <Row className='d-flex justify-content-end'>
                                     <Col lg={2} md={2} sm={2}>
                                       <img
                                         draggable={false}
                                         src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                        height="39px"
-                                        width="39px"
+                                        height='39px'
+                                        width='39px'
                                         className={styles["Profile_minutes"]}
-                                        alt=""
+                                        alt=''
                                       />
                                     </Col>
                                     <Col
                                       lg={6}
                                       md={6}
                                       sm={6}
-                                      className={styles["Line_heigh"]}
-                                    >
+                                      className={styles["Line_heigh"]}>
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>
                                           <span
                                             className={
                                               styles["Uploaded_heading"]
-                                            }
-                                          >
+                                            }>
                                             {t("Uploaded-by")}
                                           </span>
                                         </Col>
@@ -1050,8 +1051,7 @@ const Minutes = ({
                                       lg={3}
                                       md={3}
                                       sm={3}
-                                      className="d-flex justify-content-start align-items-center"
-                                    >
+                                      className='d-flex justify-content-start align-items-center'>
                                       {Number(editorRole.status) === 1 ||
                                       Number(editorRole.status) === 11 ||
                                       Number(editorRole.status) ===
@@ -1069,23 +1069,22 @@ const Minutes = ({
                                         <img
                                           draggable={false}
                                           src={EditIcon}
-                                          height="21.55px"
-                                          width="21.55px"
-                                          className="cursor-pointer"
+                                          height='21.55px'
+                                          width='21.55px'
+                                          className='cursor-pointer'
                                           onClick={() => handleEditFunc(data)}
-                                          alt=""
+                                          alt=''
                                         />
                                       ) : null}
                                     </Col>
                                   </Row>
                                 </Col>
                               </Row>
-                              <Row className="mt-2">
+                              <Row className='mt-2'>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
                                     className={styles["Show_more"]}
-                                    onClick={() => handleshowMore(index)}
-                                  >
+                                    onClick={() => handleshowMore(index)}>
                                     {generalShowMore === index
                                       ? t("Hide-details")
                                       : t("Show-details")}
@@ -1104,11 +1103,15 @@ const Minutes = ({
                                         );
                                         return (
                                           <>
-                                            <Col lg={3} md={3} sm={3}>
+                                            <Col lg={3} md={3} sm={12}>
                                               <AttachmentViewer
                                                 name={filesname.displayFileName}
                                                 data={filesname}
-                                                id={0}
+                                                id={filesname}
+                                                fk_UID={filesname.fK_UserID}
+                                                handleClickDownload={() => {
+                                                  downloadDocument(filesname);
+                                                }}
                                               />
                                               {/* <section
                                                 className={styles["Outer_Box"]}
@@ -1189,11 +1192,11 @@ const Minutes = ({
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}
-                                  height="20.76px"
-                                  width="20.76px"
+                                  height='20.76px'
+                                  width='20.76px'
                                   className={styles["RedCrossClass"]}
                                   onClick={() => handleRemovingTheMinutes(data)}
-                                  alt=""
+                                  alt=''
                                 />
                               ) : null}
                             </Col>
@@ -1205,23 +1208,21 @@ const Minutes = ({
                 : null}
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            ></Col>
+              className='d-flex justify-content-end gap-2'></Col>
           </Row>
         </>
       ) : null}
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex gap-2 justify-content-end"
-        >
+          className='d-flex gap-2 justify-content-end'>
           <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}

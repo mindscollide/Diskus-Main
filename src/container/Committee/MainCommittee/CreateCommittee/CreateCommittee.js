@@ -741,7 +741,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 className="SearchCheckbox "
                                 name="IsChat"
                                 label2Class={styles["Label_Of_CheckBox"]}
-                                label2={t("Create-talk-group")}
+                                label2={t("Create-committee-chat")}
                                 checked={createCommitteeDetails.ISTalkChatGroup}
                                 onChange={CheckBoxHandler}
                                 classNameDiv="checkboxParentClass"

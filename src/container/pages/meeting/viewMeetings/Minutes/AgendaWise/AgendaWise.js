@@ -220,12 +220,12 @@ const AgendaWise = ({
       let sizezero = true;
       let size = true;
 
-      if (fileList.length > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (fileList.length > 5) {
+        showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
         return;
       } else {
-        if (fileAttachments.length > 9) {
-          showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        if (fileAttachments.length > 4) {
+          showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
           return;
         } else {
           fileList.forEach((fileData, index) => {
@@ -297,7 +297,7 @@ const AgendaWise = ({
         });
       } else {
         let isEmptyContent = content === "<p><br></p>";
-        if (String(content).length >= 501) {
+        if (String(content).length >= 1001) {
           setAddNoteFields({
             ...addNoteFields,
             Description: {

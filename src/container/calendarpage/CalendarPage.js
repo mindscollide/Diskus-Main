@@ -23,7 +23,10 @@ import {
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
 import TodoListModal from "../todolistModal/ModalToDoList";
-import { clearResponseMessage } from "../../store/actions/Get_List_Of_Assignees";
+import {
+  clearResponseMessage,
+  ViewMeeting,
+} from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../store/actions/Admin_AddUser";
 import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
@@ -44,75 +47,75 @@ const CalendarPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const MeetingPublishData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
   );
   const getEventTypeIds = useSelector(
-    (state) => state.calendarReducer.getEventTypeIds
+    (state) => state.calendarReducer.getEventTypeIds,
   );
   const eventsDetails = useSelector(
-    (state) => state.calendarReducer.eventsDetails
+    (state) => state.calendarReducer.eventsDetails,
   );
   const CalenderData = useSelector(
-    (state) => state.calendarReducer.CalenderData
+    (state) => state.calendarReducer.CalenderData,
   );
   const googleEventCreate = useSelector(
-    (state) => state.calendarReducer.googleEventCreate
+    (state) => state.calendarReducer.googleEventCreate,
   );
   const googleEventUpdate = useSelector(
-    (state) => state.calendarReducer.googleEventUpdate
+    (state) => state.calendarReducer.googleEventUpdate,
   );
   const googleEventDelete = useSelector(
-    (state) => state.calendarReducer.googleEventDelete
+    (state) => state.calendarReducer.googleEventDelete,
   );
   const microsoftEventCreate = useSelector(
-    (state) => state.calendarReducer.microsoftEventCreate
+    (state) => state.calendarReducer.microsoftEventCreate,
   );
   const microsoftEventUpdate = useSelector(
-    (state) => state.calendarReducer.microsoftEventUpdate
+    (state) => state.calendarReducer.microsoftEventUpdate,
   );
   const microsoftEventDelete = useSelector(
-    (state) => state.calendarReducer.microsoftEventDelete
+    (state) => state.calendarReducer.microsoftEventDelete,
   );
   const ViewMeetingDetails = useSelector(
-    (state) => state.assignees.ViewMeetingDetails
+    (state) => state.assignees.ViewMeetingDetails,
   );
   const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage
+    (state) => state.assignees.ResponseMessage,
   );
 
   const ResponseMessagecalendarReducerReducer = useSelector(
-    (state) => state.calendarReducer.ResponseMessage
+    (state) => state.calendarReducer.ResponseMessage,
   );
 
   const calendarReducerErrorSeverity = useSelector(
-    (state) => state.calendarReducer.errorSeverity
+    (state) => state.calendarReducer.errorSeverity,
   );
   const ResponseMessageTodolistReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage
+    (state) => state.toDoListReducer.ResponseMessage,
   );
   const UpdateOrganizationMessageResponseMessage = useSelector(
-    (state) => state.adminReducer.UpdateOrganizationMessageResponseMessage
+    (state) => state.adminReducer.UpdateOrganizationMessageResponseMessage,
   );
   const DeleteOrganizationMessageResponseMessage = useSelector(
-    (state) => state.adminReducer.DeleteOrganizationMessageResponseMessage
+    (state) => state.adminReducer.DeleteOrganizationMessageResponseMessage,
   );
   const AllOrganizationResponseMessage = useSelector(
-    (state) => state.adminReducer.AllOrganizationResponseMessage
+    (state) => state.adminReducer.AllOrganizationResponseMessage,
   );
   const ResponseMessageAdminReducer = useSelector(
-    (state) => state.adminReducer.ResponseMessage
+    (state) => state.adminReducer.ResponseMessage,
   );
   const ResponseMessageMeetingReducer = useSelector(
-    (state) => state.meetingIdReducer.ResponseMessage
+    (state) => state.meetingIdReducer.ResponseMessage,
   );
   const ResponseMessageTodoStatusReducer = useSelector(
-    (state) => state.getTodosStatus.ResponseMessage
+    (state) => state.getTodosStatus.ResponseMessage,
   );
   const UpdateTodoStatusMessage = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage,
   );
   const UpdateTodoStatus = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatus
+    (state) => state.getTodosStatus.UpdateTodoStatus,
   );
 
   const [meetingModalShow, setMeetingModalShow] = useState(false);
@@ -146,14 +149,14 @@ const CalendarPage = () => {
   let startDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() - Number(CalenderMonthsSpan),
-    currentDate.getDate()
+    currentDate.getDate(),
   );
 
   // Calculate the end date
   let endDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + Number(CalenderMonthsSpan),
-    currentDate.getDate()
+    currentDate.getDate(),
   );
 
   // for view modal  handler
@@ -203,11 +206,23 @@ const CalendarPage = () => {
               "", // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
               10, // Calendar View
               "",
-              ""
-            )
+              "",
+            ),
           );
         } else {
-          dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+          let viewMeetingData = { MeetingID: Number(value.meetingID) };
+          dispatch(
+            ViewMeeting(
+              navigate,
+              viewMeetingData,
+              t,
+              setCalendarViewModal,
+              false,
+              false,
+              1,
+            ),
+          );
+          // dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
         }
       }
     }
@@ -293,7 +308,7 @@ const CalendarPage = () => {
       let updateStartDate = new Date(
         date.getFullYear(),
         date.getMonth() - Number(CalenderMonthsSpan),
-        1
+        1,
       );
       let calendarData = {
         UserID: parseInt(userID),
@@ -307,7 +322,7 @@ const CalendarPage = () => {
       const date = new Date(value._d);
       let updateEndDate = new Date(
         date.getFullYear(),
-        date.getMonth() + Number(CalenderMonthsSpan)
+        date.getMonth() + Number(CalenderMonthsSpan),
       );
       let calendarData = {
         UserID: parseInt(userID),
@@ -351,11 +366,11 @@ const CalendarPage = () => {
       newList = [];
     }
     if (Object.keys(Data).length > 0) {
-      Data.map((cData) => {
+      Data.forEach((cData) => {
         let StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
         let EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
         let meetingStartTime = newTimeFormaterAsPerUTC(
-          cData.eventDate + cData.startTime
+          cData.eventDate + cData.startTime,
         );
         if (cData.fK_CESID === 1) {
           newList.push({
@@ -443,16 +458,16 @@ const CalendarPage = () => {
           eventID: Number(calendarData.calendarEventSourceID),
           title:
             newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime)
+              formattedString(calendarData.model?.start?.dateTime),
             ) +
             " - " +
             calendarData.model?.summary,
           allDay: true,
           start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime)
+            formattedString(calendarData.model?.start?.dateTime),
           ),
           end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime)
+            formattedString(calendarData.model?.end?.dateTime),
           ),
           border: `2px solid ${googleEventColor}`,
           backgroundColor: googleEventColor,
@@ -488,16 +503,16 @@ const CalendarPage = () => {
           eventID: Number(calendarData.calendarEventSourceID),
           title:
             newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime)
+              formattedString(calendarData.model?.start?.dateTime),
             ) +
             " - " +
             calendarData.model?.summary,
           allDay: true,
           start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime)
+            formattedString(calendarData.model?.start?.dateTime),
           ),
           end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime)
+            formattedString(calendarData.model?.end?.dateTime),
           ),
           border: `2px solid ${googleEventColor}`,
           backgroundColor: googleEventColor,
@@ -520,7 +535,7 @@ const CalendarPage = () => {
             } else {
               return data2;
             }
-          })
+          }),
         );
       }
     } catch (error) {
@@ -537,8 +552,8 @@ const CalendarPage = () => {
         let calendarData = googleEventDelete;
         setCalenderDatae((calendarData2) =>
           calendarData2.filter(
-            (data2, index) => data2.id !== calendarData.calendarEventID
-          )
+            (data2, index) => data2.id !== calendarData.calendarEventID,
+          ),
         );
       }
     } catch (error) {
@@ -558,16 +573,16 @@ const CalendarPage = () => {
           eventID: Number(calendarData.calendarEventSourceID),
           title:
             newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime)
+              formattedString(calendarData.model?.start?.dateTime),
             ) +
             " - " +
             calendarData.model?.subject,
           allDay: true,
           start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime)
+            formattedString(calendarData.model?.start?.dateTime),
           ),
           end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime)
+            formattedString(calendarData.model?.end?.dateTime),
           ),
           border: `2px solid ${officeEventColor}`,
           backgroundColor: officeEventColor,
@@ -602,16 +617,16 @@ const CalendarPage = () => {
           eventID: Number(calendarData.calendarEventSourceID),
           title:
             newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime)
+              formattedString(calendarData.model?.start?.dateTime),
             ) +
             " - " +
             calendarData.model?.subject,
           allDay: true,
           start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime)
+            formattedString(calendarData.model?.start?.dateTime),
           ),
           end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime)
+            formattedString(calendarData.model?.end?.dateTime),
           ),
           border: `2px solid ${officeEventColor}`,
           backgroundColor: officeEventColor,
@@ -634,7 +649,7 @@ const CalendarPage = () => {
             } else {
               return data2;
             }
-          })
+          }),
         );
       }
     } catch (error) {
@@ -651,8 +666,8 @@ const CalendarPage = () => {
         let calendarData = microsoftEventDelete;
         setCalenderDatae((calendarData2) =>
           calendarData2.filter(
-            (data2, index) => data2.id !== calendarData.calendarEventID
-          )
+            (data2, index) => data2.id !== calendarData.calendarEventID,
+          ),
         );
       }
     } catch (error) {
@@ -665,17 +680,19 @@ const CalendarPage = () => {
       if (MeetingPublishData !== null) {
         console.log(MeetingPublishData, "MeetingPublishDataMeetingPublishData");
         let StartingTime = forMainCalendar(
-          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
+          MeetingPublishData.dateOfMeeting +
+            MeetingPublishData.meetingStartTime,
         );
         let EndingTime = forMainCalendar(
-          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingEndTime
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingEndTime,
         );
         let meetingStartTime = newTimeFormaterAsPerUTC(
-          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
+          MeetingPublishData.dateOfMeeting +
+            MeetingPublishData.meetingStartTime,
         );
         let findRoleID = MeetingPublishData.meetingAttendees.find(
           (attendeeData, index) =>
-            Number(attendeeData?.fK_ParticipantRoleID) === Number(userID)
+            Number(attendeeData?.fK_ParticipantRoleID) === Number(userID),
         );
         let diskusEventColor =
           localStorage.getItem("diskusEventColor") !== null
@@ -776,7 +793,7 @@ const CalendarPage = () => {
       showMessage(
         ResponseMessagecalendarReducerReducer,
         calendarReducerErrorSeverity,
-        setOpen
+        setOpen,
       );
 
       dispatch(removeCalendarResponseMessage());

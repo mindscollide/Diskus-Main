@@ -97,8 +97,7 @@ const Participants = ({
     callApiOnComponentMount();
     return () => {
       dispatch(ParticipantsData());
-
-    }
+    };
   }, []);
 
   //Opens Add more modal
@@ -123,8 +122,8 @@ const Participants = ({
         setDataroomMapFolderId,
         setSceduleMeeting,
         setPublishState,
-        setCalendarViewModal
-      )
+        setCalendarViewModal,
+      ),
     );
     // setParticipants(false);
     // setAgenda(true);
@@ -146,14 +145,17 @@ const Participants = ({
         NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.forEach(
-          (data, index) => {
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles
+          .filter(
+            (data, index) =>
+              data.participantRole.toLowerCase() !== "None".toLowerCase(),
+          )
+          .forEach((data, index) => {
             Newdata.push({
               value: data.participantRoleID,
               label: data.participantRole,
             });
-          }
-        );
+          });
         setParticpantsRole(Newdata);
       }
     } catch (error) {}
@@ -215,17 +217,17 @@ const Participants = ({
         showMessage(
           t("Please-at-least-one-partcipant-required"),
           "error",
-          setOpen
+          setOpen,
         );
       } else {
         let removingfromrow = rspvRows.filter(
-          (data, index) => data.userID !== record.userID
+          (data, index) => data.userID !== record.userID,
         );
         setrspvRows(removingfromrow);
       }
     } else {
       let removingfromrow = rspvRows.filter(
-        (data, index) => data.userID !== record.userID
+        (data, index) => data.userID !== record.userID,
       );
       setrspvRows(removingfromrow);
     }
@@ -365,37 +367,37 @@ const Participants = ({
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 2) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <Tooltip placement='bottomLeft' title={t("Accepted")}>
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 3) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <Tooltip placement='bottomLeft' title={t("Rejected")}>
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
@@ -404,9 +406,9 @@ const Participants = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -433,19 +435,18 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className="cursor-pointer "
-                          height="21px"
-                          width="21px"
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
                           onClick={() => handleCancelingRow(record)}
-                          alt=""
+                          alt=''
                         />
                       </>
                     )}
@@ -600,19 +601,18 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className="cursor-pointer "
-                          height="21px"
-                          width="21px"
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
                           onClick={() => handleCancelingRow(record)}
-                          alt=""
+                          alt=''
                         />
                       </>
                     )}
@@ -690,7 +690,7 @@ const Participants = ({
 
   const handleSaveparticpants = () => {
     let findshouldnotempty = rspvRows.every(
-      (newData, index) => Object.keys(newData.participantRole).length > 0
+      (newData, index) => Object.keys(newData.participantRole).length > 0,
     );
     let newarry = [];
     let copyData = [...rspvRows];
@@ -715,8 +715,8 @@ const Participants = ({
           currentMeeting,
           true,
           true,
-          false
-        )
+          false,
+        ),
       );
     } else {
       showMessage(t("Role-is-required"), "error", setOpen);
@@ -727,7 +727,7 @@ const Participants = ({
   useEffect(() => {
     if (rspvRows.length > 0) {
       let removedublicates = rspvRows.some(
-        (data, index) => data.isComingApi === false
+        (data, index) => data.isComingApi === false,
       );
       setIsEditable(removedublicates);
     } else {
@@ -738,13 +738,12 @@ const Participants = ({
   return (
     <>
       <>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             {((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
@@ -754,7 +753,7 @@ const Participants = ({
               isEditMeeting === true) ? null : isEditable || isEditClicked ? (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                     <Button
                       text={t("Cancel")}
                       className={styles["Cancel_Organization"]}
@@ -780,9 +779,9 @@ const Participants = ({
                         <img
                           draggable={false}
                           src={EditIcon}
-                          width="11.75px"
-                          height="11.75px"
-                          alt=""
+                          width='11.75px'
+                          height='11.75px'
+                          alt=''
                         />
                       }
                       onClick={handleEditFunction}
@@ -792,7 +791,7 @@ const Participants = ({
 
                 <Button
                   text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} alt="" />}
+                  icon={<img draggable={false} src={addmore} alt='' />}
                   className={styles["AddMoreBtn"]}
                   onClick={openAddPartcipantModal}
                 />
@@ -815,15 +814,14 @@ const Participants = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <img
                             draggable={false}
                             src={emptyContributorState}
                             width={200}
-                            className="cursor-pointer"
-                            alt=""
-                            height="230.96px"
+                            className='cursor-pointer'
+                            alt=''
+                            height='230.96px'
                             onClick={handleParticipantEmptyStateIntiate}
                           />
                         </Col>
@@ -833,8 +831,7 @@ const Participants = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span className={styles["Empty_state_heading"]}>
                             {t("No-participant")}
                           </span>
@@ -845,8 +842,7 @@ const Participants = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span className={styles["Empty_state_Subheading"]}>
                             {t("There-are-no-Participants")}
                           </span>
@@ -855,18 +851,17 @@ const Participants = ({
                     </>
                   ),
                 }}
-                className="Polling_table"
+                className='Polling_table'
                 rows={rspvRows}
               />
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               {isEditable ? (
                 <>
                   <div className={styles["definedHeight"]}></div>

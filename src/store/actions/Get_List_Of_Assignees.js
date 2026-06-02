@@ -74,7 +74,7 @@ const clearResponseMessage = () => {
 };
 
 const allAssignessList = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     // UserID: id,
@@ -158,7 +158,7 @@ const ScheduleMeetingFail = (message) => {
 
 //SaveNONAPIDisputes
 const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = localStorage.getItem("userID");
 
   return (dispatch) => {
@@ -279,7 +279,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
 
 // update meeting
 const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = JSON.parse(localStorage.getItem("userID"));
   return async (dispatch) => {
     dispatch(ScheculeMeetingInit());
@@ -498,7 +498,7 @@ const ViewMeeting = (
   setViewMeetingModal,
   setEditMeetingModal,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(ViewMeetingInit());
     let form = new FormData();
@@ -620,7 +620,7 @@ const CancelMeetingFail = (message) => {
 
 //Cancel Meeting
 const CancelMeeting = (navigate, object, t, value) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let createrID = JSON.parse(localStorage.getItem("userID"));
 
   return (dispatch) => {
@@ -756,7 +756,7 @@ const StartMeetingFail = (message) => {
 
 //START Meeting
 const StartMeeting = (navigate, object, t, searchData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(StartMeetingInit());
     let form = new FormData();
@@ -858,7 +858,7 @@ const EndMeetingFail = (message) => {
 
 //START Meeting
 const EndMeeting = (navigate, object, t, searchData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(EndMeetingInit());
     let form = new FormData();
@@ -941,7 +941,7 @@ const getAllRemindersFail = (message) => {
 };
 
 const GetAllReminders = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllRemindersinit());
     let form = new FormData();

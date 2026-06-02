@@ -12,6 +12,7 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
+import { getHomeRoute } from "../../../../commen/functions/utils";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const CancelConfirmationModal = () => {
@@ -61,7 +62,7 @@ const CancelConfirmationModal = () => {
       navigate("/Diskus/Notes");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
-      navigate("/Diskus/");
+      navigate(getHomeRoute());
       console.log("navigateLocation");
       localStorage.removeItem("navigateLocation");
     } else {

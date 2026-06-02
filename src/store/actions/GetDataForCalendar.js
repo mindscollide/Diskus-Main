@@ -44,7 +44,6 @@ const calendarLoader = (loader) => {
   };
 };
 const getCalendarDataResponse = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     try {
       // dispatch(getCalendarDataInit(flag));
@@ -65,15 +64,15 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase()
+                    "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase(),
                   )
               ) {
                 await dispatch(
                   getCalendarDataSuccess(
                     response.data.responseResult,
                     false,
-                    ""
-                  )
+                    "",
+                  ),
                 );
                 dispatch(calendarLoader(false));
                 // dispatch(getCalendarDataInit(false));
@@ -81,28 +80,28 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
+                    "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase(),
                   )
               ) {
                 await dispatch(
-                  getCalendarDataFail(t("No-records-found"), false)
+                  getCalendarDataFail(t("No-records-found"), false),
                 );
                 dispatch(calendarLoader(false));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
+                    "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase(),
                   )
               ) {
                 await dispatch(
-                  getCalendarDataFail(t("Something-went-wrong"), false)
+                  getCalendarDataFail(t("Something-went-wrong"), false),
                 );
                 dispatch(calendarLoader(false));
                 // dispatch(getCalendarDataInit(false));
               } else {
                 await dispatch(
-                  getCalendarDataFail(t("Something-went-wrong"), false)
+                  getCalendarDataFail(t("Something-went-wrong"), false),
                 );
                 dispatch(calendarLoader(false));
                 // dispatch(getCalendarDataInit(false));
@@ -111,14 +110,14 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
               //   dispatch(SetLoaderFalse());
             } else {
               await dispatch(
-                getCalendarDataFail(t("Something-went-wrong"), false)
+                getCalendarDataFail(t("Something-went-wrong"), false),
               );
               dispatch(calendarLoader(false));
               // dispatch(getCalendarDataInit(false));
             }
           } else {
             await dispatch(
-              getCalendarDataFail(t("Something-went-wrong"), false)
+              getCalendarDataFail(t("Something-went-wrong"), false),
             );
             dispatch(calendarLoader(false));
             // dispatch(getCalendarDataInit(false));
@@ -136,7 +135,6 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
 };
 
 const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     try {
       // dispatch(getCalendarDataInit(flag));
@@ -157,26 +155,26 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase()
+                    "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase(),
                   )
               ) {
                 await dispatch(
                   getCalendarDataSuccess(
                     response.data.responseResult,
                     false,
-                    ""
-                  )
+                    "",
+                  ),
                 );
                 // dispatch(calendarLoader(false));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
+                    "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase(),
                   )
               ) {
                 await dispatch(
-                  getCalendarDataFail(t("No-records-found"), false)
+                  getCalendarDataFail(t("No-records-found"), false),
                 );
                 // dispatch(getCalendarDataInit(false));
 
@@ -185,18 +183,18 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
+                    "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase(),
                   )
               ) {
                 await dispatch(
-                  getCalendarDataFail(t("Something-went-wrong"), false)
+                  getCalendarDataFail(t("Something-went-wrong"), false),
                 );
                 dispatch(getCalendarDataInit(false));
 
                 // dispatch(calendarLoader(false));
               } else {
                 await dispatch(
-                  getCalendarDataFail(t("Something-went-wrong"), false)
+                  getCalendarDataFail(t("Something-went-wrong"), false),
                 );
                 dispatch(getCalendarDataInit(false));
 
@@ -206,7 +204,7 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
               //   dispatch(SetLoaderFalse());
             } else {
               await dispatch(
-                getCalendarDataFail(t("Something-went-wrong"), false)
+                getCalendarDataFail(t("Something-went-wrong"), false),
               );
               // dispatch(getCalendarDataInit(false));
 
@@ -214,7 +212,7 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
             }
           } else {
             await dispatch(
-              getCalendarDataFail(t("Something-went-wrong"), false)
+              getCalendarDataFail(t("Something-went-wrong"), false),
             );
             dispatch(getCalendarDataInit(false));
 
@@ -257,8 +255,6 @@ const getEventsType_fail = (message) => {
   };
 };
 const getEventsTypes = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return async (dispatch) => {
     await dispatch(getEventsType_init());
     let form = new FormData();
@@ -276,20 +272,20 @@ const getEventsTypes = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Calender_CalenderServiceManager_GetAllEventTypes_01".toLowerCase()
+                  "Calender_CalenderServiceManager_GetAllEventTypes_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getEventsType_success(
                   response.data.responseResult.eventTypes,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Calender_CalenderServiceManager_GetAllEventTypes_02".toLowerCase()
+                  "Calender_CalenderServiceManager_GetAllEventTypes_02".toLowerCase(),
                 )
             ) {
               dispatch(getEventsType_fail(""));
@@ -297,7 +293,7 @@ const getEventsTypes = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Calender_CalenderServiceManager_GetAllEventTypes_03".toLowerCase()
+                  "Calender_CalenderServiceManager_GetAllEventTypes_03".toLowerCase(),
                 )
             ) {
               dispatch(getEventsType_fail(t("Something-went-wrong")));
@@ -354,11 +350,11 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Calender_CalenderServiceManager_GetDiskusEventDetails_01".toLowerCase()
+                  "Calender_CalenderServiceManager_GetDiskusEventDetails_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getEventsDetails_success(response.data.responseResult, "")
+                getEventsDetails_success(response.data.responseResult, ""),
               );
               if (Data.CalendarEventTypeId === 2) {
                 setCalendarViewModal(true);
@@ -367,15 +363,15 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Calender_CalenderServiceManager_GetDiskusEventDetails_02".toLowerCase()
+                  "Calender_CalenderServiceManager_GetDiskusEventDetails_02".toLowerCase(),
                 )
             ) {
-              dispatch(getEventsDetails_fail(""));
+              dispatch(getEventsDetails_fail(t("Something-went-wrong")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Calender_CalenderServiceManager_GetDiskusEventDetails_03".toLowerCase()
+                  "Calender_CalenderServiceManager_GetDiskusEventDetails_03".toLowerCase(),
                 )
             ) {
               dispatch(getEventsDetails_fail(t("Something-went-wrong")));
@@ -438,7 +434,7 @@ const removeCalenderDataFunc = (response) => {
   };
 };
 
- const removeCalendarResponseMessage = () => {
+const removeCalendarResponseMessage = () => {
   return {
     type: actions.CALENDAR_RESPONSE_MESSAGE,
   };

@@ -55,7 +55,7 @@ const getMeetingAgendasFail = (message) => {
 };
 
 const getMeetingAgendas = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getMeetingAgendasInit());
     let form = new FormData();
@@ -111,7 +111,7 @@ const getMeetingAttachmentsFail = (message) => {
   };
 };
 const getMeetingAttachments = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getMeetingAttachmentsInit());
     let form = new FormData();
@@ -174,7 +174,7 @@ const updateAgendaAttachment = (navigate, data, t) => {
     "AgendaAttachmentsAgendaAttachmentsAgendaAttachmentsAgendaAttachmentsAgendaAttachments",
     JSON.stringify(AgendaAttachments)
   );
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(updateAgendaAttahmentsInit());
@@ -228,7 +228,7 @@ const downloadCallRecording_success = () => {
 // For Video Call Title ->  VideoCall-ddMMyyyy-starttime-Recording.mp4
 
 const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let form = new FormData();
   form.append("RequestMethod", downloadCallRecording.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -272,7 +272,7 @@ const DownloadMeetingRecording = (
   utcDate,
   utcTime
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let form = new FormData();
   form.append("RequestMethod", downloadMeetingRecording.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));

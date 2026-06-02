@@ -775,7 +775,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                     : false
                                 }
                                 label2Class={styles["Label_Of_CheckBox"]}
-                                label2={t("Create-talk-group")}
+                                label2={t("Create-group-chat")}
                                 onChange={CheckBoxHandler}
                                 checked={GroupDetails.isGroupChat}
                                 classNameDiv="checkboxParentClass"

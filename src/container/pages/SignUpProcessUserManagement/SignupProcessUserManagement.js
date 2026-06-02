@@ -15,6 +15,7 @@ import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../../../components/elements";
 import Helper from "../../../commen/functions/history_logout";
+import { getHomeRoute } from "../../../commen/functions/utils";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useNavigate } from "react-router-dom";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
@@ -300,7 +301,7 @@ const SignupProcessUserManagement = () => {
               ) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               }
             }
           }

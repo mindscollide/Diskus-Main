@@ -367,7 +367,7 @@ const organizationTrialExtendedFail = (message) => {
 };
 
 const ExtendOrganizationTrialApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(organizationTrialExtendedInit());
@@ -474,7 +474,7 @@ const addOrganizationUsersFailed = (message) => {
 };
 
 const AddOrganizationsUserApi = (navigate, t, data, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(addOrganizationUsersInit());
     let form = new FormData();
@@ -566,7 +566,7 @@ const editOrganizationUsersFail = (message) => {
 };
 
 const EditOrganizationsUserApi = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   return (dispatch) => {
@@ -706,7 +706,7 @@ const allOrganizationUsersFail = (message) => {
 };
 
 const AllOrganizationsUsersApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   console.log("AllOrganizationsUsersApi");
   return (dispatch) => {
     dispatch(allOrganizationUsersInit());
@@ -788,7 +788,7 @@ const organzationPakageDetailsAnduserStatsFailed = (message) => {
 };
 
 const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(organzationPakageDetailsAnduserStatsInit());
@@ -896,7 +896,7 @@ const organizationSelectedPakagebyOrganzationidFail = (message) => {
 };
 
 const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(organizationSelectedPakagebyOrganzationidInit());
@@ -1102,7 +1102,7 @@ const getOrganizationPackageUserStatsFail = (message) => {
 
 //Api to Show data in graph in userManagment Add user
 const getOrganizationPackageUserStatsAPI = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getOrganizationPackageUserStatsInit());
     let form = new FormData();
@@ -1389,7 +1389,7 @@ const deleteOrganizationUserFail = (message) => {
 };
 
 const deleteOrganizationUserAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   return (dispatch) => {
@@ -1600,7 +1600,7 @@ const cancelSubscriptionReasonFail = (message) => {
 };
 
 const getCancelSubscriptionReasonApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(cancelSubscriptionReasonInit());
     let form = new FormData();
@@ -1681,7 +1681,7 @@ const cancelOrganizationSubReasonFail = (message) => {
 };
 
 const cancelOrganizationSubApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(cancelOrganizationSubReasonInit());
     let form = new FormData();
@@ -1785,7 +1785,7 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
 // };
 
 // const paymentUpgradeDetailMainApi = (navigate, t) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+// 
 //   return (dispatch) => {
 //     let form = new FormData();
 //     form.append(
@@ -1834,7 +1834,7 @@ const requestOrganizationExtendFail = (message) => {
 };
 
 const requestOrganizationExtendApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(requestOrganizationExtendInit());
     let form = new FormData();
@@ -2119,7 +2119,7 @@ const changeSelectPacakge_Failed = (response, message) => {
 };
 
 const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(changeSelectPacakge_Init());
     let form = new FormData();
@@ -2223,7 +2223,7 @@ const cancelisTrailandSubscription_Failed = (response, message) => {
 };
 
 const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(cancelisTrailandSubscription_Init());
     let form = new FormData();
@@ -2332,7 +2332,7 @@ const downgradeOrganizationSubscriptionFailed = (message) => {
 };
 
 const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(downgradeOrganizationSubscriptionInit());
     let form = new FormData();
@@ -2437,7 +2437,7 @@ const getOrganizationWalletFailed = (message) => {
 };
 
 const getOrganizationWalletApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getOrganizationWalletInit());
     let form = new FormData();
@@ -2518,7 +2518,7 @@ const BoardDeckSendEmailApi = (
   setBoarddeckOptions,
   radioValue,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(BoardDeckSendEmail_init());
     let form = new FormData();
@@ -2620,7 +2620,7 @@ const SetLoaderFalseDownload = () => {
 };
 
 const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   let form = new FormData();
   form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -2715,7 +2715,7 @@ const BoardDeckValidateURL_failed = (message) => {
 };
 
 const BoardDeckValidateURLAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(BoardDeckValidateURL_init());
     let form = new FormData();

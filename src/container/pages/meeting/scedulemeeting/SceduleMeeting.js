@@ -47,6 +47,8 @@ const SceduleMeeting = ({
   setDataroomMapFolderId,
   dataroomMapFolderId,
 }) => {
+
+  console.log(isEditMeeting, "isEditMeetingisEditMeeting")
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
 
