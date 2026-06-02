@@ -145,7 +145,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         (p) =>
           Number(p.userID) === Number(action.response.userID) &&
           Number(p.meetingID) === Number(action.response.meetingID) &&
-          Number(p.guid) !== Number(action.response.guid),
+          String(p.guid) !== String(action.response.guid),
       );
 
       // Only add if not already present
