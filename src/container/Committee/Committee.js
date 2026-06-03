@@ -49,7 +49,6 @@ import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
-import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
 import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
@@ -75,9 +74,7 @@ const Committee = () => {
     (state) => state.CommitteeReducer.realtimeCommitteeStatus,
   );
 
-  const CommitteeReducerArcheivedCommittees = useSelector(
-    (state) => state.CommitteeReducer.ArcheivedCommittees,
-  );
+
 
   const CommitteeReducerrealtimeCommitteeCreateResponse = useSelector(
     (state) => state.CommitteeReducer.realtimeCommitteeCreateResponse,
@@ -140,7 +137,6 @@ const Committee = () => {
 
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -796,7 +792,6 @@ const Committee = () => {
             <ViewUpdateCommittee
               setViewCommitteePage={setViewCommitteePage}
               viewCommitteeTab={viewCommitteeTab}
-              ViewcommitteeID={ViewcommitteeID}
             />
           </>
         ) : (
