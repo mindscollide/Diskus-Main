@@ -1512,7 +1512,7 @@ const setCommitteePollsApi = (navigate, t, data) => {
               dispatch(
                 setCommitteePolls_success(
                   response.data.responseResult,
-                  t("Record-save")
+                  ""
                 )
               );
               let OrganizationID = localStorage.getItem("organizationID");

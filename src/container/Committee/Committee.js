@@ -137,6 +137,7 @@ const Committee = () => {
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
   const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
+
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
   const [ViewcommitteeID, setViewCommitteeID] = useState(0);
@@ -145,6 +146,7 @@ const Committee = () => {
     message: "",
     severity: "error",
   });
+  console.log(viewCommitteeTab, "viewCommitteeTabviewCommitteeTab")
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   const [showActiveGroup, setShowActivegroup] = useState(false);

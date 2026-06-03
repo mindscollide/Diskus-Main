@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button} from "../../../components/elements";
+import { Button } from "../../../components/elements";
 
 import ViewModal from "../../meeting/quickMeeting/ViewQuickMeeting";
 import { Col, Row } from "react-bootstrap";
@@ -14,17 +14,7 @@ import { useDispatch } from "react-redux";
 
 import UpdateQuickMeeting from "../../meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import CreateQuickMeeting from "../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
-import {
-  activeChatBoxGS,
-  addNewChatScreen,
-  chatBoxActiveFlag,
-  createGroupScreen,
-  createShoutAllScreen,
-  footerActionStatus,
-  footerShowHideStatus,
-  headerShowHideStatus,
-  recentChatFlag,
-} from "../../../store/actions/Talk_Feature_actions";
+
 import { getMeetingByCommitteeIdApi } from "../../../store/actions/Committee_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
@@ -38,11 +28,7 @@ import CommitteeProposedMeetings from "./committeeProposedMeetings";
 import CommitteeDraftMeetings from "./committeeDraftMeetings";
 import { useCommitteeContext } from "../../../context/CommitteeContext";
 import { activeChat } from "../../../store/actions/Talk_action";
-import { useMeetingContext } from "../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
-import { clearMessegesUserManagement } from "../../../store/actions/UserManagementActions";
-import { clearResponseNewMeetingReducerMessage } from "../../../store/actions/NewMeetingActions";
-import { clearResponseMessage } from "../../../store/actions/MeetingAgenda_action";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -50,15 +36,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const ResponseMessages = useSelector(
-    (state) => state.MeetingOrganizersReducer.ResponseMessage,
-  );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage,
-  );
-  const ResponseMessageUserMangementReducer = useSelector(
-    (state) => state.UserMangementReducer.ResponseMessage,
-  );
   const {
     currentCommitteeMeetingTabActive,
     setCurrentCommitteeMeetingTabActive,
@@ -71,10 +48,10 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   } = useNewMeetingContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
-
   let userID = localStorage.getItem("userID");
 
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  const [talkGroupID, setTalkGroupID] = useState(0);
 
   useEffect(() => {
     let searchData = {
@@ -90,9 +67,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     };
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
 
-    return () => {
-      setCurrentCommitteeMeetingTabActive(1);
-    };
+    // return () => {
+    //   setCurrentCommitteeMeetingTabActive(1);
+    // };
   }, []);
 
   const handleClickTabNavigate = (value) => {
@@ -111,8 +88,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     };
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
   };
-
-  const [talkGroupID, setTalkGroupID] = useState(0);
 
   useEffect(() => {
     if (
@@ -133,57 +108,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     }
   }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessages !== "" &&
-        ResponseMessages !== undefined &&
-        ResponseMessages !== "" &&
-        ResponseMessages !== t("No-records-found") &&
-        ResponseMessages !== t("No-record-found")
-      ) {
-        dispatch(clearResponseMessage(""));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessages]);
-
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("No-record-found") &&
-        ResponseMessage !== t("No-records-found") &&
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("List-updated-successfully") &&
-        ResponseMessage !== t("No-data-available") &&
-        ResponseMessage !== t("Successful") &&
-        ResponseMessage !== t("Record-updated") &&
-        ResponseMessage !== t("Something-went-wrong") &&
-        ResponseMessage !== undefined
-      ) {
-        dispatch(clearResponseNewMeetingReducerMessage(""));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessage]);
-
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessageUserMangementReducer !== "" &&
-        ResponseMessageUserMangementReducer !== undefined
-      ) {
-        dispatch(clearMessegesUserManagement());
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessageUserMangementReducer]);
-
   const handelCreateMeeting = () => {
     setIsQuickMeetingCreate(true);
   };
@@ -202,15 +126,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     <>
       {isQuickMeetingCreate && (
         <CreateQuickMeeting
-          show={isQuickMeetingCreate}
           // this is check from where its called 6 is from committee create
           checkFlag={6}
         />
       )}
-      {isQuickMeetingView && <ViewModal viewFlag={isQuickMeetingView} />}
+      {isQuickMeetingView && <ViewModal />}
       {isQuickMeetingUpdate && (
         <UpdateQuickMeeting
-          editFlag={isQuickMeetingUpdate}
           // this is check from where its called 6 is from committee create
           checkFlag={6}
         />

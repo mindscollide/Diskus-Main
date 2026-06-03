@@ -87,8 +87,6 @@ const MeetingDetails = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  
-
   // const cancelModalMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
   // );
@@ -341,9 +339,7 @@ const MeetingDetails = () => {
       const updatedRows = [...rows];
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // const addRow = () => {
@@ -565,7 +561,7 @@ const MeetingDetails = () => {
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      
+
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -619,7 +615,8 @@ const MeetingDetails = () => {
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: currentMeetingStatus === 8 ? 11: currentMeetingStatus,
+          MeetingStatusID:
+            currentMeetingStatus === 8 ? 11 : currentMeetingStatus,
         },
       };
       dispatch(SaveMeetingDetailsApi(navigate, t, data, context, {}));
@@ -868,9 +865,7 @@ const MeetingDetails = () => {
           MeetingType: typeData,
         }));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   // Showing The reposnse messege
@@ -960,24 +955,23 @@ const MeetingDetails = () => {
           getmeetingDates.length > 0
         ) {
           getmeetingDates.forEach((data, index) => {
-            newDateTimeData.push({
-              selectedOption: convertDateTimetoGMTMeetingDetail(
-                data.meetingDate + data.startTime,
-              ).slice(0, 8),
-              startDate: convertDateTimetoGMTMeetingDetail(
-                data.meetingDate + data.startTime,
-              ).slice(8, 14),
-              endDate: convertDateTimetoGMTMeetingDetail(
-                data.meetingDate + data.endTime,
-              ).slice(8, 14),
-              endTime: resolutionResultTable(data.meetingDate + data.endTime),
-              startTime: resolutionResultTable(
-                data.meetingDate + data.startTime,
-              ),
-              dateForView: resolutionResultTable(
-                data.meetingDate + data.startTime,
-              ),
-            });
+            if (data.meetingDate !== "10000101") {
+              newDateTimeData.push({
+                endTime: resolutionResultTable(data.meetingDate + data.endTime),
+                startTime: resolutionResultTable(
+                  data.meetingDate + data.startTime,
+                ),
+                dateForView: resolutionResultTable(
+                  data.meetingDate + data.startTime,
+                ),
+              });
+            } else {
+              newDateTimeData.push({
+                dateForView: getCurrentDateforMeeting.DateGMT,
+                startTime: getStartTime?.newFormatTime,
+                endTime: getEndTime?.newFormatTime,
+              });
+            }
           });
         }
         setRows(newDateTimeData);
@@ -1101,7 +1095,7 @@ const MeetingDetails = () => {
                   lg={committeeInfo === null && groupInfo === null ? 6 : 12}
                   md={committeeInfo === null && groupInfo === null ? 6 : 12}
                   sm={committeeInfo === null && groupInfo === null ? 6 : 12}
-                className='my-2'>
+                  className='my-2'>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>

@@ -1,72 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Notification,
-  ResultMessage,
-  Table,
-} from "../../../components/elements";
-import {
-  getCurrentDateTimeUTC,
-  newTimeFormaterAsPerUTCFullDate,
-  utcConvertintoGMT,
-} from "../../../commen/functions/date_formater";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import ClipIcon from "../../../assets/images/ClipIcon.png";
-import CommentIcon from "../../../assets/images/Comment-Icon.png";
-import VideoIcon from "../../../assets/images/Video-Icon.png";
-import member from "../../../assets/images/member.svg";
-import addmore from "../../../assets/images/addmore.png";
+import { Button } from "../../../components/elements";
+
 import { Col, Row } from "react-bootstrap";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
-import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import ReactBootstrapDropdown from "react-bootstrap/Dropdown";
 
-import {
-  clearResponseNewMeetingReducerMessage,
-  JoinCurrentMeeting,
-  meetingNotConductedMQTT,
-} from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
-import CustomPagination from "../../../commen/functions/customPagination/Paginations";
-import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
-import { truncateString } from "../../../commen/functions/regex";
-import {
-  createCommitteeMeeting,
-  getMeetingStatusfromSocket,
-} from "../../../store/actions/GetMeetingUserId";
-import { Checkbox, Dropdown, Menu } from "antd";
-import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
-import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
-import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
-import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+
 import UpdateQuickMeeting from "../../meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import CreateQuickMeeting from "../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import ViewModal from "../../meeting/quickMeeting/ViewQuickMeeting";
-import {
-  activeChatBoxGS,
-  addNewChatScreen,
-  chatBoxActiveFlag,
-  createGroupScreen,
-  createShoutAllScreen,
-  footerActionStatus,
-  footerShowHideStatus,
-  headerShowHideStatus,
-  recentChatFlag,
-} from "../../../store/actions/Talk_Feature_actions";
-import {
-  GetAllUserChats,
-  GetAllUsers,
-  GetAllUsersGroupsRoomsList,
-  GetGroupMessages,
-  activeChat,
-} from "../../../store/actions/Talk_action";
-import { StatusValue } from "@/container/meeting/commonComponents/statusJson";
-import { getMeetingByCommitteeIdApi } from "../../../store/actions/Committee_actions";
+
+import { activeChat } from "../../../store/actions/Talk_action";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
   setAdvanceMeetingRoute,
@@ -74,42 +22,19 @@ import {
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
 } from "../../../store/actions/ModalStates_actions";
-import CreateEditAdvanceMeeting from "../../meeting/advanceMeeting/createEditAdvanceMeeting";
-import ViewMeetingModal from "../../meeting/advanceMeeting/viewAdvanceMeeting";
-import CommitteePublishedMeetingList from "./groupPublishMeetings";
-import CommitteeProposedMeetings from "./groupProposedMeetings";
-import CommitteeDraftMeetings from "./groupDraftMeetings";
-import { useCommitteeContext } from "../../../context/CommitteeContext";
+
 import { getMeetingbyGroupIdApi } from "../../../store/actions/Groups_actions";
 import { useGroupsContext } from "../../../context/GroupsContext";
 import GroupProposedMeetings from "./groupProposedMeetings";
 import GroupDraftMeetings from "./groupDraftMeetings";
 import GroupPublishedMeetingList from "./groupPublishMeetings";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
-import { clearMessegesUserManagement } from "../../../store/actions/UserManagementActions";
-import { clearResponseMessage } from "../../../store/actions/MeetingAgenda_action";
+import { Plus } from "react-bootstrap-icons";
 
 const GroupMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const ResponseMessages = useSelector(
-    (state) => state.MeetingOrganizersReducer.ResponseMessage,
-  );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage,
-  );
-  const ResponseMessageUserMangementReducer = useSelector(
-    (state) => state.UserMangementReducer.ResponseMessage,
-  );
-
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   const { currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive } =
     useGroupsContext();
@@ -118,9 +43,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
     isQuickMeetingCreate,
     setIsQuickMeetingCreate,
     isQuickMeetingUpdate,
-    setIsQuickMeetingUpdate,
     isQuickMeetingView,
-    setIsQuickMeetingView,
   } = useNewMeetingContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
@@ -136,9 +59,9 @@ const GroupMeetingTab = ({ groupStatus }) => {
       HostName: "",
       UserID: Number(userID),
       PageNumber: 1,
-      Length: 50,
-      PublishedMeetings: true,
-      ProposedMeetings: false,
+      Length: 30,
+      PublishedMeetings: currentGroupMeetingTabActive === 1 ? true : false,
+      ProposedMeetings: currentGroupMeetingTabActive === 2 ? true : false,
     };
     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
   }, []);
@@ -154,7 +77,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
       UserID: Number(userID),
       PageNumber: 1,
       Length: 30,
-      PublishedMeetings: value === 2 ? false : value === 1 ? true : false,
+      PublishedMeetings: value === 1 ? true : false,
       ProposedMeetings: value === 2 ? true : false,
     };
     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
@@ -195,77 +118,17 @@ const GroupMeetingTab = ({ groupStatus }) => {
     dispatch(toggleCreateEditProposedMeetingModal(true));
   };
 
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessages !== "" &&
-        ResponseMessages !== undefined &&
-        ResponseMessages !== t("No-records-found") &&
-        ResponseMessages !== t("No-record-found")
-      ) {
-        showMessage(ResponseMessages, "success", setOpen);
-        dispatch(clearResponseMessage(""));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessages]);
-
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("No-record-found") &&
-        ResponseMessage !== t("No-records-found") &&
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("List-updated-successfully") &&
-        ResponseMessage !== t("No-data-available") &&
-        ResponseMessage !== t("Successful") &&
-        ResponseMessage !== t("Record-updated") &&
-        ResponseMessage !== undefined
-      ) {
-        showMessage(ResponseMessages, "success", setOpen);
-        dispatch(clearResponseNewMeetingReducerMessage(""));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessage]);
-
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessageUserMangementReducer !== "" &&
-        ResponseMessageUserMangementReducer !== undefined
-      ) {
-        showMessage(ResponseMessageUserMangementReducer, "error", setOpen);
-        dispatch(clearMessegesUserManagement());
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessageUserMangementReducer]);
   return (
     <>
       {isQuickMeetingCreate && (
         <CreateQuickMeeting
-          show={isQuickMeetingCreate}
-          setShow={setIsQuickMeetingCreate}
           // this is check from where its called 6 is from group create
           checkFlag={7}
         />
       )}
-      {isQuickMeetingView && (
-        <ViewModal
-          viewFlag={isQuickMeetingView}
-          setViewFlag={setIsQuickMeetingView}
-        />
-      )}
+      {isQuickMeetingView && <ViewModal />}
       {isQuickMeetingUpdate && (
         <UpdateQuickMeeting
-          editFlag={isQuickMeetingUpdate}
-          setEditFlag={setIsQuickMeetingUpdate}
           // this is check from where its called 6 is from group create
           checkFlag={8}
         />
@@ -415,7 +278,6 @@ const GroupMeetingTab = ({ groupStatus }) => {
           </Col>
         ) : null}
       </Row> */}
-      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

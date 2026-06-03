@@ -36,6 +36,18 @@ import { CLEAR_RESPONSE_MESSAGE } from "../../../store/action_types";
  *   const [notify, SnackBar] = useSnackbar();
  *   notify("Saved!", "success");
  */
+
+const ignoredMessages = new Set([
+  "no record found",
+  "no records found",
+  "record found",
+  "record updated",
+  "no record updated",
+  "success",
+  "data available",
+  "Record save"
+]);
+
 const useSnackbar = (watchConfigs = []) => {
   const dispatch = useDispatch();
   const [snackState, setSnackState] = useState({
@@ -65,7 +77,7 @@ const useSnackbar = (watchConfigs = []) => {
       }));
       return { messageKey: values.map((v) => v.message).join("||"), values };
     },
-    (a, b) => a.messageKey === b.messageKey
+    (a, b) => a.messageKey === b.messageKey,
   );
 
   const prevRef = useRef([]);
@@ -76,7 +88,12 @@ const useSnackbar = (watchConfigs = []) => {
     let didShow = false;
     values.forEach(({ message, severity }, i) => {
       const prevMessage = prevRef.current[i]?.message ?? "";
-      if (message && message !== prevMessage) {
+
+      if (
+        message &&
+        message !== prevMessage &&
+        !ignoredMessages.has(message.trim().toLowerCase())
+      ) {
         show(message, severity);
         didShow = true;
       }

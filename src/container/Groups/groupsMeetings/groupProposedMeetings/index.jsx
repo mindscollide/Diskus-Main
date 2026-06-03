@@ -49,13 +49,14 @@ import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/de
 import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
 import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 const GroupProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setResponseByDate } = useNewMeetingContext();
-  const { committeeProposedMeetingData, committeeProposedMeetingDataRecord } =
-    useCommitteeContext();
+  const { groupProposedMeetingData, groupProposedMeetingDataRecord } =
+    useGroupsContext();
   //Current User ID
   //Current Organization
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -545,7 +546,7 @@ const GroupProposedMeetings = () => {
             className='MeetingTable'
             column={columns}
             size={"small"}
-            rows={committeeProposedMeetingData}
+            rows={groupProposedMeetingData}
             sticky={true}
             pagination={false}
             scroll={{
@@ -556,7 +557,7 @@ const GroupProposedMeetings = () => {
             }}
           />
         </Col>{" "}
-        {committeeProposedMeetingData.length > 0 && (
+        {groupProposedMeetingData.length > 0 && (
           <Col className={styles["ProposedMeeting_Pagination"]}>
             <div className='d-flex justify-content-center mt-2 '>
               <Row className={styles["PaginationStyle-Committee"]}>
@@ -575,7 +576,7 @@ const GroupProposedMeetings = () => {
                       meetingpageRow !== null ? Number(meetingpageRow) : 50
                     }
                     // onChange={handelChangePagination}
-                    total={committeeProposedMeetingDataRecord}
+                    total={groupProposedMeetingDataRecord}
                     showSizer={true}
                     pageSizeOptionsValues={["30", "50", "100", "200"]}
                   />

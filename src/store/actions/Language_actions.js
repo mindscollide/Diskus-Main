@@ -131,7 +131,7 @@ const changeNewLanguage = (data, navigate, t) => {
               let newdata = { UserID: Number(data.UserID) };
               dispatch(getSelectedLanguage(newdata, navigate, t));
               await dispatch(
-                setLastSelectedLanguageSuccess(t("Record-Updated"))
+                setLastSelectedLanguageSuccess(t("Record-updated"))
               );
             } else if (
               response.data.responseResult.responseMessage

@@ -548,7 +548,7 @@ const CallRequestReceived = (Data, navigate, t) => {
                   "Video_VideoServiceManager_CallRequestReceived_02".toLowerCase()
                 )
             ) {
-              await dispatch(callRequestReceivedFail(t("No-Record-Updated")));
+              await dispatch(callRequestReceivedFail(t("No-record-updated")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

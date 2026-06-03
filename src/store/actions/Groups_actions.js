@@ -1954,7 +1954,7 @@ const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
               dispatch(
                 setMeetingByGroupID_success(
                   response.data.responseResult,
-                  t("Record-save"),
+                  "",
                 ),
               );
               switch (routePath) {

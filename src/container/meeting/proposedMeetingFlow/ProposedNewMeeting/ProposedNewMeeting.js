@@ -12,6 +12,7 @@ import {
   Button,
   TextField,
   Notification,
+  useSnackbar,
 } from "../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
@@ -62,7 +63,7 @@ const ProposedNewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole, setSceduleMeeting, setEditorRole } = useMeetingContext();
-
+  const [show] = useSnackbar();
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
@@ -165,9 +166,7 @@ const ProposedNewMeeting = () => {
           setEditProposedMeetingID(EditFlowData.meetingID);
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getAllMeetingDetails, isProposedMeetingRoute]);
 
   //Getting All the Participants for edit flow
@@ -178,13 +177,10 @@ const ProposedNewMeeting = () => {
         getAllParticipants.length > 0 &&
         getAllParticipants !== undefined
       ) {
-        
         setDropdowndata(getAllParticipants);
         setMembersParticipants(getAllParticipants);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getAllParticipants]);
 
   const [open, setOpen] = useState({
@@ -203,7 +199,7 @@ const ProposedNewMeeting = () => {
   const [sendResponseBy, setSendResponseBy] = useState({
     date: newDateValue,
   });
-  
+
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
@@ -275,9 +271,7 @@ const ProposedNewMeeting = () => {
           date: convertResponseDate,
         });
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getAllProposedDatesEditFlow, isProposedMeetingRoute]);
 
   const renderLabel = (img, name, isBase64 = false) => (
@@ -439,9 +433,7 @@ const ProposedNewMeeting = () => {
           MeetingType: typeData,
         }));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   //onChange function Search
@@ -459,7 +451,7 @@ const ProposedNewMeeting = () => {
   //Adding the Dates Rows
   const addRow = () => {
     if (rows.length >= 5) {
-      showMessage(t("Not-more-than-5-dates-are-allowed"), "error", setOpen);
+      show(t("Not-more-than-5-dates-are-allowed"), "error");
       return;
     }
     const lastRow = rows[rows.length - 1];
@@ -498,12 +490,11 @@ const ProposedNewMeeting = () => {
           //Checks that if the start time of lower row is less then end time of upper row (same date scenario)
           updatedRows[index - 1].startTime <= updatedRows[index - 1].endTime
         ) {
-          showMessage(
+          show(
             t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime",
             ),
             "error",
-            setOpen,
           );
           //if the scnario gets exist paste the current value that is assigned to it already
           updatedRows[index].startTime = newDate;
@@ -515,10 +506,9 @@ const ProposedNewMeeting = () => {
             updatedRows[index].endTime !== "" &&
             newDate >= updatedRows[index].endTime
           ) {
-            showMessage(
+            show(
               t("Selected-start-time-should-not-be-greater-than-the-endTime"),
               "error",
-              setOpen,
             );
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
@@ -533,10 +523,9 @@ const ProposedNewMeeting = () => {
           updatedRows[index].endTime !== "" &&
           newDate >= updatedRows[index].endTime
         ) {
-          showMessage(
+          show(
             t("Selected-start-time-should-not-be-greater-than-the-endTime"),
             "error",
-            setOpen,
           );
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
@@ -562,10 +551,9 @@ const ProposedNewMeeting = () => {
           updatedRows[index].dateSelect?.toDateString()
       ) {
         if (updatedRows[index - 1].endTime <= updatedRows[index].startTime) {
-          showMessage(
+          show(
             t("Selected-end-time-should-not-be-less-than-the-previous-one"),
             "error",
-            setOpen,
           );
           updatedRows[index].endTime = newDate;
           return;
@@ -575,10 +563,9 @@ const ProposedNewMeeting = () => {
         }
       } else {
         if (newDate <= updatedRows[index].startTime) {
-          showMessage(
+          show(
             t("Selected-end-time-should-not-be-less-than-start-time"),
             "error",
-            setOpen,
           );
           updatedRows[index].endTime = newDate;
           return;
@@ -597,19 +584,13 @@ const ProposedNewMeeting = () => {
       const updatedRows = [...rows];
       updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
     if (rows.length === 1) {
-      showMessage(
-        t("At-least-one-date-time-slot-is-mandatory"),
-        "error",
-        setOpen,
-      );
+      show(t("At-least-one-date-time-slot-is-mandatory"), "error");
     } else {
       // Otherwise, remove the record at the given index
       const updatedRows = [...rows];
@@ -652,31 +633,33 @@ const ProposedNewMeeting = () => {
     // setSceduleMeeting(false);
     // dispatch(scheduleMeetingPageFlag(false));
 
-    dispatch(
-      listOfMeetingsApi(
-        navigate,
-        t,
-        {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings:
-            Number(localStorage.getItem("MeetingCurrentView")) === 1
-              ? true
-              : false,
-          ProposedMeetings:
-            Number(localStorage.getItem("MeetingCurrentView")) === 2
-              ? true
-              : false,
-        },
-        "",
-        {},
-      ),
-    );
+    if (committeeInfo === null && groupInfo === null) {
+      dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+            PublishedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
+          },
+          "",
+          {},
+        ),
+      );
+    }
   };
 
   //For handling  Proposed button ProposedMeeting Page
@@ -701,8 +684,6 @@ const ProposedNewMeeting = () => {
         });
       });
 
-      
-
       let ProposedDates = [];
       rows.forEach((data, index) => {
         ProposedDates.push({
@@ -720,8 +701,6 @@ const ProposedNewMeeting = () => {
           ),
         });
       });
-
-      
 
       // Sorting the Dates array
       let sortedDates = ProposedDates.sort((a, b) => {
@@ -744,7 +723,7 @@ const ProposedNewMeeting = () => {
         multiDatePickerDateChangIntoUTC(sendDate).slice(0, 8) <
         multiDatePickerDateChangIntoUTC(currentDate).slice(0, 8)
       ) {
-        showMessage(t("Send Response  Date has expired"), "error", setOpen);
+        show(t("Send-response-date-has-expired"), "error");
       } else if (
         proposedMeetingDetails.MeetingTitle !== "" &&
         membersParticipants.length !== 0 &&
@@ -772,7 +751,7 @@ const ProposedNewMeeting = () => {
             MeetingStatusID: 11,
           },
         };
-        
+
         dispatch(
           SaveMeetingDetailsApi(navigate, t, data, "updateProposedMeeting", {
             proposedMeetingDetails,
@@ -960,9 +939,8 @@ const ProposedNewMeeting = () => {
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = gellAllCommittesandGroups;
-    
+
     let tem = [...membersParticipants];
-    
 
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
@@ -1093,21 +1071,6 @@ const ProposedNewMeeting = () => {
       setParticipantUsers([]);
     }
   };
-
-  //Handling response Messege in Porposed New Meeting Will Using Meeting Response messege as the api is same
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== undefined &&
-      ResponseMessage !== null
-    ) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(clearResponseNewMeetingReducerMessage());
-    }
-  }, [ResponseMessage]);
 
   return (
     <section>
@@ -1272,7 +1235,6 @@ const ProposedNewMeeting = () => {
                       <Row className='mt-2'>
                         {membersParticipants.length > 0
                           ? membersParticipants.map((participant, index) => {
-                              
                               return (
                                 <>
                                   <Col

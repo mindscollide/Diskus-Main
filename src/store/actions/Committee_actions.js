@@ -1160,7 +1160,7 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()
             ) {
-              await dispatch(assignGroup_Success(t("Record-save")));
+              await dispatch(assignGroup_Success(""));
               dispatch(
                 getAllCommitteesByUserIdActions(navigate, t, currentPage),
               );
@@ -1953,7 +1953,7 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
               dispatch(
                 setMeetingbyCommitteeID_success(
                   response.data.responseResult,
-                  t("Record-save"),
+                  "",
                 ),
               );
               switch (routePath) {

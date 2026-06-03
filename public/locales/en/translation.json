@@ -2778,5 +2778,6 @@
   "Are-you-sure-you-want-to-continue": "Are you sure you want to continue?",
   "The-recording-is-started": "The video call is being recorded.",
   "Agenda-with-attachment": "Agenda with attachment",
-  "Agenda-without-attachment":"Agenda without attachment"
+  "Agenda-without-attachment": "Agenda without attachment",
+  "Send-response-date-has-expired": "Send Response Date has expired"
 }
