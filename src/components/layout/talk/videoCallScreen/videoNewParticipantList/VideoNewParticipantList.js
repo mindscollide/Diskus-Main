@@ -578,7 +578,7 @@ const VideoNewParticipantList = () => {
       dispatch(
         admitRejectAttendeeMainApi(
           {
-            MeetingId: session.currentMeetingID, // ⭐ USE session.currentMeetingID
+            MeetingId: session.currentMeetingID, //  USE session.currentMeetingID
             RoomId: String(session.roomID),
             IsRequestAccepted: flag === 1,
             AttendeeResponseList: filteredWaitingParticipants.map((p) => ({
@@ -598,7 +598,7 @@ const VideoNewParticipantList = () => {
         participantAcceptandReject(
           filteredWaitingParticipants.map((p) => ({
             ...p,
-            meetingID: session.currentMeetingID, // ⭐ USE session.currentMeetingID
+            meetingID: session.currentMeetingID, //  USE session.currentMeetingID
             guid: p.guid,
           })),
         ),
@@ -623,7 +623,7 @@ const VideoNewParticipantList = () => {
    */
   const handleClickAcceptAndReject = useCallback(
     (participantInfo, flag) => {
-      // ⭐ ENSURE meetingID IS NOT UNDEFINED
+      //  ENSURE meetingID IS NOT UNDEFINED
       const meetingID = participantInfo.meetingID || session.currentMeetingID;
 
       dispatch(

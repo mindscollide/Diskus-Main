@@ -1147,28 +1147,21 @@ const SearchBarComponent = ({
 
   // this is select for start date
   const handleStartDatePickerChange = (dates) => {
-    const formattedStarttDate = dates
-      ? new DateObject(dates).format("DD MMMM, YYYY")
-      : "";
     setSelectedStartDate(dates);
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedStartDate: formattedStarttDate,
+      LastModifiedStartDate: new Date(dates),
     });
     setIsStartOpen(false);
   };
 
   // this is select for end date
   const handleEndDatePickerChange = (dates) => {
-    const formattedEndtDate = dates
-      ? new DateObject(dates).format("DD MMMM, YYYY")
-      : "";
     setSelectedEndDate(dates);
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedEndDate: formattedEndtDate,
+      LastModifiedEndDate: new Date(dates),
     });
-
     setIsEndOpen(false);
   };
 

@@ -1940,23 +1940,21 @@ const SearchComponent = ({
 
   // this is select for start date
   const handleStartDatePickerChange = (dates) => {
-    let startDate = dateConverterIntoUTCForDataroom(new Date(dates), 1);
-
-    setSelectedStartDate(new Date(dates));
+    const dateObj = new Date(dates);
+    setSelectedStartDate(dateObj);
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedStartDate: startDate,
+      LastModifiedStartDate: dateObj,
     });
   };
 
   // this is select for end date
   const handleEndDatePickerChange = (dates) => {
-    let endDate = dateConverterIntoUTCForDataroom(new Date(dates), 2);
-
-    setSelectedEndDate(new Date());
+    const dateObj = new Date(dates);
+    setSelectedEndDate(dateObj);
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedEndDate: endDate,
+      LastModifiedEndDate: dateObj,
     });
   };
 
