@@ -89,6 +89,7 @@ import {
   getMeetingDetailsByMeetingIdApi,
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
+  listOfMeetingsApi,
   setCurrentMeetingInfo,
   UpdateMeetingStatusApi,
 } from "../../../store/actions/NewMeeting2.actions";
@@ -1093,16 +1094,22 @@ const PublishedMeetingList = () => {
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(
-      searchNewUserMeeting(navigate, t, {
-        Date: searchFilters.Date,
-        Title: searchFilters.MeetingTitle,
-        HostName: searchFilters.OrganizerName,
-        UserID: Number(userID),
-        PageNumber: Number(current),
-        Length: Number(PageSize),
-        PublishedMeetings: true,
-        ProposedMeetings: false,
-      }),
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: searchFilters.Date,
+          Title: searchFilters.MeetingTitle,
+          HostName: searchFilters.OrganizerName,
+          UserID: Number(userID),
+          PageNumber: Number(current),
+          Length: Number(PageSize),
+          PublishedMeetings: true,
+          ProposedMeetings: false,
+        },
+        "",
+        {},
+      ),
     );
   };
 
