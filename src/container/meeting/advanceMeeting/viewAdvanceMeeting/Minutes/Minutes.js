@@ -111,12 +111,10 @@ const Minutes = () => {
   const addMinuteID = useSelector(
     (state) => state.NewMeetingreducer.addMinuteID,
   );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage,
-  );
-
-  const ResponseMessageMinute = useSelector(
-    (state) => state.MinutesReducer.ResponseMessage,
+  console.log(
+    generalminutesDocumentForMeeting,
+    generalMinutesDocument,
+    "generalMinutesDocumentgeneralMinutesDocument",
   );
   // Initialize previousFileList to an empty array
   let previousFileList = [];
@@ -192,7 +190,7 @@ const Minutes = () => {
     };
 
     if (JSON.parse(isMinutePublished) === true) {
-      dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
+      dispatch(GetPublishedMeetingMinutesApi(navigate, t, Data, "", {}));
       let MeetingDocs = {
         MDID: Data.MeetingID,
       };
@@ -204,13 +202,17 @@ const Minutes = () => {
       );
     } else {
       dispatch(
-        GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID),
+        GetAllGeneralMinutesApiFunc(navigate, t, Data, "getallGeneralMinutes", {
+          advanceMeetingModalID,
+        }),
       );
 
-      dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
+      dispatch(
+        GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, Data2, "", {}),
+      );
     }
 
-    dispatch(GetMinuteReviewFlowByMeetingId(Data, navigate, t));
+    dispatch(GetMinuteReviewFlowByMeetingId(navigate, t, Data, "", {}));
     return () => {
       setUseCase(null);
       setFileAttachments([]);
@@ -358,12 +360,11 @@ const Minutes = () => {
     try {
       if (
         generalMinutesDocument !== undefined &&
-        generalMinutesDocument !== null &&
-        generalMinutesDocument.data.length > 0
+        generalMinutesDocument !== null
       ) {
         let files = [];
         let prevData = [];
-        generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.forEach((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -379,7 +380,9 @@ const Minutes = () => {
         setFileAttachments([]);
         setPreviousFileIDs([]);
       }
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [generalMinutesDocument]);
 
   const handleAgendaWiseClick = () => {
@@ -398,7 +401,9 @@ const Minutes = () => {
       isAgenda: false,
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
+    dispatch(
+      GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, Data2, "", {}),
+    );
     setAgenda(false);
     setGeneral(true);
   };
@@ -685,41 +690,6 @@ const Minutes = () => {
     }
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available") &&
-      ResponseMessage !== t("Something-went-wrong") &&
-      ResponseMessage !== t("Record-available")
-    ) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-    if (
-      ResponseMessageMinute !== t("No-record-found") &&
-      ResponseMessageMinute !== t("No-records-found") &&
-      ResponseMessageMinute !== "" &&
-      ResponseMessageMinute !== t("Record-found") &&
-      ResponseMessageMinute !== t("List-updated-successfully") &&
-      ResponseMessageMinute !== t("No-data-available") &&
-      ResponseMessageMinute !== t("Minute-review-flow-stats-not-available") &&
-      ResponseMessageMinute !== t("Minute-review-flow-not-found") &&
-      ResponseMessageMinute !== t("Something-went-wrong") &&
-      ResponseMessageMinute !== t("Record-available")
-    ) {
-      showMessage(ResponseMessageMinute, "success", setOpen);
-      dispatch(CleareMessegeMinutes());
-    } else {
-      dispatch(CleareMessegeMinutes());
-    }
-  }, [ResponseMessage, ResponseMessageMinute]);
-
   // OWAIS WORK cxx|:::::::>
 
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -761,7 +731,9 @@ const Minutes = () => {
       GetAllOrganizationUsersForReview(navigate, t, setAllReviewers),
     );
 
-    await dispatch(GetMinuteReviewFlowByMeetingId(newData, navigate, t));
+    await dispatch(
+      GetMinuteReviewFlowByMeetingId(navigate, t, newData, "", {}),
+    );
 
     await dispatch(
       GetAllGeneralMinutesApiFunc(
@@ -775,8 +747,8 @@ const Minutes = () => {
     await dispatch(
       GetAllAgendaWiseMinutesApiFunc(
         navigate,
-        newData,
         t,
+        newData,
         Number(advanceMeetingModalID),
         false,
         false,
@@ -1024,12 +996,9 @@ const Minutes = () => {
       IsAgendaMinute: false,
     };
     dispatch(
-      GetMinutesVersionHistoryWithCommentsApi(
-        Data,
-        navigate,
-        t,
+      GetMinutesVersionHistoryWithCommentsApi(navigate, t, Data, "", {
         setShowVersionHistory,
-      ),
+      }),
     );
   };
 
@@ -1042,10 +1011,12 @@ const Minutes = () => {
     };
     dispatch(
       GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
-        Data,
         navigate,
         t,
-        setShowRevisionHistory,
+        Data,
+        "",
+
+        { setShowRevisionHistory },
       ),
     );
   };

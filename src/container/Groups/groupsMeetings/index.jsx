@@ -23,7 +23,10 @@ import {
   toggleCreateEditProposedMeetingModal,
 } from "../../../store/actions/ModalStates_actions";
 
-import { getMeetingbyGroupIdApi } from "../../../store/actions/Groups_actions";
+import {
+  getMeetingbyGroupIdApi,
+  resetViewGroupDetails,
+} from "../../../store/actions/Groups_actions";
 import { useGroupsContext } from "../../../context/GroupsContext";
 import GroupProposedMeetings from "./groupProposedMeetings";
 import GroupDraftMeetings from "./groupDraftMeetings";

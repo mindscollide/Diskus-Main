@@ -187,3 +187,15 @@ body[dir="rtl"] .ResetOkBtn {
   position: absolute;
   bottom: 10px;
 }
+.VoteMeetingButton{
+  max-width: 128px !important;
+  max-height: 25px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+}

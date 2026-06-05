@@ -31,13 +31,10 @@ const ApprovalIncompleteModal = ({
   const publishMinutes = () => {
     let Data = { MeetingID: Number(advanceMeetingModalID) };
     dispatch(
-      MeetingPublishedMinutesApi(
-        Data,
-        navigate,
-        t,
+      MeetingPublishedMinutesApi(navigate, t, Data, "", {
         setApprovalModal,
-        setPublishAnywayModal
-      )
+        setPublishAnywayModal,
+      }),
     );
   };
 
@@ -48,22 +45,22 @@ const ApprovalIncompleteModal = ({
     ) {
       setRejectedUserData(
         MinutesReducer?.GetStatsForPublishingMinutesByWorkFlowIdData
-          ?.rejectedMinutesList
+          ?.rejectedMinutesList,
       );
       setPendingUserData(
         MinutesReducer?.GetStatsForPublishingMinutesByWorkFlowIdData
-          ?.pendingMinutesList
+          ?.pendingMinutesList,
       );
       setTotalRejectedMinutes(
         MinutesReducer?.GetStatsForPublishingMinutesByWorkFlowIdData
-          ?.totalRejected
+          ?.totalRejected,
       );
       setTotalPendingMinutes(
         MinutesReducer?.GetStatsForPublishingMinutesByWorkFlowIdData
-          ?.totalPending
+          ?.totalPending,
       );
       setDeadLineDate(
-        MinutesReducer?.GetStatsForPublishingMinutesByWorkFlowIdData?.deadline
+        MinutesReducer?.GetStatsForPublishingMinutesByWorkFlowIdData?.deadline,
       );
     }
   }, [MinutesReducer.GetStatsForPublishingMinutesByWorkFlowIdData]);
@@ -71,27 +68,26 @@ const ApprovalIncompleteModal = ({
   return (
     <Modal
       show={true}
-      size="md"
+      size='md'
       onHide={() => setApprovalModal(false)}
-      modalHeaderClassName="justify-content-end no-padding-top"
+      modalHeaderClassName='justify-content-end no-padding-top'
       ModalTitle={
         <>
-          <Row className="text-end">
+          <Row className='text-end'>
             <Col
               onClick={() => setApprovalModal(false)}
               lg={12}
               md={12}
               sm={12}
-              className="cursor-pointer"
-            >
-              <img src={Close} alt="" />
+              className='cursor-pointer'>
+              <img src={Close} alt='' />
             </Col>
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
               <p className={styles["approval-confirmation"]}>
                 {t(
-                  "Approval-status-is-incomplete-do-you-want-to-proceed-with-publishing-the-minutes"
+                  "Approval-status-is-incomplete-do-you-want-to-proceed-with-publishing-the-minutes",
                 )}
               </p>
             </Col>
@@ -113,8 +109,7 @@ const ApprovalIncompleteModal = ({
                       dangerouslySetInnerHTML={{
                         __html: data.minuteDetail,
                       }}
-                      className={styles["remove-p-margin"]}
-                    ></div>
+                      className={styles["remove-p-margin"]}></div>
                     <p className={styles["users"]}>
                       {data?.listOfUsers.map((users, index) => {
                         return index === data.listOfUsers.length - 1
@@ -138,8 +133,7 @@ const ApprovalIncompleteModal = ({
                       dangerouslySetInnerHTML={{
                         __html: data.minuteDetail,
                       }}
-                      className={styles["remove-p-margin"]}
-                    ></div>
+                      className={styles["remove-p-margin"]}></div>
                     <p className={styles["users"]}>
                       {data?.listOfUsers.map((users, index) => {
                         return index === data.listOfUsers.length - 1
@@ -167,8 +161,7 @@ const ApprovalIncompleteModal = ({
               sm={12}
               md={12}
               lg={12}
-              className="d-flex align-items-center justify-content-end"
-            >
+              className='d-flex align-items-center justify-content-end'>
               <Button
                 text={t("Cancel")}
                 onClick={() => setApprovalModal(false)}

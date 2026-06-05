@@ -4286,7 +4286,11 @@ const showGetAllAgendaWiseMinutesInit = () => {
   };
 };
 
-const showGetAllAgendaWiseMinutesSuccess = (response, message, loader) => {
+const showGetAllAgendaWiseMinutesSuccess = (
+  response,
+  message,
+  loader = false,
+) => {
   return {
     type: actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS,
     response: response,
@@ -4495,16 +4499,13 @@ const UpdateAgendaWiseMinutesApiFunc = (
               setisEdit(false);
               if (resendFlag === true) {
                 dispatch(
-                  ResendUpdatedMinuteForReview(
-                    resendData,
-                    navigate,
-                    t,
+                  ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
                     setEditMinute,
                     setConfirmationEdit,
                     setResendMinuteForReview,
                     setShowRevisionHistory,
                     isAgenda,
-                  ),
+                  }),
                 );
               }
             } else if (
@@ -4554,16 +4555,13 @@ const UpdateAgendaWiseMinutesApiFunc = (
               );
               if (resendFlag === true) {
                 dispatch(
-                  ResendUpdatedMinuteForReview(
-                    resendData,
-                    navigate,
-                    t,
+                  ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
                     setEditMinute,
                     setConfirmationEdit,
                     setResendMinuteForReview,
                     setShowRevisionHistory,
                     isAgenda,
-                  ),
+                  }),
                 );
               }
             }
@@ -5133,7 +5131,7 @@ const UpdateMinutesGeneralApiFunc = (
                 break;
               default:
                 let Meet = {
-                  MeetingID: currentMeeting,
+                  MeetingID: meetingId,
                 };
                 if (!fileUploadFlag) {
                   await dispatch(
@@ -5141,22 +5139,18 @@ const UpdateMinutesGeneralApiFunc = (
                       navigate,
                       t,
                       Meet,
-                      currentMeeting,
                     ),
                   );
                 }
                 if (resendFlag === true) {
                   dispatch(
-                    ResendUpdatedMinuteForReview(
-                      resendData,
-                      navigate,
-                      t,
+                    ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
                       setEditMinute,
                       setConfirmationEdit,
                       setResendMinuteForReview,
                       setShowRevisionHistory,
                       isAgenda,
-                    ),
+                    }),
                   );
                 }
                 break;
@@ -5203,14 +5197,17 @@ const UpdateMinutesGeneralApiFunc = (
             if (resendFlag === true) {
               dispatch(
                 ResendUpdatedMinuteForReview(
-                  resendData,
                   navigate,
                   t,
-                  setEditMinute,
-                  setConfirmationEdit,
-                  setResendMinuteForReview,
-                  setShowRevisionHistory,
-                  isAgenda,
+                  resendData,
+                  "",
+                  {
+                    setEditMinute,
+                    setConfirmationEdit,
+                    setResendMinuteForReview,
+                    setShowRevisionHistory,
+                    isAgenda,
+                  },
                 ),
               );
             }

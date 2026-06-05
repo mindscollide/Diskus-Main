@@ -24,12 +24,12 @@ const PublishAnywayModal = ({
     let Data = { MeetingID: Number(advanceMeetingModalID) };
     dispatch(
       MeetingPublishedMinutesApi(
-        Data,
         navigate,
         t,
-        setApprovalModal,
-        setPublishAnywayModal
-      )
+        Data,
+        "",
+        { setApprovalModal, setPublishAnywayModal },
+      ),
     );
   };
 
@@ -41,7 +41,7 @@ const PublishAnywayModal = ({
         setShow={() => setPublishAnywayModal(false)} // Set show modal action
         modalFooterClassName={"d-block"} // CSS class for modal footer
         modalHeaderClassName={"d-block"} // CSS class for modal header
-        className="AllReviewedModal" // Additional CSS class for modal
+        className='AllReviewedModal' // Additional CSS class for modal
         onHide={() => {
           setPublishAnywayModal(false); // Hide modal action
         }}
@@ -50,8 +50,8 @@ const PublishAnywayModal = ({
           // Modal body section
           <>
             {/* Delete comment message */}
-            <div className="d-flex justify-content-center align-items-center">
-              <img src={AllReviewed} alt="" />
+            <div className='d-flex justify-content-center align-items-center'>
+              <img src={AllReviewed} alt='' />
             </div>
             <div className={styles["text-section"]}>
               <p className={styles["delete-comment-message"]}>
@@ -68,7 +68,7 @@ const PublishAnywayModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2" // CSS class for flex layout
+                className='d-flex justify-content-center gap-2' // CSS class for flex layout
               >
                 <Button
                   onClick={() => {

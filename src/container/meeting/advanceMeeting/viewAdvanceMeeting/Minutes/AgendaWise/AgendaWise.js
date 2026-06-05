@@ -725,7 +725,9 @@ const AgendaWise = ({
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t));
+    dispatch(
+      GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, Data, "", {}),
+    );
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
         navigate,
@@ -973,10 +975,11 @@ const AgendaWise = ({
     };
     dispatch(
       GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
-        Data,
         navigate,
         t,
-        setShowRevisionHistory,
+        Data,
+        "",
+        { setShowRevisionHistory },
       ),
     );
   };
@@ -989,12 +992,9 @@ const AgendaWise = ({
       IsAgendaMinute: true,
     };
     dispatch(
-      GetMinutesVersionHistoryWithCommentsApi(
-        Data,
-        navigate,
-        t,
+      GetMinutesVersionHistoryWithCommentsApi(navigate, t, Data, "", {
         setShowVersionHistory,
-      ),
+      }),
     );
   };
 

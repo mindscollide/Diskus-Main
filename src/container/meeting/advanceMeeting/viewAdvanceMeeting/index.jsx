@@ -64,7 +64,10 @@ import {
   resetViewTabs,
   toggleViewMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
-import { LeaveMeetingApi, resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
+import {
+  LeaveMeetingApi,
+  resetCurrentMeetingInfo,
+} from "../../../../store/actions/NewMeeting2.actions";
 import NewEndMeetingModal from "../../commonComponents/NewEndMeetingModal/NewEndMeetingModal";
 
 const ViewMeetingModal = () => {
@@ -116,7 +119,8 @@ const ViewMeetingModal = () => {
     iframeRef,
   } = useContext(MeetingContext);
 
-  const { editorRole, setEditorRole,setVideoTalk,setAdvanceMeetingModalID } = useMeetingContext();
+  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID } =
+    useMeetingContext();
 
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
@@ -149,7 +153,6 @@ const ViewMeetingModal = () => {
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
 
-  
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
   );
@@ -518,9 +521,9 @@ const ViewMeetingModal = () => {
         dispatch(setVideoControlHost(false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
-        
-        dispatch(resetCurrentMeetingInfo())
-        dispatch(toggleViewMeetingModal(false))
+
+        dispatch(resetCurrentMeetingInfo());
+        dispatch(toggleViewMeetingModal(false));
         localStorage.setItem("isMeeting", false);
         sessionStorage.removeItem("isMeeting");
 
@@ -544,8 +547,8 @@ const ViewMeetingModal = () => {
     ) {
       try {
         setEditorRole({ status: null, role: null });
-        dispatch(resetCurrentMeetingInfo())
-        dispatch(toggleViewMeetingModal(false))
+        dispatch(resetCurrentMeetingInfo());
+        dispatch(toggleViewMeetingModal(false));
         dispatch(
           searchNewUserMeeting(
             navigate,
@@ -563,9 +566,7 @@ const ViewMeetingModal = () => {
             t,
           ),
         );
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
@@ -576,9 +577,9 @@ const ViewMeetingModal = () => {
     ) {
       try {
         setEditorRole({ status: null, role: null });
-        
-        dispatch(resetCurrentMeetingInfo())
-        dispatch(toggleViewMeetingModal(false))
+
+        dispatch(resetCurrentMeetingInfo());
+        dispatch(toggleViewMeetingModal(false));
         dispatch(
           searchNewUserMeeting(
             navigate,
@@ -596,9 +597,7 @@ const ViewMeetingModal = () => {
             t,
           ),
         );
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
@@ -618,8 +617,8 @@ const ViewMeetingModal = () => {
           editorRole.status !== "9"
         ) {
           setEditorRole({ status: null, role: null });
-          dispatch(resetCurrentMeetingInfo())
-          dispatch(toggleViewMeetingModal(false))
+          dispatch(resetCurrentMeetingInfo());
+          dispatch(toggleViewMeetingModal(false));
           if (isMeetingVideo === true) {
             localStorage.setItem("isCaller", false);
             localStorage.setItem("isMeetingVideo", false);
@@ -636,9 +635,7 @@ const ViewMeetingModal = () => {
           }
           localStorage.setItem("folderDataRoomMeeting", 0);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
@@ -703,9 +700,7 @@ const ViewMeetingModal = () => {
           dispatch(AgendaPollVotingStartedAction(true));
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [AgendaVotingModalStartedData]);
 
   // ─── Web Notification Routing ─────────────────────────────────────────────
@@ -738,9 +733,7 @@ const ViewMeetingModal = () => {
         );
         dispatch(webnotificationGlobalFlag(false));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [globalFunctionWebnotificationFlag]);
 
   // ─── Vote Cast Success Message ────────────────────────────────────────────
@@ -762,14 +755,13 @@ const ViewMeetingModal = () => {
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="my-2">
+      <section className='position-relative'>
+        <Row className='my-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-between"
-          >
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -794,10 +786,10 @@ const ViewMeetingModal = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -992,15 +984,16 @@ const ViewMeetingModal = () => {
               {agenda && <Agenda />}
               {agendaViewer && <AgendaViewer />}
 
-              {Number(editorRole.status) === 11 && (
-                <>
-                  {minutes && <Minutes />}
-                  {actionsPage && <Actions />}
-                  {polls && <Polls />}
-                  {attendance && <Attendence />}
-                  {isRecording && <Recording />}
-                </>
-              )}
+              {Number(editorRole.status) === 1 ||
+                (Number(editorRole.status) === 9 && (
+                  <>
+                    {minutes && <Minutes />}
+                    {actionsPage && <Actions />}
+                    {polls && <Polls />}
+                    {attendance && <Attendence />}
+                    {isRecording && <Recording />}
+                  </>
+                ))}
             </span>
           </Col>
         </Row>

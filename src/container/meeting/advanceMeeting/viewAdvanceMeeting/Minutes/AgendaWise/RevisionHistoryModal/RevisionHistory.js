@@ -57,14 +57,16 @@ const RevisionHistory = ({
   const [minuteDate, setMinuteDate] = useState("");
 
   const editMinuteFunction = (Editdata) => {
-    
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
       MinuteID: Editdata.minuteID,
       IsAgenda: isAgenda,
     };
     dispatch(
-      GetDataForResendMinuteReview(Data, navigate, t, setEditMinute, Editdata),
+      GetDataForResendMinuteReview(navigate, t, Data, "", {
+        setEditMinute,
+        Editdata,
+      }),
     );
   };
 
@@ -96,7 +98,7 @@ const RevisionHistory = ({
       setEditMinuteData(GetDataForResendMinuteReviewData.minuteBundle);
     }
   }, [GetDataForResendMinuteReviewData]);
-  
+
   return (
     <Modal
       onHide={
@@ -197,13 +199,13 @@ const RevisionHistory = ({
                         <Row>
                           <Col lg={12} md={12} sm={12}>
                             <div
-                              className={styles["reviewer-progress-wrapper"]}
-                            >
+                              className={styles["reviewer-progress-wrapper"]}>
                               <Row>
                                 <Col lg={11} md={11} sm={12}>
                                   <div
-                                    className={styles["reviewer-progress-text"]}
-                                  >
+                                    className={
+                                      styles["reviewer-progress-text"]
+                                    }>
                                     <p>
                                       {t("Total")}:{" "}
                                       {
@@ -245,10 +247,9 @@ const RevisionHistory = ({
                                     currentLanguage === "ar"
                                       ? "text-start"
                                       : "text-end"
-                                  }
-                                >
+                                  }>
                                   <img
-                                    alt=""
+                                    alt=''
                                     src={DropdownPurple}
                                     className={
                                       isDrawerOpen === "main"
@@ -265,11 +266,9 @@ const RevisionHistory = ({
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <p
-                                      className={`${styles["text-wrapper-review"]}`}
-                                    >
+                                      className={`${styles["text-wrapper-review"]}`}>
                                       <span
-                                        className={styles["Review-pending"]}
-                                      >
+                                        className={styles["Review-pending"]}>
                                         {t("Pending")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
@@ -287,11 +286,9 @@ const RevisionHistory = ({
                                         )}
                                     </p>
                                     <p
-                                      className={`${styles["text-wrapper-review"]}`}
-                                    >
+                                      className={`${styles["text-wrapper-review"]}`}>
                                       <span
-                                        className={styles["Review-accepted"]}
-                                      >
+                                        className={styles["Review-accepted"]}>
                                         {t("Accepted")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
@@ -309,11 +306,9 @@ const RevisionHistory = ({
                                         )}
                                     </p>
                                     <p
-                                      className={`${styles["text-wrapper-review"]}`}
-                                    >
+                                      className={`${styles["text-wrapper-review"]}`}>
                                       <span
-                                        className={styles["Review-declined"]}
-                                      >
+                                        className={styles["Review-declined"]}>
                                         {t("Rejected")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
@@ -341,15 +336,13 @@ const RevisionHistory = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="position-relative"
-                          >
+                            className='position-relative'>
                             {/* First */}
 
                             <div
                               className={
                                 styles["version-control-wrapper-with-more"]
-                              }
-                            >
+                              }>
                               <span className={styles["with-text"]}>
                                 V
                                 {revisionHistoryData?.mainMinute?.versionNumber}
@@ -365,14 +358,12 @@ const RevisionHistory = ({
                                       __html:
                                         revisionHistoryData?.mainMinute
                                           ?.minutesDetails,
-                                    }}
-                                  ></p>
-                                  <Row className="mt-1">
+                                    }}></p>
+                                  <Row className='mt-1'>
                                     {revisionHistoryData?.mainMinute
                                       ?.minuteAttachmentFiles.length > 0
                                       ? revisionHistoryData?.mainMinute?.minuteAttachmentFiles.map(
                                           (data, index) => {
-                                            
                                             return (
                                               <>
                                                 <Col lg={3} md={3} sm={3}>
@@ -394,25 +385,22 @@ const RevisionHistory = ({
                                   lg={3}
                                   md={3}
                                   sm={12}
-                                  className="position-relative"
-                                >
-                                  <Row className="m-0">
+                                  className='position-relative'>
+                                  <Row className='m-0'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="p-0"
-                                    >
+                                      className='p-0'>
                                       <span
-                                        className={styles["bar-line"]}
-                                      ></span>
+                                        className={styles["bar-line"]}></span>
                                       <p className={styles["uploadedbyuser"]}>
                                         {t("Uploaded-by")}
                                       </p>{" "}
                                       <img
                                         className={styles["edit-icon"]}
                                         src={EditIcon}
-                                        alt=""
+                                        alt=''
                                         onClick={() =>
                                           editMinuteFunction(
                                             revisionHistoryData?.mainMinute,
@@ -424,7 +412,7 @@ const RevisionHistory = ({
                                         <img
                                           src={`data:image/jpeg;base64,${revisionHistoryData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}
                                           className={styles["Image"]}
-                                          alt=""
+                                          alt=''
                                           draggable={false}
                                         />
                                         <p className={styles["agendaCreater"]}>
@@ -437,8 +425,7 @@ const RevisionHistory = ({
                                     </Col>
                                   </Row>
                                   <Row
-                                    className={`${styles["positioning-tb"]} m-0`}
-                                  >
+                                    className={`${styles["positioning-tb"]} m-0`}>
                                     <Col lg={12} md={12} sm={12}>
                                       <p className={styles["time-uploader"]}>
                                         {
@@ -478,78 +465,69 @@ const RevisionHistory = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="position-relative"
-                                  >
+                                    className='position-relative'>
                                     <div
                                       className={
                                         styles["version-control-wrapper"]
-                                      }
-                                    >
+                                      }>
                                       <span></span>
                                     </div>
                                     <div
                                       className={
                                         styles["uploaded-details-rejected"]
-                                      }
-                                    >
+                                      }>
                                       <Row className={styles["inherit-height"]}>
                                         <Col lg={9} md={9} sm={12}>
                                           <p
                                             className={styles["minutes-text"]}
                                             dangerouslySetInnerHTML={{
                                               __html: declineReviewData.reason,
-                                            }}
-                                          ></p>
+                                            }}></p>
                                         </Col>
                                         <Col
                                           lg={3}
                                           md={3}
                                           sm={12}
-                                          className="position-relative"
-                                        >
-                                          <Row className="m-0">
+                                          className='position-relative'>
+                                          <Row className='m-0'>
                                             <Col
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="p-0"
-                                            >
+                                              className='p-0'>
                                               <span
-                                                className={styles["bar-line"]}
-                                              ></span>
+                                                className={
+                                                  styles["bar-line"]
+                                                }></span>
                                               <p
                                                 className={
                                                   styles["uploadedbyuser"]
-                                                }
-                                              >
+                                                }>
                                                 {t("Reviewed-by")}
                                               </p>
                                               <div className={styles["gap-ti"]}>
                                                 <img
                                                   src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                   className={styles["Image"]}
-                                                  alt=""
+                                                  alt=''
                                                   draggable={false}
                                                 />
                                                 <p
                                                   className={
                                                     styles["agendaCreater"]
-                                                  }
-                                                >
+                                                  }>
                                                   {declineReviewData?.actorName}
                                                 </p>
                                               </div>
                                             </Col>
                                           </Row>
                                           <Row
-                                            className={`${styles["positioning-tb"]} m-0`}
-                                          >
+                                            className={`${styles["positioning-tb"]} m-0`}>
                                             <Col lg={12} md={12} sm={12}>
                                               <p
                                                 className={
                                                   styles["time-uploader"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   newDateFormatForMinutes(
                                                     declineReviewData.modifiedOn,
@@ -560,8 +538,7 @@ const RevisionHistory = ({
                                               <p
                                                 className={
                                                   styles["date-uploader"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   newDateFormatForMinutes(
                                                     declineReviewData.modifiedOn,
@@ -595,15 +572,13 @@ const RevisionHistory = ({
                                   <div
                                     className={
                                       styles["reviewer-progress-wrapper"]
-                                    }
-                                  >
+                                    }>
                                     <Row>
                                       <Col lg={11} md={11} sm={12}>
                                         <div
                                           className={
                                             styles["reviewer-progress-text"]
-                                          }
-                                        >
+                                          }>
                                           <p>
                                             {t("Total")}:{" "}
                                             {
@@ -636,10 +611,9 @@ const RevisionHistory = ({
                                           currentLanguage === "ar"
                                             ? "text-start"
                                             : "text-end"
-                                        }
-                                      >
+                                        }>
                                         <img
-                                          alt=""
+                                          alt=''
                                           src={DropdownPurple}
                                           className={
                                             isDrawerOpen === index
@@ -656,13 +630,11 @@ const RevisionHistory = ({
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>
                                           <p
-                                            className={`${styles["text-wrapper-review"]}`}
-                                          >
+                                            className={`${styles["text-wrapper-review"]}`}>
                                             <span
                                               className={
                                                 styles["Review-pending"]
-                                              }
-                                            >
+                                              }>
                                               {t("Pending")}:
                                             </span>{" "}
                                             {reviewData.reviewStats.pendingUsers
@@ -672,13 +644,11 @@ const RevisionHistory = ({
                                               )}
                                           </p>
                                           <p
-                                            className={`${styles["text-wrapper-review"]}`}
-                                          >
+                                            className={`${styles["text-wrapper-review"]}`}>
                                             <span
                                               className={
                                                 styles["Review-accepted"]
-                                              }
-                                            >
+                                              }>
                                               {t("Accepted")}:
                                             </span>{" "}
                                             {reviewData.reviewStats
@@ -688,13 +658,11 @@ const RevisionHistory = ({
                                               )}
                                           </p>
                                           <p
-                                            className={`${styles["text-wrapper-review"]}`}
-                                          >
+                                            className={`${styles["text-wrapper-review"]}`}>
                                             <span
                                               className={
                                                 styles["Review-declined"]
-                                              }
-                                            >
+                                              }>
                                               {t("Rejected")}:
                                             </span>{" "}
                                             {reviewData.reviewStats
@@ -714,8 +682,7 @@ const RevisionHistory = ({
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="position-relative"
-                                >
+                                  className='position-relative'>
                                   {/* First */}
 
                                   <div
@@ -723,8 +690,7 @@ const RevisionHistory = ({
                                       styles[
                                         "version-control-wrapper-with-more"
                                       ]
-                                    }
-                                  >
+                                    }>
                                     <span className={styles["with-text"]}>
                                       V{reviewData.versionNumber}
                                     </span>
@@ -737,37 +703,34 @@ const RevisionHistory = ({
                                           className={styles["minutes-text"]}
                                           dangerouslySetInnerHTML={{
                                             __html: reviewData.minutesDetails,
-                                          }}
-                                        ></p>
+                                          }}></p>
                                       </Col>
                                       <Col
                                         lg={3}
                                         md={3}
                                         sm={12}
-                                        className="position-relative"
-                                      >
-                                        <Row className="m-0">
+                                        className='position-relative'>
+                                        <Row className='m-0'>
                                           <Col
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className="p-0"
-                                          >
+                                            className='p-0'>
                                             <span
-                                              className={styles["bar-line"]}
-                                            ></span>
+                                              className={
+                                                styles["bar-line"]
+                                              }></span>
                                             <p
                                               className={
                                                 styles["uploadedbyuser"]
-                                              }
-                                            >
+                                              }>
                                               {t("Uploaded-by")}
                                             </p>{" "}
                                             {index === 0 && (
                                               <img
                                                 className={styles["edit-icon"]}
                                                 src={EditIcon}
-                                                alt=""
+                                                alt=''
                                                 onClick={() =>
                                                   editMinuteFunction(reviewData)
                                                 }
@@ -777,14 +740,13 @@ const RevisionHistory = ({
                                               <img
                                                 src={`data:image/jpeg;base64,${reviewData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
-                                                alt=""
+                                                alt=''
                                                 draggable={false}
                                               />
                                               <p
                                                 className={
                                                   styles["agendaCreater"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   reviewData?.mainMinute
                                                     ?.userName
@@ -794,14 +756,12 @@ const RevisionHistory = ({
                                           </Col>
                                         </Row>
                                         <Row
-                                          className={`${styles["positioning-tb"]} m-0`}
-                                        >
+                                          className={`${styles["positioning-tb"]} m-0`}>
                                           <Col lg={12} md={12} sm={12}>
                                             <p
                                               className={
                                                 styles["time-uploader"]
-                                              }
-                                            >
+                                              }>
                                               {
                                                 newDateFormatForMinutes(
                                                   reviewData.lastUpdatedDate +
@@ -813,8 +773,7 @@ const RevisionHistory = ({
                                             <p
                                               className={
                                                 styles["date-uploader"]
-                                              }
-                                            >
+                                              }>
                                               {
                                                 newDateFormatForMinutes(
                                                   reviewData.lastUpdatedDate +
@@ -838,13 +797,11 @@ const RevisionHistory = ({
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="position-relative"
-                                        >
+                                          className='position-relative'>
                                           <div
                                             className={
                                               styles["version-control-wrapper"]
-                                            }
-                                          >
+                                            }>
                                             <span></span>
                                           </div>
                                           <div
@@ -852,13 +809,11 @@ const RevisionHistory = ({
                                               styles[
                                                 "uploaded-details-rejected"
                                               ]
-                                            }
-                                          >
+                                            }>
                                             <Row
                                               className={
                                                 styles["inherit-height"]
-                                              }
-                                            >
+                                              }>
                                               <Col lg={9} md={9} sm={12}>
                                                 <p
                                                   className={
@@ -867,45 +822,39 @@ const RevisionHistory = ({
                                                   dangerouslySetInnerHTML={{
                                                     __html:
                                                       declineReviewData.reason,
-                                                  }}
-                                                ></p>
+                                                  }}></p>
                                               </Col>
                                               <Col
                                                 lg={3}
                                                 md={3}
                                                 sm={12}
-                                                className="position-relative"
-                                              >
-                                                <Row className="m-0">
+                                                className='position-relative'>
+                                                <Row className='m-0'>
                                                   <Col
                                                     lg={12}
                                                     md={12}
                                                     sm={12}
-                                                    className="p-0"
-                                                  >
+                                                    className='p-0'>
                                                     <span
                                                       className={
                                                         styles["bar-line"]
-                                                      }
-                                                    ></span>
+                                                      }></span>
                                                     <p
                                                       className={
                                                         styles["uploadedbyuser"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {t("Reviewed-by")}
                                                     </p>
                                                     <div
                                                       className={
                                                         styles["gap-ti"]
-                                                      }
-                                                    >
+                                                      }>
                                                       <img
                                                         src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                         className={
                                                           styles["Image"]
                                                         }
-                                                        alt=""
+                                                        alt=''
                                                         draggable={false}
                                                       />
                                                       <p
@@ -913,8 +862,7 @@ const RevisionHistory = ({
                                                           styles[
                                                             "agendaCreater"
                                                           ]
-                                                        }
-                                                      >
+                                                        }>
                                                         {
                                                           declineReviewData?.actorName
                                                         }
@@ -923,14 +871,12 @@ const RevisionHistory = ({
                                                   </Col>
                                                 </Row>
                                                 <Row
-                                                  className={`${styles["positioning-tb"]} m-0`}
-                                                >
+                                                  className={`${styles["positioning-tb"]} m-0`}>
                                                   <Col lg={12} md={12} sm={12}>
                                                     <p
                                                       className={
                                                         styles["time-uploader"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {
                                                         newDateFormatForMinutes(
                                                           declineReviewData.modifiedOn,
@@ -941,8 +887,7 @@ const RevisionHistory = ({
                                                     <p
                                                       className={
                                                         styles["date-uploader"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {
                                                         newDateFormatForMinutes(
                                                           declineReviewData.modifiedOn,

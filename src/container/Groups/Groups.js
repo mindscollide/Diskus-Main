@@ -25,6 +25,7 @@ import {
   validateEncryptedStringViewGroupsListLinkApi,
   validateEncryptedStringViewGroupDetailLinkApi,
   viewGroupDetails,
+  resetViewGroupDetails,
 } from "../../store/actions/Groups_actions";
 import {
   GetAllUsers,
@@ -213,6 +214,8 @@ const Groups = () => {
       dispatch(viewGroupPageFlag(false));
       localStorage.removeItem("groupsArCurrent");
       localStorage.removeItem("ViewGroupID");
+      dispatch(resetViewGroupDetails())
+
     };
   }, []);
 

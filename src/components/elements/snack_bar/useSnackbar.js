@@ -45,7 +45,8 @@ const ignoredMessages = new Set([
   "no record updated",
   "success",
   "data available",
-  "Record save"
+  "Record save",
+  "No Data available"
 ]);
 
 const useSnackbar = (watchConfigs = []) => {
@@ -87,7 +88,7 @@ const useSnackbar = (watchConfigs = []) => {
     // (avoids re-firing the same message on unrelated re-renders)
     let didShow = false;
     values.forEach(({ message, severity }, i) => {
-      const prevMessage = prevRef.current[i]?.message ?? "";
+      const prevMessage = prevRef.current[i]?.message.toLowerCase() ?? "";
 
       if (
         message &&

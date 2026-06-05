@@ -249,21 +249,21 @@ const GroupProposedMeetings = () => {
         align: "center",
         sorter: (a, b) => {
           const dateA = new Date(
-            a.dateOfMeeting.substring(0, 4),
-            parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8),
+            a.responseDeadLine.substring(0, 4),
+            parseInt(a.responseDeadLine.substring(4, 6)) - 1,
+            a.responseDeadLine.substring(6, 8),
           );
           const dateB = new Date(
-            b.dateOfMeeting.substring(0, 4),
-            parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8),
+            b.responseDeadLine.substring(0, 4),
+            parseInt(b.responseDeadLine.substring(4, 6)) - 1,
+            b.responseDeadLine.substring(6, 8),
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.responseDeadLine + "185958",
           );
           return (
             <span className={styles.columnValue}>{`${moment(meetingDate).format(
@@ -284,52 +284,36 @@ const GroupProposedMeetings = () => {
         dataIndex: "meetingAction",
         width: 90,
         align: "center",
-
         key: "meetingAction",
         render: (text, record) => {
-          let maxValue = record.meetingPoll?.totalNoOfDirectors;
-          let value = record.meetingPoll?.totalNoOfDirectorsVoted;
-          let allVoterVotedCompleted =
-            value === maxValue && value === 0 && maxValue === 0
-              ? null
-              : record.meetingPoll?.totalNoOfDirectors ===
-                record.meetingPoll?.totalNoOfDirectorsVoted;
-
           const isResponseDateGone = forRecentActivity(
             `${record.responseDeadLine}000000`,
           );
           const currentDateObj = new Date();
+
           const isViewPollShown = getDifferentisDateisPassed(
             currentDateObj,
             isResponseDateGone,
           );
-          // if (record.meetingPoll) {
-          //   return (
-          //     allVoterVotedCompleted && (
-          //       <img
-          //         src={rspvGreenIcon}
-          //         height="17.06px"
-          //         width="17.06px"
-          //         alt=""
-          //         draggable="false"
-          //       />
-          //     )
-          //   );
-          // }
-          return (
-            record.isParticipant && (
-              <div className='d-flex justify-content-center align-items-center gap-2'>
-                <div>
-                  <CustomButton
-                    className={styles.VoteMeetingButton}
-                    text={t("Vote")}
-                    disableBtn={isViewPollShown ? true : false}
-                    onClick={() => handleClickActions(record)}
-                  />
+          if (record.isOrganizer) return;
+          if (record.meetingPoll) {
+            if (record.isParticipant) {
+              return (
+                <div className='d-flex justify-content-center align-items-center gap-2'>
+                  <div>
+                    <CustomButton
+                      className={styles.VoteMeetingButton}
+                      text={t("Vote")}
+                      disableBtn={isViewPollShown ? true : false}
+                      onClick={() => handleClickActions(record)}
+                    />
+                  </div>
                 </div>
-              </div>
-            )
-          );
+              );
+            } else {
+              return "-";
+            }
+          }
         },
       },
       {
@@ -363,18 +347,15 @@ const GroupProposedMeetings = () => {
                 />
               </>
             ) : (
-              <>
-                {" "}
-                <span className={styles["PollRatioValue"]}>
-                  {currentLanguage === "en"
-                    ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
-                    : `${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectorsVoted,
-                      )} / ${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectors,
-                      )}`}
-                </span>
-              </>
+              <span className={styles["PollRatioValue"]}>
+                {currentLanguage === "en"
+                  ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
+                  : `${convertToArabicNumerals(
+                      record.meetingPoll?.totalNoOfDirectorsVoted,
+                    )} / ${convertToArabicNumerals(
+                      record.meetingPoll?.totalNoOfDirectors,
+                    )}`}
+              </span>
             );
           } else {
             return null;
@@ -387,53 +368,13 @@ const GroupProposedMeetings = () => {
         width: 130,
         key: "meetingAction",
         render: (text, record) => {
-          const isResponseDateGone = forRecentActivity(
-            `${record.responseDeadLine}000000`,
-          );
-          const currentDateObj = new Date();
-
-          const isViewPollShown = getDifferentisDateisPassed(
-            currentDateObj,
-            isResponseDateGone,
-          );
-
-          return record.isParticipant ? (
-            <div className='d-flex justify-content-center align-items-center gap-2'>
-              <div>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text='Send Reply'
-                  disableBtn={isViewPollShown ? true : false}
-                  onClick={
-                    () => handleClickActions(record)
-                    // viewProposeDatePollHandler(
-                    //   true,
-                    //   false,
-                    //   false,
-                    //   record.pK_MDID,
-                    //   record.responseDeadLine,
-                    // )
-                  }
-                />
-              </div>
-            </div>
-          ) : record.isOrganizer ? (
+          return record.isOrganizer ? (
             <div className='d-flex justify-content-center align-items-center gap-2'>
               <div>
                 <CustomButton
                   className={styles.MoreMeetingButton}
                   text={t("View-poll")}
-                  onClick={
-                    () => handleClickActions(record)
-
-                    // onClick={() =>
-                    //   viewProposeDatePollHandler(
-                    //     false,
-                    //     false,
-                    //     true,
-                    //     record.pK_MDID,
-                    //   )
-                  }
+                  onClick={() => handleClickActions(record)}
                 />
               </div>
             </div>

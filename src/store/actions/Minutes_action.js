@@ -159,61 +159,61 @@ const ListOfDefaultRejectionComments = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ListOfDefaultRejectinComments_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ListOfDefaultRejectinComments_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getListOfDefaultRejectionComments_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ListOfDefaultRejectinComments_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ListOfDefaultRejectinComments_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getListOfDefaultRejectionComments_Fail(
-                  t("No-data-available", data)
-                )
+                  t("No-data-available", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ListOfDefaultRejectinComments_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ListOfDefaultRejectinComments_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 getListOfDefaultRejectionComments_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 getListOfDefaultRejectionComments_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              getListOfDefaultRejectionComments_Fail(t("Something-went-wrong"))
+              getListOfDefaultRejectionComments_Fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getListOfDefaultRejectionComments_Fail(t("Something-went-wrong"))
+            getListOfDefaultRejectionComments_Fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getListOfDefaultRejectionComments_Fail(t("Something-went-wrong"))
+          getListOfDefaultRejectionComments_Fail(t("Something-went-wrong")),
         );
       });
   };
@@ -249,7 +249,6 @@ const clearPendingApprovalCount = () => {
 
 // GetPendingApprovalsCount
 const GetPendingApprovalsCount = (navigate, t) => {
-
   return (dispatch) => {
     dispatch(getPendingApprovalsCount_Init());
     let form = new FormData();
@@ -266,39 +265,39 @@ const GetPendingApprovalsCount = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PendingApprovalsCount_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PendingApprovalsCount_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getPendingApprovalsCount_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PendingApprovalsCount_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PendingApprovalsCount_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
-                getPendingApprovalsCount_Fail(t("No-data-available", data))
+                getPendingApprovalsCount_Fail(t("No-data-available", data)),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PendingApprovalsCount_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PendingApprovalsCount_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getPendingApprovalsCount_Fail(t("Something-went-wrong"))
+                getPendingApprovalsCount_Fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getPendingApprovalsCount_Fail(t("Something-went-wrong"))
+                getPendingApprovalsCount_Fail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -322,7 +321,7 @@ const getMinuteReviewStatsForOrganizerByMeetingId_Init = () => {
 
 const getMinuteReviewStatsForOrganizerByMeetingId_Success = (
   response,
-  message
+  message,
 ) => {
   return {
     type: actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_SUCCESS,
@@ -333,7 +332,7 @@ const getMinuteReviewStatsForOrganizerByMeetingId_Success = (
 
 const getMinuteReviewStatsForOrganizerByMeetingId_Fail = (
   message,
-  response
+  response,
 ) => {
   return {
     type: actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_FAIL,
@@ -343,14 +342,19 @@ const getMinuteReviewStatsForOrganizerByMeetingId_Fail = (
 };
 
 //GetMinuteReviewStatsForOrganizerByMeetingId
-const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
-
+const GetMinuteReviewStatsForOrganizerByMeetingId = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return (dispatch) => {
     dispatch(getMinuteReviewStatsForOrganizerByMeetingId_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinuteReviewStatsForOrganizerByMeetingId.RequestMethod
+      getMinuteReviewStatsForOrganizerByMeetingId.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -359,7 +363,13 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetMinuteReviewStatsForOrganizerByMeetingId(Data, navigate, t)
+            GetMinuteReviewStatsForOrganizerByMeetingId(
+              navigate,
+              t,
+              Data,
+              routePath,
+              object,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -367,80 +377,80 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("Minute-review-flow-stats-not-available", data)
-                )
+                  t("Minute-review-flow-stats-not-available", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_03".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("Minute-review-flow-not-found", data)
-                )
+                  t("Minute-review-flow-not-found", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewStatsForOrganizerByMeetingId_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
           getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
       });
   };
@@ -470,13 +480,12 @@ const getAllOrganizationUsersForReview_Fail = (message, response) => {
 
 //GetAllOrganizationUsersForReview
 const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
-
   return (dispatch) => {
     dispatch(getAllOrganizationUsersForReview_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getAllOrganizationUsersForReview.RequestMethod
+      getAllOrganizationUsersForReview.RequestMethod,
     );
     axiosInstance
       .post(workflowApi, form)
@@ -484,7 +493,7 @@ const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetAllOrganizationUsersForReview(navigate, t, setAllReviewers)
+            GetAllOrganizationUsersForReview(navigate, t, setAllReviewers),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -492,58 +501,62 @@ const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_01".toLowerCase(),
                 )
             ) {
               setAllReviewers(response.data.responseResult.organizationUsers);
               dispatch(
                 getAllOrganizationUsersForReview_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getAllOrganizationUsersForReview_Fail(
-                  t("No-data-available", data)
-                )
+                  t("No-data-available", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetAllOrganizationUsersForReview_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+                getAllOrganizationUsersForReview_Fail(
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
-                getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+                getAllOrganizationUsersForReview_Fail(
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+              getAllOrganizationUsersForReview_Fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+            getAllOrganizationUsersForReview_Fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getAllOrganizationUsersForReview_Fail(t("Something-went-wrong"))
+          getAllOrganizationUsersForReview_Fail(t("Something-went-wrong")),
         );
       });
   };
@@ -572,14 +585,19 @@ const getMinutesForReviewerByMeetingId_Fail = (message, response) => {
 };
 
 //GetMinutesForReviewerByMeetingId
-const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
-
+const GetMinutesForReviewerByMeetingId = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return (dispatch) => {
     dispatch(getMinutesForReviewerByMeetingId_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinutesForReviewerByMeetingId.RequestMethod
+      getMinutesForReviewerByMeetingId.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -587,92 +605,104 @@ const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+          dispatch(
+            GetMinutesForReviewerByMeetingId(
+              navigate,
+              t,
+              Data,
+              routePath,
+              object,
+            ),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinutesForReviewerByMeetingId_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinutesForReviewerByMeetingId_Fail(
-                  t("No-data-available", data)
-                )
+                  t("No-data-available", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_03".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinutesForReviewerByMeetingId_Fail(
                   t("Minute-review-flow-not-found"),
-                  data
-                )
+                  data,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_04".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinutesForReviewerByMeetingId_Fail(
                   t("User-has-not-been-assigned-any-minutes-to-review"),
-                  data
-                )
+                  data,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_05".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinutesForReviewerByMeetingId_05".toLowerCase(),
                 )
             ) {
               dispatch(
-                getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+                getMinutesForReviewerByMeetingId_Fail(
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
-                getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+                getMinutesForReviewerByMeetingId_Fail(
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+              getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+            getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong"))
+          getMinutesForReviewerByMeetingId_Fail(t("Something-went-wrong")),
         );
       });
   };
@@ -686,7 +716,7 @@ const getMinuteReviewPendingApprovalsStatsByReviewerId_Init = () => {
 
 const getMinuteReviewPendingApprovalsStatsByReviewerId_Success = (
   response,
-  message
+  message,
 ) => {
   return {
     type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_SUCCESS,
@@ -697,7 +727,7 @@ const getMinuteReviewPendingApprovalsStatsByReviewerId_Success = (
 
 const getMinuteReviewPendingApprovalsStatsByReviewerId_Fail = (
   message,
-  response
+  response,
 ) => {
   return {
     type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_FAIL,
@@ -708,13 +738,12 @@ const getMinuteReviewPendingApprovalsStatsByReviewerId_Fail = (
 
 //GetMinuteReviewPendingApprovalsStatsByReviewerId
 const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
-
   return (dispatch) => {
     dispatch(getMinuteReviewPendingApprovalsStatsByReviewerId_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinuteReviewPendingApprovalsStatsByReviewerId.RequestMethod
+      getMinuteReviewPendingApprovalsStatsByReviewerId.RequestMethod,
     );
     axiosInstance
       .post(workflowApi, form)
@@ -722,7 +751,7 @@ const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+            GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -730,67 +759,67 @@ const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinuteReviewPendingApprovalsStatsByReviewerId_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
-                  t("No-data-available", data)
-                )
+                  t("No-data-available", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsStatsByReviewerId_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
           getMinuteReviewPendingApprovalsStatsByReviewerId_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
       });
   };
@@ -804,7 +833,7 @@ const getMinuteReviewPendingApprovalsByReviewerId_Init = () => {
 
 const getMinuteReviewPendingApprovalsByReviewerId_Success = (
   response,
-  message
+  message,
 ) => {
   return {
     type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_SUCCESS,
@@ -815,7 +844,7 @@ const getMinuteReviewPendingApprovalsByReviewerId_Success = (
 
 const getMinuteReviewPendingApprovalsByReviewerId_Fail = (
   message,
-  response
+  response,
 ) => {
   return {
     type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_FAIL,
@@ -825,14 +854,19 @@ const getMinuteReviewPendingApprovalsByReviewerId_Fail = (
 };
 
 //Get Minute REviewPendingApprovalByReviewerID
-const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
-
+const GetMinuteReviewPendingApprovalsByReviewerId = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return (dispatch) => {
     dispatch(getMinuteReviewPendingApprovalsByReviewerId_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinuteReviewPendingApprovalsByReviewerId.RequestMethod
+      getMinuteReviewPendingApprovalsByReviewerId.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -841,7 +875,13 @@ const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t)
+            GetMinuteReviewPendingApprovalsByReviewerId(
+              navigate,
+              t,
+              Data,
+              routePath,
+              object,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -849,67 +889,67 @@ const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinuteReviewPendingApprovalsByReviewerId_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getMinuteReviewPendingApprovalsByReviewerId_Fail(
-                  t("No-data-available", data)
-                )
+                  t("No-data-available", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewPendingApprovalsByReviewerId_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 getMinuteReviewPendingApprovalsByReviewerId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 getMinuteReviewPendingApprovalsByReviewerId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               getMinuteReviewPendingApprovalsByReviewerId_Fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             getMinuteReviewPendingApprovalsByReviewerId_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
           getMinuteReviewPendingApprovalsByReviewerId_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
       });
   };
@@ -946,9 +986,17 @@ const saveMinutesReviewFlow_Fail = (message, response) => {
 };
 
 //SaveMinutesReviewFlow
-const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
-
-
+const SaveMinutesReviewFlow = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+  // Data,
+  // navigate,
+  // t,
+  // setAddReviewers,
+) => {
   return (dispatch) => {
     dispatch(saveMinutesReviewFlow_Init());
     let form = new FormData();
@@ -959,21 +1007,22 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
+          dispatch(SaveMinutesReviewFlow(navigate, t, Data, routePath, object));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_01".toLowerCase(),
                 )
             ) {
+              const { setAddReviewers } = object;
               dispatch(
                 saveMinutesReviewFlow_Success(
                   response.data.responseResult,
-                  t("Minutes-circulated-for-review")
-                )
+                  t("Minutes-circulated-for-review"),
+                ),
               );
               let Data2 = {
                 isAgenda: false,
@@ -987,21 +1036,33 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
                 MeetingID: Data.MeetingID,
               };
               dispatch(
-                GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t)
+                GetMinuteReviewStatsForOrganizerByMeetingId(
+                  navigate,
+                  t,
+                  Data2,
+                  "",
+                  {},
+                ),
               );
               dispatch(
-                GetMinuteReviewStatsForOrganizerByMeetingId(Data3, navigate, t)
+                GetMinuteReviewStatsForOrganizerByMeetingId(
+                  navigate,
+                  t,
+                  Data3,
+                  "",
+                  {},
+                ),
               );
               dispatch(
-                GetMinuteReviewFlowByMeetingId(reviewFlowData, navigate, t)
+                GetMinuteReviewFlowByMeetingId(reviewFlowData, navigate, t),
               );
 
-              setAddReviewers(false);
+              isFunction(setAddReviewers) && setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_02".toLowerCase(),
                 )
             ) {
               let data = [];
@@ -1010,7 +1071,7 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_03".toLowerCase(),
                 )
             ) {
               dispatch(saveMinutesReviewFlow_Fail(t("Flow-not-found-to-edit")));
@@ -1018,14 +1079,15 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_04".toLowerCase(),
                 )
             ) {
+              const { setAddReviewers } = object;
               dispatch(
                 saveMinutesReviewFlow_Success(
                   response.data.responseResult,
-                  t("Minutes-review-flow-edited-successfully")
-                )
+                  t("Minutes-review-flow-edited-successfully"),
+                ),
               );
               let Data2 = {
                 isAgenda: false,
@@ -1036,26 +1098,40 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
                 MeetingID: Data.MeetingID,
               };
               dispatch(
-                GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t)
+                GetMinuteReviewStatsForOrganizerByMeetingId(
+                  navigate,
+                  t,
+                  Data2,
+                  "",
+                  {},
+                ),
               );
               dispatch(
-                GetMinuteReviewStatsForOrganizerByMeetingId(Data3, navigate, t)
+                GetMinuteReviewStatsForOrganizerByMeetingId(
+                  navigate,
+                  t,
+                  Data3,
+                  "",
+                  {},
+                ),
               );
-              setAddReviewers(false);
+              isFunction(setAddReviewers) && setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_05".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_05".toLowerCase(),
                 )
             ) {
+              const { setAddReviewers } = object;
+
               dispatch(saveMinutesReviewFlow_Fail(t("Invalid-data-provided")));
-              setAddReviewers(false);
+              isFunction(setAddReviewers) && setAddReviewers(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_06".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_06".toLowerCase(),
                 )
             ) {
               dispatch(saveMinutesReviewFlow_Fail(t("Something-went-wrong")));
@@ -1063,27 +1139,27 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_07".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_07".toLowerCase(),
                 )
             ) {
               dispatch(
-                saveMinutesReviewFlow_Fail(t("Flow-deleted-successfully"))
+                saveMinutesReviewFlow_Fail(t("Flow-deleted-successfully")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_08".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_08".toLowerCase(),
                 )
             ) {
               dispatch(
-                saveMinutesReviewFlow_Fail(t("Error-while-saving-flow"))
+                saveMinutesReviewFlow_Fail(t("Error-while-saving-flow")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_09".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_09".toLowerCase(),
                 )
             ) {
               dispatch(saveMinutesReviewFlow_Fail(t("Deadline-not-provided")));
@@ -1123,18 +1199,19 @@ const GetMinuteVersionHistorywithComments_fail = (message) => {
 };
 
 const GetMinutesVersionHistoryWithCommentsApi = (
-  Data,
   navigate,
   t,
-  setShowVersionHistory
+  Data,
+  routePath,
+  object,
+  // setShowVersionHistory,
 ) => {
-
   return (dispatch) => {
     dispatch(GetMinuteVersionHistorywithComments_init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinuteVersionHistoryWithComments.RequestMethod
+      getMinuteVersionHistoryWithComments.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -1144,87 +1221,90 @@ const GetMinutesVersionHistoryWithCommentsApi = (
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             GetMinutesVersionHistoryWithCommentsApi(
-              Data,
               navigate,
               t,
-              setShowVersionHistory
-            )
+              Data,
+              routePath,
+              object,
+              // setShowVersionHistory,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            const { setShowVersionHistory } = object;
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteVersionHistorywithComments_success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
               setShowVersionHistory(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteVersionHistorywithComments_fail(
-                  t("No-version-history-available")
-                )
+                  t("No-version-history-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteVersionHistorywithComments_fail(
-                  t("Minute-review-flow-not-found")
-                )
+                  t("Minute-review-flow-not-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteVersionHistoryWithComments_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteVersionHistorywithComments_fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 GetMinuteVersionHistorywithComments_fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               GetMinuteVersionHistorywithComments_fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
-            GetMinuteVersionHistorywithComments_fail(t("Something-went-wrong"))
+            GetMinuteVersionHistorywithComments_fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          GetMinuteVersionHistorywithComments_fail(t("Something-went-wrong"))
+          GetMinuteVersionHistorywithComments_fail(t("Something-went-wrong")),
         );
       });
   };
@@ -1237,7 +1317,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_init = () => {
 };
 const GetMinuteReviewDetailsByOrganizerByMinuteId_success = (
   response,
-  message
+  message,
 ) => {
   return {
     type: actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_SUCCESS,
@@ -1253,18 +1333,19 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_fail = (message) => {
 };
 
 const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
-  Data,
   navigate,
   t,
-  setShowRevisionHistory
+  Data,
+  routePath,
+  object = {},
+  // setShowRevisionHistory,
 ) => {
-
   return (dispatch) => {
     dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinuteReviewDetailsForOrganizerByMinuteId.RequestMethod
+      getMinuteReviewDetailsForOrganizerByMinuteId.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -1274,33 +1355,36 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             GetMinuteReviewDetailsByOrganizerByMinuteId_Api(
-              Data,
               navigate,
               t,
-              setShowRevisionHistory
-            )
+              Data,
+              routePath,
+              object,
+              // setShowRevisionHistory,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            const { setShowRevisionHistory } = object;
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
               setShowRevisionHistory(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_02".toLowerCase(),
                 )
             ) {
               dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_fail(""));
@@ -1308,53 +1392,53 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  t("Minute-review-flow-not-found")
-                )
+                  t("Minute-review-flow-not-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
           GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
       });
   };
@@ -1391,17 +1475,13 @@ const getMinuteReviewFlowByMeetingId_Init = () => {
 };
 
 const getMinuteReviewFlowByMeetingId_Success = (response, message) => {
-  
   try {
-    
     return {
       type: actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS,
       response: response,
       message: message,
     };
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 const getMinuteReviewFlowByMeetingId_Fail = (message, response) => {
@@ -1413,108 +1493,116 @@ const getMinuteReviewFlowByMeetingId_Fail = (message, response) => {
 };
 
 //GetMinuteReviewFlowByMeetingId
-const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
-
+const GetMinuteReviewFlowByMeetingId = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return (dispatch) => {
     dispatch(getMinuteReviewFlowByMeetingId_Init());
     let form = new FormData();
     form.append("RequestMethod", getMinuteReviewFlowByMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     try {
-      axiosInstance.post(workflowApi, form)
+      axiosInstance
+        .post(workflowApi, form)
 
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
-            dispatch(GetMinuteReviewFlowByMeetingId(Data, navigate, t));
+            dispatch(
+              GetMinuteReviewFlowByMeetingId(
+                navigate,
+                t,
+                Data,
+                routePath,
+                object,
+              ),
+            );
           } else if (response.data.responseCode === 200) {
             if (response.data.responseResult.isExecuted === true) {
               if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_01".toLowerCase()
+                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_01".toLowerCase(),
                   )
               ) {
-                
                 try {
                   dispatch(
                     getMinuteReviewFlowByMeetingId_Success(
                       response.data.responseResult,
-                      ""
-                    )
+                      "",
+                    ),
                   );
                 } catch (error) {
-                  
+                  console.log(error);
                 }
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_02".toLowerCase()
+                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_02".toLowerCase(),
                   )
               ) {
-                
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
-                    t("No-data-available", data)
-                  )
+                    t("No-data-available", data),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_03".toLowerCase()
+                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_03".toLowerCase(),
                   )
               ) {
-                
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
                     t("Minute-review-flow-not-found"),
-                    data
-                  )
+                    data,
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_04".toLowerCase()
+                    "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_04".toLowerCase(),
                   )
               ) {
-                
                 dispatch(
-                  getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+                  getMinuteReviewFlowByMeetingId_Fail(
+                    t("Something-went-wrong"),
+                  ),
                 );
               } else {
-                
                 dispatch(
-                  getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+                  getMinuteReviewFlowByMeetingId_Fail(
+                    t("Something-went-wrong"),
+                  ),
                 );
               }
             } else {
-              
               dispatch(
-                getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+                getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong")),
               );
             }
           } else {
-            
             dispatch(
-              getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+              getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong")),
             );
           }
         })
         .catch((response) => {
-          
           dispatch(
-            getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
+            getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong")),
           );
         });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 };
 
@@ -1539,13 +1627,12 @@ const MeetingPublishedMinutes_fail = (message) => {
 };
 
 const MeetingPublishedMinutesApi = (
-  Data,
   navigate,
   t,
-  setApprovalModal,
-  setPublishAnywayModal
+  Data,
+  routePath,
+  object = {},
 ) => {
-
   return (dispatch) => {
     dispatch(MeetingPublishedMinutes_init());
     let form = new FormData();
@@ -1557,42 +1644,39 @@ const MeetingPublishedMinutesApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            MeetingPublishedMinutesApi(
-              Data,
-              navigate,
-              t,
-              setApprovalModal,
-              setPublishAnywayModal
-            )
+            MeetingPublishedMinutesApi(navigate, t, Data, routePath, object),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            const { setApprovalModal, setPublishAnywayModal } = object;
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 MeetingPublishedMinutes_success(
                   response.data.responseResult,
-                  t("Published-successful")
-                )
+                  t("Published-successful"),
+                ),
               );
               setApprovalModal(false);
               setPublishAnywayModal(false);
               localStorage.setItem("isMinutePublished", true);
-              dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
+              dispatch(
+                GetPublishedMeetingMinutesApi(navigate, t, Data, "", {}),
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                MeetingPublishedMinutes_fail(t("Published-Unsuccessful"))
+                MeetingPublishedMinutes_fail(t("Published-Unsuccessful")),
               );
               setApprovalModal(false);
               setPublishAnywayModal(false);
@@ -1600,7 +1684,7 @@ const MeetingPublishedMinutesApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_03".toLowerCase(),
                 )
             ) {
               setApprovalModal(false);
@@ -1618,7 +1702,6 @@ const MeetingPublishedMinutesApi = (
       })
       .catch((response) => {
         dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
-        
       });
   };
 };
@@ -1643,8 +1726,13 @@ const GetPublishedMeetingMinutes_fail = (message) => {
   };
 };
 
-const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
-
+const GetPublishedMeetingMinutesApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
   return (dispatch) => {
     dispatch(GetPublishedMeetingMinutes_init());
     let form = new FormData();
@@ -1655,50 +1743,52 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetPublishedMeetingMinutesApi(Data, navigate, t));
+          dispatch(
+            GetPublishedMeetingMinutesApi(navigate, t, Data, routePath, object),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetPublishedMeetingMinutes_success(
                   response.data.responseResult,
-                  t("Record-available")
-                )
+                  t("Record-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                GetPublishedMeetingMinutes_fail(t("No-record-available"))
+                GetPublishedMeetingMinutes_fail(t("No-record-available")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllPublishedMinutes_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                GetPublishedMeetingMinutes_fail(t("Something-went-wrong"))
+                GetPublishedMeetingMinutes_fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                GetPublishedMeetingMinutes_fail(t("Something-went-wrong"))
+                GetPublishedMeetingMinutes_fail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              GetPublishedMeetingMinutes_fail(t("Something-went-wrong"))
+              GetPublishedMeetingMinutes_fail(t("Something-went-wrong")),
             );
           }
         } else {
@@ -1742,7 +1832,6 @@ const acceptRejectMinuteReview_Fail = (message, response) => {
 
 //AcceptRejectMinuteReview
 const AcceptRejectMinuteReview = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(acceptRejectMinuteReview_Init());
     let form = new FormData();
@@ -1760,14 +1849,14 @@ const AcceptRejectMinuteReview = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 acceptRejectMinuteReview_Success(
                   response.data.responseResult,
-                  t("Minute-review-saved-successfully")
-                )
+                  t("Minute-review-saved-successfully"),
+                ),
               );
               dispatch(reviewMinutesPage(false));
               dispatch(pendingApprovalPage(true));
@@ -1775,7 +1864,7 @@ const AcceptRejectMinuteReview = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_02".toLowerCase(),
                 )
             ) {
               let data = [];
@@ -1784,28 +1873,28 @@ const AcceptRejectMinuteReview = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_03".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 acceptRejectMinuteReview_Fail(
-                  t("Minute-review-not-saved", data)
-                )
+                  t("Minute-review-not-saved", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_AcceptRejectMinuteReview_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                acceptRejectMinuteReview_Fail(t("Something-went-wrong"))
+                acceptRejectMinuteReview_Fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                acceptRejectMinuteReview_Fail(t("Something-went-wrong"))
+                acceptRejectMinuteReview_Fail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -1852,7 +1941,6 @@ const publishMeetingMinutes_Fail = (message, response) => {
 
 //publishMeetingMinutes
 const PublishMeetingMinutes = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(publishMeetingMinutes_Init());
     let form = new FormData();
@@ -1871,33 +1959,35 @@ const PublishMeetingMinutes = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_01".toLowerCase(),
                 )
             ) {
               let data = { MeetingID: Data.MeetingID };
               dispatch(
                 publishMeetingMinutes_Success(
                   response.data.responseResult,
-                  t("Publish-successful")
-                )
+                  t("Publish-successful"),
+                ),
               );
-              dispatch(GetPublishedMeetingMinutesApi(data, navigate, t));
+              dispatch(
+                GetPublishedMeetingMinutesApi(navigate, t, data, "", {}),
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
-                publishMeetingMinutes_Fail(t("Publish-unsuccessful", data))
+                publishMeetingMinutes_Fail(t("Publish-unsuccessful", data)),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_PublishMeetingMinutes_03".toLowerCase(),
                 )
             ) {
               dispatch(publishMeetingMinutes_Fail(t("Something-went-wrong")));
@@ -1941,14 +2031,12 @@ const getDataForResendMinuteReview_Fail = (message, response) => {
 
 //GetDataForResendMinuteReview
 const GetDataForResendMinuteReview = (
-  Data,
   navigate,
   t,
-  setEditMinute,
-  Editdata
+  Data,
+  routePath,
+  object = {},
 ) => {
-  
-
   return (dispatch) => {
     dispatch(getDataForResendMinuteReview_Init());
     let form = new FormData();
@@ -1961,28 +2049,23 @@ const GetDataForResendMinuteReview = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetDataForResendMinuteReview(
-              Data,
-              navigate,
-              t,
-              setEditMinute,
-              Editdata
-            )
+            GetDataForResendMinuteReview(navigate, t, Data, routePath, object),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            const { setEditMinute, Editdata } = object;
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getDataForResendMinuteReview_Success(
                   response.data.responseResult,
-                  t("Record-found")
-                )
+                  t("Record-found"),
+                ),
               );
               isFunction(setEditMinute) && setEditMinute(true);
               dispatch(currentMeetingMinutesToReview(Editdata));
@@ -1990,50 +2073,50 @@ const GetDataForResendMinuteReview = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
                 getDataForResendMinuteReview_Fail(
-                  t("No-review-flow-in-this-meeting", data)
-                )
+                  t("No-review-flow-in-this-meeting", data),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 getDataForResendMinuteReview_Fail(
-                  t("This-minute-has-not-been-sent-for-review")
-                )
+                  t("This-minute-has-not-been-sent-for-review"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetActionableBundleForMinute_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+                getDataForResendMinuteReview_Fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+                getDataForResendMinuteReview_Fail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+              getDataForResendMinuteReview_Fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getDataForResendMinuteReview_Fail(t("Something-went-wrong"))
+            getDataForResendMinuteReview_Fail(t("Something-went-wrong")),
           );
         }
       })
@@ -2067,16 +2150,17 @@ const resendUpdatedMinuteForReview_Fail = (message, response) => {
 
 //ResendUpdatedMinuteForReview
 const ResendUpdatedMinuteForReview = (
-  Data,
   navigate,
   t,
-  setEditMinute,
-  setConfirmationEdit,
-  setResendMinuteForReview,
-  setShowRevisionHistory,
-  isAgenda
+  Data,
+  routePath,
+  object = {},
+  // setEditMinute,
+  // setConfirmationEdit,
+  // setResendMinuteForReview,
+  // setShowRevisionHistory,
+  // isAgenda,
 ) => {
-
   return (dispatch) => {
     dispatch(resendUpdatedMinuteForReview_Init());
     let form = new FormData();
@@ -2087,21 +2171,30 @@ const ResendUpdatedMinuteForReview = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ResendUpdatedMinuteForReview(Data, navigate, t));
+          dispatch(
+            ResendUpdatedMinuteForReview(navigate, t, Data, routePath, object),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            const {
+              setEditMinute,
+              setConfirmationEdit,
+              setResendMinuteForReview,
+              setShowRevisionHistory,
+              isAgenda,
+            } = object;
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 resendUpdatedMinuteForReview_Success(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
               setEditMinute(false);
               setConfirmationEdit(false);
@@ -2119,8 +2212,8 @@ const ResendUpdatedMinuteForReview = (
                     Data.MeetingID,
                     false,
                     false,
-                    false
-                  )
+                    false,
+                  ),
                 );
               } else {
                 let newData = {
@@ -2132,38 +2225,38 @@ const ResendUpdatedMinuteForReview = (
                     navigate,
                     t,
                     newData,
-                    Data.MeetingID
-                  )
+                    Data.MeetingID,
+                  ),
                 );
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_02".toLowerCase(),
                 )
             ) {
               let data = [];
               dispatch(
-                resendUpdatedMinuteForReview_Fail(t("Invalid-data", data))
+                resendUpdatedMinuteForReview_Fail(t("Invalid-data", data)),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 resendUpdatedMinuteForReview_Fail(
-                  t("Minute-review-flow-not-found")
-                )
+                  t("Minute-review-flow-not-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_04".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_04".toLowerCase(),
                 )
             ) {
               dispatch(resendUpdatedMinuteForReview_Fail(t("Unsuccessful")));
@@ -2171,37 +2264,37 @@ const ResendUpdatedMinuteForReview = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_05".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_05".toLowerCase(),
                 )
             ) {
               dispatch(
-                resendUpdatedMinuteForReview_Fail(t("Something-went-wrong"))
+                resendUpdatedMinuteForReview_Fail(t("Something-went-wrong")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_06".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_ResendUpdatedMinuteForReview_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 resendUpdatedMinuteForReview_Fail(
-                  t("Deadline-cannot-be-in-past")
-                )
+                  t("Deadline-cannot-be-in-past"),
+                ),
               );
             } else {
               dispatch(
-                resendUpdatedMinuteForReview_Fail(t("Something-went-wrong"))
+                resendUpdatedMinuteForReview_Fail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              resendUpdatedMinuteForReview_Fail(t("Something-went-wrong"))
+              resendUpdatedMinuteForReview_Fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            resendUpdatedMinuteForReview_Fail(t("Something-went-wrong"))
+            resendUpdatedMinuteForReview_Fail(t("Something-went-wrong")),
           );
         }
       })
@@ -2235,13 +2328,12 @@ const getPendingApprovalStatsThisWeek_Fail = (message, response) => {
 
 //ResendUpdatedMinuteForReview
 const getPendingApprovalStatsThisWeekApi = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(getPendingApprovalStatsThisWeek_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getMinuteAndSignatureApprovalThisWeekRM.RequestMethod
+      getMinuteAndSignatureApprovalThisWeekRM.RequestMethod,
     );
     // form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -2256,20 +2348,20 @@ const getPendingApprovalStatsThisWeekApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getPendingApprovalStatsThisWeek_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_02".toLowerCase(),
                 )
             ) {
               dispatch(getPendingApprovalStatsThisWeek_Fail(t("")));
@@ -2277,31 +2369,31 @@ const getPendingApprovalStatsThisWeekApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetMinuteAndSignatureApprovalsThisWeek_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+                getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+                getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+              getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+            getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong"))
+          getPendingApprovalStatsThisWeek_Fail(t("Something-went-wrong")),
         );
       });
   };
@@ -2315,7 +2407,7 @@ const getStatsForPublishingMinutesByWorkFlowId_Init = () => {
 
 const getStatsForPublishingMinutesByWorkFlowId_Success = (
   response,
-  message
+  message,
 ) => {
   return {
     type: actions.GET_STATSFORPUBLISHINGMINUTESBYWORKFLOWID_SUCCESS,
@@ -2334,19 +2426,18 @@ const getStatsForPublishingMinutesByWorkFlowId_Fail = (message, response) => {
 
 //GetStatsForPublishingMinutesByWorkFlowId
 const GetStatsForPublishingMinutesByWorkFlowId = (
-  Data,
   navigate,
   t,
-  setApprovalModal,
-  setPublishAnywayModal
+  Data,
+  routePath,
+  object = {},
 ) => {
-
   return (dispatch) => {
     dispatch(getStatsForPublishingMinutesByWorkFlowId_Init());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getStatsForPublishingMinutesByWorkFlowId.RequestMethod
+      getStatsForPublishingMinutesByWorkFlowId.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -2356,34 +2447,35 @@ const GetStatsForPublishingMinutesByWorkFlowId = (
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             GetStatsForPublishingMinutesByWorkFlowId(
-              Data,
               navigate,
               t,
-              setApprovalModal,
-              setPublishAnywayModal
-            )
+              Data,
+              routePath,
+              object,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            const { setApprovalModal, setPublishAnywayModal } = object;
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetStatsForPublishingMinutesByWorkFlowId_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetStatsForPublishingMinutesByWorkFlowId_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getStatsForPublishingMinutesByWorkFlowId_Success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
               setApprovalModal(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetStatsForPublishingMinutesByWorkFlowId_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetStatsForPublishingMinutesByWorkFlowId_02".toLowerCase(),
                 )
             ) {
               dispatch(getStatsForPublishingMinutesByWorkFlowId_Fail(t("")));
@@ -2392,41 +2484,41 @@ const GetStatsForPublishingMinutesByWorkFlowId = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetStatsForPublishingMinutesByWorkFlowId_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetStatsForPublishingMinutesByWorkFlowId_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 getStatsForPublishingMinutesByWorkFlowId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 getStatsForPublishingMinutesByWorkFlowId_Fail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               getStatsForPublishingMinutesByWorkFlowId_Fail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             getStatsForPublishingMinutesByWorkFlowId_Fail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
           getStatsForPublishingMinutesByWorkFlowId_Fail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
       });
   };
@@ -2456,13 +2548,12 @@ const MinutesWorkFlowActorStatusFail = (message) => {
 };
 
 const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(MinutesWorkFlowActorStatusInit());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      MinutesWorkFlowActorStatusNotification.RequestMethod
+      MinutesWorkFlowActorStatusNotification.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -2471,7 +2562,7 @@ const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2479,14 +2570,14 @@ const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 MinutesWorkFlowActorStatusSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
               dispatch(reviewMinutesPage(true));
               dispatch(pendingApprovalPage(false));
@@ -2494,7 +2585,7 @@ const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_02".toLowerCase(),
                 )
             ) {
               dispatch(MinutesWorkFlowActorStatusFail(t("")));
@@ -2502,15 +2593,15 @@ const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                MinutesWorkFlowActorStatusFail(t("Something-went-wrong"))
+                MinutesWorkFlowActorStatusFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                MinutesWorkFlowActorStatusFail(t("Something-went-wrong"))
+                MinutesWorkFlowActorStatusFail(t("Something-went-wrong")),
               );
             }
           } else {

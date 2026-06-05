@@ -83,9 +83,7 @@ export const getAllUnpublishedMeetingData = async (
   let newMeetingData = [];
   if (Array.isArray(meetingData) && meetingData?.length > 0) {
     meetingData.forEach(async (data, index) => {
-      const primaryOrganizerA = data.meetingAttendees.find(
-        (item) => item.isPrimaryOrganizer === true,
-      );
+   
       const meetingAgendas =
         data.meetingAgenda !== null &&
         data.meetingAgenda !== undefined &&
@@ -120,7 +118,7 @@ export const getAllUnpublishedMeetingData = async (
           totalNoOfDirectorsVoted:
             data.proposedMeetingDetail?.totalNoOfDirectorsVoted || 0,
         },
-        responseDeadLine: data.responseDeadLine || 0,
+        responseDeadLine:  data?.proposedMeetingDetail?.deadLineDate || "",
         status: data.status,
         title: data.title,
         key: index,

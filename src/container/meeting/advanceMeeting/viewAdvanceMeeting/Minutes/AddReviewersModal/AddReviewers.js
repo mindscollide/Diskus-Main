@@ -43,7 +43,7 @@ const AddReviewers = ({
   const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
 
   const generalminutesDocumentForMeeting = useSelector(
-    (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting
+    (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting,
   );
 
   let currentMeetingTitle = localStorage.getItem("meetingTitle");
@@ -70,10 +70,8 @@ const AddReviewers = ({
   const [selectReviewersArray, setSelectReviewersArray] = useState([]);
 
   const [minuteDate, setMinuteDate] = useState(
-    new Date(new Date().setDate(new Date().getDate() + 1))
+    new Date(new Date().setDate(new Date().getDate() + 1)),
   );
-
-  
 
   //All Agenda wise minutes
   const [minuteDataAgenda, setMinuteDataAgenda] = useState([]);
@@ -94,7 +92,6 @@ const AddReviewers = ({
   };
 
   async function backFunctionMinutes() {
-    
     setSelectedMinuteIDs([]);
     setSelectReviewersArray([]);
     setSelectReviewers(false);
@@ -116,7 +113,7 @@ const AddReviewers = ({
         setSelectedMinuteIDs,
         setSelectReviewersArray,
         minuteReviewDataCheckForEdit,
-        setMinuteReviewDataCheckForEdit
+        setMinuteReviewDataCheckForEdit,
       );
       setSelectReviewers(false);
       setSelectMinutes(true);
@@ -125,7 +122,7 @@ const AddReviewers = ({
 
   const minuteDateHandler = (date, format = "YYYYMMDD") => {
     let minuteDateValueFormat = new Date(date);
-    
+
     minuteDateValueFormat.setHours(23);
     minuteDateValueFormat.setMinutes(59);
     minuteDateValueFormat.setSeconds(58);
@@ -141,7 +138,7 @@ const AddReviewers = ({
       let resultedActionableBundle = createListOfActionAbleBundle(
         minuteDataAgenda,
         minuteDataGeneral,
-        minuteDate
+        minuteDate,
       );
       let Data = {
         MeetingID: Number(advanceMeetingModalID),
@@ -152,7 +149,9 @@ const AddReviewers = ({
         ListOfActionAbleBundle: resultedActionableBundle,
       };
 
-      dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
+      dispatch(
+        SaveMinutesReviewFlow(navigate, t, Data, "", { setAddReviewers }),
+      );
     }
   };
 
@@ -173,13 +172,13 @@ const AddReviewers = ({
 
     return data.map((item) => {
       const matchedMinute = generalMinutesData.find(
-        (minute) => minute.pK_MeetingGeneralMinutesID === item.minuteID
+        (minute) => minute.pK_MeetingGeneralMinutesID === item.minuteID,
       );
 
       const updatedAttachments = matchedMinute
         ? (item.minutesAttachmets || []).map((attachment) => {
             const matchedFile = (matchedMinute.files || []).find(
-              (file) => file.pK_FileID === attachment.fileID
+              (file) => file.pK_FileID === attachment.fileID,
             );
             return matchedFile ? matchedFile : attachment;
           })
@@ -213,12 +212,9 @@ const AddReviewers = ({
       const generalMinutes = NewMeetingreducer.generalMinutes;
 
       if (generalMinutes && Object.keys(generalMinutes).length > 0) {
-        
-
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
         const combinedData = transformDataGeneral(minutesData, documentsData);
-        
 
         if (
           MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
@@ -226,11 +222,9 @@ const AddReviewers = ({
           Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
             .length > 0
         ) {
-          
-
           let date = resolutionResultTable(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
-              ?.workFlow?.deadlineDatetime
+              ?.workFlow?.deadlineDatetime,
           );
 
           setMinuteDate(date);
@@ -242,13 +236,12 @@ const AddReviewers = ({
             MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow;
 
           convertFinalData.forEach((agenda) => {
-            
             let result = findEntityIndexByMinuteID(check, agenda.minuteID);
             // // If matchingData found, update attachments in minuteData
             if (result.found) {
               agenda.apiCheck = true;
               agenda.reviewersList = extractPKUIDsFromActors(
-                check.bundleModels[result.index]
+                check.bundleModels[result.index],
               );
               agenda.bundleID =
                 check.bundleModels[
@@ -265,7 +258,6 @@ const AddReviewers = ({
         setMinuteDataGeneral([]);
       }
     } catch (error) {
-      
       setMinuteDataGeneral([]);
     }
   }, [NewMeetingreducer.generalMinutes]);
@@ -293,7 +285,7 @@ const AddReviewers = ({
           reducerData.agendaHierarchyList.forEach((parentAgenda) => {
             // Find the parent agenda details in the agendaWiseMinutes array
             let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
-              (minute) => minute.agendaID === parentAgenda.pK_MAID
+              (minute) => minute.agendaID === parentAgenda.pK_MAID,
             );
 
             // Initialize an array to hold sub-minutes of the parent agenda
@@ -302,7 +294,7 @@ const AddReviewers = ({
             parentAgenda.childAgendas.forEach((childAgenda) => {
               // Filter the minutes that match the child agenda ID and push to subMinutes
               let childMinutes = reducerData.agendaWiseMinutes.filter(
-                (minute) => minute.agendaID === childAgenda.pK_MAID
+                (minute) => minute.agendaID === childAgenda.pK_MAID,
               );
               subMinutes.push(...childMinutes);
             });
@@ -317,8 +309,8 @@ const AddReviewers = ({
                 ? parentAgendaMinutes[0].agendaTitle
                 : parentAgenda.childAgendas.find((childAgenda) =>
                     subMinutes.some(
-                      (minute) => minute.agendaID === childAgenda.pK_MAID
-                    )
+                      (minute) => minute.agendaID === childAgenda.pK_MAID,
+                    ),
                   )?.parentTitle || "";
 
               let parentAgendaObj = {
@@ -341,7 +333,7 @@ const AddReviewers = ({
                 })),
                 subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
                   let childMinutes = subMinutes.filter(
-                    (minute) => minute.agendaID === childAgenda.pK_MAID
+                    (minute) => minute.agendaID === childAgenda.pK_MAID,
                   );
                   return {
                     agendaID: childAgenda.pK_MAID,
@@ -377,7 +369,8 @@ const AddReviewers = ({
               // Find matching entry in data state by pK_MeetingAgendaMinutesID
               let matchingData =
                 NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                  (entry) =>
+                    entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                 );
 
               // If matchingData found, update attachments in minuteData
@@ -392,7 +385,7 @@ const AddReviewers = ({
                 let matchingData =
                   NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
                     (entry) =>
-                      entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                      entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                   );
 
                 // If matchingData found, update attachments in minuteData
@@ -413,7 +406,7 @@ const AddReviewers = ({
               if (result.found) {
                 minute.apiCheck = true;
                 minute.reviewersList = extractPKUIDsFromActors(
-                  check.bundleModels[result.index]
+                  check.bundleModels[result.index],
                 );
                 minute.bundleID =
                   check.bundleModels[
@@ -430,7 +423,7 @@ const AddReviewers = ({
                 if (result.found) {
                   minute.apiCheck = true;
                   minute.reviewersList = extractPKUIDsFromActors(
-                    check.bundleModels[result.index]
+                    check.bundleModels[result.index],
                   );
                   minute.bundleID =
                     check.bundleModels[
@@ -443,8 +436,6 @@ const AddReviewers = ({
           // Log the transformed data to the console
           setMinuteDataAgenda(convertFinalData);
         } else {
-          
-
           // Store agendaWiseMinutesReducer in a local variable
           let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
           // Initialize an empty array to hold the transformed data
@@ -453,7 +444,7 @@ const AddReviewers = ({
           reducerData.agendaHierarchyList.forEach((parentAgenda) => {
             // Find the parent agenda details in the agendaWiseMinutes array
             let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
-              (minute) => minute.agendaID === parentAgenda.pK_MAID
+              (minute) => minute.agendaID === parentAgenda.pK_MAID,
             );
 
             // Initialize an array to hold sub-minutes of the parent agenda
@@ -462,7 +453,7 @@ const AddReviewers = ({
             parentAgenda.childAgendas.forEach((childAgenda) => {
               // Filter the minutes that match the child agenda ID and push to subMinutes
               let childMinutes = reducerData.agendaWiseMinutes.filter(
-                (minute) => minute.agendaID === childAgenda.pK_MAID
+                (minute) => minute.agendaID === childAgenda.pK_MAID,
               );
               subMinutes.push(...childMinutes);
             });
@@ -477,8 +468,8 @@ const AddReviewers = ({
                 ? parentAgendaMinutes[0].agendaTitle
                 : parentAgenda.childAgendas.find((childAgenda) =>
                     subMinutes.some(
-                      (minute) => minute.agendaID === childAgenda.pK_MAID
-                    )
+                      (minute) => minute.agendaID === childAgenda.pK_MAID,
+                    ),
                   )?.parentTitle || "";
 
               let parentAgendaObj = {
@@ -501,7 +492,7 @@ const AddReviewers = ({
                 })),
                 subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
                   let childMinutes = subMinutes.filter(
-                    (minute) => minute.agendaID === childAgenda.pK_MAID
+                    (minute) => minute.agendaID === childAgenda.pK_MAID,
                   );
                   return {
                     agendaID: childAgenda.pK_MAID,
@@ -537,7 +528,8 @@ const AddReviewers = ({
               // Find matching entry in data state by pK_MeetingAgendaMinutesID
               let matchingData =
                 NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                  (entry) =>
+                    entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                 );
 
               // If matchingData found, update attachments in minuteData
@@ -552,7 +544,7 @@ const AddReviewers = ({
                 let matchingData =
                   NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
                     (entry) =>
-                      entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                      entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                   );
 
                 // If matchingData found, update attachments in minuteData
@@ -568,7 +560,6 @@ const AddReviewers = ({
         }
       }
     } catch (error) {
-      
       setMinuteDataAgenda([]);
     }
   }, [
@@ -576,10 +567,6 @@ const AddReviewers = ({
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
     NewMeetingreducer.GetMinuteReviewFlowByMeetingIdData,
   ]);
-
-  
-  
-  
 
   return (
     <Modal
@@ -591,20 +578,23 @@ const AddReviewers = ({
         (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
           ? "scrollStyle mr-20 mt-16p"
           : !selectMinutes &&
-            currentLanguage === "en" &&
-            (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
-          ? "scrollStyle mr-20 "
-          : selectMinutes &&
-            currentLanguage === "ar" &&
-            (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
-          ? "scrollStyle ml-20 mt-16p"
-          : !selectMinutes &&
-            currentLanguage === "ar" &&
-            (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
-          ? "scrollStyle ml-20 "
-          : minuteDataAgenda.length === 0 || minuteDataGeneral.length === 0
-          ? "emptystatereviewers"
-          : ""
+              currentLanguage === "en" &&
+              (minuteDataAgenda.length !== 0 || minuteDataGeneral.length !== 0)
+            ? "scrollStyle mr-20 "
+            : selectMinutes &&
+                currentLanguage === "ar" &&
+                (minuteDataAgenda.length !== 0 ||
+                  minuteDataGeneral.length !== 0)
+              ? "scrollStyle ml-20 mt-16p"
+              : !selectMinutes &&
+                  currentLanguage === "ar" &&
+                  (minuteDataAgenda.length !== 0 ||
+                    minuteDataGeneral.length !== 0)
+                ? "scrollStyle ml-20 "
+                : minuteDataAgenda.length === 0 ||
+                    minuteDataGeneral.length === 0
+                  ? "emptystatereviewers"
+                  : ""
       }
       modalFooterClassName={
         minuteDataAgenda.length === 0 && minuteDataGeneral.length === 0

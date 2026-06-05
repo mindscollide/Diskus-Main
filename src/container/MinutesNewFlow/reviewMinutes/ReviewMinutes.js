@@ -494,7 +494,7 @@ const ReviewMinutes = () => {
           ),
         );
 
-        dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+        dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
       } else {
         let allAgendaWiseDocs = {
           MDID: currentMeetingMinutesToReviewData?.meetingID,
@@ -518,7 +518,7 @@ const ReviewMinutes = () => {
           ),
         );
 
-        dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+        dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
       }
     } catch {}
     return () => {
