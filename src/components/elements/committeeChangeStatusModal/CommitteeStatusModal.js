@@ -80,7 +80,7 @@ const CommitteeStatusModal = ({ isActive, setIsActive, statusUpdateData }) => {
                 <Button
                   className={styles["ProccedBtn"]}
                   onClick={handleUpdateStatus}
-                  text={t("Procced")}
+                  text={t("Proceed")}
                 />
               </Col>
             </Row>

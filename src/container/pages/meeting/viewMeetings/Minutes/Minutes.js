@@ -800,6 +800,10 @@ const Minutes = () => {
   };
 
   const accordianClick = (data, id, index) => {
+    console.log(
+      { data, id, index },
+      "minutesDataminutesDataminutesDataminutesData",
+    );
     setOpenIndices((prevIndices) =>
       prevIndices.includes(index)
         ? prevIndices.filter((i) => i !== index)
@@ -1952,7 +1956,10 @@ const Minutes = () => {
                 data?.MinuteStats?.rejectedByUsers.length > 0
                   ? true
                   : false;
-
+              console.log(
+                { isOpen, isOpenReviewer, openReviewerDetail, openIndices },
+                "minutesDataminutesData",
+              );
               return (
                 <Row className='mt-2'>
                   <Col
