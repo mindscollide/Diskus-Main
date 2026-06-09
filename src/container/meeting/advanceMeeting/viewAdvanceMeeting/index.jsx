@@ -984,16 +984,16 @@ const ViewMeetingModal = () => {
               {agenda && <Agenda />}
               {agendaViewer && <AgendaViewer />}
 
-              {Number(editorRole.status) === 1 ||
-                (Number(editorRole.status) === 9 && (
-                  <>
+              {/* {Number(editorRole.status) === 10 ||
+                (Number(editorRole.status) === 9 && ( */}
+                  {/* <> */}
                     {minutes && <Minutes />}
                     {actionsPage && <Actions />}
                     {polls && <Polls />}
                     {attendance && <Attendence />}
                     {isRecording && <Recording />}
-                  </>
-                ))}
+                  {/* </> */}
+                {/* // ))} */}
             </span>
           </Col>
         </Row>

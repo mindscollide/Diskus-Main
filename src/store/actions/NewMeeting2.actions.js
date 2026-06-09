@@ -1350,7 +1350,7 @@ export const SaveMeetingOrganizersApi = (
                   await dispatch(
                     saveMeetingOrganizers_success(
                       response.data.responseResult,
-                      t("Organizers-saved-successfully"),
+                      "",
                     ),
                   );
                   dispatch(

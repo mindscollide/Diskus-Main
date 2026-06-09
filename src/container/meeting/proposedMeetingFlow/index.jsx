@@ -61,9 +61,10 @@ const ProposedMeeting = () => {
     setProposedMeetingDataRecord,
     proposedMeetingDataRecord,
     setResponseByDate,
+    responseByDate,
   } = useNewMeetingContext();
 
-  console.log(proposedMeetingData, "proposedMeetingDataproposedMeetingData")
+  console.log(proposedMeetingData,responseByDate, "proposedMeetingDataproposedMeetingData")
   //Current User ID
   //Current Organization
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -115,6 +116,7 @@ const ProposedMeeting = () => {
           t,
           { MeetingID: record.pK_MDID },
           "",
+          {}
         ),
       );
 

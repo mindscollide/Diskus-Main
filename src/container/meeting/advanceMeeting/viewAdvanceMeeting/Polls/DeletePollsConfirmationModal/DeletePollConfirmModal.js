@@ -15,20 +15,19 @@ const DeletePollConfirmModal = ({ pollID }) => {
   const navigate = useNavigate();
   const { advanceMeetingModalID } = useMeetingContext();
   const deletPollsMeeting = useSelector(
-    (state) => state.NewMeetingreducer.deletPollsMeeting
+    (state) => state.NewMeetingreducer.deletPollsMeeting,
   );
   const handleNOFunctionality = () => {
     dispatch(deleteSavedPollsMeeting(false));
   };
 
   const handleYesFunctionality = () => {
-    
     let data = {
       PollID: Number(pollID),
       MeetingID: parseInt(advanceMeetingModalID),
     };
     dispatch(
-      deleteMeetingPollApi(navigate, t, data, Number(advanceMeetingModalID))
+      deleteMeetingPollApi(navigate, t, data, Number(advanceMeetingModalID)),
     );
     dispatch(deleteSavedPollsMeeting(false));
   };
@@ -49,8 +48,7 @@ const DeletePollConfirmModal = ({ pollID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center"
-            >
+              className='d-flex justify-content-center'>
               <span className={styles["UnsaveheadingFileUpload"]}>
                 {t("Are-you-sure-you-want-to-delete-Poll")}
               </span>
@@ -65,8 +63,7 @@ const DeletePollConfirmModal = ({ pollID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center gap-2"
-            >
+              className='d-flex justify-content-center gap-2'>
               <Button
                 text={t("No")}
                 className={styles["Yes_unsave_File_Upload"]}

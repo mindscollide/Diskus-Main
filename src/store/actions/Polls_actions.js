@@ -1,4 +1,3 @@
-
 import {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,
@@ -137,14 +136,13 @@ const LoaderState = () => {
 
 // search Polls
 const searchPollsApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(searchPolls_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", searcPollsRequestMethod.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -156,7 +154,7 @@ const searchPollsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SearchPolls_01".toLowerCase()
+                  "Polls_PollsServiceManager_SearchPolls_01".toLowerCase(),
                 )
             ) {
               dispatch(searchPolls_success(response.data.responseResult, ""));
@@ -164,7 +162,7 @@ const searchPollsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SearchPolls_02".toLowerCase()
+                  "Polls_PollsServiceManager_SearchPolls_02".toLowerCase(),
                 )
             ) {
               dispatch(searchPolls_fail(t("No-records-found")));
@@ -172,7 +170,7 @@ const searchPollsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SearchPolls_03".toLowerCase()
+                  "Polls_PollsServiceManager_SearchPolls_03".toLowerCase(),
                 )
             ) {
               dispatch(searchPolls_fail(t("Something-went-wrong")));
@@ -218,7 +216,6 @@ const deltePollsFailed = (message) => {
 //Delete polls APi
 
 const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
-
   let createrID = parseInt(localStorage.getItem("userID"));
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
   return (dispatch) => {
@@ -226,7 +223,8 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deltePolls.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -238,7 +236,7 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_01".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_01".toLowerCase(),
                 )
             ) {
               let Data = {
@@ -255,22 +253,22 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                 dispatch(
                   deltePollsSuccess(
                     response.data.responseResult,
-                    t("Poll-deleted-successfully")
-                  )
+                    t("Poll-deleted-successfully"),
+                  ),
                 );
               } else {
                 dispatch(
                   deltePollsSuccess(
                     response.data.responseResult,
-                    t("Poll-status-updated-successfully")
-                  )
+                    t("Poll-status-updated-successfully"),
+                  ),
                 );
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_02".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_02".toLowerCase(),
                 )
             ) {
               dispatch(setDeltePollModal(false));
@@ -279,7 +277,7 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_03".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_03".toLowerCase(),
                 )
             ) {
               dispatch(deltePollsFailed(t("Something-went-wrong")));
@@ -325,14 +323,14 @@ const savePolls_fail = (message) => {
 
 // Save polls Api
 const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
-
   return async (dispatch) => {
     dispatch(savePolls_init());
     // Check if the browser is online
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", savePollsRequestMethod.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
+    await axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -348,8 +346,8 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
               await dispatch(
                 savePolls_success(
                   response.data.responseResult,
-                  t("Poll-created")
-                )
+                  t("Poll-created"),
+                ),
               );
               if (value === 1) {
                 let userID = localStorage.getItem("userID");
@@ -370,7 +368,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                   PollID: response.data.responseResult.pollID,
                 };
                 await dispatch(
-                  SetMeetingPollsApiFunc(Data, navigate, t, currentMeeting)
+                  SetMeetingPollsApiFunc(Data, navigate, t, currentMeeting),
                 );
               } else if (value === 3) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -415,8 +413,8 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
             ) {
               dispatch(
                 savePolls_fail(
-                  t("Participant-list-of-consists-of-duplicate-members")
-                )
+                  t("Participant-list-of-consists-of-duplicate-members"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -424,7 +422,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                 .includes("Polls_PollsServiceManager_SavePoll_06".toLowerCase())
             ) {
               dispatch(
-                savePolls_fail(t("There-must-be-at-least-two-poll-options"))
+                savePolls_fail(t("There-must-be-at-least-two-poll-options")),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -475,20 +473,18 @@ const castVoteApi = (
   t,
   check,
   setvotePolls,
-  currnetMeeting
+  currnetMeeting,
 ) => {
-
   return async (dispatch) => {
     dispatch(castVoteInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", castVote.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
-          castVoteApi(navigate, data, t, check, setvotePolls, currnetMeeting)
+          castVoteApi(navigate, data, t, check, setvotePolls, currnetMeeting),
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -500,8 +496,8 @@ const castVoteApi = (
             await dispatch(
               castVoteSuccess(
                 response.data.responseResult,
-                t("Your-vote-is-submitted-successfully")
-              )
+                t("Your-vote-is-submitted-successfully"),
+              ),
             );
             if (check) {
               if (check === 1) {
@@ -584,7 +580,7 @@ const castVoteApi = (
               .includes("Polls_PollsServiceManager_CastVote_04".toLowerCase())
           ) {
             dispatch(
-              castVoteFailed(t("You-are-only-allowed-to-select-one-answer"))
+              castVoteFailed(t("You-are-only-allowed-to-select-one-answer")),
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -638,7 +634,6 @@ const getAllPollsByPollsIDInit = () => {
 };
 
 const getAllPollsByPollsIDSuccess = (response, message) => {
-  
   return {
     type: actions.GET_POLLS_BY_POLLID_SUCCESS,
     response: response,
@@ -662,15 +657,12 @@ const AccessDeniedPolls = (response) => {
 };
 
 const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
-  
-
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(getPollsByPollIdApi(navigate, data, check, t));
@@ -680,7 +672,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase(),
               )
           ) {
             try {
@@ -729,22 +721,20 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
                 await dispatch(setVotePollModal(true));
               }
               dispatch(
-                getAllPollsByPollsIDSuccess(response.data.responseResult, "")
+                getAllPollsByPollsIDSuccess(response.data.responseResult, ""),
               );
-              
+
               if (typeof setEditPolls === "function") {
                 setEditPolls(true);
               }
 
               dispatch(showunsavedEditPollsMeetings(false));
-            } catch (error) {
-              
-            }
+            } catch (error) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
@@ -752,18 +742,18 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase(),
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            
+
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
             //trigger the global access modal
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("Exception")));
@@ -805,16 +795,14 @@ const viewVotesApi = (
   t,
   check,
   setviewVotes,
-  setViewPublishedPoll
+  setViewPublishedPoll,
 ) => {
-
   return async (dispatch) => {
     dispatch(viewVotesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", viewvotes.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(viewVotesApi(navigate, data, t));
@@ -827,11 +815,13 @@ const viewVotesApi = (
           ) {
             if (check) {
               if (Number(check) === 1) {
-                
                 isFunction(setviewVotes) && setviewVotes(true);
                 setViewPublishedPoll(false);
                 await dispatch(
-                  viewVotesSuccess(response.data.responseResult.voteDetails, "")
+                  viewVotesSuccess(
+                    response.data.responseResult.voteDetails,
+                    "",
+                  ),
                 );
               }
             } else {
@@ -841,7 +831,7 @@ const viewVotesApi = (
               await dispatch(globalFlag(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(
-                viewVotesSuccess(response.data.responseResult.voteDetails, "")
+                viewVotesSuccess(response.data.responseResult.voteDetails, ""),
               );
 
               await dispatch(viewVotesDetailsModal(true));
@@ -895,7 +885,6 @@ const getAllcommittesandGroups_fail = (message) => {
   };
 };
 const getAllCommitteesandGroups = (navigate, t, flag) => {
-
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
   let Data = {
     OrganizationID: OrganizationID,
@@ -906,9 +895,10 @@ const getAllCommitteesandGroups = (navigate, t, flag) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      getAllCommittesandGroupsforPolls.RequestMethod
+      getAllCommittesandGroupsforPolls.RequestMethod,
     );
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -920,21 +910,21 @@ const getAllCommitteesandGroups = (navigate, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase()
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getAllcommittesandGroups_success(
                   response.data.responseResult,
                   "",
-                  flag
-                )
+                  flag,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase()
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase(),
                 )
             ) {
               dispatch(getAllcommittesandGroups_fail(t("No-records-found")));
@@ -942,15 +932,15 @@ const getAllCommitteesandGroups = (navigate, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase()
+                  "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getAllcommittesandGroups_fail(t("Something-went-wrong"))
+                getAllcommittesandGroups_fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getAllcommittesandGroups_fail(t("Something-went-wrong"))
+                getAllcommittesandGroups_fail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -993,15 +983,15 @@ const updatePollsApi = (
   t,
   value,
   setEditPolls,
-  currentMeeting
+  currentMeeting,
 ) => {
-
   return async (dispatch) => {
     dispatch(updatePollsInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", updatePolls.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
+    await axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1013,8 +1003,8 @@ const updatePollsApi = (
               t,
               value,
               setEditPolls,
-              currentMeeting
-            )
+              currentMeeting,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1022,14 +1012,14 @@ const updatePollsApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePoll_01".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePoll_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 updatePollsSuccess(
                   response.data.responseResult,
-                  t("Polls-due-date-update-successFully")
-                )
+                  t("Polls-due-date-update-successFully"),
+                ),
               );
               if (typeof setEditPolls === "function") {
                 setEditPolls(false);
@@ -1090,7 +1080,7 @@ const updatePollsApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePoll_02".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePoll_02".toLowerCase(),
                 )
             ) {
               dispatch(updatePollsFailed(t("Poll-not-updated")));
@@ -1098,14 +1088,14 @@ const updatePollsApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePoll_03".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePoll_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 updatePollsSuccess(
                   response.data.responseResult,
-                  t("Poll-details-updated")
-                )
+                  t("Poll-details-updated"),
+                ),
               );
               if (typeof setEditPolls === "function") {
                 setEditPolls(false);
@@ -1166,29 +1156,29 @@ const updatePollsApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePoll_04".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePoll_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                updatePollsFailed(t("There-must-be-atleast-two-Poll-options"))
+                updatePollsFailed(t("There-must-be-atleast-two-Poll-options")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePoll_05".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePoll_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 updatePollsFailed(
-                  t("Participant-list-consists-of-duplicate-members")
-                )
+                  t("Participant-list-consists-of-duplicate-members"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_UpdatePoll_06".toLowerCase()
+                  "Polls_PollsServiceManager_UpdatePoll_06".toLowerCase(),
                 )
             ) {
               dispatch(updatePollsFailed(t("Exception")));
@@ -1228,14 +1218,13 @@ const searchPollsByCommitteeID_fail = (message) => {
 };
 // search Polls
 const GetPollsByCommitteeIDapi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(searchPollsByCommitteeID_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollbyCommitteeIdRM.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1247,20 +1236,20 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByComitteeID_01".toLowerCase()
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 searchPollsByCommitteeID_success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByComitteeID_02".toLowerCase()
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_02".toLowerCase(),
                 )
             ) {
               dispatch(searchPollsByCommitteeID_fail(t("No-records-found")));
@@ -1268,15 +1257,15 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByComitteeID_03".toLowerCase()
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                searchPollsByCommitteeID_fail(t("Something-went-wrong"))
+                searchPollsByCommitteeID_fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                searchPollsByCommitteeID_fail(t("Something-went-wrong"))
+                searchPollsByCommitteeID_fail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -1319,16 +1308,15 @@ const getPollsByGroupMainApi = (
   Data,
   check,
   setEditPoll,
-  setViewPoll
+  setViewPoll,
 ) => {
-
-
   return (dispatch) => {
     dispatch(getPollsByGroupInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getPollByGroupIDApi.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1340,17 +1328,17 @@ const getPollsByGroupMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByGroupID_01".toLowerCase()
+                  "Polls_PollsServiceManager_GetPollsByGroupID_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getPollsByGroupSuccess(response.data.responseResult, "")
+                getPollsByGroupSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByGroupID_02".toLowerCase()
+                  "Polls_PollsServiceManager_GetPollsByGroupID_02".toLowerCase(),
                 )
             ) {
               dispatch(getPollsByGroupFail(t("No-records-found")));
@@ -1358,7 +1346,7 @@ const getPollsByGroupMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByGroupID_03".toLowerCase()
+                  "Polls_PollsServiceManager_GetPollsByGroupID_03".toLowerCase(),
                 )
             ) {
               dispatch(getPollsByGroupFail(t("Something-went-wrong")));
@@ -1400,14 +1388,13 @@ const setGroupFail = (message) => {
 };
 
 const setGroupPollsMainApi = (navigate, t, Data) => {
-
-
   return (dispatch) => {
     dispatch(setGroupInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", setGroupPollsApi.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1419,7 +1406,7 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SetGroupPolls_01".toLowerCase()
+                  "Polls_PollsServiceManager_SetGroupPolls_01".toLowerCase(),
                 )
             ) {
               dispatch(setGroupSuccess(response.data.responseResult, ""));
@@ -1439,7 +1426,7 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SetGroupPolls_02".toLowerCase()
+                  "Polls_PollsServiceManager_SetGroupPolls_02".toLowerCase(),
                 )
             ) {
               dispatch(setGroupFail(t("No-records-found")));
@@ -1447,7 +1434,7 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SetGroupPolls_03".toLowerCase()
+                  "Polls_PollsServiceManager_SetGroupPolls_03".toLowerCase(),
                 )
             ) {
               dispatch(setGroupFail(t("Something-went-wrong")));
@@ -1487,14 +1474,13 @@ const setCommitteePolls_fail = (message) => {
 };
 
 const setCommitteePollsApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(setCommitteePolls_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setCommitteePollsRM.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1506,14 +1492,11 @@ const setCommitteePollsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SetCommitteePolls_01".toLowerCase()
+                  "Polls_PollsServiceManager_SetCommitteePolls_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                setCommitteePolls_success(
-                  response.data.responseResult,
-                  ""
-                )
+                setCommitteePolls_success(response.data.responseResult, ""),
               );
               let OrganizationID = localStorage.getItem("organizationID");
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -1531,7 +1514,7 @@ const setCommitteePollsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SetCommitteePolls_02".toLowerCase()
+                  "Polls_PollsServiceManager_SetCommitteePolls_02".toLowerCase(),
                 )
             ) {
               dispatch(setCommitteePolls_fail(t("No-records-save")));
@@ -1539,7 +1522,7 @@ const setCommitteePollsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_SetCommitteePolls_03".toLowerCase()
+                  "Polls_PollsServiceManager_SetCommitteePolls_03".toLowerCase(),
                 )
             ) {
               dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
@@ -1599,7 +1582,7 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_01".toLowerCase(),
                 )
             ) {
               dispatch(getTaskGroupIdSuccess(response.data.responseResult, ""));
@@ -1607,7 +1590,7 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_02".toLowerCase(),
                 )
             ) {
               dispatch(getTaskGroupIdFail(t("No-records-found")));
@@ -1615,7 +1598,7 @@ const getTasksByGroupIDApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_03".toLowerCase(),
                 )
             ) {
               dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
@@ -1675,7 +1658,7 @@ const setTasksByGroupApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase(),
                 )
             ) {
               dispatch(setTaskGroupSuccess(response.data.responseResult, ""));
@@ -1689,7 +1672,7 @@ const setTasksByGroupApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_02".toLowerCase(),
                 )
             ) {
               dispatch(setTaskGroupFail(t("No-records-found")));
@@ -1697,7 +1680,7 @@ const setTasksByGroupApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_03".toLowerCase(),
                 )
             ) {
               dispatch(setTaskGroupFail(t("Something-went-wrong")));
@@ -1757,17 +1740,17 @@ const getTaskCommitteeIDApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getTaskCommitteeIdSuccess(response.data.responseResult, "")
+                getTaskCommitteeIdSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_02".toLowerCase(),
                 )
             ) {
               dispatch(getTaskCommitteeIdFail(t("No-records-found")));
@@ -1775,7 +1758,7 @@ const getTaskCommitteeIDApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_03".toLowerCase(),
                 )
             ) {
               dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
@@ -1835,11 +1818,11 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                setTaskCommitteeSuccess(response.data.responseResult, "")
+                setTaskCommitteeSuccess(response.data.responseResult, ""),
               );
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -1851,7 +1834,7 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_02".toLowerCase(),
                 )
             ) {
               dispatch(setTaskCommitteeFail(t("No-records-found")));
@@ -1859,7 +1842,7 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_03".toLowerCase(),
                 )
             ) {
               dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
@@ -1902,14 +1885,13 @@ const deleteCommitteePoll_fail = (message) => {
 };
 
 const deleteCommitteePollApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(deleteCommitteePoll_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deleteCommitteePollRM.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1921,14 +1903,14 @@ const deleteCommitteePollApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteCommitteePolls_01".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteCommitteePolls_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 deleteCommitteePoll_success(
                   response.data.responseResult,
-                  t("Record-deleted")
-                )
+                  t("Record-deleted"),
+                ),
               );
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -1946,7 +1928,7 @@ const deleteCommitteePollApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteCommitteePolls_02".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteCommitteePolls_02".toLowerCase(),
                 )
             ) {
               dispatch(deleteCommitteePoll_fail(t("No-records-found")));
@@ -1954,7 +1936,7 @@ const deleteCommitteePollApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteCommitteePolls_03".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteCommitteePolls_03".toLowerCase(),
                 )
             ) {
               dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
@@ -1994,14 +1976,13 @@ const deleteGroupPoll_fail = (message) => {
   };
 };
 const deleteGroupPollApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(deleteGroupPoll_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deleteGroupPollsRM.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -2013,14 +1994,14 @@ const deleteGroupPollApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteGroupPolls_01".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteGroupPolls_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 deleteGroupPoll_success(
                   response.data.responseResult,
-                  t("Record-deleted")
-                )
+                  t("Record-deleted"),
+                ),
               );
               let OrganizationID = localStorage.getItem("organizationID");
               let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -2037,7 +2018,7 @@ const deleteGroupPollApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteGroupPolls_02".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteGroupPolls_02".toLowerCase(),
                 )
             ) {
               dispatch(deleteGroupPoll_fail(t("No-records-deleted")));
@@ -2045,7 +2026,7 @@ const deleteGroupPollApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteGroupPolls_03".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteGroupPolls_03".toLowerCase(),
                 )
             ) {
               dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
@@ -2085,14 +2066,13 @@ const deleteMeetingPoll_fail = (message) => {
   };
 };
 const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
-
-
   return (dispatch) => {
     dispatch(deleteMeetingPoll_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deleteMeetingPollsRM.RequestMethod);
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -2104,14 +2084,14 @@ const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteMeetingPolls_01".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteMeetingPolls_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 deleteMeetingPoll_success(
                   response.data.responseResult,
-                  t("Record-deleted")
-                )
+                  t("Record-deleted"),
+                ),
               );
               let OrganizationID = localStorage.getItem("organizationID");
 
@@ -2128,7 +2108,7 @@ const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteMeetingPolls_02".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteMeetingPolls_02".toLowerCase(),
                 )
             ) {
               dispatch(deleteMeetingPoll_fail(t("No-records-deleted")));
@@ -2136,7 +2116,7 @@ const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_DeleteMeetingPolls_03".toLowerCase()
+                  "Polls_PollsServiceManager_DeleteMeetingPolls_03".toLowerCase(),
                 )
             ) {
               dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
@@ -2164,18 +2144,14 @@ const getPollsByPollIdforCommitteeApi = (
   setEditPolls,
   setvotePolls,
   setUnPublished,
-  setViewPublishedPoll
+  setViewPublishedPoll,
 ) => {
-
-  
-
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2187,8 +2163,8 @@ const getPollsByPollIdforCommitteeApi = (
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -2196,7 +2172,7 @@ const getPollsByPollIdforCommitteeApi = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase(),
               )
           ) {
             if (Number(check) === 1) {
@@ -2210,13 +2186,13 @@ const getPollsByPollIdforCommitteeApi = (
               setViewPublishedPoll(true);
             }
             await dispatch(
-              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
+              getAllPollsByPollsIDSuccess(response.data.responseResult, ""),
             );
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
@@ -2224,17 +2200,17 @@ const getPollsByPollIdforCommitteeApi = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase(),
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            
+
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("Someting-went-wrong")));
@@ -2257,18 +2233,14 @@ const getPollByPollIdforGroups = (
   setvotePolls,
   setUnPublished,
   setViewPublishedPoll,
-  setviewVotes
+  setviewVotes,
 ) => {
-
-  
-
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2280,8 +2252,8 @@ const getPollByPollIdforGroups = (
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -2289,7 +2261,7 @@ const getPollByPollIdforGroups = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase(),
               )
           ) {
             if (Number(check) === 1) {
@@ -2303,13 +2275,13 @@ const getPollByPollIdforGroups = (
               setviewVotes(true);
             }
             await dispatch(
-              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
+              getAllPollsByPollsIDSuccess(response.data.responseResult, ""),
             );
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
@@ -2317,17 +2289,17 @@ const getPollByPollIdforGroups = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase(),
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            
+
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("Someting-went-wrong")));
@@ -2349,18 +2321,14 @@ const getPollByPollIdforMeeting = (
   setEditPolls,
   setvotePolls,
   setUnPublished,
-  setViewPublishedPoll
+  setViewPublishedPoll,
 ) => {
-
-  
-
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2372,8 +2340,8 @@ const getPollByPollIdforMeeting = (
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -2381,7 +2349,7 @@ const getPollByPollIdforMeeting = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase(),
               )
           ) {
             if (Number(check) === 1) {
@@ -2395,13 +2363,13 @@ const getPollByPollIdforMeeting = (
               setViewPublishedPoll(true);
             }
             await dispatch(
-              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
+              getAllPollsByPollsIDSuccess(response.data.responseResult, ""),
             );
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
@@ -2409,17 +2377,17 @@ const getPollByPollIdforMeeting = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase(),
               )
           ) {
             dispatch(AccessDeniedPolls(true));
-            
+
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase()
+                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase(),
               )
           ) {
             dispatch(getAllPollsByPollsIDFailed(t("Someting-went-wrong")));
@@ -2443,7 +2411,6 @@ const createPollMeetingMQTT = (response) => {
   return { type: actions.POLL_CREATE_ADVANCED_MEETING, response: response };
 };
 const deletePollsMQTT = (response) => {
-  
   return { type: actions.DELETE_POLLS_MQTT, deleteData: response };
 };
 const validateStringPoll_init = () => {
@@ -2469,7 +2436,6 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
     let Data = {
       EncryptedString: emailString,
     };
-  
 
     dispatch(validateStringPoll_init());
 
@@ -2477,7 +2443,8 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
     form.append("RequestMethod", ValidateEmailRelatedStringPolls.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axiosInstance.post(pollApi, form)
+    axiosInstance
+      .post(pollApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -2485,8 +2452,14 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
           // Retry the API call
           resolve(
             dispatch(
-              validateStringPollApi(emailString, navigate, t, RouteNo, dispatch)
-            )
+              validateStringPollApi(
+                emailString,
+                navigate,
+                t,
+                RouteNo,
+                dispatch,
+              ),
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2494,14 +2467,14 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_01".toLowerCase()
+                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 validateStringPoll_success(
                   response.data.responseResult?.data,
-                  t("Successfully")
-                )
+                  t("Successfully"),
+                ),
               );
               dispatch(emailRouteID(RouteNo));
               resolve(response.data.responseResult.data);
@@ -2509,7 +2482,7 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_02".toLowerCase()
+                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_02".toLowerCase(),
                 )
             ) {
               dispatch(validateStringPoll_fail(t("Unsuccessful")));
@@ -2518,7 +2491,7 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_03".toLowerCase()
+                  "Polls_PollsServiceManager_ValidateEncryptedStringPollRelatedEmailData_03".toLowerCase(),
                 )
             ) {
               dispatch(validateStringPoll_fail(t("Something-went-wrong")));
@@ -2578,7 +2551,7 @@ const UpdatedCastVoteFail = (message) => {
 };
 
 // const UpdatedCastVoteAPI = (navigate, t, data) => {
-// 
+//
 //   return (dispatch) => {
 //     dispatch(UpdatedCastVoteInit());
 //     let form = new FormData();
@@ -2649,16 +2622,14 @@ const UpdatedCastVoteAPI = (
   t,
   check,
   setvotePolls,
-  currnetMeeting
+  currnetMeeting,
 ) => {
-
   return async (dispatch) => {
     dispatch(UpdatedCastVoteInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", updateCastVotePolls.RequestMethod);
-    await     axiosInstance.post(pollApi, form)
-    .then(async (response) => {
+    await axiosInstance.post(pollApi, form).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2668,8 +2639,8 @@ const UpdatedCastVoteAPI = (
             t,
             check,
             setvotePolls,
-            currnetMeeting
-          )
+            currnetMeeting,
+          ),
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -2677,14 +2648,14 @@ const UpdatedCastVoteAPI = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_UpdateCastedVote_01".toLowerCase()
+                "Polls_PollsServiceManager_UpdateCastedVote_01".toLowerCase(),
               )
           ) {
             await dispatch(
               UpdatedCastVoteSucess(
                 response.data.responseResult,
-                t("Vote-updated")
-              )
+                t("Vote-updated"),
+              ),
             );
             if (check) {
               if (check === 1) {
@@ -2753,7 +2724,7 @@ const UpdatedCastVoteAPI = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_UpdateCastedVote_02".toLowerCase()
+                "Polls_PollsServiceManager_UpdateCastedVote_02".toLowerCase(),
               )
           ) {
             dispatch(UpdatedCastVoteFail(t("No-vote-updated")));
@@ -2761,7 +2732,7 @@ const UpdatedCastVoteAPI = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_UpdateCastedVote_03".toLowerCase()
+                "Polls_PollsServiceManager_UpdateCastedVote_03".toLowerCase(),
               )
           ) {
             dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
@@ -2769,7 +2740,7 @@ const UpdatedCastVoteAPI = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Polls_PollsServiceManager_UpdateCastedVote_04".toLowerCase()
+                "Polls_PollsServiceManager_UpdateCastedVote_04".toLowerCase(),
               )
           ) {
             dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
@@ -2798,7 +2769,7 @@ const UpdatedCastVoteAPI = (
               .includes("Polls_PollsServiceManager_CastVote_07".toLowerCase())
           ) {
             dispatch(
-              UpdatedCastVoteFail(t("The-poll-due-date-has-been-passed"))
+              UpdatedCastVoteFail(t("The-poll-due-date-has-been-passed")),
             );
             dispatch(setEditpollModal(false));
             dispatch(setCreatePollModal(false));

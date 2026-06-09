@@ -808,11 +808,11 @@ const Agenda = () => {
       },
       [t("No-agendas-exist")]: { text: t("No-agendas-exist"), type: "error" },
       [t("Voting-saved")]: {
-        text: t("Agenda-voting-details-saved-successfully"),
+        text: t("Agenda-poll-created"),
         type: "success",
       },
       [t("Voting-updated")]: {
-        text: t("Agenda-voting-details-updated-successfully"),
+        text: t("Agenda-poll-updated"),
         type: "success",
       },
     };

@@ -182,7 +182,7 @@ const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
               await dispatch(
                 saveMeetingOrganizers_success(
                   response.data.responseResult,
-                  t("Organizers-saved-successfully"),
+                  "",
                 ),
               );
               dispatch(GetAllMeetingOrganizers(Data2, navigate, t));

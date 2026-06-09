@@ -1,0 +1,261 @@
+.Scedule_Proposed_meeting_heading {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #6172d6;
+}
+
+.custom-modal-dialog {
+  max-width: 1470px; /* Set your desired max-width */
+  width: 100%; /* Adjust the width as needed */
+}
+
+.custom-modal-content {
+  width: 100%;
+}
+
+.DateButtonSceduleProposedMeeting {
+  font-size: 12px !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+.DateButtonSceduleProposedMeeting:is(:hover, :active, :focus, :focus-visible) {
+  font-size: 12px !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.ParticipantName {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #505050;
+  white-space: nowrap;
+  width: 160px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.WidthOFSpan {
+  line-height: 15px !important;
+  display: flex;
+  flex-direction: column !important;
+}
+
+.Designation {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #6172d6;
+}
+
+.TotalVotes {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #6172d6;
+}
+
+.DateObject {
+  width: auto !important;
+  min-width: 121px !important;
+  height: 29px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  padding: 3px 15px !important;
+  cursor: pointer !important;
+}
+
+.DateObject:is(:active) {
+  width: auto !important;
+  min-width: 121px !important;
+  height: 29px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #e1e1e1 !important;
+  background-color: #6172d6 !important;
+  padding: 3px 15px !important;
+  cursor: pointer !important;
+}
+
+.Date-Object-Detail {
+  width: 200px;
+  padding: 4px 11px;
+  font-size: 16px !important;
+  border: 3px solid #f1f1f1;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #545454;
+  cursor: pointer !important;
+  user-select: none;
+}
+.Date-Object-Detail_disabled {
+  pointer-events: none !important;
+  width: 200px;
+  padding: 4px 11px;
+  font-size: 16px !important;
+  border: 3px solid #f1f1f1;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #545454;
+  cursor: pointer !important;
+  user-select: none;
+}
+
+.Date-Object-Detail_active {
+  width: 200px;
+  background: #ffffff !important;
+  color: #ffffff !important;
+  padding: 4px 11px;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  border: 3px solid #6172d6;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  user-select: none;
+}
+
+.ColoumnOuterBorderBox span {
+  color: #5a5a5a !important;
+}
+
+.forTick {
+  width: 121px !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 8px !important;
+}
+
+.TotalCount {
+  color: #6172d6;
+  font-weight: 600 !important;
+  /* margin-left: 35px !important; */
+}
+
+.bottom_line {
+  display: flex !important;
+  width: auto !important ;
+  min-width: 103% !important ;
+  border: 1px solid #e1e1e1 !important;
+  margin-top: 10px !important;
+}
+
+.OuterBoxCheck {
+  width: 160px !important;
+  border: 3px solid #6172d6 !important;
+  border-radius: 4px !important;
+  min-height: 450px !important;
+  z-index: 1 !important;
+}
+
+.UpperTopLine {
+  display: flex !important;
+  width: auto !important;
+  min-width: 100% !important;
+  border: 1px solid #707070 !important;
+}
+
+.FixedHeight {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.FixedHeight::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.FixedHeight::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.TotalCount_HEading {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #6172d6;
+}
+
+.Sizing {
+  padding: 10px 0px !important;
+}
+
+
+.SceduleButton {
+  padding: 12px 30px !important;
+  background: #6172d6;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.SceduleButton:is(:hover, :active:focus, :focus-visible) {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.border-column {
+  border-left: 1px solid #6172d6;
+  border-right: 1px solid #6172d6;
+}
+
+.SceduleProposedMeeting tbody tr:last-child td {
+  border-bottom: 1px solid #6172d6 !important;
+}
+
+.last-row td {
+  border-bottom: 1px solid #000;
+}
+.border-title {
+  border-top: 1px solid #6172d6;
+  border-top-right-radius: 8px solid #6172d6;
+  border-top-left-radius: 8px solid #6172d6;
+  padding: 8px;
+  text-align: center;
+}
+
+.bottom-border {
+  border-bottom: 1px solid #000; /* Add your border styles here */
+}
+
+.HighlightedColumn {
+  border-left: 1px solid blue !important;
+  border-right: 1px solid blue !important;
+  border-top: 1px solid blue !important;
+  padding: 5px !important;
+}
+
+.Schedule-btn-count {
+  display: flex;
+  padding: 10px 26px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  background-color: #5f78d6 !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.date-time-column {
+  flex-direction: column !important;
+  justify-content: center !important;
+}

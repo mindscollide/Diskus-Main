@@ -929,6 +929,7 @@ const SubAgendaMappingDragging = ({
                                                       type="text"
                                                       as={"textarea"}
                                                       name={"Description"}
+                                                      maxLength={5000}
                                                       value={
                                                         subAgendaData.description
                                                       }

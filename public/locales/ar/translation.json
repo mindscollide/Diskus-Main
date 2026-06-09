@@ -2582,5 +2582,7 @@
   "The-recording-is-started": "The video call is being recorded.",
   "Agenda-with-attachment": "Agenda with attachment",
   "Agenda-without-attachment": "Agenda without attachment",
-  "Send-response-date-has-expired": "Send Response Date has expired"
+  "Send-response-date-has-expired": "Send Response Date has expired",
+  "Agenda-poll-created": "Agenda Poll Created",
+  "Agenda-poll-updated": "Agenda Poll Updated"
 }

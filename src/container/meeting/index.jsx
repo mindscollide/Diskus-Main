@@ -29,14 +29,24 @@ import ViewQuickMeeting from "./quickMeeting/ViewQuickMeeting";
 import {
   setAdvanceMeetingRoute,
   setProposedMeetingRoute,
+  setViewTab,
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
+  toggleViewMeetingModal,
 } from "../../store/actions/ModalStates_actions";
 import { GetAllMeetingTypesNewFunction } from "@/store/actions/NewMeetingActions";
 import { listOfMeetingsApi } from "@/store/actions/NewMeeting2.actions";
 import ProposedNewMeeting from "./proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
 import ViewProposedMeetingModal from "./proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "./proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
+import { validateEncryptedStringViewMeetingLinkApi } from "../../store/actions/NewMeetingActions";
+import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import {
+  getViewMeetingByMeetingIdApi,
+  joinMeetingApi,
+  setCurrentMeetingInfo,
+} from "../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../context/MeetingContext";
 /**
  * MainMeeting Component
  *
@@ -91,6 +101,8 @@ const MainMeeting = () => {
     isQuickMeetingView,
     setIsQuickMeetingView,
   } = useNewMeetingContext();
+
+  const { setEditorRole, setVideoTalk } = useMeetingContext();
 
   // Local state management
   const [searchText, setSearchText] = useState("");
@@ -215,7 +227,6 @@ const MainMeeting = () => {
       await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
-    
     await dispatch(
       listOfMeetingsApi(
         navigate,
@@ -269,7 +280,6 @@ const MainMeeting = () => {
       await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
-    
     await dispatch(
       listOfMeetingsApi(
         navigate,
@@ -324,7 +334,6 @@ const MainMeeting = () => {
       await dispatch(GetAllMeetingTypesNewFunction, (navigate, t, true));
     }
 
-    
     await dispatch(
       listOfMeetingsApi(
         navigate,
@@ -424,7 +433,7 @@ const MainMeeting = () => {
           ? true
           : false,
     };
-    
+
     await dispatch(listOfMeetingsApi(navigate, t, searchData));
     setSearchText("");
     setentereventIcon(false);
@@ -435,6 +444,236 @@ const MainMeeting = () => {
       DateView: "",
     });
   };
+
+  let viewMeetingRoute = localStorage.getItem("viewMeetingLink");
+
+  useEffect(() => {
+    if (viewMeetingRoute !== null) {
+      const action = async () => {
+        const getResponse = await dispatch(
+          validateEncryptedStringViewMeetingLinkApi(
+            viewMeetingRoute,
+            navigate,
+            t,
+          ),
+        );
+        console.log(getResponse, "viewFol_action");
+
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          const {
+            attendeeId,
+            isQuickMeeting,
+            meetingID,
+            meetingStatusId,
+            organizationID,
+            userID,
+            isChat,
+            talkGroupId,
+            isVideo,
+            videoCallUrl,
+            isMinutePublished,
+          } = getResponse.response;
+          try {
+            if (Number(meetingStatusId) === 10) {
+              // Set state synchronously BEFORE dispatch — no stale closure issue
+              localStorage.setItem("videoCallURL", videoCallUrl);
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              setEditorRole((prev) => ({
+                ...prev,
+                status: meetingStatusId,
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                      ? "Agenda Contributor"
+                      : "Organizer",
+                isPrimaryOrganizer: false,
+              }));
+              let role = {
+                status: meetingStatusId,
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                      ? "Agenda Contributor"
+                      : "Organizer",
+                isPrimaryOrganizer: false,
+              };
+              let record = {
+                title: "",
+                FK_MDID: meetingID,
+              };
+
+              dispatch(
+                joinMeetingApi(
+                  navigate,
+                  t,
+                  {
+                    VideoCallURL: videoCallUrl,
+                    FK_MDID: Number(meetingID),
+                    DateTime: getCurrentDateTimeUTC(),
+                  },
+                  "JoinMeetingFromListing",
+                  {
+                    role,
+                    isQuickMeeting: isQuickMeeting,
+                    record,
+                    setIsQuickMeetingView,
+                  },
+                ),
+              );
+
+              return;
+            }
+
+            if (isQuickMeeting) {
+              await dispatch(
+                getViewMeetingByMeetingIdApi(
+                  navigate,
+                  t,
+                  { MeetingID: meetingID },
+                  "ViewQuickMeetingFromListing",
+                  {
+                    setIsQuickMeetingView,
+                  },
+                ),
+              );
+              return;
+            }
+
+            dispatch(
+              setCurrentMeetingInfo({
+                meetingID: meetingID,
+              }),
+            );
+            dispatch(toggleViewMeetingModal(true));
+            dispatch(setViewTab("meetingDetails"));
+            setEditorRole((prev) => ({
+              ...prev,
+              status: meetingStatusId,
+              role:
+                attendeeId === 2
+                  ? "Participant"
+                  : attendeeId === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+              isPrimaryOrganizer: false,
+            }));
+          } catch (error) {}
+
+          // if (meetingStatusId === "10" || meetingStatusId === 10) {
+          //   if (isQuickMeeting) {
+          //     let joinMeetingData = {
+          //       VideoCallURL: videoCallUrl,
+          //       FK_MDID: meetingID,
+          //       DateTime: getCurrentDateTimeUTC(),
+          //     };
+
+          //     dispatch(
+          //       JoinCurrentMeeting(
+          //         isQuickMeeting,
+          //         navigate,
+          //         t,
+          //         joinMeetingData,
+          //         // setViewFlag,
+          //         // setEditFlag,
+          //         // setSceduleMeeting,
+          //         1,
+          //         // setAdvanceMeetingModalID,
+          //         // setViewAdvanceMeetingModal
+          //       )
+          //     );
+          //   } else {
+          //     let joinMeetingData = {
+          //       VideoCallURL: videoCallUrl,
+          //       FK_MDID: meetingID,
+          //       DateTime: getCurrentDateTimeUTC(),
+          //     };
+
+          //     dispatch(
+          //       JoinCurrentMeeting(
+          //         isQuickMeeting,
+          //         navigate,
+          //         t,
+          //         joinMeetingData,
+          //         setViewFlag,
+          //         setEditFlag,
+          //         setSceduleMeeting,
+          //         1,
+          //         // setAdvanceMeetingModalID,
+          //         // setViewAdvanceMeetingModal
+          //       )
+          //     );
+          //     setEditorRole({
+          //       status: String(meetingStatusId),
+          //       role:
+          //         attendeeId === 2
+          //           ? "Participant"
+          //           : attendeeId === 4
+          //           ? "Agenda Contributor"
+          //           : "Organizer",
+          //       isPrimaryOrganizer: false,
+          //     });
+          //     setVideoTalk({
+          //       isChat: isChat,
+          //       isVideoCall: isVideo,
+          //       talkGroupID: talkGroupId,
+          //     });
+          //     localStorage.setItem("videoCallURL", videoCallUrl);
+
+          //     // dispatch(viewMeetingFlag(true));
+          //     localStorage.setItem("isMinutePublished", isMinutePublished);
+          //   }
+          // } else {
+          //   if (isQuickMeeting) {
+          //     let Data = { MeetingID: meetingID };
+          //     await dispatch(
+          //       ViewMeeting(
+          //         navigate,
+          //         Data,
+          //         t,
+          //         setViewFlag,
+          //         setEditFlag,
+          //         setSceduleMeeting,
+          //         1
+          //       )
+          //     );
+          //     // setViewFlag(true);
+          //   } else {
+          //     setEditorRole({
+          //       status: String(meetingStatusId),
+          //       role:
+          //         attendeeId === 2
+          //           ? "Participant"
+          //           : attendeeId === 4
+          //           ? "Agenda Contributor"
+          //           : "Organizer",
+          //       isPrimaryOrganizer: false,
+          //     });
+          //     setVideoTalk({
+          //       isChat: isChat,
+          //       isVideoCall: isVideo,
+          //       talkGroupID: talkGroupId,
+          //     });
+          //     // setAdvanceMeetingModalID(meetingID);
+          //     // setViewAdvanceMeetingModal(true);
+          //     // setmeetingDetails(true);
+          //     // dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          //     // dispatch(scheduleMeetingPageFlag(false));
+          //     // localStorage.setItem("currentMeetingID", meetingID);
+          //     // localStorage.setItem("isMinutePublished", isMinutePublished);
+          //   }
+          // }
+        }
+        localStorage.removeItem("viewMeetingLink");
+      };
+      action();
+    }
+  }, [viewMeetingRoute]);
 
   const handleCreateAdvanceMeeting = () => {
     dispatch(setAdvanceMeetingRoute(1));

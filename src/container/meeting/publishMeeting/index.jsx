@@ -373,7 +373,9 @@ const PublishedMeetingList = () => {
   const handleJoinMeeting = async (record) => {
     const role = record.isAgendaContributor
       ? "Agenda Contributor"
-      : "Organizer";
+      : record.isParticipant
+        ? "Participant"
+        : "Organizer";
     const meetingId = Number(record.pK_MDID);
     const context = "JoinMeetingFromMainListing";
 

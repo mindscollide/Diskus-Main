@@ -1,0 +1,67 @@
+.iconclassname {
+  position: absolute;
+  right: 0 !important;
+  left: 94% !important;
+  top: 25px !important;
+  display: block;
+}
+.delete-meeting-heading {
+  color: #6172d6;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0;
+}
+.delete-meeting-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a !important;
+}
+.delete-meeting-modal {
+  padding: 35px 50px;
+}
+.delete-meeting-modalfooter {
+  padding: 0 50px 35px 50px;
+}
+.labelclass {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6172d6;
+}
+.ConfirmPasswordBtn {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background-color: #6172d6 !important;
+  color: #ffffff !important;
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+.ConfirmPasswordBtn:disabled {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background-color: #6172d6 !important;
+  color: #ffffff !important;
+  padding: 12px 30px !important;
+  opacity: 50% !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+.ConfirmPasswordBtnTextDisabled {
+  font-size: 12px;
+  opacity: 50%;
+}
+.errorMessage-inLogin {
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  font-weight: 500 !important;
+}
