@@ -407,12 +407,11 @@ const saveResolutionDocumentsApi = (navigate, t, data) => {
               dispatch(
                 saveResolutionDocuments_success(
                   response.data.responseResult,
-                  t("Update-successful")
+                  ""
                 )
               );
               dispatch(updateResolutionDataRoom_fail(""));
               dispatch(saveFiles_fail(""));
-
               localStorage.removeItem("resolutionID");
               dispatch(createResolutionModal(false));
               dispatch(updateResolutionModal(false));
@@ -431,7 +430,6 @@ const saveResolutionDocumentsApi = (navigate, t, data) => {
               dispatch(saveResolutionDocuments_fail(t("Something-went-wrong")));
               dispatch(updateResolutionDataRoom_fail(""));
               dispatch(saveFiles_fail(""));
-
               localStorage.removeItem("resolutionID");
               dispatch(createResolutionModal(false));
               dispatch(updateResolutionModal(false));
@@ -488,7 +486,6 @@ const saveResolutionDocumentsApi = (navigate, t, data) => {
         dispatch(updateResolutionDataRoom_fail(""));
         localStorage.removeItem("resolutionID");
         dispatch(saveFiles_fail(""));
-
         dispatch(createResolutionModal(false));
         dispatch(updateResolutionModal(false));
         if (Number(resolutionView) === 1) {

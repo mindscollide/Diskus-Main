@@ -508,7 +508,7 @@ const saveMeetingActionsDocuments = (
             dispatch(
               saveTaskDocuments_success(
                 response.data.responseResult,
-                t("Update-successful")
+                ""
               )
             );
 
