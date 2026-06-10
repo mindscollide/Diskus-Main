@@ -1025,11 +1025,13 @@ const ModalView = ({ ModalTitle }) => {
     try {
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let typeOfMeeting = localStorage.getItem("typeOfMeeting");
-
+      console.log(isMeetingVideo,typeOfMeeting, "leaveMeetingleaveMeeting")
       if (
         isMeetingVideo === true &&
         String(typeOfMeeting) === "isQuickMeeting"
       ) {
+      console.log(isMeetingVideo,typeOfMeeting, "leaveMeetingleaveMeeting")
+
         const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
         const currentMeetingID = JSON.parse(
           localStorage.getItem("currentMeetingID"),
@@ -1090,6 +1092,8 @@ const ModalView = ({ ModalTitle }) => {
           ),
         );
       } else if (String(typeOfMeeting) === "isQuickMeeting") {
+      console.log(isMeetingVideo,typeOfMeeting, "leaveMeetingleaveMeeting")
+
         let leaveMeetingData = {
           FK_MDID: Number(id),
           DateTime: getCurrentDateTimeUTC(),

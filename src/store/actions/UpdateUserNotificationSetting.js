@@ -239,7 +239,7 @@ const DiskusWebNotificationMarkAsReadAPI = (
               dispatch(
                 DiskusWebNotificationMarkAsReadSuccess(
                   response.data.responseResult,
-                  t("Successful")
+                  ""
                 )
               );
               //For Bring Notification Count to Zero

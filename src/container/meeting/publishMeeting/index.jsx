@@ -379,21 +379,37 @@ const PublishedMeetingList = () => {
     const meetingId = Number(record.pK_MDID);
     const context = "JoinMeetingFromMainListing";
 
-    // if (record.isQuickMeeting) {
-    //   await dispatch(
-    //     getViewMeetingByMeetingIdApi(
-    //       navigate,
-    //       t,
-    //       { MeetingID: meetingId },
-    //       context,
-    //       {
-    //         setIsQuickMeetingView,
-    //         setIsQuickMeetingUpdate,
-    //       }
-    //     )
-    //   );
-    //   return;
-    // }
+    if (record.isQuickMeeting) {
+      dispatch(
+        joinMeetingApi(
+          navigate,
+          t,
+          {
+            VideoCallURL: record.videoCallURL,
+            FK_MDID: Number(meetingId),
+            DateTime: getCurrentDateTimeUTC(),
+          },
+          "JoinQuickMeetingFromListing",
+          {
+            record,
+            setIsQuickMeetingView,
+          },
+        ),
+      );
+      // await dispatch(
+      //   getViewMeetingByMeetingIdApi(
+      //     navigate,
+      //     t,
+      //     { MeetingID: meetingId },
+      //     context,
+      //     {
+      //       setIsQuickMeetingView,
+      //       setIsQuickMeetingUpdate,
+      //     }
+      //   )
+      // );
+      return;
+    }
 
     // Set state synchronously BEFORE dispatch — no stale closure issue
     localStorage.setItem("videoCallURL", record.videoCallURL);
@@ -416,7 +432,6 @@ const PublishedMeetingList = () => {
         "JoinMeetingFromListing",
         {
           role,
-          isQuickMeeting: record.isQuickMeeting,
           record,
           setIsQuickMeetingView,
         },

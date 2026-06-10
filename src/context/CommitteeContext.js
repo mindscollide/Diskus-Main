@@ -111,6 +111,8 @@ export const CommitteeProvider = ({ children }) => {
   const [isCommitteeViewQuickMeeting, setIsCommitteeViewQuickMeeting] =
     useState(false);
 
+  const [currentViewCommitteeTabs, setCurrentViewCommitteeTabs] = useState(1);
+
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
   // =========================
@@ -550,8 +552,8 @@ export const CommitteeProvider = ({ children }) => {
         setViewCommitteePage,
         showModal,
         setShowModal,
-      }}
-    >
+        currentViewCommitteeTabs, setCurrentViewCommitteeTabs
+      }}>
       {children}
     </CommitteeContext.Provider>
   );

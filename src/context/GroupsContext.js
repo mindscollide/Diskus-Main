@@ -103,6 +103,8 @@ export const GroupsProvider = ({ children }) => {
     (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
   );
 
+  const [currentViewGroupTabs, setCurrentViewGroupTabs] = useState(1);
+
   // =========================
   // HELPERS
   // =========================
@@ -613,8 +615,9 @@ export const GroupsProvider = ({ children }) => {
         setCurrentGroupMeetingPage,
         currentGroupMeetingLength,
         setCurrentGroupMeetingLength,
-      }}
-    >
+        currentViewGroupTabs,
+        setCurrentViewGroupTabs,
+      }}>
       {children}
     </GroupContext.Provider>
   );

@@ -317,7 +317,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
               await dispatch(
                 joinGuestVideoSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               sessionStorage.setItem("hasJoined", true);
@@ -588,7 +588,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
               await dispatch(
                 raiseUnRaisedSuccess(
                   response.data.responseResult,
-                  // t("Successful")
+                  // "
                   t(""),
                 ),
               );
@@ -899,7 +899,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
               await dispatch(
                 guestLeaveMeetingVideoSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               sessionStorage.setItem("isRejoining", "true");
@@ -1014,7 +1014,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
               await dispatch(
                 muteUnmuteSelfSuccess(
                   response.data.responseResult,
-                  // t("Successful")
+                  // "
                   t(""),
                 ),
               );
@@ -1106,7 +1106,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
               await dispatch(
                 hideUnhideSelfSuccess(
                   response.data.responseResult,
-                  // t("Successful")
+                  // "
                   t(""),
                 ),
               );
@@ -1250,7 +1250,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               await dispatch(
                 getVideoCallParticipantGuestSuccess(
                   response.data.responseResult.participantList,
-                  t("Successful"),
+                  "",
                   1,
                 ),
               );

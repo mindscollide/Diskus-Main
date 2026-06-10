@@ -366,17 +366,21 @@ const ProposedNewMeeting = () => {
         }),
       );
 
-      data.organizationUsers?.forEach((u) =>
-        temp.push({
-          value: u.userID,
-          name: u.userName,
-          label: renderLabel(
-            u?.profilePicture?.displayProfilePictureName,
-            u.userName,
-            true,
-          ),
-          type: 3,
-        }),
+      temp.push(
+        ...(data.organizationUsers
+          ?.filter(
+            (u) => Number(u.userID) !== Number(localStorage.getItem("userID")),
+          )
+          .map((u) => ({
+            value: u.userID,
+            name: u.userName,
+            label: renderLabel(
+              u?.profilePicture?.displayProfilePictureName,
+              u.userName,
+              true,
+            ),
+            type: 3,
+          })) || []),
       );
     }
 

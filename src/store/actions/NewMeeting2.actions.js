@@ -2534,6 +2534,8 @@ export const UpdateMeetingStatusApi = (
                       }
                       case "startMeetingFromMainListing": {
                         const { record } = object;
+
+                        console.log(record, "recordrecordrecordrecordrecord");
                         await dispatch(
                           setCurrentMeetingInfo({
                             meetingID: record.pK_MDID,
@@ -2643,7 +2645,9 @@ export const UpdateMeetingStatusApi = (
                       default:
                         break;
                     }
-                  } catch (error) {}
+                  } catch (error) {
+                    console.log(error);
+                  }
                 },
               // _02: Record not updated
               Meeting_MeetingServiceManager_MeetingStatusUpdate_02: () =>
@@ -3114,15 +3118,8 @@ const joinMeetingFail = (message) => {
 // ─── Join Meeting ────────────────────────────────────────────────────────────
 
 export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
-  const {
-    isQuickMeeting,
-    setViewFlag,
-    setEditFlag,
-    setSceduleMeeting,
-    routeNo,
-    NotificationCheckQuickMeet,
-  } = object;
-
+  const { record } = object;
+  console.log(object, "JoinMeetingFromListing");
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
     const form = new FormData();
@@ -3149,11 +3146,11 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 localStorage.setItem("videoCallURL", Data.VideoCallURL);
                 localStorage.setItem(
                   "AdvanceMeetingOpen",
-                  isQuickMeeting ? false : true,
+                  record.isQuickMeeting ? false : true,
                 );
                 localStorage.setItem(
                   "typeOfMeeting",
-                  isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting",
+                  record.isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting",
                 );
                 localStorage.setItem(
                   "isMeetingVideoHostCheck",
@@ -3161,10 +3158,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 );
 
                 await dispatch(
-                  joinMeetingSuccess(
-                    response.data.responseResult,
-                    t("Successful"),
-                  ),
+                  joinMeetingSuccess(response.data.responseResult, ""),
                 );
 
                 // if (isQuickMeeting === true && routeNo !== 11) {
@@ -3184,22 +3178,22 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 //   );
                 // }
 
-                if (NotificationCheckQuickMeet) {
-                  dispatch(
-                    getViewMeetingByMeetingIdApi(
-                      navigate,
-                      t,
-                      { MeetingID: Number(Data.FK_MDID) },
-                      "viewMeeting",
-                      {
-                        setViewFlag,
-                        setEditFlag: false,
-                        setSceduleMeeting: false,
-                        no: 1,
-                      },
-                    ),
-                  );
-                }
+                // if (NotificationCheckQuickMeet) {
+                //   dispatch(
+                //     getViewMeetingByMeetingIdApi(
+                //       navigate,
+                //       t,
+                //       { MeetingID: Number(Data.FK_MDID) },
+                //       "viewMeeting",
+                //       {
+                //         setViewFlag,
+                //         setEditFlag: false,
+                //         setSceduleMeeting: false,
+                //         no: 1,
+                //       },
+                //     ),
+                //   );
+                // }
 
                 localStorage.setItem("currentMeetingID", Data.FK_MDID);
 
@@ -3225,18 +3219,15 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 // Route-specific extras (runs AFTER the normal _01 flow)
                 switch (routePath) {
                   case "JoinMeetingFromListing": {
-                    const { isQuickMeeting, record, setIsQuickMeetingView } =
-                      object;
-                    if (isQuickMeeting) {
+                    const { record, setIsQuickMeetingView } = object;
+                    if (record.isQuickMeeting) {
                       await dispatch(
                         getViewMeetingByMeetingIdApi(
                           navigate,
                           t,
                           { MeetingID: Data.FK_MDID },
                           "JoinMeetingFromListing",
-                          {
-                            setIsQuickMeetingView,
-                          },
+                          { record, setIsQuickMeetingView },
                         ),
                       );
                       return;
@@ -4455,10 +4446,7 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
 
                 if (isQuickMeeting) {
                   dispatch(
-                    leaveMeetingQuickSuccess(
-                      response.data.responseResult,
-                      t("Successful"),
-                    ),
+                    leaveMeetingQuickSuccess(response.data.responseResult, ""),
                   );
 
                   if (typeof setEndMeetingConfirmationModal === "function") {
@@ -4497,7 +4485,7 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
                       response.data.responseResult,
-                      t("Successful"),
+                      "",
                     ),
                   );
                   if (typeof setEndMeetingConfirmationModal === "function") {

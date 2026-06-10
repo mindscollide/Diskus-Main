@@ -60,8 +60,14 @@ const Groups = () => {
   const { t } = useTranslation();
 
   //Context For Groups
-  const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
-    useGroupsContext();
+  const {
+    ViewGroupPage,
+    setViewGroupPage,
+    showModal,
+    setShowModal,
+    setCurrentViewGroupTabs,
+    currentViewGroupTabs,
+  } = useGroupsContext();
   const GroupsReducerrealtimeGroupStatus = useSelector(
     (state) => state.GroupsReducer.realtimeGroupStatus,
   );
@@ -196,7 +202,7 @@ const Groups = () => {
 
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           localStorage.setItem("ViewGroupID", getResponse.response.groupID);
-          setViewGroupTab(1);
+          setCurrentViewGroupTabs(1);
           setViewGroupPage(true);
           dispatch(viewGroupPageFlag(true));
         }
@@ -214,8 +220,7 @@ const Groups = () => {
       dispatch(viewGroupPageFlag(false));
       localStorage.removeItem("groupsArCurrent");
       localStorage.removeItem("ViewGroupID");
-      dispatch(resetViewGroupDetails())
-
+      dispatch(resetViewGroupDetails());
     };
   }, []);
 
@@ -282,9 +287,7 @@ const Groups = () => {
 
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
@@ -295,7 +298,7 @@ const Groups = () => {
         groupTitle: data.groupTitle,
       }),
     );
-    setViewGroupTab(4);
+    setCurrentViewGroupTabs(4);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
@@ -308,7 +311,7 @@ const Groups = () => {
         groupTitle: data.groupTitle,
       }),
     );
-    setViewGroupTab(3);
+    setCurrentViewGroupTabs(3);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
@@ -320,7 +323,7 @@ const Groups = () => {
         groupTitle: data.groupTitle,
       }),
     );
-    setViewGroupTab(2);
+    setCurrentViewGroupTabs(2);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
@@ -372,9 +375,7 @@ const Groups = () => {
           });
         });
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [GroupsReducerremoveGroupMember]);
 
   const handlechange = (value) => {
@@ -399,7 +400,7 @@ const Groups = () => {
       }),
     );
     localStorage.setItem("ViewGroupID", data.groupID);
-    setViewGroupTab(1);
+    setCurrentViewGroupTabs(1);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
   };
@@ -413,7 +414,7 @@ const Groups = () => {
     );
     if (statusID === 1) {
       localStorage.setItem("ViewGroupID", groupID);
-      setViewGroupTab(1);
+      setCurrentViewGroupTabs(1);
       dispatch(viewGroupPageFlag(true));
       setViewGroupPage(true);
     } else if (statusID === 2) {
@@ -485,7 +486,7 @@ const Groups = () => {
 
   const handleDocumentsClickTab = (data) => {
     localStorage.setItem("ViewGroupID", data.groupID);
-    setViewGroupTab(1);
+    setCurrentViewGroupTabs(1);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
   };
@@ -568,10 +569,7 @@ const Groups = () => {
           </>
         ) : ViewGroupPage && GroupsReducerviewGroupPageFlag === true ? (
           <>
-            <ViewGrouppage
-              setViewGroupPage={setViewGroupPage}
-              viewGroupTab={viewGroupTab}
-            />
+            <ViewGrouppage  setViewGroupPage={setViewGroupPage}/>
           </>
         ) : (
           <>

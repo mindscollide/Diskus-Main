@@ -510,7 +510,7 @@ const revokeToken = (
                   "Calender_CalenderServiceManager_RevokeToken_01".toLowerCase(),
                 )
             ) {
-              dispatch(revokeTokenSuccess(t("Successful")));
+              dispatch(revokeTokenSuccess(""));
               dispatch(
                 updateUserSettingFunc(
                   navigate,

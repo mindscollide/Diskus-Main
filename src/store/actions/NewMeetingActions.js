@@ -7446,7 +7446,7 @@ const JoinCurrentMeeting = (
               await dispatch(
                 joinMeetingSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               if (isQuickMeeting === true) {
@@ -7678,7 +7678,7 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                   dispatch(
                     leaveMeetingQuickSuccess(
                       response.data.responseResult,
-                      t("Successful"),
+                      "",
                     ),
                   );
 
@@ -7722,7 +7722,7 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
                       response.data.responseResult,
-                      t("Successful"),
+                      "",
                     ),
                   );
                   if (typeof setEndMeetingConfirmationModal === "function") {
@@ -7915,8 +7915,8 @@ const LeaveCurrentMeetingOtherMenus = (
               dispatch(
                 leaveMeetingAdvancedSuccess(
                   response.data.responseResult,
-                  t("Successful"),
-                ),
+                  "",
+                ),""
               );
               if (currentMeetingVideoID !== 0) {
               }
@@ -8882,7 +8882,7 @@ const GetMeetingStatusDataAPI = (
               dispatch(
                 GetMeetingStatusDataSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               try {
@@ -9605,7 +9605,7 @@ const getMeetingRecordingFilesApi = (
                 },
               };
               dispatch(
-                getMeetingRecordingFiles_success(apiResonse, t("Successful")),
+                getMeetingRecordingFiles_success(apiResonse, ""),
               );
               setDownloadVideoRecordingModal(true);
             } else if (
@@ -9622,7 +9622,7 @@ const getMeetingRecordingFilesApi = (
                 },
               };
               dispatch(
-                getMeetingRecordingFiles_success(apiResonse, t("Successful")),
+                getMeetingRecordingFiles_success(apiResonse, ""),
               );
               setDownloadVideoRecordingModal(true);
             } else if (
@@ -9715,7 +9715,7 @@ const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
               dispatch(
                 requestMeetingRecordingTranscript_success(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (

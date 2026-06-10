@@ -11,23 +11,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { XLg } from "react-bootstrap-icons";
 import GroupMeetingTab from "../../groupsMeetings";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 
-const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
+const ViewGrouppage = ({ setViewGroupPage }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { currentViewGroupTabs, setCurrentViewGroupTabs } = useGroupsContext();
 
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
-    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse,
   );
   const dispatch = useDispatch();
   const [groupStatus, setGroupStatus] = useState(null);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
   let NotificationClickViewGroupID = localStorage.getItem(
-    "NotifcationClickViewGroupID"
-  );
-  
-  const [currentViewGroup, setCurrentViewGroup] = useState(
-    viewGroupTab !== undefined && viewGroupTab !== 0 ? viewGroupTab : 1
+    "NotifcationClickViewGroupID",
   );
 
   useEffect(() => {
@@ -35,7 +33,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
       if (ViewGroupID !== null || NotificationClickViewGroupID !== null) {
         if (
           JSON.parse(
-            localStorage.getItem("NotificationClickAddedIntoGroup")
+            localStorage.getItem("NotificationClickAddedIntoGroup"),
           ) === true
         ) {
           dispatch(getbyGroupID(navigate, NotificationClickViewGroupID, t));
@@ -43,9 +41,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
           dispatch(getbyGroupID(navigate, ViewGroupID, t));
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
 
     return () => {
       localStorage.removeItem("NotifcationClickViewGroupID");
@@ -71,8 +67,8 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   }, [GroupsReducergetGroupByGroupIdResponse]);
   return (
     <>
-      <section className=" color-5a5a5a">
-        <Row className="mt-3">
+      <section className=' color-5a5a5a'>
+        <Row className='mt-3'>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["View-Committee-heading"]}>
               {t("View-group")}
@@ -85,66 +81,65 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
               sm={12}
               md={12}
               lg={12}
-              className="d-flex justify-content-between"
-            >
-              <div className="d-flex gap-3 mb-3">
+              className='d-flex justify-content-between'>
+              <div className='d-flex gap-3 mb-3'>
                 <Button
                   text={t("Group-details")}
                   className={
-                    currentViewGroup === 1
+                    currentViewGroupTabs === 1
                       ? styles["View-Group-details_active"]
                       : styles["View-Group-details"]
                   }
-                  onClick={() => setCurrentViewGroup(1)}
+                  onClick={() => setCurrentViewGroupTabs(1)}
                 />
                 <Button
                   text={t("Tasks")}
                   className={
-                    currentViewGroup === 2
+                    currentViewGroupTabs === 2
                       ? styles["View-Group-details_active"]
                       : styles["View-Group-details"]
                   }
-                  onClick={() => setCurrentViewGroup(2)}
+                  onClick={() => setCurrentViewGroupTabs(2)}
                 />
                 <Button
                   text={t("Polls")}
                   className={
-                    currentViewGroup === 3
+                    currentViewGroupTabs === 3
                       ? styles["View-Group-details_active"]
                       : styles["View-Group-details"]
                   }
-                  onClick={() => setCurrentViewGroup(3)}
+                  onClick={() => setCurrentViewGroupTabs(3)}
                 />
                 <Button
                   text={t("Meetings")}
                   className={
-                    currentViewGroup === 4
+                    currentViewGroupTabs === 4
                       ? styles["View-Group-details_active"]
                       : styles["View-Group-details"]
                   }
-                  onClick={() => setCurrentViewGroup(4)}
+                  onClick={() => setCurrentViewGroupTabs(4)}
                 />
               </div>
               <div>
-                <XLg size={"24px"} cursor="pointer" onClick={handleClose} />
+                <XLg size={"24px"} cursor='pointer' onClick={handleClose} />
               </div>
             </Col>
           </Row>
 
-          {currentViewGroup === 1 ? (
+          {currentViewGroupTabs === 1 ? (
             <ViewUpdateGroup
               setViewGroupPage={setViewGroupPage}
               groupStatus={groupStatus}
             />
-          ) : currentViewGroup === 2 ? (
+          ) : currentViewGroupTabs === 2 ? (
             <>
               <ViewGroupTodo groupStatus={groupStatus} />
             </>
-          ) : currentViewGroup === 3 ? (
+          ) : currentViewGroupTabs === 3 ? (
             <>
               <Polls view={2} groupStatus={groupStatus} />
             </>
-          ) : currentViewGroup === 4 ? (
+          ) : currentViewGroupTabs === 4 ? (
             <GroupMeetingTab groupStatus={groupStatus} />
           ) : null}
         </span>

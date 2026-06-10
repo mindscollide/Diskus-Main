@@ -154,6 +154,8 @@ const CommitteePublishedMeetingList = () => {
     committeePublishedMeetingDataRecord,
   } = useCommitteeContext();
 
+  console.log(committeePublishedMeetingData, "committeePublishedMeetingDatacommitteePublishedMeetingData")
+
   const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
     useNewMeetingContext();
 
@@ -368,8 +370,6 @@ const CommitteePublishedMeetingList = () => {
           },
           "JoinQuickMeetingFromListing",
           {
-            role,
-            isQuickMeeting: record.isQuickMeeting,
             record,
             setIsQuickMeetingView,
           },

@@ -971,26 +971,9 @@ const MainMeeting = () => {
           </Col>
         </Row>
 
-        {isQuickMeetingCreate && (
-          <CreateQuickMeeting
-            show={isQuickMeetingCreate}
-            setShow={setIsQuickMeetingCreate}
-            checkFlag={5}
-          />
-        )}
-        {isQuickMeetingUpdate && (
-          <UpdateQuickMeeting
-            editFlag={isQuickMeetingUpdate}
-            setEditFlag={setIsQuickMeetingUpdate}
-            checkFlag={4}
-          />
-        )}
-        {isQuickMeetingView && (
-          <ViewQuickMeeting
-            viewFlag={isQuickMeetingView}
-            setViewFlag={setIsQuickMeetingView}
-          />
-        )}
+        {isQuickMeetingCreate && <CreateQuickMeeting checkFlag={5} />}
+        {isQuickMeetingUpdate && <UpdateQuickMeeting checkFlag={4} />}
+        {isQuickMeetingView && <ViewQuickMeeting />}
         {/* {viewAdvanceMeetingModal && advanceMeetingModalID !== 0 && (
           <ViewAdvanceMeeting />
         )} */}

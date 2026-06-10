@@ -2193,7 +2193,7 @@ const ResendUpdatedMinuteForReview = (
               dispatch(
                 resendUpdatedMinuteForReview_Success(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               setEditMinute(false);

@@ -346,7 +346,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
               await dispatch(
                 muteUnmuteSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               // setNewParticipants((prevState) =>
@@ -454,7 +454,7 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
               await dispatch(
                 hideUnHideParticipantGuestSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
 
@@ -1080,7 +1080,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
               await dispatch(
                 getVideoCallParticipantSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (
@@ -1420,7 +1420,7 @@ const openPresenterViewMainApi = (
               await dispatch(
                 openPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (
@@ -1517,7 +1517,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (
@@ -1744,7 +1744,7 @@ const stopPresenterViewMainApi = (
               await dispatch(
                 stopPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (
@@ -1918,7 +1918,7 @@ const stopPresenterViewMainApiTest = (
             }
 
             await dispatch(
-              stopPresenterSuccess(res.responseResult, t("Successful")),
+              stopPresenterSuccess(res.responseResult, ""),
             );
             return resolve(); // 🎯 Everything done, resolve the promise
           } else if (msg.includes("stoppresenterview_02")) {
@@ -2046,7 +2046,7 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               await dispatch(
                 joinPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (
@@ -2286,7 +2286,7 @@ const leavePresenterViewMainApi = (
                 await dispatch(
                   leavePresenterSuccess(
                     response.data.responseResult,
-                    t("Successful"),
+                    "",
                   ),
                 );
                 await setLeavePresenterViewToJoinOneToOne(false);
@@ -2448,7 +2448,7 @@ const leavePresenterViewMainApiTest = (
             } else if (flag === 3) {
               if (!alreadyInMeetingVideo) cleanUpLocalStorage();
               await dispatch(
-                leavePresenterSuccess(resData.responseResult, t("Successful")),
+                leavePresenterSuccess(resData.responseResult, ""),
               );
               await setLeavePresenterViewToJoinOneToOne(false);
               dispatch(maximizeVideoPanelFlag(false));
@@ -2737,7 +2737,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
               await dispatch(
                 isSharedScreenSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (

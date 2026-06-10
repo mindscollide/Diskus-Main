@@ -7522,7 +7522,7 @@ const Dashboard = () => {
         VideoMainReducerResponseMessage !== "" &&
         VideoMainReducerResponseMessage !== t("List-updated-successfully") &&
         VideoMainReducerResponseMessage !== t("No-data-available") &&
-        VideoMainReducerResponseMessage !== t("Successful") &&
+        VideoMainReducerResponseMessage !== "" &&
         VideoMainReducerResponseMessage !== t("Record-updated") &&
         VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
         VideoMainReducerResponseMessage !== undefined

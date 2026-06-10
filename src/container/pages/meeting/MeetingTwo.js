@@ -4820,7 +4820,7 @@ const NewMeeting = () => {
         ResponseMessage !== "" &&
         ResponseMessage !== t("List-updated-successfully") &&
         ResponseMessage !== t("No-data-available") &&
-        ResponseMessage !== t("Successful") &&
+        ResponseMessage !== " &&
         ResponseMessage !== t("Record-updated") &&
         ResponseMessage !== t("Something-went-wrong") &&
         ResponseMessage !== undefined

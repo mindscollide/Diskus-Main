@@ -392,7 +392,7 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
               dispatch(
                 organizationTrialExtendedSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               dispatch(showUpgradeNowModal(false));
@@ -1308,7 +1308,7 @@ const ResendForgotPasswordCodeApi = (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_AuthManager_ResendForgotPasswordCode_03"
           ) {
-            let newMessage = t("Successful");
+            let newMessage = "";
             dispatch(
               ResendForgotPasswordCodeSuccess(
                 response.data.responseResult,
@@ -1508,7 +1508,7 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
               dispatch(
                 paymentInitiateSuccessApi(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               // setPaymentModal(true);
@@ -1708,7 +1708,7 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
               dispatch(
                 cancelOrganizationSubReasonSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
               dispatch(showReasonForLeavingModal(false));

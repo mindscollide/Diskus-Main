@@ -62,8 +62,14 @@ const Committee = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let currentPage = localStorage.getItem("CocurrentPage");
-  const { ViewCommitteePage, setViewCommitteePage, showModal, setShowModal } =
-    useCommitteeContext();
+  const {
+    ViewCommitteePage,
+    setViewCommitteePage,
+    showModal,
+    setShowModal,
+    setCurrentViewCommitteeTabs,
+    currentViewCommitteeTabs,
+  } = useCommitteeContext();
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   const CommitteeReducerGetAllCommitteesByUserIDResponse = useSelector(
@@ -73,8 +79,6 @@ const Committee = () => {
   const CommitteeReducerrealtimeCommitteeStatus = useSelector(
     (state) => state.CommitteeReducer.realtimeCommitteeStatus,
   );
-
-
 
   const CommitteeReducerrealtimeCommitteeCreateResponse = useSelector(
     (state) => state.CommitteeReducer.realtimeCommitteeCreateResponse,
@@ -133,7 +137,7 @@ const Committee = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
-  const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
+
 
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
@@ -142,7 +146,6 @@ const Committee = () => {
     message: "",
     severity: "error",
   });
-  console.log(viewCommitteeTab, "viewCommitteeTabviewCommitteeTab")
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -199,7 +202,7 @@ const Committee = () => {
             getResponse.responseCode === 1
           ) {
             // Set necessary states and flags for viewing committee details
-            setViewCommitteeViewTab(1); // Switch to the committee details tab
+            setCurrentViewCommitteeTabs(1); // Switch to the committee details tab
             localStorage.setItem(
               "ViewCommitteeID",
               getResponse.response.committeeID,
@@ -236,7 +239,7 @@ const Committee = () => {
         callApi(); // Invoke the API call
       }
     } catch (error) {
-       // Log any errors for debugging
+      // Log any errors for debugging
     }
 
     // Cleanup logic for unmount
@@ -244,7 +247,7 @@ const Committee = () => {
       localStorage.removeItem("committeeView_Id");
       localStorage.removeItem("committeeList");
       dispatch(resetViewCommitteeDetails());
-      localStorage.removeItem("ViewCommitteeID")
+      localStorage.removeItem("ViewCommitteeID");
       localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
       setShowModal(false); // Reset modal visibility
     };
@@ -263,7 +266,7 @@ const Committee = () => {
 
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           // Set necessary states and flags for viewing committee details
-          setViewCommitteeViewTab(1); // Switch to the committee details tab
+          setCurrentViewCommitteeTabs(1); // Switch to the committee details tab
           localStorage.setItem(
             "ViewCommitteeID",
             getResponse.response.committeeID,
@@ -287,7 +290,7 @@ const Committee = () => {
             t,
           ),
         );
-        
+
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           localStorage.removeItem("CoArcurrentPage");
           localStorage.setItem("CocurrentPage", 1);
@@ -335,7 +338,7 @@ const Committee = () => {
   // useEffect(() => {
   //   try {
   //     if (CommitteeReducerrealtimeCommitteeStatus !== null) {
-  //       
+  //
   //       const {
   //         committeeStatusID,
   //         commmitteeID,
@@ -355,7 +358,7 @@ const Committee = () => {
   //           talkGroupID,
   //         },
   //       } = CommitteeReducerrealtimeCommitteeStatus;
-  //       
+  //
 
   //       const committeeData = {
   //         committeesTitle: committeeTitle,
@@ -373,12 +376,12 @@ const Committee = () => {
   //         listOfGroups: [...listOfGroups],
   //         committeeMembers: [...committeMembers],
   //       };
-  //       
+  //
 
   //       const committeeExists = getcommitteedata.some(
   //         (data) => data.committeeID === commmitteeID
   //       );
-  //       
+  //
 
   //       if (committeeStatusID === 2) {
   //         // Archive => remove from list if exists
@@ -388,7 +391,7 @@ const Committee = () => {
   //           );
   //         }
   //       } else if (committeeStatusID === 1 || committeeStatusID === 3) {
-  //         
+  //
 
   //         if (!committeeExists) {
   //           // Add new group if not already present
@@ -402,13 +405,13 @@ const Committee = () => {
   //                 : data3
   //             )
   //           );
-  //           
+  //
   //         }
   //       }
   //       dispatch(realtimeCommitteeStatusResponse(null));
   //     }
   //   } catch (error) {
-  //     
+  //
   //   }
   // }, [CommitteeReducerrealtimeCommitteeStatus]);
 
@@ -482,12 +485,8 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [CommitteeReducerrealtimeCommitteeStatus]);
-
-  
 
   useEffect(() => {
     try {
@@ -508,9 +507,7 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeResponse(null));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [CommitteeReducerrealtimeCommitteeCreateResponse]);
 
   useEffect(() => {
@@ -535,9 +532,7 @@ const Committee = () => {
           }
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [CommitteeReducerremoveCommitteeMember]);
 
   const archivedmodaluser = async (e) => {
@@ -568,7 +563,7 @@ const Committee = () => {
         committeeTitle: data.committeesTitle,
       }),
     );
-    setViewCommitteeViewTab(1);
+    setCurrentViewCommitteeTabs(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
@@ -582,7 +577,7 @@ const Committee = () => {
         committeeTitle: data.committeesTitle,
       }),
     );
-    setViewCommitteeViewTab(1);
+    setCurrentViewCommitteeTabs(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
@@ -596,7 +591,7 @@ const Committee = () => {
           committeeTitle: data.committeesTitle,
         }),
       );
-      setViewCommitteeViewTab(1);
+      setCurrentViewCommitteeTabs(1);
       localStorage.setItem("ViewCommitteeID", CommitteeStatusID);
       setViewCommitteePage(true);
       dispatch(viewCommitteePageFlag(true));
@@ -694,7 +689,7 @@ const Committee = () => {
         committeeTitle: data.committeesTitle,
       }),
     );
-    setViewCommitteeViewTab(4);
+    setCurrentViewCommitteeTabs(4);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
@@ -707,7 +702,7 @@ const Committee = () => {
       }),
     );
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-    setViewCommitteeViewTab(3);
+    setCurrentViewCommitteeTabs(3);
     setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
   };
@@ -718,7 +713,7 @@ const Committee = () => {
         committeeTitle: data.committeesTitle,
       }),
     );
-    setViewCommitteeViewTab(2);
+    setCurrentViewCommitteeTabs(2);
     setViewCommitteePage(true);
     dispatch(viewCommitteePageFlag(true));
     localStorage.setItem("ViewCommitteeID", data.committeeID);
@@ -736,9 +731,7 @@ const Committee = () => {
       } else {
         dispatch(getallcommitteebyuserid_clear());
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [CommitteeReducerResponseMessage]);
 
   const isCurrentUserCreator = (data) => {
@@ -791,7 +784,6 @@ const Committee = () => {
           <>
             <ViewUpdateCommittee
               setViewCommitteePage={setViewCommitteePage}
-              viewCommitteeTab={viewCommitteeTab}
             />
           </>
         ) : (

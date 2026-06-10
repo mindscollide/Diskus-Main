@@ -367,8 +367,6 @@ const GroupPublishedMeetingList = () => {
           },
           "JoinQuickMeetingFromListing",
           {
-            role,
-            isQuickMeeting: record.isQuickMeeting,
             record,
             setIsQuickMeetingView,
           },
