@@ -521,11 +521,14 @@ body[dir="rtl"] .ResetOkBtn {
 .JoinMeetingButton {
   max-width: 118px !important;
   max-height: 25px !important;
-  background: #f16b6b !important;
-  border: none !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border:none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px;
+  font-weight: 400;
   font-size: 0.8em;
   border-radius: 4px !important;
   white-space: nowrap;
@@ -564,7 +567,7 @@ body[dir="rtl"] .ResetOkBtn {
   max-height: 25px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  border: 1px solid #e1e1e1 !important;
+  border: nonez !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;

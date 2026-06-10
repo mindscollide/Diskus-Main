@@ -53,6 +53,7 @@ import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const App = () => {
@@ -117,7 +118,7 @@ const App = () => {
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
-    (state) => state.UserManagementModals
+    (state) => state.UserManagementModals,
   );
 
   // Detect mobile device function
@@ -236,7 +237,7 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <GlobalSnackbar />
     </>
   );
 };

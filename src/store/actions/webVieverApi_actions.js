@@ -868,7 +868,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
             ) {
               dispatch(
                 AddAnnotationsOnDataroomAttachementSuccess(
-                  t("File-is-saved-successfully")
+                  t("Annotations-saved-successfully")
                 )
               );
             } else if (
