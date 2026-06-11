@@ -145,6 +145,12 @@ const SceduleProposedmeeting = ({
   }, [organizerRows, proposedDates]);
 
   const toggleActive = (index, record, formattedDate) => {
+    const isNoneOfAbove =
+      record?.proposedDate === "10000101" &&
+      record?.startTime === "000000" &&
+      record?.endTime === "000000";
+
+    if (isNoneOfAbove) return;
     if (record !== undefined) {
       setProposedDatesData((newData) =>
         newData.map((proposedData) => ({
@@ -214,8 +220,7 @@ const SceduleProposedmeeting = ({
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}
-              >
+                title={record.userName}>
                 {record.userName}
               </span>
             ) : (
@@ -229,44 +234,61 @@ const SceduleProposedmeeting = ({
       ),
     },
     ...formattedDates.map((formattedDate, index) => {
-      let record = proposedDatesData[index];
+      const proposedRecord = proposedDatesData[index];
+
+      const isNoneOfAbove =
+        proposedRecord?.proposedDate === "10000101" &&
+        proposedRecord?.startTime === "000000" &&
+        proposedRecord?.endTime === "000000";
 
       let isFind;
-      if (record !== null && record !== undefined) {
-        let datetimeVal = `${record?.proposedDate}${record?.startTime}`;
+
+      if (proposedRecord) {
+        const datetimeVal = `${proposedRecord?.proposedDate}${proposedRecord?.startTime}`;
         const formatetDateTime = utcConvertintoGMT(datetimeVal);
+
         if (String(formatetDateTime) === String(formattedDate)) {
-          isFind = record;
+          isFind = proposedRecord;
         }
       }
+
       return {
         title: (
           <span
             className={
-              isFind !== undefined && isFind.isSelected
-                ? styles["Date-Object-Detail_active"]
-                : styles["Date-Object-Detail"]
+              isNoneOfAbove
+                ? styles["Date-Object-Detail"]
+                : isFind?.isSelected
+                  ? styles["Date-Object-Detail_active"]
+                  : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}
-          >
+            style={{
+              cursor: isNoneOfAbove ? "not-allowed" : "pointer",
+              opacity: isNoneOfAbove ? 0.6 : 1,
+            }}
+            onClick={() => {
+              if (isNoneOfAbove) return;
+
+              toggleActive(index, proposedRecord, formattedDate);
+            }}>
             <span className={styles["date-time-column"]}>
-              {record?.proposedDate === "10000101" &&
-              record?.startTime === "000000" &&
-              record?.endTime === "000000"
+              {isNoneOfAbove
                 ? t("None-of-the-above")
                 : newTimeFormaterViewPoll(formattedDate)}
             </span>
           </span>
         ),
+
         dataIndex: `selectedProposedDates-${index}`,
         key: `selectedProposedDates-${index}`,
         align: "center",
-        render: (text, record) => {
-          console.log(text, record, "CheckTextRecordBoth");
-          if (record.userName === "Total") {
-            const totalDate = record?.selectedProposedDates?.find(
+
+        render: (text, rowRecord) => {
+          if (rowRecord.userName === "Total") {
+            const totalDate = rowRecord?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0,
             );
+
             if (totalDate) {
               return (
                 <span className={styles["TotalCount"]}>
@@ -275,22 +297,25 @@ const SceduleProposedmeeting = ({
               );
             }
           } else {
-            const proposedDate = record?.selectedProposedDates?.find(
+            const proposedDate = rowRecord?.selectedProposedDates?.find(
               (date) =>
                 date.proposedDate === moment(formattedDate).format("YYYYMMDD"),
             );
-            if (proposedDate?.isSelected) {
+
+            // Never show tick for None of the above
+            if (!isNoneOfAbove && proposedDate?.isSelected) {
               return (
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width="20.7px"
-                  height="14.21px"
-                  alt=""
+                  width='20.7px'
+                  height='14.21px'
+                  alt=''
                 />
               );
             }
           }
+
           return null;
         },
       };
@@ -323,12 +348,11 @@ const SceduleProposedmeeting = ({
                 md={1}
                 sm={1}
                 onClick={() => dispatch(showSceduleProposedMeeting(false))}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <img
                   src={BlackCrossIcon}
-                  alt=""
-                  className="cursor-pointer"
+                  alt=''
+                  className='cursor-pointer'
                   width={15}
                 />
               </Col>
@@ -344,7 +368,7 @@ const SceduleProposedmeeting = ({
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className="SceduleProposedMeeting"
+                    className='SceduleProposedMeeting'
                     rows={updateTableRows}
                   />
                   <span>
@@ -353,8 +377,7 @@ const SceduleProposedmeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center mt-4"
-                      >
+                        className='d-flex justify-content-center mt-4'>
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}

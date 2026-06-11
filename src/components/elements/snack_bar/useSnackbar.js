@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Notification from "./index";
 import { CLEAR_RESPONSE_MESSAGE } from "../../../store/action_types";
+import { useTranslation } from "react-i18next";
 
 /**
  * useSnackbar
@@ -46,11 +47,14 @@ const ignoredMessages = new Set([
   "success",
   "data available",
   "Record save",
-  "No Data available"
+  "No Data available",
+  "Record Saved",
+  "Record Save",
 ]);
 
 const useSnackbar = (watchConfigs = []) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [snackState, setSnackState] = useState({
     open: false,
     message: "",
@@ -92,8 +96,8 @@ const useSnackbar = (watchConfigs = []) => {
 
       if (
         message &&
-        message !== prevMessage &&
-        !ignoredMessages.has(message.trim().toLowerCase())
+        t(message) !== t(prevMessage) &&
+        !ignoredMessages.has(t(message).trim().toLowerCase())
       ) {
         show(message, severity);
         didShow = true;

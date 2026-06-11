@@ -1685,7 +1685,13 @@ const MeetingDetails = () => {
                         }
                       />
                       <span className={styles["Create_group_chat_heading"]}>
-                        {t("Create-meeting-chat")}
+                        {committeeInfo !== null ? (
+                          <>{t("Create-committee-chat")}</>
+                        ) : groupInfo !== null ? (
+                          <>{t("Create-group-chat")}</>
+                        ) : (
+                          <>{t("Create-meeting-chat")}</>
+                        )}
                       </span>
                     </Col>
                   </Row>

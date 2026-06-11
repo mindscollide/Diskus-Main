@@ -630,6 +630,22 @@ const PublishedMeetingList = () => {
             isPrimaryOrganizer: record.isPrimaryOrganizer,
           });
           return;
+        } else {
+          dispatch(
+            UpdateMeetingStatusApi(
+              navigate,
+              t,
+              {
+                MeetingID: Number(record.pK_MDID),
+                StatusID: 10,
+              },
+              "startQuickMeetingFromMainListing",
+              {
+                record,
+                setIsQuickMeetingView,
+              },
+            ),
+          );
         }
 
         break;

@@ -8,31 +8,17 @@ import {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
   meetingStatusProposedMqtt,
-  validateStringParticipantProposedApi,
-  validateStringUserMeetingProposedDatesPollsApi,
 } from "../store/actions/NewMeetingActions";
 import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
 } from "../hooks/meetingResponse/response";
-import {
-  toggleIsOrganizerProposedMeetingDates,
-  toggleIsParticipantProposedMeetingDates,
-} from "../store/actions/ModalStates_actions";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 export const CommitteeContext = createContext();
 
 export const CommitteeProvider = ({ children }) => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
   const [ViewCommitteePage, setViewCommitteePage] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [viewVotes, setviewVotes] = useState(false);
-  let MeetingProp = localStorage.getItem("meetingprop");
-  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const dispatch = useDispatch();
   // =========================
   // REDUX
@@ -63,12 +49,8 @@ export const CommitteeProvider = ({ children }) => {
   const meetingStatusProposedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
-  const {
-    CommitteeMeetingMQTT,
-    MeetingStatusSocket,
-    allMeetingsSocketData,
-    MeetingStatusEnded,
-  } = useSelector((state) => state.meetingIdReducer);
+  const { CommitteeMeetingMQTT, MeetingStatusSocket, MeetingStatusEnded } =
+    useSelector((state) => state.meetingIdReducer);
 
   // =========================
   // STATE
@@ -104,12 +86,6 @@ export const CommitteeProvider = ({ children }) => {
     useState(0);
 
   // Quick Meeting
-  const [isCommitteeCreateQuickMeeting, setIsCommitteeCreateQuickMeeting] =
-    useState(false);
-  const [isCommitteeUpdateQuickMeeting, setIsCommitteeUpateQuickMeeting] =
-    useState(false);
-  const [isCommitteeViewQuickMeeting, setIsCommitteeViewQuickMeeting] =
-    useState(false);
 
   const [currentViewCommitteeTabs, setCurrentViewCommitteeTabs] = useState(1);
 
@@ -552,7 +528,8 @@ export const CommitteeProvider = ({ children }) => {
         setViewCommitteePage,
         showModal,
         setShowModal,
-        currentViewCommitteeTabs, setCurrentViewCommitteeTabs
+        currentViewCommitteeTabs,
+        setCurrentViewCommitteeTabs,
       }}>
       {children}
     </CommitteeContext.Provider>

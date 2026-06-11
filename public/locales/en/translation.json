@@ -2781,5 +2781,8 @@
   "Agenda-without-attachment": "Agenda without attachment",
   "Send-response-date-has-expired": "Send Response Date has expired",
   "Agenda-poll-created": "Agenda Poll Created",
-  "Agenda-poll-updated": "Agenda Poll Updated"
+  "Agenda-poll-updated": "Agenda Poll Updated",
+  "Create-meeting-chat": "Create Meeting Chat",
+  "Meeting-chat": "Meeting Chat",
+  "Create-committee-chat": "Create Committee Chat"
 }

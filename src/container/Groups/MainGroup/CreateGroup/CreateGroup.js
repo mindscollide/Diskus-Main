@@ -716,7 +716,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 className="SearchCheckbox "
                                 name="IsChat"
                                 label2Class={styles["Label_Of_CheckBox"]}
-                                label2={t("Create-talk-group")}
+                                label2={t("Create-group-chat")}
                                 checked={createGroupDetails.isGroupChat}
                                 onChange={CheckBoxHandler}
                                 classNameDiv="checkboxParentClass"
