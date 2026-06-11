@@ -66,6 +66,8 @@ const App = () => {
       const localUser = localStorage.getItem("userID");
       const sessionToken = sessionStorage.getItem("token");
       const sessionUser = sessionStorage.getItem("userID");
+      const is2FaEnabled = localStorage.getItem("is2FAEnabled");
+
       const isAlreadyInDashboard =
         window.location.pathname
           .toLowerCase()
@@ -86,7 +88,12 @@ const App = () => {
       }
 
       // Step 2: Redirect to dashboard if token exists but not on dashboard
-      if (!isAlreadyInDashboard && localToken && localUser) {
+      if (
+        !isAlreadyInDashboard &&
+        localToken &&
+        localUser &&
+        is2FaEnabled === "true"
+      ) {
         window.location.replace("/Diskus/");
       }
     };
