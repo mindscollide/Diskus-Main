@@ -20,12 +20,11 @@ import {
   Checkbox,
   Accordian,
   EmployeeCard,
-  Notification,
   AttachmentViewer,
 } from "@/components/elements";
 import { useTranslation } from "react-i18next";
 import crossicon from "@/assets/images/BlackCrossIconModals.svg";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import CustomUpload from "@/components/elements/upload/Upload";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -52,7 +51,6 @@ import {
 } from "@/commen/functions/convertFileSizeInMB";
 import Select from "react-select";
 import { Tooltip } from "antd";
-import { showMessage } from "@/components/elements/snack_bar/utill";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
@@ -64,14 +62,14 @@ import {
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
-import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
   // checkFlag 5 is for Create Meeting
 
   //For Localization
-
+  const [show] = useSnackbar();
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -197,6 +195,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   let OrganizationId = localStorage.getItem("organizationID");
 
   const [allPresenters, setAllPresenters] = useState([]);
+
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
     label: "",
@@ -267,7 +266,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setModalField(false);
       setIsDetails(false);
       setIsAgenda(true);
-      setCurrentStep(2);
+      setCurrentStep(3);
       setIsAttendees(false);
       setIsPublishMeeting(false);
     } else {
@@ -281,66 +280,24 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   };
 
   const changeSelectAttendees = async () => {
+    setModalField(false);
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
-      createMeeting.MeetingAgendas.length > 0
+      createMeeting.MeetingDate !== ""
     ) {
-      setModalField(false);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(true);
-      setCurrentStep(3);
-
+      setCurrentStep(2);
       setIsPublishMeeting(false);
-    } else if (
-      createMeeting.MeetingStartTime === "" ||
-      createMeeting.MeetingEndTime === "" ||
-      createMeeting.MeetingDate === ""
-    ) {
+    } else {
       setModalField(true);
       setIsDetails(true);
       setCurrentStep(1);
-
       setIsAgenda(false);
       setIsAttendees(false);
-      setIsPublishMeeting(true);
-    } else if (createMeeting.MeetingAgendas.length > 0) {
-      setModalField(false);
-      setIsDetails(false);
-      setIsAgenda(false);
-      setIsAttendees(true);
-      setCurrentStep(3);
-
       setIsPublishMeeting(false);
-    } else if (createMeeting.MeetingAgendas.length === 0) {
-      // If Title is empty, create a numbered title and append the object
-      const newObjMeetingAgenda = {
-        ...objMeetingAgenda,
-        Title: t("No-agenda-available"),
-        PresenterName: userName,
-        PK_MAID: generateRandomAgendaID,
-      };
-
-      let previousAdendas = [...createMeeting.MeetingAgendas];
-      let newData = {
-        ObjMeetingAgenda: newObjMeetingAgenda,
-        MeetingAgendaAttachments: [],
-      };
-      previousAdendas.push(newData);
-      setCreateMeeting({
-        ...createMeeting,
-        MeetingAgendas: previousAdendas,
-      });
-      setModalField(true);
-      setIsAgenda(false);
-      setCurrentStep(3);
-
-      setIsAttendees(true);
-      setIsDetails(false);
-      setIsPublishMeeting(false);
-    } else {
     }
   };
 
@@ -351,18 +308,15 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
     ) {
-      setModalField(false);
       setIsDetails(false);
-      setIsAttendees(false);
-      setIsAgenda(true);
+      setIsAttendees(true);
+      setIsAgenda(false);
       setCurrentStep(2);
-
       setIsPublishMeeting(false);
     } else {
       setModalField(true);
       setIsDetails(true);
       setCurrentStep(1);
-
       setIsAttendees(false);
       setIsAgenda(false);
       setIsPublishMeeting(false);
@@ -378,37 +332,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     });
   };
 
-  // navigate to attendee or show msg if user dont add one agenda
+  // navigate from Participants to Agenda
   const navigateToAttendees = async () => {
-    if (createMeeting.MeetingAgendas.length > 0) {
-      setIsPublishMeeting(false);
-      setIsAgenda(false);
-      setIsAttendees(true);
-      setCurrentStep(3);
-    } else {
-      // If Title is empty, create a numbered title and append the object
-      const newObjMeetingAgenda = {
-        ...objMeetingAgenda,
-        Title: t("No-agenda-available"),
-        PresenterName: userName,
-        PK_MAID: generateRandomAgendaID,
-      };
-
-      let previousAdendas = [...createMeeting.MeetingAgendas];
-      let newData = {
-        ObjMeetingAgenda: newObjMeetingAgenda,
-        MeetingAgendaAttachments: [],
-      };
-      previousAdendas.push(newData);
-      setCreateMeeting({
-        ...createMeeting,
-        MeetingAgendas: previousAdendas,
-      });
-      setIsAgenda(false);
-      setCurrentStep(3);
-      setIsAttendees(true);
-      setIsPublishMeeting(false);
-    }
+    setIsPublishMeeting(false);
+    setIsAttendees(false);
+    setIsAgenda(true);
+    setCurrentStep(3);
   };
 
   //On Change Checkbox
@@ -431,11 +360,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         const currentDateTime = convertDateTimeObject(getformattedDateTIme);
 
         if (dateTimeFormat < currentDateTime) {
-          showMessage(
-            t("Time-should-be-greater-then-system-time"),
-            "error",
-            setOpen,
-          );
+          show(t("Time-should-be-greater-then-system-time"), "error");
           setTimeout(() => {
             setCreateMeeting({
               ...createMeeting,
@@ -520,10 +445,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        showMessage(
+        show(
           t("Date-and-time-should-be-greater-than-current-system-time"),
           "error",
-          setOpen,
         );
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
@@ -583,7 +507,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     let sizezero = true;
 
     if (attachments.length + filesArray.length > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
 
@@ -602,15 +526,11 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       }
 
       if (fileExists) {
-        showMessage(t("This-file-already-exist"), "error", setOpen);
+        show(t("This-file-already-exist"), "error");
       } else if (!size) {
-        showMessage(
-          t("File-size-should-not-be-more-than-1-5GB"),
-          "error",
-          setOpen,
-        );
+        show(t("File-size-should-not-be-more-than-1-5GB"), "error", setOpen);
       } else if (!sizezero) {
-        showMessage(t("File-size-is-0mb"), "error", setOpen);
+        show(t("File-size-is-0mb"), "error");
       } else {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
@@ -1585,325 +1505,255 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // }, [checkFlag]);
   console.log(assigneesuser, checkFlag, "checkFlagcheckFlag");
   // for api response of list of all assignees
-useEffect(() => {
-  try {
-    let presenterList = [];
-    let newMemberData = [];
-    let attendeesUsersData = [];
-    let userData = null;
+  useEffect(() => {
+    try {
+      let presenterList = [];
+      let newMemberData = [];
+      let attendeesUsersData = [];
+      let userData = null;
 
-    const currentUserID = Number(
-      localStorage.getItem("userID"),
-    );
+      const currentUserID = Number(localStorage.getItem("userID"));
 
-    // =========================================
-    // Common Presenter Dropdown Item
-    // =========================================
-    const createPresenterItem = (
-      id,
-      name,
-      displayProfilePictureName,
-    ) => ({
-      label: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className='d-flex gap-2 align-items-center'>
-              <img
-                src={`data:image/jpeg;base64,${displayProfilePictureName}`}
-                height='16.45px'
-                width='18.32px'
-                draggable='false'
-                alt=''
-              />
-              <span>{name}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      value: id,
-      name,
-    });
-
-    // =========================================
-    // Update Presenter
-    // =========================================
-    const updatePresenter = (
-      id,
-      name,
-      displayProfilePictureName,
-    ) => {
-      const presenterItem = createPresenterItem(
-        id,
+      // =========================================
+      // Common Presenter Dropdown Item
+      // =========================================
+      const createPresenterItem = (id, name, displayProfilePictureName) => ({
+        label: (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className='d-flex gap-2 align-items-center'>
+                <img
+                  src={`data:image/jpeg;base64,${displayProfilePictureName}`}
+                  height='16.45px'
+                  width='18.32px'
+                  draggable='false'
+                  alt=''
+                />
+                <span>{name}</span>
+              </Col>
+            </Row>
+          </>
+        ),
+        value: id,
         name,
-        displayProfilePictureName,
-      );
+      });
+      setAllPresenters([createPresenterItem]);
 
-      setDefaultPresenter(presenterItem);
-      setPresenterValue(presenterItem);
-
-      setDefaultObjMeetingAgenda((prev) => ({
-        ...prev,
-        PresenterName: name,
-      }));
-
-      setObjMeetingAgenda((prev) => ({
-        ...prev,
-        PresenterName: name,
-      }));
-    };
-
-    // =========================================
-    // Create Meeting Attendee Object
-    // =========================================
-    const createUserDataObject = (userId) => ({
-      User: {
-        PK_UID: parseInt(userId),
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: 3,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    });
-
-    // =========================================
-    // Committee / Group Members
-    // =========================================
-    if (Number(checkFlag) === 6 || Number(checkFlag) === 7) {
-      let sourceData = [];
-
-      if (Number(checkFlag) === 6) {
-        sourceData =
-          CommitteeReducergetCommitteeByCommitteeID
-            ?.committeMembers || [];
-      } else {
-        sourceData =
-          GroupsReducergetGroupByGroupIdResponse
-            ?.groupMembers || [];
-      }
-
-      if (sourceData.length > 0) {
-        // Check if creator exists
-        const isCreatorExist = sourceData.some(
-          (member) =>
-            Number(member?.pK_UID) ===
-            Number(createrID),
+      // =========================================
+      // Update Presenter
+      // =========================================
+      const updatePresenter = (id, name, displayProfilePictureName) => {
+        const presenterItem = createPresenterItem(
+          id,
+          name,
+          displayProfilePictureName,
         );
+        presenterList.push(presenterItem);
+        setDefaultPresenter(presenterItem);
+        setPresenterValue(presenterItem);
 
-        // If creator not exists in members
-        if (!isCreatorExist) {
-          updatePresenter(
-            fK_UID,
-            userName,
-            userProfilePicture?.displayProfilePictureName,
-          );
+        setDefaultObjMeetingAgenda((prev) => ({
+          ...prev,
+          PresenterName: name,
+        }));
 
-          userData = createUserDataObject(
-            createrID,
-          );
+        setObjMeetingAgenda((prev) => ({
+          ...prev,
+          PresenterName: name,
+        }));
+      };
 
-          newMemberData.push({
-            name: userName,
-            designation: "",
-            profilePicture:
-              userProfilePicture?.displayProfilePictureName,
-            organization:
-              localStorage.getItem(
-                "organizatioName",
-              ),
-            role: 3,
-            displayProfilePic:
-              userProfilePicture?.displayProfilePictureName,
-          });
+      // =========================================
+      // Create Meeting Attendee Object
+      // =========================================
+      const createUserDataObject = (userId) => ({
+        User: {
+          PK_UID: parseInt(userId),
+        },
+        MeetingAttendeeRole: {
+          PK_MARID: 3,
+        },
+        AttendeeAvailability: {
+          PK_AAID: 1,
+        },
+      });
+
+      // =========================================
+      // Committee / Group Members
+      // =========================================
+      if (Number(checkFlag) === 6 || Number(checkFlag) === 7) {
+        let sourceData = [];
+
+        if (Number(checkFlag) === 6) {
+          sourceData =
+            CommitteeReducergetCommitteeByCommitteeID?.committeMembers || [];
+        } else {
+          sourceData =
+            GroupsReducergetGroupByGroupIdResponse?.groupMembers || [];
         }
 
-        sourceData.forEach((member) => {
-          const userProfile =
-            member?.userProfilePicture || {};
+        if (sourceData.length > 0) {
+          // Check if creator exists
+          const isCreatorExist = sourceData.some(
+            (member) => Number(member?.pK_UID) === Number(createrID),
+          );
 
-          // Exclude logged-in user and creator from dropdown
-          if (
-            Number(member?.pK_UID) !==
-              currentUserID &&
-            Number(member?.pK_UID) !==
-              Number(createrID)
-          ) {
-            presenterList.push(
-              createPresenterItem(
+          // If creator not exists in members
+          if (!isCreatorExist) {
+            updatePresenter(
+              fK_UID,
+              userName,
+              userProfilePicture?.displayProfilePictureName,
+            );
+
+            userData = createUserDataObject(createrID);
+
+            newMemberData.push({
+              name: userName,
+              designation: "",
+              profilePicture: userProfilePicture?.displayProfilePictureName,
+              organization: localStorage.getItem("organizatioName"),
+              role: 3,
+              displayProfilePic: userProfilePicture?.displayProfilePictureName,
+            });
+          }
+
+          sourceData.forEach((member) => {
+            const userProfile = member?.userProfilePicture || {};
+
+            // Exclude logged-in user and creator from dropdown
+            if (
+              Number(member?.pK_UID) !== currentUserID &&
+              Number(member?.pK_UID) !== Number(createrID)
+            ) {
+              presenterList.push(
+                createPresenterItem(
+                  member?.pK_UID,
+                  member?.userName,
+                  userProfile?.displayProfilePictureName,
+                ),
+              );
+            }
+
+            // Meeting attendees list
+            attendeesUsersData.push({
+              creationDate: "",
+              creationTime: "",
+              designation: member?.designation || "",
+              displayProfilePictureName: userProfile?.displayProfilePictureName,
+              emailAddress: member?.email,
+              mobileNumber: "",
+              name: member?.userName,
+              organization: localStorage.getItem("organizatioName"),
+              orignalProfilePictureName: userProfile?.orignalProfilePictureName,
+              pK_UID: member?.pK_UID,
+            });
+
+            // Creator presenter logic
+            if (Number(member?.pK_UID) === Number(createrID)) {
+              updatePresenter(
                 member?.pK_UID,
                 member?.userName,
                 userProfile?.displayProfilePictureName,
+              );
+
+              newMemberData.push({
+                name: member?.userName,
+                designation: member?.designation,
+                profilePicture: userProfile?.displayProfilePictureName,
+                organization: localStorage.getItem("organizatioName"),
+                role: 3,
+                displayProfilePic: userProfile?.displayProfilePictureName,
+              });
+
+              userData = createUserDataObject(member?.pK_UID);
+            }
+          });
+
+          setAllPresenters(presenterList);
+          setAttendeesParticipant(presenterList);
+          setMeetingAttendeesList(attendeesUsersData);
+          setAddedParticipantNameList(newMemberData);
+
+          setCreateMeeting((prev) => ({
+            ...prev,
+            MeetingAttendees: userData ? [userData] : [],
+          }));
+        }
+
+        return;
+      }
+
+      // =========================================
+      // Assignees User Data
+      // =========================================
+      if (assigneesuser && Object.keys(assigneesuser).length > 0) {
+        const usersList = assigneesuser;
+
+        setMeetingAttendeesList(usersList);
+
+        usersList.forEach((user) => {
+          // Exclude logged-in user and creator from dropdown
+          if (
+            Number(user?.pK_UID) !== currentUserID &&
+            Number(user?.pK_UID) !== Number(createrID)
+          ) {
+            presenterList.push(
+              createPresenterItem(
+                user?.pK_UID,
+                user?.name,
+                user?.displayProfilePictureName,
               ),
             );
           }
 
-          // Meeting attendees list
-          attendeesUsersData.push({
-            creationDate: "",
-            creationTime: "",
-            designation:
-              member?.designation || "",
-            displayProfilePictureName:
-              userProfile?.displayProfilePictureName,
-            emailAddress: member?.email,
-            mobileNumber: "",
-            name: member?.userName,
-            organization:
-              localStorage.getItem(
-                "organizatioName",
-              ),
-            orignalProfilePictureName:
-              userProfile?.orignalProfilePictureName,
-            pK_UID: member?.pK_UID,
-          });
-
           // Creator presenter logic
-          if (
-            Number(member?.pK_UID) ===
-            Number(createrID)
-          ) {
+          if (Number(user?.pK_UID) === Number(createrID)) {
             updatePresenter(
-              member?.pK_UID,
-              member?.userName,
-              userProfile?.displayProfilePictureName,
+              user?.pK_UID,
+              user?.name,
+              user?.displayProfilePictureName,
             );
 
             newMemberData.push({
-              name: member?.userName,
-              designation:
-                member?.designation,
-              profilePicture:
-                userProfile?.displayProfilePictureName,
-              organization:
-                localStorage.getItem(
-                  "organizatioName",
-                ),
+              name: user?.name,
+              designation: user?.designation,
+              profilePicture: user?.orignalProfilePictureName,
+              organization: user?.organization,
               role: 3,
-              displayProfilePic:
-                userProfile?.displayProfilePictureName,
+              displayProfilePic: user?.displayProfilePictureName,
             });
 
-            userData = createUserDataObject(
-              member?.pK_UID,
-            );
+            userData = createUserDataObject(user?.pK_UID);
           }
         });
 
         setAllPresenters(presenterList);
-        setAttendeesParticipant(
-          presenterList,
-        );
-        setMeetingAttendeesList(
-          attendeesUsersData,
-        );
-        setAddedParticipantNameList(
-          newMemberData,
-        );
+        setAttendeesParticipant(presenterList);
+        setAddedParticipantNameList(newMemberData);
 
         setCreateMeeting((prev) => ({
           ...prev,
-          MeetingAttendees: userData
-            ? [userData]
-            : [],
+          MeetingAttendees: userData ? [userData] : [],
         }));
       }
-
-      return;
+    } catch (error) {
+      console.error("Error in attendees useEffect:", error);
     }
-
-    // =========================================
-    // Assignees User Data
-    // =========================================
-    if (
-      assigneesuser &&
-      Object.keys(assigneesuser).length > 0
-    ) {
-      const usersList = assigneesuser;
-
-      setMeetingAttendeesList(usersList);
-
-      usersList.forEach((user) => {
-        // Exclude logged-in user and creator from dropdown
-        if (
-          Number(user?.pK_UID) !==
-            currentUserID &&
-          Number(user?.pK_UID) !==
-            Number(createrID)
-        ) {
-          presenterList.push(
-            createPresenterItem(
-              user?.pK_UID,
-              user?.name,
-              user?.displayProfilePictureName,
-            ),
-          );
-        }
-
-        // Creator presenter logic
-        if (
-          Number(user?.pK_UID) ===
-          Number(createrID)
-        ) {
-          updatePresenter(
-            user?.pK_UID,
-            user?.name,
-            user?.displayProfilePictureName,
-          );
-
-          newMemberData.push({
-            name: user?.name,
-            designation: user?.designation,
-            profilePicture:
-              user?.orignalProfilePictureName,
-            organization:
-              user?.organization,
-            role: 3,
-            displayProfilePic:
-              user?.displayProfilePictureName,
-          });
-
-          userData = createUserDataObject(
-            user?.pK_UID,
-          );
-        }
-      });
-
-      setAllPresenters(presenterList);
-      setAttendeesParticipant(
-        presenterList,
-      );
-      setAddedParticipantNameList(
-        newMemberData,
-      );
-
-      setCreateMeeting((prev) => ({
-        ...prev,
-        MeetingAttendees: userData
-          ? [userData]
-          : [],
-      }));
-    }
-  } catch (error) {
-    console.error(
-      "Error in attendees useEffect:",
-      error,
-    );
-  }
-}, [
-  assigneesuser,
-  checkFlag,
-  createrID,
-  fK_UID,
-  userName,
-  userProfilePicture,
-  CommitteeReducergetCommitteeByCommitteeID,
-  GroupsReducergetGroupByGroupIdResponse,
-]);
+  }, [
+    assigneesuser,
+    checkFlag,
+    createrID,
+    fK_UID,
+    userName,
+    userProfilePicture,
+    CommitteeReducergetCommitteeByCommitteeID,
+    GroupsReducergetGroupByGroupIdResponse,
+  ]);
 
   // =========================================
   // Helper Function
@@ -1940,7 +1790,7 @@ useEffect(() => {
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        show(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
         setParticipantRoleValue({
           label: t("Participant"),
@@ -2019,7 +1869,7 @@ useEffect(() => {
       }
     } else {
       if (found === undefined) {
-        showMessage(t("Please-add-valid-user"), "error", setOpen);
+        show(t("Please-add-valid-user"), "error");
         setTaskAssignedTo(0);
         setParticipantRoleValue({
           label: t("Participant"),
@@ -2050,7 +1900,17 @@ useEffect(() => {
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
+      show(t("Please-add-atleast-one-participant"), "error");
+      return;
+    }
+
+    const invalidAgenda = createMeeting.MeetingAgendas.find((agenda) => {
+      const presenterName = agenda?.ObjMeetingAgenda?.PresenterName;
+      if (!presenterName) return false;
+      return !addedParticipantNameList.some((ap) => ap.name === presenterName);
+    });
+    if (invalidAgenda) {
+      show(t("Agenda-presenter-not-in-attendees"), "error");
       return;
     }
     let finalDateTime = createConvert(
@@ -2136,22 +1996,18 @@ useEffect(() => {
   const onHideCancelButton = () => {
     if (currentStep === 1) {
       setIsDetails(true);
-
       setIsAgenda(false);
       setIsAttendees(false);
       setCloseConfirmationModal(false);
     } else if (currentStep === 2) {
       setIsDetails(false);
-      setIsAgenda(true);
-      setCloseConfirmationModal(false);
-
-      setIsAttendees(false);
-    } else if (currentStep === 3) {
-      setIsDetails(false);
-      setCloseConfirmationModal(false);
-
       setIsAgenda(false);
       setIsAttendees(true);
+      setCloseConfirmationModal(false);
+    } else if (currentStep === 3) {
+      setIsDetails(false);
+      setIsAgenda(true);
+      setIsAttendees(false);
       setCurrentStep(3);
     }
   };
@@ -2268,6 +2124,16 @@ useEffect(() => {
                   />
                   <Button
                     className={
+                      isAttendees
+                        ? "isAttendee-Schedule-top-btn_active"
+                        : "isAttendee-Schedule-top-btn-NonActive"
+                    }
+                    text={t("Participants")}
+                    datatut='show-meeting-attendees'
+                    onClick={changeSelectAttendees}
+                  />
+                  <Button
+                    className={
                       isAgenda
                         ? "isAgenda-Schedule-top-btn_active"
                         : "isAgenda-Schedule-top-btn-NonActive"
@@ -2275,16 +2141,6 @@ useEffect(() => {
                     text={t("Agenda")}
                     onClick={changeSelectAgenda}
                     datatut='show-agenda'
-                  />
-                  <Button
-                    className={
-                      isAttendees
-                        ? "isAttendee-Schedule-top-btn_active"
-                        : "isAttendee-Schedule-top-btn-NonActive"
-                    }
-                    text={t("Attendees")}
-                    datatut='show-meeting-attendees'
-                    onClick={changeSelectAttendees}
                   />
                 </Col>
               </Row>
@@ -2521,7 +2377,11 @@ useEffect(() => {
                       </Col>
                       <Col lg={5} md={5} xs={12} className='agenda-title-field'>
                         <Select
-                          options={allPresenters}
+                          options={allPresenters.filter((p) =>
+                            createMeeting.MeetingAttendees.some(
+                              (att) => att?.User?.PK_UID === p.value,
+                            ),
+                          )}
                           maxMenuHeight={140}
                           classNamePrefix={"ModalOrganizerSelect"}
                           onChange={handleChangePresenter}
@@ -2725,7 +2585,9 @@ useEffect(() => {
                 <Row className=' mt-4'>
                   <Col lg={6} md={6} sm={12} xs={12}>
                     <Select
-                      options={attendeesParticipant}
+                      options={attendeesParticipant.filter(
+                        (p) => p.value !== Number(createrID),
+                      )}
                       classNamePrefix={"ModalOrganizerSelect"}
                       filterOption={filterFunc}
                       placeholder='Please Select'
@@ -2876,6 +2738,26 @@ useEffect(() => {
                   </Col>
                 </Row>
               </>
+            ) : isAttendees ? (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    sm={12}
+                    className='d-flex justify-content-end'>
+                    <Button
+                      onClick={navigateToAttendees}
+                      className={
+                        "btn btn-primary modal-createMeeting-addagendaBtn_Next"
+                      }
+                      text={t("Next")}
+                      type='submit'
+                    />
+                  </Col>
+                </Row>
+              </>
             ) : isAgenda ? (
               <>
                 <Row>
@@ -2898,26 +2780,6 @@ useEffect(() => {
                           : `${"+"}  ${t("Add-agenda")}`
                       }
                     />
-                    <Button
-                      onClick={navigateToAttendees}
-                      className={
-                        "btn btn-primary modal-createMeeting-addagendaBtn_Next"
-                      }
-                      text={t("Next")}
-                      type='submit'
-                    />
-                  </Col>
-                </Row>
-              </>
-            ) : isAttendees ? (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    xs={12}
-                    sm={12}
-                    className='d-flex justify-content-end'>
                     <Button
                       className={"btn btn-primary modal-createMeeting-publish"}
                       text={t("Publish")}
@@ -2952,7 +2814,6 @@ useEffect(() => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

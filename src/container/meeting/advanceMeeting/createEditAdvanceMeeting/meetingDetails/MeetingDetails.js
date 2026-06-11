@@ -1149,7 +1149,7 @@ const MeetingDetails = () => {
                     rows='5'
                     name={"Notes"}
                     change={HandleChange}
-                    placeholder={t("Note-for-this-meeting")}
+                    placeholder={t("Notes")}
                     required={true}
                     maxLength={1100}
                     value={meetingDetails.Notes}

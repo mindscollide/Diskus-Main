@@ -3,7 +3,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Notification from "./index";
 import { CLEAR_RESPONSE_MESSAGE } from "../../../store/action_types";
-import { useTranslation } from "react-i18next";
 
 /**
  * useSnackbar
@@ -38,23 +37,24 @@ import { useTranslation } from "react-i18next";
  *   notify("Saved!", "success");
  */
 
-const ignoredMessages = new Set([
-  "no record found",
-  "no records found",
-  "record found",
-  "record updated",
-  "no record updated",
-  "success",
-  "data available",
-  "Record save",
-  "No Data available",
-  "Record Saved",
-  "Record Save",
-]);
+const ignoredMessages = new Set(
+  [
+    "no record found",
+    "no records found",
+    "record found",
+    "record updated",
+    "no record updated",
+    "success",
+    "data available",
+    "record save",
+    "no data available",
+    "record saved",
+  ].map((m) => m.toLowerCase().trim())
+);
 
 const useSnackbar = (watchConfigs = []) => {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+
   const [snackState, setSnackState] = useState({
     open: false,
     message: "",
@@ -63,15 +63,14 @@ const useSnackbar = (watchConfigs = []) => {
 
   const show = useCallback((message, severity = "success") => {
     if (!message) return;
+
     setSnackState({ open: true, message, severity });
+
     setTimeout(() => {
       setSnackState((prev) => ({ ...prev, open: false }));
     }, 3000);
   }, []);
 
-  // Select all watched message/severity pairs from the Redux store.
-  // The custom equality function prevents re-renders when the message strings
-  // haven't changed (avoids new-array-reference churn on every render).
   const { messageKey, values } = useSelector(
     (state) => {
       const values = watchConfigs.map((cfg) => ({
@@ -80,40 +79,43 @@ const useSnackbar = (watchConfigs = []) => {
           ? cfg.severitySelector(state) || "success"
           : cfg.severity || "success",
       }));
-      return { messageKey: values.map((v) => v.message).join("||"), values };
+
+      const messageKey = values
+        .map((v) => `${v.message}:${v.severity}`)
+        .join("||");
+
+      return { messageKey, values };
     },
-    (a, b) => a.messageKey === b.messageKey,
+    (a, b) => a.messageKey === b.messageKey
   );
 
-  const prevRef = useRef([]);
+  const prevRef = useRef(new Map());
 
   useEffect(() => {
-    // Fire the snackbar only when a message transitions from empty → non-empty
-    // (avoids re-firing the same message on unrelated re-renders)
     let didShow = false;
-    values.forEach(({ message, severity }, i) => {
-      const prevMessage = prevRef.current[i]?.message.toLowerCase() ?? "";
+
+    values.forEach(({ message, severity }) => {
+      const normalized = message?.toLowerCase().trim();
 
       if (
         message &&
-        t(message) !== t(prevMessage) &&
-        !ignoredMessages.has(t(message).trim().toLowerCase())
+        !ignoredMessages.has(normalized) &&
+        prevRef.current.get(normalized) !== severity
       ) {
         show(message, severity);
         didShow = true;
+        prevRef.current.set(normalized, severity);
       }
     });
-    prevRef.current = values;
 
-    // Clear all ResponseMessage / errorSeverity fields in the store once
-    // the message has been consumed so it doesn't re-trigger on re-renders.
     if (didShow) {
       dispatch({ type: CLEAR_RESPONSE_MESSAGE });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messageKey]);
+  }, [messageKey, dispatch, show, values]);
 
-  const SnackBar = <Notification open={snackState} setOpen={setSnackState} />;
+  const SnackBar = (
+    <Notification open={snackState} setOpen={setSnackState} />
+  );
 
   return [show, SnackBar];
 };

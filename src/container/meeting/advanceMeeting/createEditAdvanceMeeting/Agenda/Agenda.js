@@ -8,7 +8,11 @@ import React, {
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import {
+  Button,
+  Notification,
+  useSnackbar,
+} from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -288,6 +292,7 @@ const Agenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [show] = useSnackbar();
 
   /* --------------------------------------------------------------------------
    * Redux selectors
@@ -444,12 +449,12 @@ const Agenda = () => {
       name: p.userName,
       label: (
         <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+          <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
             <img
-              alt=""
+              alt=''
               src={`data:image/jpeg;base64,${p.userProfilePicture.displayProfilePictureName}`}
-              width="17px"
-              height="17px"
+              width='17px'
+              height='17px'
               className={styles["Image_class_Agenda"]}
             />
             <span className={styles["Name_Class"]}>{p.userName}</span>
@@ -587,7 +592,7 @@ const Agenda = () => {
 
       const rowError = validateAgendaRow(row, i);
       if (rowError) {
-        showMessage(t(rowError.key, rowError.params), "error", setOpen);
+        show(t(rowError.key, rowError.params), "error");
         return; // fail-fast
       }
 
@@ -602,7 +607,7 @@ const Agenda = () => {
           const sub = row.subAgenda[j];
           const subError = validateSubAgendaRow(sub, i, j);
           if (subError) {
-            showMessage(t(subError.key, subError.params), "error", setOpen);
+            show(t(subError.key, subError.params), "error");
             return;
           }
           if (sub.subSelectRadio === AGENDA_SOURCE.ATTACHMENT) {
@@ -792,47 +797,8 @@ const Agenda = () => {
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
 
   /* --------------------------------------------------------------------------
-   * Response-message snackbar handler.
-   * Uses a lookup table instead of an if/else chain — easier to extend.
-   * ------------------------------------------------------------------------ */
-  useEffect(() => {
-    const msg = MeetingAgendaReducer.ResponseMessage;
-    if (!msg) return;
-
-    const messageMap = {
-      [t("Record-saved")]: { text: t("Record-saved"), type: "success" },
-      [t("Record-updated")]: { text: t("Record-updated"), type: "success" },
-      [t("Agendas-imported-successfully")]: {
-        text: t("Agendas-imported-successfully"),
-        type: "success",
-      },
-      [t("No-agendas-exist")]: { text: t("No-agendas-exist"), type: "error" },
-      [t("Voting-saved")]: {
-        text: t("Agenda-poll-created"),
-        type: "success",
-      },
-      [t("Voting-updated")]: {
-        text: t("Agenda-poll-updated"),
-        type: "success",
-      },
-    };
-
-    const match = messageMap[msg];
-    if (match) showMessage(match.text, match.type, setOpen);
-
-    dispatch(clearResponseMessage(""));
-  }, [MeetingAgendaReducer.ResponseMessage, dispatch, t]);
-
-  /* --------------------------------------------------------------------------
    * Generic snackbar handler for NewMeetingreducer response messages.
    * ------------------------------------------------------------------------ */
-  useEffect(() => {
-    const msg = NewMeetingreducer.ResponseMessage;
-    if (typeof msg === "string" && msg !== "") {
-      showMessage(msg, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [NewMeetingreducer.ResponseMessage, dispatch]);
 
   /* --------------------------------------------------------------------------
    * MQTT-pushed updates — another user modified this meeting's agenda.
@@ -890,8 +856,7 @@ const Agenda = () => {
         {/* Draggable agenda list ------------------------------------------ */}
         {!hideDragArea && (
           <DragDropContext
-            onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-          >
+            onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
             {!showEmptyState && (
               <Row>
                 <Col
@@ -902,9 +867,8 @@ const Agenda = () => {
                     rows.length > 1
                       ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                       : styles["Scroller_Agenda"]
-                  }
-                >
-                  <Droppable droppableId="board" type="PARENT">
+                  }>
+                  <Droppable droppableId='board' type='PARENT'>
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.droppableProps}>
                         {rows.map((data, index) => (
@@ -914,8 +878,7 @@ const Agenda = () => {
                               data.canView === false && isContributor
                                 ? "d-none"
                                 : styles["agenda-border-class"]
-                            }
-                          >
+                            }>
                             <ParentAgenda
                               fileForSend={fileForSend}
                               setFileForSend={setFileForSend}
@@ -959,14 +922,13 @@ const Agenda = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center mt-3"
-              >
+                className='d-flex justify-content-center mt-3'>
                 <img
                   draggable={false}
                   src={emptyContributorState}
-                  width="274.05px"
-                  height="230.96px"
-                  alt=""
+                  width='274.05px'
+                  height='230.96px'
+                  alt=''
                   className={styles["Image-Add-Agenda"]}
                 />
               </Col>
@@ -976,8 +938,7 @@ const Agenda = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center mt-3"
-              >
+                className='d-flex justify-content-center mt-3'>
                 <span className={styles["Empty_state_heading"]}>
                   {t("No-agenda-availabe-to-discuss").toUpperCase()}
                 </span>
@@ -988,7 +949,7 @@ const Agenda = () => {
 
         {/* "Add Agenda" button ------------------------------------------- */}
         {showAddAgendaBtn && (
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col lg={12} md={12} sm={12}>
               <Button
                 text={
@@ -997,14 +958,13 @@ const Agenda = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex justify-content-center gap-2 align-items-center"
-                    >
+                      className='d-flex justify-content-center gap-2 align-items-center'>
                       <img
                         draggable={false}
                         src={plusFaddes}
-                        height="10.77px"
-                        width="10.77px"
-                        alt=""
+                        height='10.77px'
+                        width='10.77px'
+                        alt=''
                       />
                       <span className={styles["Add_Agen_Heading"]}>
                         {t("Add-agenda")}
@@ -1025,13 +985,12 @@ const Agenda = () => {
         )}
 
         {/* Footer action buttons ---------------------------------------- */}
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             {showImportBtn && (
               <Button
                 text={t("Import-previous-agenda")}
