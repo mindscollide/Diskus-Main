@@ -346,7 +346,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
               await dispatch(
                 savePolls_success(
                   response.data.responseResult,
-                  t("Poll-created"),
+                  "",
                 ),
               );
               if (value === 1) {
