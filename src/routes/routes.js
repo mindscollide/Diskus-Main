@@ -106,6 +106,7 @@ import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
 import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
 import { AuthorityProvider } from "../context/AuthorityContext.js";
 import MainCompliance from "../container/ComplianceUser/index.jsx";
+import EmailActionHandler from "../container/emailAction/EmailActionHandler.jsx";
 import { NewMeetingProvider } from "../context/NewMeetingContext.js";
 import MainMeeting from "../container/meeting/index.jsx";
 import { TalkProvider } from "../context/TalkContext.js";
@@ -521,6 +522,16 @@ export const router = createBrowserRouter(
                   <MainCompliance />
                 </ErrorBoundary>
               </RouteWrapperUser>
+            }
+          />
+          <Route
+            path='email_action'
+            element={
+              <ErrorBoundary
+                FallbackComponent={ErrorFallback}
+                onError={logErrors}>
+                <EmailActionHandler />
+              </ErrorBoundary>
             }
           />
         </Route>

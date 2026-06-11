@@ -1902,29 +1902,32 @@ const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
   };
 };
 
-const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
+const ExportAgendaPDF = (Data, navigate, t, currentMeeting) => {
   let form = new FormData();
   form.append("RequestMethod", exportAgendaAsPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
   return (dispatch) => {
     dispatch(sendAgendaPDFAsEmail_init());
     axiosInstance
-      .post(DataRoomAllFilesDownloads, form)
+      .post(DataRoomAllFilesDownloads, form, {
+        responseType: "blob",
+      })
 
       .then(async (response) => {
         console.log("response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
+          dispatch(ExportAgendaPDF(Data, navigate, t, currentMeeting));
           dispatch(setLoaderFalse());
-        } else if (response.data.responseCode === 200) {
+        }
+        if (response.status === 200 && response.data) {
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: "application/zip" }), // ✅ change type
           );
 
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", `Agenda - ${meetingTitle}.zip`); // ✅ add .zip
+          link.setAttribute("download", `Agenda - ${currentMeeting}.zip`); // ✅ add .zip
           document.body.appendChild(link);
 
           link.click();
@@ -1938,8 +1941,12 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
           dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
+      .catch((error) => {
+        console.log("Export PDF Error:", error);
         dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+      })
+      .finally(() => {
+        dispatch(setLoaderFalse());
       });
   };
 };

@@ -2215,4 +2215,8 @@ export const GetAllComplianceAuthority = {
 
 export const ChangeChecklistAllowedTransactionStatusRM = {
   RequestMethod: "ServiceManager.ChangeChecklistAllowedTransactionStatus"
-}
+};
+
+export const validateEmailActionTokenRM = {
+  RequestMethod: "ServiceManager.ValidateEmailActionToken",
+};

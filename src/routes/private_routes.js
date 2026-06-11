@@ -353,6 +353,23 @@ const PrivateRoutes = () => {
         let getValue = getActionValue(currentUrl, "signed_cr_action=");
         localStorage.setItem("docSignedCrAction", getValue);
       }
+
+      // Unified email action handler — save token for post-login redirect
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/email_action".toLowerCase())
+      ) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailToken =
+          urlParams.get("token") ||
+          (window.location.search.length > 1
+            ? window.location.search.slice(1)
+            : null);
+        if (emailToken) {
+          localStorage.setItem("emailActionToken", emailToken);
+        }
+      }
     };
     callRoutingFunction();
     // Action: Meeting RSVP
@@ -397,7 +414,10 @@ const PrivateRoutes = () => {
               .includes("Diskus/committee".toLowerCase()) ||
             currentUrl
               .toLowerCase()
-              .includes("Diskus/resolution".toLowerCase()))) ||
+              .includes("Diskus/resolution".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/email_action".toLowerCase()))) ||
         currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase())
           ? "/"
           : currentUser === null && token === ""

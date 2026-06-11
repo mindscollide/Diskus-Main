@@ -116,7 +116,7 @@ const PrintExportAgendaModal = ({
     if (printFlag === true) {
       dispatch(PrintMeetingAgenda(Data, navigate, t));
     } else if (exportFlag === true) {
-      dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
+      dispatch(ExportAgendaPDF(Data, navigate, t, currentMeeting));
     }
   };
 

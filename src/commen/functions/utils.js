@@ -2946,6 +2946,7 @@ export const handleNavigation = (
   if (OnlyComplianceFeature) {
     localStorage.setItem("OnlyComplianceAllowed", OnlyComplianceFeature);
   }
+  const emailActionToken = localStorage.getItem("emailActionToken");
   const RSVP = localStorage.getItem("RSVP");
   const dataroomValue = localStorage.getItem("DataRoomEmail");
   const AgCont = localStorage.getItem("AgCont");
@@ -2987,7 +2988,9 @@ export const handleNavigation = (
     // if (adminRights) {
     //   navigate("/Admin/ManageUsers");
     // } else if (userRights) {
-    if (RSVP !== null) {
+    if (emailActionToken !== null) {
+      navigate("/Diskus/email_action");
+    } else if (RSVP !== null) {
       navigate("/Diskus/Meeting/Useravailabilityformeeting");
     } else if (
       dataroomValue !== null ||
