@@ -219,7 +219,71 @@ button.updatemeetingmodalconfirmationsubmit {
 
   font-weight: 600 !important;
 }
-
+.NextButton_QuickMeetingUpdate {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 12px 30px !important;
+  font-weight: 600 !important;
+}
+.SaveAndUpdateAgendaButton_QuickMeetingUpdate {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 30px;
+}
+.DiscardButton_QuickMeetingUpdate {
+  background-color: #f16b6b !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 30px;
+}
+.CancelMeeting_QuickMeetingUpdate {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 30px;
+}
+.UpdateMeeting_QuickMeetingUpdate {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 30px;
+}
 body[dir="rtl"] .modal-update-meeting {
   margin-left: 3px;
 }
@@ -336,8 +400,8 @@ body[dir="rtl"] .modal-update-addagenda {
 .ismeeting-finish-btn {
   background-color: #6172d6 !important;
   border-color: #6172d6 !important;
-  width: 150px !important;
-  height: 45px !important;
+  min-width: 150px !important;
+  min-height: 31px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 400 !important;
@@ -401,13 +465,13 @@ body[dir="rtl"] .modal-update-addagenda {
 
 .isDetail-Update-btn,
 .isDetail-Update-btn:is(
-    :active,
-    :hover,
-    :focus,
-    :focus-visible,
-    :visited,
-    :target
-  ) {
+  :active,
+  :hover,
+  :focus,
+  :focus-visible,
+  :visited,
+  :target
+) {
   padding: 8px 30px !important;
   border: none !important;
   border-radius: 4px !important;
@@ -424,13 +488,13 @@ body[dir="rtl"] .isDetail-Update-btn {
 
 .isDetail-Update-Outline-btn,
 .isDetail-Update-Outline-btn:is(
-    :hover,
-    :active,
-    :focus,
-    :focus-visible,
-    :visited,
-    :target
-  ) {
+  :hover,
+  :active,
+  :focus,
+  :focus-visible,
+  :visited,
+  :target
+) {
   color: #666666 !important;
   padding: 8px 30px !important;
   border: 1px solid #e1e1e1;

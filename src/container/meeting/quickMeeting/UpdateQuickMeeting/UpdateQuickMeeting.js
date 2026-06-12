@@ -276,8 +276,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
     ) {
-      setCurrentStep(2);
-      setModalField(false);
+      setCurrentStep(3);
       setIsDetails(false);
       setIsAgenda(true);
       setIsAttendees(false);
@@ -285,7 +284,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setCancelMeetingModal(false);
     } else {
       setCurrentStep(1);
-
       setModalField(true);
       setIsDetails(true);
       setIsAgenda(false);
@@ -302,9 +300,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
     ) {
-      setCurrentStep(3);
-
-      setModalField(false);
+      setCurrentStep(2);
       setIsDetails(false);
       setIsAgenda(false);
       setIsAttendees(true);
@@ -315,7 +311,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setModalField(true);
       setIsDetails(true);
       setCurrentStep(1);
-
       setIsAgenda(false);
       setIsAttendees(false);
       setIsMinutes(false);
@@ -359,13 +354,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       createMeetingTime !== "" &&
       meetingDate !== ""
     ) {
-      setModalField(false);
       setIsDetails(false);
       setIsMinutes(false);
       setIsPublishMeeting(false);
       setCancelMeetingModal(false);
-      setIsAgenda(true);
-      setIsAttendees(false);
+      setIsAgenda(false);
+      setIsAttendees(true);
       setCurrentStep(2);
     } else {
       setModalField(true);
@@ -379,18 +373,11 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     }
   };
 
+  // navigate from Participants to Agenda
   const navigateToAttendees = () => {
-    if (createMeeting.MeetingAgendas.length > 0) {
-      setIsAgenda(false);
-      setIsAttendees(true);
-      setCurrentStep(3);
-    } else {
-      setIsAgenda(true);
-      setCurrentStep(2);
-
-      setIsAttendees(false);
-      showMessage(t("Please-atleast-add-one-agenda"), "error", setOpen);
-    }
+    setIsAttendees(false);
+    setIsAgenda(true);
+    setCurrentStep(3);
   };
 
   const navigateToMinutes = () => {
@@ -2148,6 +2135,17 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
       return;
     }
+
+    const invalidAgenda = createMeeting.MeetingAgendas.find((agenda) => {
+      const presenterName = agenda?.ObjMeetingAgenda?.PresenterName;
+      if (!presenterName) return false;
+      return !addedParticipantNameList.some((ap) => ap.name === presenterName);
+    });
+    if (invalidAgenda) {
+      showMessage(t("Agenda-presenter-not-in-attendees"), "error", setOpen);
+      return;
+    }
+
     let hasOrganizer = createMeeting.MeetingAttendees.some(
       (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1,
     );
@@ -2572,17 +2570,15 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setIsMinutes(false);
     } else if (currentStep === 2) {
       setIsDetails(false);
-      setIsAgenda(true);
+      setIsAgenda(false);
+      setIsAttendees(true);
       setCloseConfirmationModal(false);
-
-      setIsAttendees(false);
       setIsMinutes(false);
     } else if (currentStep === 3) {
       setIsDetails(false);
+      setIsAgenda(true);
+      setIsAttendees(false);
       setCloseConfirmationModal(false);
-
-      setIsAgenda(false);
-      setIsAttendees(true);
       setIsMinutes(false);
     } else if (currentStep === 4) {
       setIsDetails(false);
@@ -2709,6 +2705,17 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     />
                     <Button
                       className={
+                        isAttendees
+                          ? "  isDetail-Update-btn"
+                          : "   isDetail-Update-Outline-btn"
+                      }
+                      variant={"Primary"}
+                      text={t("Participants")}
+                      datatut='show-meeting-attendees'
+                      onClick={changeSelectAttendees}
+                    />
+                    <Button
+                      className={
                         isAgenda
                           ? "  isDetail-Update-btn"
                           : "   isDetail-Update-Outline-btn"
@@ -2717,17 +2724,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       text={t("Agendas")}
                       onClick={changeSelectAgenda}
                       datatut='show-agenda'
-                    />
-                    <Button
-                      className={
-                        isAttendees
-                          ? "  isDetail-Update-btn"
-                          : "   isDetail-Update-Outline-btn"
-                      }
-                      variant={"Primary"}
-                      text={t("Attendees")}
-                      datatut='show-meeting-attendees'
-                      onClick={changeSelectAttendees}
                     />
                     {minutesOftheMeatingStatus && (
                       <Button
@@ -2963,7 +2959,11 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                             xs={12}
                             className='agenda-title-field '>
                             <Select
-                              options={allPresenters}
+                              options={allPresenters.filter((p) =>
+                                createMeeting.MeetingAttendees.some(
+                                  (att) => att?.User?.PK_UID === p.value,
+                                ),
+                              )}
                               isDisabled={endMeetingStatus}
                               maxMenuHeight={140}
                               classNamePrefix={"ModalOrganizerSelect"}
@@ -3020,9 +3020,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                       return (
                                         <Col sm={4} md={4} lg={4} key={index}>
                                           <AttachmentViewer
-                                            id={Number(
-                                              data.OriginalAttachmentName,
-                                            )}
+                                            id={0}
                                             handleEyeIcon={() =>
                                               handeClickView(data)
                                             }
@@ -3194,7 +3192,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     <Row className='updatemeeting-attendees-row '>
                       <Col lg={5} md={5} sm={12} xs={12}>
                         <Select
-                          options={attendeesParticipant}
+                          options={attendeesParticipant.filter(
+                            (p) => p.value !== Number(createrID),
+                          )}
                           classNamePrefix={"ModalOrganizerSelect"}
                           filterOption={filterFunc}
                           placeholder='Please Select'
@@ -3447,37 +3447,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       className='d-flex justify-content-end'>
                       <Button
                         onClick={navigateToAgenda}
-                        className={
-                          " btn btn-primary modal-update-meeting-details "
-                        }
-                        variant={"Primary"}
-                        text={t("Next")}
-                      />
-                    </Col>
-                  </Row>
-                </>
-              ) : isAgenda ? (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className='d-flex justify-content-between'>
-                      <Button
-                        disableBtn={endMeetingStatus}
-                        onClick={addAnOtherAgenda}
-                        className={`modal-update-addagenda ${currentLanguage}`}
-                        text={
-                          editRecordFlag
-                            ? t("Update-agenda")
-                            : " + " + t("Add-agenda")
-                        }
-                      />
-                      <Button
-                        onClick={navigateToAttendees}
-                        className={" btn btn-primary modal-update-meeting"}
+                        className={"NextButton_QuickMeetingUpdate"}
                         text={t("Next")}
                       />
                     </Col>
@@ -3485,13 +3455,40 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                 </>
               ) : isAttendees ? (
                 <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      xs={12}
+                      className='d-flex justify-content-end'>
+                      <Button
+                        onClick={navigateToAttendees}
+                        className={"NextButton_QuickMeetingUpdate"}
+                        text={t("Next")}
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ) : isAgenda ? (
+                <>
                   {minutesOftheMeatingStatus ? (
                     <Row>
                       <Col
                         lg={12}
                         md={12}
+                        sm={12}
                         xs={12}
-                        className='d-flex justify-content-end'>
+                        className='d-flex justify-content-between'>
+                        <Button
+                          disableBtn={endMeetingStatus}
+                          onClick={addAnOtherAgenda}
+                          className={`modal-update-addagenda ${currentLanguage}`}
+                          text={
+                            editRecordFlag
+                              ? t("Update-agenda")
+                              : " + " + t("Add-agenda")
+                          }
+                        />
                         <Button
                           className={" btn btn-primary modal-update-meeting"}
                           text={t("Next")}
@@ -3501,24 +3498,36 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     </Row>
                   ) : (
                     <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        xs={12}
-                        className='d-flex justify-content-end gap-2'>
+                      <Col lg={3} md={3} sm={12} xs={12}>
                         <Button
-                          className={"UpdateMeeting_discardChangesBtn"}
+                          disableBtn={endMeetingStatus}
+                          onClick={addAnOtherAgenda}
+                          className={`SaveAndUpdateAgendaButton_QuickMeetingUpdate`}
+                          text={
+                            editRecordFlag
+                              ? t("Update-agenda")
+                              : " + " + t("Add-agenda")
+                          }
+                        />
+                      </Col>
+                      <Col lg={3} md={3} sm={12} xs={12}>
+                        <Button
+                          className={"DiscardButton_QuickMeetingUpdate"}
                           text={t("Discard-changes")}
                           onClick={discardMeeting}
                         />
+                      </Col>
+                      <Col lg={3} md={3} sm={12} xs={12}>
                         <Button
                           disableBtn={endMeetingStatus}
-                          className={"UpdateMeeting_cancelMeetingBtn"}
+                          className={"CancelMeeting_QuickMeetingUpdate"}
                           text={t("Cancel-meeting")}
                           onClick={cancelMeetingConfirmation}
                         />
+                      </Col>
+                      <Col lg={3} md={3} sm={12} xs={12}>
                         <Button
-                          className={"UpdateMeeting_publishMeetingBtn"}
+                          className={"UpdateMeeting_QuickMeetingUpdate"}
                           text={t("Update")}
                           onClick={handleSubmit}
                         />
@@ -3536,7 +3545,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         xs={12}
                         className='d-flex justify-content-end'>
                         <Button
-                          className={" btn btn-primary ismeeting-finish-btn"}
+                          className={"btn btn-primary ismeeting-finish-btn"}
                           text={t("Update")}
                           onClick={navigateToPublish}
                         />
@@ -3556,12 +3565,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         />
                         <Button
                           disableBtn={endMeetingStatus}
-                          className={"UpdateMeeting_cancelMeetingBtn"}
+                          className={"CancelMeeting_QuickMeetingUpdate"}
                           text={t("Cancel-meeting")}
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
-                          className={"UpdateMeeting_publishMeetingBtn"}
+                          className={"UpdateMeeting_QuickMeetingUpdate"}
                           text={t("Update")}
                           onClick={navigateToPublish}
                         />
