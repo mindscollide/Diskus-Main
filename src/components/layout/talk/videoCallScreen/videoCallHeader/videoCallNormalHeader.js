@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
+import { isSharedScreenCall } from "../../../../../commen/apis/Api_config";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
@@ -406,10 +408,72 @@ const VideoCallNormalHeader = ({
       setGroupVideoCallAccepted([]); // Clear list when component unmounts
       setGroupCallParticipantList([]);
       setUnansweredCallParticipant([]);
+
+      // If THIS user is the active screen sharer and closes the tab, stop the
+      // screen share on the backend and re-enable the share icon for everyone.
+      const isScreenShareEnabled = JSON.parse(
+        localStorage.getItem("isScreenShareEnabled"),
+      );
+      console.log("stopShareOnTabClose check", isScreenShareEnabled);
+      if (isScreenShareEnabled) {
+        let participantRoomId = String(
+          localStorage.getItem("participantRoomId"),
+        );
+        let roomID = String(localStorage.getItem("acceptedRoomID"));
+        let newRoomID = String(localStorage.getItem("newRoomId"));
+
+        let isMeetingVideoHostCheck = JSON.parse(
+          localStorage.getItem("isMeetingVideoHostCheck"),
+        );
+        let isMeetingVideo = JSON.parse(
+          localStorage.getItem("isMeetingVideo"),
+        );
+        let userID = localStorage.getItem("userID");
+        let isGuid = localStorage.getItem("isGuid");
+        let participantUID = localStorage.getItem("participantUID");
+        let RoomID = !isMeetingVideo
+          ? roomID
+          : isMeetingVideoHostCheck
+            ? newRoomID
+            : participantRoomId;
+        let UID = !isMeetingVideo
+          ? userID
+          : isMeetingVideoHostCheck
+            ? isGuid
+            : participantUID;
+        let data = {
+          RoomID: RoomID,
+          ShareScreen: false,
+          UID: UID,
+        };
+        dispatch(screenShareTriggeredGlobally(false));
+
+        // The page is unloading, so a normal axios call would be cancelled by
+        // the browser. Use fetch with `keepalive: true` so the request is
+        // guaranteed to be sent even as the tab closes. (sendBeacon can't set
+        // the required `_token` header, so we use keepalive fetch instead.)
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const form = new FormData();
+          form.append("RequestMethod", isSharedScreenCall.RequestMethod);
+          form.append("RequestData", JSON.stringify(data));
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: form,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopShareOnTabClose error", error);
+        }
+        localStorage.removeItem("isScreenShareEnabled");
+      }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pagehide", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("pagehide", handleBeforeUnload);
     };
   }, []);
 

@@ -2207,3 +2207,25 @@ body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
   border: none !important;
   display: none !important;
 }
+
+.Cancel-btn {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #232323 !important;
+  width: 100px !important;
+  height: 30px !important;
+  margin-top: 4px;
+  border-radius: 2px;
+  font-size: 8px;
+}
+
+.Cancel-btn:hover {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #232323 !important;
+  width: 100px !important;
+  height: 30px !important;
+  margin-top: 4px;
+  border-radius: 2px;
+  font-size: 8px;
+}

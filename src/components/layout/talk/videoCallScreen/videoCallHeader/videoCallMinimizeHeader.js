@@ -109,6 +109,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    leavePresenterViewToJoinOneToOne,
+    setLeaveMeetingVideoForOneToOneOrGroup,
+    setJoiningOneToOneAfterLeavingPresenterView,
+    setLeavePresenterViewToJoinOneToOne,
+    stopApiCalledRef,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -137,7 +142,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   let currentUserName = localStorage.getItem("name");
   let callerName = localStorage.getItem("callerName");
   let initiateVideoCallFlag = JSON.parse(
-    localStorage.getItem("initiateVideoCall")
+    localStorage.getItem("initiateVideoCall"),
   );
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
@@ -152,7 +157,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
+    localStorage.getItem("isMeetingVideoHostCheck"),
   );
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let participantRoomId = localStorage.getItem("participantRoomId");
@@ -164,69 +169,69 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   // Prepare data for the API request
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const meetingUrlData = useSelector(
-    (state) => state.NewMeetingreducer.getmeetingURL
+    (state) => state.NewMeetingreducer.getmeetingURL,
   );
 
   //Audio Control For host
   const audioControl = useSelector(
-    (state) => state.videoFeatureReducer.audioControlHost
+    (state) => state.videoFeatureReducer.audioControlHost,
   );
 
   //Video Control For host
   const videoControl = useSelector(
-    (state) => state.videoFeatureReducer.videoControlHost
+    (state) => state.videoFeatureReducer.videoControlHost,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterStartedFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterStartedFlag
+    (state) => state.videoFeatureReducer.presenterStartedFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const LeaveCallModalFlag = useSelector(
-    (state) => state.videoFeatureReducer.LeaveCallModalFlag
+    (state) => state.videoFeatureReducer.LeaveCallModalFlag,
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
 
   const getAllParticipantMain = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
+    (state) => state.videoFeatureReducer.getAllParticipantMain,
   );
 
   const newJoinPresenterParticipant = useSelector(
-    (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+    (state) => state.videoFeatureReducer.newJoinPresenterParticipant,
   );
 
   const leavePresenterParticipant = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterParticipant
+    (state) => state.videoFeatureReducer.leavePresenterParticipant,
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare
+    (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
   const VideoRecipentData = useSelector(
-    (state) => state.VideoMainReducer.VideoRecipentData
+    (state) => state.VideoMainReducer.VideoRecipentData,
   );
 
   const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -235,12 +240,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
       : isMeetingVideo
-      ? isMeetingVideoHostCheck
-        ? newRoomID
-        : participantRoomId
-      : initiateCallRoomID
-      ? initiateCallRoomID
-      : activeRoomID;
+        ? isMeetingVideoHostCheck
+          ? newRoomID
+          : participantRoomId
+        : initiateCallRoomID
+          ? initiateCallRoomID
+          : activeRoomID;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
 
@@ -285,7 +290,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     ) {
       // Remove the participant whose guid matches the uid
       const updatedParticipants = filteredParticipants.filter(
-        (participant) => participant.guid !== leavePresenterParticipant.uid
+        (participant) => participant.guid !== leavePresenterParticipant.uid,
       );
       // Update the state with the filtered list
       setFilteredParticipants(updatedParticipants);
@@ -309,7 +314,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       const updatedParticipants = dublicateData.filter(
         (participant) =>
           participant.userID !== newJoinPresenterParticipant.userID &&
-          participant.guid !== newJoinPresenterParticipant.guid
+          participant.guid !== newJoinPresenterParticipant.guid,
       );
 
       // Step 2: Add the new participant
@@ -393,12 +398,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     let alreadyInMeetingVideo = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideo")
         ? sessionStorage.getItem("alreadyInMeetingVideo")
-        : false
+        : false,
     );
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let participantUID = localStorage.getItem("participantUID");
     let isGuid = localStorage.getItem("isGuid");
@@ -417,7 +422,21 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
           console.log(data, "presenterViewJoinFlag");
-          dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
+          if (stopApiCalledRef.current) return;
+
+          stopApiCalledRef.current = true;
+          dispatch(
+            stopPresenterViewMainApi(
+              navigate,
+              t,
+              data,
+              leavePresenterViewToJoinOneToOne ? 3 : 0,
+              setLeaveMeetingVideoForOneToOneOrGroup,
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setLeavePresenterViewToJoinOneToOne,
+              stopApiCalledRef,
+            ),
+          );
         } else {
           if (alreadyInMeetingVideo) {
             sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -428,14 +447,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           } else {
             let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
             let isMeetingVideoHostCheck = JSON.parse(
-              localStorage.getItem("isMeetingVideoHostCheck")
+              localStorage.getItem("isMeetingVideoHostCheck"),
             );
             let participantUID = localStorage.getItem("participantUID");
             let isGuid = localStorage.getItem("isGuid");
             let data = {
               RoomID: String(callAcceptedRoomID),
               UserGUID: String(
-                isMeetingVideoHostCheck ? isGuid : participantUID
+                isMeetingVideoHostCheck ? isGuid : participantUID,
               ),
               Name: String(currentUserName),
             };
@@ -484,7 +503,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
       if (isZoomEnabled) {
@@ -494,7 +513,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           if (iframe && iframe?.contentWindow) {
             iframe?.contentWindow?.postMessage(
               "RecordingStopMsgFromIframe",
-              "*"
+              "*",
             );
             console.log("RecordingStopMsgFromIframe");
           }
@@ -532,7 +551,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
     if (isMeeting === true) {
       let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
       if (
@@ -545,13 +564,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         console.log("busyCall");
 
         let isSharedSceenEnable = JSON.parse(
-          localStorage.getItem("isSharedSceenEnable")
+          localStorage.getItem("isSharedSceenEnable"),
         );
         if (isZoomEnabled) {
           if (isSharedSceenEnable && !globallyScreenShare) {
             console.log("busyCall");
             let isMeetingVideoHostCheck = JSON.parse(
-              localStorage.getItem("isMeetingVideoHostCheck")
+              localStorage.getItem("isMeetingVideoHostCheck"),
             );
             let roomID = localStorage.getItem("acceptedRoomID");
             let userID = localStorage.getItem("userID");
@@ -561,14 +580,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             let RoomID = !isMeetingVideo
               ? roomID
               : isMeetingVideo && isMeetingVideoHostCheck
-              ? newRoomID
-              : participantRoomId;
+                ? newRoomID
+                : participantRoomId;
 
             let UID = isMeetingVideo
               ? userID
               : isMeetingVideoHostCheck
-              ? isGuid
-              : participantUID;
+                ? isGuid
+                : participantUID;
             let data = {
               RoomID: RoomID,
               ShareScreen: false,
@@ -589,7 +608,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         let Data = {
           RoomID: String(RoomID),
           UserGUID: String(
-            isMeetingVideoHostCheck ? newUserGUID : participantUID
+            isMeetingVideoHostCheck ? newUserGUID : participantUID,
           ),
           Name: String(newName),
           IsHost: isMeetingVideoHostCheck ? true : false,
@@ -614,13 +633,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     } else if (meetingHostData?.isDashboardVideo === false) {
       console.log("busyCall");
       let isSharedSceenEnable = JSON.parse(
-        localStorage.getItem("isSharedSceenEnable")
+        localStorage.getItem("isSharedSceenEnable"),
       );
       if (isZoomEnabled) {
         if (isSharedSceenEnable && !globallyScreenShare) {
           console.log("busyCall");
           let isMeetingVideoHostCheck = JSON.parse(
-            localStorage.getItem("isMeetingVideoHostCheck")
+            localStorage.getItem("isMeetingVideoHostCheck"),
           );
           let roomID = localStorage.getItem("acceptedRoomID");
           let userID = localStorage.getItem("userID");
@@ -630,14 +649,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           let RoomID = !isMeetingVideo
             ? roomID
             : isMeetingVideoHostCheck
-            ? newRoomID
-            : participantRoomId;
+              ? newRoomID
+              : participantRoomId;
 
           let UID = !isMeetingVideo
             ? userID
             : isMeetingVideoHostCheck
-            ? isGuid
-            : participantUID;
+              ? isGuid
+              : participantUID;
           let data = {
             RoomID: RoomID,
             ShareScreen: false,
@@ -815,7 +834,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     let alreadyInMeetingVideo = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideo")
         ? sessionStorage.getItem("alreadyInMeetingVideo")
-        : false
+        : false,
     );
     if (presenterViewHostFlag) {
       let data = {
@@ -824,7 +843,21 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       };
       sessionStorage.setItem("StopPresenterViewAwait", true);
       console.log(data, "presenterViewJoinFlag");
-      dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
+      if (stopApiCalledRef.current) return;
+
+      stopApiCalledRef.current = true;
+      dispatch(
+        stopPresenterViewMainApi(
+          navigate,
+          t,
+          data,
+          leavePresenterViewToJoinOneToOne ? 3 : 0,
+          setLeaveMeetingVideoForOneToOneOrGroup,
+          setJoiningOneToOneAfterLeavingPresenterView,
+          setLeavePresenterViewToJoinOneToOne,
+          stopApiCalledRef,
+        ),
+      );
       console.log("busyCall");
       console.log(presenterViewHostFlag, "presenterViewHostFlag");
     } else {
@@ -836,7 +869,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       } else {
         let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
         let isMeetingVideoHostCheck = JSON.parse(
-          localStorage.getItem("isMeetingVideoHostCheck")
+          localStorage.getItem("isMeetingVideoHostCheck"),
         );
         let participantUID = localStorage.getItem("participantUID");
         let isGuid = localStorage.getItem("isGuid");
@@ -881,7 +914,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     if (usersData) {
       let roomID = localStorage.getItem("acceptedRoomID");
       let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
       let newRoomID = localStorage.getItem("newRoomId");
       let participantRoomId = localStorage.getItem("participantRoomId");
@@ -889,8 +922,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
           ? roomID
           : isMeetingVideoHostCheck
-          ? newRoomID
-          : participantRoomId;
+            ? newRoomID
+            : participantRoomId;
       // Mute/Unmute a specific participant
       console.log("filteredParticipants");
       console.log("getAllParticipantMain");
@@ -898,8 +931,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         prev.map((participant) =>
           participant.guid === usersData.guid
             ? { ...participant, mute: flag }
-            : participant
-        )
+            : participant,
+        ),
       );
       if (
         presenterViewFlag &&
@@ -940,7 +973,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
     let roomID = localStorage.getItem("acceptedRoomID");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let newRoomID = localStorage.getItem("newRoomId");
     let participantRoomId = localStorage.getItem("participantRoomId");
@@ -948,8 +981,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
         ? roomID
         : isMeetingVideoHostCheck
-        ? newRoomID
-        : participantRoomId;
+          ? newRoomID
+          : participantRoomId;
 
     let data = {
       RoomID: RoomID,
@@ -965,8 +998,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       prev.map((participant) =>
         participant.guid === usersData.guid
           ? { ...participant, hideCamera: flag }
-          : participant
-      )
+          : participant,
+      ),
     );
 
     dispatch(hideUnHideParticipantGuestMainApi(navigate, t, data));
@@ -983,7 +1016,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     console.log("getAllParticipantMain");
     console.log("filteredParticipants");
     setFilteredParticipants((prev) =>
-      prev.filter((participant) => participant.guid !== usersData.guid)
+      prev.filter((participant) => participant.guid !== usersData.guid),
     );
 
     dispatch(removeParticipantMeetingMainApi(navigate, t, data));
@@ -1223,8 +1256,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   LeaveCallModalFlag === true
                     ? "minimize grayScaleImage"
                     : !localMicStatus
-                    ? "minimize for-host-active-state-minimize"
-                    : "minimize inactive-state"
+                      ? "minimize for-host-active-state-minimize"
+                      : "minimize inactive-state"
                 }
               >
                 <Tooltip
@@ -1237,12 +1270,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         ? t("Enable-mic")
                         : t("Disable-mic")
                       : meetingHostData?.isDashboardVideo
-                      ? audioControl
-                        ? t("Enable-mic")
-                        : t("Disable-mic")
-                      : localMicStatus
-                      ? t("Disable-mic")
-                      : t("Enable-mic")
+                        ? audioControl
+                          ? t("Enable-mic")
+                          : t("Disable-mic")
+                        : localMicStatus
+                          ? t("Disable-mic")
+                          : t("Enable-mic")
                   }
                 >
                   <img
@@ -1252,8 +1285,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           ? MicOffHost
                           : MicOn
                         : localMicStatus
-                        ? MicOn
-                        : MicOff
+                          ? MicOn
+                          : MicOff
                     }
                     onClick={() => {
                       if (
@@ -1277,8 +1310,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   LeaveCallModalFlag === true
                     ? "minimize grayScaleImage"
                     : !localVidStatus
-                    ? "minimize for-host-active-state-minimize"
-                    : "minimize inactive-state"
+                      ? "minimize for-host-active-state-minimize"
+                      : "minimize inactive-state"
                 }
               >
                 <Tooltip
@@ -1291,12 +1324,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         ? t("Disable-video")
                         : t("Enable-video")
                       : meetingHostData?.isDashboardVideo
-                      ? videoControl
-                        ? t("Disable-video")
-                        : t("Enable-video")
-                      : localVidStatus
-                      ? t("Disable-video")
-                      : t("Enable-video")
+                        ? videoControl
+                          ? t("Disable-video")
+                          : t("Enable-video")
+                        : localVidStatus
+                          ? t("Disable-video")
+                          : t("Enable-video")
                   }
                 >
                   <img
@@ -1308,12 +1341,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           ? VideoOffHost
                           : VideoOn
                         : meetingHostData?.isDashboardVideo
-                        ? videoControl
-                          ? VideoOffHost
-                          : VideoOn
-                        : localVidStatus
-                        ? VideoOn
-                        : VideoOff
+                          ? videoControl
+                            ? VideoOffHost
+                            : VideoOn
+                          : localVidStatus
+                            ? VideoOn
+                            : VideoOff
                     }
                     onClick={() => {
                       if (
@@ -1324,7 +1357,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         videoHideUnHideForHost(videoControl ? false : true);
                       } else if (meetingHostData?.isDashboardVideo) {
                         videoHideUnHideForParticipant(
-                          videoControl ? false : true
+                          videoControl ? false : true,
                         );
                       } else {
                         toggleVideo(!localVidStatus);
@@ -1341,12 +1374,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     (isZoomEnabled && disableBeforeJoinZoom)
                       ? "grayScaleImage"
                       : presenterViewFlag && presenterViewHostFlag
-                      ? "presenterImage"
-                      : presenterViewFlag && presenterViewJoinFlag
-                      ? "presenterImage"
-                      : globallyScreenShare
-                      ? "globally-screenshare-presenterImage"
-                      : "screenShare-Toggle inactive-state"
+                        ? "presenterImage"
+                        : presenterViewFlag && presenterViewJoinFlag
+                          ? "presenterImage"
+                          : globallyScreenShare
+                            ? "globally-screenshare-presenterImage"
+                            : "screenShare-Toggle inactive-state"
                   }
                 >
                   <Tooltip
@@ -1406,7 +1439,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                       (usersData, index) => {
                                         console.log(
                                           usersData,
-                                          "usersDatausersData"
+                                          "usersDatausersData",
                                         );
                                         return (
                                           <>
@@ -1492,8 +1525,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                 usersData.isHost ? (
                                                   JSON.parse(
                                                     localStorage.getItem(
-                                                      "isWebCamEnabled"
-                                                    )
+                                                      "isWebCamEnabled",
+                                                    ),
                                                   ) ? (
                                                     <img
                                                       draggable="false"
@@ -1550,8 +1583,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                 usersData.isHost ? (
                                                   JSON.parse(
                                                     localStorage.getItem(
-                                                      "isMicEnabled"
-                                                    )
+                                                      "isMicEnabled",
+                                                    ),
                                                   ) ? (
                                                     <img
                                                       draggable="false"
@@ -1607,12 +1640,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                                   className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     makeHostOnClick(
-                                                                      usersData
+                                                                      usersData,
                                                                     )
                                                                   }
                                                                 >
                                                                   {t(
-                                                                    "Make-host"
+                                                                    "Make-host",
                                                                   )}
                                                                 </Dropdown.Item>
                                                               ) : null}
@@ -1628,7 +1661,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                                   className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     removeParticipantMeetingOnClick(
-                                                                      usersData
+                                                                      usersData,
                                                                     )
                                                                   }
                                                                 >
@@ -1645,7 +1678,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
-                                                                  true
+                                                                  true,
                                                                 )
                                                               }
                                                             >
@@ -1659,7 +1692,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
-                                                                  false
+                                                                  false,
                                                                 )
                                                               }
                                                             >
@@ -1675,7 +1708,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
-                                                                  true
+                                                                  true,
                                                                 );
                                                               }}
                                                             >
@@ -1689,12 +1722,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
-                                                                  false
+                                                                  false,
                                                                 );
                                                               }}
                                                             >
                                                               {t(
-                                                                "UnHide-video"
+                                                                "UnHide-video",
                                                               )}
                                                             </Dropdown.Item>
                                                           </>
@@ -1722,12 +1755,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                                   className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     makeHostOnClick(
-                                                                      usersData
+                                                                      usersData,
                                                                     )
                                                                   }
                                                                 >
                                                                   {t(
-                                                                    "Make-host"
+                                                                    "Make-host",
                                                                   )}
                                                                 </Dropdown.Item>
                                                               ) : null}
@@ -1743,7 +1776,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                                   className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     removeParticipantMeetingOnClick(
-                                                                      usersData
+                                                                      usersData,
                                                                     )
                                                                   }
                                                                 >
@@ -1760,7 +1793,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
-                                                                  true
+                                                                  true,
                                                                 )
                                                               }
                                                             >
@@ -1774,7 +1807,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
-                                                                  false
+                                                                  false,
                                                                 )
                                                               }
                                                             >
@@ -1790,7 +1823,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
-                                                                  true
+                                                                  true,
                                                                 );
                                                               }}
                                                             >
@@ -1804,12 +1837,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
-                                                                  false
+                                                                  false,
                                                                 );
                                                               }}
                                                             >
                                                               {t(
-                                                                "UnHide-video"
+                                                                "UnHide-video",
                                                               )}
                                                             </Dropdown.Item>
                                                           </>
@@ -1822,7 +1855,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                             </Row>
                                           </>
                                         );
-                                      }
+                                      },
                                     )
                                   ) : (
                                     <>
@@ -1843,7 +1876,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   </Tooltip>
                 )}
 
-              {((meetingHostData?.isHost &&
+              {/* {((meetingHostData?.isHost &&
                 !presenterViewHostFlag &&
                 !presenterViewJoinFlag) ||
                 (presenterViewFlag && presenterViewHostFlag)) &&
@@ -1863,7 +1896,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       />
                     </div>
                   </Tooltip>
-                )}
+                )} */}
               {/* {(!presenterViewFlag || */}
               {/* {activeCall && currentCallType === 1 && ( */}
               <div className="position-relative">
@@ -1898,7 +1931,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                   false,
                                   false,
                                   false,
-                                  false
+                                  false,
                                 )
                               }
                             />
@@ -1964,7 +1997,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       {console.log(
                         "LeaveCallModalFlag 4",
                         callerID,
-                        currentUserID
+                        currentUserID,
                       )}
                       <div className="minimize inactive-state">
                         <img
@@ -1974,7 +2007,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                               false,
                               false,
                               false,
-                              false
+                              false,
                             )
                           }
                           alt="End Call"
@@ -2046,10 +2079,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           presenterViewFlag && presenterViewHostFlag
                             ? t("Stop-presentation")
                             : presenterViewFlag && !presenterViewHostFlag
-                            ? t("Leave-presentation")
-                            : isMeetingVideo
-                            ? t("Leave-meeting-video-call")
-                            : t("Leave-call")
+                              ? t("Leave-presentation")
+                              : isMeetingVideo
+                                ? t("Leave-meeting-video-call")
+                                : t("Leave-call")
                         }
                         onClick={() =>
                           minimizeEndCallParticipant(false, false, false, false)
