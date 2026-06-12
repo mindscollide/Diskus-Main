@@ -32,7 +32,24 @@ import StartRecordSmall from "../../../../../assets/images/Recent Activity Icons
 import RecordStart from "../../../../../assets/images/Recent Activity Icons/Video/RecordStart.png";
 import RecordPlay from "../../../../../assets/images/Recent Activity Icons/Video/RecordPlay.png";
 
-import { activeChat } from "../../../../../store/actions/Talk_action";
+import {
+  activeChat,
+  GetAllUserChats,
+  GetAllUsers,
+  GetGroupMessages,
+  GetAllUsersGroupsRoomsList,
+} from "../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -128,7 +145,14 @@ const VideoCallNormalHeader = ({
     inCallParticipantsList,
     setInCallParticipantsList,
     stopApiCalledRef,
+    videoTalk,
+    videoChatUnreadCount,
+    setVideoChatUnreadCount,
   } = useContext(MeetingContext);
+
+  // Meeting group chat (presenter / meeting-video) — mirrors AgendaViewer group chat
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+  const [meetingChatGroupID, setMeetingChatGroupID] = useState(0);
 
   const leaveModalPopupRef = useRef(null);
 
@@ -817,70 +841,136 @@ const VideoCallNormalHeader = ({
     }
   };
 
+  // Open the meeting / presenter GROUP chat keyed by the meeting talkGroupID,
+  // mirroring AgendaViewer's groupChatInitiation so every participant shares one
+  // channel (fixes undelivered messages + stale 1:1 chat in presenter/meeting video).
+  const openMeetingGroupChat = async (talkChatID) => {
+    if (!talkChatID || talkChatID === 0) return;
+    await dispatch(createShoutAllScreen(false));
+    await dispatch(addNewChatScreen(false));
+    await dispatch(footerActionStatus(false));
+    await dispatch(createGroupScreen(false));
+    await dispatch(recentChatFlag(true));
+    await dispatch(activeChatBoxGS(true));
+    await dispatch(headerShowHideStatus(true));
+    await dispatch(footerShowHideStatus(true));
+    setMeetingChatGroupID(talkChatID);
+    let chatGroupData = {
+      UserID: currentUserID,
+      ChannelID: currentOrganization,
+      GroupID: talkChatID,
+      NumberOfMessages: 50,
+      OffsetMessage: 0,
+    };
+    await dispatch(
+      GetAllUserChats(navigate, currentUserID, currentOrganization, t),
+    );
+    await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+    await dispatch(GetAllUsers(navigate, currentUserID, currentOrganization, t));
+    await dispatch(
+      GetAllUsersGroupsRoomsList(navigate, currentUserID, currentOrganization, t),
+    );
+  };
+
+  // After chats load, select the meeting group record, force its display name to
+  // the meeting title, and activate it as a group ("G") chat.
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      meetingChatGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages?.allMessages?.find(
+        (item) => item.id === meetingChatGroupID,
+      );
+      if (foundRecord) {
+        const groupRecord = {
+          ...foundRecord,
+          fullName: meetingTitle?.trim() || foundRecord.fullName,
+          name: meetingTitle?.trim() || foundRecord.name,
+        };
+        dispatch(chatBoxActiveFlag(true));
+        localStorage.setItem("ActiveChatType", "G");
+        localStorage.setItem("activeOtoChatID", meetingChatGroupID);
+        dispatch(activeChat(groupRecord));
+      }
+      setMeetingChatGroupID(0);
+    }
+  }, [AllUserChats?.AllUserChatsData, meetingChatGroupID]);
+
   const onClickCloseChatHandler = () => {
     if (LeaveCallModalFlag === false) {
       if (VideoChatMessagesFlag === false) {
-        if (callerID === currentUserID) {
-          let activeChatData = {
-            id: VideoRecipentData.userID,
-            fullName:
-              VideoRecipentData?.recipients?.[0]?.userName ??
-              VideoRecipentData?.userName ??
-              "",
-            imgURL: "",
-            messageBody: "",
-            messageDate: "",
-            notiCount: 0,
-            messageType: "O",
-            isOnline: false,
-            companyName: organizationName,
-            sentDate: "",
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: "",
-            senderID: currentUserID,
-            admin: 0,
-            isBlock: 0,
+        if (isMeetingVideo || presenterViewFlag) {
+          // MEETING / PRESENTER → meeting group chat (all participants, one channel)
+          openMeetingGroupChat(videoTalk?.talkGroupID);
+        } else {
+          // 1:1 video call → existing one-to-one chat (unchanged)
+          if (callerID === currentUserID) {
+            let activeChatData = {
+              id: VideoRecipentData.userID,
+              fullName:
+                VideoRecipentData?.recipients?.[0]?.userName ??
+                VideoRecipentData?.userName ??
+                "",
+              imgURL: "",
+              messageBody: "",
+              messageDate: "",
+              notiCount: 0,
+              messageType: "O",
+              isOnline: false,
+              companyName: organizationName,
+              sentDate: "",
+              receivedDate: "",
+              seenDate: "",
+              attachmentLocation: "",
+              senderID: currentUserID,
+              admin: 0,
+              isBlock: 0,
+            };
+            dispatch(activeChat(activeChatData));
+          } else if (callerID !== currentUserID) {
+            let activeChatData = {
+              id: callerID,
+              fullName: callerNameInitiate,
+              imgURL: "",
+              messageBody: "",
+              messageDate: "",
+              notiCount: 0,
+              messageType: "O",
+              isOnline: false,
+              companyName: organizationName,
+              sentDate: "",
+              receivedDate: "",
+              seenDate: "",
+              attachmentLocation: "",
+              senderID: currentUserID,
+              admin: 0,
+              isBlock: 0,
+            };
+            dispatch(activeChat(activeChatData));
+          }
+          localStorage.setItem("ActiveChatType", "O");
+          dispatch(chatEnableNormalFlag(true));
+          let chatOTOData = {
+            UserID: currentUserID,
+            ChannelID: currentOrganization,
+            OpponentUserId:
+              callerID !== currentUserID ? callerID : recipentCalledID,
+            NumberOfMessages: 50,
+            OffsetMessage: 0,
           };
-          dispatch(activeChat(activeChatData));
-        } else if (callerID !== currentUserID) {
-          let activeChatData = {
-            id: callerID,
-            fullName: callerNameInitiate,
-            imgURL: "",
-            messageBody: "",
-            messageDate: "",
-            notiCount: 0,
-            messageType: "O",
-            isOnline: false,
-            companyName: organizationName,
-            sentDate: "",
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: "",
-            senderID: currentUserID,
-            admin: 0,
-            isBlock: 0,
-          };
-          dispatch(activeChat(activeChatData));
-        }
-        localStorage.setItem("ActiveChatType", "O");
-        dispatch(chatEnableNormalFlag(true));
-        let chatOTOData = {
-          UserID: currentUserID,
-          ChannelID: currentOrganization,
-          OpponentUserId:
+          dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+          localStorage.setItem("ActiveChatType", "O");
+          localStorage.setItem(
+            "activeOtoChatID",
             callerID !== currentUserID ? callerID : recipentCalledID,
-          NumberOfMessages: 50,
-          OffsetMessage: 0,
-        };
+          );
+        }
         dispatch(videoChatMessagesFlag(true));
-        dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-        localStorage.setItem("ActiveChatType", "O");
-        localStorage.setItem(
-          "activeOtoChatID",
-          callerID !== currentUserID ? callerID : recipentCalledID,
-        );
+        if (setVideoChatUnreadCount) setVideoChatUnreadCount(0);
       } else {
         dispatch(videoChatMessagesFlag(false));
       }
@@ -1923,11 +2013,42 @@ const VideoCallNormalHeader = ({
                 }
               >
                 <Tooltip placement="topRight" title={t("Chat")}>
-                  <img
-                    onClick={onClickCloseChatHandler}
-                    src={ChatIcon}
-                    alt="Chat"
-                  />
+                  <span
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <img
+                      onClick={onClickCloseChatHandler}
+                      src={ChatIcon}
+                      alt="Chat"
+                    />
+                    {(isMeetingVideo || presenterViewFlag) &&
+                      VideoChatMessagesFlag === false &&
+                      videoChatUnreadCount > 0 && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-6px",
+                            right: "-6px",
+                            minWidth: "16px",
+                            height: "16px",
+                            padding: "0 4px",
+                            borderRadius: "8px",
+                            background:
+                              "linear-gradient(to left, #49dbdb 0%, #6172d6 100%)",
+                            color: "#fff",
+                            fontSize: "10px",
+                            lineHeight: "16px",
+                            textAlign: "center",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {convertNumbersInString(
+                            String(videoChatUnreadCount),
+                            localStorage.getItem("i18nextLng") || "en",
+                          )}
+                        </span>
+                      )}
+                  </span>
                 </Tooltip>
               </div>
             )}
