@@ -53,6 +53,7 @@ import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const App = () => {
@@ -243,7 +244,7 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <GlobalSnackbar />
     </>
   );
 };

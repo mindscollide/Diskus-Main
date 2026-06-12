@@ -419,17 +419,7 @@ const DocumentViewer = () => {
     instance.UI.disableElements(disabledElements);
   }; // Set Permissions
 
-  // Handle Notifications
-  useEffect(() => {
-    if (ResponseMessage) {
-      // Reset unsaved changes on successful save
-      setHasUnsavedChanges(false);
-      showMessage(ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
-    }
-  }, [ResponseMessage]);
+
 
   return (
     <>

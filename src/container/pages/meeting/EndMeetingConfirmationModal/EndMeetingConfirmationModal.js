@@ -33,7 +33,7 @@ const EndMeetingConfirmationModal = ({
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
-                  "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected"
+                  "Are-you-sure-you-want-to-end-the-meeting"
                 )}
               </span>
             </Col>

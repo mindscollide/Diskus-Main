@@ -258,7 +258,6 @@
   "Others": "Others",
   "Warning": "Warning",
   "This-is-warning-message": "This is warning message",
-  "Proceed": "Proceed",
   "Invoice-date": "Invoice Date",
   "Payment-date": "Payment Date",
   "Payment-history": "Payment History",
@@ -663,7 +662,7 @@
   "Regular-members": "Regular Members",
   "Committee-type": "Committee Type",
   "Update-committee": "Update Committee",
-  "Committee-update": "Committee Update",
+  "Committee-updated": "Committee Updated",
   "No-committee-update": "No Committee Update",
   "View-committee": "View Committee",
   "Archived-committees": "Archived Committees",
@@ -2780,6 +2779,10 @@
   "Meeting-chat": "Meeting Chat",
   "Host-has-been-changed": "Host has been changed",
   "Total-reviewed": "Total Reviewed",
+  "Proceed":"Proceed",
+  "Annotations-saved-successfully":"Annotations Saved Successfully",
+  "Are-you-sure-you-want-to-end-the-meeting":"Are you sure you want to end the meeting?",
+  "Poll-deleted": "Poll Deleted",
   "This-year-(2026)": "This Year (2026)",
   "Last-year-(2025)": "Last Year (2025)"
 }

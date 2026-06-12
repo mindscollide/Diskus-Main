@@ -3974,7 +3974,8 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
               await dispatch(
                 saveFiles_success(
                   response.data.responseResult,
-                  t("Files-saved-successfully"),
+                  
+                  "",
                 ),
               );
             } else if (
@@ -5377,7 +5378,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
               await dispatch(
                 saveFiles_success_agenda_wise(
                   response.data.responseResult,
-                  t("Files-saved-successfully"),
+                  "",
                 ),
               );
             } else if (
@@ -10309,7 +10310,7 @@ const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
             dispatch(
               saveFilesQuickMeeting_Success(
                 responseResult,
-                t("Files-saved-successfully"),
+                "",
               ),
             );
 

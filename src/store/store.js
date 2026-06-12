@@ -2,21 +2,19 @@
  * @file store.js
  * @description Redux store configuration.
  *
- * Combines ~50 domain reducers via `combineReducers` into `AppReducer`.
- * The `rootReducer` wrapper intercepts `SET_INITIAL_ALLSTATE` and sets
- * `state = undefined` before passing to `AppReducer`, which causes every
- * reducer to return its initial state — effectively wiping all Redux state
- * on logout.
- *
- * Middleware: Redux Thunk (async action creators).
- * ImmutableStateInvariantMiddleware is disabled (`immutableCheck: false`)
- * for performance, as some parts of the codebase mutate state directly.
- *
- * @see src/store/action_types.js for SET_INITIAL_ALLSTATE constant
+ * Features:
+ * - Redux Toolkit `configureStore`
+ * - Redux DevTools enabled conditionally
+ * - Global reset on logout via `SET_INITIAL_ALLSTATE`
+ * - Redux Thunk middleware
+ * - Immutable check disabled for performance
  */
-import { applyMiddleware, combineReducers } from "redux";
+
+import { combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore } from "@reduxjs/toolkit";
+
 import {
   authReducer,
   toDoListReducer,
@@ -54,93 +52,244 @@ import {
   UserReportReducer,
   SignatureWorkFlowReducer,
   GuestVideoReducer,
+  assigneesReducer,
+  calendarReducer,
+  OnBoardModalStates,
+  RoleListReducer,
+  webViewerReducer,
 } from "./reducers";
+
 import * as actions from "./action_types";
-import { configureStore } from "@reduxjs/toolkit";
+
 import uploadReducer from "./reducers/Upload_reducer";
 import fAQsReducer from "./reducers/Get_Faqs_reducer";
 import meetingIdReducer from "./reducers/GetMeetingId_reducer";
-import { assigneesReducer } from "./reducers";
-import { calendarReducer } from "./reducers";
-import { OnBoardModalStates } from "./reducers";
-import { RoleListReducer } from "./reducers";
-import { webViewerReducer } from "./reducers";
-//Aun Attendance Meeting Reducer
+
+// Attendance Reducers
 import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
 import actionMeetingReducer from "./reducers/ActionMeeting_Reducer";
+
+// User Management
 import UserManagementModals from "./reducers/UserManagementModals";
 import UserMangementReducer from "./reducers/UserManagementReducer";
 import ManageAuthorityReducer from "./reducers/ManageAuthorityReducer";
+
+// Compliance & Modal States
 import ComplainceSettingReducerReducer from "./reducers/ComplainSettingReducer";
+// import ModalStatesReducer from "./reducers/ModalState_reducer";
+
+/**
+ * Root application reducer
+ */
 const AppReducer = combineReducers({
   auth: authReducer,
-  toDoListReducer: toDoListReducer,
-  uploadReducer: uploadReducer,
-  settingReducer: settingReducer,
-  fAQsReducer: fAQsReducer,
-  meetingIdReducer: meetingIdReducer,
+  toDoListReducer,
+  uploadReducer,
+  settingReducer,
+  fAQsReducer,
+  meetingIdReducer,
   assignees: assigneesReducer,
-  calendarReducer: calendarReducer,
+  calendarReducer,
   OnBoardModal: OnBoardModalStates,
   todoStatus: TodoStatus,
-  downloadReducer: downloadReducer,
-  postAssigneeComments: postAssigneeComments,
-  VideoChatReducer: VideoChatReducer,
-  videoFeatureReducer: videoFeatureReducer,
-  minuteofMeetingReducer: minuteofMeetingReducer,
-  countryNamesReducer: countryNamesReducer,
+  downloadReducer,
+  postAssigneeComments,
+  VideoChatReducer,
+  videoFeatureReducer,
+  minuteofMeetingReducer,
+  countryNamesReducer,
   GetSubscriptionPackage: GetSubscriptionPackages,
-  // Auth2 Reducer
+
+  // Auth
   Authreducer: AuthReducer,
-  //admin reducers
-  adminReducer: adminReducer,
+
+  // Admin
+  adminReducer,
   roleListReducer: RoleListReducer,
-  getTodosStatus: getTodosStatus,
-  NotesReducer: NotesReducer,
+
+  // Todo
+  getTodosStatus,
+
+  // Notes
+  NotesReducer,
+
+  // Video
   videoCall: videoCallReducer,
+  VideoMainReducer,
+  GuestVideoReducer,
+
+  // Talk
   talkStateData: talkReducer,
   talkFeatureStates: talkFeatureReducer,
-  CommitteeReducer: CommitteeReducer,
-  GroupsReducer: GroupsReducer,
-  ResolutionReducer: ResolutionReducer,
+
+  // Committee / Groups / Resolution
+  CommitteeReducer,
+  GroupsReducer,
+  ResolutionReducer,
+
+  // Notifications
   RealtimeNotification: RealtimeNotificationReducer,
-  OrganizationBillingReducer: OrganizationBillingReducer,
-  DataRoomReducer: DataRoomReducer,
-  PollsReducer: PollsReducer,
+
+  // Billing
+  OrganizationBillingReducer,
+
+  // Data Room
+  DataRoomReducer,
+  DataRoomFileAndFoldersDetailsReducer,
+
+  // Polls
+  PollsReducer,
+
+  // Meetings
   NewMeetingreducer: NewMeetingReducer,
-  LanguageReducer: LanguageReducer,
-  VideoMainReducer: VideoMainReducer,
+  MeetingOrganizersReducer,
+  MeetingAgendaReducer,
+  MinutesReducer,
+  AgendaWiseAgendaListReducer,
+
+  // Attendance & Actions
+  attendanceMeetingReducer,
+  actionMeetingReducer,
+
+  // Reports
+  UserReportReducer,
+
+  // Signature Workflow
+  SignatureWorkFlowReducer,
+
+  // Language
+  LanguageReducer,
+
+  // Web Viewer
   webViewer: webViewerReducer,
-  MeetingOrganizersReducer: MeetingOrganizersReducer,
-  MeetingAgendaReducer: MeetingAgendaReducer,
-  //Attendance Meeting Reducer aun
-  attendanceMeetingReducer: attendanceMeetingReducer,
-  actionMeetingReducer: actionMeetingReducer,
-  AgendaWiseAgendaListReducer: AgendaWiseAgendaListReducer,
-  DataRoomFileAndFoldersDetailsReducer: DataRoomFileAndFoldersDetailsReducer,
-  UserReportReducer: UserReportReducer,
-  SignatureWorkFlowReducer: SignatureWorkFlowReducer,
-  MinutesReducer: MinutesReducer,
-  UserManagementModals: UserManagementModals,
-  UserMangementReducer: UserMangementReducer,
-  GuestVideoReducer: GuestVideoReducer,
-  ManageAuthorityReducer: ManageAuthorityReducer,
-  ComplainceSettingReducerReducer: ComplainceSettingReducerReducer,
+
+  // User Management
+  UserManagementModals,
+  UserMangementReducer,
+  ManageAuthorityReducer,
+
+  // Compliance
+  ComplainceSettingReducerReducer,
+
+  // Modal States
+  // ModalStatesReducer,
 });
 
+// All store slice keys that carry ResponseMessage / responseMessage.
+// Used by the universal CLEAR_RESPONSE_MESSAGE handler below.
+const RESPONSE_MESSAGE_SLICE_KEYS = [
+  "auth",
+  "Authreducer",
+  "adminReducer",
+  "toDoListReducer",
+  "uploadReducer",
+  "settingReducer",
+  "fAQsReducer",
+  "meetingIdReducer",
+  "assignees",
+  "calendarReducer",
+  "downloadReducer",
+  "postAssigneeComments",
+  "videoFeatureReducer",
+  "minuteofMeetingReducer",
+  "countryNamesReducer",
+  "GetSubscriptionPackage",
+  "roleListReducer",
+  "getTodosStatus",
+  "todoStatus",
+  "NotesReducer",
+  "VideoMainReducer",
+  "GuestVideoReducer",
+  "talkStateData",
+  "CommitteeReducer",
+  "GroupsReducer",
+  "ResolutionReducer",
+  "OrganizationBillingReducer",
+  "DataRoomReducer",
+  "DataRoomFileAndFoldersDetailsReducer",
+  "PollsReducer",
+  "NewMeetingreducer",
+  "MeetingOrganizersReducer",
+  "MeetingAgendaReducer",
+  "MinutesReducer",
+  "AgendaWiseAgendaListReducer",
+  "attendanceMeetingReducer",
+  "actionMeetingReducer",
+  "UserReportReducer",
+  "SignatureWorkFlowReducer",
+  "LanguageReducer",
+  "webViewer",
+  "UserManagementModals",
+  "UserMangementReducer",
+  "ManageAuthorityReducer",
+  "ComplainceSettingReducerReducer",
+];
+
+/**
+ * Global root reducer
+ * Resets entire redux state on logout.
+ * Handles CLEAR_RESPONSE_MESSAGE universally across all slices so that
+ * GlobalSnackbar can clear consumed messages without per-reducer boilerplate.
+ */
 const rootReducer = (state, action) => {
-  // when a logout action is dispatched it will reset redux state
   if (action.type === actions.SET_INITIAL_ALLSTATE) {
     state = undefined;
   }
-  return AppReducer(state, action);
+
+  const newState = AppReducer(state, action);
+
+  if (action.type === actions.CLEAR_RESPONSE_MESSAGE) {
+    return RESPONSE_MESSAGE_SLICE_KEYS.reduce((acc, key) => {
+      const slice = acc[key];
+      if (!slice) return acc;
+      const patch = {};
+      if ("ResponseMessage" in slice) patch.ResponseMessage = "";
+      if ("responseMessage" in slice) patch.responseMessage = "";
+      if ("errorSeverity" in slice) patch.errorSeverity = null;
+      return Object.keys(patch).length
+        ? { ...acc, [key]: { ...slice, ...patch } }
+        : acc;
+    }, newState);
+  }
+
+  return newState;
 };
+
+/**
+ * Redux DevTools enhancer
+ */
+const devTools =
+  process.env.NODE_ENV !== "production"
+    ? composeWithDevTools({
+        trace: true,
+        traceLimit: 25,
+      })
+    : undefined;
+
+/**
+ * Configure Redux Store
+ */
 const store = configureStore({
   reducer: rootReducer,
+
+  devTools: process.env.NODE_ENV !== "production",
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: true,
-      immutableCheck: false, // Disable ImmutableStateInvariantMiddleware
-    }).concat(thunk), // Optional: include if you're using custom thunk logic
+      immutableCheck: false,
+      serializableCheck: false,
+    }).concat(thunk),
+
+  // enhancers: (getDefaultEnhancers) => {
+  //   const enhancers = getDefaultEnhancers();
+
+  //   if (devTools) {
+  //     enhancers.push(devTools);
+  //   }
+
+  //   return enhancers;
+  // },
 });
+
 export default store;

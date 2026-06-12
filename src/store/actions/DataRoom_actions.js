@@ -132,7 +132,7 @@ const saveFilesApi = (
                 await dispatch(
                   saveFiles_success(
                     response.data.responseMessage,
-                    t("Files-saved-successfully"),
+                    "",
                   ),
                 );
                 if (viewFolderID !== null) {
