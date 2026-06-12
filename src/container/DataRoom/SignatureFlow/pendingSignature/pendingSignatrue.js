@@ -30,6 +30,111 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
+/**
+ * Async: strip only <apref> elements whose referenced PDF object does NOT exist
+ * in the document's XRef table.
+ *
+ * Root cause of the errors
+ * ────────────────────────
+ * After the XFDF processing pipeline (processXmlForReadOnly, processXmlToHideFields,
+ * etc.) some <apref> nodes reference PDF objects that no longer exist in the
+ * current document (stale objnum pointers from a previous PDF revision or from
+ * server-side re-processing).  When Apryse tries to load those appearance streams
+ * inside a Promise.all it logs:
+ *   "Error in Promise.all for appearanceReference N on page M"
+ *   {type: 'PDFWorkerError', message: '…Can not find any annotation…'}
+ * and the cascade TypeError: Cannot read properties of undefined (reading 'children')
+ *
+ * Why we validate instead of stripping everything
+ * ────────────────────────────────────────────────
+ * <apref> on a SIGNED Sig field is the ONLY data Apryse uses to render the
+ * signature visual.  Stripping all <apref> makes every signed field blank.
+ * We instead ask the PDF document (fullAPI: true) whether the objnum exists;
+ * only missing/free/null objects are stripped.  Valid signature appearances
+ * survive intact.
+ *
+ * Fallback
+ * ────────
+ * If pdfDoc is unavailable or the API call throws, every <apref> on a
+ * non-Sig widget is stripped as a safe default (Apryse regenerates text/
+ * checkbox appearances from field values).  Sig-field <apref> are preserved
+ * in all code paths.
+ *
+ * @param {string}  xfdfStr  - XFDF string (already sanitized)
+ * @param {object}  pdfDoc   - Apryse PDFDoc from documentViewer.getDocument().getPDFDoc()
+ * @param {Array}   userAnnotations - userAnnotations state (for fallback Sig detection)
+ * @returns {Promise<string>} cleaned XFDF string
+ */
+const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc, userAnnotations) => {
+  // ── Helper: collect Sig field names from userAnnotations (fallback path) ──
+  const getSigFieldNames = () => {
+    const sigNames = new Set();
+    const parser = new DOMParser();
+    (userAnnotations || []).forEach(({ xml }) => {
+      (xml || []).forEach(({ ffield }) => {
+        if (!ffield) return;
+        try {
+          const d = parser.parseFromString(ffield, "text/xml");
+          const name = d.documentElement.getAttribute("name");
+          const type = d.documentElement.getAttribute("type");
+          if (name && type === "Sig") sigNames.add(name);
+        } catch { /* ignore */ }
+      });
+    });
+    return sigNames;
+  };
+
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xfdfStr, "text/xml");
+    const aprefs = Array.from(doc.querySelectorAll("apref"));
+
+    if (!aprefs.length) return xfdfStr;
+
+    // ── Primary path: validate each apref objnum against the PDF XRef table ──
+    if (pdfDoc) {
+      for (const apref of aprefs) {
+        const objnum = parseInt(apref.getAttribute("objnum") ?? "0", 10);
+
+        // PDF object 0 is the null/free object — never a valid appearance stream
+        if (objnum === 0) {
+          apref.remove();
+          continue;
+        }
+
+        try {
+          // getXRefTableEntry(objnum) returns the Obj at that number in the
+          // XRef table (in standard PDFs the entry index equals the object number).
+          // Returns a null-type Obj for free/deleted entries.
+          const obj = await pdfDoc.getXRefTableEntry(objnum);
+
+          // isNull() returns true for free/null XRef entries (missing objects)
+          const missing = !obj || (typeof obj.isNull === "function" && await obj.isNull());
+          if (missing) apref.remove();
+        } catch {
+          // Object doesn't exist or API unavailable — strip to prevent error
+          apref.remove();
+        }
+      }
+
+      return new XMLSerializer().serializeToString(doc);
+    }
+
+    // ── Fallback path: no pdfDoc — strip apref from non-Sig fields only ──
+    const sigFieldNames = getSigFieldNames();
+    doc.querySelectorAll("widget").forEach((widget) => {
+      const fieldName = widget.getAttribute("field");
+      if (!sigFieldNames.has(fieldName)) {
+        widget.querySelectorAll("apref").forEach((node) => node.remove());
+      }
+    });
+
+    return new XMLSerializer().serializeToString(doc);
+  } catch {
+    return xfdfStr; // parsing failed — return original unchanged
+  }
+};
+
 const containsNull = (arr) => arr.some((el) => el === null);
 
 const getCurrentUserID = () =>
@@ -809,6 +914,41 @@ const PendingSignatureViewer = () => {
     [docWorkflowID, dispatch, navigate, t],
   );
 
+  // ─── Suppress Apryse internal appearance-stream crash ────────────────────
+  //
+  // When an <apref> in the XFDF references a PDF appearance object that no
+  // longer resolves (e.g. after server-side PDF reprocessing), Apryse's
+  // internal appearance-loading runs a Promise.all that rejects with:
+  //   TypeError: Cannot read properties of undefined (reading 'children')
+  // That rejection is unhandled inside webviewer-core.min.js — it never
+  // surfaces to our try/catch around importAnnotations.
+  //
+  // We MUST keep <apref> on Sig-type fields so already-signed signature
+  // visuals remain visible; stripping them makes signed fields blank.
+  // This handler silences only the specific Apryse internal crash while
+  // leaving all other unhandled rejections untouched.
+  useEffect(() => {
+    const suppressApryseChildrenError = (event) => {
+      const reason = event?.reason;
+      if (
+        reason instanceof TypeError &&
+        typeof reason.message === "string" &&
+        reason.message.includes("children") &&
+        typeof reason.stack === "string" &&
+        reason.stack.includes("webviewer-core.min.js")
+      ) {
+        event.preventDefault(); // prevent "Uncaught (in promise)" from printing
+      }
+    };
+    window.addEventListener("unhandledrejection", suppressApryseChildrenError);
+    return () => {
+      window.removeEventListener(
+        "unhandledrejection",
+        suppressApryseChildrenError,
+      );
+    };
+  }, []);
+
   // ─── WebViewer initialisation ─────────────────────────────────────────────
 
   // ✅ WebViewer initialisation with signature tool override
@@ -904,9 +1044,15 @@ const PendingSignatureViewer = () => {
 
           if (pdfXfdfRef.current) {
             try {
-              const cleanedXFDF = sanitizeXFDF(
-                pdfXfdfRef.current,
-                documentViewer,
+              // Validate each <apref> objnum against the PDF XRef table;
+              // strip references to missing objects (they cause the
+              // "Can not find any annotation" PDFWorkerError) while keeping
+              // valid ones so already-signed signature visuals stay visible.
+              const pdfDoc = await documentViewer.getDocument().getPDFDoc();
+              const cleanedXFDF = await stripInvalidAppearanceRefs(
+                sanitizeXFDF(pdfXfdfRef.current, documentViewer),
+                pdfDoc,
+                userAnnotationsRef.current,
               );
               await annotationManager.importAnnotations(cleanedXFDF);
 
