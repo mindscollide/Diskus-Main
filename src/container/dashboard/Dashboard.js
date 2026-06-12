@@ -286,6 +286,8 @@ const Dashboard = () => {
     setUnReadCountNotification,
     setPendingApprovalTabCount,
     setInCallParticipantsList,
+    videoTalk,
+    setVideoChatUnreadCount,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -2863,6 +2865,25 @@ const Dashboard = () => {
           }
           dispatch(mqttInsertPrivateGroupMessage(data.payload));
           setNotificationID(id);
+          // Badge the presenter / meeting-video chat icon for new group messages
+          // while the in-video chat panel is closed.
+          try {
+            // For GROUP messages the group id is carried in `receiverID`
+            // (the group is the receiver) — same field chatMain keys on.
+            const incomingGroupID = data?.payload?.data?.[0]?.receiverID;
+            const inMeetingVideo = JSON.parse(
+              localStorage.getItem("isMeetingVideo"),
+            );
+            if (
+              inMeetingVideo &&
+              VideoChatMessagesFlagReducer === false &&
+              Number(incomingGroupID) === Number(videoTalk?.talkGroupID) &&
+              data.payload.data[0].senderID !== parseInt(createrID) &&
+              setVideoChatUnreadCount
+            ) {
+              setVideoChatUnreadCount((prev) => prev + 1);
+            }
+          } catch (e) {}
         } else if (
           data.payload.message.toLowerCase() === "USER_IS_BLOCKED".toLowerCase()
         ) {

@@ -822,6 +822,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setCustomCheckState(false);
   };
 
+  const cancelButtonHandler = () => {
+    setSave(false);
+    setTodayCheckState(false);
+    setLeave(false);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+  };
+
   const printChat = () => {
     let Data = {
       TalkRequest: {
@@ -863,6 +871,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(PrintChat(Data, t, navigate));
+    setPrint(false);
+    setTodayCheckState(false);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+  };
+
+  const cancelPrintHandler = () => {
     setPrint(false);
     setTodayCheckState(false);
     setAllCheckState(false);
@@ -915,6 +930,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
       message: t("Email-initiated"),
     });
     setNotificationID(id);
+    setEmail(false);
+    setTodayCheckState(false);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+  };
+  const cancelPrintemailChatHandler = () => {
     setEmail(false);
     setTodayCheckState(false);
     setAllCheckState(false);
@@ -5325,10 +5346,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
+                                className="d-flex justify-content-center gap-2"
                               >
                                 <Button
-                                  className=" Ok-btn"
+                                  className="Cancel-btn"
+                                  text={t("Cancel")}
+                                  onClick={cancelButtonHandler}
+                                />
+                                <Button
+                                  className="Ok-btn"
                                   text={t("Okay")}
                                   onClick={downloadChat}
                                 />
@@ -5426,8 +5452,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
+                                className="d-flex justify-content-center gap-2"
                               >
+                                <Button
+                                  className="Cancel-btn"
+                                  text={t("Cancel")}
+                                  onClick={cancelPrintHandler}
+                                />
                                 <Button
                                   className=" Ok-btn"
                                   text={t("Okay")}
@@ -5527,8 +5558,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
+                                className="d-flex justify-content-center gap-2"
                               >
+                                <Button
+                                  className="Cancel-btn"
+                                  text={t("Cancel")}
+                                  onClick={cancelPrintemailChatHandler}
+                                />
                                 <Button
                                   className=" Ok-btn"
                                   text="Okay"

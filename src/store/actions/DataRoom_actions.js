@@ -75,7 +75,6 @@ const saveFilesApi = (
   setTasksAttachments,
   tasksAttachments,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -267,7 +266,6 @@ const uploadDocumentsApi = (
   setShowbarupload,
   showbarupload,
 ) => {
-
   // Set Uploading to true when starting the upload
   setTasksAttachments((prevTasks) => ({
     ...prevTasks,
@@ -488,7 +486,6 @@ const getFolderDocumentsApi = (
   sortValue,
   isDescending,
 ) => {
-
   let createrID = localStorage.getItem("userID");
 
   let OrganizationID = localStorage.getItem("organizationID");
@@ -903,7 +900,6 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   filterValue,
   order,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -997,7 +993,6 @@ const getFolderDocumentsApiScrollBehaviour = (
   SortBy,
   order,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -1107,7 +1102,6 @@ const shareFiles_fail = (message) => {
 
 // Share Files Api
 const shareFilesApi = (navigate, FileData, t, setShareFile) => {
-
   return (dispatch) => {
     dispatch(shareFiles_init());
     let form = new FormData();
@@ -1192,7 +1186,6 @@ const shareFolders_fail = (message) => {
 
 // Share Folders Api
 const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
-
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
 
@@ -1298,7 +1291,6 @@ const deleteFileDataroom_fail = (message) => {
 
 // Delete file API
 const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -1384,11 +1376,7 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                 )
             ) {
               dispatch(
-                deleteFileDataroom_fail(
-                  t(
-                    "Not-authorized-to-delete-the-file",
-                  ),
-                ),
+                deleteFileDataroom_fail(t("Not-authorized-to-delete-the-file")),
               );
             } else {
               dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
@@ -1444,7 +1432,6 @@ const FileisExist = (
   setShowbarupload,
   showbarupload,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let folderId = localStorage.getItem("folderID");
   let Data = {
@@ -1562,7 +1549,6 @@ const FolderisExist = (
   Type,
   setIsExistFolder,
 ) => {
-
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let Data = {
@@ -1675,7 +1661,6 @@ const deleteFolder_fail = (message) => {
 };
 
 const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
-
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let folderId = localStorage.getItem("folderID");
@@ -1777,7 +1762,6 @@ const FolderisExistrename_fail = (message) => {
 
 // Folder Exist API
 const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
-
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
 
@@ -1864,7 +1848,6 @@ const renameFolder_fail = (message) => {
   };
 };
 const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
 
@@ -1955,7 +1938,6 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
 };
 
 const FileisExist2 = (navigate, fileData, t, setShowRenameFile) => {
-
   let createrID = localStorage.getItem("userID");
   let Data = {
     UserID: JSON.parse(createrID),
@@ -2036,7 +2018,6 @@ const renameFile_fail = (message) => {
   };
 };
 const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
-
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -2176,8 +2157,6 @@ const searchDocumentsAndFoldersApi_fail = (message) => {
 
 // Get Documents And Folder API
 const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
-
-
   return (dispatch) => {
     if (no !== 1) {
       dispatch(searchDocumentsAndFoldersApi_init());
@@ -2259,8 +2238,6 @@ const recentDocuments_fail = (message) => {
 };
 
 const getRecentDocumentsApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(recentDocuments_init());
     let form = new FormData();
@@ -2339,8 +2316,6 @@ const getSharedFileUser_fail = (message) => {
 };
 
 const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
-
-
   return (dispatch) => {
     dispatch(getSharedFileUser_init());
     let form = new FormData();
@@ -2415,8 +2390,6 @@ const getSharedFolderUser_fail = (message) => {
 };
 
 const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
-
-
   return (dispatch) => {
     dispatch(getSharedFolderUser_init());
     let form = new FormData();
@@ -2495,7 +2468,7 @@ const createFolderLink_fail = (message) => {
 };
 
 // const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
-// 
+//
 
 //   return (dispatch) => {
 //     dispatch(createFolderLink_init());
@@ -2558,8 +2531,6 @@ const createFolderLink_fail = (message) => {
 //Same Api Newly Implemented
 
 const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
-
-
   return (dispatch) => {
     dispatch(createFolderLink_init());
     let form = new FormData();
@@ -2634,8 +2605,6 @@ const createFileLink_fail = (message) => {
   };
 };
 const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
-
-
   return (dispatch) => {
     dispatch(createFileLink_init());
     let form = new FormData();
@@ -2707,8 +2676,6 @@ const checkFileLink_fail = (message) => {
   };
 };
 const checkFileLinkApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(checkFileLink_init());
     let form = new FormData();
@@ -2828,8 +2795,6 @@ const requestAccess_fail = (message) => {
 };
 
 const requestAccessApi = (navigate, t, data, setRequestAccept) => {
-
-
   return (dispatch) => {
     dispatch(requestAccess_init());
     let form = new FormData();
@@ -2894,8 +2859,6 @@ const updateGeneralAccess_fail = (message) => {
   };
 };
 const updateGeneralAccessApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(updateGeneralAccess_init());
     let form = new FormData();
@@ -2967,8 +2930,6 @@ const updateFolderGeneralAccess_fail = (message) => {
   };
 };
 const updateFolderGeneralAccessApi = (navigate, t, data) => {
-
-
   return (dispatch) => {
     dispatch(updateFolderGeneralAccess_init());
     let form = new FormData();
@@ -3053,7 +3014,6 @@ const downloadFail = (response) => {
 
 // DownloadFile
 const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
-
   let form = new FormData();
   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -3222,13 +3182,15 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
           response.data.responseResult.annotationString || "";
         const ext = Name.split(".").pop().toLowerCase();
         const userName = localStorage.getItem("name") || "";
+        const userEmail = localStorage.getItem("userEmail") || "";
         const dateTimeStr = new Date().toLocaleString();
         const footerText = `Downloaded by: ${userName}  |  ${dateTimeStr}`;
 
         let finalBlob;
 
         if (ext === "pdf") {
-          const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+          const { PDFDocument, rgb, StandardFonts, degrees } =
+            await import("pdf-lib");
 
           let pdfBytes;
 
@@ -3247,7 +3209,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 
           // Step 2: stamp footer (logo + text) on every page using pdf-lib
           const pdfDoc = await PDFDocument.load(pdfBytes);
-          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+          const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
           // ── Embed logo ──────────────────────────────────────────────────────
           // Fetch the PNG bytes from the webpack-resolved asset URL, embed
@@ -3277,12 +3239,12 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
           const FOOTER_HEIGHT = 38;
 
           for (const page of pdfDoc.getPages()) {
-            const { width } = page.getSize();
+            const { width, height } = page.getSize();
 
-            // ── 1. Erase existing footer ──────────────────────────────────
-            // A solid white rectangle spanning the full page width and the
-            // reserved footer height wipes whatever was there — same or
-            // different — so our footer is always clean and never stacked.
+            // =========================================================
+            // FOOTER EXISTING CODE
+            // =========================================================
+
             page.drawRectangle({
               x: 0,
               y: 0,
@@ -3292,7 +3254,6 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               opacity: 1,
             });
 
-            // ── 2. Separator line ─────────────────────────────────────────
             page.drawLine({
               start: { x: 10, y: FOOTER_HEIGHT - 4 },
               end: { x: width - 10, y: FOOTER_HEIGHT - 4 },
@@ -3300,7 +3261,6 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               color: rgb(0.85, 0.85, 0.85),
             });
 
-            // ── 3. Logo — bottom-left ─────────────────────────────────────
             if (embeddedLogo) {
               page.drawImage(embeddedLogo, {
                 x: 10,
@@ -3310,8 +3270,8 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               });
             }
 
-            // ── 4. Text — centred on full page width ──────────────────────
             const textWidth = font.widthOfTextAtSize(footerText, 8);
+
             page.drawText(footerText, {
               x: (width - textWidth) / 2,
               y: 14,
@@ -3319,6 +3279,78 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               font,
               color: rgb(0.4, 0.4, 0.4),
             });
+
+            // =========================================================
+            // WATERMARK START (FIXED CENTERED VERSION)
+            // =========================================================
+
+            const watermarkFontSize = 27;
+
+            const watermarkText = [
+              (userName || "").toUpperCase(),
+              (userEmail || "").toUpperCase(),
+              dateTimeStr.toUpperCase(),
+            ];
+
+            const rotationAngle = degrees(5);
+
+            // Box size
+            const boxWidth = 420;
+            const boxHeight = 180;
+
+            // Page center
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Box center position
+            const boxX = centerX - boxWidth / 2;
+            const boxY = centerY - boxHeight / 2;
+
+            // Draw watermark container
+            page.drawRectangle({
+              x: boxX,
+              y: boxY,
+              width: boxWidth,
+              height: boxHeight,
+              borderWidth: 2,
+              borderColor: rgb(0.38, 0.38, 0.38),
+              color: rgb(1, 1, 1),
+              opacity: 0.02,
+              borderOpacity: 0.45,
+              rotate: rotationAngle,
+            });
+
+            // helper → TRUE CENTER INSIDE BOX (not page)
+            const drawCenteredLine = (text, offsetY) => {
+              const textWidth = font.widthOfTextAtSize(text, watermarkFontSize);
+
+              // position relative to BOX center (not page center)
+              const boxCenterX = boxX + boxWidth / 2;
+              const boxCenterY = boxY + boxHeight / 2;
+
+              page.drawText(text, {
+                x: boxCenterX - textWidth / 2,
+                y: boxCenterY + offsetY,
+
+                size: watermarkFontSize,
+                font,
+                fontWeight: 900,
+
+                rotate: rotationAngle,
+
+                color: rgb(0.38, 0.38, 0.38),
+                opacity: 0.45,
+              });
+            };
+
+            // Vertical spacing inside box (perfect centering)
+            drawCenteredLine(watermarkText[0], 50);
+            drawCenteredLine(watermarkText[1], 0);
+            drawCenteredLine(watermarkText[2], -35);
+
+            // =========================================================
+            // WATERMARK END
+            // =========================================================
           }
 
           const modifiedBytes = await pdfDoc.save();
@@ -3364,7 +3396,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 };
 
 // const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
-// 
+//
 
 //
 //   let form = new FormData();
@@ -3429,8 +3461,6 @@ const downloadFolderFail = (response) => {
 };
 
 const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
-
-
   let form = new FormData();
   form.append("RequestMethod", dataRoomFolderDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -3509,7 +3539,6 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
   setShareFileModal,
   setRequestFile,
 ) => {
-
   return async (dispatch) => {
     dispatch(validateUserDataRoomInit());
     let form = new FormData();
@@ -3822,7 +3851,6 @@ const deleteSharedFileDataroom_fail = (message) => {
 
 // Delete file API
 const deleteSharedFileDataroom = (navigate, Data, t) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -3934,7 +3962,6 @@ const deleteSharedFolderDataroom_fail = (message) => {
 
 // Delete file API
 const deleteSharedFolderDataroom = (navigate, Data, t) => {
-
   let currentView = localStorage.getItem("setTableView");
   let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
@@ -4078,8 +4105,6 @@ const DataRoomFileSharingPermissionAPI = (
   FileID,
   FileName,
 ) => {
-
-
   return (dispatch) => {
     dispatch(DataRoomFileSharingPermissionInit());
     let form = new FormData();

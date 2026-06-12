@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
+import { isSharedScreenCall } from "../../../../../commen/apis/Api_config";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
@@ -30,7 +32,24 @@ import StartRecordSmall from "../../../../../assets/images/Recent Activity Icons
 import RecordStart from "../../../../../assets/images/Recent Activity Icons/Video/RecordStart.png";
 import RecordPlay from "../../../../../assets/images/Recent Activity Icons/Video/RecordPlay.png";
 
-import { activeChat } from "../../../../../store/actions/Talk_action";
+import {
+  activeChat,
+  GetAllUserChats,
+  GetAllUsers,
+  GetGroupMessages,
+  GetAllUsersGroupsRoomsList,
+} from "../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -126,7 +145,14 @@ const VideoCallNormalHeader = ({
     inCallParticipantsList,
     setInCallParticipantsList,
     stopApiCalledRef,
+    videoTalk,
+    videoChatUnreadCount,
+    setVideoChatUnreadCount,
   } = useContext(MeetingContext);
+
+  // Meeting group chat (presenter / meeting-video) — mirrors AgendaViewer group chat
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+  const [meetingChatGroupID, setMeetingChatGroupID] = useState(0);
 
   const leaveModalPopupRef = useRef(null);
 
@@ -406,10 +432,72 @@ const VideoCallNormalHeader = ({
       setGroupVideoCallAccepted([]); // Clear list when component unmounts
       setGroupCallParticipantList([]);
       setUnansweredCallParticipant([]);
+
+      // If THIS user is the active screen sharer and closes the tab, stop the
+      // screen share on the backend and re-enable the share icon for everyone.
+      const isScreenShareEnabled = JSON.parse(
+        localStorage.getItem("isScreenShareEnabled"),
+      );
+      console.log("stopShareOnTabClose check", isScreenShareEnabled);
+      if (isScreenShareEnabled) {
+        let participantRoomId = String(
+          localStorage.getItem("participantRoomId"),
+        );
+        let roomID = String(localStorage.getItem("acceptedRoomID"));
+        let newRoomID = String(localStorage.getItem("newRoomId"));
+
+        let isMeetingVideoHostCheck = JSON.parse(
+          localStorage.getItem("isMeetingVideoHostCheck"),
+        );
+        let isMeetingVideo = JSON.parse(
+          localStorage.getItem("isMeetingVideo"),
+        );
+        let userID = localStorage.getItem("userID");
+        let isGuid = localStorage.getItem("isGuid");
+        let participantUID = localStorage.getItem("participantUID");
+        let RoomID = !isMeetingVideo
+          ? roomID
+          : isMeetingVideoHostCheck
+            ? newRoomID
+            : participantRoomId;
+        let UID = !isMeetingVideo
+          ? userID
+          : isMeetingVideoHostCheck
+            ? isGuid
+            : participantUID;
+        let data = {
+          RoomID: RoomID,
+          ShareScreen: false,
+          UID: UID,
+        };
+        dispatch(screenShareTriggeredGlobally(false));
+
+        // The page is unloading, so a normal axios call would be cancelled by
+        // the browser. Use fetch with `keepalive: true` so the request is
+        // guaranteed to be sent even as the tab closes. (sendBeacon can't set
+        // the required `_token` header, so we use keepalive fetch instead.)
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const form = new FormData();
+          form.append("RequestMethod", isSharedScreenCall.RequestMethod);
+          form.append("RequestData", JSON.stringify(data));
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: form,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopShareOnTabClose error", error);
+        }
+        localStorage.removeItem("isScreenShareEnabled");
+      }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pagehide", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("pagehide", handleBeforeUnload);
     };
   }, []);
 
@@ -753,70 +841,136 @@ const VideoCallNormalHeader = ({
     }
   };
 
+  // Open the meeting / presenter GROUP chat keyed by the meeting talkGroupID,
+  // mirroring AgendaViewer's groupChatInitiation so every participant shares one
+  // channel (fixes undelivered messages + stale 1:1 chat in presenter/meeting video).
+  const openMeetingGroupChat = async (talkChatID) => {
+    if (!talkChatID || talkChatID === 0) return;
+    await dispatch(createShoutAllScreen(false));
+    await dispatch(addNewChatScreen(false));
+    await dispatch(footerActionStatus(false));
+    await dispatch(createGroupScreen(false));
+    await dispatch(recentChatFlag(true));
+    await dispatch(activeChatBoxGS(true));
+    await dispatch(headerShowHideStatus(true));
+    await dispatch(footerShowHideStatus(true));
+    setMeetingChatGroupID(talkChatID);
+    let chatGroupData = {
+      UserID: currentUserID,
+      ChannelID: currentOrganization,
+      GroupID: talkChatID,
+      NumberOfMessages: 50,
+      OffsetMessage: 0,
+    };
+    await dispatch(
+      GetAllUserChats(navigate, currentUserID, currentOrganization, t),
+    );
+    await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+    await dispatch(GetAllUsers(navigate, currentUserID, currentOrganization, t));
+    await dispatch(
+      GetAllUsersGroupsRoomsList(navigate, currentUserID, currentOrganization, t),
+    );
+  };
+
+  // After chats load, select the meeting group record, force its display name to
+  // the meeting title, and activate it as a group ("G") chat.
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      meetingChatGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages?.allMessages?.find(
+        (item) => item.id === meetingChatGroupID,
+      );
+      if (foundRecord) {
+        const groupRecord = {
+          ...foundRecord,
+          fullName: meetingTitle?.trim() || foundRecord.fullName,
+          name: meetingTitle?.trim() || foundRecord.name,
+        };
+        dispatch(chatBoxActiveFlag(true));
+        localStorage.setItem("ActiveChatType", "G");
+        localStorage.setItem("activeOtoChatID", meetingChatGroupID);
+        dispatch(activeChat(groupRecord));
+      }
+      setMeetingChatGroupID(0);
+    }
+  }, [AllUserChats?.AllUserChatsData, meetingChatGroupID]);
+
   const onClickCloseChatHandler = () => {
     if (LeaveCallModalFlag === false) {
       if (VideoChatMessagesFlag === false) {
-        if (callerID === currentUserID) {
-          let activeChatData = {
-            id: VideoRecipentData.userID,
-            fullName:
-              VideoRecipentData?.recipients?.[0]?.userName ??
-              VideoRecipentData?.userName ??
-              "",
-            imgURL: "",
-            messageBody: "",
-            messageDate: "",
-            notiCount: 0,
-            messageType: "O",
-            isOnline: false,
-            companyName: organizationName,
-            sentDate: "",
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: "",
-            senderID: currentUserID,
-            admin: 0,
-            isBlock: 0,
+        if (isMeetingVideo || presenterViewFlag) {
+          // MEETING / PRESENTER → meeting group chat (all participants, one channel)
+          openMeetingGroupChat(videoTalk?.talkGroupID);
+        } else {
+          // 1:1 video call → existing one-to-one chat (unchanged)
+          if (callerID === currentUserID) {
+            let activeChatData = {
+              id: VideoRecipentData.userID,
+              fullName:
+                VideoRecipentData?.recipients?.[0]?.userName ??
+                VideoRecipentData?.userName ??
+                "",
+              imgURL: "",
+              messageBody: "",
+              messageDate: "",
+              notiCount: 0,
+              messageType: "O",
+              isOnline: false,
+              companyName: organizationName,
+              sentDate: "",
+              receivedDate: "",
+              seenDate: "",
+              attachmentLocation: "",
+              senderID: currentUserID,
+              admin: 0,
+              isBlock: 0,
+            };
+            dispatch(activeChat(activeChatData));
+          } else if (callerID !== currentUserID) {
+            let activeChatData = {
+              id: callerID,
+              fullName: callerNameInitiate,
+              imgURL: "",
+              messageBody: "",
+              messageDate: "",
+              notiCount: 0,
+              messageType: "O",
+              isOnline: false,
+              companyName: organizationName,
+              sentDate: "",
+              receivedDate: "",
+              seenDate: "",
+              attachmentLocation: "",
+              senderID: currentUserID,
+              admin: 0,
+              isBlock: 0,
+            };
+            dispatch(activeChat(activeChatData));
+          }
+          localStorage.setItem("ActiveChatType", "O");
+          dispatch(chatEnableNormalFlag(true));
+          let chatOTOData = {
+            UserID: currentUserID,
+            ChannelID: currentOrganization,
+            OpponentUserId:
+              callerID !== currentUserID ? callerID : recipentCalledID,
+            NumberOfMessages: 50,
+            OffsetMessage: 0,
           };
-          dispatch(activeChat(activeChatData));
-        } else if (callerID !== currentUserID) {
-          let activeChatData = {
-            id: callerID,
-            fullName: callerNameInitiate,
-            imgURL: "",
-            messageBody: "",
-            messageDate: "",
-            notiCount: 0,
-            messageType: "O",
-            isOnline: false,
-            companyName: organizationName,
-            sentDate: "",
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: "",
-            senderID: currentUserID,
-            admin: 0,
-            isBlock: 0,
-          };
-          dispatch(activeChat(activeChatData));
-        }
-        localStorage.setItem("ActiveChatType", "O");
-        dispatch(chatEnableNormalFlag(true));
-        let chatOTOData = {
-          UserID: currentUserID,
-          ChannelID: currentOrganization,
-          OpponentUserId:
+          dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+          localStorage.setItem("ActiveChatType", "O");
+          localStorage.setItem(
+            "activeOtoChatID",
             callerID !== currentUserID ? callerID : recipentCalledID,
-          NumberOfMessages: 50,
-          OffsetMessage: 0,
-        };
+          );
+        }
         dispatch(videoChatMessagesFlag(true));
-        dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-        localStorage.setItem("ActiveChatType", "O");
-        localStorage.setItem(
-          "activeOtoChatID",
-          callerID !== currentUserID ? callerID : recipentCalledID,
-        );
+        if (setVideoChatUnreadCount) setVideoChatUnreadCount(0);
       } else {
         dispatch(videoChatMessagesFlag(false));
       }
@@ -1859,11 +2013,42 @@ const VideoCallNormalHeader = ({
                 }
               >
                 <Tooltip placement="topRight" title={t("Chat")}>
-                  <img
-                    onClick={onClickCloseChatHandler}
-                    src={ChatIcon}
-                    alt="Chat"
-                  />
+                  <span
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <img
+                      onClick={onClickCloseChatHandler}
+                      src={ChatIcon}
+                      alt="Chat"
+                    />
+                    {(isMeetingVideo || presenterViewFlag) &&
+                      VideoChatMessagesFlag === false &&
+                      videoChatUnreadCount > 0 && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-6px",
+                            right: "-6px",
+                            minWidth: "16px",
+                            height: "16px",
+                            padding: "0 4px",
+                            borderRadius: "8px",
+                            background:
+                              "linear-gradient(to left, #49dbdb 0%, #6172d6 100%)",
+                            color: "#fff",
+                            fontSize: "10px",
+                            lineHeight: "16px",
+                            textAlign: "center",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {convertNumbersInString(
+                            String(videoChatUnreadCount),
+                            localStorage.getItem("i18nextLng") || "en",
+                          )}
+                        </span>
+                      )}
+                  </span>
                 </Tooltip>
               </div>
             )}

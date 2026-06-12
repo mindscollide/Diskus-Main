@@ -70,6 +70,8 @@ import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_action
 import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
 import { getMeetingStatusfromSocket } from "../../store/actions/GetMeetingUserId";
 import { Prev } from "react-bootstrap/esm/PageItem";
+import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { isSharedScreenCall } from "../../commen/apis/Api_config";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -806,18 +808,88 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   }, [allMeetingDetails]);
 
   useEffect(() => {
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    const handleBeforeUnload = async (event) => {
-      alert("heloo");
+    const handleBeforeUnload = (event) => {
+      const isMeeting = JSON.parse(
+        localStorage.getItem("isMeeting") || "false",
+      );
+      const isScreenShareEnabled = JSON.parse(
+        localStorage.getItem("isScreenShareEnabled") || "false",
+      );
+      const isZoomEnabled = JSON.parse(
+        localStorage.getItem("isZoomEnabled") || "false",
+      );
+
+      // Screen share stop
+      if (isMeeting && isScreenShareEnabled && isZoomEnabled) {
+        const participantRoomId = String(
+          localStorage.getItem("participantRoomId") || "",
+        );
+        const newRoomID = String(localStorage.getItem("newRoomId") || "");
+        const roomID = String(localStorage.getItem("acceptedRoomID") || "");
+        const isMeetingVideoHostCheck = JSON.parse(
+          localStorage.getItem("isMeetingVideoHostCheck") || "false",
+        );
+        const isMeetingVideo = JSON.parse(
+          localStorage.getItem("isMeetingVideo") || "false",
+        );
+        const userID = localStorage.getItem("userID") || "";
+        const isGuid = localStorage.getItem("isGuid") || "";
+        const participantUID = localStorage.getItem("participantUID") || "";
+
+        const finalRoomID = !isMeetingVideo
+          ? roomID
+          : isMeetingVideoHostCheck
+            ? newRoomID
+            : participantRoomId;
+        const finalUID = !isMeetingVideo
+          ? userID
+          : isMeetingVideoHostCheck
+            ? isGuid
+            : participantUID;
+
+        // Stop the screen share on the backend during unload.
+        // NOTE: do NOT use a synchronous XMLHttpRequest here — browsers block
+        // sync XHR inside beforeunload/unload, so it throws and aborts the rest
+        // of this handler (which is why leaveMeeting never ran when sharing).
+        // Use `keepalive` fetch (survives unload) with the `_token` auth header,
+        // wrapped in try/catch so a failure can never skip the leave logic below.
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const formData = new FormData();
+          formData.append("RequestMethod", isSharedScreenCall.RequestMethod);
+          formData.append(
+            "RequestData",
+            JSON.stringify({
+              RoomID: finalRoomID,
+              ShareScreen: false,
+              UID: finalUID,
+            }),
+          );
+
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: formData,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopShareOnUnload error", error);
+        }
+
+        localStorage.removeItem("isSharedSceenEnable");
+        localStorage.removeItem("isScreenShareEnabled");
+      }
+
+      // Leave meeting logic (only if not already handled)
       if (isMeeting) {
         dispatch(presenterViewGlobalState(0, false, false, false));
-        console.log("cacacacacacacacacc");
         setEndMeetingConfirmationModal(false);
         dispatch(setAudioControlHost(false));
-        console.log("videoHideUnHideForHost");
         dispatch(setVideoControlHost(false));
+
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, false);
+
         localStorage.setItem("isMeeting", false);
         sessionStorage.removeItem("isMeeting");
         dispatch(removeCalenderDataFunc(null));
@@ -846,12 +918,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         });
       }
     };
+
     window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      console.log("cacacacacacacacacc");
       dispatch(setAudioControlHost(false));
-      console.log("videoHideUnHideForHost");
       dispatch(setVideoControlHost(false));
       localStorage.removeItem("presenterViewFlag");
       localStorage.setItem("CallType", 0);
@@ -865,7 +937,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       sessionStorage.removeItem("isMeeting");
       dispatch(removeCalenderDataFunc(null));
       setEndMeetingConfirmationModal(false);
-
       setViewFlag(false);
       dispatch(cleareAssigneesState());
       setIsDetails(true);

@@ -2831,9 +2831,13 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
               if (data.ShareScreen === true) {
                 console.log("CheckDataCheckData");
                 localStorage.setItem("isSharedSceenEnable", true);
+                // Mark that THIS user is the active screen sharer. Used by the
+                // tab-close handler to stop the share if the sharer leaves.
+                localStorage.setItem("isScreenShareEnabled", true);
               } else {
                 console.log("CheckDataCheckData");
                 localStorage.removeItem("isSharedSceenEnable");
+                localStorage.removeItem("isScreenShareEnabled");
               }
               await dispatch(
                 isSharedScreenSuccess(
