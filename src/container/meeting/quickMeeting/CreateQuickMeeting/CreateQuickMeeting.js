@@ -1903,6 +1903,13 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       show(t("Please-add-atleast-one-participant"), "error");
       return;
     }
+    if (objMeetingAgenda.Title !== "") {
+      show(
+        t("Save-your-agenda-before-publish-the-meeting-avoid-losing-it"),
+        "error",
+      );
+      return;
+    }
 
     const invalidAgenda = createMeeting.MeetingAgendas.find((agenda) => {
       const presenterName = agenda?.ObjMeetingAgenda?.PresenterName;
@@ -1913,6 +1920,25 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       show(t("Agenda-presenter-not-in-attendees"), "error");
       return;
     }
+
+    // if(createMeeting.MeetingAgendas.length === 0) {
+    let previousAgendas = [...createMeeting.MeetingAgendas];
+    let agendaCount = previousAgendas.length + 1;
+
+    let newObjMeetingAgenda = {
+      ...objMeetingAgenda,
+      Title:
+        objMeetingAgenda.Title && objMeetingAgenda.Title.trim() !== ""
+          ? objMeetingAgenda.Title
+          : `Agenda ${agendaCount}`,
+      PresenterName: objMeetingAgenda.PresenterName || userName,
+    };
+
+    let newDefaultAgenda = {
+      ObjMeetingAgenda: newObjMeetingAgenda,
+      MeetingAgendaAttachments: [],
+    };
+    // }
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime,
     );
@@ -1938,7 +1964,10 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       IsVideoCall: createMeeting.IsVideoCall,
       IsChat: createMeeting.IsChat,
       MeetingReminderID: createMeeting.MeetingReminderID,
-      MeetingAgendas: createMeeting.MeetingAgendas,
+      MeetingAgendas:
+        createMeeting.MeetingAgendas.length === 0
+          ? [newDefaultAgenda]
+          : createMeeting.MeetingAgendas,
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
@@ -2775,9 +2804,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         currentLanguage
                       }
                       text={
-                        editRecordFlag
-                          ? t("Update-agenda")
-                          : `${"+"}  ${t("Add-agenda")}`
+                        editRecordFlag ? t("Update-agenda") : t("Save-agenda")
                       }
                     />
                     <Button

@@ -85,6 +85,7 @@
   "On-board-discussion": "Onboard discussion",
   "Attachement": "Attachments",
   "Add-agenda": "Add Agenda",
+  "Unsaved-Agenda-Warning": "Add your agenda before proceeding to the Next step to avoid losing it",
   "Update-agenda": "Update agenda",
   "Add-attendees": "Add Attendees",
   "Participant": "Participant",
@@ -2244,7 +2245,7 @@
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving": "You have unsaved changes. If you leave this page, your changes will be lost. Do you want to continue without saving?",
   "Unsave-changes": "Unsave Changes",
   "Save-and-continue": "Save & Continue",
-  "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected": "Are you sure you want to end the meeting? Once the meeting ends, all the participants will be disconnected.",
+  "Are-you-sure-you-want-to-end-the-meeting": "Are you sure you want to end the meeting?",
   "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
   "Successfully-updated-participants-list": "Updated Proposed Meetings Details",
   "Upcoming-tasks": "Upcoming Tasks",
@@ -2784,5 +2785,7 @@
   "Agenda-poll-updated": "Agenda Poll Updated",
   "Create-meeting-chat": "Create Meeting Chat",
   "Meeting-chat": "Meeting Chat",
-  "Create-committee-chat": "Create Committee Chat"
+  "Create-committee-chat": "Create Committee Chat",
+  "Save-your-agenda-before-publish-the-meeting-avoid-losing-it": "Save your agenda before publish the meeting, avoid losing it.",
+  "Save-agenda": "Save Agenda"
 }

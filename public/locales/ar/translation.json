@@ -83,6 +83,7 @@
   "Onboard-discussion": "محادثة مجلس الإدارة",
   "Attachments": "المرفقات",
   "Add-agenda": "إضافة جدول أعمال",
+  "Unsaved-Agenda-Warning": "أضف جدول أعمالك قبل المتابعة إلى الخطوة التالية لتجنب فقدانه",
   "Update-agenda": "تحديث جدول الأعمال",
   "Add-attendees": "إضافة الحضور",
   "Participant ": "المشارك",
@@ -2193,7 +2194,7 @@
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving": "لديك تغييرات غير محفوظة. إذا تركت هذه الصفحة، ستفقد التغييرات. هل تريد المتابعة دون حفظ؟",
   "Unsave-changes": "عدم حفظ التغييرات",
   "Save-and-continue": "احفظ واستمر",
-  "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected": "هل أنت متأكد أنك تريد إنهاء الاجتماع؟ بمجرد انتهاء الاجتماع، سيتم فصل جميع المشاركين.",
+  "Are-you-sure-you-want-to-end-the-meeting": "هل أنت متأكد أنك تريد إنهاء الاجتماع؟",
   "Not-allowed-more-than-5-files": "غير مسموح بأكثر من 5 ملفات",
   "Successfully-updated-participants-list": "تم تحديث قائمة المشاركين بنجاح",
   "Upcoming-tasks": "المهام القادمة",
@@ -2587,5 +2588,7 @@
   "Agenda-poll-updated": "Agenda Poll Updated",
   "Create-meeting-chat": "Create Meeting Chat",
   "Meeting-chat": "Meeting Chat",
-  "Create-committee-chat":"Create Committee Chat"
+  "Create-committee-chat": "Create Committee Chat",
+  "Save-your-agenda-before-publish-the-meeting-avoid-losing-it": "Save your agenda before publish the meeting, avoid losing it.",
+  "Save-agenda": "Save Agenda"
 }
