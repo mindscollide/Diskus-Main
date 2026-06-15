@@ -1201,18 +1201,7 @@ const ViewMeetingModal = ({
     return () => {};
   }, [globalFunctionWebnotificationFlag]);
 
-  useEffect(() => {
-    if (
-      MeetingAgendaReducer.ResponseMessage === t("Vote-casted-successfully")
-    ) {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "success",
-        setOpen
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
+
 
   return (
     <>

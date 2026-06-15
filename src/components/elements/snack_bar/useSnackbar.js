@@ -49,7 +49,7 @@ const ignoredMessages = new Set(
     "record save",
     "no data available",
     "record saved",
-  ].map((m) => m.toLowerCase().trim())
+  ].map((m) => m.toLowerCase().trim()),
 );
 
 const useSnackbar = (watchConfigs = []) => {
@@ -86,7 +86,7 @@ const useSnackbar = (watchConfigs = []) => {
 
       return { messageKey, values };
     },
-    (a, b) => a.messageKey === b.messageKey
+    (a, b) => a.messageKey === b.messageKey,
   );
 
   const prevRef = useRef(new Map());
@@ -113,9 +113,7 @@ const useSnackbar = (watchConfigs = []) => {
     }
   }, [messageKey, dispatch, show, values]);
 
-  const SnackBar = (
-    <Notification open={snackState} setOpen={setSnackState} />
-  );
+  const SnackBar = <Notification open={snackState} setOpen={setSnackState} />;
 
   return [show, SnackBar];
 };

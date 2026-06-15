@@ -66,3 +66,18 @@
   font-weight: 600 !important;
   white-space: nowrap;
 }
+
+.View_meeting_footer {
+  position: absolute;
+  right: 20px !important;
+  bottom: 30px !important;
+}
+.CloseMeetingButton{
+  padding: 12px 30px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}

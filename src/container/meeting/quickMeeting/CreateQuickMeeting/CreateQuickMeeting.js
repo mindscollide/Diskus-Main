@@ -69,7 +69,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 5 is for Create Meeting
 
   //For Localization
-  const [show] = useSnackbar();
+  const [show, SnackBar] = useSnackbar();
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -1503,7 +1503,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //     }
   //   } catch {}
   // }, [checkFlag]);
-  console.log(assigneesuser, checkFlag, "checkFlagcheckFlag");
   // for api response of list of all assignees
   useEffect(() => {
     try {
@@ -1899,11 +1898,21 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
+    console.log(
+      "Checking",
+      createMeeting,
+      addedParticipantNameList,
+      objMeetingAgenda,
+    );
+
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
       show(t("Please-add-atleast-one-participant"), "error");
       return;
     }
+    console.log("Checking");
+
     if (objMeetingAgenda.Title !== "") {
+      console.log("Checking");
       show(
         t("Save-your-agenda-before-publish-the-meeting-avoid-losing-it"),
         "error",
@@ -1922,16 +1931,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     }
 
     // if(createMeeting.MeetingAgendas.length === 0) {
-    let previousAgendas = [...createMeeting.MeetingAgendas];
-    let agendaCount = previousAgendas.length + 1;
 
-    let newObjMeetingAgenda = {
+    const newObjMeetingAgenda = {
       ...objMeetingAgenda,
-      Title:
-        objMeetingAgenda.Title && objMeetingAgenda.Title.trim() !== ""
-          ? objMeetingAgenda.Title
-          : `Agenda ${agendaCount}`,
-      PresenterName: objMeetingAgenda.PresenterName || userName,
+      Title: t("No-agenda-available"),
+      PresenterName: userName,
+      PK_MAID: generateRandomAgendaID,
     };
 
     let newDefaultAgenda = {
@@ -2359,7 +2364,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       size='small'
                       placeholder={t("Meeting-title")}
                       required={true}
-                      maxLength={245}
+                      maxLength={250}
                     />
                   </Col>
                 </Row>
@@ -2376,6 +2381,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       applyClass='form-control2 createmeetingtextarea'
                       type='text'
                       as={"textarea"}
+                      maxLength={5000}
                       rows='7'
                       placeholder={t("Description")}
                       value={createMeeting.MeetingDescription}
@@ -2841,6 +2847,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           </>
         }
       />
+      {SnackBar}
     </>
   );
 };

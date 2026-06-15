@@ -49,7 +49,7 @@ import { MeetingContext, useMeetingContext } from "@/context/MeetingContext";
 import { userLogOutApiFunc } from "@/store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "@/commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
-import CastVoteAgendaModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import CastVoteAgendaModal from "@/container/meeting/advanceMeeting/viewAdvanceMeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import PollsCastVoteInitimationModal from "@/container/meeting/commonComponents/pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
 import { useGroupsContext } from "@/context/GroupsContext";
 import { webnotificationGlobalFlag } from "@/store/actions/UpdateUserNotificationSetting";
@@ -66,9 +66,12 @@ import {
 } from "../../../../store/actions/ModalStates_actions";
 import {
   LeaveMeetingApi,
+  listOfMeetingsApi,
   resetCurrentMeetingInfo,
 } from "../../../../store/actions/NewMeeting2.actions";
 import NewEndMeetingModal from "../../commonComponents/NewEndMeetingModal/NewEndMeetingModal";
+import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
+import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
 
 const ViewMeetingModal = () => {
   const { t } = useTranslation();
@@ -121,7 +124,7 @@ const ViewMeetingModal = () => {
 
   const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID } =
     useMeetingContext();
-
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
   const ViewAdvanceMeetingPolls =
@@ -538,6 +541,32 @@ const ViewMeetingModal = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [dispatch]);
 
+  const handleCloseMeeting = () => {
+    dispatch(toggleViewMeetingModal(false));
+    dispatch(resetCurrentMeetingInfo());
+    setEditorRole({ status: null, role: null });
+    dispatch(resetViewTabs());
+    dispatch(resetViewGroupDetails());
+    dispatch(resetViewCommitteeDetails());
+    dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+          PublishedMeetings: currentView && Number(currentView) === 1,
+          ProposedMeetings: currentView && Number(currentView) === 2,
+        },
+        "",
+      ),
+    );
+  };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 
   useEffect(() => {
@@ -738,19 +767,6 @@ const ViewMeetingModal = () => {
 
   // ─── Vote Cast Success Message ────────────────────────────────────────────
 
-  useEffect(() => {
-    if (
-      MeetingAgendaReducer.ResponseMessage === t("Vote-casted-successfully")
-    ) {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "success",
-        setOpen,
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
-
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -786,8 +802,9 @@ const ViewMeetingModal = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
-            <span className={styles["Scedule_meeting_paper"]}>
+          <Col lg={12} md={12} sm={12} className='mb-4 '>
+            <span
+              className={`${styles["Scedule_meeting_paper"]} ${"position-relative"}`}>
               <Row>
                 <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
@@ -986,14 +1003,23 @@ const ViewMeetingModal = () => {
 
               {/* {Number(editorRole.status) === 10 ||
                 (Number(editorRole.status) === 9 && ( */}
-                  {/* <> */}
-                    {minutes && <Minutes />}
-                    {actionsPage && <Actions />}
-                    {polls && <Polls />}
-                    {attendance && <Attendence />}
-                    {isRecording && <Recording />}
-                  {/* </> */}
-                {/* // ))} */}
+              {/* <> */}
+              {minutes && <Minutes />}
+              {actionsPage && <Actions />}
+              {polls && <Polls />}
+              {attendance && <Attendence />}
+              {isRecording && <Recording />}
+              {/* </> */}
+              {/* // ))} */}
+              {Number(editorRole.status) !== 10 && (
+                <footer className={styles["View_meeting_footer"]}>
+                  <Button
+                    text={t("Close")}
+                    className={styles["CloseMeetingButton"]}
+                    onClick={handleCloseMeeting}
+                  />
+                </footer>
+              )}
             </span>
           </Col>
         </Row>

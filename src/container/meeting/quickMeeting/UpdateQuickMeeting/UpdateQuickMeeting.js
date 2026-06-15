@@ -53,7 +53,6 @@ import {
   ConvertFileSizeInMB,
   isFileSizeValid,
 } from "@/commen/functions/convertFileSizeInMB";
-import { showMessage } from "@/components/elements/snack_bar/utill";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
@@ -65,10 +64,13 @@ import {
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
+import { useSnackbar } from "../../../../components/elements";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
+  const [show, SnackBar] = useSnackbar();
+
   const getStartTime = getStartTimeWithCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
   const [defaultPresenter, setDefaultPresenter] = useState(null);
@@ -556,7 +558,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
-      showMessage(t("Please-fill-description"), "error", setOpen);
+      show(t("Please-fill-description"), "error");
     }
   };
 
@@ -860,7 +862,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     let sizezero = true;
 
     if (attachments.length + filesArray.length > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
 
@@ -879,15 +881,11 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       }
 
       if (fileExists) {
-        showMessage(t("This-file-already-exist"), "error", setOpen);
+        show(t("This-file-already-exist"), "error");
       } else if (!size) {
-        showMessage(
-          t("File-size-should-not-be-more-than-1-5GB"),
-          "error",
-          setOpen,
-        );
+        show(t("File-size-should-not-be-more-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-is-0mb"), "error", setOpen);
+        show(t("File-size-is-0mb"), "error");
       } else {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
@@ -1781,10 +1779,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        showMessage(
+        show(
           t("Date-and-time-should-be-greater-than-current-system-time"),
           "error",
-          setOpen,
         );
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
@@ -2035,7 +2032,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        show(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleValue({
@@ -2105,7 +2102,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       }
     } else {
       if (found === undefined) {
-        showMessage(t("Please-add-valid-user"), "error", setOpen);
+        show(t("Please-add-valid-user"), "error");
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleValue({
@@ -2131,8 +2128,19 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
+    const newObjMeetingAgenda = {
+      ...objMeetingAgenda,
+      Title: t("No-agenda-available"),
+      PresenterName: userName,
+      PK_MAID: generateRandomAgendaID,
+    };
+
+    let newDefaultAgenda = {
+      ObjMeetingAgenda: newObjMeetingAgenda,
+      MeetingAgendaAttachments: [],
+    };
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
+      show(t("Please-add-atleast-one-participant"), "error");
       return;
     }
 
@@ -2142,7 +2150,16 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       return !addedParticipantNameList.some((ap) => ap.name === presenterName);
     });
     if (invalidAgenda) {
-      showMessage(t("Agenda-presenter-not-in-attendees"), "error", setOpen);
+      show(t("Agenda-presenter-not-in-attendees"), "error");
+      return;
+    }
+
+    if (objMeetingAgenda.Title !== "") {
+      console.log("Checking");
+      show(
+        t("Save-your-agenda-before-publish-the-meeting-avoid-losing-it"),
+        "error",
+      );
       return;
     }
 
@@ -2184,7 +2201,10 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         IsVideoCall: createMeeting.IsVideoCall,
         IsChat: createMeeting.IsChat,
         MeetingReminderID: createMeeting.MeetingReminderID,
-        MeetingAgendas: createMeeting.MeetingAgendas,
+        MeetingAgendas:
+          createMeeting.MeetingAgendas.length === 0
+            ? [newDefaultAgenda]
+            : createMeeting.MeetingAgendas,
         MeetingAttendees: createMeeting.MeetingAttendees,
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
@@ -2193,7 +2213,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         UpdateMeeting(navigate, t, checkFlag, newData, setIsQuickMeetingUpdate),
       );
     } else {
-      showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
+      show(t("Please-atleast-add-one-organizer"), "error");
     }
   };
 
@@ -2902,7 +2922,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         size='small'
                         placeholder={t("Meeting-title")}
                         required={true}
-                        maxLength={245}
+                        maxLength={250}
                       />
                     </Col>
                   </Row>
@@ -2925,6 +2945,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
+                        maxLength={5000}
                       />
                     </Col>
                   </Row>
@@ -3486,7 +3507,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           text={
                             editRecordFlag
                               ? t("Update-agenda")
-                              : " + " + t("Add-agenda")
+                              : t("Save-agenda")
                           }
                         />
                         <Button
@@ -3506,7 +3527,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           text={
                             editRecordFlag
                               ? t("Update-agenda")
-                              : " + " + t("Add-agenda")
+                              : t("Save-agenda")
                           }
                         />
                       </Col>
@@ -3647,7 +3668,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

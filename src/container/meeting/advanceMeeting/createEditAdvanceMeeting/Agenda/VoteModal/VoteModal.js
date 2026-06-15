@@ -38,14 +38,17 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
 
   let currentAgendaVotingID = Number(
-    localStorage.getItem("currentAgendaVotingID")
+    localStorage.getItem("currentAgendaVotingID"),
   );
 
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
     useSelector((state) => state);
-  
+
   const [addOptions, setAddOptions] = useState(false);
   const [open, setOpen] = useState({
     open: false,
@@ -89,7 +92,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const deleteRow = (recordToDelete) => {
     setMeetingParticipants((prevRowsData) =>
-      prevRowsData.filter((record) => record !== recordToDelete)
+      prevRowsData.filter((record) => record !== recordToDelete),
     );
   };
 
@@ -105,7 +108,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const AddOptions = () => {
     const optionExists = saveOptions.some(
-      (option) => option.votingAnswer === voteAnswerValue
+      (option) => option.votingAnswer === voteAnswerValue,
     );
 
     if (!optionExists) {
@@ -196,34 +199,28 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let dataForAllOrganizers = { MeetingID: currentMeeting };
-        let dataForAllMeetingParticipants = { MeetingID: currentMeeting };
+        let dataForAllOrganizers = { MeetingID: meetingID };
+        let dataForAllMeetingParticipants = { MeetingID: meetingID };
 
         await dispatch(
           GetAllSavedparticipantsAPI(
             dataForAllMeetingParticipants,
             navigate,
             t,
-            false
-          )
+            false,
+          ),
         );
 
         await dispatch(
-          GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t)
+          GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t),
         );
 
         await dispatch(GetAllVotingResultDisplay(navigate, t));
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     fetchData();
   }, []); // Add dependencies for re-execution if needed
-  
-  
-  
-  
 
   useEffect(() => {
     try {
@@ -240,9 +237,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             MeetingAgendaReducer.GetCurrentAgendaDetails.agendaVotingID,
         });
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
   useEffect(() => {
@@ -255,9 +250,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       ) {
         setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
   const MeetingColoumns = [
@@ -367,7 +360,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                 </>
               ),
             });
-          }
+          },
         );
       }
 
@@ -386,7 +379,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       if (currentAgendaVotingID !== 0) {
         setMeetingParticipants(
           MeetingAgendaReducer.MeetingAgendaVotingDetailsData
-            .agendaVotingDetails.votingMembers
+            .agendaVotingDetails.votingMembers,
         );
       }
 
@@ -395,9 +388,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           (obj) =>
             obj.userID ===
             MeetingAgendaReducer.MeetingAgendaVotingDetailsData
-              .agendaVotingDetails.userID
+              .agendaVotingDetails.userID,
         );
-      
+
       if (matchedOrganizer !== undefined) {
         setIsOrganizer({
           value: matchedOrganizer.userID,
@@ -425,10 +418,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           userID: matchedOrganizer.userID,
         });
       }
-      
+
       let agendaVotingDetails =
         MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails;
-      
+
       setAgendaDetails({
         ...agendaDetails,
         userID: agendaVotingDetails.userID,
@@ -442,7 +435,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         isvotingClosed: false,
       });
       let votingAnswerData = agendaVotingDetails.votingAnswers;
-      
+
       if (Array.isArray(votingAnswerData) && votingAnswerData.length > 0) {
         let newAnswers = [];
         votingAnswerData.forEach((item) => {
@@ -479,7 +472,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
               </>
             ),
           });
-        }
+        },
       );
       setVotingResultDataList(newVotingResultData);
     }
@@ -501,10 +494,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         AgendaVotingID: agendaDetails.agendaVotingID,
       }));
 
-      
       if (Object.keys(votingOptionData).length > 2) {
         let Data = {
-          MeetingID: currentMeeting,
+          MeetingID: meetingID,
           AgendaVoting: {
             AgendaVotingID: agendaDetails.agendaVotingID,
             AgendaID: agendaDetails.agendaId,
@@ -518,8 +510,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           },
         };
 
-        
-        dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
+        dispatch(SaveAgendaVoting(Data, navigate, t, meetingID));
         dispatch(getAgendaVotingDetails_success([], ""));
         setAgendaDetails({
           ...agendaDetails,
@@ -547,7 +538,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         showMessage(
           t("Voting-options-should-be-2-or-more-than-2"),
           "error",
-          setOpen
+          setOpen,
         );
       }
     } else {
@@ -583,8 +574,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     dispatch(showAllMeetingParticipantsSuccess([], "", false));
     localStorage.setItem("currentAgendaVotingID", 0);
   };
-
-  
 
   return (
     <section>
@@ -835,7 +824,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Vote_modal_heading"]}>
                           {t(
-                            "Allow-the-following-individual-to-open/close-voting"
+                            "Allow-the-following-individual-to-open/close-voting",
                           )}
                           <span>*</span>
                         </span>

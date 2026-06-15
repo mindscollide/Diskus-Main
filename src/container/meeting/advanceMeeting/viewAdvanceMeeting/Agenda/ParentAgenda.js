@@ -5,11 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  AttachmentViewer,
-  Button,
-  Notification,
-} from "@/components/elements";
+import { AttachmentViewer, Button, Notification } from "@/components/elements";
 import AttachmentIcon from "@/assets/images/Attachment.svg";
 import {
   showAdvancePermissionModal,
@@ -55,7 +51,7 @@ const ParentAgenda = ({
   let currentUserID = localStorage.getItem("userID");
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const [open, setOpen] = useState({
@@ -117,7 +113,7 @@ const ParentAgenda = ({
   //Konsa user vote kar sakta hai
   const checkUserAuthentication = (record) => {
     let flag = record.agendaVoters.find(
-      (data, index) => data.userID === Number(currentUserID)
+      (data, index) => data.userID === Number(currentUserID),
     );
     if (flag) {
       return true;
@@ -134,7 +130,7 @@ const ParentAgenda = ({
       DoVotingStart: true,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
     );
   };
 
@@ -146,7 +142,7 @@ const ParentAgenda = ({
       DoVotingStart: false,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
     );
   };
 
@@ -159,8 +155,8 @@ const ParentAgenda = ({
         navigate,
         data,
         t,
-        record.displayAttachmentName
-      )
+        record.displayAttachmentName,
+      ),
     );
   };
   const pdfData = (record, ext) => {
@@ -175,16 +171,16 @@ const ParentAgenda = ({
       if (Number(editorRole.status) === 10) {
         window.open(
           `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
-            pdfDataJson
+            pdfDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       }
     }
@@ -196,17 +192,6 @@ const ParentAgenda = ({
     //   );
     // }
   };
-
-  // useEffect(() => {
-  //   if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-  //     showMessage(
-  //       t("Thank-you-for-participanting-in-voting"),
-  //       "success",
-  //       setOpen
-  //     );
-  //     dispatch(clearResponseMessage(""));
-  //   }
-  // }, [MeetingAgendaReducer.ResponseMessage]);
 
   return (
     <>
@@ -446,19 +431,19 @@ const ParentAgenda = ({
                                                 pdfData(
                                                   filesData,
                                                   getFileExtension(
-                                                    filesData?.displayAttachmentName
-                                                  )
+                                                    filesData?.displayAttachmentName,
+                                                  ),
                                                 )
                                               }
                                               id={Number(
-                                                filesData.originalAttachmentName
+                                                filesData.originalAttachmentName,
                                               )}
                                               name={
                                                 filesData.displayAttachmentName
                                               }
                                               key={fileIndex}
                                             />
-                                          )
+                                          ),
                                         )}
                                       </>
                                     ) : data.selectedRadio === 1 &&

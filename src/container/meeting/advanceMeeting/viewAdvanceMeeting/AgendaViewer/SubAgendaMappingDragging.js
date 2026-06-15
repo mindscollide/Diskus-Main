@@ -194,16 +194,7 @@ const SubAgendaMappingDragging = ({
     
   };
 
-  // useEffect(() => {
-  //   if (ResponseMessage === t("Vote-casted-successfully")) {
-  //     showMessage(
-  //       t("Thank-you-for-participanting-in-voting"),
-  //       "error",
-  //       setOpen
-  //     );
-  //     dispatch(clearResponseMessage(""));
-  //   }
-  // }, [ResponseMessage]);
+
 
   return (
     <>

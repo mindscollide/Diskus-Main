@@ -376,13 +376,17 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
                 )
             ) {
               // dispatch(showVoteAgendaModal(true));
-
-              dispatch(
-                getAgendaAndVotingInfo_success(
-                  response.data.responseResult,
-                  "",
+              const updatedResponse = {
+                ...response.data.responseResult,
+                votingAnswers: response.data.responseResult.votingAnswers.map(
+                  (listData) => ({
+                    ...listData,
+                    agendaID: Data.AgendaID,
+                  }),
                 ),
-              );
+              };
+
+              dispatch(getAgendaAndVotingInfo_success(updatedResponse, ""));
 
               dispatch(AgendaPollVotingStartedAction(false));
               dispatch(showCastVoteAgendaModal(true));
@@ -460,7 +464,7 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
               dispatch(
                 casteVoteForAgenda_success(
                   response.data.responseResult,
-                  t("Vote-casted-successfully"),
+                  t("Thank-you-for-participanting-in-voting"),
                 ),
               );
               try {
