@@ -5256,6 +5256,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       {save === true ? (
                         <>
                           <div className="chat-menu-popups">
+                            <Row className="mt-3">
+                              <Col className="d-flex justify-content-end crossIcon-class">
+                                <img
+                                  src={CrossIcon}
+                                  width={10}
+                                  height={10}
+                                  onClick={cancelButtonHandler}
+                                />
+                              </Col>
+                            </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
@@ -5349,11 +5359,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 className="d-flex justify-content-center gap-2"
                               >
                                 <Button
-                                  className="Cancel-btn"
-                                  text={t("Cancel")}
-                                  onClick={cancelButtonHandler}
-                                />
-                                <Button
                                   className="Ok-btn"
                                   text={t("Okay")}
                                   onClick={downloadChat}
@@ -5365,6 +5370,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : print === true ? (
                         <>
                           <div className="chat-menu-popups">
+                            <Row className="mt-3">
+                              <Col className="d-flex justify-content-end crossIcon-class">
+                                <img
+                                  src={CrossIcon}
+                                  width={10}
+                                  height={10}
+                                  onClick={cancelPrintHandler}
+                                />
+                              </Col>
+                            </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
@@ -5455,11 +5470,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 className="d-flex justify-content-center gap-2"
                               >
                                 <Button
-                                  className="Cancel-btn"
-                                  text={t("Cancel")}
-                                  onClick={cancelPrintHandler}
-                                />
-                                <Button
                                   className=" Ok-btn"
                                   text={t("Okay")}
                                   onClick={printChat}
@@ -5471,6 +5481,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : email === true ? (
                         <>
                           <div className="chat-menu-popups">
+                            <Row className="mt-3">
+                              <Col className="d-flex justify-content-end crossIcon-class">
+                                <img
+                                  src={CrossIcon}
+                                  width={10}
+                                  height={10}
+                                  onClick={cancelPrintemailChatHandler}
+                                />
+                              </Col>
+                            </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
@@ -5560,11 +5580,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 sm={12}
                                 className="d-flex justify-content-center gap-2"
                               >
-                                <Button
-                                  className="Cancel-btn"
-                                  text={t("Cancel")}
-                                  onClick={cancelPrintemailChatHandler}
-                                />
                                 <Button
                                   className=" Ok-btn"
                                   text="Okay"
