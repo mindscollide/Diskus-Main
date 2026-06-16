@@ -1,6 +1,11 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import { Button, Modal, Notification } from "../../components/elements";
+import {
+  Button,
+  Modal,
+  Notification,
+  useSnackbar,
+} from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
@@ -68,6 +73,7 @@ const Groups = () => {
     setCurrentViewGroupTabs,
     currentViewGroupTabs,
   } = useGroupsContext();
+  const [show, SnackBar] = useSnackbar();
   const GroupsReducerrealtimeGroupStatus = useSelector(
     (state) => state.GroupsReducer.realtimeGroupStatus,
   );
@@ -130,16 +136,10 @@ const Groups = () => {
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [viewGroupTab, setViewGroupTab] = useState(0);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
@@ -477,10 +477,10 @@ const Groups = () => {
           ),
         );
       } else {
-        showMessage(t("Talk-group-doesnt-exist"), "error", setOpen);
+        show(t("Talk-group-doesnt-exist"), "error");
       }
     } else {
-      showMessage(t("No-talk-group-created"), "error", setOpen);
+      show(t("No-talk-group-created"), "error");
     }
   };
 
@@ -511,18 +511,6 @@ const Groups = () => {
     await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
   };
 
-  useEffect(() => {
-    if (
-      GroupsReducerResponseMessage !== "" &&
-      GroupsReducerResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(GroupsReducerResponseMessage, "success", setOpen);
-      dispatch(clearMessagesGroup());
-    } else {
-      dispatch(clearMessagesGroup());
-    }
-  }, [GroupsReducerResponseMessage]);
-
   const isCurrentUserCreator = (data) => {
     return (
       data.creatorID === Number(currentUserId) && isCurrentUserMember(data)
@@ -537,7 +525,7 @@ const Groups = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "success", setOpen);
+    show(t("Not-a-member-of-talk-group"), "error");
   };
 
   if (createEditMeetingModal) {
@@ -569,7 +557,7 @@ const Groups = () => {
           </>
         ) : ViewGroupPage && GroupsReducerviewGroupPageFlag === true ? (
           <>
-            <ViewGrouppage  setViewGroupPage={setViewGroupPage}/>
+            <ViewGrouppage setViewGroupPage={setViewGroupPage} />
           </>
         ) : (
           <>
@@ -885,7 +873,7 @@ const Groups = () => {
         />
       ) : null}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

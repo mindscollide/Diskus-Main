@@ -1033,7 +1033,7 @@ const updateCommittee = (navigate, Data, t) => {
               await dispatch(
                 updateCommittee_Success(
                   response.data.responseResult,
-                  t("Committee-update"),
+                  t("Committee-updated"),
                 ),
               );
               let newData = {

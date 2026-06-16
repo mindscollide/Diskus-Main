@@ -408,9 +408,7 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (
             ) {
               let data = [];
               dispatch(
-                getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("Minute-review-flow-not-found", data),
-                ),
+                getMinuteReviewStatsForOrganizerByMeetingId_Fail(t("", data)),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -650,12 +648,7 @@ const GetMinutesForReviewerByMeetingId = (
                 )
             ) {
               let data = [];
-              dispatch(
-                getMinutesForReviewerByMeetingId_Fail(
-                  t("Minute-review-flow-not-found"),
-                  data,
-                ),
-              );
+              dispatch(getMinutesForReviewerByMeetingId_Fail("", data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1267,7 +1260,8 @@ const GetMinutesVersionHistoryWithCommentsApi = (
             ) {
               dispatch(
                 GetMinuteVersionHistorywithComments_fail(
-                  t("Minute-review-flow-not-found"),
+                  // t("Minute-review-flow-not-found"),
+                  "",
                 ),
               );
             } else if (
@@ -1396,9 +1390,9 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
                 )
             ) {
               dispatch(
-                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(
-                  t("Minute-review-flow-not-found"),
-                ),
+                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(),
+                // t("Minute-review-flow-not-found"),
+                "",
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1563,7 +1557,8 @@ const GetMinuteReviewFlowByMeetingId = (
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
-                    t("Minute-review-flow-not-found"),
+                    // t("Minute-review-flow-not-found"),
+                    "",
                     data,
                   ),
                 );
@@ -2249,7 +2244,8 @@ const ResendUpdatedMinuteForReview = (
             ) {
               dispatch(
                 resendUpdatedMinuteForReview_Fail(
-                  t("Minute-review-flow-not-found"),
+                  // t("Minute-review-flow-not-found"),
+                  "",
                 ),
               );
             } else if (

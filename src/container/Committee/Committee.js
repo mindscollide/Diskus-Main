@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Committee.module.css";
-import { Button, Notification } from "../../components/elements";
+import { Button, Notification, useSnackbar } from "../../components/elements";
 import React, { useEffect, useState } from "react";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
 import { useTranslation } from "react-i18next";
@@ -48,7 +48,6 @@ import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommi
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
 import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
@@ -61,6 +60,8 @@ const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [show, SnackBar] = useSnackbar();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
     ViewCommitteePage,
@@ -90,10 +91,6 @@ const Committee = () => {
 
   const CommitteeReducerviewCommitteePageFlag = useSelector(
     (state) => state.CommitteeReducer.viewCommitteePageFlag,
-  );
-
-  const CommitteeReducerResponseMessage = useSelector(
-    (state) => state.CommitteeReducer.ResponseMessage,
   );
 
   const CommitteeReducercreateCommitteePageFlag = useSelector(
@@ -138,14 +135,9 @@ const Committee = () => {
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
 
-
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -659,10 +651,10 @@ const Committee = () => {
           ),
         );
       } else {
-        showMessage(t("No-talk-group-created"), "error", setOpen);
+        show(t("No-talk-group-created"), "error");
       }
     } else {
-      showMessage(t("No-talk-group-created"), "error", setOpen);
+      show(t("No-talk-group-created"), "error");
     }
   };
 
@@ -718,21 +710,6 @@ const Committee = () => {
     dispatch(viewCommitteePageFlag(true));
     localStorage.setItem("ViewCommitteeID", data.committeeID);
   };
-  useEffect(() => {
-    try {
-      if (
-        CommitteeReducerResponseMessage !== "" &&
-        CommitteeReducerResponseMessage !== undefined &&
-        CommitteeReducerResponseMessage !== t("No-data-available")
-      ) {
-        showMessage(CommitteeReducerResponseMessage, "success", setOpen);
-
-        dispatch(getallcommitteebyuserid_clear());
-      } else {
-        dispatch(getallcommitteebyuserid_clear());
-      }
-    } catch (error) {}
-  }, [CommitteeReducerResponseMessage]);
 
   const isCurrentUserCreator = (data) => {
     return (
@@ -748,7 +725,7 @@ const Committee = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "error", setOpen);
+    show(t("Not-a-member-of-talk-group"), "error");
   };
 
   if (createEditMeetingModal) {
@@ -782,9 +759,7 @@ const Committee = () => {
         ) : ViewCommitteePage &&
           CommitteeReducerviewCommitteePageFlag === true ? (
           <>
-            <ViewUpdateCommittee
-              setViewCommitteePage={setViewCommitteePage}
-            />
+            <ViewUpdateCommittee setViewCommitteePage={setViewCommitteePage} />
           </>
         ) : (
           <>
@@ -1029,7 +1004,7 @@ const Committee = () => {
           </>
         )}
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
       {showModal ? (
         <ModalArchivedCommittee
           archivedCommittee={showModal}

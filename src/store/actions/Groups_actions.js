@@ -727,7 +727,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               await dispatch(
                 updateGroup_Succes(
                   response.data.responseResult,
-                  t("Updated-successfully"),
+                  t("Group-updated"),
                 ),
               );
 
