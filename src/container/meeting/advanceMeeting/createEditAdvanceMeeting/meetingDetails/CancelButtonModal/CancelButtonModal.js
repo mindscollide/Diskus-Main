@@ -15,19 +15,14 @@ import {
   listOfMeetingsApi,
   resetCurrentMeetingInfo,
 } from "../../../../../../store/actions/NewMeeting2.actions";
-import { getMeetingByCommitteeIdApi } from "../../../../../../store/actions/Committee_actions";
-import { getMeetingbyGroupIdApi } from "../../../../../../store/actions/Groups_actions";
-import { useCommitteeContext } from "../../../../../../context/CommitteeContext";
-import { useGroupsContext } from "../../../../../../context/GroupsContext";
+import { resetViewCommitteeDetails } from "../../../../../../store/actions/Committee_actions";
+import { resetViewGroupDetails } from "../../../../../../store/actions/Groups_actions";
 const CancelButtonModal = ({ setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { goBackCancelModal, setGoBackCancelModal, setEditorRole } =
     useContext(MeetingContext);
-
-  const { currentCommitteeMeetingTabActive } = useCommitteeContext();
-  const { currentGroupMeetingTabActive } = useGroupsContext();
 
   const committeeInfo = useSelector(
     (state) => state.CommitteeReducer.viewCommitteeDetails,
@@ -53,6 +48,8 @@ const CancelButtonModal = ({ setRows }) => {
       dispatch(toggleCreateEditMeetingModal(false));
       dispatch(resetCreateEditTabs());
       dispatch(resetCurrentMeetingInfo());
+      dispatch(resetViewGroupDetails());
+      dispatch(resetViewCommitteeDetails());
       setGoBackCancelModal(false);
 
       setEditorRole({

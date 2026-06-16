@@ -80,18 +80,6 @@ const CancelConfirmationModal = () => {
     }
 
     if (committeeInfo !== null) {
-      let searchData = {
-        CommitteeID: committeeInfo.CommitteeID,
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(localStorage.getItem("userID")),
-        PageNumber: 1,
-        Length: 30,
-        PublishedMeetings: true,
-        ProposedMeetings: false,
-      };
-      dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
       return;
     }
     if (groupInfo !== null) {

@@ -182,7 +182,7 @@ export const CommitteeProvider = ({ children }) => {
 
       const callAddAndUpdateCommitteeMeeting = async () => {
         const { committeeID, meeting } = CommitteeMeetingMQTT;
-        if (Number(committeeInfo.committeeID) !== Number(committeeID)) return;
+        if (Number(committeeInfo?.committeeID) !== Number(committeeID)) return;
 
         if (!meeting?.pK_MDID) return;
 
