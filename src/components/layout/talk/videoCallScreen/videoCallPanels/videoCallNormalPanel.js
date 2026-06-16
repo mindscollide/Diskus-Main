@@ -1054,6 +1054,25 @@ const VideoPanelNormal = () => {
         notifyParticipantHostIsTransfer,
       );
       showMessage(t("Host-has-been-changed"), "info", setOpen);
+      // Reload the participant list from the backend so the new host's isHost
+      // flags are applied for every participant. Without this, non-host clients
+      // (e.g. User C / User D) keep showing the previous host after a manual
+      // host transfer, since the notification only flips a boolean flag.
+      //
+      // Resolve the room reliably: `participantRoomId` can be empty at this
+      // moment, which made the first call go out with a null RoomID (response
+      // code 3). Fall back to the joined/active room keys and only fire when a
+      // valid RoomID is present, so the call succeeds on the first hit.
+      const resolvedRoomID =
+        (presenterViewFlag ? callAcceptedRoomID : participantRoomIds) ||
+        localStorage.getItem("acceptedRoomID") ||
+        localStorage.getItem("activeRoomID") ||
+        localStorage.getItem("newRoomId");
+
+      if (resolvedRoomID && String(resolvedRoomID) !== "0") {
+        let Data = { RoomID: String(resolvedRoomID) };
+        dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      }
       // RESET AFTER SHOWING TOAST
       dispatch(notifyParticipantsWhenHostIsTransferred(false));
     }

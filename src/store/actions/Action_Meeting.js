@@ -44,8 +44,9 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(meetingTaskData));
     form.append("RequestMethod", getMeetingTasksAction.RequestMethod);
-    
-    axiosInstance.post(toDoListApi, form)
+
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -56,21 +57,18 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetMeetingTasks_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetMeetingTasks_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                getMeetingTask_Success(
-                  response.data.responseResult,
-                  ""
-                )
+                getMeetingTask_Success(response.data.responseResult, ""),
               );
               dispatch(showCancelActions(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetMeetingTasks_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetMeetingTasks_02".toLowerCase(),
                 )
             ) {
               dispatch(getMeetingTask_Fail(""));
@@ -78,7 +76,7 @@ const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetMeetingTasks_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetMeetingTasks_03".toLowerCase(),
                 )
             ) {
               dispatch(getMeetingTask_Fail(t("Something-went-wrong")));
@@ -128,19 +126,20 @@ const uploadActionMeetingApi = (
   t,
   data,
   dataroomMapFolderId,
-  newFolder
+  newFolder,
 ) => {
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
-  
+
   return async (dispatch) => {
     dispatch(actionMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     form.append("File", data);
-    
-    await axiosInstance.post(dataRoomApi, form)
+
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -150,8 +149,8 @@ const uploadActionMeetingApi = (
               t,
               data,
               dataroomMapFolderId,
-              newFolder
-            )
+              newFolder,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -159,7 +158,7 @@ const uploadActionMeetingApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase(),
                 )
             ) {
               dispatch(actionMeetingSuccess(response.data.responseResult, ""));
@@ -177,7 +176,7 @@ const uploadActionMeetingApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(actionMeetingFail(t("Failed-to-update-document")));
@@ -185,7 +184,7 @@ const uploadActionMeetingApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(actionMeetingFail(t("Something-went-wrong")));
@@ -232,7 +231,7 @@ const mapTaskAgendaMainApi = (
   t,
   mapTaskData,
   setCreateaTask,
-  setCreateTaskID
+  setCreateTaskID,
 ) => {
   let creatorID = localStorage.getItem("userID");
 
@@ -241,8 +240,9 @@ const mapTaskAgendaMainApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(mapTaskData));
     form.append("RequestMethod", mapTaskWithMeetingAgenda.RequestMethod);
-    
-    axiosInstance.post(toDoListApi, form)
+
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -252,8 +252,8 @@ const mapTaskAgendaMainApi = (
               t,
               mapTaskData,
               setCreateaTask,
-              setCreateTaskID
-            )
+              setCreateTaskID,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -261,14 +261,14 @@ const mapTaskAgendaMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_MapTaskWithMeetingAndAgenda_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_MapTaskWithMeetingAndAgenda_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 mapTaskAgendaSuccess(
                   response.data.responseResult.responseMessage,
-                  t("Data-inserted-successfully")
-                )
+                  t("Data-inserted-successfully"),
+                ),
               );
               let Data = {
                 MeetingID: Number(mapTaskData.MeetingID),
@@ -286,7 +286,7 @@ const mapTaskAgendaMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_MapTaskWithMeetingAndAgenda_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_MapTaskWithMeetingAndAgenda_02".toLowerCase(),
                 )
             ) {
               dispatch(mapTaskAgendaFail(t("Failed-to-insert-record")));
@@ -294,7 +294,7 @@ const mapTaskAgendaMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_MapTaskWithMeetingAndAgenda_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_MapTaskWithMeetingAndAgenda_03".toLowerCase(),
                 )
             ) {
               dispatch(mapTaskAgendaFail(t("Something-went-wrong")));
@@ -343,15 +343,16 @@ const saveTaskDocumentsAndAssigneesApi = (
   value,
   setShow,
   newData,
-  setCreateTaskID
+  setCreateTaskID,
 ) => {
   return (dispatch) => {
     dispatch(saveTaskDocumentsAndAssignees_init());
     let form = new FormData();
     form.append("RequestMethod", saveTaskandAssgineesRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(toDoListApi, form)
+
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -363,8 +364,8 @@ const saveTaskDocumentsAndAssigneesApi = (
               value,
               setShow,
               newData,
-              setCreateTaskID
-            )
+              setCreateTaskID,
+            ),
           );
         } else if (
           response.data.responseCode === 200 &&
@@ -374,14 +375,14 @@ const saveTaskDocumentsAndAssigneesApi = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_01".toLowerCase()
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_01".toLowerCase(),
               )
           ) {
             dispatch(
               saveTaskDocumentsAndAssignees_success(
                 response.data.responseResult,
-                ""
-              )
+                "",
+              ),
             );
             let NewData = {
               ToDoID: Number(Data.TaskID),
@@ -397,14 +398,14 @@ const saveTaskDocumentsAndAssigneesApi = (
                 value,
                 setShow,
                 newData,
-                setCreateTaskID
-              )
+                setCreateTaskID,
+              ),
             );
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_02".toLowerCase()
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_02".toLowerCase(),
               )
           ) {
             dispatch(saveTaskDocumentsAndAssignees_fail(t("No-record-save")));
@@ -413,22 +414,22 @@ const saveTaskDocumentsAndAssigneesApi = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_03".toLowerCase()
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_03".toLowerCase(),
               )
           ) {
             dispatch(
-              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong")),
             );
             setCreateTaskID(0);
           } else {
             dispatch(
-              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong")),
             );
             setCreateTaskID(0);
           }
         } else {
           dispatch(
-            saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+            saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong")),
           );
           setCreateTaskID(0);
         }
@@ -470,15 +471,16 @@ const saveMeetingActionsDocuments = (
   setCreateaTask,
   newData,
   setCreateTaskID,
-  currentMeeting
+  currentMeeting,
 ) => {
   return async (dispatch) => {
     dispatch(saveTaskDocuments_init());
     let form = new FormData();
     form.append("RequestMethod", saveTaskDocuments.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    await axiosInstance.post(dataRoomApi, form)
+
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -491,8 +493,8 @@ const saveMeetingActionsDocuments = (
               setCreateaTask,
               newData,
               setCreateTaskID,
-              currentMeeting
-            )
+              currentMeeting,
+            ),
           );
         } else if (
           response.data.responseCode === 200 &&
@@ -502,14 +504,17 @@ const saveMeetingActionsDocuments = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
+                "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase(),
               )
           ) {
+            const successMessage =
+              value === 7 ? t("Task-created") : t("Update-successful");
+
             dispatch(
               saveTaskDocuments_success(
                 response.data.responseResult,
-                t("Update-successful")
-              )
+                successMessage,
+              ),
             );
 
             // Create Task from Meeting Actions
@@ -520,8 +525,8 @@ const saveMeetingActionsDocuments = (
                   t,
                   newData,
                   setCreateaTask,
-                  setCreateTaskID
-                )
+                  setCreateTaskID,
+                ),
               );
               setCreateTaskID(0);
             }
@@ -537,7 +542,7 @@ const saveMeetingActionsDocuments = (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "DataRoom_DataRoomManager_SaveToDoDocuments_02".toLowerCase()
+                "DataRoom_DataRoomManager_SaveToDoDocuments_02".toLowerCase(),
               )
           ) {
             dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
@@ -587,8 +592,9 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(dataDelete));
     form.append("RequestMethod", removeTaskMeetingMapping.RequestMethod);
-    
-    axiosInstance.post(toDoListApi, form)
+
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -599,14 +605,14 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_01".toLowerCase(),
                 )
             ) {
               dispatch(removeMapTaskSuccess(t("Delete-successfully")));
 
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = 
+              let meetingPageCurrent =
                 localStorage.getItem("MeetingPageCurrent");
               let meetingTaskData = {
                 MeetingID: Number(dataDelete.MeetingID),
@@ -623,7 +629,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_02".toLowerCase(),
                 )
             ) {
               dispatch(removeMapTaskFail(t("Failed-to-delete-record")));
@@ -631,7 +637,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_03".toLowerCase(),
                 )
             ) {
               dispatch(removeMapTaskFail(t("Something-went-wrong")));
