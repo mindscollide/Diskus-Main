@@ -2591,5 +2591,6 @@
   "Create-committee-chat": "Create Committee Chat",
   "Save-your-agenda-before-publish-the-meeting-avoid-losing-it": "Save your agenda before publish the meeting, avoid losing it.",
   "Save-agenda": "Save Agenda",
-  "Committee-updated": "Committee Updated"
+  "Committee-updated": "Committee Updated",
+  "Agenda-presenter-is-not-in-attendees": "Agenda presenter is not in attendees"
 }

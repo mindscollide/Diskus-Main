@@ -60,10 +60,18 @@ import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
 import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
 import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
+import {
+  resetCreateEditTabs,
+  resetViewTabs,
+  toggleCreateEditMeetingModal,
+  toggleViewMeetingModal,
+} from "../../store/actions/ModalStates_actions";
+import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../context/MeetingContext";
 
 const Groups = () => {
   const { t } = useTranslation();
-
+  const { setEditorRole } = useMeetingContext();
   //Context For Groups
   const {
     ViewGroupPage,
@@ -212,6 +220,8 @@ const Groups = () => {
     }
     return () => {
       setShowModal(false);
+      setViewGroupPage(false);
+      dispatch(viewGroupPageFlag(false));
       localStorage.removeItem("NotificationClickArchivedGroup", false);
       setUpdateComponentpage(false);
       setViewGroupPage(false);
@@ -221,6 +231,12 @@ const Groups = () => {
       localStorage.removeItem("groupsArCurrent");
       localStorage.removeItem("ViewGroupID");
       dispatch(resetViewGroupDetails());
+      setEditorRole({ status: null, role: null });
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
+      dispatch(resetCurrentMeetingInfo());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetViewTabs());
     };
   }, []);
 

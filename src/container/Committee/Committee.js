@@ -55,6 +55,14 @@ import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeetin
 import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
 import { useCommitteeContext } from "../../context/CommitteeContext";
+import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
+import {
+  resetCreateEditTabs,
+  resetViewTabs,
+  toggleCreateEditMeetingModal,
+  toggleViewMeetingModal,
+} from "../../store/actions/ModalStates_actions";
+import { useMeetingContext } from "../../context/MeetingContext";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -62,6 +70,7 @@ const Committee = () => {
   const navigate = useNavigate();
 
   const [show, SnackBar] = useSnackbar();
+  const { setEditorRole } = useMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
     ViewCommitteePage,
@@ -241,7 +250,15 @@ const Committee = () => {
       dispatch(resetViewCommitteeDetails());
       localStorage.removeItem("ViewCommitteeID");
       localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
+      setEditorRole({ status: null, role: null });
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
+      dispatch(resetCurrentMeetingInfo());
+      dispatch(resetCurrentMeetingInfo());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetViewTabs());
       setShowModal(false); // Reset modal visibility
+      dispatch(viewCommitteePageFlag(false));
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
   useEffect(() => {
