@@ -52,7 +52,8 @@
 .JoinMeetingButton {
   max-width: 118px !important;
   max-height: 25px !important;
-  background: #f16b6b !important;
+  background: #6172d6 !important;
+  color: #fff !important;
   border: none !important;
   display: flex;
   justify-content: center;
