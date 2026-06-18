@@ -442,7 +442,7 @@ const Sidebar = () => {
             role: null,
             isPrimaryOrganizer: false,
           });
-          // navigate(targetPath);
+          navigate(targetPath);
           return;
         } else {
           if (!isMeetingVideo) {

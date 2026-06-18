@@ -9,6 +9,7 @@
 /build
 # misc
 .env
+.env.*
 .DS_Store
 # Claude Code internal directories
 .claude/worktrees/

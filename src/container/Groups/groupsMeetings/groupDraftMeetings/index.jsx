@@ -20,6 +20,7 @@ import ArrowDownIcon from "@/assets/images/sortingIcons/Arrow-down.png";
 import CancelMeetingIcon from "@/assets/images/New Meeting Listing Icons/CancelMeeting.png";
 import ChevronDownIcon from "@/assets/images/dropdown-icon.png";
 import EditIcon from "@/assets/images/New Meeting Listing Icons/EditMeeting.png";
+import MeetingPublishIcon from "@/assets/images/New Meeting Listing Icons/Publish Meeting.png";
 
 // Styles (reuse DraftMeeting styles from existing component)
 import styles from "./groupDraftMeetings.module.css";
@@ -187,7 +188,7 @@ const GroupDraftMeetings = () => {
           <span>{t("Delete-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleClickPublish}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+          <img src={MeetingPublishIcon} alt="" width="16" height="16" />
           <span>{t("Publish-meeting")}</span>
         </div>
       </div>
