@@ -1,5 +1,31 @@
 import * as actions from "../action_types";
 
+/**
+ * Collapse duplicate participants so the same person can never appear twice in
+ * the participant list. Identity = userID for real users (the stable per-person
+ * key), falling back to guid for guests (userID 0/null). Entries are merged so
+ * the host flag and latest fields are preserved. This makes the list idempotent
+ * against duplicate MQTT delivery, backend re-publish, and the same user joining
+ * with a different guid (e.g. the host appearing twice).
+ */
+const dedupeParticipants = (list) => {
+  const map = new Map();
+  (Array.isArray(list) ? list : []).forEach((p) => {
+    if (!p) return;
+    const hasUserId =
+      p.userID !== undefined && p.userID !== null && Number(p.userID) !== 0;
+    const key = hasUserId ? `u:${Number(p.userID)}` : `g:${String(p.guid)}`;
+    const existing = map.get(key);
+    map.set(
+      key,
+      existing
+        ? { ...existing, ...p, isHost: existing.isHost || p.isHost }
+        : p,
+    );
+  });
+  return Array.from(map.values());
+};
+
 const initialState = {
   VideoChatPanel: false,
   ContactVideoFlag: false,
@@ -140,15 +166,18 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_JOINT_REQUESTS: {
-      // Check if participant already exists in waiting list
+      // Check if the SAME participant already exists in the waiting list.
+      // Dedup on guid (primary identity), falling back to userID + meetingID.
+      // (Previously this used `!==` on guid, so identical entries were never
+      // blocked — causing duplicate waiting-list rows on repeated MQTT delivery.)
       const exists = state.waitingParticipantsList.some(
         (p) =>
-          Number(p.userID) === Number(action.response.userID) &&
-          Number(p.meetingID) === Number(action.response.meetingID) &&
-          String(p.guid) !== String(action.response.guid),
+          String(p.guid) === String(action.response.guid) ||
+          (Number(p.userID) === Number(action.response.userID) &&
+            Number(p.meetingID) === Number(action.response.meetingID)),
       );
 
-      // Only add if not already present
+      // Only add if not already present (idempotent against duplicate delivery)
       if (exists) {
         return state;
       }
@@ -633,7 +662,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllParticipantMain: action.response.participantList,
+        getAllParticipantMain: dedupeParticipants(action.response.participantList),
         ResponseMessage: action.message,
         errorSeverity: "success", // Added
       };
@@ -651,7 +680,12 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.GET_MEETING_NEW_PARTICIPANT_JOIN: {
       console.log(action, "dtadtatatatatattata");
-      let getPrevState = [...state.getAllParticipantMain, ...action.response];
+      // Idempotent: merge new joiners and collapse duplicates by stable identity
+      // so the same user can never appear twice (even with a different guid).
+      let getPrevState = dedupeParticipants([
+        ...state.getAllParticipantMain,
+        ...(action.response || []),
+      ]);
       return {
         ...state,
         getAllParticipantMain: getPrevState,
@@ -765,7 +799,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllParticipantMain: action.response.participantList,
+        getAllParticipantMain: dedupeParticipants(action.response.participantList),
         waitingParticipantsList: action.response.waitingParticipants,
         errorSeverity: "success", // Added
       };
@@ -1198,7 +1232,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log(action, "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER");
       return {
         ...state,
-        getAllParticipantMain: action.response,
+        getAllParticipantMain: dedupeParticipants(action.response),
       };
     }
 
