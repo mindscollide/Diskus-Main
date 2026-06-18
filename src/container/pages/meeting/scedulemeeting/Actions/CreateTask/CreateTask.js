@@ -36,7 +36,7 @@ import {
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../../../commen/functions/utils";
 const CreateTask = ({
   setCreateaTask,
@@ -58,11 +58,7 @@ const CreateTask = ({
     (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
   //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   let currentLanguage = localStorage.getItem("i18nextLng");
   // state for date handler
   const [agendaDueDate, setAgendaDueDate] = useState("");
@@ -176,7 +172,7 @@ const CreateTask = ({
       let size = true;
 
       if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-15-files"), "error");
         return;
       }
 
@@ -192,15 +188,11 @@ const CreateTask = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -917,6 +909,7 @@ const CreateTask = ({
         )}
       </section>
       
+    {SnackBar}
     </>
   );
 };

@@ -3,16 +3,12 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import styles from "./workingDays.module.css";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { Notification } from "../../../../../components/elements";
 
 const WorkingDays = ({ setOrganizationSetting, organizationSettingData }) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // const handleChangeSwitchValue = (checked, name) => {
   //   setOrganizationSetting((organizationSettings) => {
@@ -43,11 +39,7 @@ const WorkingDays = ({ setOrganizationSetting, organizationSettingData }) => {
 
         // Prevent all days from becoming false
         if (!isAnyOtherDayTrue) {
-          showMessage(
-            t("Please-select-atleast-a-single-day"),
-            "error",
-            setOpen
-          );
+          show(t("Please-select-atleast-a-single-day"), "error");
           return prev;
         }
       }
@@ -234,6 +226,7 @@ const WorkingDays = ({ setOrganizationSetting, organizationSettingData }) => {
         </Col>
       </Row>
       
+    {SnackBar}
     </>
   );
 };

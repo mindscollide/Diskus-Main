@@ -25,7 +25,7 @@ import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { Spin } from "antd";
 import moment from "moment";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const EditUser = ({ ModalTitle }) => {
   const { OrganizationBillingReducer, adminReducer } = useSelector(
@@ -41,11 +41,7 @@ const EditUser = ({ ModalTitle }) => {
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
   const [InvoiceNumber, setInvoiceNumber] = useState("");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const { t } = useTranslation();
 
@@ -386,7 +382,7 @@ const EditUser = ({ ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(adminReducer.ResponseMessage, "success", setOpen);
+      show(adminReducer.ResponseMessage, "success");
     }
   }, [adminReducer.ResponseMessage]);
 
@@ -395,11 +391,7 @@ const EditUser = ({ ModalTitle }) => {
       OrganizationBillingReducer.ResponseMessage !== "" &&
       OrganizationBillingReducer.ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(
-        OrganizationBillingReducer.ResponseMessage,
-        "success",
-        setOpen
-      );
+      show(OrganizationBillingReducer.ResponseMessage, "success");
     }
   }, [OrganizationBillingReducer.ResponseMessage]);
 
@@ -699,6 +691,7 @@ const EditUser = ({ ModalTitle }) => {
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

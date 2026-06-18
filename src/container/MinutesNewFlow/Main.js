@@ -6,7 +6,7 @@ import PendingApproval from "./pendingApprovals/PendingApprovals";
 import ReviewMinutes from "./reviewMinutes/ReviewMinutes";
 import { Notification } from "../../components/elements";
 import { CleareMessegeMinutes } from "../../store/actions/Minutes_action";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 
 // Functional component for Minutes Flow section
 const MinutesFlow = () => {
@@ -22,11 +22,7 @@ const MinutesFlow = () => {
   const showReviewMinutesPage = useSelector(
     (state) => state.MinutesReducer.showReviewMinutesPage
   );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   useEffect(() => {
     if (
@@ -37,7 +33,7 @@ const MinutesFlow = () => {
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(ResponseMessage, "sucess", setOpen);
+      show(ResponseMessage, "sucess");
       dispatch(CleareMessegeMinutes());
     } else {
       dispatch(CleareMessegeMinutes());
@@ -53,6 +49,7 @@ const MinutesFlow = () => {
       ) : null}
 
 
+    {SnackBar}
     </>
   );
 };

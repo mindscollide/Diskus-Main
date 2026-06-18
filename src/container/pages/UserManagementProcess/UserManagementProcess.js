@@ -27,7 +27,7 @@ import { getHomeRoute } from "../../../commen/functions/utils";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -59,11 +59,7 @@ const UserManagementProcess = () => {
   );
 
   //state to show snackbar
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
@@ -116,11 +112,7 @@ const UserManagementProcess = () => {
       AuthreducerEmailValidationResponseMessage !==
         t("Users-password-is-created")
     ) {
-      showMessage(
-        AuthreducerEmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerEmailValidationResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       AuthreducerEnterPasswordResponseMessage !== "" &&
@@ -129,7 +121,7 @@ const UserManagementProcess = () => {
       AuthreducerEnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
+      show(AuthreducerEnterPasswordResponseMessage, "success");
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -206,7 +198,7 @@ const UserManagementProcess = () => {
       AuthreducerVerifyOTPEmailResponseMessage !== "" &&
       AuthreducerVerifyOTPEmailResponseMessage !== undefined
     ) {
-      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
+      show(AuthreducerVerifyOTPEmailResponseMessage, "success");
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -218,11 +210,7 @@ const UserManagementProcess = () => {
       AuthreducerAuthenticateAFAResponseMessage !== "" &&
       AuthreducerAuthenticateAFAResponseMessage !== undefined
     ) {
-      showMessage(
-        AuthreducerAuthenticateAFAResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerAuthenticateAFAResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else {
@@ -279,6 +267,7 @@ const UserManagementProcess = () => {
     <>
       {componentToRender}
       
+    {SnackBar}
     </>
   );
 };

@@ -35,7 +35,7 @@ import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import {
   JoinCurrentMeeting,
   meetingStatusPublishedMqtt,
@@ -130,11 +130,7 @@ const CalendarPage = () => {
   const [defaultValue, setDefaultValue] = useState("");
   const [defaultState, setDefaultState] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   let CalenderMonthsSpan =
@@ -756,14 +752,14 @@ const CalendarPage = () => {
       UpdateOrganizationMessageResponseMessage !== t("No-records-found") &&
       UpdateOrganizationMessageResponseMessage !== ""
     ) {
-      showMessage(UpdateOrganizationMessageResponseMessage, "success", setOpen);
+      show(UpdateOrganizationMessageResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       DeleteOrganizationMessageResponseMessage !== "" &&
       DeleteOrganizationMessageResponseMessage !== t("No-records-found") &&
       DeleteOrganizationMessageResponseMessage !== ""
     ) {
-      showMessage(DeleteOrganizationMessageResponseMessage, "success", setOpen);
+      show(DeleteOrganizationMessageResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -771,7 +767,7 @@ const CalendarPage = () => {
       AllOrganizationResponseMessage !== t("No-records-found") &&
       AllOrganizationResponseMessage !== ""
     ) {
-      showMessage(AllOrganizationResponseMessage, "success", setOpen);
+      show(AllOrganizationResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -779,7 +775,7 @@ const CalendarPage = () => {
       ResponseMessageAdminReducer !== t("No-records-found") &&
       ResponseMessageAdminReducer !== ""
     ) {
-      showMessage(ResponseMessageAdminReducer, "success", setOpen);
+      show(ResponseMessageAdminReducer, "success");
 
       dispatch(cleareMessage());
     } else {
@@ -790,11 +786,7 @@ const CalendarPage = () => {
       ResponseMessagecalendarReducerReducer !== undefined &&
       ResponseMessagecalendarReducerReducer !== null
     ) {
-      showMessage(
-        ResponseMessagecalendarReducerReducer,
-        calendarReducerErrorSeverity,
-        setOpen,
-      );
+      show(ResponseMessagecalendarReducerReducer, calendarReducerErrorSeverity);
 
       dispatch(removeCalendarResponseMessage());
     }
@@ -813,7 +805,7 @@ const CalendarPage = () => {
       ResponseMessageMeetingReducer !== "" &&
       ResponseMessageMeetingReducer !== t("No-records-found")
     ) {
-      showMessage(ResponseMessageMeetingReducer, "success", setOpen);
+      show(ResponseMessageMeetingReducer, "success");
 
       dispatch(HideNotificationMeetings());
     } else if (
@@ -821,7 +813,7 @@ const CalendarPage = () => {
       ResponseMessageAssigneesReducer !== "" &&
       ResponseMessageAssigneesReducer !== t("No-records-found")
     ) {
-      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
+      show(ResponseMessageAssigneesReducer, "success");
 
       dispatch(clearResponseMessage());
     } else {
@@ -837,7 +829,7 @@ const CalendarPage = () => {
       ResponseMessageTodolistReducer !== "" &&
       ResponseMessageTodolistReducer !== t("No-records-found")
     ) {
-      showMessage(ResponseMessageTodolistReducer, "success", setOpen);
+      show(ResponseMessageTodolistReducer, "success");
 
       dispatch(clearResponce());
     } else if (
@@ -845,7 +837,7 @@ const CalendarPage = () => {
       ResponseMessageAssigneesReducer !== "" &&
       ResponseMessageAssigneesReducer !== t("No-records-found")
     ) {
-      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
+      show(ResponseMessageAssigneesReducer, "success");
 
       dispatch(clearResponseMessage());
     } else {
@@ -861,7 +853,7 @@ const CalendarPage = () => {
       ResponseMessageTodoStatusReducer !== "" &&
       ResponseMessageTodoStatusReducer !== t("No-records-found")
     ) {
-      showMessage(ResponseMessageTodoStatusReducer, "success", setOpen);
+      show(ResponseMessageTodoStatusReducer, "success");
 
       dispatch(cleareMessagetodo());
     } else if (
@@ -870,7 +862,7 @@ const CalendarPage = () => {
       UpdateTodoStatusMessage !== "" &&
       UpdateTodoStatusMessage !== t("No-records-found")
     ) {
-      showMessage(UpdateTodoStatusMessage, "success", setOpen);
+      show(UpdateTodoStatusMessage, "success");
 
       dispatch(cleareMessagetodo());
     } else if (
@@ -879,7 +871,7 @@ const CalendarPage = () => {
       UpdateTodoStatus !== "" &&
       UpdateTodoStatus !== t("No-records-found")
     ) {
-      showMessage(UpdateTodoStatus, "success", setOpen);
+      show(UpdateTodoStatus, "success");
 
       dispatch(cleareMessagetodo());
     } else {
@@ -994,6 +986,7 @@ const CalendarPage = () => {
       )}
 
       
+    {SnackBar}
     </>
   );
 };

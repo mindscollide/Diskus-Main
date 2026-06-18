@@ -48,7 +48,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import DeletePollConfirmModal from "./DeletePollsConfirmationModal/DeletePollConfirmModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -123,11 +123,7 @@ const Polls = () => {
   const [pollsRows, setPollsRows] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -821,7 +817,7 @@ const Polls = () => {
       ResponseMessagePoll !== t("No-records-found") &&
       ResponseMessagePoll !== t("No-record-found")
     ) {
-      showMessage(ResponseMessagePoll, "success", setOpen);
+      show(ResponseMessagePoll, "success");
       dispatch(clearPollsMesseges());
     } else {
       dispatch(clearPollsMesseges());
@@ -836,7 +832,7 @@ const Polls = () => {
       ResponseMessageMeeting !== t("No-records-found") &&
       ResponseMessageMeeting !== t("No-record-found")
     ) {
-      showMessage(ResponseMessageMeeting, "success", setOpen);
+      show(ResponseMessageMeeting, "success");
       dispatch(clearResponseNewMeetingReducerMessage());
     } else {
       dispatch(clearResponseNewMeetingReducerMessage());
@@ -1014,6 +1010,7 @@ const Polls = () => {
         
         {AccessDeniedGlobalState && <AccessDeniedModal />}
       </section>
+    {SnackBar}
     </>
   );
 };

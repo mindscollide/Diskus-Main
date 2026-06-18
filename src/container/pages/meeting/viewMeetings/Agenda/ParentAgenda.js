@@ -35,7 +35,7 @@ import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/optio
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const ParentAgenda = ({
@@ -58,11 +58,7 @@ const ParentAgenda = ({
     (state) => state
   );
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
@@ -529,6 +525,7 @@ const ParentAgenda = ({
         </Draggable>
       </div>
       
+    {SnackBar}
     </>
   );
 };

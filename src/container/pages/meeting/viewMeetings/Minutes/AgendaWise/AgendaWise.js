@@ -53,7 +53,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const AgendaWise = ({
@@ -74,11 +74,7 @@ const AgendaWise = ({
 
   let isAgenda = true;
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const [showVersionHistory, setShowVersionHistory] = useState(false);
@@ -221,11 +217,11 @@ const AgendaWise = ({
       let size = true;
 
       if (fileList.length > 5) {
-        showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-5-files"), "error");
         return;
       } else {
         if (fileAttachments.length > 4) {
-          showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+          show(t("Not-allowed-more-than-5-files"), "error");
           return;
         } else {
           fileList.forEach((fileData, index) => {
@@ -241,15 +237,11 @@ const AgendaWise = ({
             );
 
             if (!size) {
-              showMessage(
-                t("File-size-should-not-be-greater-then-zero"),
-                "error",
-                setOpen,
-              );
+              show(t("File-size-should-not-be-greater-then-zero"), "error");
             } else if (!sizezero) {
-              showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+              show(t("File-size-should-not-be-zero"), "error");
             } else if (fileExists) {
-              showMessage(t("File-already-exists"), "error", setOpen);
+              show(t("File-already-exists"), "error");
             } else {
               let file = {
                 DisplayAttachmentName: fileData.name,
@@ -361,7 +353,7 @@ const AgendaWise = ({
       }
 
       if (!isAgendaSelected) {
-        showMessage(t("Select-agenda"), "error", setOpen);
+        show(t("Select-agenda"), "error");
       }
     }
   };
@@ -2262,6 +2254,7 @@ const AgendaWise = ({
           advanceMeetingModalID={advanceMeetingModalID}
         />
       ) : null}
+    {SnackBar}
     </section>
   );
 };

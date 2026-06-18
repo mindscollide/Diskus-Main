@@ -18,7 +18,7 @@ import Helper from "../../../commen/functions/history_logout";
 import { getHomeRoute } from "../../../commen/functions/utils";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const SignupProcessUserManagement = () => {
   const UserMangementReducerdefaultRoutingValue = useSelector(
@@ -60,11 +60,7 @@ const SignupProcessUserManagement = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   let signUpUserManagementRoute = Number(
     localStorage.getItem("SignupFlowPageRoute")
   );
@@ -118,7 +114,7 @@ const SignupProcessUserManagement = () => {
       AuthreducerVerifyOTPEmailResponseMessage !== t("2fa-verification") &&
       AuthreducerVerifyOTPEmailResponseMessage !== t("2fa-enabled")
     ) {
-      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
+      show(AuthreducerVerifyOTPEmailResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -127,7 +123,7 @@ const SignupProcessUserManagement = () => {
       AuthreducerEnterPasswordResponseMessage !== t("2fa-verification") &&
       AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled")
     ) {
-      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
+      show(AuthreducerEnterPasswordResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -136,11 +132,7 @@ const SignupProcessUserManagement = () => {
       AuthreducerOrganizationCreateResponseMessage !== t("2fa-verification") &&
       AuthreducerOrganizationCreateResponseMessage !== t("2fa-enabled")
     ) {
-      showMessage(
-        AuthreducerOrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerOrganizationCreateResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -149,7 +141,7 @@ const SignupProcessUserManagement = () => {
       AuthreducerCreatePasswordResponseMessage !== t("2fa-verification") &&
       AuthreducerCreatePasswordResponseMessage !== t("2fa-enabled")
     ) {
-      showMessage(AuthreducerCreatePasswordResponseMessage, "success", setOpen);
+      show(AuthreducerCreatePasswordResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       AuthreducerGetSelectedPackageResponseMessage !== "" &&
@@ -157,11 +149,7 @@ const SignupProcessUserManagement = () => {
       AuthreducerGetSelectedPackageResponseMessage !== t("2fa-verification") &&
       AuthreducerGetSelectedPackageResponseMessage !== t("2fa-enabled")
     ) {
-      showMessage(
-        AuthreducerGetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerGetSelectedPackageResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       AuthreducerEmailValidationResponseMessage !== "" &&
@@ -169,11 +157,7 @@ const SignupProcessUserManagement = () => {
       AuthreducerEmailValidationResponseMessage !== t("2fa-verification") &&
       AuthreducerEmailValidationResponseMessage !== t("2fa-enabled")
     ) {
-      showMessage(
-        AuthreducerEmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerEmailValidationResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       AuthreducerpasswordUpdateOnForgotPasswordMessege !== "" &&
@@ -182,11 +166,7 @@ const SignupProcessUserManagement = () => {
         t("2fa-verification") &&
       AuthreducerpasswordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
     ) {
-      showMessage(
-        AuthreducerpasswordUpdateOnForgotPasswordMessege,
-        "success",
-        setOpen
-      );
+      show(AuthreducerpasswordUpdateOnForgotPasswordMessege, "success");
 
       dispatch(cleareMessage());
     } else {
@@ -204,27 +184,19 @@ const SignupProcessUserManagement = () => {
   //Password SignUp Process Response Messeges Controller
   useEffect(() => {
     if (AuthreducerVerifyOTPEmailResponseMessage !== "") {
-      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
+      show(AuthreducerVerifyOTPEmailResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (AuthreducerEnterPasswordResponseMessage !== "") {
-      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
+      show(AuthreducerEnterPasswordResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (AuthreducerOrganizationCreateResponseMessage !== "") {
-      showMessage(
-        AuthreducerOrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerOrganizationCreateResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (AuthreducerCreatePasswordResponseMessage !== "") {
-      showMessage(AuthreducerCreatePasswordResponseMessage, "success", setOpen);
+      show(AuthreducerCreatePasswordResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (AuthreducerGetSelectedPackageResponseMessage !== "") {
-      showMessage(
-        AuthreducerGetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerGetSelectedPackageResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (AuthreducerEmailValidationResponseMessage !== "") {
@@ -232,11 +204,7 @@ const SignupProcessUserManagement = () => {
         AuthreducerEmailValidationResponseMessage,
         "EmailValidationResponseMessage"
       );
-      showMessage(
-        AuthreducerEmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerEmailValidationResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else {
@@ -253,18 +221,14 @@ const SignupProcessUserManagement = () => {
   //Organization SignUp //SignUp Process Response Messeges Controller
   useEffect(() => {
     if (AuthreducerOrganizationCreateResponseMessage !== "") {
-      showMessage(
-        AuthreducerOrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      show(AuthreducerOrganizationCreateResponseMessage, "success");
     }
   }, [AuthreducerOrganizationCreateResponseMessage]);
 
   //User Management PakageDetails Messeges SignUp Process Response Messeges Controller
   useEffect(() => {
     if (UserMangementReducerResponseMessage !== "") {
-      showMessage(UserMangementReducerResponseMessage, "success", setOpen);
+      show(UserMangementReducerResponseMessage, "success");
       dispatch(clearMessegesUserManagement());
     }
   }, [UserMangementReducerResponseMessage]);
@@ -351,6 +315,7 @@ const SignupProcessUserManagement = () => {
       {SignupComponent}
 
       
+    {SnackBar}
     </>
   );
 };

@@ -20,7 +20,7 @@ import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Button, Notification } from "../../../../../../components/elements";
 import DeleteIcon from "../../../../../../assets/images/del.png";
 import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoChecklist/ModalToDoListChecklist";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { ViewToDoList } from "../../../../../../store/actions/ToDoList_action";
@@ -52,11 +52,7 @@ const CreateEditViewComplianceTask = () => {
   const [taskView, setTaskView] = useState(false);
   console.log("ComplianceChecklistData", ComplianceChecklistData);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   const [checkListData, setCheckListData] = useState(0);
 
@@ -118,7 +114,7 @@ const CreateEditViewComplianceTask = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        notify(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -392,6 +388,7 @@ const CreateEditViewComplianceTask = () => {
 
       
       <ComplianceCloseConfirmationModal />
+    {SnackBar}
     </>
   );
 };

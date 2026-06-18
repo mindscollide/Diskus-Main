@@ -48,7 +48,7 @@ import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { Tooltip } from "antd";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Participants = ({
@@ -77,11 +77,7 @@ const Participants = ({
   const { editorRole, setEditorRole } = useContext(MeetingContext);
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [rspvRows, setrspvRows] = useState([]);
 
   const callApiOnComponentMount = async () => {
@@ -214,11 +210,7 @@ const Participants = ({
   const handleCancelingRow = (record) => {
     if (isEditMeeting) {
       if (rspvRows.length === 1) {
-        showMessage(
-          t("Please-at-least-one-partcipant-required"),
-          "error",
-          setOpen,
-        );
+        show(t("Please-at-least-one-partcipant-required"), "error");
       } else {
         let removingfromrow = rspvRows.filter(
           (data, index) => data.userID !== record.userID,
@@ -719,7 +711,7 @@ const Participants = ({
         ),
       );
     } else {
-      showMessage(t("Role-is-required"), "error", setOpen);
+      show(t("Role-is-required"), "error");
     }
     setIsEditClicked(false);
   };
@@ -982,6 +974,7 @@ const Participants = ({
         
       </>
       {/* )} */}
+    {SnackBar}
     </>
   );
 };

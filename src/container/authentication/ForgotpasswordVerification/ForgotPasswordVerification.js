@@ -20,7 +20,7 @@ import {
   verificationEmailOTP,
 } from "../../../../src/store/actions/Auth2_actions";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ForgotPasswordVerification = () => {
   const { auth, Authreducer } = useSelector((state) => state);
 
@@ -28,11 +28,7 @@ const ForgotPasswordVerification = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   // Constants for timer
   const timerDurationMinutes = 5;
   const initialSeconds = 0;
@@ -112,7 +108,7 @@ const ForgotPasswordVerification = () => {
   //for messeges shown in the snack-bar
   useEffect(() => {
     if (auth.ResponseMessage !== "") {
-      showMessage(auth.ResponseMessage, "success", setOpen);
+      show(auth.ResponseMessage, "success");
 
       dispatch(cleareChangePasswordMessage());
     } else {
@@ -123,11 +119,7 @@ const ForgotPasswordVerification = () => {
   //for showing the responses in the snackbar
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
+      show(Authreducer.VerifyOTPEmailResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else {
@@ -326,6 +318,7 @@ const ForgotPasswordVerification = () => {
         </Row>
       </Container>
       
+    {SnackBar}
     </>
   );
 };

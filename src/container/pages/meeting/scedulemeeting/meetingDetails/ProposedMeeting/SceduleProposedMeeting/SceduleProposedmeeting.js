@@ -28,17 +28,13 @@ import {
 } from "../../../../../../../commen/functions/date_formater";
 import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
 import BlackCrossIcon from "../../../../../../../assets/images/BlackCrossIconModals.svg";
-import { showMessage } from "../../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../../components/elements/snack_bar/useSnackbar";
 const SceduleProposedmeeting = ({
   setDataroomMapFolderId,
   setCurrentMeetingID,
   setSceduleMeeting,
 }) => {
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID"),
   );
@@ -370,6 +366,7 @@ const SceduleProposedmeeting = ({
         }
       />
       
+    {SnackBar}
     </section>
   );
 };

@@ -98,7 +98,7 @@ import {
   headerShowHideStatus,
   recentChatFlag,
 } from "../../../../../store/actions/Talk_Feature_actions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
@@ -282,11 +282,7 @@ const AgendaViewer = () => {
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -606,7 +602,7 @@ const AgendaViewer = () => {
 
         dispatch(activeChat(foundRecord));
       } else {
-        showMessage(t("Chat-not-found"), "error", setOpen);
+        show(t("Chat-not-found"), "error");
         localStorage.removeItem("activeOtoChatID");
         dispatch(chatBoxActiveFlag(false));
       }
@@ -616,18 +612,18 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      showMessage(t("Email-sent"), "Success", setOpen);
+      show(t("Email-sent"), "Success");
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {
-      showMessage(t("Invalid-data"), "error", setOpen);
+      show(t("Invalid-data"), "error");
       dispatch(clearResponseMessage(""));
     }
   }, [agendaResponseMessage]);
 
   useEffect(() => {
     if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
-      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      show(t("Could-not-join-call"), "Success");
       dispatch(clearMessegesVideoFeature(""));
     }
   }, [AgendaVideoResponseMessage]);
@@ -1430,6 +1426,7 @@ const AgendaViewer = () => {
         <MaxParticipantVideoRemovedComponent />
       )}
       {nonMeetingVideo && <NonMeetingVideoModal />}
+    {SnackBar}
     </>
   );
 };

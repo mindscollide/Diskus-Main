@@ -25,7 +25,7 @@ import {
 import { useEffect } from "react";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { Tooltip } from "antd";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const Participants = () => {
@@ -43,11 +43,7 @@ const Participants = () => {
   } = useMeetingContext();
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -269,7 +265,7 @@ const Participants = () => {
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found")
     ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      show(NewMeetingreducer.ResponseMessage, "success");
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -371,6 +367,7 @@ const Participants = () => {
         )}
         
       </section>
+    {SnackBar}
     </>
   );
 };

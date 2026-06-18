@@ -53,7 +53,7 @@ import {
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useTableScrollBottom } from "../CommonFunctions/reusableFunctions";
 import { Checkbox } from "antd";
@@ -62,11 +62,7 @@ import CustomButton from "../../../../components/elements/button/Button";
 const ManageAuthority = () => {
   // Translation hook for multi-language support
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   // Authority context values and setters
   const {
     setAuthorityViewState, // controls add/edit/view mode
@@ -384,7 +380,7 @@ const ManageAuthority = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -1060,6 +1056,7 @@ const ManageAuthority = () => {
       
       <DeleteAuthorityModal />
       {addEditViewAuthoriyModal ? <AddEditViewAuthorityModal /> : null}
+    {SnackBar}
     </>
   );
 };

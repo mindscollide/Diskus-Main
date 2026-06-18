@@ -48,7 +48,7 @@ import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotify
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
-import { showMessage } from "./components/elements/snack_bar/utill";
+import useSnackbar from "./components/elements/snack_bar/useSnackbar";
 import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
@@ -117,11 +117,7 @@ const App = () => {
 
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
@@ -224,7 +220,7 @@ const App = () => {
       SessionExpireResponseMessage !== ""
     ) {
       try {
-        showMessage(SessionExpireResponseMessage, "error", setOpen);
+        show(SessionExpireResponseMessage, "error");
       } catch (error) {}
     }
   }, [SessionExpireResponseMessage]);
@@ -245,6 +241,7 @@ const App = () => {
         />
       )}
       <GlobalSnackbar />
+      {SnackBar}
     </>
   );
 };

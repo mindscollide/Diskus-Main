@@ -67,7 +67,7 @@ import {
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { useTalkContext } from "../../../../../context/TalkContext";
 import { Tooltip } from "antd";
-import { showMessage } from "../../../../elements/snack_bar/utill";
+import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
@@ -346,11 +346,7 @@ const VideoPanelNormal = () => {
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "info",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   console.log(
     {
@@ -1042,7 +1038,7 @@ const VideoPanelNormal = () => {
       // Show recording notification
       if (!recordingToastShownRef.current) {
         recordingToastShownRef.current = true;
-        showMessage(t("The-recording-is-started"), "info", setOpen);
+        show(t("The-recording-is-started"), "info");
       }
     }
   }, [hostTransferFlag]);
@@ -1053,7 +1049,7 @@ const VideoPanelNormal = () => {
         "Check Notification for Host Transfer",
         notifyParticipantHostIsTransfer,
       );
-      showMessage(t("Host-has-been-changed"), "info", setOpen);
+      show(t("Host-has-been-changed"), "info");
       // Reload the participant list from the backend so the new host's isHost
       // flags are applied for every participant. Without this, non-host clients
       // (e.g. User C / User D) keep showing the previous host after a manual
@@ -1477,7 +1473,7 @@ const VideoPanelNormal = () => {
             // Show recording notification when stream is connected
             if (isMeetingVideo && !recordingToastShownRef.current) {
               recordingToastShownRef.current = true;
-              showMessage(t("The-recording-is-started"), "info", setOpen);
+              show(t("The-recording-is-started"), "info");
               console.log(" Recording notification shown on StreamConnected");
             }
 
@@ -1511,7 +1507,7 @@ const VideoPanelNormal = () => {
             // Show toast only once per recording session
             if (!recordingToastShownRef.current) {
               recordingToastShownRef.current = true;
-              showMessage(t("The-recording-is-started"), "info", setOpen);
+              show(t("The-recording-is-started"), "info");
             }
 
             // Update recording states
@@ -1817,7 +1813,7 @@ const VideoPanelNormal = () => {
 
     if (!recordingToastShownRef.current) {
       recordingToastShownRef.current = true;
-      showMessage(t("The-recording-is-started"), "info", setOpen);
+      show(t("The-recording-is-started"), "info");
     }
 
     setStartRecordingState(false);
@@ -2266,6 +2262,7 @@ const VideoPanelNormal = () => {
       )}
 
       
+    {SnackBar}
     </>
   );
 };

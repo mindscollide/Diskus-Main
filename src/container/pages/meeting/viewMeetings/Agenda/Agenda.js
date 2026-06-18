@@ -29,7 +29,7 @@ import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -83,11 +83,7 @@ const Agenda = ({}) => {
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -150,9 +146,9 @@ const Agenda = ({}) => {
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      showMessage(t("Record-saved"), "success", setOpen);
+      show(t("Record-saved"), "success");
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      showMessage(t("Record-updated"), "success", setOpen);
+      show(t("Record-updated"), "success");
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -492,6 +488,7 @@ const Agenda = ({}) => {
         />
       )}
       
+    {SnackBar}
     </>
   );
 };

@@ -17,7 +17,7 @@ import {
   setVotePollModal,
   UpdatedCastVoteAPI,
 } from "../../../store/actions/Polls_actions";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const Votepoll = () => {
   const dispatch = useDispatch();
@@ -32,11 +32,7 @@ const Votepoll = () => {
   let userID = localStorage.getItem("userID");
   const { t } = useTranslation();
   const [pollsOption, setPollsOption] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -122,7 +118,7 @@ const Votepoll = () => {
       dispatch(UpdatedCastVoteAPI(navigate, data, t));
     } else {
       // open sncak bar for atleast select one option
-      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
+      show(t("Required-atleast-one-vote"), "error");
     }
   };
 
@@ -440,6 +436,7 @@ const Votepoll = () => {
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

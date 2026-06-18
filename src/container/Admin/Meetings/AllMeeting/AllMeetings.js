@@ -35,7 +35,7 @@ import {
 } from "../../../../commen/functions/date_formater";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 import { Pagination } from "antd";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -51,11 +51,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [allMeetingData, setAllMeetingData] = useState([]);
   const [isMeetingId, setMeetingId] = useState(0);
   const [isMeetingStatusId, setMeetingStatusId] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   const [meetingStatusOption, setMeetingStatusOption] = useState([]);
   const [meetingSelectedStatusOption, setMeetingSelectedStatusOption] =
@@ -579,22 +575,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   useEffect(() => {
     if (adminReducer.UpdateOrganizationMessageResponseMessage !== "") {
-      showMessage(
-        adminReducer.UpdateOrganizationMessageResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(adminReducer.UpdateOrganizationMessageResponseMessage, "success");
       dispatch(cleareMessage());
     }
   }, [adminReducer.UpdateOrganizationMessageResponseMessage]);
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationMessageResponseMessage !== "") {
-      showMessage(
-        adminReducer.DeleteOrganizationMessageResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(adminReducer.DeleteOrganizationMessageResponseMessage, "success");
 
       dispatch(cleareMessage());
     }
@@ -607,11 +595,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationResponseMessage !==
         t("No-data-available-against-this-organization")
     ) {
-      showMessage(
-        adminReducer.AllOrganizationResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(adminReducer.AllOrganizationResponseMessage, "success");
 
       dispatch(cleareMessage());
     }
@@ -623,7 +607,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !==
         t("No-data-available-against-this-organization")
     ) {
-      showMessage(adminReducer.ResponseMessage, "success", setOpen);
+      notify(adminReducer.ResponseMessage, "success");
 
       dispatch(cleareMessage());
     }
@@ -1196,6 +1180,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

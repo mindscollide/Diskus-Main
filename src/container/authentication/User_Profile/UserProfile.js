@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateuserprofile } from "../../../store/actions/GetUserSetting";
 import AvatarEditorComponent from "../../../components/elements/imageUploader/ImageUploader";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UserProfileModal = ({ ModalTitle, user, setUser }) => {
   const dispatch = useDispatch();
@@ -59,11 +59,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
   };
 
   //For Localization
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   // for edit User Input Fields
   const Name = useRef(null);
   const Designation = useRef(null);
@@ -275,7 +271,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
       }
     } else {
       setErrorBar(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -542,6 +538,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

@@ -33,7 +33,7 @@ import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 
 const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const { t } = useTranslation();
@@ -79,11 +79,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     },
   ]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [members, setMembers] = useState([]);
 
@@ -115,10 +111,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        show(t("Please-fill-options"), "error");
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      show(t("Please-fill-options"), "error");
     }
   };
 
@@ -454,17 +450,17 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       // setError(true);
 
       if (pollsData.Title === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        show(t("Title-is-required"), "error");
       } else if (pollsData.date === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        show(t("Select-date"), "error");
       } else if (Object.keys(members).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        show(t("Atleat-one-member-required"), "error");
       } else if (Object.keys(options).length <= 1) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        show(t("Required-atleast-two-options"), "error");
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        show(t("Please-fill-all-open-option-fields"), "error");
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        show(t("Please-fill-all-reqired-fields"), "error");
       }
     }
   };
@@ -483,7 +479,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found")
     ) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -830,6 +826,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           </section>
         </>
       )}
+    {SnackBar}
     </>
   );
 };

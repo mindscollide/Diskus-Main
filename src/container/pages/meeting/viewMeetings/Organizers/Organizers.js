@@ -26,7 +26,7 @@ import {
   GetAllMeetingOrganizers,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -76,11 +76,7 @@ const Organizers = () => {
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   useEffect(() => {
     if (advanceMeetingModalID) {
@@ -491,7 +487,7 @@ const Organizers = () => {
       MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
       MeetingOrganizersReducer.ResponseMessage !== ""
     ) {
-      showMessage(MeetingOrganizersReducer.ResponseMessage, "success", setOpen);
+      show(MeetingOrganizersReducer.ResponseMessage, "success");
       dispatch(clearResponseMessage(""));
     } else {
       dispatch(clearResponseMessage(""));
@@ -545,6 +541,7 @@ const Organizers = () => {
           setMeetingDetails={setorganizers}
         />
       )}
+    {SnackBar}
     </>
   );
 };

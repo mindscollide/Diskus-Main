@@ -39,7 +39,7 @@ import {
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../../../commen/functions/utils";
 import { isFileSizeValid } from "../../../../../../commen/functions/convertFileSizeInMB";
 const CreateTask = ({
@@ -82,11 +82,7 @@ const CreateTask = ({
   const [fileForSend, setFileForSend] = useState([]);
 
   //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // Select for select Agenda
   const [selectAgenda, setSelectAgenda] = useState([]);
@@ -449,7 +445,7 @@ const CreateTask = ({
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
 
@@ -466,15 +462,11 @@ const CreateTask = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -983,6 +975,7 @@ const CreateTask = ({
       </section>
 
       
+    {SnackBar}
     </>
   );
 };

@@ -41,7 +41,7 @@ import {
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
 import ModalToDoList from "../../../container/todolistModal/ModalToDoList.js";
-import { showMessage } from "../../elements/snack_bar/utill.js";
+import useSnackbar from "../../elements/snack_bar/useSnackbar";
 import { ClearNotesResponseMessage } from "../../../store/actions/Notes_actions.js";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees.js";
 import { clearResponce } from "../../../store/actions/ToDoList_action.js";
@@ -209,11 +209,7 @@ const Header2 = ({ isVideo }) => {
 
   const [show, setShow] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   useEffect(() => {
     if (Blur !== null) {
@@ -329,7 +325,7 @@ const Header2 = ({ isVideo }) => {
         NotesReponseMessege !== t("Data-available") &&
         NotesReponseMessege !== t("Updated")
       ) {
-        showMessage(NotesReponseMessege, "success", setOpen);
+        notify(NotesReponseMessege, "success");
         dispatch(ClearNotesResponseMessage());
       }
     } catch (error) {
@@ -345,7 +341,7 @@ const Header2 = ({ isVideo }) => {
       ResponseMessageTodoReducer !== "" &&
       ResponseMessageTodoReducer !== t("No-records-found")
     ) {
-      showMessage(ResponseMessageTodoReducer, "success", setOpen);
+      notify(ResponseMessageTodoReducer, "success");
       dispatch(clearResponce());
     } else if (
       ResponseMessageAssigneesReducer !== "" &&
@@ -353,7 +349,7 @@ const Header2 = ({ isVideo }) => {
       ResponseMessageAssigneesReducer !== t("No-records-found") &&
       ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
     ) {
-      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
+      notify(ResponseMessageAssigneesReducer, "success");
       dispatch(clearResponseMessage());
     } else {
       dispatch(clearResponce());
@@ -1915,6 +1911,7 @@ const Header2 = ({ isVideo }) => {
       {UpgradeNowModalReducer && <UpgradeNowModal />}
       {requestExtentionModal && <RequestExtensionModal />}
       
+    {SnackBar}
     </>
   );
 };

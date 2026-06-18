@@ -54,7 +54,7 @@ import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 
 import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
@@ -107,11 +107,7 @@ const Polling = () => {
   );
   const [enterpressed, setEnterpressed] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
@@ -1017,7 +1013,7 @@ const Polling = () => {
       PollsReducerResponseMessage !== t("No-records-found") &&
       PollsReducerResponseMessage !== t("No-data-available")
     ) {
-      showMessage(PollsReducerResponseMessage, "Success", setOpen);
+      show(PollsReducerResponseMessage, "Success");
       dispatch(clearMessagesGroup());
     } else {
       dispatch(clearMessagesGroup());
@@ -1313,6 +1309,7 @@ const Polling = () => {
       {AccessDeniedGlobalState && <AccessDeniedModal />}
 
       
+    {SnackBar}
     </>
   );
 };

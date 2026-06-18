@@ -33,7 +33,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
@@ -88,11 +88,7 @@ const ReviewSignature = () => {
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -599,7 +595,7 @@ const ReviewSignature = () => {
       ResponseMessage !== null &&
       ResponseMessage !== undefined
     ) {
-      showMessage(ResponseMessage, "error", setOpen);
+      show(ResponseMessage, "error");
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
@@ -739,6 +735,7 @@ const ReviewSignature = () => {
           setSignatoriesList={setSignatoriesList}
         />
       )}
+    {SnackBar}
     </>
   );
 };

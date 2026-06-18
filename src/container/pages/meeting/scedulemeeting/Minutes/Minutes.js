@@ -16,7 +16,7 @@ import featherupload from "../../../../../assets/images/featherupload.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 
 import {
   ADDGeneralMinutesApiFunc,
@@ -107,11 +107,7 @@ const Minutes = ({
   const [isEdit, setisEdit] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -264,7 +260,7 @@ const Minutes = ({
       let size = true;
 
       if (fileAttachments.length > 4) {
-        showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-5-files"), "error");
         return;
       }
 
@@ -280,15 +276,11 @@ const Minutes = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
-            "error",
-            setOpen,
-          );
+          show(t("File-size-should-not-be-greater-then-zero"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1263,6 +1255,7 @@ const Minutes = ({
         />
       )}
       
+    {SnackBar}
     </section>
   );
 };

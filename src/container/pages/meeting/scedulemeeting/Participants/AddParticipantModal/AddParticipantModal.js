@@ -19,7 +19,7 @@ import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 
 const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const animatedComponents = makeAnimated();
@@ -29,11 +29,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [membersParticipants, setMembersParticipants] = useState([]);
   const RemovedParticipant = (index) => {
     const updatedPartipants = [...membersParticipants];
@@ -304,11 +300,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
       rspvRowsCopy.find((obj) => obj.userID === userID)
     );
     if (membersParticipants.length === 0) {
-      showMessage(
-        t("Atleast-one-participant-should-be-selected"),
-        "error",
-        setOpen
-      );
+      show(t("Atleast-one-participant-should-be-selected"), "error");
     } else {
       setrspvRows(rspvRowsCopy);
       dispatch(showAddParticipantsModal(false));
@@ -489,6 +481,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
         }
       />
       
+    {SnackBar}
     </section>
   );
 };

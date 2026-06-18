@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   Button,
   Checkbox,
@@ -24,11 +24,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -56,7 +52,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       dispatch(UpdatedCastVoteAPI(navigate, data, t, 1, setvotePolls));
     } else {
       // open sncak bar for atleast select one option
-      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
+      show(t("Required-atleast-one-vote"), "error");
     }
   };
   const handleForCheck = (value) => {
@@ -367,6 +363,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         </Row>
       </section>
       
+    {SnackBar}
     </>
   );
 };

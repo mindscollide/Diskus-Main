@@ -33,7 +33,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -110,11 +110,7 @@ const ManageUsers = () => {
 
   const [emailError, setEmailError] = useState("");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //AllOrganizationsUsers Api
   useEffect(() => {
@@ -627,7 +623,7 @@ const ManageUsers = () => {
       UserMangementReducerResponseMessage !== "" &&
       UserMangementReducerResponseMessage !== t("No-data-found")
     ) {
-      showMessage(UserMangementReducerResponseMessage, "success", setOpen);
+      show(UserMangementReducerResponseMessage, "success");
       dispatch(clearMessegesUserManagement());
     }
   }, [UserMangementReducerResponseMessage]);
@@ -919,6 +915,7 @@ const ManageUsers = () => {
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
       
+    {SnackBar}
     </Container>
   );
 };

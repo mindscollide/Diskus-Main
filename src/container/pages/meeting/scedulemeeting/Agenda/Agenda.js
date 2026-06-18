@@ -49,7 +49,7 @@ import {
   nextTabAgenda,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { MeetingContext } from "../../../../../context/MeetingContext";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import NewCancelAgendaBuilderModal from "../../viewMeetings/Agenda/NewCancelAgendaBuilderModal/NewCancelAgendaBuilderModal";
 
 const Agenda = ({
@@ -116,11 +116,7 @@ const Agenda = ({
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [selectedID, setSelectedID] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [meetingTime, setMeetingTime] = useState({
     meetingStartTime: "",
     meetingEndTime: "",
@@ -443,55 +439,35 @@ const Agenda = ({
       let row = rows[rowIndex];
 
       if (row.files.length > 10) {
-        showMessage(
-          t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         return;
       }
       // Check conditions for the parent objects
       if (row.title === "") {
-        showMessage(
-          t("Title-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("Title-is-missing-in-agenda", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         break;
       }
 
       if (row.startDate === "") {
-        showMessage(
-          t("tart-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("tart-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         break;
       }
 
       if (row.endDate === "") {
-        showMessage(
-          t("End-time-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("End-time-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         break;
       }
 
       if (row.presenterID === 0) {
-        showMessage(
-          t("Presenter-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("Presenter-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         break;
@@ -502,11 +478,7 @@ const Agenda = ({
       }
 
       if (row.selectedRadio === 2 && row.urlFieldMain === "") {
-        showMessage(
-          t("URL-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("URL-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         break;
@@ -516,11 +488,7 @@ const Agenda = ({
         row.selectedRadio === 3 &&
         (row.userID === 0 || row.mainNote === "")
       ) {
-        showMessage(
-          t("UserID/Note-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
-          "error",
-          setOpen,
-        );
+        show(t("UserID/Note-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }), "error");
 
         isValid = false;
         break;
@@ -533,67 +501,47 @@ const Agenda = ({
 
           console.log(subAgendaItem, "rowrowrow");
           if (subAgendaItem.subfiles.length > 10) {
-            showMessage(
-              t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
-              "error",
-              setOpen,
-            );
+            show(t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }), "error");
 
             isValid = false;
             return;
           }
 
           if (subAgendaItem.subTitle === "") {
-            showMessage(
-              t("Title-is-missing-in-agenda", {
+            show(t("Title-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
+              }), "error");
 
             isValid = false;
             break;
           }
 
           if (subAgendaItem.startDate === "") {
-            showMessage(
-              t("Start-date-is-missing-in-agenda", {
+            show(t("Start-date-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
+              }), "error");
 
             isValid = false;
             break; // Stop processing if subAgenda startDate is missing
           }
 
           if (subAgendaItem.endDate === "") {
-            showMessage(
-              t("End-date-is-missing-in-agenda", {
+            show(t("End-date-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
+              }), "error");
 
             isValid = false;
             break; // Stop processing if subAgenda endDate is missing
           }
 
           if (subAgendaItem.presenterID === 0) {
-            showMessage(
-              t("Presenter-is-missing-in-agenda", {
+            show(t("Presenter-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
+              }), "error");
 
             isValid = false;
             break; // Stop processing if subAgenda presenterID is missing
@@ -605,14 +553,10 @@ const Agenda = ({
             subAgendaItem.subSelectRadio === 2 &&
             subAgendaItem.subAgendaUrlFieldRadio === ""
           ) {
-            showMessage(
-              t("URL-is-missing-in-agenda", {
+            show(t("URL-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
+              }), "error");
 
             isValid = false;
             break;
@@ -623,14 +567,10 @@ const Agenda = ({
             (subAgendaItem.userID === 0 ||
               subAgendaItem.subAgendarequestContributorEnterNotes === "")
           ) {
-            showMessage(
-              t("UserID/Note-is-missing-in-agenda", {
+            show(t("UserID/Note-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
-              }),
-              "error",
-              setOpen,
-            );
+              }), "error");
 
             isValid = false;
             break;
@@ -1392,6 +1332,7 @@ const Agenda = ({
       {ShowCancelAgendaBuilderModal && (
         <NewCancelAgendaBuilderModal setSceduleMeeting={setSceduleMeeting} />
       )}
+    {SnackBar}
     </>
   );
 };

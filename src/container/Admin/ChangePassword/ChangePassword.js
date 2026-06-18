@@ -19,7 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -35,11 +35,7 @@ const ChangePassword = () => {
     ConfirmPassword: "",
   });
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const dispatch = useDispatch();
 
@@ -89,11 +85,7 @@ const ChangePassword = () => {
         t("Password-updated-successfully") &&
       Authreducer.ChangeUserPasswordResponseMessage != ""
     ) {
-      showMessage(
-        Authreducer.ChangeUserPasswordResponseMessage,
-        "success",
-        setOpen
-      );
+      show(Authreducer.ChangeUserPasswordResponseMessage, "success");
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -362,6 +354,7 @@ const ChangePassword = () => {
         }
       />
       
+    {SnackBar}
     </>
   );
 };

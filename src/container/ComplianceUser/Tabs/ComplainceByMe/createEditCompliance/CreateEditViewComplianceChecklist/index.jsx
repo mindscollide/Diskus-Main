@@ -40,7 +40,7 @@ import {
   parseUTCDateString,
 } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import DeleteChecklistConfirmationModal from "../../../../CommonComponents/DeleteChecklistConfirmationModal";
 const CreateEditViewComplianceChecklist = () => {
@@ -52,11 +52,7 @@ const CreateEditViewComplianceChecklist = () => {
   const cancelBtnRef = useRef(null);
   const accordionContainerRef = useRef(null);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const authorityRespnseMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
@@ -303,7 +299,7 @@ const CreateEditViewComplianceChecklist = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -820,6 +816,7 @@ const CreateEditViewComplianceChecklist = () => {
       
       <ComplianceCloseConfirmationModal />
       <DeleteChecklistConfirmationModal />
+    {SnackBar}
     </>
   );
 };

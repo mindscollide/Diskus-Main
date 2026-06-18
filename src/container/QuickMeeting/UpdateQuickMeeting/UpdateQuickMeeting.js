@@ -53,7 +53,7 @@ import {
   ConvertFileSizeInMB,
   isFileSizeValid,
 } from "../../../commen/functions/convertFileSizeInMB";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
@@ -141,11 +141,7 @@ const UpdateQuickMeeting = ({
     URLs: "",
     FK_MDID: 0,
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // for upload documents
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
@@ -396,7 +392,7 @@ const UpdateQuickMeeting = ({
       setCurrentStep(2);
 
       setIsAttendees(false);
-      showMessage(t("Please-atleast-add-one-agenda"), "error", setOpen);
+      show(t("Please-atleast-add-one-agenda"), "error");
     }
   };
 
@@ -577,7 +573,7 @@ const UpdateQuickMeeting = ({
         FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
-      showMessage(t("Please-fill-description"), "error", setOpen);
+      show(t("Please-fill-description"), "error");
     }
   };
 
@@ -881,7 +877,7 @@ const UpdateQuickMeeting = ({
     let sizezero = true;
 
     if (attachments.length + filesArray.length > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
 
@@ -900,15 +896,11 @@ const UpdateQuickMeeting = ({
       }
 
       if (fileExists) {
-        showMessage(t("This-file-already-exist"), "error", setOpen);
+        show(t("This-file-already-exist"), "error");
       } else if (!size) {
-        showMessage(
-          t("File-size-should-not-be-more-than-1-5GB"),
-          "error",
-          setOpen
-        );
+        show(t("File-size-should-not-be-more-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-is-0mb"), "error", setOpen);
+        show(t("File-size-is-0mb"), "error");
       } else {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
@@ -1810,11 +1802,7 @@ const UpdateQuickMeeting = ({
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        showMessage(
-          t("Date-and-time-should-be-greater-than-current-system-time"),
-          "error",
-          setOpen
-        );
+        show(t("Date-and-time-should-be-greater-than-current-system-time"), "error");
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
           setCreateMeeting({
@@ -2072,7 +2060,7 @@ const UpdateQuickMeeting = ({
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        show(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleValue({
@@ -2142,7 +2130,7 @@ const UpdateQuickMeeting = ({
       }
     } else {
       if (found === undefined) {
-        showMessage(t("Please-add-valid-user"), "error", setOpen);
+        show(t("Please-add-valid-user"), "error");
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleValue({
@@ -2169,7 +2157,7 @@ const UpdateQuickMeeting = ({
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
+      show(t("Please-add-atleast-one-participant"), "error");
       return;
     }
     let hasOrganizer = createMeeting.MeetingAttendees.some(
@@ -2219,7 +2207,7 @@ const UpdateQuickMeeting = ({
         UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
       );
     } else {
-      showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
+      show(t("Please-atleast-add-one-organizer"), "error");
     }
   };
 
@@ -3666,6 +3654,7 @@ const UpdateQuickMeeting = ({
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

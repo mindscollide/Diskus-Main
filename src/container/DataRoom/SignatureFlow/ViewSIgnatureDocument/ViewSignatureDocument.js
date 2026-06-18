@@ -17,7 +17,7 @@ import {
   processXmlToHideFields,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 /**
  * Async: strip only <apref> elements whose referenced PDF object does NOT exist
@@ -108,11 +108,7 @@ const ViewSignatureDocument = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -629,7 +625,7 @@ const ViewSignatureDocument = () => {
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       dispatch(ClearMessageAnnotations());
     }
   }, [ResponseMessage]);
@@ -688,6 +684,7 @@ const ViewSignatureDocument = () => {
         />
       )}
    
+    {SnackBar}
     </>
   );
 };

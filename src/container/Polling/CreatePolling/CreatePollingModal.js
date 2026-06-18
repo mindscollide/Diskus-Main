@@ -31,7 +31,7 @@ import moment from "moment";
 import { multiDatePickerDateChangIntoUTC } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { validateInput } from "../../../commen/functions/regex";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 const CreatePolling = () => {
   const datePickerRef = useRef();
@@ -57,11 +57,7 @@ const CreatePolling = () => {
   const [meetingDate, setMeetingDate] = useState("");
   const [members, setMembers] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [selectedsearch, setSelectedsearch] = useState([]);
 
   const [error, setError] = useState(false);
@@ -392,17 +388,17 @@ const CreatePolling = () => {
       setError(true);
 
       if (createPollData.TypingTitle === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        show(t("Title-is-required"), "error");
       } else if (createPollData.date === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        show(t("Select-date"), "error");
       } else if (Object.keys(members).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        show(t("Atleat-one-member-required"), "error");
       } else if (Object.keys(options).length <= 1) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        show(t("Required-atleast-two-options"), "error");
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        show(t("Please-fill-all-open-option-fields"), "error");
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        show(t("Please-fill-all-reqired-fields"), "error");
       }
     }
   };
@@ -446,10 +442,10 @@ const CreatePolling = () => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        show(t("Please-fill-options"), "error");
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      show(t("Please-fill-options"), "error");
     }
   };
 
@@ -959,6 +955,7 @@ const CreatePolling = () => {
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

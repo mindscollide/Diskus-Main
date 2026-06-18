@@ -18,17 +18,13 @@ import {
   castVoteApi,
   UpdatedCastVoteAPI,
 } from "../../../../store/actions/Polls_actions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -53,7 +49,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       dispatch(UpdatedCastVoteAPI(navigate, data, t, 2, setvotePolls));
     } else {
       // open sncak bar for atleast select one option
-      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
+      show(t("Required-atleast-one-vote"), "error");
     }
   };
   const handleForCheck = (value) => {
@@ -363,6 +359,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         </Row>
       </section>
       
+    {SnackBar}
     </>
   );
 };

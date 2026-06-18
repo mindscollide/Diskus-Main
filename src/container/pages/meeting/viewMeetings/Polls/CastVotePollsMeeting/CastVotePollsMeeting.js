@@ -13,7 +13,7 @@ import {
 import { Progress, Radio } from "antd";
 import { _justShowDateformatBilling } from "../../../../../../commen/functions/date_formater";
 import { UpdatedCastVoteAPI } from "../../../../../../store/actions/Polls_actions";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
 
@@ -22,11 +22,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   const { advanceMeetingModalID } = useMeetingContext();
   let userID = localStorage.getItem("userID");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -62,7 +58,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       );
     } else {
       // open sncak bar for atleast select one option
-      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
+      show(t("Required-atleast-one-vote"), "error");
     }
   };
   const handleForCheck = (value) => {
@@ -384,6 +380,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         </Row>
       </section>
       
+    {SnackBar}
     </>
   );
 };

@@ -62,7 +62,7 @@ import { useGroupsContext } from "../../../../context/GroupsContext";
 import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
 import { useResolutionContext } from "../../../../context/ResolutionContext";
 import { clearResponseMessage } from "../../../../store/actions/MeetingOrganizers_action";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import Recording from "./recording/Recording";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
@@ -77,11 +77,7 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
   const {
     setViewFlag,
@@ -1262,11 +1258,7 @@ const ViewMeetingModal = ({
     if (
       MeetingAgendaReducer.ResponseMessage === t("Vote-casted-successfully")
     ) {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "success",
-        setOpen,
-      );
+      show(t("Thank-you-for-participanting-in-voting"), "success");
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -1528,6 +1520,7 @@ const ViewMeetingModal = ({
         />
       )}
       
+    {SnackBar}
     </>
   );
 };

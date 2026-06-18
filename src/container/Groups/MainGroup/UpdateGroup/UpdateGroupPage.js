@@ -25,7 +25,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { useNavigate } from "react-router-dom";
 import { Upload } from "antd";
 import { maxFileSize } from "../../../../commen/functions/utils";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 
@@ -36,11 +36,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [fileForSend, setFileForSend] = useState([]);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [erorbar, setErrorBar] = useState(false);
 
   const assigneesuserData = useSelector((state) => state.assignees.user);
@@ -127,11 +123,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     const newMeetingAttendees = [...membersData];
     const newGroupMembers = [...groupMembers];
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      showMessage(
-        t("You-can-add-data-only-from-one-form-option-at-a-time"),
-        "error",
-        setOpen
-      );
+      show(t("You-can-add-data-only-from-one-form-option-at-a-time"), "error");
       setAttendees([]);
       setTaskAssignedTo(0);
       setParticipantRoleName("");
@@ -142,11 +134,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       );
 
       if (groupMembersRolesVal.value === 0) {
-        showMessage(
-          t("Please-select-group-member-type-also"),
-          "error",
-          setOpen
-        );
+        show(t("Please-select-group-member-type-also"), "error");
       } else {
         if (foundIndex === -1) {
           newMeetingAttendees.push({
@@ -181,7 +169,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          showMessage(t("User-already-exist"), "error", setOpen);
+          show(t("User-already-exist"), "error");
           setTaskAssignedTo(0);
           setParticipantRoleName("");
           setTaskAssignedToInput("");
@@ -198,7 +186,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         });
       });
       if (check === true) {
-        showMessage(t("User-already-exist"), "error", setOpen);
+        show(t("User-already-exist"), "error");
         setAttendees([]);
         setParticipantRoleName("");
         setPresenterValue({
@@ -237,15 +225,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          showMessage(
-            t("Please-select-group-member-type-also"),
-            "error",
-            setOpen
-          );
+          show(t("Please-select-group-member-type-also"), "error");
         }
       }
     } else {
-      showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
+      show(t("Please-select-atleast-one-members"), "error");
       setPresenterValue({
         value: 0,
         label: "",
@@ -403,10 +387,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupDetails.GroupTypeID !== 0
     ) {
       if (Object.keys(membersData).length === 0) {
-        showMessage(t("Please-add-atleast-one-group-head"), "error", setOpen);
+        show(t("Please-add-atleast-one-group-head"), "error");
       } else {
         if (!checkGroupHead(membersData)) {
-          showMessage(t("Please-add-atleast-one-group-head"), "error", setOpen);
+          show(t("Please-add-atleast-one-group-head"), "error");
         } else {
           setErrorBar(false);
           let OrganizationID = JSON.parse(
@@ -431,7 +415,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       }
     } else {
       setErrorBar(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -511,7 +495,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       let totalFiles = fileList.length + fileAttachments.length;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
 
@@ -529,15 +513,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1356,6 +1336,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         onHide={() => setCloseConfirmationBox(false)}
       />
       
+    {SnackBar}
     </>
   );
 };

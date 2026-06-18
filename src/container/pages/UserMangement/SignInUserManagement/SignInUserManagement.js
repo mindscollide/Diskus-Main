@@ -27,7 +27,7 @@ import {
 } from "../../../../store/actions/UserManagementActions";
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import SwitchToChromeBox from "../../../../components/elements/SwitchToChromeBox/SwitchToChromeBox";
 
 const SignInUserManagement = () => {
@@ -59,11 +59,7 @@ const SignInUserManagement = () => {
   const [errorBar, setErrorBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberEmail, setRemeberEmail] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [bestExperienceBox, setBestExperienceBox] = useState(false);
 
@@ -91,10 +87,10 @@ const SignInUserManagement = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (email === "") {
-      showMessage(t("Please-enter-email"), "error", setOpen);
+      show(t("Please-enter-email"), "error");
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      showMessage(t("Email-format-is-invalid"), "error", setOpen);
+      show(t("Email-format-is-invalid"), "error");
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));
@@ -235,14 +231,10 @@ const SignInUserManagement = () => {
         adminReducerDeleteOrganizationResponseMessageData,
         "DeleteOrganizationResponseMessage"
       );
-      showMessage(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "error",
-        setOpen
-      );
+      show(adminReducerDeleteOrganizationResponseMessageData, "error");
       dispatch(cleareMessage());
     }
-  }, [adminReducerDeleteOrganizationResponseMessageData, setOpen]);
+  }, [adminReducerDeleteOrganizationResponseMessageData, show]);
 
   return (
     <>
@@ -433,6 +425,7 @@ const SignInUserManagement = () => {
       </Container>
       {getpayemntString && getpayemntString !== "" && <Loader />}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
+    {SnackBar}
     </>
   );
 };

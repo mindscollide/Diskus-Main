@@ -32,7 +32,7 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -68,11 +68,7 @@ const Attendence = () => {
     (state) => state.attendanceMeetingReducer.attendanceMeetings,
   );
   const [attendenceRows, setAttendenceRows] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [cancelModalView, setCancelModalView] = useState(false);
 
@@ -288,7 +284,7 @@ const Attendence = () => {
   // Function to handle notification logic
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
 
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
@@ -440,6 +436,7 @@ const Attendence = () => {
       )}
 
       
+    {SnackBar}
     </>
   );
 };

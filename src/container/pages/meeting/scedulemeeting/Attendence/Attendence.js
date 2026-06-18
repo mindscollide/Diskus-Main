@@ -27,7 +27,7 @@ import {
   showAttendanceConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Attendence = ({
@@ -56,11 +56,7 @@ const Attendence = ({
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let userID = localStorage.getItem("userID");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [attendenceRows, setAttendenceRows] = useState([]);
 
@@ -279,7 +275,7 @@ const Attendence = ({
 
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
     }
@@ -411,6 +407,7 @@ const Attendence = ({
       )}
 
       
+    {SnackBar}
     </>
   );
 };

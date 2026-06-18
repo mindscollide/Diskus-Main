@@ -8,16 +8,12 @@ import { Button, Loader, Notification } from "../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { cleareMessage } from "../../../../store/actions/Admin_PackageUpgrade";
 import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/Admin_PackageDetail";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
   const { GetSubscriptionPackage } = Data;
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -50,11 +46,7 @@ const PackageUpgradeDetail = () => {
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
         t("Organization-subscription-update")
     ) {
-      showMessage(
-        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      show(GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage, "success");
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -193,6 +185,7 @@ const PackageUpgradeDetail = () => {
         </Row>
       </Container>
       
+    {SnackBar}
     </>
   );
 };

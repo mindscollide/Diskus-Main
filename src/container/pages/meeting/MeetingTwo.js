@@ -130,7 +130,7 @@ import {
 } from "../../../context/MeetingContext";
 import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
 import ViewProposedMeetingModal from "./scedulemeeting/meetingDetails/ProposedMeeting/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import { useGroupsContext } from "../../../context/GroupsContext";
@@ -376,11 +376,7 @@ const NewMeeting = () => {
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [rows, setRow] = useState([]);
 
   console.log(rows, "rows");
@@ -1751,7 +1747,7 @@ const NewMeeting = () => {
 
         dispatch(activeChat(foundRecord));
       } else {
-        showMessage(t("Chat-not-found"), "error", setOpen);
+        show(t("Chat-not-found"), "error");
         localStorage.removeItem("activeOtoChatID");
         dispatch(chatBoxActiveFlag(false));
       }
@@ -4802,7 +4798,7 @@ const NewMeeting = () => {
         ResponseMessages !== t("No-records-found") &&
         ResponseMessages !== t("No-record-found")
       ) {
-        showMessage(ResponseMessages, "success", setOpen);
+        show(ResponseMessages, "success");
         dispatch(clearResponseMessage(""));
       } else {
       }
@@ -4825,7 +4821,7 @@ const NewMeeting = () => {
         ResponseMessage !== t("Something-went-wrong") &&
         ResponseMessage !== undefined
       ) {
-        showMessage(ResponseMessages, "success", setOpen);
+        show(ResponseMessages, "success");
         dispatch(clearResponseNewMeetingReducerMessage(""));
       }
     } catch (error) {
@@ -4839,7 +4835,7 @@ const NewMeeting = () => {
         ResponseMessageUserMangementReducer !== "" &&
         ResponseMessageUserMangementReducer !== undefined
       ) {
-        showMessage(ResponseMessageUserMangementReducer, "error", setOpen);
+        show(ResponseMessageUserMangementReducer, "error");
         dispatch(clearMessegesUserManagement());
       }
     } catch (error) {
@@ -5594,6 +5590,7 @@ const NewMeeting = () => {
       )}
       {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+    {SnackBar}
     </>
   );
 };

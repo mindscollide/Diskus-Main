@@ -45,7 +45,7 @@ import {
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
@@ -110,11 +110,7 @@ const Groups = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
@@ -427,10 +423,10 @@ const Groups = () => {
           ),
         );
       } else {
-        showMessage(t("Talk-group-doesnt-exist"), "error", setOpen);
+        show(t("Talk-group-doesnt-exist"), "error");
       }
     } else {
-      showMessage(t("No-talk-group-created"), "error", setOpen);
+      show(t("No-talk-group-created"), "error");
     }
   };
 
@@ -475,7 +471,7 @@ const Groups = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "success", setOpen);
+    show(t("Not-a-member-of-talk-group"), "success");
   };
 
   return (
@@ -808,6 +804,7 @@ const Groups = () => {
       ) : null}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
       
+    {SnackBar}
     </>
   );
 };

@@ -46,7 +46,7 @@ import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommi
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
@@ -116,11 +116,7 @@ const Committee = () => {
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
   const [ViewcommitteeID, setViewCommitteeID] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -643,10 +639,10 @@ const Committee = () => {
           ),
         );
       } else {
-        showMessage(t("No-talk-group-created"), "error", setOpen);
+        show(t("No-talk-group-created"), "error");
       }
     } else {
-      showMessage(t("No-talk-group-created"), "error", setOpen);
+      show(t("No-talk-group-created"), "error");
     }
   };
 
@@ -699,7 +695,7 @@ const Committee = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "error", setOpen);
+    show(t("Not-a-member-of-talk-group"), "error");
   };
 
   return (
@@ -997,6 +993,7 @@ const Committee = () => {
         />
       )}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
+    {SnackBar}
     </>
   );
 };

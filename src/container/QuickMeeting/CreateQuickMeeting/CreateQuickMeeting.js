@@ -53,7 +53,7 @@ import {
 } from "../../../commen/functions/convertFileSizeInMB";
 import Select from "react-select";
 import { Tooltip } from "antd";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
@@ -103,11 +103,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
 
   const [isPublishMeeting, setIsPublishMeeting] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   // for modal fields error
   const [modalField, setModalField] = useState(false);
@@ -435,11 +431,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         const currentDateTime = convertDateTimeObject(getformattedDateTIme);
 
         if (dateTimeFormat < currentDateTime) {
-          showMessage(
-            t("Time-should-be-greater-then-system-time"),
-            "error",
-            setOpen,
-          );
+          notify(t("Time-should-be-greater-then-system-time"), "error");
           setTimeout(() => {
             setCreateMeeting({
               ...createMeeting,
@@ -524,11 +516,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        showMessage(
-          t("Date-and-time-should-be-greater-than-current-system-time"),
-          "error",
-          setOpen,
-        );
+        notify(t("Date-and-time-should-be-greater-than-current-system-time"), "error");
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
           setCreateMeeting({
@@ -587,7 +575,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let sizezero = true;
 
     if (attachments.length + filesArray.length > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      notify(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
 
@@ -606,15 +594,11 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
 
       if (fileExists) {
-        showMessage(t("This-file-already-exist"), "error", setOpen);
+        notify(t("This-file-already-exist"), "error");
       } else if (!size) {
-        showMessage(
-          t("File-size-should-not-be-more-than-1-5GB"),
-          "error",
-          setOpen,
-        );
+        notify(t("File-size-should-not-be-more-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-is-0mb"), "error", setOpen);
+        notify(t("File-size-is-0mb"), "error");
       } else {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
@@ -1917,7 +1901,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     console.log(found, "foundfoundfound");
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        notify(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
         setParticipantRoleValue({
           label: t("Participant"),
@@ -1996,7 +1980,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     } else {
       if (found === undefined) {
-        showMessage(t("Please-add-valid-user"), "error", setOpen);
+        notify(t("Please-add-valid-user"), "error");
         setTaskAssignedTo(0);
         setParticipantRoleValue({
           label: t("Participant"),
@@ -2027,7 +2011,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
+      notify(t("Please-add-atleast-one-participant"), "error");
       return;
     }
     let finalDateTime = createConvert(
@@ -2949,6 +2933,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }
       />
       
+    {SnackBar}
     </>
   );
 };

@@ -23,7 +23,7 @@ import {
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 const Summary = () => {
   const navigate = useNavigate();
@@ -79,11 +79,7 @@ const Summary = () => {
     "lastPaymentlastPayment",
     _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
   );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Open Invoice Table State
   const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
@@ -131,21 +127,21 @@ const Summary = () => {
       VerifyOTPEmailResponseMessage !== undefined &&
       EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(VerifyOTPEmailResponseMessage, "success", setOpen);
+      show(VerifyOTPEmailResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       EnterPasswordResponseMessage !== "" &&
       EnterPasswordResponseMessage !== undefined &&
       EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(EnterPasswordResponseMessage, "success", setOpen);
+      show(EnterPasswordResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       OrganizationCreateResponseMessage !== "" &&
       OrganizationCreateResponseMessage !== undefined &&
       EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(OrganizationCreateResponseMessage, "success", setOpen);
+      show(OrganizationCreateResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -153,7 +149,7 @@ const Summary = () => {
       CreatePasswordResponseMessage !== undefined &&
       EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(CreatePasswordResponseMessage, "success", setOpen);
+      show(CreatePasswordResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -161,7 +157,7 @@ const Summary = () => {
       GetSelectedPackageResponseMessage !== undefined &&
       EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(GetSelectedPackageResponseMessage, "success", setOpen);
+      show(GetSelectedPackageResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -169,7 +165,7 @@ const Summary = () => {
       EmailValidationResponseMessage !== undefined &&
       EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(EmailValidationResponseMessage, "success", setOpen);
+      show(EmailValidationResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else {
@@ -459,6 +455,7 @@ const Summary = () => {
         />
         
       </Fragment>
+    {SnackBar}
     </>
   );
 };

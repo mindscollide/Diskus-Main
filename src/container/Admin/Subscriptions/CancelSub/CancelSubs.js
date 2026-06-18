@@ -17,7 +17,7 @@ import DismissWarningAlert from "../../../../components/elements/DismissWarningA
 import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
 import { _justShowDateformat } from "../../../../commen/functions/date_formater";
 import { isHTML } from "../../../../commen/functions/html_formater";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
@@ -29,11 +29,7 @@ const CancelSubs = () => {
   const [revokeCancellation, setRevokeCancellation] = useState(
     revokeCancellationCheck ? true : false
   );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
@@ -139,7 +135,7 @@ const CancelSubs = () => {
 
   useEffect(() => {
     if (adminReducer.revokeResponseMessege !== "") {
-      showMessage(adminReducer.revokeResponseMessege, "success", setOpen);
+      show(adminReducer.revokeResponseMessege, "success");
       dispatch(adminClearMessege());
     } else {
       dispatch(adminClearMessege());
@@ -147,11 +143,7 @@ const CancelSubs = () => {
   }, [adminReducer.revokeResponseMessege]);
   useEffect(() => {
     if (GetSubscriptionPackage.getCancelSubscriptionResponseMessage !== "") {
-      showMessage(
-        GetSubscriptionPackage.getCancelSubscriptionResponseMessage,
-        "success",
-        setOpen
-      );
+      show(GetSubscriptionPackage.getCancelSubscriptionResponseMessage, "success");
       dispatch(cleareMessageSubsPac());
     } else {
       dispatch(cleareMessageSubsPac());
@@ -697,6 +689,7 @@ const CancelSubs = () => {
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

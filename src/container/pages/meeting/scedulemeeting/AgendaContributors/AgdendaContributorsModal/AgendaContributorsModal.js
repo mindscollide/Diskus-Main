@@ -20,7 +20,7 @@ import GroupIcon from "../../../../../../assets/images/GroupSetting.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 
 const AgendaContributorsModal = ({
   SelectedRSVP,
@@ -37,11 +37,7 @@ const AgendaContributorsModal = ({
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [membersOrganizers, setMembersOrganizers] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -303,11 +299,7 @@ const AgendaContributorsModal = ({
     );
 
     if (membersOrganizers.length === 0) {
-      showMessage(
-        t("Atleast-one-agenda-contributor-should-be-selected"),
-        "error",
-        setOpen
-      );
+      show(t("Atleast-one-agenda-contributor-should-be-selected"), "error");
     } else {
       setRowsData(newData);
       dispatch(showAddAgendaContributor(false));
@@ -479,6 +471,7 @@ const AgendaContributorsModal = ({
         }
       />
       
+    {SnackBar}
     </section>
   );
 };

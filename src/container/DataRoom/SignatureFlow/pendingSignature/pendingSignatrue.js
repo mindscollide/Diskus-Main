@@ -26,7 +26,7 @@ import {
   revertReadOnlyFreetextElements,
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
@@ -530,11 +530,7 @@ const PendingSignatureViewer = () => {
   });
 
   // ── UI state ───────────────────────────────────────────────────────────────
-  const [notification, setNotification] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [reasonModal, setReasonModal] = useState(false);
   const [declineConfirmationModal, setDeclineConfirmationModal] =
     useState(false);
@@ -631,7 +627,7 @@ const PendingSignatureViewer = () => {
   }, [docWorkflowID]);
 
   useEffect(() => {
-    if (ResponseMessage) showMessage(ResponseMessage, "error", setNotification);
+    if (ResponseMessage) show(ResponseMessage, "error");
   }, [ResponseMessage]);
 
   // ── getAllFieldsByWorkflowID ────────────────────────────────────────────────
@@ -842,7 +838,7 @@ const PendingSignatureViewer = () => {
         console.log(valid, "handleSavehandleSavehandle");
 
         if (!valid || !isSigned) {
-          showMessage(t("Signature-is-required"), "warning", setNotification);
+          show(t("Signature-is-required"), "warning");
           return;
         }
 
@@ -1364,6 +1360,7 @@ const PendingSignatureViewer = () => {
         />
       )}
 
+    {SnackBar}
     </>
   );
 };

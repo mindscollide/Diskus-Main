@@ -221,7 +221,7 @@ import {
   SignatureDocumentStatusChangeSignees,
   signeeCreatorCount,
 } from "../../store/actions/workflow_actions";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import {
   meetingVideoRecording,
   videoRecording,
@@ -420,11 +420,7 @@ const Dashboard = () => {
   });
 
   //State For Meeting Data
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
@@ -626,7 +622,7 @@ const Dashboard = () => {
             await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
           }
         }
-        showMessage(t("Presenter-view-started"), "success", setOpen);
+        show(t("Presenter-view-started"), "success");
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
           console.log("mqtt mqmqmqmqmqmq");
@@ -4796,17 +4792,9 @@ const Dashboard = () => {
             pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
           }));
           if (data.payload.data.status === "Signed") {
-            showMessage(
-              t("Document-has-been-signed-successfully"),
-              "success",
-              setOpen,
-            );
+            show(t("Document-has-been-signed-successfully"), "success");
           } else if (data.payload.data.status === "Declined") {
-            showMessage(
-              t("Document-has-been-declined-successfully"),
-              "success",
-              setOpen,
-            );
+            show(t("Document-has-been-declined-successfully"), "success");
           }
         }
         if (
@@ -7980,7 +7968,7 @@ const Dashboard = () => {
         VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
         VideoMainReducerResponseMessage !== undefined
       ) {
-        showMessage(VideoMainReducerResponseMessage, "success", setOpen);
+        show(VideoMainReducerResponseMessage, "success");
         dispatch(cleareResponceMessage(""));
       }
     } catch (error) {
@@ -8279,6 +8267,7 @@ const Dashboard = () => {
           )}
         </Layout>
       </ConfigProvider>
+    {SnackBar}
     </>
   );
 };

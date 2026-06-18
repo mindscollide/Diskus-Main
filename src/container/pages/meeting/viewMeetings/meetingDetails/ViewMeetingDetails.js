@@ -77,7 +77,7 @@ import {
 import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { useCallback } from "react";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
@@ -205,11 +205,7 @@ const ViewMeetingDetails = ({}) => {
   const [viewFlag, setViewFlag] = useState(false);
 
   //For Custom language datepicker
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [meetingDetails, setMeetingDetailsData] = useState({
     MeetingTitle: "",
@@ -658,7 +654,7 @@ const ViewMeetingDetails = ({}) => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage(t("Link-copied"), "success", setOpen);
+    show(t("Link-copied"), "success");
   };
 
   // const groupChatInitiation = (data) => {
@@ -764,7 +760,7 @@ const ViewMeetingDetails = ({}) => {
 
         dispatch(activeChat(foundRecord));
       } else {
-        showMessage(t("Chat-not-found"), "error", setOpen);
+        show(t("Chat-not-found"), "error");
         localStorage.removeItem("activeOtoChatID");
         dispatch(chatBoxActiveFlag(false));
       }
@@ -780,7 +776,7 @@ const ViewMeetingDetails = ({}) => {
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== undefined
     ) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       dispatch(CleareMessegeNewMeeting());
       dispatch(ClearResponseMessageGuest());
     } else {
@@ -826,7 +822,7 @@ const ViewMeetingDetails = ({}) => {
   // to show message when join meeting Video Response comes 4
   useEffect(() => {
     if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
-      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      show(t("Could-not-join-call"), "Success");
       dispatch(clearMessegesVideoFeature(""));
     }
   }, [AgendaVideoResponseMessage]);
@@ -1203,6 +1199,7 @@ const ViewMeetingDetails = ({}) => {
         }
       />
       {nonMeetingVideo && <NonMeetingVideoModal />}
+    {SnackBar}
     </>
   );
 };

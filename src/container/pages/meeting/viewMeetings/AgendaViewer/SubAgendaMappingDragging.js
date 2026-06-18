@@ -29,7 +29,7 @@ import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/optio
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const SubAgendaMappingDragging = ({
@@ -70,11 +70,7 @@ const SubAgendaMappingDragging = ({
   const dispatch = useDispatch();
   let currentUserID = localStorage.getItem("userID");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const apllyLockOnSubAgenda = (parentIndex, subIndex) => {
     const exists = subLockArry.some((item) => {
@@ -655,6 +651,7 @@ const SubAgendaMappingDragging = ({
           );
         })}
       
+    {SnackBar}
     </>
   );
 };

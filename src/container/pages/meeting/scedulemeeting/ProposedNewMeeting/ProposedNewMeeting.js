@@ -52,7 +52,7 @@ import {
   scheduleMeetingPageFlag,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
@@ -185,11 +185,7 @@ const ProposedNewMeeting = ({
     }
   }, [getAllParticipants]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Setting Minutes hours and second for Send Response by Date Seperately
   let newDateValue = getCurrentDateforMeeting.DateGMT;
@@ -471,7 +467,7 @@ const ProposedNewMeeting = ({
   //Adding the Dates Rows
   const addRow = () => {
     if (rows.length >= 5) {
-      showMessage(t("Not-more-than-5-dates-are-allowed"), "error", setOpen);
+      show(t("Not-more-than-5-dates-are-allowed"), "error");
       return;
     }
     const lastRow = rows[rows.length - 1];
@@ -510,13 +506,9 @@ const ProposedNewMeeting = ({
           //Checks that if the start time of lower row is less then end time of upper row (same date scenario)
           updatedRows[index - 1].startTime <= updatedRows[index - 1].endTime
         ) {
-          showMessage(
-            t(
+          show(t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
-            ),
-            "error",
-            setOpen
-          );
+            ), "error");
           //if the scnario gets exist paste the current value that is assigned to it already
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
@@ -527,11 +519,7 @@ const ProposedNewMeeting = ({
             updatedRows[index].endTime !== "" &&
             newDate >= updatedRows[index].endTime
           ) {
-            showMessage(
-              t("Selected-start-time-should-not-be-greater-than-the-endTime"),
-              "error",
-              setOpen
-            );
+            show(t("Selected-start-time-should-not-be-greater-than-the-endTime"), "error");
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
             return;
@@ -545,11 +533,7 @@ const ProposedNewMeeting = ({
           updatedRows[index].endTime !== "" &&
           newDate >= updatedRows[index].endTime
         ) {
-          showMessage(
-            t("Selected-start-time-should-not-be-greater-than-the-endTime"),
-            "error",
-            setOpen
-          );
+          show(t("Selected-start-time-should-not-be-greater-than-the-endTime"), "error");
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           return;
@@ -574,11 +558,7 @@ const ProposedNewMeeting = ({
           updatedRows[index].dateSelect?.toDateString()
       ) {
         if (updatedRows[index - 1].endTime <= updatedRows[index].startTime) {
-          showMessage(
-            t("Selected-end-time-should-not-be-less-than-the-previous-one"),
-            "error",
-            setOpen
-          );
+          show(t("Selected-end-time-should-not-be-less-than-the-previous-one"), "error");
           updatedRows[index].endTime = newDate;
           return;
         } else {
@@ -587,11 +567,7 @@ const ProposedNewMeeting = ({
         }
       } else {
         if (newDate <= updatedRows[index].startTime) {
-          showMessage(
-            t("Selected-end-time-should-not-be-less-than-start-time"),
-            "error",
-            setOpen
-          );
+          show(t("Selected-end-time-should-not-be-less-than-start-time"), "error");
           updatedRows[index].endTime = newDate;
           return;
         } else {
@@ -617,11 +593,7 @@ const ProposedNewMeeting = ({
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
     if (rows.length === 1) {
-      showMessage(
-        t("At-least-one-date-time-slot-is-mandatory"),
-        "error",
-        setOpen
-      );
+      show(t("At-least-one-date-time-slot-is-mandatory"), "error");
     } else {
       // Otherwise, remove the record at the given index
       const updatedRows = [...rows];
@@ -749,7 +721,7 @@ const ProposedNewMeeting = ({
         multiDatePickerDateChangIntoUTC(sendDate).slice(0, 8) <
         multiDatePickerDateChangIntoUTC(currentDate).slice(0, 8)
       ) {
-        showMessage(t("Send Response  Date has expired"), "error", setOpen);
+        show(t("Send Response  Date has expired"), "error");
       } else if (
         proposedMeetingDetails.MeetingTitle !== "" &&
         membersParticipants.length !== 0 &&
@@ -1137,7 +1109,7 @@ const ProposedNewMeeting = ({
       ResponseMessage !== undefined &&
       ResponseMessage !== null
     ) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
@@ -1723,6 +1695,7 @@ const ProposedNewMeeting = ({
         </Col>
       </Row>
       
+    {SnackBar}
     </section>
   );
 };

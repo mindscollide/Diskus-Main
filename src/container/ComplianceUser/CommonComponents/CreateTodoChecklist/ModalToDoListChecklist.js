@@ -33,7 +33,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import { parseYYYYMMDDToEndOfDay } from "../commonFunctions";
@@ -70,11 +70,7 @@ const ModalToDoListChecklist = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
   const [createTaskID, setCreateTaskID] = useState(0);
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -182,7 +178,7 @@ const ModalToDoListChecklist = ({
     var valueCheck = value.replace(/^\s/g, "");
     if (name === "Title") {
       if (valueCheck.length > 199) {
-        showMessage(t("Title-limit-is-200"), "error", setOpen);
+        notify(t("Title-limit-is-200"), "error");
       } else {
         setTask({
           ...task,
@@ -196,7 +192,7 @@ const ModalToDoListChecklist = ({
       });
     } else if (name === "Description") {
       if (valueCheck.length > 2000) {
-        showMessage(t("Description-limit-is-2000"), "error", setOpen);
+        notify(t("Description-limit-is-2000"), "error");
       } else {
         setTask({
           ...task,
@@ -217,7 +213,7 @@ const ModalToDoListChecklist = ({
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      notify(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -232,15 +228,11 @@ const ModalToDoListChecklist = ({
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-than-1-5GB"),
-          "error",
-          setOpen
-        );
+        notify(t("File-size-should-not-be-greater-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        notify(t("File-size-should-not-be-zero"), "error");
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        notify(t("File-already-exists"), "error");
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -287,7 +279,7 @@ const ModalToDoListChecklist = ({
 
     // Step 2: Validate and process task creation date and time
     if (!task.creationDate) {
-      showMessage(t("Due date is required"), "error", setOpen); // Validate task creation date
+      notify(t("Due date is required"), "error"); // Validate task creation date
       return;
     }
 
@@ -302,11 +294,11 @@ const ModalToDoListChecklist = ({
 
     // Step 3: Validate task properties
     if (!task.Title || task.Title.trim() === "") {
-      showMessage(t("Please select a title for the task"), "error", setOpen); // Validate task title
+      notify(t("Please select a title for the task"), "error"); // Validate task title
       return;
     }
     if (!newDate) {
-      showMessage(t("Deadline date is required"), "error", setOpen); // Validate deadline date
+      notify(t("Deadline date is required"), "error"); // Validate deadline date
       return;
     }
     // Step 4: Construct the task object
@@ -808,6 +800,7 @@ const ModalToDoListChecklist = ({
         }
       />
       
+    {SnackBar}
     </>
   );
 };

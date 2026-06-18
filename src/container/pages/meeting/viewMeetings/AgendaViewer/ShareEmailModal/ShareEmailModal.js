@@ -20,7 +20,7 @@ import {
   clearResponseMessage,
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import CrossEmail from "./../AV-Images/Cross-Email.png";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const ShareEmailModal = ({ setShareEmailView }) => {
@@ -36,11 +36,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     (state) => state
   );
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -124,7 +120,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(value)) {
-      showMessage(t("Invalid-email-format"), "error", setOpen);
+      show(t("Invalid-email-format"), "error");
       return;
     }
 
@@ -165,13 +161,13 @@ const ShareEmailModal = ({ setShareEmailView }) => {
 
       dispatch(SendAgendaPDFAsEmail(Data, navigate, t, setShareEmailView));
     } else {
-      showMessage(t("Atleast-add-one-user"), "error", setOpen);
+      show(t("Atleast-add-one-user"), "error");
     }
   };
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Invalid-data")) {
-      showMessage(t("Invalid-data"), "error", setOpen);
+      show(t("Invalid-data"), "error");
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -317,6 +313,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
       />
 
       
+    {SnackBar}
     </section>
   );
 };

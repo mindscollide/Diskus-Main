@@ -103,7 +103,6 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
 import enUS from "antd/es/date-picker/locale/en_US";
-import { showMessage } from "../../../../../elements/snack_bar/utill";
 import useSnackbar from "../../../../../elements/snack_bar/useSnackbar";
 
 const ChatMainBody = ({ chatMessageClass }) => {

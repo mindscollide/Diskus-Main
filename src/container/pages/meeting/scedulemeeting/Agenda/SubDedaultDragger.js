@@ -9,7 +9,7 @@ import { getRandomUniqueNumber } from "./drageFunction";
 import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { isFileSizeValid } from "../../../../../commen/functions/convertFileSizeInMB";
 
 const SubDedaultDragger = ({
@@ -23,11 +23,7 @@ const SubDedaultDragger = ({
   const { t } = useTranslation();
   //Uploader Props For SubAgendas
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const { editorRole, isAgendaUpdateWhenMeetingActive } = useMeetingContext();
 
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -54,7 +50,7 @@ const SubDedaultDragger = ({
       // Check the total number of files, including new uploads
       const totalFilesCount = getRowData.subfiles.length + fileList.length;
       if (totalFilesCount > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return; // Stop further processing
       }
 
@@ -73,15 +69,11 @@ const SubDedaultDragger = ({
           }
 
           if (!size) {
-            showMessage(
-              t("File-size-should-not-be-greater-than-1-5GB"),
-              "error",
-              setOpen
-            );
+            show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
           } else if (!sizezero) {
-            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+            show(t("File-size-should-not-be-zero"), "error");
           } else if (fileExists) {
-            showMessage(t("File-already-exists"), "error", setOpen);
+            show(t("File-already-exists"), "error");
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -108,13 +100,9 @@ const SubDedaultDragger = ({
           }
 
           if (!size) {
-            showMessage(
-              t("File-size-should-not-be-greater-than-1-5GB"),
-              "error",
-              setOpen
-            );
+            show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
           } else if (!sizezero) {
-            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+            show(t("File-size-should-not-be-zero"), "error");
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -216,6 +204,7 @@ const SubDedaultDragger = ({
         </Col>
       </Row>
       
+    {SnackBar}
     </>
   );
 };

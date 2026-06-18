@@ -149,7 +149,7 @@ import {
   fileFormatforSignatureFlow,
   openDocumentViewer,
 } from "../../commen/functions/utils";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../commen/functions/regex";
 import {
   formatFileSize,
@@ -429,11 +429,7 @@ const DataRoom = () => {
   console.log(getAllData, "CheckgetAll");
 
   // ─── Snack-bar notification state ────────────────────────────────────────
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   /**
    * Search query payload sent to the search API.
    * Type/date/owner filters are toggled individually as boolean flags.
@@ -3648,29 +3644,21 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !== t("Files-saved-successfully") &&
       errorSeverityState !== null
     ) {
-      showMessage(DataRoomReducer.ResponseMessage, errorSeverityState, setOpen);
+      show(DataRoomReducer.ResponseMessage, errorSeverityState);
       dispatch(clearDataResponseMessage());
     }
     if (
       DataRoomReducer.FolderisExistMessage !== "" &&
       DataRoomReducer.FolderisExistMessage !== t("Folder-already-exist")
     ) {
-      showMessage(
-        DataRoomReducer.FolderisExistMessage,
-        errorSeverityState,
-        setOpen,
-      );
+      show(DataRoomReducer.FolderisExistMessage, errorSeverityState);
       dispatch(clearDataResponseMessage());
     }
     if (
       DataRoomReducer.FileisExistMessage !== "" &&
       DataRoomReducer.FileisExistMessage !== t("File-already-exist")
     ) {
-      showMessage(
-        DataRoomReducer.FileisExistMessage,
-        errorSeverityState,
-        setOpen,
-      );
+      show(DataRoomReducer.FileisExistMessage, errorSeverityState);
       dispatch(clearDataResponseMessage());
     }
   }, [
@@ -3686,11 +3674,7 @@ const DataRoom = () => {
    */
   useEffect(() => {
     if (DataRoomFileAndFoldersDetailsResponseMessage !== "") {
-      showMessage(
-        DataRoomFileAndFoldersDetailsResponseMessage,
-        errorSeverityState2,
-        setOpen,
-      );
+      show(DataRoomFileAndFoldersDetailsResponseMessage, errorSeverityState2);
       dispatch(clearDataResponseMessageDataRoom2());
     }
   }, [DataRoomFileAndFoldersDetailsResponseMessage, errorSeverityState2]);
@@ -3708,7 +3692,7 @@ const DataRoom = () => {
       SignatureResponseMessage !== null &&
       SignatureResponseMessage !== t("Created-successfully")
     ) {
-      showMessage(SignatureResponseMessage, "success", setOpen);
+      show(SignatureResponseMessage, "success");
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [SignatureResponseMessage]);
@@ -4816,6 +4800,7 @@ const DataRoom = () => {
       )}
       {/* Global snackbar notification */}
       
+    {SnackBar}
     </>
   );
 };

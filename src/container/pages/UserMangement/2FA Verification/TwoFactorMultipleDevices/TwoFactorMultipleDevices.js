@@ -22,7 +22,7 @@ import Cookies from "js-cookie";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const TwoFactorMultipleDevices = () => {
   const AuthreducerAuthenticateAFAResponse = useSelector(
     (state) => state.Authreducer.AuthenticateAFAResponse
@@ -34,11 +34,7 @@ const TwoFactorMultipleDevices = () => {
 
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [currentDevice, setCurrentDevice] = useState([
     {
@@ -106,7 +102,7 @@ const TwoFactorMultipleDevices = () => {
         localStorage.setItem("LoginFlowPageRoute", 15);
         dispatch(LoginFlowRoutes(15));
       } else {
-        showMessage(t("0-device-not-found"), "error", setOpen);
+        show(t("0-device-not-found"), "error");
       }
     } else {
       let Data = {
@@ -429,6 +425,7 @@ const TwoFactorMultipleDevices = () => {
         </Row>
       </Container>
       
+    {SnackBar}
     </>
   );
 };

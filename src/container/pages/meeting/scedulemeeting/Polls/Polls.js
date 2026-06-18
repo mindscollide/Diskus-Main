@@ -50,7 +50,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import EditDeletePollConfirm from "./EditDeletePollConfirm/EditDeletePollConfirm";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 const Polls = ({
   setSceduleMeeting,
@@ -98,11 +98,7 @@ const Polls = ({
   console.log(currentMeeting, "currentMeetingcurrentMeeting");
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
 
@@ -581,7 +577,7 @@ const Polls = ({
       ResponseMessage !== t("Record-not-found") &&
       ResponseMessage !== ""
     ) {
-      showMessage(ResponseMessage, "error", setOpen);
+      show(ResponseMessage, "error");
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -768,6 +764,7 @@ const Polls = ({
         )}
         
       </section>
+    {SnackBar}
     </>
   );
 };

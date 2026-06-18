@@ -64,7 +64,7 @@ import {
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Organizers = ({
@@ -130,11 +130,7 @@ const Organizers = ({
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   useEffect(() => {
     let Data = { MeetingID: currentMeeting };
@@ -638,7 +634,7 @@ const Organizers = ({
     );
     if (recordToDelete.isPrimaryOrganizer) {
       if (findisPrimary.length === 1) {
-        showMessage(t("Primary-organizer-doesn't-deleted"), "error", setOpen);
+        show(t("Primary-organizer-doesn't-deleted"), "error");
       } else {
       }
     } else {
@@ -777,11 +773,7 @@ const Organizers = ({
       );
       setIsEdit(false);
     } else {
-      showMessage(
-        t("At-least-one-primary-organizer-is-required"),
-        "error",
-        setOpen,
-      );
+      show(t("At-least-one-primary-organizer-is-required"), "error");
     }
   };
 
@@ -903,17 +895,17 @@ const Organizers = ({
       MeetingOrganizersReducer.ResponseMessage ===
       "Organizers-saved-successfully"
     ) {
-      showMessage(t("Organizers-saved-successfully"), "error", setOpen);
+      show(t("Organizers-saved-successfully"), "error");
     } else if (
       MeetingOrganizersReducer.ResponseMessage ===
       "Notification-sent-successfully"
     ) {
-      showMessage(t("Notification-sent-successfully"), "error", setOpen);
+      show(t("Notification-sent-successfully"), "error");
     } else if (
       MeetingOrganizersReducer.ResponseMessage ===
       "Notification-not-sent-successfully"
     ) {
-      showMessage(t("Notification-not-sent-successfully"), "error", setOpen);
+      show(t("Notification-not-sent-successfully"), "error");
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
@@ -1110,6 +1102,7 @@ const Organizers = ({
           prevFlag={prevFlag}
         />
       )}
+    {SnackBar}
     </>
   );
 };

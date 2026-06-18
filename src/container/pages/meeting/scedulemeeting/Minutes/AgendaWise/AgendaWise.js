@@ -33,7 +33,7 @@ import {
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const AgendaWise = ({
@@ -50,11 +50,7 @@ const AgendaWise = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [isEdit, setisEdit] = useState(false);
   const [accordianExpand, setAccordianExpand] = useState(false);
   const [organizerID, setOrganizerID] = useState(0);
@@ -279,7 +275,7 @@ const AgendaWise = ({
       let size = true;
 
       if (fileAttachments.length > 4) {
-        showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-5-files"), "error");
         return;
       }
 
@@ -295,15 +291,11 @@ const AgendaWise = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-then-zero"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -433,7 +425,7 @@ const AgendaWise = ({
       }
 
       if (!isAgendaSelected) {
-        showMessage(t("Select-agenda"), "error", setOpen);
+        show(t("Select-agenda"), "error");
       }
     }
   };
@@ -733,7 +725,7 @@ const AgendaWise = ({
       ResponseMessage !== t("List-updated-successfully") &&
       ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
@@ -1177,6 +1169,7 @@ const AgendaWise = ({
       </Row>
 
       
+    {SnackBar}
     </section>
   );
 };

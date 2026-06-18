@@ -35,7 +35,7 @@ import {
 import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
 import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { MeetingContext } from "../../context/MeetingContext";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import crossicon from "../../assets/images/BlackCrossIconModals.svg";
 
@@ -197,11 +197,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     ExternalMeetingAttendees: [],
     MinutesOfMeeting: [],
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
@@ -1244,7 +1240,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage(t("Link-copied"), "success", setOpen);
+    show(t("Link-copied"), "success");
   };
 
   const joinMeetingCall = () => {
@@ -1339,7 +1335,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   useEffect(() => {
     if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
-      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      show(t("Could-not-join-call"), "Success");
       dispatch(clearMessegesVideoFeature(""));
     }
   }, [AgendaVideoResponseMessage]);
@@ -1898,6 +1894,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       </Container>
 
       {/* Max Component */}
+    {SnackBar}
     </>
   );
 };

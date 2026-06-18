@@ -25,7 +25,7 @@ import {
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 
 const ViewParticipantsDates = ({
   setViewProposeDatePoll,
@@ -43,11 +43,7 @@ const ViewParticipantsDates = ({
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -393,11 +389,7 @@ const ViewParticipantsDates = ({
         SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
       );
     } else if (!selectAll) {
-      showMessage(
-        t("Please-select-any-of-the-given-options"),
-        "error",
-        setOpen
-      );
+      show(t("Please-select-any-of-the-given-options"), "error");
     }
   };
 
@@ -647,6 +639,7 @@ const ViewParticipantsDates = ({
         </Col>
       </Row>
       
+    {SnackBar}
     </section>
   );
 };

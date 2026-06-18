@@ -25,7 +25,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { saveCommitteeDocumentsApi } from "../../../../store/actions/Committee_actions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
@@ -86,11 +86,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let creatorID = JSON.parse(localStorage.getItem("userID"));
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // for initial State
   const [createCommitteeDetails, setCreateCommitteeDetails] = useState({
@@ -221,11 +217,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       (roleOpt) => roleOpt.label === "Regular Members"
     );
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      showMessage(
-        t("You-can-add-data-only-from-one-form-option-at-a-time"),
-        "error",
-        setOpen
-      );
+      show(t("You-can-add-data-only-from-one-form-option-at-a-time"), "error");
       setAttendees([]);
       setTaskAssignedTo(0);
       setCommitteeMembersRolesVal(findRegularRole);
@@ -274,7 +266,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             name: "",
           });
         } else {
-          showMessage(t("User-already-exist"), "error", setOpen);
+          show(t("User-already-exist"), "error");
           setAttendees([]);
           setTaskAssignedTo(0);
           setCommitteeMembersRolesVal(findRegularRole);
@@ -286,11 +278,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           });
         }
       } else {
-        showMessage(
-          t("Please-select-committee-member-type-also"),
-          "error",
-          setOpen
-        );
+        show(t("Please-select-committee-member-type-also"), "error");
       }
     } else if (attendees.length > 0) {
       let check = false;
@@ -303,7 +291,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
       });
       if (check === true) {
-        showMessage(t("User-already-exist"), "error", setOpen);
+        show(t("User-already-exist"), "error");
         setAttendees([]);
         setCommitteeMembersRolesVal(findRegularRole);
 
@@ -344,15 +332,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             });
           });
         } else {
-          showMessage(
-            t("Please-select-committee-member-type-also"),
-            "error",
-            setOpen
-          );
+          show(t("Please-select-committee-member-type-also"), "error");
         }
       }
     } else {
-      showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
+      show(t("Please-select-atleast-one-members"), "error");
       setAttendees([]);
       setTaskAssignedTo(0);
       setCommitteeMembersRolesVal(findRegularRole);
@@ -450,11 +434,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       createCommitteeDetails.CreatorID !== 0
     ) {
       if (!checkGroupMembers(createCommitteeDetails.CommitteeMembers)) {
-        showMessage(
-          t("Please-add-atleast-one-executive-member"),
-          "error",
-          setOpen
-        );
+        show(t("Please-add-atleast-one-executive-member"), "error");
       } else {
         setErrorBar(false);
         let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -475,7 +455,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       }
     } else {
       setErrorBar(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
   const documentsUploadCall = async (folderID) => {
@@ -547,7 +527,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
 
@@ -564,15 +544,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1722,6 +1698,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setShowModal={setCloseConfirmationBox}
       />
       
+    {SnackBar}
     </>
   );
 };

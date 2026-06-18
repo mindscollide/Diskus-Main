@@ -14,7 +14,7 @@ import Group_Icon from "../../assets/images/Path 636.png";
 import { useDispatch, useSelector } from "react-redux";
 import { assignGroups } from "../../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 const ModalMarketingTeamCommittee = ({
   ModalTitle,
   MarketingTeam,
@@ -32,11 +32,7 @@ const ModalMarketingTeamCommittee = ({
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   useEffect(() => {
     if (mapgroupsData !== null && mapgroupsData !== undefined) {
@@ -101,7 +97,7 @@ const ModalMarketingTeamCommittee = ({
     let findIndexGroupID = data.findIndex((data) => data.GroupID === groupID);
     if (groupID !== 0 && committeeID !== 0) {
       if (findIndexGroupID !== -1) {
-        showMessage(t("This-group-already-exist-is-list"), "error", setOpen);
+        show(t("This-group-already-exist-is-list"), "error");
         setGroupName("");
         setGroupID(0);
       } else {
@@ -329,6 +325,7 @@ const ModalMarketingTeamCommittee = ({
         />
       </Container>
       
+    {SnackBar}
     </>
   );
 };

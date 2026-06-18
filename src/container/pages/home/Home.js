@@ -64,7 +64,7 @@ import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import Stats from "../../NewDashboardLayout/Stats/Stats";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -87,11 +87,7 @@ const Home = () => {
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
   const [upComingEvents, setUpComingEvents] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   //For Calendar
   const dispatch = useDispatch();
@@ -792,11 +788,7 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(Authreducer.VerifyOTPEmailResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -810,11 +802,7 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(Authreducer.OrganizationCreateResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -822,11 +810,7 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.CreatePasswordResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(Authreducer.CreatePasswordResponseMessage, "success");
 
       dispatch(cleareMessage());
     } else if (
@@ -834,22 +818,14 @@ const Home = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(Authreducer.GetSelectedPackageResponseMessage, "success");
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.EmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      notify(Authreducer.EmailValidationResponseMessage, "success");
 
       dispatch(cleareMessage());
     }
@@ -994,7 +970,7 @@ const Home = () => {
           }
         });
       } else {
-        showMessage(t("No-events-available-on-this-date"), "error", setOpen);
+        notify(t("No-events-available-on-this-date"), "error");
       }
     }
   };
@@ -1187,6 +1163,7 @@ const Home = () => {
       ) : showTodo ? (
         <ModalToDoList showModal={showTodo} setShow={setShowTodo} />
       ) : null}
+    {SnackBar}
     </>
   );
 };

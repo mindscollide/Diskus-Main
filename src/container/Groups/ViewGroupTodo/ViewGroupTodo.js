@@ -6,7 +6,7 @@ import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 import {
   ViewToDoList,
@@ -96,11 +96,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
   const [statusOptions, setStatusOptions] = useState([]);
   const [taskTitleSort, setTaskTitleSort] = useState(null);
   const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
@@ -671,7 +667,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         toDoListReducerResponseMessage !== "" &&
         toDoListReducerResponseMessage !== t("No-records-found")
       ) {
-        showMessage(toDoListReducerResponseMessage, "success", setOpen);
+        notify(toDoListReducerResponseMessage, "success");
 
         dispatch(clearResponce());
       } else if (
@@ -679,7 +675,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         assigneesResponseMessage !== "" &&
         assigneesResponseMessage !== t("No-records-found")
       ) {
-        showMessage(assigneesResponseMessage, "success", setOpen);
+        notify(assigneesResponseMessage, "success");
 
         dispatch(clearResponseMessage());
       } else {
@@ -719,11 +715,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         getTodosStatusResponseMessage !== "" &&
         getTodosStatusResponseMessage !== t("No-records-found")
       ) {
-        showMessage(
-          assigneesgetTodosStatus.ResponseMessage,
-          "success",
-          setOpen
-        );
+        notify(assigneesgetTodosStatus.ResponseMessage, "success");
 
         dispatch(cleareMessage());
       } else if (
@@ -732,7 +724,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         assigneesUpdateTodoStatusMessage !== "" &&
         assigneesUpdateTodoStatusMessage !== t("No-records-found")
       ) {
-        showMessage(assigneesUpdateTodoStatusMessage, "success", setOpen);
+        notify(assigneesUpdateTodoStatusMessage, "success");
 
         dispatch(cleareMessage());
       } else if (
@@ -741,7 +733,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         getTodoStatusUpdateTodoStatus !== "" &&
         getTodoStatusUpdateTodoStatus !== t("No-records-found")
       ) {
-        showMessage(getTodoStatusUpdateTodoStatus, "success", setOpen);
+        notify(getTodoStatusUpdateTodoStatus, "success");
 
         dispatch(cleareMessage());
       } else {
@@ -835,6 +827,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
+    {SnackBar}
     </>
   );
 };

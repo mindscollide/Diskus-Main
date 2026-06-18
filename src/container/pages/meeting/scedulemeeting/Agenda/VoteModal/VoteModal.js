@@ -32,7 +32,7 @@ import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
 import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 
 const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const { t } = useTranslation();
@@ -52,11 +52,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     ""
   );
   const [addOptions, setAddOptions] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [errorShow, setErrorShow] = useState(false);
 
   const [agendaDetails, setAgendaDetails] = useState({
@@ -126,7 +122,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       setAddOptions(false);
       setVoteAnswerValue("");
     } else {
-      showMessage(t("Cannot-add-option-with-same-name"), "error", setOpen);
+      show(t("Cannot-add-option-with-same-name"), "error");
     }
   };
 
@@ -558,15 +554,11 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         dispatch(GetCurrentAgendaDetails([]));
         dispatch(showVoteAgendaModal(false));
       } else {
-        showMessage(
-          t("Voting-options-should-be-2-or-more-than-2"),
-          "error",
-          setOpen
-        );
+        show(t("Voting-options-should-be-2-or-more-than-2"), "error");
       }
     } else {
       setErrorShow(true);
-      showMessage(t("Required-fields-should-not-be-empty"), "error", setOpen);
+      show(t("Required-fields-should-not-be-empty"), "error");
     }
   };
 
@@ -969,6 +961,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         }
       />
       
+    {SnackBar}
     </section>
   );
 };
