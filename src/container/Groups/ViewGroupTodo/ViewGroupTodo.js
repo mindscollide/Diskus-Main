@@ -823,7 +823,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       </div>
       {show ? (
         <ModalToDoList
-          show={show}
+          showModal={show}
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}

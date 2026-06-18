@@ -99,8 +99,7 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
-import { RecordCircle } from "react-bootstrap-icons";
-import { showMessage } from "../../../../elements/snack_bar/utill";
+import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -123,6 +122,7 @@ const VideoCallNormalHeader = ({
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+  const [show, SnackBar] =useSnackbar()
 
   const {
     editorRole,
@@ -1578,7 +1578,7 @@ const VideoCallNormalHeader = ({
       MeetingId: Number(currentMeetingID),
     };
     dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
-    showMessage(t("Link-copied"), "success", setOpen);
+    show(t("Link-copied"), "success");
   };
 
   useEffect(() => {
@@ -2676,6 +2676,7 @@ const VideoCallNormalHeader = ({
           </div>
         </>
       </>
+      {SnackBar}
     </>
   );
 };

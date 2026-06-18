@@ -33,7 +33,6 @@ import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../context/MeetingContext";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
@@ -426,15 +425,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   };
 
-  useEffect(() => {
-    if (
-      postAssigneeCommentsResponseMessege !== "" &&
-      postAssigneeCommentsResponseMessege !== "Comment added successfully"
-    ) {
-      showMessage(postAssigneeCommentsResponseMessege, "error", setOpen);
-    }
-    dispatch(HideNotificationTodoComment());
-  }, [postAssigneeCommentsResponseMessege]);
+
 
   const handleClose = () => {
     dispatch(emptyCommentState());

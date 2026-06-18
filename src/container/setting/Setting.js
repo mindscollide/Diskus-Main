@@ -13,24 +13,15 @@ import {
 import { getUserSetting } from "../../store/actions/GetUserSetting";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 const Organization = () => {
   const settingReducerUserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData
-  );
-
-  const userSettingsResponseMessagesData = useSelector(
-    (state) => state.settingReducer.UpdateUserSettingResponseMessage
+    (state) => state.settingReducer.UserProfileData,
   );
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+
   const [organizationStates, setOrganizationStates] = useState({
     EmailOnNewMeeting: false,
     EmailOnEditMeeting: false,
@@ -247,7 +238,7 @@ const Organization = () => {
   };
 
   const ChangePushNotificationWhenCommitteeIsDissolvedorArchived = (
-    checked
+    checked,
   ) => {
     setOrganizationStates({
       ...organizationStates,
@@ -305,7 +296,7 @@ const Organization = () => {
   };
 
   const ChangePushNotificationWhenWhenResolutionIsCancelledAfterCirculation = (
-    checked
+    checked,
   ) => {
     setOrganizationStates({
       ...organizationStates,
@@ -348,7 +339,7 @@ const Organization = () => {
   const updateOrganizationLevelSettings = async () => {
     if (signUpCodeToken !== "") {
       await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, organizationStates, t)
+        getGoogleValidToken(navigate, signUpCodeToken, organizationStates, t),
       );
       setSignUpCodeToken("");
     } else {
@@ -361,15 +352,15 @@ const Organization = () => {
     if (userProfileData !== null && userProfileData !== undefined) {
       localStorage.setItem(
         "officeEventColor",
-        userProfileData.officeEventColor
+        userProfileData.officeEventColor,
       );
       localStorage.setItem(
         "googleEventColor",
-        userProfileData.googleEventColor
+        userProfileData.googleEventColor,
       );
       localStorage.setItem(
         "diskusEventColor",
-        userProfileData.diskusEventColor
+        userProfileData.diskusEventColor,
       );
 
       let settingData = {
@@ -511,23 +502,11 @@ const Organization = () => {
     }
   };
 
-  useEffect(() => {
-    if (
-      userSettingsResponseMessagesData !== "" &&
-      userSettingsResponseMessagesData !== ""
-    ) {
-      showMessage(userSettingsResponseMessagesData, "success", setOpen);
-      dispatch(updateUserMessageCleare());
-    } else {
-      dispatch(updateUserMessageCleare());
-    }
-  }, [userSettingsResponseMessagesData]);
-
   return (
     <>
       <Container>
         <Col sm={6} xs={12}>
-          <Row className="">
+          <Row className=''>
             <Col lg={12} md={12} sm={12} xs={12}>
               <label className={styles["settingPage_title"]}>
                 {t("Configurations")}
@@ -535,14 +514,13 @@ const Organization = () => {
             </Col>
           </Row>
           <Col className={styles["OrganizerlevelSetting"]}>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Is-2fa-verification")}</label>
               </Col>
               <Col
@@ -550,10 +528,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="Is2FAVerification"
+                  name='Is2FAVerification'
                   checkedValue={organizationStates.Is2FAVerification || false}
                   onChange={Is2FAVerificationHandle}
                 />
@@ -563,14 +540,13 @@ const Organization = () => {
             {/* New Data Started Inserting  */}
             {roleID !== 1 && roleID !== 2 ? (
               <>
-                <Row className="mt-3 FontArabicRegular">
+                <Row className='mt-3 FontArabicRegular'>
                   <Col
                     lg={10}
                     md={10}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-start fw-900"
-                  >
+                    className='d-flex justify-content-start fw-900'>
                     <label>{t("Diskus-color-theme")}</label>
                   </Col>
                   <Col
@@ -578,11 +554,10 @@ const Organization = () => {
                     md={2}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <input
-                      type="color"
-                      className="m-0 p-0 circle-color-picker"
+                      type='color'
+                      className='m-0 p-0 circle-color-picker'
                       value={organizationStates.DiskusEventColor}
                       onChange={(e) =>
                         setOrganizationStates({
@@ -599,14 +574,13 @@ const Organization = () => {
               <></>
             )}
 
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-on-edit-meeting")}</label>
               </Col>
               <Col
@@ -614,24 +588,22 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailOnEditMeeting"
+                  name='EmailOnEditMeeting'
                   checkedValue={organizationStates.EmailOnEditMeeting}
                   onChange={emailOnEditMeeting}
                 />
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-on-cancel-or-delete-meeting")}</label>
               </Col>
               <Col
@@ -639,10 +611,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailOnCancelledMeeting"
+                  name='EmailOnCancelledMeeting'
                   checkedValue={
                     organizationStates.EmailOnCancelledorDeleteMeeting
                   }
@@ -651,14 +622,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-added-to-committee")}</label>
               </Col>
               <Col
@@ -666,10 +636,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenAddedToCommittee"
+                  name='EmailWhenAddedToCommittee'
                   checkedValue={
                     organizationStates.EmailWhenAddedToCommittee || false
                   }
@@ -678,14 +647,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-added-to-group")}</label>
               </Col>
               <Col
@@ -693,10 +661,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenAddedToGroup"
+                  name='EmailWhenAddedToGroup'
                   checkedValue={
                     organizationStates.EmailWhenAddedToGroup || false
                   }
@@ -705,14 +672,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Email-when-committee-is-dissolved-or-archived")}
                 </label>
@@ -722,10 +688,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenCommitteeIsDissolvedorArchived"
+                  name='EmailWhenCommitteeIsDissolvedorArchived'
                   checkedValue={
                     organizationStates.EmailWhenCommitteeIsDissolvedorArchived ||
                     false
@@ -735,14 +700,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-committee-is-inActive")}</label>
               </Col>
               <Col
@@ -750,10 +714,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenCommitteeIsInActive"
+                  name='EmailWhenCommitteeIsInActive'
                   checkedValue={
                     organizationStates.EmailWhenCommitteeIsInActive || false
                   }
@@ -762,14 +725,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-group-is-closed-or-archived")}</label>
               </Col>
               <Col
@@ -777,10 +739,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenGroupIsClosedorArchived"
+                  name='EmailWhenGroupIsClosedorArchived'
                   checkedValue={
                     organizationStates.EmailWhenGroupIsClosedorArchived || false
                   }
@@ -789,14 +750,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-group-is-inActive")}</label>
               </Col>
               <Col
@@ -804,10 +764,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenGroupIsInActive"
+                  name='EmailWhenGroupIsInActive'
                   checkedValue={
                     organizationStates.EmailWhenGroupIsInActive || false
                   }
@@ -816,14 +775,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-new-resolution-is-circulated")}</label>
               </Col>
               <Col
@@ -831,10 +789,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenNewResolutionIsCirculated"
+                  name='EmailWhenNewResolutionIsCirculated'
                   checkedValue={
                     organizationStates.EmailWhenNewResolutionIsCirculated ||
                     false
@@ -844,14 +801,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-removed-from-committee")}</label>
               </Col>
               <Col
@@ -859,10 +815,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenRemovedFromCommittee"
+                  name='EmailWhenRemovedFromCommittee'
                   checkedValue={
                     organizationStates.EmailWhenRemovedFromCommittee || false
                   }
@@ -871,14 +826,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-removed-from-group")}</label>
               </Col>
               <Col
@@ -886,10 +840,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenRemovedFromGroup"
+                  name='EmailWhenRemovedFromGroup'
                   checkedValue={
                     organizationStates.EmailWhenRemovedFromGroup || false
                   }
@@ -898,14 +851,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Email-when-resolution-is-cancelled-after-circulation")}
                 </label>
@@ -915,10 +867,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenResolutionIsCancelledAfterCirculation"
+                  name='EmailWhenResolutionIsCancelledAfterCirculation'
                   checkedValue={
                     organizationStates.EmailWhenResolutionIsCancelledAfterCirculation ||
                     false
@@ -930,14 +881,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-when-resolution-is-closed")}</label>
               </Col>
               <Col
@@ -945,10 +895,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailWhenResolutionIsClosed"
+                  name='EmailWhenResolutionIsClosed'
                   checkedValue={
                     organizationStates.EmailWhenResolutionIsClosed || false
                   }
@@ -957,14 +906,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Email-on-new-meeting")}</label>
               </Col>
               <Col
@@ -972,24 +920,22 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="EmailOnNewMeeting"
+                  name='EmailOnNewMeeting'
                   checkedValue={organizationStates.EmailOnNewMeeting}
                   onChange={emailOnNewMeeting}
                 />
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Push-notification-when-added-to-committee")}</label>
               </Col>
               <Col
@@ -997,10 +943,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenAddedToCommittee"
+                  name='PushNotificationWhenAddedToCommittee'
                   checkedValue={
                     organizationStates.PushNotificationWhenAddedToCommittee ||
                     false
@@ -1010,14 +955,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Push-notification-when-added-to-group")}</label>
               </Col>
               <Col
@@ -1025,10 +969,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenAddedToGroup"
+                  name='PushNotificationWhenAddedToGroup'
                   checkedValue={
                     organizationStates.PushNotificationWhenAddedToGroup || false
                   }
@@ -1037,17 +980,16 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t(
-                    "Push-notification-when-committee-is-dissolved-or-archived"
+                    "Push-notification-when-committee-is-dissolved-or-archived",
                   )}
                 </label>
               </Col>
@@ -1056,10 +998,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenCommitteeIsDissolvedorArchived"
+                  name='PushNotificationWhenCommitteeIsDissolvedorArchived'
                   checkedValue={
                     organizationStates.PushNotificationWhenCommitteeIsDissolvedorArchived ||
                     false
@@ -1071,14 +1012,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-when-committee-is-inActive")}
                 </label>
@@ -1088,10 +1028,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenCommitteeIsInActive"
+                  name='PushNotificationWhenCommitteeIsInActive'
                   checkedValue={
                     organizationStates.PushNotificationWhenCommitteeIsInActive ||
                     false
@@ -1101,14 +1040,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-when-group-is-closed-or-archived")}
                 </label>
@@ -1118,10 +1056,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenGroupIsClosedORArchived"
+                  name='PushNotificationWhenGroupIsClosedORArchived'
                   checkedValue={
                     organizationStates.PushNotificationWhenGroupIsClosedORArchived ||
                     false
@@ -1131,14 +1068,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-when-group-is-set-inactive")}
                 </label>
@@ -1148,10 +1084,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenGroupisSetInactive"
+                  name='PushNotificationWhenGroupisSetInactive'
                   checkedValue={
                     organizationStates.PushNotificationWhenGroupisSetInactive ||
                     false
@@ -1161,14 +1096,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-when-new-resolution-is-circulated")}
                 </label>
@@ -1178,10 +1112,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenNewResolutionIsCirculated"
+                  name='PushNotificationWhenNewResolutionIsCirculated'
                   checkedValue={
                     organizationStates.PushNotificationWhenNewResolutionIsCirculated ||
                     false
@@ -1191,14 +1124,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Push-notification-when-remove-from-group")}</label>
               </Col>
               <Col
@@ -1206,10 +1138,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenRemoveFromGroup"
+                  name='PushNotificationWhenRemoveFromGroup'
                   checkedValue={
                     organizationStates.PushNotificationWhenRemoveFromGroup ||
                     false
@@ -1219,14 +1150,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-when-removed-from-committee")}
                 </label>
@@ -1236,10 +1166,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenRemovedFromCommittee"
+                  name='PushNotificationWhenRemovedFromCommittee'
                   checkedValue={
                     organizationStates.PushNotificationWhenRemovedFromCommittee ||
                     false
@@ -1249,14 +1178,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-when-resolution-is-closed")}
                 </label>
@@ -1266,10 +1194,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenResolutionIsClosed"
+                  name='PushNotificationWhenResolutionIsClosed'
                   checkedValue={
                     organizationStates.PushNotificationWhenResolutionIsClosed ||
                     false
@@ -1279,17 +1206,16 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t(
-                    "Push-notification-when-when-resolution-is-cancelled-after-circulation"
+                    "Push-notification-when-when-resolution-is-cancelled-after-circulation",
                   )}
                 </label>
               </Col>
@@ -1298,10 +1224,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationWhenWhenResolutionIsCancelledAfterCirculation"
+                  name='PushNotificationWhenWhenResolutionIsCancelledAfterCirculation'
                   checkedValue={
                     organizationStates.PushNotificationWhenWhenResolutionIsCancelledAfterCirculation ||
                     false
@@ -1318,14 +1243,13 @@ const Organization = () => {
             roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3 FontArabicRegular">
+                <Row className='mt-3 FontArabicRegular'>
                   <Col
                     lg={10}
                     md={10}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-start fw-900"
-                  >
+                    className='d-flex justify-content-start fw-900'>
                     <label>{t("User-allow-google-calendar-synch")}</label>
                   </Col>
                   <Col
@@ -1333,10 +1257,9 @@ const Organization = () => {
                     md={2}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <Switch
-                      name="UserAllowGoogleCalendarSynch"
+                      name='UserAllowGoogleCalendarSynch'
                       checkedValue={
                         organizationStates.UserAllowGoogleCalendarSynch || false
                       }
@@ -1353,14 +1276,13 @@ const Organization = () => {
             roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3 FontArabicRegular">
+                <Row className='mt-3 FontArabicRegular'>
                   <Col
                     lg={9}
                     md={9}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-start fw-900"
-                  >
+                    className='d-flex justify-content-start fw-900'>
                     <label>{t("Google-calender-color")}</label>
                   </Col>
                   <Col
@@ -1368,11 +1290,10 @@ const Organization = () => {
                     md={3}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <input
-                      type="color"
-                      className="m-0 p-0 circle-color-picker"
+                      type='color'
+                      className='m-0 p-0 circle-color-picker'
                       value={organizationStates.GoogleEventColor}
                       onChange={(e) =>
                         setOrganizationStates({
@@ -1392,14 +1313,13 @@ const Organization = () => {
             roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3 FontArabicRegular">
+                <Row className='mt-3 FontArabicRegular'>
                   <Col
                     lg={10}
                     md={10}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-start fw-900"
-                  >
+                    className='d-flex justify-content-start fw-900'>
                     <label>{t("User-allow-microsoft-calendar-synch")}</label>
                   </Col>
                   <Col
@@ -1407,10 +1327,9 @@ const Organization = () => {
                     md={2}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <Switch
-                      name="UserAllowMicrosoftCalendarSynch"
+                      name='UserAllowMicrosoftCalendarSynch'
                       checkedValue={
                         organizationStates.UserAllowMicrosoftCalendarSynch ||
                         false
@@ -1429,14 +1348,13 @@ const Organization = () => {
             roleID !== 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3 FontArabicRegular">
+                <Row className='mt-3 FontArabicRegular'>
                   <Col
                     lg={9}
                     md={9}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-start fw-900"
-                  >
+                    className='d-flex justify-content-start fw-900'>
                     <label>{t("Microsoft-calender-color")}</label>
                   </Col>
                   <Col
@@ -1444,11 +1362,10 @@ const Organization = () => {
                     md={3}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end  "
-                  >
+                    className='d-flex justify-content-end  '>
                     <input
-                      type="color"
-                      className="m-0 p-0 circle-color-picker"
+                      type='color'
+                      className='m-0 p-0 circle-color-picker'
                       value={organizationStates.OfficeEventColor}
                       onChange={(e) =>
                         setOrganizationStates({
@@ -1467,14 +1384,13 @@ const Organization = () => {
             {/* New Data Ends */}
             <span className={styles["bottom-line"]}></span>
 
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Push-notification-on-new-meeting")}</label>
               </Col>
               <Col
@@ -1482,24 +1398,22 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationOnNewMeeting"
+                  name='PushNotificationOnNewMeeting'
                   checkedValue={organizationStates.PushNotificationOnNewMeeting}
                   onChange={pushNotificationOnNewMeeting}
                 />
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Push-notification-on-edit-meeting")}</label>
               </Col>
               <Col
@@ -1507,10 +1421,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationOnEditMeeting"
+                  name='PushNotificationOnEditMeeting'
                   checkedValue={
                     organizationStates.PushNotificationOnEditMeeting
                   }
@@ -1519,14 +1432,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>
                   {t("Push-notification-on-cancel-or-delete-meeting")}
                 </label>
@@ -1536,10 +1448,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="PushNotificationonCancelledORDeleteMeeting"
+                  name='PushNotificationonCancelledORDeleteMeeting'
                   checkedValue={
                     organizationStates.PushNotificationonCancelledORDeleteMeeting
                   }
@@ -1548,14 +1459,13 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3 FontArabicRegular">
+            <Row className='mt-3 FontArabicRegular'>
               <Col
                 lg={10}
                 md={10}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
+                className='d-flex justify-content-start fw-900'>
                 <label>{t("Show-notification-on-participant-joining")}</label>
               </Col>
               <Col
@@ -1563,10 +1473,9 @@ const Organization = () => {
                 md={2}
                 sm={12}
                 xs={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Switch
-                  name="ShowNotificationonparticipantJoining"
+                  name='ShowNotificationonparticipantJoining'
                   checkedValue={
                     organizationStates.ShowNotificationonparticipantJoining
                   }
@@ -1575,15 +1484,15 @@ const Organization = () => {
               </Col>
             </Row>
           </Col>
-          <Row className="my-2">
-            <Col sm={12} md={6} lg={6} className="d-flex justify-content-start">
+          <Row className='my-2'>
+            <Col sm={12} md={6} lg={6} className='d-flex justify-content-start'>
               <Button
                 className={styles["organization-level-resetBtn"]}
                 text={t("Reset")}
                 onClick={ResetUserConfigurationSetting}
               />
             </Col>
-            <Col sm={12} md={6} lg={6} className="d-flex justify-content-end">
+            <Col sm={12} md={6} lg={6} className='d-flex justify-content-end'>
               <Button
                 onClick={updateOrganizationLevelSettings}
                 className={styles["organization-level-updateBtn"]}
@@ -1593,7 +1502,6 @@ const Organization = () => {
           </Row>
         </Col>
       </Container>
-      
     </>
   );
 };

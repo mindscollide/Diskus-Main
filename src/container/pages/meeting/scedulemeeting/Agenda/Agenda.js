@@ -1022,44 +1022,6 @@ const Agenda = ({
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
 
   useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      showMessage(t("Record-saved"), "success", setOpen);
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      showMessage(t("Record-updated"), "success", setOpen);
-    } else if (
-      MeetingAgendaReducer.ResponseMessage ===
-      t("Agendas-imported-successfully")
-    ) {
-      showMessage(t("Agendas-imported-successfully"), "success", setOpen);
-    } else if (MeetingAgendaReducer.ResponseMessage === t("No-agendas-exist")) {
-      showMessage(t("No-agendas-exist"), "error", setOpen);
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-saved")) {
-      showMessage(
-        t("Agenda-voting-details-saved-successfully"),
-        "success",
-        setOpen,
-      );
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-updated")) {
-      showMessage(
-        t("Agenda-voting-details-updated-successfully"),
-        "success",
-        setOpen,
-      );
-    }
-    dispatch(clearResponseMessage(""));
-  }, [MeetingAgendaReducer.ResponseMessage]);
-
-  useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      typeof NewMeetingreducer.ResponseMessage === "string"
-    ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [NewMeetingreducer.ResponseMessage]);
-
-  useEffect(() => {
     if (
       MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== undefined &&
       MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== null

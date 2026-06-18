@@ -71,7 +71,6 @@ import {
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { sortTasksByDeadline } from "../../../commen/functions/utils";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 
 import ModalToDoList from "../../todolistModal/ModalToDoList";
@@ -397,27 +396,6 @@ const TodoList = () => {
     }
   }, [ToDoDetails, pendingUpdate]);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // EFFECT: Show snack-bar notification for status update messages
-  // FIX: original code had triple-redundant !== "" checks and three separate
-  // if/else branches for the same showMessage call.
-  // ─────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    const noRecord = t("No-records-found");
-    const msg =
-      ResponseMessageTodoStatusReducer ||
-      UpdateTodoStatusMessage ||
-      UpdateTodoStatus;
-
-    if (msg && msg !== noRecord) {
-      showMessage(msg, "success", setOpen);
-    }
-    dispatch(cleareMessage());
-  }, [
-    ResponseMessageTodoStatusReducer,
-    UpdateTodoStatusMessage,
-    UpdateTodoStatus,
-  ]); // eslint-disable-line
 
   // ─────────────────────────────────────────────────────────────────────────
   // HANDLERS
@@ -1082,7 +1060,7 @@ const TodoList = () => {
        */}
       {show && (
         <ModalToDoList
-          show={show}
+          showModal={show}
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}

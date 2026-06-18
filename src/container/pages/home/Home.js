@@ -1185,7 +1185,7 @@ const Home = () => {
           setViewFlagToDo={setTodoViewModal}
         />
       ) : showTodo ? (
-        <ModalToDoList show={showTodo} setShow={setShowTodo} />
+        <ModalToDoList showModal={showTodo} setShow={setShowTodo} />
       ) : null}
     </>
   );

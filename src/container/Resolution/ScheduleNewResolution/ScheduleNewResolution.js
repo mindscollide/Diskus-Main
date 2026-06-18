@@ -20,7 +20,6 @@ import {
   TextField,
   Button,
   Checkbox,
-  Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -32,7 +31,6 @@ import {
   getAllVotingMethods,
   getAllResolutionStatus,
   createResolution,
-  clearResponseMessage,
   createResolutionModal,
   uploadDocumentsResolutionApi,
   saveFilesResolutionApi,
@@ -55,14 +53,15 @@ import {
   timeforSend,
   timeforViewScheduleResolution,
 } from "../../../commen/functions/time_formatter";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../commen/functions/utils";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const ScheduleNewResolution = () => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [show, SnackBar] = useSnackbar();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const ResolutionReducergetAllCommitteesAndGroups = useSelector(
@@ -71,9 +70,7 @@ const ScheduleNewResolution = () => {
   const ResolutionReducerupdateResolutionDataroom = useSelector(
     (state) => state.ResolutionReducer.updateResolutionDataroom,
   );
-  const ResolutionReducerResponseMessage = useSelector(
-    (state) => state.ResolutionReducer.ResponseMessage,
-  );
+
   const ResolutionReducerGetAllVotingMethods = useSelector(
     (state) => state.ResolutionReducer.GetAllVotingMethods,
   );
@@ -81,17 +78,12 @@ const ScheduleNewResolution = () => {
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [votingMethods, setVotingMethods] = useState([]);
-  const [decision, setDecision] = useState({
+  const decision = {
     label: t("Decision-pending"),
     value: 1,
-  });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  };
+
   const [sendStatus, setsendStatus] = useState(0);
-  const [folderID, setFolderID] = useState(0);
   const [error, setError] = useState(false);
   const [voters, setVoters] = useState([]);
   const [nonVoter, setNonVoters] = useState([]);
@@ -101,7 +93,7 @@ const ScheduleNewResolution = () => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  const [reminderData, setReminderData] = useState([
+  const reminderData = [
     {
       label: "10 minutes before",
       value: 1,
@@ -126,7 +118,7 @@ const ScheduleNewResolution = () => {
       label: "7 days before",
       value: 6,
     },
-  ]);
+  ];
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: dateforSend(new Date(), 1),
     time: timeforSend(new Date()),
@@ -335,14 +327,10 @@ const ScheduleNewResolution = () => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(t("This-voter-already-exist"), "error", setOpen);
+                show(t("This-voter-already-exist"), "error");
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen,
-              );
+              show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
             }
           }
         } else if (voterInfo.type === 2) {
@@ -389,18 +377,10 @@ const ScheduleNewResolution = () => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("User-already-exist-voter-list"),
-                  "error",
-                  setOpen,
-                );
+                show(t("User-already-exist-voter-list"), "error");
               }
             } else {
-              showMessage(
-                t("User-already-exist-non-voter-list"),
-                "error",
-                setOpen,
-              );
+              show(t("User-already-exist-non-voter-list"), "error");
             }
           }
         } else if (voterInfo.type === 3) {
@@ -429,18 +409,10 @@ const ScheduleNewResolution = () => {
                 });
               }
             } else {
-              showMessage(
-                t("This-user-already-exist-in-voter-list"),
-                "error",
-                setOpen,
-              );
+              show(t("This-user-already-exist-in-voter-list"), "error");
             }
           } else {
-            showMessage(
-              t("This-voter-is-already-exist-in-non-voter-list"),
-              "error",
-              setOpen,
-            );
+            show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
           }
         }
       } catch (error) {
@@ -509,15 +481,14 @@ const ScheduleNewResolution = () => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
+                show(
                   t("This-voter-is-already-exist-in-non-voter-list"),
                   "error",
-                  setOpen,
                 );
                 console.log("user Already Non Voter List");
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              show(t("This-voter-already-exist"), "error");
             }
           }
         } else if (nonVoterInfo.type === 2) {
@@ -563,14 +534,13 @@ const ScheduleNewResolution = () => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
+                show(
                   t("This-voter-is-already-exist-in-non-voter-list"),
                   "error",
-                  setOpen,
                 );
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              show(t("This-voter-already-exist"), "error");
             }
           }
         } else if (nonVoterInfo.type === 3) {
@@ -598,14 +568,10 @@ const ScheduleNewResolution = () => {
                 });
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen,
-              );
+              show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
             }
           } else {
-            showMessage(t("This-voter-already-exist"), "error", setOpen);
+            show(t("This-voter-already-exist"), "error");
           }
         }
       } catch (error) {
@@ -763,7 +729,7 @@ const ScheduleNewResolution = () => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -859,7 +825,7 @@ const ScheduleNewResolution = () => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -880,7 +846,7 @@ const ScheduleNewResolution = () => {
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
 
@@ -896,15 +862,11 @@ const ScheduleNewResolution = () => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen,
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -992,14 +954,13 @@ const ScheduleNewResolution = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={GroupIcon}
-                        alt=""
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
+                        alt=''
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
@@ -1025,14 +986,13 @@ const ScheduleNewResolution = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={committeeicon}
-                        alt=""
-                        width="21.71px"
-                        height="18.61px"
-                        draggable="false"
+                        alt=''
+                        width='21.71px'
+                        height='18.61px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -1058,15 +1018,14 @@ const ScheduleNewResolution = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        alt=""
+                        alt=''
                         className={styles["UserProfilepic"]}
-                        width="18px"
-                        height="18px"
-                        draggable="false"
+                        width='18px'
+                        height='18px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -1120,22 +1079,10 @@ const ScheduleNewResolution = () => {
 
   useEffect(() => {
     if (ResolutionReducerupdateResolutionDataroom !== 0) {
-      setFolderID(ResolutionReducerupdateResolutionDataroom);
       let folderIDCreated = ResolutionReducerupdateResolutionDataroom;
       documentsUploadCall(folderIDCreated);
     }
   }, [ResolutionReducerupdateResolutionDataroom]);
-
-  useEffect(() => {
-    if (
-      ResolutionReducerResponseMessage !== "" &&
-      ResolutionReducerResponseMessage !== undefined &&
-      ResolutionReducerResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
-      dispatch(clearResponseMessage());
-    }
-  }, [ResolutionReducerResponseMessage]);
 
   // Get Voting Methods
   useEffect(() => {
@@ -1269,7 +1216,7 @@ const ScheduleNewResolution = () => {
       <section>
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <Row className="my-2">
+            <Row className='my-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Resolution_create_heading"]}>
                   {t("Schedule-new-resolution")}
@@ -1296,16 +1243,15 @@ const ScheduleNewResolution = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput resolution-search-input"
-                        >
+                          className='CreateMeetingInput resolution-search-input'>
                           <TextField
-                            applyClass="form-control2"
-                            type="text"
+                            applyClass='form-control2'
+                            type='text'
                             placeholder={t("Resolution-title") + "*"}
                             required={true}
                             value={createResolutionData.Title}
                             maxLength={300}
-                            name="ResolutionTitle"
+                            name='ResolutionTitle'
                             change={handleChange}
                           />
                         </Col>
@@ -1316,25 +1262,23 @@ const ScheduleNewResolution = () => {
                                 createResolutionData.Title === "" && error
                                   ? ` ${styles["errorMessage"]}`
                                   : `${styles["errorMessage_hidden"]}`
-                              }
-                            >
+                              }>
                               {t("Resolution-Title-is-required")}
                             </p>
                           </Col>
                         </Row>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         {/* Voting Methods */}
                         <Col
                           lg={6}
                           md={6}
                           sm={6}
-                          className="resolution-search-input FontArabicRegular"
-                        >
+                          className='resolution-search-input FontArabicRegular'>
                           <Select
-                            name="Participant"
+                            name='Participant'
                             placeholder={t("Voting-method") + "*"}
-                            className="select-voting-deadline"
+                            className='select-voting-deadline'
                             options={votingMethods}
                             isSearchable={false}
                             onChange={detailDropDownhandler}
@@ -1347,8 +1291,7 @@ const ScheduleNewResolution = () => {
                                     0 && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Voting-method-is-required")}
                               </p>
                             </Col>
@@ -1359,12 +1302,11 @@ const ScheduleNewResolution = () => {
                           lg={6}
                           md={6}
                           sm={6}
-                          className="resolution-search-input FontArabicRegular"
-                        >
+                          className='resolution-search-input FontArabicRegular'>
                           <Select
-                            name=""
+                            name=''
                             placeholder={t("Decision") + "*"}
-                            className="select-voting-deadline"
+                            className='select-voting-deadline'
                             defaultValue={{
                               label: decision.label,
                               value: decision.value,
@@ -1379,18 +1321,17 @@ const ScheduleNewResolution = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput FontArabicRegular "
-                        >
+                          className='CreateMeetingInput FontArabicRegular '>
                           <TextField
-                            applyClass="text-area-create-resolution"
-                            type="text"
+                            applyClass='text-area-create-resolution'
+                            type='text'
                             as={"textarea"}
-                            rows="4"
+                            rows='4'
                             placeholder={t("Notes-for-voters") + "*"}
                             value={createResolutionData.NotesToVoter}
                             required={true}
                             maxLength={500}
-                            name="ResolutionDescription"
+                            name='ResolutionDescription'
                             change={handleChange}
                           />
                           <Row>
@@ -1401,8 +1342,7 @@ const ScheduleNewResolution = () => {
                                   error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Notes-to-voters-is-required")}
                               </p>
                             </Col>
@@ -1410,7 +1350,7 @@ const ScheduleNewResolution = () => {
                         </Col>
                       </Row>
                       {/* Circulation Date Heading */}
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Circulation_heading"]}>
                             {t("Circulation-date")}
@@ -1418,33 +1358,32 @@ const ScheduleNewResolution = () => {
                           <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
-                      <Row className="mt-0">
+                      <Row className='mt-0'>
                         {/* Circulation Date */}
                         <Col
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <div className="datepicker align-items-center ">
+                          className='CreateMeetingReminder  '>
+                          <div className='datepicker align-items-center '>
                             <DatePicker
                               format={"DD/MM/YYYY"}
                               minDate={currentDate}
-                              placeholder="YYYY-MM-DD"
+                              placeholder='YYYY-MM-DD'
                               render={
                                 <InputIcon
-                                  placeholder="DD/MM/YYYY"
+                                  placeholder='DD/MM/YYYY'
                                   className={styles["Resolution_datePicker"]}
                                 />
                               }
                               editable={false}
-                              className="datePickerTodoCreate2"
+                              className='datePickerTodoCreate2'
                               onOpenPickNewDate={true}
                               containerClassName={
                                 styles["datePicker_Container"]
                               }
-                              inputMode=""
-                              name="circulation"
+                              inputMode=''
+                              name='circulation'
                               value={circulationDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
@@ -1458,8 +1397,7 @@ const ScheduleNewResolution = () => {
                                   circulationDateTime.date === "" && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Circulation-date-is-required")}
                               </p>
                             </Col>
@@ -1470,22 +1408,21 @@ const ScheduleNewResolution = () => {
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
-                        >
+                          className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
                           {/* Circualtion Time */}
 
                           <DatePicker
-                            arrowClassName="arrowClass"
-                            containerClassName="containerResolutionTimePicker"
-                            className="timePicker"
+                            arrowClassName='arrowClass'
+                            containerClassName='containerResolutionTimePicker'
+                            className='timePicker'
                             disableDayPicker
-                            inputClass="inputTImeMeeting"
+                            inputClass='inputTImeMeeting'
                             calendar={calendarValue}
                             locale={localValue}
-                            format="hh:mm A"
+                            format='hh:mm A'
                             editable={false}
                             plugins={[
-                              <TimePicker hideSeconds position="bottom" />,
+                              <TimePicker hideSeconds position='bottom' />,
                             ]}
                             render={<CustomInput />}
                             value={circulationDateTime.timeCirculationforView}
@@ -1500,8 +1437,7 @@ const ScheduleNewResolution = () => {
                                   circulationDateTime.time === "" && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Circulation-time-is-required")}
                               </p>
                             </Col>
@@ -1509,27 +1445,25 @@ const ScheduleNewResolution = () => {
                         </Col>
                       </Row>
                       {/* Voting Deadline */}
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <span
                             className={
                               styles["Voting_deadline_Create_resolution"]
-                            }
-                          >
+                            }>
                             {t("Voting-deadline")}
                           </span>
                           <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
-                      <Row className="mt-0">
+                      <Row className='mt-0'>
                         {/* Voting Date */}
                         <Col
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
-                        >
-                          <div className="datepicker align-items-center ">
+                          className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
+                          <div className='datepicker align-items-center '>
                             <DatePicker
                               format={"DD/MM/YYYY"}
                               minDate={
@@ -1537,21 +1471,21 @@ const ScheduleNewResolution = () => {
                                   ? dateformatYYYYMMDD(circulationDateTime.date)
                                   : currentDate
                               }
-                              placeholder="DD/MM/YYYY"
+                              placeholder='DD/MM/YYYY'
                               render={
                                 <InputIcon
-                                  placeholder="DD/MM/YYYY"
+                                  placeholder='DD/MM/YYYY'
                                   className={styles["Resolution_datePicker"]}
                                 />
                               }
                               editable={false}
-                              className="datePickerTodoCreate2"
+                              className='datePickerTodoCreate2'
                               onOpenPickNewDate={true}
                               containerClassName={
                                 styles["datePicker_Container"]
                               }
-                              inputMode=""
-                              name="voting"
+                              inputMode=''
+                              name='voting'
                               value={votingDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
@@ -1565,8 +1499,7 @@ const ScheduleNewResolution = () => {
                                   votingDateTime.date === "" && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Voting-deadline-date-is-required")}
                               </p>
                             </Col>
@@ -1577,17 +1510,16 @@ const ScheduleNewResolution = () => {
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
-                        >
+                          className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
                           <DatePicker
-                            arrowClassName="arrowClass"
-                            containerClassName="containerResolutionTimePicker"
-                            className="timePicker"
+                            arrowClassName='arrowClass'
+                            containerClassName='containerResolutionTimePicker'
+                            className='timePicker'
                             disableDayPicker
-                            inputClass="inputTImeMeeting"
+                            inputClass='inputTImeMeeting'
                             calendar={calendarValue}
                             locale={localValue}
-                            format="hh:mm A"
+                            format='hh:mm A'
                             editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
@@ -1601,8 +1533,7 @@ const ScheduleNewResolution = () => {
                                   votingDateTime.time === "" && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Voting-deadline-time-is-required")}
                               </p>
                             </Col>
@@ -1610,27 +1541,25 @@ const ScheduleNewResolution = () => {
                         </Col>
                       </Row>
                       {/* Decision Deadline */}
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <span
                             className={
                               styles["decision_annoucement_Createresoulution"]
-                            }
-                          >
+                            }>
                             {t("Decision-announcement")}
                           </span>
                           <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
-                      <Row className="mt-0">
+                      <Row className='mt-0'>
                         {/* Decision Date */}
                         <Col
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
-                        >
-                          <div className="datepicker align-items-center ">
+                          className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
+                          <div className='datepicker align-items-center '>
                             <DatePicker
                               format={"DD/MM/YYYY"}
                               minDate={
@@ -1638,21 +1567,21 @@ const ScheduleNewResolution = () => {
                                   ? dateformatYYYYMMDD(votingDateTime.date)
                                   : currentDate
                               }
-                              placeholder="DD/MM/YYYY"
+                              placeholder='DD/MM/YYYY'
                               render={
                                 <InputIcon
-                                  placeholder="DD/MM/YYYY"
+                                  placeholder='DD/MM/YYYY'
                                   className={styles["Resolution_datePicker"]}
                                 />
                               }
                               editable={false}
-                              className="datePickerTodoCreate2"
+                              className='datePickerTodoCreate2'
                               onOpenPickNewDate={true}
                               containerClassName={
                                 styles["datePicker_Container"]
                               }
-                              inputMode=""
-                              name="decision"
+                              inputMode=''
+                              name='decision'
                               value={decisionDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
@@ -1666,8 +1595,7 @@ const ScheduleNewResolution = () => {
                                   decisionDateTime.date === "" && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Decision-announcement-date-is-required")}
                               </p>
                             </Col>
@@ -1678,17 +1606,16 @@ const ScheduleNewResolution = () => {
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
-                        >
+                          className='CreateMeetingReminder resolution-search-input FontArabicRegular '>
                           <DatePicker
-                            arrowClassName="arrowClass"
-                            containerClassName="containerResolutionTimePicker"
-                            className="timePicker"
+                            arrowClassName='arrowClass'
+                            containerClassName='containerResolutionTimePicker'
+                            className='timePicker'
                             disableDayPicker
-                            inputClass="inputTImeMeeting"
+                            inputClass='inputTImeMeeting'
                             calendar={calendarValue}
                             locale={localValue}
-                            format="hh:mm A"
+                            format='hh:mm A'
                             editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
@@ -1702,8 +1629,7 @@ const ScheduleNewResolution = () => {
                                   decisionDateTime.time === "" && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Decision-announcement-time-is-required")}
                               </p>
                             </Col>
@@ -1711,7 +1637,7 @@ const ScheduleNewResolution = () => {
                         </Col>
                       </Row>
                       {/* Reminder Frequency */}
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Reminder"]}>
                             {t("Reminder-frequency")}
@@ -1719,20 +1645,19 @@ const ScheduleNewResolution = () => {
                           <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
-                      <Row className="mt-0">
+                      <Row className='mt-0'>
                         {/* Reminder List */}
                         <Col
                           lg={6}
                           md={6}
                           sm={12}
-                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height FontArabicMedium "
-                        >
+                          className='CreateMeetingReminder resolution-search-input select-dropdowns-height FontArabicMedium '>
                           <Select
-                            name="Participant"
+                            name='Participant'
                             placeholder={t("Time")}
-                            className="select-voting-deadline"
+                            className='select-voting-deadline'
                             styles={customStyles}
-                            menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
+                            menuPlacement='top' // Set menuPlacement to 'top' to open the dropdown upwards
                             menuPortalTarget={document.body}
                             options={reminderData}
                             onChange={ReminderChangeHandler}
@@ -1745,33 +1670,30 @@ const ScheduleNewResolution = () => {
                                     0 && error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
-                                }
-                              >
+                                }>
                                 {t("Reminder-frequency-is-required")}
                               </p>
                             </Col>
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           className={
                             styles["Schedule_resolution_checkboxalign"]
-                          }
-                        >
+                          }>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
-                            >
+                              className='UpdateCheckbox  d-flex justify-content-start FontArabicRegular'>
                               <Checkbox
-                                className="SearchCheckbox "
-                                name="IsChat"
+                                className='SearchCheckbox '
+                                name='IsChat'
                                 checked={
                                   createResolutionData.IsResolutionPublic
                                 }
@@ -1780,8 +1702,7 @@ const ScheduleNewResolution = () => {
                                 }
                                 label2={t("Make-resolution-public")}
                                 onChange={handleChangeChecker}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
+                                classNameDiv='checkboxParentClass'></Checkbox>
                             </Col>
                           </Row>
                         </Col>
@@ -1791,8 +1712,7 @@ const ScheduleNewResolution = () => {
                       lg={1}
                       md={1}
                       sm={false}
-                      className="d-flex justify-content-center"
-                    >
+                      className='d-flex justify-content-center'>
                       <span className={styles["line_createresolution"]}></span>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
@@ -1801,8 +1721,7 @@ const ScheduleNewResolution = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-start gap-3"
-                        >
+                          className='d-flex justify-content-start gap-3'>
                           <Button
                             text={t("Voters")}
                             className={
@@ -1831,7 +1750,7 @@ const ScheduleNewResolution = () => {
                                 <Col lg={5} md={5} sm={5}>
                                   <Select
                                     placeholder={`${t("Add-members")}*`}
-                                    className="mt-3"
+                                    className='mt-3'
                                     isSearchable={true}
                                     value={
                                       voterInfo.value === 0 ? null : voterInfo
@@ -1852,8 +1771,7 @@ const ScheduleNewResolution = () => {
                                           voters.length === 0 && error
                                             ? ` ${styles["errorMessage"]}`
                                             : `${styles["errorMessage_hidden"]}`
-                                        }
-                                      >
+                                        }>
                                         {t("At-least-add-one-voter")}
                                       </p>
                                     </Col>
@@ -1864,11 +1782,10 @@ const ScheduleNewResolution = () => {
                                   lg={5}
                                   md={5}
                                   sm={5}
-                                  className="CreateMeetingInput resolution-search-input "
-                                >
+                                  className='CreateMeetingInput resolution-search-input '>
                                   <TextField
-                                    applyClass="text-area-create-group"
-                                    type="text"
+                                    applyClass='text-area-create-group'
+                                    type='text'
                                     placeholder={`${t("Email")}*`}
                                     required={true}
                                     value={emailValue}
@@ -1889,16 +1806,15 @@ const ScheduleNewResolution = () => {
                                 </Col>
                               </Row>
 
-                              <Row className="mt-1">
+                              <Row className='mt-1'>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
                                   className={
                                     styles["scroll-bar-Create-resolution"]
-                                  }
-                                >
-                                  <Row className="mt-2">
+                                  }>
+                                  <Row className='mt-2'>
                                     {votersForView.length > 0
                                       ? votersForView.map((data, index) => {
                                           return (
@@ -1916,16 +1832,16 @@ const ScheduleNewResolution = () => {
                                                   Icon={
                                                     <img
                                                       src={CrossIcon}
-                                                      width="18px"
-                                                      height="18px"
-                                                      alt=""
+                                                      width='18px'
+                                                      height='18px'
+                                                      alt=''
                                                       onClick={() =>
                                                         removeUserForVoter(
                                                           data.userID,
                                                           data.userName,
                                                         )
                                                       }
-                                                      draggable="false"
+                                                      draggable='false'
                                                     />
                                                   }
                                                 />
@@ -1944,7 +1860,7 @@ const ScheduleNewResolution = () => {
                                 <Col lg={5} md={5} sm={5}>
                                   <Select
                                     placeholder={`${t("Add-members")}*`}
-                                    className="mt-3"
+                                    className='mt-3'
                                     isSearchable={true}
                                     value={
                                       nonVoterInfo.value === 0
@@ -1953,7 +1869,7 @@ const ScheduleNewResolution = () => {
                                     }
                                     options={meetingAttendeesList}
                                     onChange={handleChangeNonVoter}
-                                     filterOption={(candidate, input) =>
+                                    filterOption={(candidate, input) =>
                                       candidate.data.name
                                         ?.toLowerCase()
                                         .includes(input.toLowerCase())
@@ -1965,11 +1881,10 @@ const ScheduleNewResolution = () => {
                                   lg={5}
                                   md={5}
                                   sm={5}
-                                  className="CreateMeetingInput resolution-search-input "
-                                >
+                                  className='CreateMeetingInput resolution-search-input '>
                                   <TextField
-                                    applyClass="text-area-create-group"
-                                    type="text"
+                                    applyClass='text-area-create-group'
+                                    type='text'
                                     placeholder={t("Email")}
                                     required={true}
                                     disable={true}
@@ -1989,16 +1904,15 @@ const ScheduleNewResolution = () => {
                                   />
                                 </Col>
                               </Row>
-                              <Row className="mt-1">
+                              <Row className='mt-1'>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
                                   className={
                                     styles["scroll-bar-Create-resolution"]
-                                  }
-                                >
-                                  <Row className="mt-2">
+                                  }>
+                                  <Row className='mt-2'>
                                     {nonVoterForView.length > 0
                                       ? nonVoterForView.map((data, index) => {
                                           return (
@@ -2007,8 +1921,7 @@ const ScheduleNewResolution = () => {
                                                 lg={6}
                                                 md={6}
                                                 sm={6}
-                                                key={data.pK_UID}
-                                              >
+                                                key={data.pK_UID}>
                                                 <EmployeeinfoCard
                                                   Employeename={data?.name}
                                                   Employeeemail={
@@ -2021,16 +1934,16 @@ const ScheduleNewResolution = () => {
                                                   Icon={
                                                     <img
                                                       src={CrossIcon}
-                                                      width="18px"
-                                                      height="18px"
-                                                      alt=""
+                                                      width='18px'
+                                                      height='18px'
+                                                      alt=''
                                                       onClick={() =>
                                                         removeUserForNonVoter(
                                                           data.userID,
                                                           data.userName,
                                                         )
                                                       }
-                                                      draggable="false"
+                                                      draggable='false'
                                                     />
                                                   }
                                                 />
@@ -2045,11 +1958,10 @@ const ScheduleNewResolution = () => {
                             </>
                           ) : null}
 
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["Attachments_resolution"]}
-                              >
+                                className={styles["Attachments_resolution"]}>
                                 {t("Attachments")}
                               </span>
                             </Col>
@@ -2057,15 +1969,13 @@ const ScheduleNewResolution = () => {
                           <Row
                             className={
                               styles["create_resolution_attachmentattendeepart"]
-                            }
-                          >
+                            }>
                             {tasksAttachments.length > 0 && (
                               <Col
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={styles["attachments_height"]}
-                              >
+                                className={styles["attachments_height"]}>
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <Row>
@@ -2078,8 +1988,7 @@ const ScheduleNewResolution = () => {
                                                   lg={4}
                                                   md={4}
                                                   key={data}
-                                                  id="Slider"
-                                                >
+                                                  id='Slider'>
                                                   <AttachmentViewer
                                                     data={data}
                                                     name={
@@ -2117,20 +2026,18 @@ const ScheduleNewResolution = () => {
                                   styles[
                                     "dragdrop_attachment_create_resolution"
                                   ]
-                                }
-                              >
-                                <p className="ant-upload-drag-icon">
+                                }>
+                                <p className='ant-upload-drag-icon'>
                                   <span
                                     className={
                                       styles["create_resolution_dragger"]
-                                    }
-                                  >
+                                    }>
                                     <img
                                       src={featherupload}
-                                      alt=""
-                                      width="18.87px"
-                                      height="18.87px"
-                                      draggable="false"
+                                      alt=''
+                                      width='18.87px'
+                                      height='18.87px'
+                                      draggable='false'
                                     />
                                   </span>
                                 </p>
@@ -2146,13 +2053,12 @@ const ScheduleNewResolution = () => {
                               </Dragger>
                             </Col>
                           </Row>
-                          <Row className="mt-4">
+                          <Row className='mt-4'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end gap-3"
-                            >
+                              className='d-flex justify-content-end gap-3'>
                               <Button
                                 text={t("Discard")}
                                 className={
@@ -2217,7 +2123,7 @@ const ScheduleNewResolution = () => {
           setDiscardresolution={setDsicardresolution}
         />
       ) : null}
-      
+      {SnackBar}
     </>
   );
 };

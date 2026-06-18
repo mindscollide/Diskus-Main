@@ -22,34 +22,21 @@ import { useTranslation } from "react-i18next";
 import { DownloadFile } from "../../store/actions/Download_action";
 import "./ModalUpdateToDo.css";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   const { t } = useTranslation();
-  const state = useSelector((state) => state);
-  const { toDoListReducer } = state;
-
+  const [show, SnackBar] = useSnackbar();
   const toDoListReducerData = useSelector(
-    (state) => state.toDoListReducer.ToDoDetails
+    (state) => state.toDoListReducer.ToDoDetails,
   );
 
   const allAssigneesData = useSelector(
-    (state) => state.toDoListReducer.AllAssigneesData
-  );
-
-  const toDoListReducerResponseMessageData = useSelector(
-    (state) => state.toDoListReducer.Message
+    (state) => state.toDoListReducer.AllAssigneesData,
   );
 
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   //task Object
   const [task, setTask] = useState({
@@ -219,17 +206,16 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         .map((item) => (
           <div
             onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
+            className='dropdown-row-assignee d-flex align-items-center flex-row'
+            key={item.pK_UID}>
             {}
             <img
-              draggable="false"
+              draggable='false'
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
+              alt=''
+              className='user-img'
             />
-            <p className="p-0 m-0">{item.name}</p>
+            <p className='p-0 m-0'>{item.name}</p>
           </div>
         ));
     } else {
@@ -248,13 +234,13 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     };
 
     if (Task.DeadLineDate === "") {
-      showMessage(t("Date-missing"), "error", setOpen);
+      show(t("Date-missing"), "error");
     } else if (Task.DeadLineTime === "") {
-      showMessage(t("Time-missing"), "error", setOpen);
+      show(t("Time-missing"), "error");
     } else if (Task.Title === "") {
-      showMessage(t("Title-missing"), "error", setOpen);
+      show(t("Title-missing"), "error");
     } else if (Task.Description === "") {
-      showMessage(t("Description-missing"), "error", setOpen);
+      show(t("Description-missing"), "error");
     } else {
       dispatch(UpdateToDoList(navigate, Task, t));
       setUpdateFlagToDo(false);
@@ -281,46 +267,36 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     dispatch(DownloadFile(navigate, data));
   };
 
-  useEffect(() => {
-    if (
-      toDoListReducerResponseMessageData ===
-      "The Record has been Updated successfully"
-    ) {
-      showMessage(toDoListReducerResponseMessageData, "success", setOpen);
-      //
-    }
-  }, [toDoListReducerResponseMessageData]);
-
   return (
     <>
       <Container>
         <Modal
           show={updateFlagToDo}
           setShow={setUpdateFlagToDo}
-          className="modaldialog"
+          className='modaldialog'
           ModalBody={
             <>
               <Row>
                 <Col lg={2} md={2} xs={12}>
                   <TimePickers
                     change={taskHandler}
-                    name="DeadLineTime"
+                    name='DeadLineTime'
                     value={task.DeadLineTime}
                   />
                 </Col>
                 <Col lg={3} md={3} xs={12}>
                   <CustomDatePicker
                     change={taskHandler}
-                    name="DeadLineDate"
+                    name='DeadLineDate'
                     value={task.DeadLineDate}
                   />
                 </Col>
-                <Col lg={7} md={7} xs={12} className="modaltodo-search-input">
+                <Col lg={7} md={7} xs={12} className='modaltodo-search-input'>
                   <InputSearchFilter
                     placeholder={t("Add-attendees")}
                     value={taskAssignedToInput}
                     filteredDataHandler={searchFilterHandler(
-                      taskAssignedToInput
+                      taskAssignedToInput,
                     )}
                     change={onChangeSearch}
                   />
@@ -328,13 +304,13 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                     <>
                       <span>
                         {taskAssignedName.map((taskAssignedName) => (
-                          <div className="dropdown-row-assignee d-flex align-items-center flex-row">
+                          <div className='dropdown-row-assignee d-flex align-items-center flex-row'>
                             <img
-                              draggable="false"
+                              draggable='false'
                               src={userImage}
-                              alt="userimage"
+                              alt='userimage'
                             />
-                            <p className="p-0 m-0">{taskAssignedName}</p>
+                            <p className='p-0 m-0'>{taskAssignedName}</p>
                           </div>
                         ))}
                       </span>
@@ -346,44 +322,43 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     change={taskHandler}
-                    name="Title"
-                    applyClass="form-control2"
-                    type="text"
-                    placeholder="Title"
+                    name='Title'
+                    applyClass='form-control2'
+                    type='text'
+                    placeholder='Title'
                     required
                     value={task.Title}
                   />
                 </Col>
               </Row>
               <Row>
-                <Col lg={12} md={12} xs={12} className="textAreaDiv">
+                <Col lg={12} md={12} xs={12} className='textAreaDiv'>
                   <TextField
                     change={taskHandler}
-                    name="Description"
-                    applyClass="form-control2"
-                    type="text"
+                    name='Description'
+                    applyClass='form-control2'
+                    type='text'
                     as={"textarea"}
-                    rows="7"
+                    rows='7'
                     placeholder={"Description"}
                     value={task.Description}
                   />
                 </Col>
               </Row>
-              <Row className="mt-4">
+              <Row className='mt-4'>
                 <Col
                   lg={12}
                   md={12}
                   xs={12}
-                  className="d-flex justify-content-start flex-column margin-left-15"
-                >
+                  className='d-flex justify-content-start flex-column margin-left-15'>
                   <label>Attachment</label>
-                  <span className="custom-upload-input">
+                  <span className='custom-upload-input'>
                     <CustomUpload
                       change={uploadFilesAgenda}
                       onClick={(event) => {
                         event.target.value = null;
                       }}
-                      className="UploadFileButton"
+                      className='UploadFileButton'
                     />
                     <Row>
                       {tasksAttachments.TasksAttachments.length > 0
@@ -398,9 +373,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                                   sm={12}
                                   lg={3}
                                   md={3}
-                                  className="modalupdatetodolist-attachment-icon"
-                                  onClick={(e) => downloadClick(e, data)}
-                                >
+                                  className='modalupdatetodolist-attachment-icon'
+                                  onClick={(e) => downloadClick(e, data)}>
                                   {ext === "doc" ? (
                                     <FileIcon
                                       extension={"docx"}
@@ -471,32 +445,30 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                                     />
                                   ) : null}
                                   <p
-                                    className="modalupdatetodolist-attachment-text"
-                                    title={data.DisplayAttachmentName}
-                                  >
+                                    className='modalupdatetodolist-attachment-text'
+                                    title={data.DisplayAttachmentName}>
                                     {first}
                                   </p>
                                 </Col>
                               );
-                            }
+                            },
                           )
                         : null}
                     </Row>
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-5">
+              <Row className='mt-5'>
                 <Col
                   lg={12}
                   md={12}
                   xs={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <Button
                     onClick={updateToDoList}
                     className={"btn btn-primary px-4 fw-600"}
                     variant={"Primary"}
-                    text="Update"
+                    text='Update'
                   />
                 </Col>
               </Row>
@@ -504,7 +476,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           }
         />
       </Container>
-      
+      {SnackBar}
     </>
   );
 };

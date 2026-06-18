@@ -8,8 +8,8 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 
 import { getRandomUniqueNumber } from "./drageFunction";
 import { MeetingContext } from "../../../../../context/MeetingContext";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { isFileSizeValid } from "../../../../../commen/functions/convertFileSizeInMB";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 
 const DefaultDragger = ({
   index,
@@ -21,6 +21,7 @@ const DefaultDragger = ({
   const { t } = useTranslation();
   const { isAgendaUpdateWhenMeetingActive, editorRole } =
     useContext(MeetingContext);
+    const [show, SnackBar] =useSnackbar()
 
   let currentUserID = Number(localStorage.getItem("userID"));
 
@@ -52,7 +53,7 @@ const DefaultDragger = ({
       // Check the total number of files, including new uploads
       const totalFilesCount = getRowData.files.length + fileList.length;
       if (totalFilesCount > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return; // Stop further processing
       }
 
@@ -70,15 +71,14 @@ const DefaultDragger = ({
           }
 
           if (!size) {
-            showMessage(
+            show(
               t("File-size-should-not-be-greater-than-1-5GB"),
-              "error",
-              setOpen
+              "error"
             );
           } else if (!sizezero) {
-            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+            show(t("File-size-should-not-be-zero"), "error");
           } else if (fileExists) {
-            showMessage(t("File-already-exists"), "error", setOpen);
+            show(t("File-already-exists"), "error");
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -105,13 +105,12 @@ const DefaultDragger = ({
           }
 
           if (!size) {
-            showMessage(
+            show(
               t("File-size-should-not-be-greater-than-1-5GB"),
-              "error",
-              setOpen
+              "error"
             );
           } else if (!sizezero) {
-            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+            show(t("File-size-should-not-be-zero"), "error");
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -215,7 +214,7 @@ const DefaultDragger = ({
           </Dragger>
         </Col>
       </Row>
-      
+      {SnackBar}
     </>
   );
 };

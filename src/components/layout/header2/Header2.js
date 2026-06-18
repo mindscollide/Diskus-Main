@@ -1904,7 +1904,7 @@ const Header2 = ({ isVideo }) => {
       {createNotesModal && <ModalAddNote />}
       {showTaskModalHeader && (
         <ModalToDoList
-          show={showTaskModalHeader}
+          showModal={showTaskModalHeader}
           setShow={setShowModalHeader}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}

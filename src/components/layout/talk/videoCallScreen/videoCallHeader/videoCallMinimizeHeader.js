@@ -84,13 +84,13 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
-import { showMessage } from "../../../../elements/snack_bar/utill";
+import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 
 const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const [show, SnackBar] =useSnackbar()
   const participantPopupDisable = useRef(null);
 
   const {
@@ -888,7 +888,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       MeetingId: Number(currentMeetingID),
     };
     dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
-    showMessage(t("Link-copied"), "success", setOpen);
+    show(t("Link-copied"), "success");
   };
 
   const openPresenterParticipantsList = () => {
@@ -2118,6 +2118,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           </div>
         </>
       )}
+      {SnackBar}
     </>
   );
 };
