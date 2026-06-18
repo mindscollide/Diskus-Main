@@ -1108,8 +1108,15 @@ const PendingSignatureViewer = () => {
                       // Do nothing - field is blocked
                     }
                   } else {
-                    // Not a signature widget, proceed normally
-                    originalMouseLeftUpRef.current.call(this, e);
+                    // Clicked on empty page area (not a signature widget).
+                    // Do NOT trigger the signature-create flow. The
+                    // SignatureCreateTool stays the active tool after the
+                    // "Create New Signature" modal is closed, so calling the
+                    // original mouseLeftUp here would re-open that modal on any
+                    // click anywhere on the page. The modal must only open when
+                    // the user clicks their own "Sign here" widget (handled in
+                    // the branch above), so empty-area clicks are ignored.
+                    console.log("❌ Ignoring click outside a signature field");
                   }
                 };
               }

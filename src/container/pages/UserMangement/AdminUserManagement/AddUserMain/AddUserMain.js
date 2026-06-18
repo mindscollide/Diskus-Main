@@ -45,6 +45,7 @@ const AddUserMain = () => {
   const [selectedCountry, setSelectedCountry] = useState({});
   const [graphData, setGraphData] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log("packageAssignedOption", packageAssignedOption);
   const [userAddMain, setUserAddMain] = useState({
     Name: {
       value: "",
@@ -193,8 +194,8 @@ const AddUserMain = () => {
             setCompanyEmailValidateError,
             userAddMain,
             t,
-            setEmailUnique
-          )
+            setEmailUnique,
+          ),
         );
       } else {
         setEmailUnique(false);
@@ -450,12 +451,28 @@ const AddUserMain = () => {
       let temp = [];
       UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
         (data) => {
+          // `data.pK_PackageID` came back undefined (wrong field name), which
+          // made every option `value` undefined → selecting a package never
+          // stored an id and the "Please select a package" error stuck.
+          // Resolve the id from the realistic backend key names so the option
+          // always carries a valid value. (Logged once to confirm the exact
+          // field — remove the console.log once verified.)
+          console.log("Package detail item:", data);
+          const packageId =
+            data.pK_PackageID ??
+            data.pK_OrganizationsSelectedPackageID ??
+            data.pK_OrganizationSelectedPackageID ??
+            data.fK_PackageID ??
+            data.packageID ??
+            data.packageId ??
+            data.pK_PackageDetailID ??
+            data.id;
           temp.push({
-            value: data.pK_PackageID,
+            value: packageId,
             label: data.name,
             isDisabled: data.packageAllotedUsers > data.headCount,
           });
-        }
+        },
       );
       setPackageAssignedOption(temp);
     }
@@ -464,24 +481,33 @@ const AddUserMain = () => {
   // handler of package Assigned
   const handlePackageAssigned = async (selectedOption) => {
     setPackageAssignedValue(selectedOption);
-    if (selectedOption && selectedOption.value) {
-      setUserAddMain({
-        ...userAddMain,
+    // Treat any chosen option as a valid selection. Using a null/undefined
+    // check (instead of a truthiness check on `selectedOption.value`, which
+    // misfired for a falsy package id) means picking a package always stores
+    // its id and clears the error. The functional updater also prevents a
+    // stale-closure spread from later reverting PackageAssigned back to 0.
+    if (
+      selectedOption &&
+      selectedOption.value !== undefined &&
+      selectedOption.value !== null
+    ) {
+      setUserAddMain((prev) => ({
+        ...prev,
         PackageAssigned: {
           value: selectedOption.value,
           errorMessage: "",
           errorStatus: false,
         },
-      });
+      }));
     } else {
-      setUserAddMain({
-        ...userAddMain,
+      setUserAddMain((prev) => ({
+        ...prev,
         PackageAssigned: {
           value: 0,
           errorMessage: t("Please-select-a-package"),
           errorStatus: true,
         },
-      });
+      }));
     }
   };
 
@@ -638,7 +664,7 @@ const AddUserMain = () => {
                           {["Professional", "Premium"].map((packageName) => {
                             const packageData =
                               UserMangementReducer.getOrganizationUserStatsGraph?.selectedPackages?.find(
-                                (packages) => packages.name === packageName
+                                (packages) => packages.name === packageName,
                               );
 
                             return (
