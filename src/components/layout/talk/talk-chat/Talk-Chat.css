@@ -2212,20 +2212,23 @@ body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
   background-color: #fff !important;
   border: 1px solid #e1e1e1 !important;
   color: #232323 !important;
-  width: 100px !important;
-  height: 30px !important;
-  margin-top: 4px;
+  width: 120px !important;
+  height: 46px !important;
   border-radius: 2px;
-  font-size: 8px;
 }
 
 .Cancel-btn:hover {
   background-color: #fff !important;
   border: 1px solid #e1e1e1 !important;
   color: #232323 !important;
-  width: 100px !important;
-  height: 30px !important;
-  margin-top: 4px;
+  width: 120px !important;
+  height: 46px !important;
   border-radius: 2px;
-  font-size: 8px;
+}
+
+.crossIcon-class {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  cursor: pointer;
 }

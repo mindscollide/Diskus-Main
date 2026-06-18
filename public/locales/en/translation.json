@@ -2779,10 +2779,11 @@
   "Meeting-chat": "Meeting Chat",
   "Host-has-been-changed": "Host has been changed",
   "Total-reviewed": "Total Reviewed",
-  "Proceed":"Proceed",
-  "Annotations-saved-successfully":"Annotations Saved Successfully",
-  "Are-you-sure-you-want-to-end-the-meeting":"Are you sure you want to end the meeting?",
+  "Proceed": "Proceed",
+  "Annotations-saved-successfully": "Annotations Saved Successfully",
+  "Are-you-sure-you-want-to-end-the-meeting": "Are you sure you want to end the meeting?",
   "Poll-deleted": "Poll Deleted",
   "This-year-(2026)": "This Year (2026)",
-  "Last-year-(2025)": "Last Year (2025)"
+  "Last-year-(2025)": "Last Year (2025)",
+  "Task-created": "Task created"
 }

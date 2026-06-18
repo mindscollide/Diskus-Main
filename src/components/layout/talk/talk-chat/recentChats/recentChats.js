@@ -240,52 +240,56 @@ const RecentChats = () => {
 
   useEffect(() => {
     try {
-      if (allChatData.length !== 0) {
-        const updatedChatData = [...allChatData]; // Create a copy of the array
+      const push = talkStateData.PushChatData;
+      // Nothing to merge
+      if (!push || Object.keys(push).length === 0) {
+        return;
+      }
+
+      setAllChatData((prevChatData) => {
+        // Never collapse the recent list: seed from the local list when present,
+        // otherwise fall back to the authoritative Redux recent-chats list. This
+        // prevents the single-item collapse when a message arrives while the
+        // local list is momentarily empty (remount / async fetch race).
+        const base =
+          prevChatData && prevChatData.length > 0
+            ? [...prevChatData]
+            : [
+                ...(talkStateData.AllUserChats?.AllUserChatsData?.allMessages ||
+                  []),
+              ];
 
         // Find the index of the chat to update or insert
-        const index = updatedChatData.findIndex(
-          (chat) => chat.id === talkStateData.PushChatData.id,
-        );
+        const index = base.findIndex((chat) => chat.id === push.id);
 
         if (index !== -1) {
           // Update the existing chat data
-          updatedChatData[index] = {
-            ...updatedChatData[index],
-            ...talkStateData.PushChatData,
+          base[index] = {
+            ...base[index],
+            ...push,
           };
         } else {
           // Insert the new chat data
-          updatedChatData.push(talkStateData.PushChatData);
+          base.push(push);
         }
 
-        // Sort the updatedChatData array by messageDate in descending order
-        updatedChatData.sort((a, b) => {
+        // Sort by messageDate in descending order
+        base.sort((a, b) => {
           const dateA = a.messageDate;
           const dateB = b.messageDate;
 
-          // Convert custom date strings to numerical values for comparison
           const numericDateA = parseInt(
-            `${dateA.slice(0, 8)}${dateA.slice(8)}`,
+            `${dateA?.slice(0, 8)}${dateA?.slice(8)}`,
           );
           const numericDateB = parseInt(
-            `${dateB.slice(0, 8)}${dateB.slice(8)}`,
+            `${dateB?.slice(0, 8)}${dateB?.slice(8)}`,
           );
 
           return numericDateB - numericDateA;
         });
 
-        // Set the state with the sorted updatedChatData
-        setAllChatData(updatedChatData);
-      } else if (
-        allChatData.length === 0 &&
-        talkStateData.PushChatData.length !== 0
-      ) {
-        setAllChatData((prevChatData) => [
-          ...prevChatData,
-          talkStateData.PushChatData,
-        ]);
-      }
+        return base;
+      });
     } catch (error) {
       console.log("ERROR");
     }
