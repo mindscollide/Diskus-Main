@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   getAllGroupsResponse: [],
   getGroupByGroupIdResponse: null,
   createGroupResponse: null,
@@ -41,6 +42,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewGroupDetailLink: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_FAIL: {
@@ -49,6 +51,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewGroupDetailLink: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -64,6 +67,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewGroupsList: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_FAIL: {
@@ -72,6 +76,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewGroupsList: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_GROUPS_BYUSERID_INIT: {
@@ -92,6 +97,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getAllGroupsResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_GROUPS_BYUSERID_FAIL: {
@@ -100,6 +106,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         getAllGroupsResponse: [],
+        errorSeverity: "error",
       };
     }
     case actions.GET_GROUPS_BYGROUPID_INIT: {
@@ -114,6 +121,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getGroupByGroupIdResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_GROUPS_BYGROUPID_FAIL: {
@@ -122,6 +130,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getGroupByGroupIdResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CREATE_GROUP_INIT: {
@@ -136,6 +145,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         createGroupResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CREATE_GROUP_FAIL: {
@@ -144,6 +154,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         createGroupResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_GROUP_MEMBERS_ROLES_INIT: {
@@ -158,6 +169,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationGroupRoles: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_GROUP_MEMBERS_ROLES_FAIL: {
@@ -166,6 +178,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationGroupRoles: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEAR_RESPONSE_MESSAGE_GROUPS: {
@@ -186,6 +199,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationGroupTypes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_GROUP_ORGANIZATION_TYPE_FAIL: {
@@ -194,6 +208,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationGroupTypes: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_GROUP_INIT: {
@@ -216,6 +231,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         updateGroupResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_GROUP_STATUS_INIT: {
@@ -230,6 +246,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         UpdateGroupStatusResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_GROUP_STATUS_FAIL: {
@@ -238,6 +255,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         UpdateGroupStatusResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.REALTIME_GROUPS_RESPONSE: {
@@ -264,6 +282,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getAllGroups: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALL_ORGANIZATION_GROUPS_FAIL: {
@@ -272,6 +291,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         getAllGroups: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
@@ -293,6 +313,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         ArcheivedGroups: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ARCHEIVED_GROUPS_FAIL: {
@@ -301,6 +322,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         ArcheivedGroups: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -317,6 +339,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         FolderID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -341,6 +364,7 @@ const GroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -365,6 +389,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         groupDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -388,6 +413,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: true,
         uploadGroupDocuments: action.respose,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPLOAD_GROUPS_DOCUMENTS_FAIL: {
@@ -396,6 +422,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         uploadGroupDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVE_GROUP_FILES_DOCUMENTS_INIT: {
@@ -410,6 +437,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: true,
         saveUploadGroupDocuments: action.respose,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_GROUP_FILES_DOCUMENTS_FAIL: {
@@ -418,6 +446,7 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         saveUploadGroupDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

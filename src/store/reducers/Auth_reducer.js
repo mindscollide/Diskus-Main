@@ -5,6 +5,7 @@ const initialState = {
   isLoggedIn: false,
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   signUpResponseMessage: "",
   LoginResponseMessage: "",
   isSignUp: false,
@@ -37,6 +38,7 @@ const authReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         Token: action.response.token,
         Refresh: action.response.refreshToken,
+        errorSeverity: "success",
       };
 
     case actions.REFRESH_TOKEN_FAIL:
@@ -47,6 +49,7 @@ const authReducer = (state = initialState, action) => {
         SessionExpireResponseMessage: action.message,
         Token: "",
         Refresh: "",
+        errorSeverity: "error",
       };
 
     case actions.SIGN_UP_INIT:
@@ -59,6 +62,7 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: true,
         Loading: false,
         pendingError: false,
+        errorSeverity: "success",
       };
     case actions.SIGN_UP_FAIL:
       return {
@@ -67,6 +71,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         pendingError: true,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.SIGN_IN_INIT:
@@ -88,6 +93,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         UserDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.SIGN_IN_FAIL:
@@ -97,6 +103,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         UserDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.FORGOT_PASSWORD_INIT: {
@@ -113,6 +120,7 @@ const authReducer = (state = initialState, action) => {
         ForgotPasswordData: action.response,
         ResponseMessage: action.message,
         messageId: Date.now(),
+        errorSeverity: "success",
       };
     }
     case actions.FORGOT_PASSWORD_FAIL: {
@@ -122,6 +130,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         messageId: Date.now(),
+        errorSeverity: "error",
       };
     }
     case actions.VERIFY_OPT_INIT: {
@@ -133,6 +142,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPData: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.VERIFY_OPT_FAIL: {
@@ -141,6 +151,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPData: action.response,
+        errorSeverity: "error",
       };
     }
     case actions.VERIFY_OTPSIGNUP_SUCCESS: {
@@ -149,6 +160,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPSignupData: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.VERIFY_OTPSIGNUP_FAIL: {
@@ -157,6 +169,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPSignupData: action.response,
+        errorSeverity: "error",
       };
     }
 
@@ -165,6 +178,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -173,6 +187,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -195,6 +210,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response,
         ConfirmPasswordData: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CHANGE_PASSWORD_FAIL: {
@@ -203,6 +219,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response,
         ConfirmPasswordData: action.message,
+        errorSeverity: "error",
       };
     }
 

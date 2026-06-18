@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   EmailValidationResponse: null,
   EmailValidationResponseMessage: "",
   EnterPasswordResponse: null,
@@ -51,6 +52,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         validatePassword: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATEPASSWORD_FAIL: {
@@ -59,6 +61,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         validatePassword: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.PAYMENTCOMPLETE_INIT: {
@@ -73,6 +76,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         paymentCompleteResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PAYMENTCOMPLETE_FAIL: {
@@ -81,6 +85,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         paymentCompleteResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_INIT: {
@@ -95,6 +100,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         getSubscriptionUpgradePaymentDetail: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_FAIL: {
@@ -103,6 +109,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         getSubscriptionUpgradePaymentDetail: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -119,6 +126,7 @@ const AuthReducer = (state = initialState, action) => {
 
         getSubscriptionPaymentComplete: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_FAIL: {
@@ -127,6 +135,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         getSubscriptionPaymentComplete: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -153,6 +162,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -161,6 +171,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.EMAILVALIDATION_SUCCESS: {
@@ -174,6 +185,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         EmailValidationResponse: action.response,
         EmailValidationResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.EMAILVALIDATION_FAIL: {
@@ -181,6 +193,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         EmailValidationResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.PASSWORDVALIDATION_INIT: {
@@ -195,6 +208,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         EnterPasswordResponse: action.response,
         EnterPasswordResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PASSWORDVALIDATION_FAIL: {
@@ -203,6 +217,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         EnterPasswordResponse: null,
         EnterPasswordResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.VERIFYOTPFOREMAIL_INIT: {
@@ -217,6 +232,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         VerifyOTPEmailResponse: action.response,
         VerifyOTPEmailResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VERIFYOTPFOREMAIL_FAIL: {
@@ -224,6 +240,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         VerifyOTPEmailResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.PASSWORDCREATION_INIT: {
@@ -238,6 +255,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         CreatePasswordResponse: action.response,
         CreatePasswordResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PASSWORDCREATION_FAIL: {
@@ -246,6 +264,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         CreatePasswordResponse: null,
         CreatePasswordResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SIGNUPORGANIZATION_INIT:
@@ -259,6 +278,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         OrganizationCreateResponse: action.response,
         OrganizationCreateResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.SIGNUPORGANIZATION_FAIL:
       return {
@@ -266,6 +286,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         OrganizationCreateResponse: null,
         OrganizationCreateResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_INIT: {
       return {
@@ -278,6 +299,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetSelectedPacakgeDetails: action.response,
+        errorSeverity: "success",
         // GetSelectedPackageResponseMessage: action.message,
       };
     }
@@ -287,6 +309,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         GetSelectedPacakgeDetails: null,
         GetSelectedPackageResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CHANGEPASSWORD_INIT: {
@@ -301,6 +324,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         // ChangeUserPasswordResponse: action.response,
         ChangeUserPasswordResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CHANGEPASSWORD_FAIL: {
@@ -309,6 +333,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         ChangeUserPasswordResponse: null,
         ChangeUserPasswordResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.RESELECTIONPACKAGE_INIT: {
@@ -322,6 +347,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         OrganizationCreateResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.RESELECTIONPACKAGE_FAIL: {
@@ -329,6 +355,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         OrganizationCreateResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CHECKINGAUTHENTICATEAFA_INIT: {
@@ -343,6 +370,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         AuthenticateAFAResponse: action.response,
         AuthenticateAFAResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CHECKINGAUTHENTICATEAFA_FAIL: {
@@ -351,6 +379,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         AuthenticateAFAResponse: null,
         AuthenticateAFAResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SENDTWOFACOTP_INIT: {
@@ -365,6 +394,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         SendTwoFacOTPResponse: action.response,
         SendTwoFacOTPResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SENDTWOFACOTP_FAIL: {
@@ -373,6 +403,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         SendTwoFacOTPResponse: null,
         SendTwoFacOTPResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.VERIFYTWOFACOTP_INIT: {
@@ -387,6 +418,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         VerifyTwoFacOTPResponse: action.response,
         VerifyTwoFacOTPResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VERIFYTWOFACOTP_FAIL: {
@@ -395,6 +427,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         VerifyTwoFacOTPResponse: null,
         VerifyTwoFacOTPResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.PASSWORD_UPDATE_INIT: {
@@ -408,6 +441,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         passwordUpdateOnForgotPasswordMessege: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PASSWORD_UPDATE_FAIL: {
@@ -415,6 +449,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         passwordUpdateOnForgotPasswordMessege: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETSUBSCRIPTIONDETAIL_INIT: {
@@ -430,6 +465,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         getSubscriptiondetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETSUBSCRIPTIONDETAIL_FAIL: {
@@ -439,6 +475,7 @@ const AuthReducer = (state = initialState, action) => {
 
         getSubscriptiondetails: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEARE_MESSAGE: {
@@ -482,6 +519,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         UpdateProfilePicture: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_PROFILE_PICTURE_FAIL: {
@@ -490,6 +528,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         UpdateProfilePicture: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -505,6 +544,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         logoutUser: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -528,6 +568,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         getInvoiceHTML: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETINVOICEHTMLBYORGANIZATION_FAIL: {
@@ -536,6 +577,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         getInvoiceHTML: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.DOWNLOADINVOICE_INIT: {
@@ -550,6 +592,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         downloadInvoice: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DOWNLOADINVOICE_FAIL: {
@@ -558,6 +601,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         downloadInvoice: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_INIT: {
@@ -572,6 +616,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         validateStringOtpEmail: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATEENCRYPTEDSTRINGFOROTPEMAILLINK_FAIL: {
@@ -580,6 +625,7 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
         validateStringOtpEmail: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default:

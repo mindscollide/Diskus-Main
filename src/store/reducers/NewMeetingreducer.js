@@ -6,6 +6,7 @@ const initialState = {
   Loading: false,
   meetingurlspinner: false,
   ResponseMessage: "",
+  errorSeverity: null,
   adduserModal: false,
   crossConfirmation: false,
   notifyOrganizors: false,
@@ -201,6 +202,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingRecordingFiles: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GETMEETINGRECORDINGFILES_FAIL: {
@@ -209,6 +211,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingRecordingFiles: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.MOVEFILEANDFODLER_INIT: {
@@ -223,6 +226,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           moveFilesandFolders: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.MOVEFILEANDFODLER_FAIL: {
@@ -231,6 +235,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           moveFilesandFolders: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.QUICKMEETING_DOCUMENTS_UPLOAD_INIT: {
@@ -245,6 +250,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           uploadQuickMeetingDocment: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.QUICKMEETING_DOCUMENTS_UPLOAD_FAIL: {
@@ -253,6 +259,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           uploadQuickMeetingDocment: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -268,6 +275,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           saveQuickMeetingDocuments: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.QUICKMEETING_SAVE_DOCUMENTS_FAIL: {
@@ -534,6 +542,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           searchMeetings: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GET_SEARCH_NEW_MEETINGS_FAIL: {
@@ -542,6 +551,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           searchMeetings: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.CLEAR_NEWMEETINGSTATE: {
@@ -563,6 +573,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: action.loader,
           getALlMeetingTypes: action.response,
+          errorSeverity: "success",
         };
       }
 
@@ -588,6 +599,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingDetails: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -612,6 +624,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           // Loading: false,
           getAllReminderFrequency: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -637,6 +650,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           recurring: action.response,
           ResponseMessage: action.message,
           Loading: action.loader,
+          errorSeverity: "success",
         };
       }
 
@@ -717,6 +731,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getAllCommitteeAndGroupPartcipants: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -741,6 +756,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           getAllPartiicpantsRoles: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -765,6 +781,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getmeetingURL: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -796,6 +813,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           saveMeetingParticipants: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -818,6 +836,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.SAVE_AGENDACONTRIBUTORS_FAIL: {
@@ -825,6 +844,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -842,6 +862,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           getAllSavedparticipants: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -850,6 +871,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: action.loader,
           getAllSavedparticipantsIsPublished: action.response,
+          errorSeverity: "success",
         };
       }
 
@@ -884,6 +906,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loader2: false,
           getAllAgendaContributors: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -894,6 +917,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loader2: false,
           getAllAgendaContributorsIsPublished: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -915,6 +939,7 @@ const NewMeetingreducer = (state = initialState, action) => {
 
           getAllAgendaContributors: [],
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -930,6 +955,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -956,6 +982,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           LoadingViewModal: false,
           getAllMeetingDetails: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -982,6 +1009,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getPollsMeetingID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1007,6 +1035,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingusers: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1030,6 +1059,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1054,6 +1084,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           setMeetingProposeDate: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1080,6 +1111,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           getAllProposedDates: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1110,6 +1142,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingResponse: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1135,6 +1168,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingMaterialData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1143,6 +1177,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           meetingMaterialIsPublished: action.response,
+          errorSeverity: "success",
         };
       }
 
@@ -1152,6 +1187,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingMaterialData: [],
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1167,6 +1203,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1191,6 +1228,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           agendaRights: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1216,6 +1254,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           attachmentsPermission: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1233,6 +1272,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.flag,
           generalMinutes: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1258,6 +1298,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           addMinuteID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1282,6 +1323,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: true,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1306,6 +1348,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           generalMinutesDocument: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1329,6 +1372,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           generalminutesDocumentForMeeting: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1352,6 +1396,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1375,6 +1420,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1399,6 +1445,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           agendaWiseMinuteID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1423,6 +1470,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: true,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1446,6 +1494,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1470,6 +1519,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           agendaWiseMinutesReducer: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1495,6 +1545,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           userWiseMeetingProposed: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1504,6 +1555,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           userWiseMeetingProposed: [],
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.CLEAR_GET_USER_WISE_PROPOSED: {
@@ -1527,6 +1579,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           getUserProposedOrganizerData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1536,6 +1589,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           getUserProposedOrganizerData: [],
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1551,6 +1605,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: true,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1575,6 +1630,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           RetriveAgendaWiseDocuments: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1598,6 +1654,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1621,6 +1678,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1645,6 +1703,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: action.loader,
           meetingDataRoomMapFolderID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1669,6 +1728,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: action.loader,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GETMEETINGBYCOMMITTEEID_INIT: {
@@ -1683,6 +1743,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingByCommitteeID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GETMEETINGBYCOMMITTEEID_FAIL: {
@@ -1691,6 +1752,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingByCommitteeID: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1713,6 +1775,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           scheduleMeetingProposed: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1722,6 +1785,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           scheduleMeetingProposed: "",
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1737,6 +1801,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           setMeetingbyCommitteeID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.SETMEETINGBYCOMMITTEEID_FAIL: {
@@ -1745,6 +1810,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           setMeetingbyCommitteeID: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1761,6 +1827,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingbyGroupID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GETMEETINGBYGROUPID_FAIL: {
@@ -1769,6 +1836,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingbyGroupID: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1784,6 +1852,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           setMeetingByMeetingID: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.SETMEETINGBYGROUPID_FAIL: {
@@ -1792,6 +1861,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           setMeetingByMeetingID: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -1862,6 +1932,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getallDocumentsForAgendaWiseMinutes: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1888,6 +1959,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           UploadDocumentsResponse: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1912,6 +1984,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           SaveFolderResponse: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -1938,6 +2011,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2051,6 +2125,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           viewMeetingLink: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_FAIL: {
@@ -2059,6 +2134,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           viewMeetingLink: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS: {
@@ -2166,6 +2242,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           userAvailibilityData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2339,6 +2416,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           endMeetingStatus: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2348,6 +2426,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           endMeetingStatus: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2364,6 +2443,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           joinMeetingResponse: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2373,6 +2453,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           joinMeetingResponse: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2407,6 +2488,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           leaveMeetingResponse: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2441,6 +2523,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           validatencryptedstring: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_FAIL: {
@@ -2449,6 +2532,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           validatencryptedstring: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2489,6 +2573,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getDashboardMeetingData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GETDASHBOARDMEETINGDATA_FAIL: {
@@ -2497,6 +2582,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getDashboardMeetingData: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.GETMEETINGCOUNT_DASHBOARD_MQTT: {
@@ -2522,6 +2608,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           validateEncryptedStringParticipantProposed: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_FAIL: {
@@ -2530,6 +2617,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           validateEncryptedStringParticipantProposed: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.GETALLMEETINGUSERSRSVPDETAILS_INIT: {
@@ -2544,6 +2632,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingUsersRSVP: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.GETALLMEETINGUSERSRSVPDETAILS_FAIL: {
@@ -2552,6 +2641,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingUsersRSVP: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2568,6 +2658,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           leaveMeetingVideoResponse: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2577,6 +2668,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           leaveMeetingVideoResponse: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.NEW_MEETING_LOADER_REDUCER: {
@@ -2620,6 +2712,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           updatedPartcipantsData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2629,6 +2722,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
           updatedPartcipantsData: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2657,6 +2751,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           validateEncryptedStringUserMeetingProposeDatesPoll: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
       case actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_FAIL: {
@@ -2665,6 +2760,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           validateEncryptedStringUserMeetingProposeDatesPoll: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
       case actions.PROPOSED_MEETING_VIEW_FLAG: {
@@ -2693,6 +2789,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingStatusResponseData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       }
 
@@ -2702,6 +2799,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           getMeetingStatusResponseData: null,
           ResponseMessage: action.message,
+          errorSeverity: "error",
         };
       }
 
@@ -2724,6 +2822,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingTranscriptResponse: action.response,
           responseMessage: action.message,
+          errorSeverity: "success",
         };
 
       case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_FAIL:
@@ -2732,6 +2831,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: false,
           meetingTranscriptResponse: null,
           responseMessage: action.message,
+          errorSeverity: "error",
         };
 
       case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_CLEAR:

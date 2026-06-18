@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   saveAttendanceMeeting: [],
   attendanceMeetings: [],
 };
@@ -29,6 +30,7 @@ const attendanceMeetingReducer = (state = initialState, action) => {
         Loading: false,
         attendanceMeetings: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -38,6 +40,7 @@ const attendanceMeetingReducer = (state = initialState, action) => {
         Loading: false,
         attendanceMeetings: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -54,6 +57,7 @@ const attendanceMeetingReducer = (state = initialState, action) => {
         Loading: false,
         saveAttendanceMeeting: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -63,6 +67,7 @@ const attendanceMeetingReducer = (state = initialState, action) => {
         Loading: false,
         saveAttendanceMeeting: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.ATTENDANCE_REDUCER_STATE_CLEAR: {

@@ -4,6 +4,7 @@ const initialState = {
   Loading: false,
   FullLoader: false,
   ResponseMessage: "",
+  errorSeverity: null,
   VideoCallUsersData: [],
   InitiateVideoCallData: [],
   VideoCallResponseData: [],
@@ -36,6 +37,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         VideoCallUsersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -45,6 +47,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         VideoCallUsersData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -62,6 +65,7 @@ const VideoMainReducer = (state = initialState, action) => {
         FullLoader: false,
         InitiateVideoCallData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -71,6 +75,7 @@ const VideoMainReducer = (state = initialState, action) => {
         FullLoader: false,
         InitiateVideoCallData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEARE_MESSAGE_RESPONCE: {
@@ -101,6 +106,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         VideoCallResponseData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -110,6 +116,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         VideoCallResponseData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -144,6 +151,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         RecentCallsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -153,6 +161,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         RecentCallsData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -169,6 +178,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         CallRequestReceivedData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -178,6 +188,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         CallRequestReceivedData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -203,6 +214,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         MissedCallCountData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -212,6 +224,7 @@ const VideoMainReducer = (state = initialState, action) => {
         Loading: false,
         CallRequestReceivedData: {},
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SCROLL_BEHAVIOR_SPINNER: {

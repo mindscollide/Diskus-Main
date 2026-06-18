@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   UserProfileData: null,
   ResponseMessage: "",
+  errorSeverity: null,
   severity: null,
   ResponseCode: "",
   Loading: false,
@@ -55,6 +56,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: action.loader ? action.loader : false,
         UserProfileData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -76,6 +78,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         UserProfileData: null,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATEUSERPROFILE_INIT: {
@@ -91,6 +94,7 @@ const settingReducer = (state = initialState, action) => {
         // Loading: false,
         UpdateSuccessfull: true,
         UpdateResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -100,6 +104,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateSuccessfull: true,
         UpdateResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATEUSERNOTIFICATION_INIT: {
@@ -115,6 +120,7 @@ const settingReducer = (state = initialState, action) => {
         // Loading: false,
         UpdateSuccessfull: true,
         UpdateResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATEUSERNOTIFICATION_FAIL: {
@@ -123,6 +129,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateSuccessfull: true,
         UpdateResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATEUSERGENERALSETTING_INIT: {
@@ -138,6 +145,7 @@ const settingReducer = (state = initialState, action) => {
         // Loading: false,
         UpdateSuccessfull: true,
         UpdateResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATEUSERGENERALSETTING_FAIL: {
@@ -146,6 +154,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateSuccessfull: true,
         UpdateResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETUSERNOTIFICATION_INIT: {
@@ -177,6 +186,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationData: newNotificationData,
         RecentActivityData: newRNotificationData,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SET_RECENT_ACTIVITY_NOTIFICATION: {
@@ -193,6 +203,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationData: [],
         RecentActivityData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_TIMEZONE_INIT: {
@@ -207,6 +218,7 @@ const settingReducer = (state = initialState, action) => {
         // Loading: false,
         TimeZone: action.response,
         TimeZoneResponse: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_TIMEZONE_FAIL: {
@@ -214,6 +226,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         TimeZoneResponse: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_COUNTRYCODE_INIT: {
@@ -228,6 +241,7 @@ const settingReducer = (state = initialState, action) => {
         // Loading: false,
         CountryCodeResponse: action.message,
         CountryCodes: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.GET_COUNTRYCODE_FAIL: {
@@ -235,6 +249,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CountryCodeResponse: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -257,6 +272,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         GetOrganizationLevelSettingResponse: action.response,
         GetOrganizationLevelSettingResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETORGANIZATIONLEVELSETTING_FAIL: {
@@ -265,6 +281,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         GetOrganizationLevelSettingResponse: null,
         GetOrganizationLevelSettingResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATEORGANIZATIONLEVELSETTING_INIT: {
@@ -279,6 +296,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         // UpdateOrganizationLevelSettingResponse: action.response,
         UpdateOrganizationLevelSettingResponse: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATEORGANIZATIONLEVELSETTING_FAIL: {
@@ -287,6 +305,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateOrganizationLevelSettingResponse: null,
         UpdateOrganizationLevelSettingResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UDPATEUSERSETTING_INIT: {
@@ -305,6 +324,7 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserSettingResponse: action.response,
         UpdateUserSettingResponseMessage: action.message,
         severity: "success",
+        errorSeverity: "success",
       };
     }
     case actions.UDPATEUSERSETTING_FAIL: {
@@ -314,6 +334,7 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserSettingResponse: null,
         UpdateUserSettingResponseMessage: action.message,
         severity: "error",
+        errorSeverity: "error",
       };
     }
     case actions.GET_USERS_DETAILS_INIT: {
@@ -329,6 +350,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         GetUserDetailsResponse: action.response,
         GetUserDetailsResponseMessege: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -338,6 +360,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         GetUserDetailsResponse: null,
         GetUserDetailsResponseMessege: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -354,6 +377,7 @@ const settingReducer = (state = initialState, action) => {
         // Loading:false,
         UpdateUserProfileResponse: action.response,
         UpdateUserProfileResponseMessege: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -363,6 +387,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateUserProfileResponse: null,
         UpdateUserProfileResponseMessege: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UDPATEUSERSETTING_MESSAGE_CLEARE: {
@@ -394,6 +419,7 @@ const settingReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        errorSeverity: "success",
       };
     }
     case actions.GOOGLEVALIDTOKEN_FAIL: {
@@ -401,6 +427,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: true,
         message: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.REVOKETOKEN_INIT: {
@@ -413,6 +440,7 @@ const settingReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        errorSeverity: "success",
       };
     }
     case actions.REVOKETOKEN_FAIL: {
@@ -420,6 +448,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: true,
         message: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -434,6 +463,7 @@ const settingReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        errorSeverity: "success",
       };
     }
 
@@ -442,6 +472,7 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: true,
         message: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.REVOKE_TOKEN_MICROSOFT_INIT: {
@@ -456,6 +487,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         microsftRevokeToken: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.REVOKE_TOKEN_MICROSOFT_FAIL: {
@@ -464,6 +496,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         microsftRevokeToken: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -480,6 +513,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationSpinner: false,
         diskusWebNotificationData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DISKUS_WEB_NOTIFICATION_FAIL: {
@@ -488,6 +522,7 @@ const settingReducer = (state = initialState, action) => {
         NotificationSpinner: false,
         diskusWebNotificationData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -504,6 +539,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         diskusNotificationMarkAsRead: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -513,6 +549,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         diskusNotificationMarkAsRead: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     //this state will take the previous object also that are currently unread and will accumulate the newly coming objects also

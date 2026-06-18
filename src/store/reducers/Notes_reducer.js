@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   SaveNotesResponse: null,
   GetAllNotesResponse: null,
   UpdateNotesResponse: null,
@@ -37,6 +38,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         SaveNotesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADD_NOTES_FAIL: {
@@ -45,6 +47,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         SaveNotesResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_NOTES_INIT: {
@@ -59,6 +62,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         GetAllNotesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_NOTES_FAIL: {
@@ -67,6 +71,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         GetAllNotesResponse: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_NOTES_BY_NOTESID_INIT: {
@@ -81,6 +86,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         GetNotesByNotesId: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_NOTES_BY_NOTESID_FAIL: {
@@ -89,6 +95,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         GetNotesByNotesId: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_NOTES_INIT: {
@@ -102,6 +109,7 @@ const NotesReducer = (state = initialState, action) => {
         ...state,
         UpdateNotesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_NOTES_FAIL: {
@@ -109,6 +117,7 @@ const NotesReducer = (state = initialState, action) => {
         ...state,
         UpdateNotesResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEAR_NOTES_RESPONSEMESSAGE: {
@@ -129,6 +138,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: true,
         ResponseMessage: action.message,
         deleteNoteResponse: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.DELETE_NOTE_FAIL: {
@@ -137,6 +147,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         deleteNoteResponse: null,
+        errorSeverity: "error",
       };
     }
 
@@ -155,6 +166,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: true,
         createUpdateNotesDataRoomMapData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -164,6 +176,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         createUpdateNotesDataRoomMapData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -182,6 +195,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         saveNotesDocumentData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -209,6 +223,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         retrieveNotesDocumentData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -235,6 +250,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: true,
         saveFilesNotes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -262,6 +278,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: true,
         uploadDocumentNotes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -289,6 +306,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         deleteNotesDocument: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -298,6 +316,7 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         deleteNotesDocument: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

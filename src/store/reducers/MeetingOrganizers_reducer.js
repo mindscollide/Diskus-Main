@@ -3,6 +3,7 @@ import * as actions from '../action_types'
 const initialState = {
   Loading: false,
   ResponseMessage: '',
+  errorSeverity: null,
   SaveMeetingOrganizersData: [],
   AllUserCommitteesGroupsData: [],
   MeetingOrganizersData: [],
@@ -30,6 +31,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         AllUserCommitteesGroupsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       }
     }
     case actions.GETALLCOMMITTEESUSERSANDGROUPS_FAIL: {
@@ -38,6 +40,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         AllUserCommitteesGroupsData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       }
     }
 
@@ -67,6 +70,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         LoadingMeetingOrganizer: false,
         SaveMeetingOrganizersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       }
     }
     case actions.SAVE_MEETINGORGANIZERS_FAIL: {
@@ -75,6 +79,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         LoadingMeetingOrganizer: false,
         SaveMeetingOrganizersData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       }
     }
 
@@ -97,6 +102,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         MeetingStatusUpdateData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       }
     }
     case actions.UPDATE_ORGANIZERSMEETING_FAIL: {
@@ -105,6 +111,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         MeetingStatusUpdateData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       }
     }
 
@@ -120,6 +127,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         AllMeetingOrganizersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       }
     }
     case actions.GETALLMEETINGORGANIZERS_FAIL: {
@@ -128,6 +136,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         AllMeetingOrganizersData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       }
     }
 
@@ -171,6 +180,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       }
     }
 
@@ -179,6 +189,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       }
     }
 

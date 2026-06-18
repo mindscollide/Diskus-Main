@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   xfdfData: "",
   attachmentBlob: "",
   isHTML: false
@@ -36,6 +37,7 @@ const webViewerReducer = (state = initialState, action) => {
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: action.meessage,
+        errorSeverity: "success",
       };
     }
     case actions.GETANNOTATIONSOFTODOATTACHEMENT_FAIL: {
@@ -43,6 +45,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "error",
       };
     }
     case actions.ADDANNOTATIONSONTODOATTACHEMENT_INIT: {
@@ -56,6 +59,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "success",
       };
     }
     case actions.ADDANNOTATIONSONTODOATTACHEMENT_FAIL: {
@@ -63,6 +67,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "error",
       };
     }
     case actions.GETANNOTATIONSOFNOTESATTACHEMENT_INIT: {
@@ -78,6 +83,7 @@ const webViewerReducer = (state = initialState, action) => {
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: action.meessage,
+        errorSeverity: "success",
       };
     }
     case actions.GETANNOTATIONSOFNOTESATTACHEMENT_FAIL: {
@@ -85,6 +91,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "error",
       };
     }
     case actions.ADDANNOTATIONSOFNOTESATTACHEMENT_INIT: {
@@ -98,6 +105,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "success",
       };
     }
     case actions.ADDANNOTATIONSOFNOTESATTACHEMENT_FAIL: {
@@ -105,6 +113,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "error",
       };
     }
     case actions.GETANNOTATIONSOFRESOLUTIONATTACHEMENT_INIT: {
@@ -120,6 +129,7 @@ const webViewerReducer = (state = initialState, action) => {
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: action.meessage,
+        errorSeverity: "success",
       };
     }
     case actions.GETANNOTATIONSOFRESOLUTIONATTACHEMENT_FAIL: {
@@ -127,6 +137,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "error",
       };
     }
     case actions.ADDANNOTATIONSOFRESOLUTIONATTACHEMENT_INIT: {
@@ -140,6 +151,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "success",
       };
     }
     case actions.ADDANNOTATIONSOFRESOLUTIONATTACHEMENT_FAIL: {
@@ -147,6 +159,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.meessag,
+        errorSeverity: "error",
       };
     }
     case actions.ADDANNOTATIONSOFDATAROOMATTACHEMENT_INIT: {
@@ -160,6 +173,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADDANNOTATIONSOFDATAROOMATTACHEMENT_FAIL: {
@@ -167,6 +181,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_INIT: {
@@ -182,7 +197,8 @@ const webViewerReducer = (state = initialState, action) => {
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: "",
-        isHTML: action.checking
+        isHTML: action.checking,
+        errorSeverity: "success",
       };
     }
     case actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_FAIL: {
@@ -190,6 +206,7 @@ const webViewerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default:

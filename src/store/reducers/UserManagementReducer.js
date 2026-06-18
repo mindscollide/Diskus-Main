@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   saveOrganizationAndSelectedPakageData: null,
   getOrganizationSubscriptionExpiryDetailsData: null,
   extentOrganizationalTrialData: null,
@@ -49,6 +50,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         saveOrganizationAndSelectedPakageData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_ORGANIZATIONAND_SELECTEDPAKGE_USERMANAGEMENT_FAIL: {
@@ -57,6 +59,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         saveOrganizationAndSelectedPakageData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -95,6 +98,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         extentOrganizationalTrialData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.EXTEND_ORGANIZATION_TRIAL_FAIL: {
@@ -103,6 +107,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         extentOrganizationalTrialData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -118,6 +123,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: action.loader,
         addOrganizationUsersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADD_ORGANIZATION_USERS_FAIL: {
@@ -126,6 +132,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         addOrganizationUsersData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -141,6 +148,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         editOrganizationUsersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.EDIT_ORGANIZATION_USERS_FAIL: {
@@ -149,6 +157,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         editOrganizationUsersData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -164,6 +173,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         allOrganizationUsersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ALL_ORGANIZAION_USERS_FAIL: {
@@ -172,6 +182,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         allOrganizationUsersData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -187,6 +198,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         organizationPakageDetailsUserStatsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ORGANIZATION_PAKAGEDETAILS_AND_USERSTATS_FAIL: {
@@ -195,6 +207,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         organizationPakageDetailsUserStatsData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -210,6 +223,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         organizationSelectedPakagesByOrganizationIDData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_FAIL: {
@@ -218,6 +232,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         organizationSelectedPakagesByOrganizationIDData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -247,6 +262,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getAllSelectedPakagesData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALL_ORGANIZATION_SELECTED_PAKAGES_FAIL: {
@@ -255,6 +271,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getAllSelectedPakagesData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -271,6 +288,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: action.loader,
         getAllUserTypePackagesData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -280,6 +298,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getAllUserTypePackagesData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -296,6 +315,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationUserStatsGraph: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.USERADMIN_LIST_OF_STATS_GRAPH_FAIL:
@@ -304,6 +324,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationUserStatsGraph: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.RESEND_FORGOT_PASSWORD_CODE_INIT:
@@ -318,6 +339,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         ResendForgotPasswordCodedData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.RESEND_FORGOT_PASSWORD_CODE_FAIL:
@@ -326,6 +348,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         ResendForgotPasswordCodedData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.DELETE_ORGANIZATION_USERS_INIT:
@@ -340,6 +363,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         deleteOrganizationUsersData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.DELETE_ORGANIZATION_USERS_FAIL:
@@ -348,6 +372,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         deleteOrganizationUsersData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //Payment Initiate
@@ -363,6 +388,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         paymentInitiateData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.PAYMENT_INITIATE_FAIL:
@@ -371,6 +397,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         paymentInitiateData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //Cancel Sub Reason Api Data
@@ -386,6 +413,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         cancelSubReasonData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.CANCEL_SUB_REASONS_FAIL:
@@ -394,6 +422,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         cancelSubReasonData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //Cancel Organization Subscription Reason Api Data
@@ -409,6 +438,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         cancelOrganizationSubsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.CANCEL_ORGANIZATION_SUB_FAIL:
@@ -417,6 +447,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         cancelOrganizationSubsData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     // Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
@@ -455,6 +486,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         organizationTrialExtendData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.REQUEST_ORGANIZATION_TRIAL_EXTEND_FAIL:
@@ -463,6 +495,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         organizationTrialExtendData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //Payment Status Modal
@@ -478,6 +511,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         paymentStatusModal: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.PAYMENT_STATUS_FAILED:
@@ -500,6 +534,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         changeSelectedPackage: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CHANGE_PACKAGE_SELECTED_FAIL: {
@@ -508,6 +543,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         changeSelectedPackage: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_INIT: {
@@ -522,6 +558,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         isFreeTrailCancelandUpgradeOrganization: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CANCELFREETRAILANDUPDGRADEORGANIZATION_FAIL: {
@@ -530,6 +567,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         isFreeTrailCancelandUpgradeOrganization: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -546,6 +584,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         downgradeOrganizationSubscriptionData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -571,6 +610,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getOrganizationWallet: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -595,6 +635,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         boardDeckSendEmailData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -620,6 +661,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         downloadBoardDeckPDF: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -652,6 +694,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         videoURLData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -677,6 +720,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getMinutesPublishedData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -686,6 +730,7 @@ const UserMangementReducer = (state = initialState, action) => {
         Loading: false,
         getMinutesPublishedData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
