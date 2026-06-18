@@ -552,7 +552,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

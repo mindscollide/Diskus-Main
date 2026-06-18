@@ -1322,7 +1322,6 @@ const SignatureViewer = () => {
         }
       />
 
-      <Notification open={notification} setOpen={setNotification} />
 
       {sendModal && (
         <SendDocumentModal

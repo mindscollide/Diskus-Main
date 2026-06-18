@@ -1788,7 +1788,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         onHide={() => setCloseConfirmationBox(false)}
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

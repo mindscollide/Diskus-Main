@@ -1098,7 +1098,7 @@ const Notes = () => {
           setViewNotes={setViewModalShow}
         />
       ) : null}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

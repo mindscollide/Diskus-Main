@@ -3665,7 +3665,7 @@ const UpdateQuickMeeting = ({
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

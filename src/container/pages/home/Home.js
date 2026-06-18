@@ -1093,12 +1093,7 @@ const Home = () => {
           <Col lg={4} md={4} sm={12} className="m-0 "></Col>
         </Row>
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+    
       {show ? (
         <ModalMeeting
           show={show}

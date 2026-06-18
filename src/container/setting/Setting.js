@@ -1593,7 +1593,7 @@ const Organization = () => {
           </Row>
         </Col>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

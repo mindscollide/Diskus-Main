@@ -215,7 +215,7 @@ const SubDedaultDragger = ({
           </Dragger>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

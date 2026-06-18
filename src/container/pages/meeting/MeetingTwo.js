@@ -5129,7 +5129,7 @@ const NewMeeting = () => {
             checkFlag={4}
           />
         ) : null}
-        <Notification open={open} setOpen={setOpen} />
+        
         {sceduleMeeting && scheduleMeetingsPageFlag === true ? (
           <SceduleMeeting
             setSceduleMeeting={setSceduleMeeting}

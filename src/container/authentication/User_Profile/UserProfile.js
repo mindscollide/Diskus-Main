@@ -541,7 +541,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

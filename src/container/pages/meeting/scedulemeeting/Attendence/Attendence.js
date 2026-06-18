@@ -410,7 +410,7 @@ const Attendence = ({
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

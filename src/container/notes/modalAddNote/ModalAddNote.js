@@ -621,7 +621,7 @@ const ModalAddNote = ({ ModalTitle }) => {
             </>
           }
         />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

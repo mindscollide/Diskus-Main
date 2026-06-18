@@ -1312,7 +1312,7 @@ const Polling = () => {
       {PollsReducerdeletePollsModal && <DeletePoll id={idForDelete} />}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -1074,7 +1074,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -1146,7 +1146,7 @@ const ViewMeetingDetails = ({}) => {
             setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           />
         )}
-        <Notification open={open} setOpen={setOpen} />
+        
       </section>
 
       <Modal

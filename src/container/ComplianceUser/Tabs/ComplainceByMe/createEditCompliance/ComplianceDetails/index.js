@@ -1252,7 +1252,7 @@ const ComplainceDetails = () => {
           }
         />
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
       <ComplianceCloseConfirmationModal />
       {complianceOnHoldModal && <CompliaceStatusOnHoldModal />}
       <ComplianceStatusCancelModal />

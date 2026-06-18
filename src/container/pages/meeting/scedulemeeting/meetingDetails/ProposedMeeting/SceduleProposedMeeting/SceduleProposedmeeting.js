@@ -369,7 +369,7 @@ const SceduleProposedmeeting = ({
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

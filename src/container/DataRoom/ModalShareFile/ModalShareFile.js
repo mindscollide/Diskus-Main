@@ -588,7 +588,7 @@ const ModalShareFile = ({
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

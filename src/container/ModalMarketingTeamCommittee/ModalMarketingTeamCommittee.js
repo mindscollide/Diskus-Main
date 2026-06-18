@@ -328,7 +328,7 @@ const ModalMarketingTeamCommittee = ({
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

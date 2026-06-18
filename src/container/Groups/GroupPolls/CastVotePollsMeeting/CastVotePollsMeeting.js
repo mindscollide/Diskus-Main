@@ -362,7 +362,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

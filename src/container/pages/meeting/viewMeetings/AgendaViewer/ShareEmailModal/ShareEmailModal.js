@@ -316,7 +316,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
         }
       />
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

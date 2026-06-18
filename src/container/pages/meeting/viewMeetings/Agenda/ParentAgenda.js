@@ -528,7 +528,7 @@ const ParentAgenda = ({
           )}
         </Draggable>
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

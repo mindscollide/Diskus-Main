@@ -963,7 +963,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -488,7 +488,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

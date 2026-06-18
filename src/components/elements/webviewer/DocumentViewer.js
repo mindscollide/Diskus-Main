@@ -427,7 +427,7 @@ const DocumentViewer = () => {
         <div className="webviewer" ref={viewer}></div>
       </div>
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

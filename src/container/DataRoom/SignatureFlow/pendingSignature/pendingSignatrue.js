@@ -1364,7 +1364,6 @@ const PendingSignatureViewer = () => {
         />
       )}
 
-      <Notification open={notification} setOpen={setNotification} />
     </>
   );
 };

@@ -535,7 +535,7 @@ const Organizers = () => {
         </Row> */}
       </section>
 
-      <Notification open={open} setOpen={setOpen} />
+      
 
       {cancelModalView && (
         <CancelButtonModal

@@ -8214,7 +8214,7 @@ const Dashboard = () => {
               open={isInternetDisconnectModalVisible}
             />
           )}
-          <Notification open={open} setOpen={setOpen} />
+          
           {cancelModalMeetingDetails && <CancelButtonModal />}
           {roleRoute && (
             <Modal

@@ -712,10 +712,7 @@ const NewCalendar = () => {
           />
         </>
       )}
-      <Notification
-        open={open}
-        setOpen={setOpen}
-      />
+   
       {eventModal && (
         <EventsModal
           events={events}

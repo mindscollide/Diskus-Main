@@ -1298,7 +1298,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         setShowModal={setCloseConfirmationBox}
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

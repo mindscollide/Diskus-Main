@@ -350,7 +350,7 @@ const SignupProcessUserManagement = () => {
     <>
       {SignupComponent}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

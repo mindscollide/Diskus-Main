@@ -1355,7 +1355,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         closeBtnClick={() => setUpdateComponentpage(false)}
         onHide={() => setCloseConfirmationBox(false)}
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

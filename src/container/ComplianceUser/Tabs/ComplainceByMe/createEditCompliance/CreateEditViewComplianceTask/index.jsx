@@ -390,7 +390,7 @@ const CreateEditViewComplianceTask = () => {
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
       <ComplianceCloseConfirmationModal />
     </>
   );

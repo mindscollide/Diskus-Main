@@ -161,7 +161,7 @@ const UpdatePasswordSuccessfully = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

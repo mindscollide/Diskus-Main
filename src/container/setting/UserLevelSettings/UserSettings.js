@@ -2364,7 +2364,7 @@ const UserSettings = ({ googleClientIDs }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

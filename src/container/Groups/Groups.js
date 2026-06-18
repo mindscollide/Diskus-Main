@@ -807,7 +807,7 @@ const Groups = () => {
         />
       ) : null}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

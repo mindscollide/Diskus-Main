@@ -2536,7 +2536,7 @@ const Minutes = () => {
           />
         ) : null}
 
-        <Notification open={open} setOpen={setOpen} />
+        
       </section>
     </>
   );

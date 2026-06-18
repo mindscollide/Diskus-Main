@@ -1914,7 +1914,7 @@ const Header2 = ({ isVideo }) => {
 
       {UpgradeNowModalReducer && <UpgradeNowModal />}
       {requestExtentionModal && <RequestExtensionModal />}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

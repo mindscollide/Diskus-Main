@@ -964,7 +964,7 @@ const Committee = () => {
           </>
         )}
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
       {showModal ? (
         <ModalArchivedCommittee
           archivedCommittee={showModal}

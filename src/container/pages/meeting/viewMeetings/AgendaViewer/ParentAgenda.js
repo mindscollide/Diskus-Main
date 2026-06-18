@@ -473,7 +473,7 @@ const ParentAgenda = ({
         {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
         {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

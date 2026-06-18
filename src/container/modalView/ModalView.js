@@ -1894,7 +1894,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           handleClickContinue={handleClickEndMeeting}
           handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
         />
-        <Notification open={open} setOpen={setOpen} />
+        
       </Container>
 
       {/* Max Component */}

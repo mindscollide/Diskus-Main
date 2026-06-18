@@ -1301,7 +1301,7 @@ const AgendaViewer = () => {
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
 
       {/* {fullScreenView ? (
         <FullScreenAgendaModal

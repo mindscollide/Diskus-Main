@@ -766,7 +766,7 @@ const Polls = ({
             currentMeeting={currentMeeting}
           />
         )}
-        <Notification open={open} setOpen={setOpen} />
+        
       </section>
     </>
   );

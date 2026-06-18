@@ -4815,7 +4815,7 @@ const DataRoom = () => {
         />
       )}
       {/* Global snackbar notification */}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

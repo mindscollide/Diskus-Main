@@ -696,7 +696,7 @@ const CancelSubs = () => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

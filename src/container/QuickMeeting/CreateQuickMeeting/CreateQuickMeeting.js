@@ -2948,7 +2948,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

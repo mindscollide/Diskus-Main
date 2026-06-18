@@ -722,7 +722,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

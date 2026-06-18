@@ -958,7 +958,7 @@ const CreatePolling = () => {
           size={defineUnsaveModal ? "md" : "xl"}
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

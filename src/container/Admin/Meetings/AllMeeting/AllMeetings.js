@@ -1195,7 +1195,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -654,7 +654,7 @@ const SubAgendaMappingDragging = ({
             </>
           );
         })}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

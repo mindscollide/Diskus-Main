@@ -428,7 +428,7 @@ const TwoFactorMultipleDevices = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

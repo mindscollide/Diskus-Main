@@ -371,7 +371,7 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </div>
   );
 };

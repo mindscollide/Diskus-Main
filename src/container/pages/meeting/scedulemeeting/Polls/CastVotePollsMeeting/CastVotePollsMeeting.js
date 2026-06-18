@@ -314,7 +314,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

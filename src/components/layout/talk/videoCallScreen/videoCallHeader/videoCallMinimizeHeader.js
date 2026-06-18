@@ -2061,7 +2061,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                 </Tooltip>
               </div>
             </div>
-            <Notification open={open} setOpen={setOpen} />
+            
           </Col>
         </Row>
       </div>

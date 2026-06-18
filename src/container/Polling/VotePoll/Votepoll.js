@@ -439,7 +439,7 @@ const Votepoll = () => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

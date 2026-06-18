@@ -878,7 +878,7 @@ const Reports = () => {
           </span>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </Fragment>
   );
 };

@@ -233,7 +233,7 @@ const WorkingDays = ({ setOrganizationSetting, organizationSettingData }) => {
           />
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

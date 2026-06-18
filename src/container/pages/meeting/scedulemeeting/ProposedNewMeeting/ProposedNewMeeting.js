@@ -1722,7 +1722,7 @@ const ProposedNewMeeting = ({
           </span>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

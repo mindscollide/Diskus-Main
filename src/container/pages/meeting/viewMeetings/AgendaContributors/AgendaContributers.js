@@ -431,7 +431,7 @@ const AgendaContributers = () => {
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

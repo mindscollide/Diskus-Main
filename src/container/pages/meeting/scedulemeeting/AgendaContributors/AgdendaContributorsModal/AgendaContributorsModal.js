@@ -478,7 +478,7 @@ const AgendaContributorsModal = ({
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

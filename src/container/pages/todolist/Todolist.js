@@ -1103,7 +1103,7 @@ const TodoList = () => {
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

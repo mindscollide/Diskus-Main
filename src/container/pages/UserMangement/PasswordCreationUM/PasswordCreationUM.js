@@ -396,7 +396,7 @@ const PasswordCreationUM = () => {
       {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

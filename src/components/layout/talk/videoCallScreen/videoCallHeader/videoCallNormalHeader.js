@@ -2673,7 +2673,6 @@ const VideoCallNormalHeader = ({
               </div>
             ) : null}
 
-            <Notification setOpen={setOpen} open={open} />
           </div>
         </>
       </>

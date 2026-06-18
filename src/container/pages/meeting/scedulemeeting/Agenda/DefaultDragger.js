@@ -215,7 +215,7 @@ const DefaultDragger = ({
           </Dragger>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

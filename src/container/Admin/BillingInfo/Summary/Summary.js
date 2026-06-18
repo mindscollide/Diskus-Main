@@ -457,7 +457,7 @@ const Summary = () => {
             </>
           }
         />
-        <Notification open={open} setOpen={setOpen} />
+        
       </Fragment>
     </>
   );

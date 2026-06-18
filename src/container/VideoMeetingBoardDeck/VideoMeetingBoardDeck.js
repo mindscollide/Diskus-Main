@@ -139,7 +139,7 @@ const VideoMeetingBoardDeck = () => {
           </Col>
         </Row>
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

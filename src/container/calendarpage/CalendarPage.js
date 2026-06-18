@@ -993,7 +993,7 @@ const CalendarPage = () => {
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

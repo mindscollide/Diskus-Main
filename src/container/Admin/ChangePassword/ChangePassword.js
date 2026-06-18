@@ -361,7 +361,7 @@ const ChangePassword = () => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

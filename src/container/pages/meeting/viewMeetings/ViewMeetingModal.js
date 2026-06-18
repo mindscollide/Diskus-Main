@@ -1527,7 +1527,7 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

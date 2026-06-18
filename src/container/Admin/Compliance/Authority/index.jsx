@@ -1057,7 +1057,7 @@ const ManageAuthority = () => {
           </>
         )}
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
       <DeleteAuthorityModal />
       {addEditViewAuthoriyModal ? <AddEditViewAuthorityModal /> : null}
     </>

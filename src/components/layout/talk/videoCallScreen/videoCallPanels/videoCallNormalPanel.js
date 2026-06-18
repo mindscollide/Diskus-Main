@@ -2265,7 +2265,7 @@ const VideoPanelNormal = () => {
         </Row>
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -2217,7 +2217,7 @@ const ScheduleNewResolution = () => {
           setDiscardresolution={setDsicardresolution}
         />
       ) : null}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

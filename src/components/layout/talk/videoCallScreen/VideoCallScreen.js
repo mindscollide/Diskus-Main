@@ -40,7 +40,7 @@ const VideoCallScreen = () => {
   return (
     <>
       <VideoMain />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

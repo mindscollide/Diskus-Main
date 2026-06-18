@@ -979,7 +979,7 @@ const Participants = ({
             prevFlag={prevFlag}
           />
         )}
-        <Notification open={open} setOpen={setOpen} />
+        
       </>
       {/* )} */}
     </>

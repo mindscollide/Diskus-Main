@@ -1262,7 +1262,7 @@ const Minutes = ({
           prevFlag={prevFlag}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

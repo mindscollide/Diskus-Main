@@ -661,7 +661,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       {unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

@@ -751,7 +751,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           ) : null
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

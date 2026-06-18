@@ -1894,7 +1894,7 @@ const MeetingDetails = ({
           flag={1}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

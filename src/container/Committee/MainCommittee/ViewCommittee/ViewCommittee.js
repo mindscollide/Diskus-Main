@@ -836,7 +836,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

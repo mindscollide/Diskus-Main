@@ -817,7 +817,7 @@ const CreateEditViewComplianceChecklist = () => {
           // }
         />
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
       <ComplianceCloseConfirmationModal />
       <DeleteChecklistConfirmationModal />
     </>

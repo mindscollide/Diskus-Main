@@ -968,7 +968,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

@@ -1060,7 +1060,7 @@ const Organizers = ({
           </section>
         </section>
       </>
-      <Notification open={open} setOpen={setOpen} />
+      
       {NewMeetingreducer.adduserModal && (
         <ModalOrganizor currentMeeting={currentMeeting} />
       )}

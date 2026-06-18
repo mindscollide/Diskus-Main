@@ -2568,7 +2568,7 @@ const EditResolution = ({ setCancelresolution }) => {
           setResolutionupdated={setResolutionUpdateSuccessfully}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

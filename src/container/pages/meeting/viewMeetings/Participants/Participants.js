@@ -369,7 +369,7 @@ const Participants = () => {
             setMeetingDetails={setParticipants}
           />
         )}
-        <Notification open={open} setOpen={setOpen} />
+        
       </section>
     </>
   );

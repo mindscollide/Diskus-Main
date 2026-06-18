@@ -491,7 +491,7 @@ const Agenda = ({}) => {
           setMinutes={setMinutes}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

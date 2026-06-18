@@ -668,7 +668,7 @@ const Createpolls = ({ setCreatepoll }) => {
                 />
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
+            
 
             {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />

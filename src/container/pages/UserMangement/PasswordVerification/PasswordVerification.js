@@ -413,7 +413,7 @@ const PasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -427,7 +427,7 @@ const SignInUserManagement = () => {
                 </Col>
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
+            
           </>
         )}
       </Container>

@@ -343,7 +343,7 @@ const ViewCompliance = () => {
           {viewComplianceDetailsTab === 2 && <ViewComplianceTasks />}
         </section>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
 
       <ReopenOrOnHoldDetailsModal />
     </>

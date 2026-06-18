@@ -807,7 +807,7 @@ const ModalToDoListChecklist = ({
           ) : null
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

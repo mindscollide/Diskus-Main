@@ -408,7 +408,7 @@ const BoardDeckSendEmail = ({
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </Container>
   );
 };

@@ -982,7 +982,7 @@ const CreateTask = ({
         )}
       </section>
 
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

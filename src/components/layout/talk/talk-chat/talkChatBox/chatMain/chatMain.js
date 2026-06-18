@@ -6553,7 +6553,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         id={notificationID}
       />
       {/* Toast Messege Notificaiton Component */}
-      <Notification open={open} setOpen={setOpen} />
+      
       <Modal
         show={showImageModal}
         size="lg"

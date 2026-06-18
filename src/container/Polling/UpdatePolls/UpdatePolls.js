@@ -1127,7 +1127,7 @@ const UpdatePolls = () => {
           size={defineUnsaveModal ? null : "xl"}
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

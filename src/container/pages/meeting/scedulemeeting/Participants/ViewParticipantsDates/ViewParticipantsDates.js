@@ -646,7 +646,7 @@ const ViewParticipantsDates = ({
           </span>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      
     </section>
   );
 };

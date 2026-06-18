@@ -278,7 +278,7 @@ const UserManagementProcess = () => {
   return (
     <>
       {componentToRender}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

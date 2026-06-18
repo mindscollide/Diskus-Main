@@ -1011,7 +1011,7 @@ const Polls = () => {
         )}
         {deletPollsMeeting && <DeletePollConfirmModal pollID={pollID} />}
 
-        <Notification open={open} setOpen={setOpen} />
+        
         {AccessDeniedGlobalState && <AccessDeniedModal />}
       </section>
     </>

@@ -192,7 +192,7 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };
