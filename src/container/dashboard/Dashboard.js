@@ -1,5 +1,6 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { HIDE_VIDEO } from "../../commen/featureFlags";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -8182,9 +8183,9 @@ const Dashboard = () => {
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-          {NormalizeVideoFlag === true ||
+          {!HIDE_VIDEO && (NormalizeVideoFlag === true ||
           MinimizeVideoFlag === true ||
-          MaximizeVideoFlag === true ? (
+          MaximizeVideoFlag === true) ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}

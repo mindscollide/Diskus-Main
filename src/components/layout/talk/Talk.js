@@ -705,7 +705,7 @@ const Talk = () => {
               </div>
             </Tooltip>
           ) : null} */}
-          {checkFeatureIDAvailability(4) ? (
+          {/* {checkFeatureIDAvailability(4) ? (
             <Tooltip placement='leftTop' title={t("Video-call")}>
               <div
                 // className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"
@@ -717,7 +717,6 @@ const Talk = () => {
                       : "talk_subIcon_hidden"
                 }
                 onClick={videoIconClick}>
-                {/* <span className="talk-count"></span> */}
                 <span className={missedCallCount === 0 ? "" : "talk-count"}>
                   {missedCallCount === 0
                     ? ""
@@ -751,7 +750,7 @@ const Talk = () => {
                 <span className='TalkIconPannelLabels'>{t("Video-call")}</span>
               </div>
             </Tooltip>
-          ) : null}
+          ) : null} */}
           {checkFeatureIDAvailability(3) ? (
             <Tooltip placement='leftTop' title={t("Chat")}>
               <div

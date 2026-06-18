@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewMeetingDetails.module.css";
+import { HIDE_VIDEO } from "../../../../../commen/featureFlags";
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container } from "react-bootstrap";
 import {
@@ -991,7 +992,7 @@ const ViewMeetingDetails = ({}) => {
                         className="cursor-pointer mx-2"
                       />
                     )}
-                    {meetingDetails.IsVideoCall && (
+                    {!HIDE_VIDEO && meetingDetails.IsVideoCall && (
                       <>
                         {editorRole.status === "10" ||
                         editorRole.status === 10 ? (

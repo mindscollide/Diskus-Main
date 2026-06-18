@@ -103,6 +103,9 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "build:pso": "env-cmd -f .env.pso craco build",
+    "build:uat": "env-cmd -f .env.uat craco build",
+    "build:staging": "env-cmd -f .env.staging craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -126,6 +129,7 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
+    "env-cmd": "^11.0.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "process": "^0.11.10",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ModalMeeting.css";
+import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import {
   TextField,
   Button,
@@ -144,6 +145,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                   </Row>
 
                   <Row>
+                    {!HIDE_VIDEO && (
                     <Col lg={1} md={1} xs={12}>
                       <Button
                         text={<CameraVideo />}
@@ -151,6 +153,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         className="onboard_detail_camera"
                       />
                     </Col>
+                    )}
                     <Col lg={7} md={7} xs={12} className="CreateMeetingInput">
                       <TextField
                         name="MeetingLocation"

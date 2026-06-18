@@ -64,6 +64,7 @@ import {
   uploadDocumentsQuickMeetingApi,
 } from "../../../store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { HIDE_VIDEO } from "../../../commen/featureFlags";
 
 const UpdateQuickMeeting = ({
   editFlag,
@@ -84,23 +85,23 @@ const UpdateQuickMeeting = ({
   const dispatch = useDispatch();
 
   const assigneesViewMeetingDetails = useSelector(
-    (state) => state.assignees.ViewMeetingDetails
+    (state) => state.assignees.ViewMeetingDetails,
   );
 
   const assigneesRemindersData = useSelector(
-    (state) => state.assignees.RemindersData
+    (state) => state.assignees.RemindersData,
   );
 
   const uploadReduceruploadDocumentsList = useSelector(
-    (state) => state.uploadReducer.uploadDocumentsList
+    (state) => state.uploadReducer.uploadDocumentsList,
   );
 
   const CommitteeReducergetCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID
+    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID,
   );
 
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
-    (state) => state.GroupsReducer?.getGroupByGroupIdResponse
+    (state) => state.GroupsReducer?.getGroupByGroupIdResponse,
   );
   const {
     userName = "",
@@ -226,10 +227,7 @@ const UpdateQuickMeeting = ({
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
   const generateRandomAgendaID = generateRandomNegativeAuto();
-  console.log(
-    { attachments },
-    "attachments"
-  );
+  console.log({ attachments }, "attachments");
   const [fileSize, setFileSize] = useState(0);
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
@@ -721,7 +719,7 @@ const UpdateQuickMeeting = ({
 
   function urlPatternValidation(URL) {
     const regex = new RegExp(
-      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
+      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?",
     );
     return regex.test(URL);
   }
@@ -890,7 +888,7 @@ const UpdateQuickMeeting = ({
       let { isMorethan } = isFileSizeValid(uploadedFile.size);
 
       let fileExists = attachments.some(
-        (filename) => filename.DisplayAttachmentName === uploadedFile.name
+        (filename) => filename.DisplayAttachmentName === uploadedFile.name,
       );
 
       if (!isMorethan) {
@@ -905,7 +903,7 @@ const UpdateQuickMeeting = ({
         showMessage(
           t("File-size-should-not-be-more-than-1-5GB"),
           "error",
-          setOpen
+          setOpen,
         );
       } else if (!sizezero) {
         showMessage(t("File-size-is-0mb"), "error", setOpen);
@@ -939,14 +937,14 @@ const UpdateQuickMeeting = ({
       await Promise.all(
         fileForSend.map((file) =>
           dispatch(
-            uploadDocumentsQuickMeetingApi(navigate, t, file, filesToUpload)
-          )
-        )
+            uploadDocumentsQuickMeetingApi(navigate, t, file, filesToUpload),
+          ),
+        ),
       );
 
       let savedFiles = [];
       const saveResponse = await dispatch(
-        saveFilesQuickMeetingApi(navigate, t, filesToUpload, 0, savedFiles)
+        saveFilesQuickMeetingApi(navigate, t, filesToUpload, 0, savedFiles),
       );
 
       if (saveResponse.isExecuted && saveResponse.responseCode === 1) {
@@ -960,7 +958,7 @@ const UpdateQuickMeeting = ({
           // Update existing file entries or push new ones
           uploaded.forEach((newFile) => {
             const existingIdx = updatedAttachments.findIndex(
-              (a) => a.DisplayAttachmentName === newFile.DisplayAttachmentName
+              (a) => a.DisplayAttachmentName === newFile.DisplayAttachmentName,
             );
             if (existingIdx !== -1) {
               updatedAttachments[existingIdx].OriginalAttachmentName =
@@ -1320,7 +1318,7 @@ const UpdateQuickMeeting = ({
           CommitteeMembers.length > 0
         ) {
           let findisCreatorFind = CommitteeMembers.find(
-            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
+            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID),
           );
           console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
           if (findisCreatorFind === undefined) {
@@ -1611,7 +1609,7 @@ const UpdateQuickMeeting = ({
             user?.displayProfilePictureName,
             user.name,
             user?.pK_UID,
-            user?.name
+            user?.name,
           );
           PresenterData.push(userItem);
 
@@ -1619,7 +1617,7 @@ const UpdateQuickMeeting = ({
             setUserAsPresenter(
               user?.displayProfilePictureName,
               user?.name,
-              user?.pK_UID
+              user?.pK_UID,
             );
           }
         });
@@ -1636,7 +1634,7 @@ const UpdateQuickMeeting = ({
 
         if (CommitteeMembers?.length > 0) {
           const findisCreatorFind = CommitteeMembers.find(
-            (userInfo) => Number(userInfo.pK_UID) === Number(createrID)
+            (userInfo) => Number(userInfo.pK_UID) === Number(createrID),
           );
 
           // Set presenter (creator) if not found in committee members
@@ -1644,7 +1642,7 @@ const UpdateQuickMeeting = ({
             setUserAsPresenter(
               userProfilePicture?.displayProfilePictureName,
               userNamecopy,
-              fK_UID2
+              fK_UID2,
             );
           } else {
             // Set presenter values even if creator is found
@@ -1653,8 +1651,8 @@ const UpdateQuickMeeting = ({
                 userProfilePicture?.displayProfilePictureName,
                 userNamecopy,
                 fK_UID2,
-                userNamecopy
-              )
+                userNamecopy,
+              ),
             );
             setDefaultObjMeetingAgenda((prev) => ({
               ...prev,
@@ -1687,7 +1685,7 @@ const UpdateQuickMeeting = ({
               userProfile.displayProfilePictureName,
               committeesMember.userName,
               committeesMember?.pK_UID,
-              committeesMember?.userName
+              committeesMember?.userName,
             );
 
             membersData.push(memberItem);
@@ -1714,14 +1712,14 @@ const UpdateQuickMeeting = ({
               userProfile.displayProfilePictureName,
               groupMemberData.userName,
               groupMemberData?.pK_UID,
-              groupMemberData?.userName
+              groupMemberData?.userName,
             );
 
             const presenterItem = createUserItem(
               userProfile.displayProfilePictureName,
               groupMemberData.userName,
               groupMemberData?.pK_UID,
-              groupMemberData?.userName
+              groupMemberData?.userName,
             );
 
             membersData.push(memberItem);
@@ -1741,7 +1739,7 @@ const UpdateQuickMeeting = ({
             assigneeMember?.displayProfilePictureName,
             assigneeMember.name,
             assigneeMember?.pK_UID,
-            assigneeMember?.name
+            assigneeMember?.name,
           );
           membersData.push(memberItem);
         });
@@ -1806,14 +1804,14 @@ const UpdateQuickMeeting = ({
       let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
       const getformattedDateTIme = getCurrentDateTime(new Date());
       const dateTimeFormat = convertDateTimeObject(
-        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
+        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`,
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
         showMessage(
           t("Date-and-time-should-be-greater-than-current-system-time"),
           "error",
-          setOpen
+          setOpen,
         );
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
@@ -1934,7 +1932,7 @@ const UpdateQuickMeeting = ({
                       atchmenDataaa.originalAttachmentName,
                     isNew: false,
                   });
-                }
+                },
               );
             }
             meetingAgenAtc.push({
@@ -1966,7 +1964,7 @@ const UpdateQuickMeeting = ({
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
                 FK_MDID: externalMeetingAttendeesData.fK_MDID,
               });
-            }
+            },
           );
         } catch (error) {
           //  Block of code to handle errors
@@ -1977,14 +1975,14 @@ const UpdateQuickMeeting = ({
           moment(
             EditmeetingDateFormat(
               viewData.meetingEvent.meetingDate +
-                viewData.meetingEvent.startTime
-            )
-          ).format("DD/MM/YYYY")
+                viewData.meetingEvent.startTime,
+            ),
+          ).format("DD/MM/YYYY"),
         );
         let newDate = new Date(
           EditmeetingDateFormat(
-            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
-          )
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime,
+          ),
         );
         setCreateMeetingTime(newDate);
         setCreateMeeting({
@@ -1997,10 +1995,10 @@ const UpdateQuickMeeting = ({
           IsVideoCall: viewData.meetingDetails.isVideoCall,
           VideoCallURL: viewData.meetingDetails.videoCallURL,
           MeetingStartTime: convertTimetoGMT(
-            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime,
           ),
           MeetingEndTime: convertTimetoGMT(
-            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime,
           ),
           MeetingLocation: viewData.meetingEvent.location,
           MeetingReminderID: reminder,
@@ -2173,7 +2171,7 @@ const UpdateQuickMeeting = ({
       return;
     }
     let hasOrganizer = createMeeting.MeetingAttendees.some(
-      (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1
+      (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1,
     );
 
     if (hasOrganizer) {
@@ -2186,7 +2184,7 @@ const UpdateQuickMeeting = ({
       await setIsAgenda(false);
       await setIsAttendees(false);
       let finalDateTime = createConvert(
-        createMeeting.MeetingDate + createMeeting.MeetingStartTime
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime,
       );
       let finalDateTimeWithoutUTC =
         createMeeting.MeetingDate + createMeeting.MeetingStartTime;
@@ -2216,7 +2214,7 @@ const UpdateQuickMeeting = ({
       };
       console.log(newData, "newDatanewDatanewData");
       await dispatch(
-        UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
+        UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag),
       );
     } else {
       showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
@@ -2505,13 +2503,13 @@ const UpdateQuickMeeting = ({
       return prevAttachments.filter(
         (fileData, index) =>
           attachmentdata.DisplayAttachmentName !==
-          fileData.DisplayAttachmentName
+          fileData.DisplayAttachmentName,
       );
     });
     setFileForSend((prevAttachments) => {
       return prevAttachments.filter(
         (fileData, index) =>
-          attachmentdata.DisplayAttachmentName !== fileData.name
+          attachmentdata.DisplayAttachmentName !== fileData.name,
       );
     });
   };
@@ -2531,7 +2529,7 @@ const UpdateQuickMeeting = ({
         const getFormattedTime = getHoursMinutesSec(newDate);
         const getformattedDateTIme = getCurrentDateTime(new Date());
         const dateTimeFormat = convertDateTimeObject(
-          `${createMeeting.MeetingDate}${getFormattedTime}`
+          `${createMeeting.MeetingDate}${getFormattedTime}`,
         );
         const currentDateTime = convertDateTimeObject(getformattedDateTIme);
 
@@ -2623,7 +2621,7 @@ const UpdateQuickMeeting = ({
   const handleDeleteAgenda = (data, indexValue) => {
     let copyMeetingAgenda = [...createMeeting.MeetingAgendas];
     let findIndexofMeetingAgenda = createMeeting.MeetingAgendas.findIndex(
-      (data, index) => index === indexValue
+      (data, index) => index === indexValue,
     );
     if (findIndexofMeetingAgenda !== -1) {
       copyMeetingAgenda.splice(findIndexofMeetingAgenda, 1);
@@ -2671,8 +2669,8 @@ const UpdateQuickMeeting = ({
         navigate,
         dataRoomData,
         t,
-        record.DisplayAttachmentName
-      )
+        record.DisplayAttachmentName,
+      ),
     );
   };
 
@@ -2863,28 +2861,31 @@ const UpdateQuickMeeting = ({
                   </Row>
 
                   <Row className='updatemeetingvideoiconbtrrow'>
+                    {!HIDE_VIDEO && (
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={2}
+                        xs={12}
+                        className='CreateMeetingInput'>
+                        <Button
+                          disableBtn={endMeetingStatus}
+                          text={<CameraVideo />}
+                          name='IsVideoCall'
+                          className={
+                            createMeeting.IsVideoCall === false
+                              ? "cameraButton update"
+                              : "cameraButton update Enable"
+                          }
+                          onClick={videoEnableButton}
+                        />
+                      </Col>
+                    )}
+
                     <Col
-                      lg={1}
-                      md={1}
-                      sm={2}
-                      xs={12}
-                      className='CreateMeetingInput'>
-                      <Button
-                        disableBtn={endMeetingStatus}
-                        text={<CameraVideo />}
-                        name='IsVideoCall'
-                        className={
-                          createMeeting.IsVideoCall === false
-                            ? "cameraButton update"
-                            : "cameraButton update Enable"
-                        }
-                        onClick={videoEnableButton}
-                      />
-                    </Col>
-                    <Col
-                      lg={7}
-                      md={7}
-                      sm={6}
+                      lg={HIDE_VIDEO ? 8 : 7}
+                      md={HIDE_VIDEO ? 8 : 7}
+                      sm={12}
                       xs={12}
                       className='location-textbox CreateMeetingInput'>
                       <TextField
@@ -3048,7 +3049,7 @@ const UpdateQuickMeeting = ({
                                         <Col sm={4} md={4} lg={4} key={index}>
                                           <AttachmentViewer
                                             id={Number(
-                                              data.OriginalAttachmentName
+                                              data.OriginalAttachmentName,
                                             )}
                                             handleEyeIcon={() =>
                                               handeClickView(data)
@@ -3060,7 +3061,7 @@ const UpdateQuickMeeting = ({
                                             handleClickRemove={() => {
                                               deleteAttachmentfromAgenda(
                                                 data,
-                                                index
+                                                index,
                                               );
                                             }}
                                             name={data.DisplayAttachmentName}
@@ -3149,7 +3150,7 @@ const UpdateQuickMeeting = ({
                                           applyClass='form-control2'
                                           type='text'
                                           placeholder={t(
-                                            "Presenter-Title-Placeholder"
+                                            "Presenter-Title-Placeholder",
                                           )}
                                         />
                                       </Col>
@@ -3171,7 +3172,7 @@ const UpdateQuickMeeting = ({
                                         ? data.MeetingAgendaAttachments.map(
                                             (
                                               MeetingAgendaAttachmentsData,
-                                              index
+                                              index,
                                             ) => {
                                               return (
                                                 <Col
@@ -3187,22 +3188,22 @@ const UpdateQuickMeeting = ({
                                                       MeetingAgendaAttachmentsData.DisplayAttachmentName
                                                     }
                                                     id={Number(
-                                                      MeetingAgendaAttachmentsData.OriginalAttachmentName
+                                                      MeetingAgendaAttachmentsData.OriginalAttachmentName,
                                                     )}
                                                     handleEyeIcon={() =>
                                                       handeClickView(
-                                                        MeetingAgendaAttachmentsData
+                                                        MeetingAgendaAttachmentsData,
                                                       )
                                                     }
                                                     handleClickDownload={() =>
                                                       downloadClick(
-                                                        MeetingAgendaAttachmentsData
+                                                        MeetingAgendaAttachmentsData,
                                                       )
                                                     }
                                                   />
                                                 </Col>
                                               );
-                                            }
+                                            },
                                           )
                                         : null}
                                     </Row>
@@ -3410,7 +3411,7 @@ const UpdateQuickMeeting = ({
                                   </Row>
                                 </Col>
                               );
-                            }
+                            },
                           )
                         ) : (
                           <Row className='updatemeeting-minutesofmeetings-none'>
