@@ -116,16 +116,6 @@ const adminReducer = (state = initialState, action) => {
         errorSeverity: "error",
       };
 
-    //action Case For Admin-CancelSub
-    case actions.ADMIN_CANCELSUB_INIT:
-      return {};
-
-    case actions.ADMIN_CANCELSUB_SUCCESS:
-      return {};
-
-    case actions.ADMIN_CANCELSUB_FAIL:
-      return {};
-
     //action Case For Admin-CustomerInformation
     case actions.ADMIN_CUSTOMERINFORMATION_INIT:
       return {

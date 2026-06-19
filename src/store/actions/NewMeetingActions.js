@@ -437,7 +437,6 @@ const handlegetAllMeetingTypesFailed = (message, loader) => {
 };
 
 const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
-
   return async (dispatch) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
@@ -536,7 +535,6 @@ const SaveMeetingDetialsNewApiFunction = (
   setProposedNewMeeting,
   flag,
 ) => {
-
   return (dispatch) => {
     dispatch(handleSaveMeetingInit());
     let form = new FormData();
@@ -836,7 +834,6 @@ const handlegetallReminderFrequencyFailed = (message) => {
 
 //Functions Get All Meeting Reminder Frequency API
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
-
   return async (dispatch) => {
     dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
@@ -928,7 +925,6 @@ const handleReucrringFailed = (message, loader) => {
 
 //Functions Get All Meeting Recurring API
 const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
-
   return (dispatch) => {
     dispatch(handleReucrringSInit());
     let form = new FormData();
@@ -1012,7 +1008,6 @@ const SearchMeeting_Fail = (message) => {
   };
 };
 const searchNewUserMeeting = (navigate, Data, t, val) => {
-
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
@@ -1204,7 +1199,6 @@ const showAddMoreParticipantsFailed = (message) => {
 
 //Function For GetAll Groups And Committeess For Partcipants
 const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(showAddMoreParticipantsInit());
     let form = new FormData();
@@ -1296,7 +1290,6 @@ const showParticipantsRolesFailed = (message) => {
 };
 
 const GetAllParticipantsRoleNew = (navigate, t) => {
-
   return async (dispatch) => {
     await dispatch(showParticipantsRolesInit());
     let form = new FormData();
@@ -1386,7 +1379,6 @@ const FetchMeetingURLApi = (
   currentMeetingTitle,
   meetingID,
 ) => {
-
   return (dispatch) => {
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
@@ -1554,7 +1546,6 @@ const saveParcipantsProposeMeetingAPI = (
   setProposedNewMeeting,
   setSceduleMeeting,
 ) => {
-
   return (dispatch) => {
     dispatch(saveParcipantsProposeMeetingInit());
     let form = new FormData();
@@ -1708,7 +1699,6 @@ const SaveparticipantsApi = (
   loader,
   setProposedNewMeeting,
 ) => {
-
   return (dispatch) => {
     dispatch(showSavedParticipantsInit());
     let form = new FormData();
@@ -1838,7 +1828,6 @@ const getAllAgendaContributor_fail = (message) => {
 };
 
 const getAllAgendaContributorApi = (navigate, t, data) => {
-
   return (dispatch) => {
     dispatch(getAllAgendaContributor_init());
     let form = new FormData();
@@ -1938,8 +1927,6 @@ const saveAgendaContributors_fail = (message) => {
 };
 
 const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
-
-
   let getAllData = {
     MeetingID:
       currentMeeting !== null && currentMeeting !== undefined
@@ -2065,7 +2052,6 @@ const showAllMeetingParticipantsFailed = (message) => {
 //Get All Saved  participants API Function
 
 const GetAllSavedparticipantsAPI = (Data, navigate, t, flag) => {
-
   return async (dispatch) => {
     dispatch(showAllMeetingParticipantsInit());
     let form = new FormData();
@@ -2182,7 +2168,6 @@ const sendNotificationParticipantsFailed = (message) => {
 
 //Send Notification API Function
 const SendNotificationApiFunc = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(sendNotificationParticipantsInit());
     let form = new FormData();
@@ -2282,7 +2267,6 @@ const GetAllMeetingDetailsApiFunc = (
   flag,
   role,
 ) => {
-
   return async (dispatch) => {
     await dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
@@ -2454,7 +2438,6 @@ const showPollsByMeetingIdFailed = (message) => {
 };
 //Api FUnctions For Getting All polls By Meeting ID
 const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(showPollsByMeetingIdInit());
     let form = new FormData();
@@ -2536,7 +2519,6 @@ const showGetAllMeetingUsersFailed = (response, message) => {
 
 //get all meeting users Api function
 const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(showGetAllMeetingUsersInit());
     let form = new FormData();
@@ -2614,7 +2596,6 @@ const showSetMeetingPollsFailed = (message) => {
 };
 
 const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
-
   return (dispatch) => {
     dispatch(showSetMeetingPollsInit());
     let form = new FormData();
@@ -2708,7 +2689,6 @@ const cleareAllProposedMeetingDates = () => {
   };
 };
 const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
-
   return async (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
     let form = new FormData();
@@ -2817,7 +2797,7 @@ const setProposedMeetingDateApiFunc = (
 ) => {
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
-  
+
     let form = new FormData();
     form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -2965,7 +2945,6 @@ const SetMeetingResponseApiFunc = (
   t,
   setViewProposeDatePoll,
 ) => {
-
   return (dispatch) => {
     dispatch(showPrposedMeetingReponsneInit());
     let form = new FormData();
@@ -3097,7 +3076,6 @@ const meetingMaterialFail = (message) => {
 
 //Aun work on meeting Material Main API
 const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
-
   return (dispatch) => {
     dispatch(meetingMaterialInit());
     let form = new FormData();
@@ -3178,7 +3156,6 @@ const showUpdateMeetingAgendaLockStatusFailed = (message) => {
   };
 };
 const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
-
   return (dispatch) => {
     dispatch(showUpdateMeetingAgendaLockStatusInit());
     let form = new FormData();
@@ -3252,7 +3229,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
   };
 };
 // const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, flag) => {
-// 
+//
 //   return (dispatch) => {
 //     dispatch(showUpdateMeetingAgendaLockStatusInit());
 //     let form = new FormData();
@@ -3356,7 +3333,6 @@ const showGetAllUserAgendaRightsFailed = (message) => {
 };
 
 const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(showGetAllUserAgendaRightsInit());
     let form = new FormData();
@@ -3435,7 +3411,6 @@ const SaveUserAttachmentPermissionsFailed = (message) => {
 };
 
 const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(SaveUserAttachmentPermissionsInit());
     let form = new FormData();
@@ -3518,7 +3493,6 @@ const ShowADDGeneralMinutesFailed = (message) => {
 };
 
 const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
     let form = new FormData();
@@ -3593,7 +3567,6 @@ const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
 };
 
 const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
       let form = new FormData();
@@ -3717,7 +3690,6 @@ const GetAllGeneralMinutesApiFunc = (
   currentMeeting,
   flag,
 ) => {
-
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
     let form = new FormData();
@@ -3824,7 +3796,6 @@ const uploadDocumentsMeetingMinutesApi = (
   // newFolder,
   newfile,
 ) => {
-
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -3928,7 +3899,6 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for genral Minutes
 const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
-
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
@@ -3974,7 +3944,7 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
               await dispatch(
                 saveFiles_success(
                   response.data.responseResult,
-                  
+
                   "",
                 ),
               );
@@ -4042,7 +4012,6 @@ const showSaveMinutesDocsFailed = (message) => {
 //SAVE GROUPS DOCUMENTS API
 
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
-
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -4128,7 +4097,6 @@ const showRetriveGeneralMinutesDocsFailed = (message) => {
 };
 
 const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(showRetriveGeneralMinutesDocsInit());
     let form = new FormData();
@@ -4227,7 +4195,6 @@ const clearProposedWiseData = () => {
   };
 };
 const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
-
   return (dispatch) => {
     dispatch(getProposedWiseInit());
     let form = new FormData();
@@ -4318,7 +4285,6 @@ const GetAllAgendaWiseMinutesApiFunc = (
   setAddReviewers,
   clickFlag,
 ) => {
-
   return async (dispatch) => {
     dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4455,7 +4421,6 @@ const UpdateAgendaWiseMinutesApiFunc = (
   setFileForSend,
   setisEdit,
 ) => {
-
   return (dispatch) => {
     dispatch(showUpdateAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4619,7 +4584,6 @@ const DeleteAgendaWiseMinutesApiFunc = (
   currentMeeting,
   id,
 ) => {
-
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4740,7 +4704,6 @@ const DeleteGeneralMinutesFailed = (message) => {
 };
 
 const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
-
   return (dispatch) => {
     dispatch(DeleteGeneralMinutesInit());
     let form = new FormData();
@@ -4861,7 +4824,6 @@ const AddAgendaWiseMinutesApiFunc = (
   t,
   setAgendaOptionValue,
 ) => {
-
   return (dispatch) => {
     dispatch(showAgendaWiseAddMinutesInit());
     let form = new FormData();
@@ -4953,7 +4915,6 @@ const showSavedAgendaWiseDocumentFailed = (message) => {
 };
 
 const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
-
   return async (dispatch) => {
     dispatch(showSavedAgendaWiseDocumentInit());
 
@@ -5061,7 +5022,6 @@ const UpdateMinutesGeneralApiFunc = (
   isAgenda,
   fileUploadFlag,
 ) => {
-
   let currentMeeting = JSON.parse(localStorage.getItem("currentMeetingID"));
   return async (dispatch) => {
     dispatch(showUpdateMinutesInit());
@@ -5223,7 +5183,6 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   // newFolder,
   newfile,
 ) => {
-
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -5333,7 +5292,6 @@ const saveFilesMeetingagendaWiseMinutesApi = (
   folderID,
   newFolder,
 ) => {
-
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
@@ -5376,10 +5334,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
                 console.log(error, "newFileID");
               }
               await dispatch(
-                saveFiles_success_agenda_wise(
-                  response.data.responseResult,
-                  "",
-                ),
+                saveFiles_success_agenda_wise(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -5445,7 +5400,6 @@ const showRetriveAgendaWiseDocumentsFailed = (message) => {
 };
 
 const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(showRetriveAgendaWiseDocumentsInit());
     let form = new FormData();
@@ -5544,7 +5498,6 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
   currentMeeting,
   MinuteData,
 ) => {
-
   return (dispatch) => {
     dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
@@ -5665,7 +5618,6 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   currentMeeting,
   id,
 ) => {
-
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseDocumentInit());
     let form = new FormData();
@@ -5818,7 +5770,6 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   flag,
   setSceduleMeeting,
 ) => {
-
   return (dispatch) => {
     dispatch(showCreateUpdateMeetingDataRoomInit());
     let form = new FormData();
@@ -6049,7 +6000,6 @@ const getMeetingbyGroup_fail = (message) => {
 
 // Get Meeting by Group ID
 const getMeetingbyGroupApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(getMeetingbyGroup_init());
     let form = new FormData();
@@ -6125,7 +6075,6 @@ const setMeetingByGroupID_fail = (message) => {
   };
 };
 const setMeetingByGroupIDApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(setMeetingByGroupID_init());
     let form = new FormData();
@@ -6228,7 +6177,6 @@ const getMeetingByCommitteeID_fail = (message) => {
   };
 };
 const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(getMeetingByCommitteeID_init());
     let form = new FormData();
@@ -6306,7 +6254,6 @@ const setMeetingbyCommitteeID_fail = (message) => {
   };
 };
 const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(setMeetingbyCommitteeID_init());
     let form = new FormData();
@@ -6419,7 +6366,6 @@ const scheduleMeetingMainApi = (
   setSceduleMeeting,
   MeetingID,
 ) => {
-
   console.log(MeetingID, "MeetingIDMeetingIDMeetingID");
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
@@ -6568,7 +6514,6 @@ const UpdateMeetingUserApiFunc = (
   setProposedNewMeeting,
   setSceduleMeeting,
 ) => {
-
   return (dispatch) => {
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
@@ -6738,7 +6683,6 @@ const UpdateMeetingUserForAgendaContributor = (
   isEditFlag,
   notifyMessageField,
 ) => {
-
   return (dispatch) => {
     dispatch(UpdateMeetingUserAgendaContributorInit());
     let form = new FormData();
@@ -6901,7 +6845,6 @@ const UpdateMeetingUserForOrganizers = (
   notificationMessage,
   setIsEdit,
 ) => {
-
   return (dispatch) => {
     dispatch(UpdateMeetingUserOrganizersInit());
     let form = new FormData();
@@ -7080,7 +7023,6 @@ const showAllDocumentsAgendaWiseMinutesFailed = (message) => {
 };
 
 const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
-
   return async (dispatch) => {
     dispatch(showAllDocumentsAgendaWiseMinutesInit());
     let form = new FormData();
@@ -7182,7 +7124,6 @@ const showIniviteToCollaborateFailed = (message) => {
 };
 
 const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
-
   return async (dispatch) => {
     dispatch(showIniviteToCollaborateInit());
     let form = new FormData();
@@ -7480,7 +7421,6 @@ const getUserProposedDatesFail = (message) => {
 };
 
 const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(getUserProposedDatesInit());
     let form = new FormData();
@@ -7948,8 +7888,6 @@ const JoinCurrentMeeting = (
   setViewAdvanceMeetingModal,
   NotificationCheckQuickMeet,
 ) => {
-
-
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
     let form = new FormData();
@@ -8187,233 +8125,243 @@ const LeaveCurrentMeeting = (
             ),
           );
         } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase(),
-                )
-            ) {
-              console.log("ChecK API HIT");
+          try {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase(),
+                  )
+              ) {
+                console.log("ChecK API HIT");
 
-              localStorage.removeItem("meetingTitle");
-              localStorage.removeItem("typeOfMeeting");
-              localStorage.removeItem("currentMeetingID");
-              localStorage.removeItem("currentMeetingLS");
-              localStorage.setItem("AdvanceMeetingOpen", false);
-              localStorage.setItem("isMeetingVideoHostCheck", false);
-              dispatch(showEndMeetingModal(false));
-              if (typeof setViewAdvanceMeetingModal === "function") {
-                setViewAdvanceMeetingModal(false);
-              }
-              try {
-                dispatch(currentMeetingStatus(0));
+                localStorage.removeItem("meetingTitle");
+                localStorage.removeItem("typeOfMeeting");
+                localStorage.removeItem("currentMeetingID");
+                localStorage.removeItem("currentMeetingLS");
+                localStorage.setItem("AdvanceMeetingOpen", false);
+                localStorage.setItem("isMeetingVideoHostCheck", false);
+                dispatch(showEndMeetingModal(false));
+                if (typeof setViewAdvanceMeetingModal === "function") {
+                  setViewAdvanceMeetingModal(false);
+                }
+                try {
+                  dispatch(currentMeetingStatus(0));
 
-                if (isQuickMeeting) {
-                  dispatch(
-                    leaveMeetingQuickSuccess(
-                      response.data.responseResult,
-                      t("Successful"),
-                    ),
-                  );
-                  console.log("Checking ");
-                  if (typeof setEndMeetingConfirmationModal === "function") {
-                    setEndMeetingConfirmationModal(false);
-                  }
-                  if (ViewCommitteeID !== null) {
-                    let userID = localStorage.getItem("userID");
-
-                    let searchData = {
-                      CommitteeID: Number(ViewCommitteeID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: 1,
-                      Length: 50,
-                      PublishedMeetings: true,
-                    };
+                  if (isQuickMeeting) {
                     dispatch(
-                      getMeetingByCommitteeIDApi(navigate, t, searchData),
+                      leaveMeetingQuickSuccess(
+                        response.data.responseResult,
+                        t("Successful"),
+                      ),
                     );
-                  } else if (ViewGroupID !== null) {
-                    let searchData = {
-                      GroupID: Number(ViewGroupID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: 1,
-                      Length: 50,
-                      PublishedMeetings: true,
-                    };
-                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
-                  } else {
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: Number(meetingPageCurrent),
-                      Length: Number(meetingpageRow),
-                      PublishedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 1
-                          ? true
-                          : false,
-                      ProposedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 2
-                          ? true
-                          : false,
-                    };
-                    console.log("chek search meeting");
-                    await dispatch(
-                      searchNewUserMeeting(navigate, searchData, t),
-                    );
-                  }
-                } else {
-                  dispatch(
-                    leaveMeetingAdvancedSuccess(
-                      response.data.responseResult,
-                      t("Successful"),
-                    ),
-                  );
-                  if (typeof setEndMeetingConfirmationModal === "function") {
-                    setEndMeetingConfirmationModal(false);
-                  }
-                  if (
-                    localStorage.getItem("navigateLocation") === "resolution"
-                  ) {
-                    navigate("/Diskus/resolution");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "dataroom"
-                  ) {
-                    navigate("/Diskus/dataroom");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "committee"
-                  ) {
-                    navigate("/Diskus/committee");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "groups"
-                  ) {
-                    navigate("/Diskus/groups");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "polling"
-                  ) {
-                    navigate("/Diskus/polling");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "polling"
-                  ) {
-                    navigate("/Diskus/polling");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "calendar"
-                  ) {
-                    navigate("/Diskus/calendar");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "todolist"
-                  ) {
-                    navigate("/Diskus/todolist");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "Notes"
-                  ) {
-                    navigate("/Diskus/Notes");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "MainDashBoard"
-                  ) {
-                    console.log("navigateLocation");
-                    navigate(getHomeRoute());
-                  } else {
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: Number(meetingPageCurrent),
-                      Length: Number(meetingpageRow),
-                      PublishedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 1
-                          ? true
-                          : false,
-                      ProposedMeetings:
-                        localStorage.getItem("MeetingCurrentView") &&
-                        Number(localStorage.getItem("MeetingCurrentView")) === 2
-                          ? true
-                          : false,
-                    };
-                    console.log("chek search meeting");
-                    await dispatch(
-                      searchNewUserMeeting(navigate, searchData, t),
-                    );
-                    localStorage.removeItem("folderDataRoomMeeting");
-                    setEditorRole({ status: null, role: null });
-                    setAdvanceMeetingModalID(null);
+                      setViewFlag(false);
+                    console.log("Checking ");
+                    if (typeof setEndMeetingConfirmationModal === "function") {
+                      setEndMeetingConfirmationModal(false);
+                    }
+                    if (ViewCommitteeID !== null) {
+                      let userID = localStorage.getItem("userID");
 
-                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                      let searchData = {
+                        CommitteeID: Number(ViewCommitteeID),
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(userID),
+                        PageNumber: 1,
+                        Length: 50,
+                        PublishedMeetings: true,
+                      };
+                      dispatch(
+                        getMeetingByCommitteeIDApi(navigate, t, searchData),
+                      );
+                    } else if (ViewGroupID !== null) {
+                      let searchData = {
+                        GroupID: Number(ViewGroupID),
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(userID),
+                        PageNumber: 1,
+                        Length: 50,
+                        PublishedMeetings: true,
+                      };
+                      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                    } else {
+                      let searchData = {
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(userID),
+                        PageNumber: Number(meetingPageCurrent),
+                        Length: Number(meetingpageRow),
+                        PublishedMeetings:
+                          localStorage.getItem("MeetingCurrentView") &&
+                          Number(localStorage.getItem("MeetingCurrentView")) ===
+                            1
+                            ? true
+                            : false,
+                        ProposedMeetings:
+                          localStorage.getItem("MeetingCurrentView") &&
+                          Number(localStorage.getItem("MeetingCurrentView")) ===
+                            2
+                            ? true
+                            : false,
+                      };
+                      console.log("chek search meeting");
+                      await dispatch(
+                        searchNewUserMeeting(navigate, searchData, t),
+                      );
+                    }
+                  } else {
+                    dispatch(
+                      leaveMeetingAdvancedSuccess(
+                        response.data.responseResult,
+                        t("Successful"),
+                      ),
+                    );
+                    if (typeof setEndMeetingConfirmationModal === "function") {
+                      setEndMeetingConfirmationModal(false);
+                    }
+                    if (
+                      localStorage.getItem("navigateLocation") === "resolution"
+                    ) {
+                      navigate("/Diskus/resolution");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "dataroom"
+                    ) {
+                      navigate("/Diskus/dataroom");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "committee"
+                    ) {
+                      navigate("/Diskus/committee");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "groups"
+                    ) {
+                      navigate("/Diskus/groups");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "polling"
+                    ) {
+                      navigate("/Diskus/polling");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "polling"
+                    ) {
+                      navigate("/Diskus/polling");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "calendar"
+                    ) {
+                      navigate("/Diskus/calendar");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "todolist"
+                    ) {
+                      navigate("/Diskus/todolist");
+                    } else if (
+                      localStorage.getItem("navigateLocation") === "Notes"
+                    ) {
+                      navigate("/Diskus/Notes");
+                    } else if (
+                      localStorage.getItem("navigateLocation") ===
+                      "MainDashBoard"
+                    ) {
+                      console.log("navigateLocation");
+                      navigate(getHomeRoute());
+                    } else {
+                      let searchData = {
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(userID),
+                        PageNumber: Number(meetingPageCurrent),
+                        Length: Number(meetingpageRow),
+                        PublishedMeetings:
+                          localStorage.getItem("MeetingCurrentView") &&
+                          Number(localStorage.getItem("MeetingCurrentView")) ===
+                            1
+                            ? true
+                            : false,
+                        ProposedMeetings:
+                          localStorage.getItem("MeetingCurrentView") &&
+                          Number(localStorage.getItem("MeetingCurrentView")) ===
+                            2
+                            ? true
+                            : false,
+                      };
+                      console.log("chek search meeting");
+                      await dispatch(
+                        searchNewUserMeeting(navigate, searchData, t),
+                      );
+                      localStorage.removeItem("folderDataRoomMeeting");
+                      setEditorRole({ status: null, role: null });
+                      setAdvanceMeetingModalID(null);
+
+                      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                    }
                   }
+
+                  // let newName = localStorage.getItem("name");
+                  // let Data = {
+                  //   RoomID: roomID,
+                  //   UserGUID: userGUID,
+                  //   Name: String(newName),
+                  // };
+                  // if (roomID !== "0" && userGUID !== null) {
+                  //   dispatch(normalizeVideoPanelFlag(false));
+                  //   dispatch(maximizeVideoPanelFlag(false));
+                  //   dispatch(minimizeVideoPanelFlag(false));
+
+                  //   localStorage.setItem("activeCall", false);
+
+                  //       localStorage.setItem("isMeeting", false);
+                  sessionStorage.removeItem("isMeeting");
+                  //   localStorage.setItem("meetingTitle", "");
+                  //   localStorage.setItem("acceptedRecipientID", 0);
+                  //   localStorage.setItem("acceptedRoomID", 0);
+                  //   localStorage.setItem("activeRoomID", 0);
+                  //   localStorage.setItem("meetingVideoID", 0);
+                  //   localStorage.setItem("MicOff", true);
+                  //   localStorage.setItem("VidOff", true);
+                  //   dispatch(LeaveMeetingVideo(Data, navigate, t));
+                  // }
+                } catch (error) {
+                  console.log(error);
                 }
 
-                // let newName = localStorage.getItem("name");
-                // let Data = {
-                //   RoomID: roomID,
-                //   UserGUID: userGUID,
-                //   Name: String(newName),
-                // };
-                // if (roomID !== "0" && userGUID !== null) {
-                //   dispatch(normalizeVideoPanelFlag(false));
-                //   dispatch(maximizeVideoPanelFlag(false));
-                //   dispatch(minimizeVideoPanelFlag(false));
-
-                //   localStorage.setItem("activeCall", false);
-
-                //       localStorage.setItem("isMeeting", false);
-                sessionStorage.removeItem("isMeeting");
-                //   localStorage.setItem("meetingTitle", "");
-                //   localStorage.setItem("acceptedRecipientID", 0);
-                //   localStorage.setItem("acceptedRoomID", 0);
-                //   localStorage.setItem("activeRoomID", 0);
-                //   localStorage.setItem("meetingVideoID", 0);
-                //   localStorage.setItem("MicOff", true);
-                //   localStorage.setItem("VidOff", true);
-                //   dispatch(LeaveMeetingVideo(Data, navigate, t));
-                // }
-              } catch (error) {
-                console.log(error);
+              
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_LeaveMeeting_02".toLowerCase(),
+                  )
+              ) {
+                dispatch(leaveMeetingFail(t("Unsuccessful")));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_LeaveMeeting_04".toLowerCase(),
+                  )
+              ) {
+                dispatch(leaveMeetingFail(t("Join-Log-Not-Found")));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase(),
+                  )
+              ) {
+                dispatch(leaveMeetingFail(t("Something-went-wrong")));
+              } else {
+                dispatch(leaveMeetingFail(t("Something-went-wrong")));
               }
-
-              setViewFlag(false);
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_LeaveMeeting_02".toLowerCase(),
-                )
-            ) {
-              dispatch(leaveMeetingFail(t("Unsuccessful")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_LeaveMeeting_04".toLowerCase(),
-                )
-            ) {
-              dispatch(leaveMeetingFail(t("Join-Log-Not-Found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase(),
-                )
-            ) {
-              dispatch(leaveMeetingFail(t("Something-went-wrong")));
             } else {
               dispatch(leaveMeetingFail(t("Something-went-wrong")));
             }
-          } else {
-            dispatch(leaveMeetingFail(t("Something-went-wrong")));
+          } catch (error) {
+            console.log(error);
           }
         } else {
           dispatch(leaveMeetingFail(t("Something-went-wrong")));
@@ -8437,7 +8385,6 @@ const newLeaveCurrentMeeting = (
   setEndMeetingConfirmationModal,
 ) => {
   console.log("ChecK API HIT");
-
 
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
@@ -8950,7 +8897,6 @@ const validateStringEmailApi = (
     let Data = {
       EncryptedString: emailString,
     };
-  
 
     dispatch(validateStringEmail_init());
 
@@ -9058,7 +9004,6 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
       let Data = {
         EncryptedString: emailString,
       };
-    
 
       dispatch(validateStringParticipantProposed_init());
 
@@ -9171,7 +9116,6 @@ const getDashboardMeetingCountMQTT = (response) => {
   };
 };
 const getDashbardMeetingDataApi = (navigate, t) => {
-
   return async (dispatch) => {
     await dispatch(getDashbardMeetingData_init());
     let form = new FormData();
@@ -9248,7 +9192,6 @@ const getAllMeetingUsersRSVP_fail = (message) => {
   };
 };
 const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
-
   return async (dispatch) => {
     await dispatch(getAllMeetingUsersRSVP_init());
     let form = new FormData();
@@ -9325,7 +9268,6 @@ const LeaveMeetingVideo = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeaveMeetingVideoForOneToOneOrGroup,
 ) => {
-
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
@@ -9621,7 +9563,6 @@ const validateStringUserMeetingProposedDatesPollsApi = (
       let Data = {
         EncryptedString: emailString,
       };
-    
 
       dispatch(validateStringUserMeetingProposedDatesPolls_Init());
 
@@ -9766,7 +9707,6 @@ const GetMeetingStatusDataAPI = (
   setVideoTalk,
   setViewFlag,
 ) => {
-
   console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
@@ -9894,7 +9834,7 @@ const GetMeetingStatusDataAPI = (
                       Data.MeetingID,
                     );
                     // setViewFlag is for setAdvanceMeetingModalID set meeting ID
-                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID)
+                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID);
                     isFunction(setViewAdvanceMeetingModal) &&
                       setViewAdvanceMeetingModal(true);
                     dispatch(viewAdvanceMeetingPublishPageFlag(true));
@@ -10007,7 +9947,6 @@ const validateEncryptedStringViewMeetingLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-    
 
       dispatch(validateEncryptedStringViewMeetingLink_Init());
 
@@ -10163,7 +10102,6 @@ const uploadDocument_fail_quickMeeting = (message) => {
 
 // Upload Documents API for Quick Meeting
 const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
-
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -10260,7 +10198,6 @@ const saveFilesQuickMeeting_Fail = (message) => ({
 const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
   return async (dispatch) => {
     try {
-    
       let creatorID = JSON.parse(localStorage.getItem("userID"));
       let requestData = {
         FolderID:
@@ -10307,12 +10244,7 @@ const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
               console.error("Error processing file IDs:", error);
             }
 
-            dispatch(
-              saveFilesQuickMeeting_Success(
-                responseResult,
-                "",
-              ),
-            );
+            dispatch(saveFilesQuickMeeting_Success(responseResult, ""));
 
             return {
               isExecuted: true,
@@ -10397,7 +10329,6 @@ const moveFilesAndFoldersApi = (
   checkFlag,
   setShow,
 ) => {
-
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
     let form = new FormData();
@@ -10619,7 +10550,6 @@ const requestMeetingRecordingTranscript_clear = () => {
 };
 
 const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
-
   return async (dispatch) => {
     dispatch(requestMeetingRecordingTranscript_init());
     let form = new FormData();
@@ -10724,8 +10654,6 @@ const NewJoinCurrentMeeting = (
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModal,
 ) => {
-
-
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
     let form = new FormData();
