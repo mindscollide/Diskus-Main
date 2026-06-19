@@ -849,7 +849,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow)
                       ? Number(meetingpageRow)
-                      : 50,
+                      : 30,
                     PublishedMeetings:
                       localStorage.getItem("MeetingCurrentView") !== null &&
                       Number(localStorage.getItem("MeetingCurrentView")) === 1
