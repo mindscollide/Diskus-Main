@@ -782,62 +782,6 @@ const Home = () => {
     Authreducer.ResponseMessage,
   ]);
 
-  useEffect(() => {
-    if (
-      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      notify(Authreducer.VerifyOTPEmailResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      notify(Authreducer.OrganizationCreateResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      notify(Authreducer.CreatePasswordResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      notify(Authreducer.GetSelectedPackageResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      notify(Authreducer.EmailValidationResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    }
-  }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
-  ]);
-
   const calendarClickFunction = async (value) => {
     //
     if (!dates.includes(value)) {

@@ -25,18 +25,6 @@ const UpdatePasswordSuccessfully = () => {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t("Password-updated-successfully")
-    ) {
-      show(Authreducer.passwordUpdateOnForgotPasswordMessege, "success");
-
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.passwordUpdateOnForgotPasswordMessege]);
-
   return (
     <>
       <Container fluid className={styles["auth_container"]}>

@@ -213,18 +213,6 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, [currentVersion]);
 
-  useEffect(() => {
-    if (
-      SessionExpireResponseMessage !== null &&
-      SessionExpireResponseMessage !== undefined &&
-      SessionExpireResponseMessage !== ""
-    ) {
-      try {
-        show(SessionExpireResponseMessage, "error");
-      } catch (error) {}
-    }
-  }, [SessionExpireResponseMessage]);
-
   return (
     <>
       {/* Define your routes here */}

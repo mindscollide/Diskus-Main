@@ -124,17 +124,7 @@ const Header2 = ({ isVideo }) => {
     (state) => state.UserManagementModals.requestExtentionModal,
   );
 
-  const NotesReponseMessege = useSelector(
-    (state) => state.NotesReducer.ResponseMessage,
-  );
 
-  const ResponseMessageTodoReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage,
-  );
-
-  const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage,
-  );
 
   const getAllNotificationData = useSelector(
     (state) => state.settingReducer.diskusWebNotificationData,
@@ -316,46 +306,7 @@ const Header2 = ({ isVideo }) => {
     }
   }, [UserProfileData]);
 
-  //Notes Response Messege as per CR
-  useEffect(() => {
-    try {
-      if (
-        NotesReponseMessege !== "" &&
-        NotesReponseMessege !== t("No-data-available") &&
-        NotesReponseMessege !== t("Data-available") &&
-        NotesReponseMessege !== t("Updated")
-      ) {
-        notify(NotesReponseMessege, "success");
-        dispatch(ClearNotesResponseMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [NotesReponseMessege]);
 
-  //Todolist tast Response messeges as per CR
-  useEffect(() => {
-    if (
-      ResponseMessageTodoReducer !== "" &&
-      ResponseMessageTodoReducer !== undefined &&
-      ResponseMessageTodoReducer !== "" &&
-      ResponseMessageTodoReducer !== t("No-records-found")
-    ) {
-      notify(ResponseMessageTodoReducer, "success");
-      dispatch(clearResponce());
-    } else if (
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== t("No-records-found") &&
-      ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
-    ) {
-      notify(ResponseMessageAssigneesReducer, "success");
-      dispatch(clearResponseMessage());
-    } else {
-      dispatch(clearResponce());
-      dispatch(clearResponseMessage());
-    }
-  }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
   const forgotPasswordCheck = (e) => {
     e?.preventDefault(); // 🚫 stop auto navigation

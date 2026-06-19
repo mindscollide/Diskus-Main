@@ -322,21 +322,6 @@ const AgendaContributers = () => {
     setColumnsData(AgendaContributorViewColoumns);
   }, [NewMeetingreducer?.getAllAgendaContributorsAllowRSVP]);
 
-  useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== undefined
-    ) {
-      show(NewMeetingreducer.ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [NewMeetingreducer.ResponseMessage]);
-
   return (
     <>
       <section>

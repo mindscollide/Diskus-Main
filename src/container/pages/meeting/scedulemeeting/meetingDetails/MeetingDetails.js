@@ -905,19 +905,6 @@ const MeetingDetails = ({
   }, [getALlMeetingTypes]);
 
   // Showing The reposnse messege
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== undefined &&
-      ResponseMessage !== null
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(clearResponseNewMeetingReducerMessage());
-    }
-  }, [ResponseMessage]);
 
   //Fetching All Saved Data
   useEffect(() => {

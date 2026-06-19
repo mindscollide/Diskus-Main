@@ -22,7 +22,7 @@ import {
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ForgotPasswordVerification = () => {
-  const { auth, Authreducer } = useSelector((state) => state);
+  const { Authreducer } = useSelector((state) => state);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,12 +38,12 @@ const ForgotPasswordVerification = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds")
       ? parseInt(localStorage.getItem("seconds"))
-      : initialSeconds
+      : initialSeconds,
   );
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes")
       ? parseInt(localStorage.getItem("minutes"))
-      : initialMinutes
+      : initialMinutes,
   );
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -106,26 +106,6 @@ const ForgotPasswordVerification = () => {
   }, []);
 
   //for messeges shown in the snack-bar
-  useEffect(() => {
-    if (auth.ResponseMessage !== "") {
-      show(auth.ResponseMessage, "success");
-
-      dispatch(cleareChangePasswordMessage());
-    } else {
-      dispatch(cleareChangePasswordMessage());
-    }
-  }, [auth.ResponseMessage]);
-
-  //for showing the responses in the snackbar
-  useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      show(Authreducer.VerifyOTPEmailResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.VerifyOTPEmailResponseMessage]);
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
@@ -151,8 +131,8 @@ const ForgotPasswordVerification = () => {
           t,
           true,
           setSeconds,
-          setMinutes
-        )
+          setMinutes,
+        ),
       );
     }
   };
@@ -317,8 +297,8 @@ const ForgotPasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

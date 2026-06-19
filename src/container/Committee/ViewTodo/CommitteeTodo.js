@@ -648,22 +648,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducerResponseMessage !== "" &&
-        PollsReducerResponseMessage !== undefined &&
-        PollsReducerResponseMessage !== "" &&
-        PollsReducerResponseMessage !== t("No-records-found")
-      ) {
-        notify(PollsReducerResponseMessage, "success");
-        dispatch(clearResponce());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [PollsReducerResponseMessage, assigneesResponseMessage]);
-
-  useEffect(() => {
-    try {
       if (removeTodo !== 0) {
         if (
           getTodosStatusUpdateTodoStatusMessage ===
@@ -681,44 +665,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       console.log(error, "error");
     }
   }, [getTodosStatusUpdateTodoStatusMessage, removeTodo]);
-
-  useEffect(() => {
-    try {
-      if (
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== undefined &&
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== t("No-records-found")
-      ) {
-        notify(getTodosStatusResponseMessage, "success");
-        dispatch(cleareMessage());
-      } else if (
-        getTodosStatusUpdateTodoStatusMessage !== "" &&
-        getTodosStatusUpdateTodoStatusMessage !== undefined &&
-        getTodosStatusUpdateTodoStatusMessage !== "" &&
-        getTodosStatusUpdateTodoStatusMessage !== t("No-records-found")
-      ) {
-        notify(getTodosStatusUpdateTodoStatusMessage, "success");
-        dispatch(cleareMessage());
-      } else if (
-        getTodosStatusUpdateTodoStatus !== "" &&
-        getTodosStatusUpdateTodoStatus !== undefined &&
-        getTodosStatusUpdateTodoStatus !== "" &&
-        getTodosStatusUpdateTodoStatus !== t("No-records-found")
-      ) {
-        notify(getTodosStatusUpdateTodoStatus, "success");
-        dispatch(cleareMessage());
-      } else {
-        dispatch(cleareMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [
-    getTodosStatusResponseMessage,
-    getTodosStatusUpdateTodoStatusMessage,
-    getTodosStatusUpdateTodoStatus,
-  ]);
 
   const scroll = {
     y: "64vh",

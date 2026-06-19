@@ -626,10 +626,6 @@ const PendingSignatureViewer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docWorkflowID]);
 
-  useEffect(() => {
-    if (ResponseMessage) show(ResponseMessage, "error");
-  }, [ResponseMessage]);
-
   // ── getAllFieldsByWorkflowID ────────────────────────────────────────────────
   useEffect(() => {
     if (!getAllFieldsByWorkflowID) return;

@@ -24,22 +24,6 @@ const MinutesFlow = () => {
   );
   const [show, SnackBar] = useSnackbar();
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      show(ResponseMessage, "sucess");
-      dispatch(CleareMessegeMinutes());
-    } else {
-      dispatch(CleareMessegeMinutes());
-    }
-  }, [ResponseMessage]);
-
   return (
     <>
       {showPendingApprovalsPage === true ? (
@@ -47,7 +31,6 @@ const MinutesFlow = () => {
       ) : showReviewMinutesPage === true ? (
         <ReviewMinutes />
       ) : null}
-
 
     {SnackBar}
     </>

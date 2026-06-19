@@ -473,19 +473,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     }
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found")
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [ResponseMessage]);
-
   return (
     <>
       {savedPolls ? (

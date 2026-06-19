@@ -258,20 +258,6 @@ const Participants = () => {
     ];
   }
 
-  useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
-    ) {
-      show(NewMeetingreducer.ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [NewMeetingreducer.ResponseMessage]);
-
   return (
     <>
       <section className={styles["height2"]}>

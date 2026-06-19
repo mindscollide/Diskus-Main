@@ -571,19 +571,6 @@ const Polls = ({
     dispatch(uploadGlobalFlag(false));
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("Record-not-found") &&
-      ResponseMessage !== ""
-    ) {
-      show(ResponseMessage, "error");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [ResponseMessage]);
-
   return (
     <>
       <section>

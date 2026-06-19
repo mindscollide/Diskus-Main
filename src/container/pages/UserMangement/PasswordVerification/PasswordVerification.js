@@ -151,46 +151,6 @@ const PasswordVerification = () => {
   };
 
   //Messeges UseEffect
-  useEffect(() => {
-    if (
-      AuthreducerVerifyOTPEmailResponseMessageData !== "" &&
-      AuthreducerVerifyOTPEmailResponseMessageData !== undefined
-    ) {
-      show(AuthreducerVerifyOTPEmailResponseMessageData, "success");
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerOrganizationCreateResponseMessageData !== "" &&
-      AuthreducerOrganizationCreateResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerOrganizationCreateResponseMessageData !== undefined
-    ) {
-      show(AuthreducerOrganizationCreateResponseMessageData, "success");
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerCreatePasswordResponseMessageData !== "" &&
-      AuthreducerCreatePasswordResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerCreatePasswordResponseMessageData !== undefined &&
-      AuthreducerCreatePasswordResponseMessageData !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      show(AuthreducerCreatePasswordResponseMessageData, "success");
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerGetSelectedPackageResponseMessageData !== "" &&
-      AuthreducerGetSelectedPackageResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerGetSelectedPackageResponseMessageData !== undefined
-    ) {
-      show(AuthreducerGetSelectedPackageResponseMessageData, "success");
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    AuthreducerVerifyOTPEmailResponseMessageData,
-    AuthreducerOrganizationCreateResponseMessageData,
-    AuthreducerCreatePasswordResponseMessageData,
-    AuthreducerEmailValidationResponseMessageData,
-    AuthreducerGetSelectedPackageResponseMessageData,
-  ]);
 
   //Handle Goback functionality
 

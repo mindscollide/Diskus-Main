@@ -1099,21 +1099,6 @@ const ProposedNewMeeting = ({
     }
   };
 
-  //Handling response Messege in Porposed New Meeting Will Using Meeting Response messege as the api is same
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== undefined &&
-      ResponseMessage !== null
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(clearResponseNewMeetingReducerMessage());
-    }
-  }, [ResponseMessage]);
-
   return (
     <section>
       <Row>

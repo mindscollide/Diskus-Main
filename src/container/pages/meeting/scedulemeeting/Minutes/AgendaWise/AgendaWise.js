@@ -715,23 +715,6 @@ const AgendaWise = ({
     setShowMore((prevState) => !prevState);
   };
 
-  //Handling of the Response Messege
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [ResponseMessage]);
-
   const toggleAcordion = (agendaID) => {
     // setExpanded((prev) => (prev === notesID ? true : false));
     if (accordianExpand === agendaID) {

@@ -809,36 +809,6 @@ const Polls = () => {
     setPolls(false);
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessagePoll !== "" &&
-      ResponseMessagePoll !== t("No-data-available") &&
-      ResponseMessagePoll !== "" &&
-      ResponseMessagePoll !== t("No-records-found") &&
-      ResponseMessagePoll !== t("No-record-found")
-    ) {
-      show(ResponseMessagePoll, "success");
-      dispatch(clearPollsMesseges());
-    } else {
-      dispatch(clearPollsMesseges());
-    }
-  }, [ResponseMessagePoll]);
-
-  useEffect(() => {
-    if (
-      ResponseMessageMeeting !== "" &&
-      ResponseMessageMeeting !== t("No-data-available") &&
-      ResponseMessageMeeting !== "" &&
-      ResponseMessageMeeting !== t("No-records-found") &&
-      ResponseMessageMeeting !== t("No-record-found")
-    ) {
-      show(ResponseMessageMeeting, "success");
-      dispatch(clearResponseNewMeetingReducerMessage());
-    } else {
-      dispatch(clearResponseNewMeetingReducerMessage());
-    }
-  }, [ResponseMessageMeeting]);
-
   return (
     <>
       <section>

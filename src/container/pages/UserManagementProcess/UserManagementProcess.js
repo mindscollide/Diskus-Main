@@ -106,31 +106,6 @@ const UserManagementProcess = () => {
     }
   }, [userManagementRoute]);
 
-  useEffect(() => {
-    if (
-      AuthreducerEmailValidationResponseMessage !== "" &&
-      AuthreducerEmailValidationResponseMessage !==
-        t("Users-password-is-created")
-    ) {
-      show(AuthreducerEmailValidationResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerEnterPasswordResponseMessage !== "" &&
-      AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled") &&
-      AuthreducerEnterPasswordResponseMessage !== undefined &&
-      AuthreducerEnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      show(AuthreducerEnterPasswordResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    AuthreducerEmailValidationResponseMessage,
-    AuthreducerEnterPasswordResponseMessage,
-  ]);
-
   //MQTT
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
@@ -193,30 +168,6 @@ const UserManagementProcess = () => {
   }, [Helper.socket]);
 
   //User Password Verification After forget password
-  useEffect(() => {
-    if (
-      AuthreducerVerifyOTPEmailResponseMessage !== "" &&
-      AuthreducerVerifyOTPEmailResponseMessage !== undefined
-    ) {
-      show(AuthreducerVerifyOTPEmailResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerVerifyOTPEmailResponseMessage]);
-
-  useEffect(() => {
-    if (
-      AuthreducerAuthenticateAFAResponseMessage !== "" &&
-      AuthreducerAuthenticateAFAResponseMessage !== undefined
-    ) {
-      show(AuthreducerAuthenticateAFAResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerAuthenticateAFAResponseMessage]);
 
   let componentToRender;
   console.log(

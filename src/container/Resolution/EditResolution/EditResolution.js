@@ -1299,13 +1299,6 @@ const EditResolution = ({ setCancelresolution }) => {
   }, [ResolutionReducerGetAllVotingMethods]);
 
   useEffect(() => {
-    if (ResolutionReducerResponseMessage !== "") {
-      show(ResolutionReducerResponseMessage, "success");
-      dispatch(clearResponseMessage());
-    }
-  }, [ResolutionReducerResponseMessage]);
-
-  useEffect(() => {
     try {
       if (ResolutionReducergetResolutionbyID !== null) {
         let resolutionData = ResolutionReducergetResolutionbyID.resolution;

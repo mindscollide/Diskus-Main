@@ -510,15 +510,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     } catch {}
   }, [Allpolls]);
 
-  useEffect(() => {
-    if (ResponseMessage !== "") {
-      show(ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [ResponseMessage]);
-
   return (
     <section>
       <Row>

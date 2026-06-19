@@ -76,53 +76,11 @@ const CalendarPage = () => {
   const microsoftEventDelete = useSelector(
     (state) => state.calendarReducer.microsoftEventDelete,
   );
-  const ViewMeetingDetails = useSelector(
-    (state) => state.assignees.ViewMeetingDetails,
-  );
-  const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage,
-  );
-
-  const ResponseMessagecalendarReducerReducer = useSelector(
-    (state) => state.calendarReducer.ResponseMessage,
-  );
-
-  const calendarReducerErrorSeverity = useSelector(
-    (state) => state.calendarReducer.errorSeverity,
-  );
-  const ResponseMessageTodolistReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage,
-  );
-  const UpdateOrganizationMessageResponseMessage = useSelector(
-    (state) => state.adminReducer.UpdateOrganizationMessageResponseMessage,
-  );
-  const DeleteOrganizationMessageResponseMessage = useSelector(
-    (state) => state.adminReducer.DeleteOrganizationMessageResponseMessage,
-  );
-  const AllOrganizationResponseMessage = useSelector(
-    (state) => state.adminReducer.AllOrganizationResponseMessage,
-  );
-  const ResponseMessageAdminReducer = useSelector(
-    (state) => state.adminReducer.ResponseMessage,
-  );
-  const ResponseMessageMeetingReducer = useSelector(
-    (state) => state.meetingIdReducer.ResponseMessage,
-  );
-  const ResponseMessageTodoStatusReducer = useSelector(
-    (state) => state.getTodosStatus.ResponseMessage,
-  );
-  const UpdateTodoStatusMessage = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatusMessage,
-  );
-  const UpdateTodoStatus = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatus,
-  );
 
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [EventTypes, setEventTypes] = useState([]);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [meetingData, setMeetingData] = useState(null);
-  const [viewFlag, setViewFlag] = useState(false);
   const [calenderData, setCalenderDatae] = useState([]);
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
@@ -130,7 +88,6 @@ const CalendarPage = () => {
   const [defaultValue, setDefaultValue] = useState("");
   const [defaultState, setDefaultState] = useState(false);
 
-  const [show, SnackBar] = useSnackbar();
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   let CalenderMonthsSpan =
@@ -748,143 +705,6 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      UpdateOrganizationMessageResponseMessage !== "" &&
-      UpdateOrganizationMessageResponseMessage !== t("No-records-found") &&
-      UpdateOrganizationMessageResponseMessage !== ""
-    ) {
-      show(UpdateOrganizationMessageResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else if (
-      DeleteOrganizationMessageResponseMessage !== "" &&
-      DeleteOrganizationMessageResponseMessage !== t("No-records-found") &&
-      DeleteOrganizationMessageResponseMessage !== ""
-    ) {
-      show(DeleteOrganizationMessageResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      AllOrganizationResponseMessage !== "" &&
-      AllOrganizationResponseMessage !== t("No-records-found") &&
-      AllOrganizationResponseMessage !== ""
-    ) {
-      show(AllOrganizationResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      ResponseMessageAdminReducer !== "" &&
-      ResponseMessageAdminReducer !== t("No-records-found") &&
-      ResponseMessageAdminReducer !== ""
-    ) {
-      show(ResponseMessageAdminReducer, "success");
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-    if (
-      ResponseMessagecalendarReducerReducer !== "" &&
-      ResponseMessagecalendarReducerReducer !== undefined &&
-      ResponseMessagecalendarReducerReducer !== null
-    ) {
-      show(ResponseMessagecalendarReducerReducer, calendarReducerErrorSeverity);
-
-      dispatch(removeCalendarResponseMessage());
-    }
-  }, [
-    UpdateOrganizationMessageResponseMessage,
-    DeleteOrganizationMessageResponseMessage,
-    AllOrganizationResponseMessage,
-    ResponseMessageAdminReducer,
-    ResponseMessagecalendarReducerReducer,
-    calendarReducerErrorSeverity,
-  ]);
-
-  useEffect(() => {
-    if (
-      ResponseMessageMeetingReducer !== "" &&
-      ResponseMessageMeetingReducer !== "" &&
-      ResponseMessageMeetingReducer !== t("No-records-found")
-    ) {
-      show(ResponseMessageMeetingReducer, "success");
-
-      dispatch(HideNotificationMeetings());
-    } else if (
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== t("No-records-found")
-    ) {
-      show(ResponseMessageAssigneesReducer, "success");
-
-      dispatch(clearResponseMessage());
-    } else {
-      dispatch(HideNotificationMeetings());
-      dispatch(clearResponseMessage());
-    }
-  }, [ResponseMessageMeetingReducer, ResponseMessageAssigneesReducer]);
-
-  useEffect(() => {
-    if (
-      ResponseMessageTodolistReducer !== "" &&
-      ResponseMessageTodolistReducer !== undefined &&
-      ResponseMessageTodolistReducer !== "" &&
-      ResponseMessageTodolistReducer !== t("No-records-found")
-    ) {
-      show(ResponseMessageTodolistReducer, "success");
-
-      dispatch(clearResponce());
-    } else if (
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== t("No-records-found")
-    ) {
-      show(ResponseMessageAssigneesReducer, "success");
-
-      dispatch(clearResponseMessage());
-    } else {
-      dispatch(clearResponce());
-      dispatch(clearResponseMessage());
-    }
-  }, [ResponseMessageTodolistReducer, ResponseMessageAssigneesReducer]);
-
-  useEffect(() => {
-    if (
-      ResponseMessageTodoStatusReducer !== "" &&
-      ResponseMessageTodoStatusReducer !== undefined &&
-      ResponseMessageTodoStatusReducer !== "" &&
-      ResponseMessageTodoStatusReducer !== t("No-records-found")
-    ) {
-      show(ResponseMessageTodoStatusReducer, "success");
-
-      dispatch(cleareMessagetodo());
-    } else if (
-      UpdateTodoStatusMessage !== "" &&
-      UpdateTodoStatusMessage !== undefined &&
-      UpdateTodoStatusMessage !== "" &&
-      UpdateTodoStatusMessage !== t("No-records-found")
-    ) {
-      show(UpdateTodoStatusMessage, "success");
-
-      dispatch(cleareMessagetodo());
-    } else if (
-      UpdateTodoStatus !== "" &&
-      UpdateTodoStatus !== undefined &&
-      UpdateTodoStatus !== "" &&
-      UpdateTodoStatus !== t("No-records-found")
-    ) {
-      show(UpdateTodoStatus, "success");
-
-      dispatch(cleareMessagetodo());
-    } else {
-      dispatch(cleareMessagetodo());
-    }
-  }, [
-    ResponseMessageTodoStatusReducer,
-    UpdateTodoStatusMessage,
-    UpdateTodoStatus,
-  ]);
-
-  useEffect(() => {
-    if (
       getEventTypeIds !== null &&
       getEventTypeIds !== undefined &&
       getEventTypeIds.length > 0
@@ -892,6 +712,7 @@ const CalendarPage = () => {
       setEventTypes(getEventTypeIds);
     }
   }, [getEventTypeIds]);
+
   useEffect(() => {
     if (eventsDetails !== null && eventsDetails !== undefined) {
       setMeetingData(eventsDetails.diskusCalendarEvent);
@@ -984,9 +805,6 @@ const CalendarPage = () => {
           setShow={setTodolistModalShow}
         />
       )}
-
-      
-    {SnackBar}
     </>
   );
 };

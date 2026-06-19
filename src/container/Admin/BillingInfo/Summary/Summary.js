@@ -121,64 +121,6 @@ const Summary = () => {
     }
   }, [searchPaymentHistory]);
 
-  useEffect(() => {
-    if (
-      VerifyOTPEmailResponseMessage !== "" &&
-      VerifyOTPEmailResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      show(VerifyOTPEmailResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else if (
-      EnterPasswordResponseMessage !== "" &&
-      EnterPasswordResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      show(EnterPasswordResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else if (
-      OrganizationCreateResponseMessage !== "" &&
-      OrganizationCreateResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      show(OrganizationCreateResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      CreatePasswordResponseMessage !== "" &&
-      CreatePasswordResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      show(CreatePasswordResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      GetSelectedPackageResponseMessage !== "" &&
-      GetSelectedPackageResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      show(GetSelectedPackageResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else if (
-      EmailValidationResponseMessage !== "" &&
-      EmailValidationResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      show(EmailValidationResponseMessage, "success");
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    EnterPasswordResponseMessage,
-    VerifyOTPEmailResponseMessage,
-    OrganizationCreateResponseMessage,
-    CreatePasswordResponseMessage,
-    EmailValidationResponseMessage,
-    GetSelectedPackageResponseMessage,
-  ]);
   const closeModal = () => {
     setActivateBlur(false);
     dispatch(setLoader());
