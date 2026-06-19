@@ -350,9 +350,11 @@ const GroupPublishedMeetingList = () => {
   // ─── Join Meeting ─────────────────────────────────────────────────────────
 
   const handleJoinMeeting = async (record) => {
-    const role = record.isAgendaContributor
+   const role = record.isAgendaContributor
       ? "Agenda Contributor"
-      : "Organizer";
+      : record.isParticipant
+        ? "Participant"
+        : "Organizer";
     const meetingId = Number(record.pK_MDID);
 
     if (record.isQuickMeeting) {
