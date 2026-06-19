@@ -89,23 +89,35 @@ const useSnackbar = (watchConfigs = []) => {
     (a, b) => a.messageKey === b.messageKey,
   );
 
-  const prevRef = useRef(new Map());
+  // Tracks the last-shown "message:severity" key PER watched config (by index).
+  // Unlike a Map keyed by message text (which persisted forever and blocked any
+  // repeat of the same message), these entries are reset to "" once
+  // CLEAR_RESPONSE_MESSAGE empties the reducer — so the SAME message
+  // (e.g. "Committee Updated") can be shown again on a repeat action.
+  const prevRef = useRef([]);
 
   useEffect(() => {
     let didShow = false;
+    const shownThisRun = new Set();
 
-    values.forEach(({ message, severity }) => {
+    values.forEach(({ message, severity }, i) => {
       const normalized = message?.toLowerCase().trim();
+      const currentKey = message ? `${normalized}:${severity}` : "";
 
       if (
         message &&
         !ignoredMessages.has(normalized) &&
-        prevRef.current.get(normalized) !== severity
+        currentKey !== prevRef.current[i] &&
+        !shownThisRun.has(currentKey)
       ) {
         show(message, severity);
+        shownThisRun.add(currentKey);
         didShow = true;
-        prevRef.current.set(normalized, severity);
       }
+
+      // Always sync to the current value (including "" after a clear) so the
+      // next identical message is treated as new and shows again.
+      prevRef.current[i] = currentKey;
     });
 
     if (didShow) {

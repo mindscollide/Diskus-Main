@@ -1657,7 +1657,7 @@
   "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
   "Create-a-to-do-list": "Create a Task",
   "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time",
-  "Agendas-imported-successfully": "Agendas imported successfully",
+  "Agendas-imported-successfully": "Agendas Imported Successfully",
   "No-agendas-exist": "No Agendas Exist",
   "Minutes-text-is-required": "Minutes Text is required",
   "Minutes-details": "Minutes Text",
@@ -2788,5 +2788,7 @@
   "Create-committee-chat": "Create Committee Chat",
   "Save-your-agenda-before-publish-the-meeting-avoid-losing-it": "Save your agenda before publish the meeting, avoid losing it.",
   "Save-agenda": "Save Agenda",
-  "Committee-updated":"Committee Updated"
+  "Committee-updated":"Committee Updated",
+  "Agenda-presenter-is-not-in-attendees": "Agenda presenter is not in attendees"
+
 }

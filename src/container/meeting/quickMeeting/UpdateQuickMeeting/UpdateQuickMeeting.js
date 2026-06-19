@@ -2150,7 +2150,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       return !addedParticipantNameList.some((ap) => ap.name === presenterName);
     });
     if (invalidAgenda) {
-      show(t("Agenda-presenter-not-in-attendees"), "error");
+      show(t("Agenda-presenter-is-not-in-attendees"), "error");
       return;
     }
 
