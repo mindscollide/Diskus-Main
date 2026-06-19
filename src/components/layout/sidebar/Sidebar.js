@@ -281,6 +281,36 @@ const Sidebar = () => {
     );
   };
 
+  //Compliance Sidebar Click
+  const handleMeetingSidebarCompliance = () => {
+    localStorage.setItem("navigateLocation", "compliance");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  const handleMeetingSidebarComplianceNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    localStorage.setItem("navigateLocation", "compliance");
+
+    SideBarGlobalNavigationFunctionNew(
+      dispatch,
+      navigate,
+      t,
+      "/Diskus/compliance",
+      editorRole,
+      setEditorRole,
+      setUnSaveChangesModalForMeeting,
+      unSaveChangesModalForMeeting,
+    );
+  };
+
   // const handleMeetingNavigation = async ({
   //   targetPath,
   //   navigateLocationKey,
@@ -442,24 +472,19 @@ const Sidebar = () => {
             role: null,
             isPrimaryOrganizer: false,
           });
-          // navigate(targetPath);
+          navigate(targetPath);
           return;
         } else {
           if (!isMeetingVideo) {
             dispatch(showEndMeetingModal(true));
+          } else if (
+            activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null
+          ) {
+            handleNoCall();
           } else {
-            if (
-              (activeCall === false ||
-                activeCall === undefined ||
-                activeCall === null) &&
-              !isMeetingVideo
-            ) {
-              handleNoCall();
-            } else {
-              if (isMeetingVideo) {
-                handleWithCall();
-              }
-            }
+            handleWithCall();
           }
 
           if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
@@ -487,6 +512,10 @@ const Sidebar = () => {
     } else {
       if (advanceMeetingViewModal) {
         if (Number(editorRole.status) !== 10) {
+          if (ViewGroupPage || ViewCommitteePage) {
+            setViewGroupPage(false);
+            setViewCommitteePage(false);
+          }
           // Close modal first, then navigate
           dispatch(resetCurrentMeetingInfo());
           dispatch(toggleViewMeetingModal(false));
@@ -518,19 +547,14 @@ const Sidebar = () => {
         } else {
           if (!isMeetingVideo) {
             dispatch(showEndMeetingModal(true));
+          } else if (
+            activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null
+          ) {
+            handleNoCall();
           } else {
-            if (
-              (activeCall === false ||
-                activeCall === undefined ||
-                activeCall === null) &&
-              !isMeetingVideo
-            ) {
-              handleNoCall();
-            } else {
-              if (isMeetingVideo) {
-                handleWithCall();
-              }
-            }
+            handleWithCall();
           }
 
           if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
@@ -984,17 +1008,13 @@ const Sidebar = () => {
                         : "m-0 p-0 iconItemSideBarMain"
                     }
                     onClick={(e) => {
-                      const handled = handleSidebarNavigation({
+                      e.preventDefault();
+                      handleSidebarNavigation({
                         targetPath: "/Diskus/Meeting",
                         navigateLocationKey: "Meeting",
                         handleWithCall: handleMeetingSidebarClick,
                         handleNoCall: handleMeetingSidebarClickNoCall,
                       });
-                      if (handled) {
-                        e.preventDefault();
-
-                        return;
-                      }
                     }}>
                     <div
                       className='d-flex flex-column justify-content-center align-items-center'
@@ -1064,8 +1084,8 @@ const Sidebar = () => {
                       const handled = handleSidebarNavigation({
                         targetPath: "/Diskus/compliance",
                         navigateLocationKey: "compliance",
-                        handleWithCall: handleMeetingSidebarResolutions,
-                        handleNoCall: handleMeetingSidebarResolutionsNoCall,
+                        handleWithCall: handleMeetingSidebarCompliance,
+                        handleNoCall: handleMeetingSidebarComplianceNoCall,
                       });
 
                       if (handled) {
