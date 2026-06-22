@@ -154,7 +154,10 @@ const CommitteePublishedMeetingList = () => {
     committeePublishedMeetingDataRecord,
   } = useCommitteeContext();
 
-  console.log(committeePublishedMeetingData, "committeePublishedMeetingDatacommitteePublishedMeetingData")
+  console.log(
+    committeePublishedMeetingData,
+    "committeePublishedMeetingDatacommitteePublishedMeetingData",
+  );
 
   const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
     useNewMeetingContext();
@@ -355,7 +358,9 @@ const CommitteePublishedMeetingList = () => {
   const handleJoinMeeting = async (record) => {
     const role = record.isAgendaContributor
       ? "Agenda Contributor"
-      : "Organizer";
+      : record.isParticipant
+        ? "Participant"
+        : "Organizer";
     const meetingId = Number(record.pK_MDID);
 
     if (record.isQuickMeeting) {
@@ -504,9 +509,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.edit && (
           <div
             className={styles.morebtn}
-            onClick={() => handleEditMeeting(record)}
-          >
-            <img src={EditIcon} alt="" width="16" height="16" />
+            onClick={() => handleEditMeeting(record)}>
+            <img src={EditIcon} alt='' width='16' height='16' />
             <span>{t("Edit-meeting")}</span>
           </div>
         )}
@@ -514,9 +518,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.talk && (
           <div
             className={styles.morebtn}
-            onClick={() => groupChatInitiation(record)}
-          >
-            <img src={ChatIcon} alt="" width="16" height="16" />
+            onClick={() => groupChatInitiation(record)}>
+            <img src={ChatIcon} alt='' width='16' height='16' />
             <span>{t("Talk")}</span>
           </div>
         )}
@@ -524,9 +527,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.viewAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewAgenda(record)}
-          >
-            <img src={AgendaIcon} alt="" width="16" height="16" />
+            onClick={() => handleClickViewAgenda(record)}>
+            <img src={AgendaIcon} alt='' width='16' height='16' />
             <span>{t("View-agenda")}</span>
           </div>
         )}
@@ -534,9 +536,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.attendance && (
           <div
             className={styles.morebtn}
-            onClick={() => onClickDownloadIcon(record.pK_MDID)}
-          >
-            <img src={ClipboardIcon} alt="" width="16" height="16" />
+            onClick={() => onClickDownloadIcon(record.pK_MDID)}>
+            <img src={ClipboardIcon} alt='' width='16' height='16' />
             <span>{t("Attendance-report")}</span>
           </div>
         )}
@@ -544,9 +545,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.recording && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickDownloadBtn(record)}
-          >
-            <img src={DownloadVideoIcon} alt="" width="16" height="16" />
+            onClick={() => handleClickDownloadBtn(record)}>
+            <img src={DownloadVideoIcon} alt='' width='16' height='16' />
             <span>{t("Download-video-recording")}</span>
           </div>
         )}
@@ -554,9 +554,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewMinutes(record)}
-          >
-            <img src={DownloadVideoIcon} alt="" width="16" height="16" />
+            onClick={() => handleClickViewMinutes(record)}>
+            <img src={DownloadVideoIcon} alt='' width='16' height='16' />
             <span>{t("View-minutes")}</span>
           </div>
         )}
@@ -564,9 +563,8 @@ const CommitteePublishedMeetingList = () => {
         {canShow.contributeAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickContributeAgenda(record)}
-          >
-            <img src={AgendaIcon} alt="" width="16" height="16" />
+            onClick={() => handleClickContributeAgenda(record)}>
+            <img src={AgendaIcon} alt='' width='16' height='16' />
             <span>{t("Contribute-agenda")}</span>
           </div>
         )}
@@ -671,7 +669,7 @@ const CommitteePublishedMeetingList = () => {
       // ── Meeting Title ──
       {
         title: (
-          <div className="d-flex align-items-center gap-2">
+          <div className='d-flex align-items-center gap-2'>
             <span>{t("Meeting-title")}</span>
             <img
               src={
@@ -681,7 +679,7 @@ const CommitteePublishedMeetingList = () => {
                     ? SortIconAscend
                     : SortIconDescend
               }
-              alt="Sort Icon"
+              alt='Sort Icon'
             />
           </div>
         ),
@@ -699,8 +697,7 @@ const CommitteePublishedMeetingList = () => {
               setMeetingLocalStorage(record);
               setVideoTalk(buildVideoTalk(record));
               setEditorRole(buildEditorRole(record));
-            }}
-          >
+            }}>
             {text}
           </span>
         ),
@@ -724,7 +721,7 @@ const CommitteePublishedMeetingList = () => {
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
         render: (text) => (
-          <div className="d-flex justify-content-start">
+          <div className='d-flex justify-content-start'>
             <span className={styles.columnValueStatus}>
               {StatusValue(t, text)}
             </span>
@@ -735,7 +732,7 @@ const CommitteePublishedMeetingList = () => {
       // ── Organizer ──
       {
         title: (
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Organizer")}</span>
             <img
               src={
@@ -745,7 +742,7 @@ const CommitteePublishedMeetingList = () => {
                     ? SortIconAscend
                     : SortIconDescend
               }
-              alt="Sort Icon"
+              alt='Sort Icon'
             />
           </div>
         ),
@@ -763,7 +760,7 @@ const CommitteePublishedMeetingList = () => {
       // ── Meeting Time ──
       {
         title: (
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Time")}</span>
             <img
               src={
@@ -773,7 +770,7 @@ const CommitteePublishedMeetingList = () => {
                     ? ArrowDownIcon
                     : ArrowUpIcon
               }
-              alt="Sort Icon"
+              alt='Sort Icon'
             />
           </div>
         ),
@@ -813,7 +810,7 @@ const CommitteePublishedMeetingList = () => {
       // ── Meeting Date ──
       {
         title: (
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Date")}</span>
             <img
               src={
@@ -823,7 +820,7 @@ const CommitteePublishedMeetingList = () => {
                     ? ArrowDownIcon
                     : ArrowUpIcon
               }
-              alt="Sort Icon"
+              alt='Sort Icon'
             />
           </div>
         ),
@@ -887,7 +884,7 @@ const CommitteePublishedMeetingList = () => {
           if (meetingCurrentStatus === STATUS.UPCOMING) {
             if (isOrganizer) {
               return (
-                <div className="d-flex justify-content-center align-items-center">
+                <div className='d-flex justify-content-center align-items-center'>
                   <CustomButton
                     text={
                       canStartMeeting ? t("Start-meeting") : t("Edit-meeting")
@@ -908,7 +905,7 @@ const CommitteePublishedMeetingList = () => {
             }
             if (isAgendaContributor) {
               return (
-                <div className="d-flex justify-content-center align-items-center">
+                <div className='d-flex justify-content-center align-items-center'>
                   <CustomButton
                     text={t("Contribute-agenda")}
                     className={styles.ContributeAgendaButton}
@@ -919,7 +916,7 @@ const CommitteePublishedMeetingList = () => {
             }
             if (isParticipant) {
               return (
-                <div className="d-flex justify-content-center align-items-center">
+                <div className='d-flex justify-content-center align-items-center'>
                   <CustomButton
                     text={t("View-meeting")}
                     className={styles.ViewMeetingButton}
@@ -933,7 +930,7 @@ const CommitteePublishedMeetingList = () => {
           // ACTIVE
           if (meetingCurrentStatus === STATUS.ACTIVE) {
             return (
-              <div className="d-flex justify-content-center align-items-center">
+              <div className='d-flex justify-content-center align-items-center'>
                 <CustomButton
                   text={t("Join-meeting")}
                   className={styles.JoinMeetingButton}
@@ -950,7 +947,7 @@ const CommitteePublishedMeetingList = () => {
             !isQuickMeeting
           ) {
             return (
-              <div className="d-flex justify-content-center align-items-center">
+              <div className='d-flex justify-content-center align-items-center'>
                 <CustomButton
                   text={t("Board-deck")}
                   className={styles.BoardDeckButton}
@@ -963,7 +960,7 @@ const CommitteePublishedMeetingList = () => {
           // NOT CONDUCTED
           if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
             return (
-              <div className="d-flex justify-content-center align-items-center">
+              <div className='d-flex justify-content-center align-items-center'>
                 <CustomButton
                   text={t("Edit-meeting")}
                   className={styles.EditMeetingButton}
@@ -996,19 +993,18 @@ const CommitteePublishedMeetingList = () => {
           if (isCancelledOrNotConducted) return null;
 
           return (
-            <div className="d-flex justify-content-center align-items-center">
+            <div className='d-flex justify-content-center align-items-center'>
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
-                overlayClassName="MoreButtons_overlay"
-                className="moreOptionsPopover"
+                trigger='click'
+                overlayClassName='MoreButtons_overlay'
+                className='moreOptionsPopover'
                 showArrow={false}
-                placement="bottomRight"
-              >
+                placement='bottomRight'>
                 <CustomButton
                   className={styles.MoreMeetingButton}
                   text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt="" />}
+                  icon2={<img src={ChevronDownIcon} width={10} alt='' />}
                 />
               </Popover>
             </div>
@@ -1062,19 +1058,18 @@ const CommitteePublishedMeetingList = () => {
 
   return (
     <>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className={styles["MainMeetingTablePublished"]}
-        >
+          className={styles["MainMeetingTablePublished"]}>
           <Table
             getPopupContainer={(node) => node.closest(".ant-table")}
             onChange={handleTableChange}
-            className="MeetingTable"
+            className='MeetingTable'
             column={columns}
-            size="small"
+            size='small'
             rows={committeePublishedMeetingData}
             sticky={true}
             pagination={false}

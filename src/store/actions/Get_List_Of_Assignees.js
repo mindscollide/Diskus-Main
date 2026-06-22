@@ -274,7 +274,14 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
 };
 
 // update meeting
-const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
+const UpdateMeeting = (
+  navigate,
+  t,
+  checkFlag,
+  object,
+  routeValue,
+  setEditFlag,
+) => {
   let createrID = JSON.parse(localStorage.getItem("userID"));
   return async (dispatch) => {
     dispatch(ScheculeMeetingInit());
@@ -286,9 +293,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            ScheduleNewMeeting(navigate, t, checkFlag, object, setEditFlag),
-          );
+          dispatch(UpdateMeeting(navigate, t, checkFlag, object, setEditFlag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -298,6 +303,9 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase(),
                 )
             ) {
+              if (routeValue === 2) {
+                setEditFlag(false);
+              }
               await dispatch(SetLoaderFalse());
               try {
                 let MappedData = {
@@ -322,11 +330,6 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
 
                     // Only include agendas with attachments
                     if (doc.MeetingAgendaAttachments.length > 0) {
-                      let checkIsNewFileExist =
-                        doc.MeetingAgendaAttachments.filter(
-                          (fileData, index) => fileData.isNew === true,
-                        );
-
                       const AgendaID = String(
                         mainMatch
                           ? mainMatch.newId
@@ -642,7 +645,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   UserID: Number(createrID),
                   PageNumber: 1,
                   Length: 30,
-           PublishedMeetings: true,
+                  PublishedMeetings: true,
                   ProposedMeetings: false,
                 };
                 dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));

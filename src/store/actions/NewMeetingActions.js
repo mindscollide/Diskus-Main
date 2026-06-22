@@ -7716,8 +7716,7 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       ProposedMeetings: false,
                     };
                     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
-                  } else {
-                  }
+                  } 
                 } else {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
@@ -7749,9 +7748,9 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                   ) {
                     navigate("/Diskus/polling");
                   } else if (
-                    localStorage.getItem("navigateLocation") === "polling"
+                    localStorage.getItem("navigateLocation") === "compliance"
                   ) {
-                    navigate("/Diskus/polling");
+                    navigate("/Diskus/compliance");
                   } else if (
                     localStorage.getItem("navigateLocation") === "calendar"
                   ) {
@@ -7768,6 +7767,15 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     navigate("/Diskus/");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "Meeting"
+                  ) {
+                    // Left via the "Meeting" sidebar item (e.g. from inside a
+                    // committee) — go to the meetings list, don't stay put.
+                    navigate("/Diskus/Meeting");
+                    await dispatch(
+                      listOfMeetingsApi(navigate, t, searchData, "", {}),
+                    );
                   } else {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),

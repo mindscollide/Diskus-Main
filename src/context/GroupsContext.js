@@ -319,6 +319,7 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
+        console.log(error);
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -441,22 +442,45 @@ export const GroupsProvider = ({ children }) => {
   }, [meetingStatusProposedMqttData]);
 
   useEffect(() => {
-    try {
-      if (MeetingStatusSocket !== null) {
-        const { message, meetingStatusID, meetingID } = MeetingStatusSocket;
+    if (MeetingStatusSocket == null) return;
 
-        if (
-          message
-            .toLowerCase()
-            .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
-        ) {
-          const { list, setList } = getActiveListAndSetter();
-          setList((prev) =>
-            prev.filter((item) => Number(item.pK_MDID) !== Number(meetingID)),
-          );
-        }
+    try {
+      const messageLower = (MeetingStatusSocket.message || "").toLowerCase();
+      const isStartedEdit = messageLower.includes(
+        "meeting_status_edited_started",
+      );
+      const isCancelledEdit = messageLower.includes(
+        "meeting_status_edited_cancelled",
+      );
+
+      if (!isStartedEdit && !isCancelledEdit) return;
+
+      // Resolve status + ID — schema differs by event variant
+      let meetingStatusID;
+      let meetingID;
+
+      if (
+        Object.prototype.hasOwnProperty.call(MeetingStatusSocket, "meeting")
+      ) {
+        meetingStatusID = MeetingStatusSocket.meeting.status;
+        meetingID = MeetingStatusSocket.meeting.pK_MDID;
+      } else {
+        meetingStatusID = MeetingStatusSocket.meetingStatusID;
+        meetingID = MeetingStatusSocket.meetingID;
       }
+
+      if (meetingID == null) return;
+
+      updateMeetingInAllLists(meetingID, (item) => ({
+        ...item,
+        status: String(meetingStatusID),
+      }));
+
+      setStartMeetingButton((prev) =>
+        prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
+      );
     } catch (error) {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 
   // =========================

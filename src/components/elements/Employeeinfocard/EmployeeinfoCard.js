@@ -39,15 +39,15 @@ const EmployeeinfoCard = ({
         <Col lg={2} md={12} sm={12}>
           <img
             src={isBase64Pic ? `data:image/jpeg;base64,${EmployeePic}` : null}
-            width="50px"
-            height="50px"
-            className="rounded-circle"
-            alt=""
-            draggable="false"
+            width='50px'
+            height='50px'
+            className='rounded-circle'
+            alt=''
+            draggable='false'
           />
         </Col>
         <Col lg={7} md={12} sm={12} className={styles["Lineheight"]}>
-          <Row className="mt-1">
+          <Row className='mt-1'>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["name_participant"]}>{Employeename}</span>
             </Col>
@@ -64,9 +64,8 @@ const EmployeeinfoCard = ({
           lg={2}
           md={12}
           sm={12}
-          className="d-flex justify-content-start align-items-center"
-        >
-          <span>{Icon}</span>
+          className='d-flex justify-content-start align-items-center '>
+          <span className='cursor-pointer'>{Icon}</span>
         </Col>
       </Row>
     </>

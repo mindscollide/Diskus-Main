@@ -391,15 +391,14 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   };
 
   const navigateToPublish = async () => {
-    await setIsQuickMeetingUpdate(false);
-    await seteditRecordIndex(null);
-    await seteditRecordFlag(false);
-    // await
-    await setIsDetails(true);
-    await setIsMinutes(false);
-    await setIsAgenda(false);
-    await setIsAttendees(false);
-
+    // await setIsQuickMeetingUpdate(false);
+    // await seteditRecordIndex(null);
+    // await seteditRecordFlag(false);
+    // // await
+    // await setIsDetails(true);
+    // await setIsMinutes(false);
+    // await setIsAgenda(false);
+    // await setIsAttendees(false);
     let finalDateTimeWithoutUTC =
       createMeeting.MeetingDate + createMeeting.MeetingStartTime;
     let newDate = finalDateTimeWithoutUTC.slice(0, 8);
@@ -428,7 +427,16 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
 
-    await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
+    await dispatch(
+      UpdateMeeting(
+        navigate,
+        t,
+        checkFlag,
+        newData,
+        2,
+        setIsQuickMeetingUpdate,
+      ),
+    );
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -956,7 +964,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       ObjMeetingAgenda: {
         ...objMeetingAgenda,
         PK_MAID: isEditMode ? objMeetingAgenda.PK_MAID : generateRandomAgendaID,
-        PresenterName: userName,
+        PresenterName: presenterValue.name,
       },
       MeetingAgendaAttachments: updatedAttachments,
     };
@@ -1859,6 +1867,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   role: meetingdata.meetingAttendeeRole.pK_MARID,
                   displayProfilePic: meetingdata.user.displayProfilePictureName,
                   isPrimaryOrganizer: meetingdata.isPrimaryOrganizer,
+                  PK_UID: meetingdata.user.pK_UID,
                 });
                 emptyList.push({
                   User: {
@@ -2074,6 +2083,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                 organization: data.organization,
                 role: participantRoleValue.value,
                 displayProfilePic: data.displayProfilePictureName,
+                PK_UID: data.pK_UID,
               });
             }
           });
@@ -2144,16 +2154,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       return;
     }
 
-    const invalidAgenda = createMeeting.MeetingAgendas.find((agenda) => {
-      const presenterName = agenda?.ObjMeetingAgenda?.PresenterName;
-      if (!presenterName) return false;
-      return !addedParticipantNameList.some((ap) => ap.name === presenterName);
-    });
-    if (invalidAgenda) {
-      show(t("Agenda-presenter-is-not-in-attendees"), "error");
-      return;
-    }
-
     if (objMeetingAgenda.Title !== "") {
       console.log("Checking");
       show(
@@ -2168,14 +2168,14 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     );
 
     if (hasOrganizer) {
-      await setIsQuickMeetingUpdate(false);
-      await seteditRecordIndex(null);
-      await seteditRecordFlag(false);
-      // await
-      await setIsDetails(true);
-      await setIsMinutes(false);
-      await setIsAgenda(false);
-      await setIsAttendees(false);
+      // await setIsQuickMeetingUpdate(false);
+      // await seteditRecordIndex(null);
+      // await seteditRecordFlag(false);
+      // // await
+      // await setIsDetails(true);
+      // await setIsMinutes(false);
+      // await setIsAgenda(false);
+      // await setIsAttendees(false);
       let finalDateTime = createConvert(
         createMeeting.MeetingDate + createMeeting.MeetingStartTime,
       );
@@ -2210,7 +2210,14 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       };
 
       await dispatch(
-        UpdateMeeting(navigate, t, checkFlag, newData, setIsQuickMeetingUpdate),
+        UpdateMeeting(
+          navigate,
+          t,
+          checkFlag,
+          newData,
+          2,
+          setIsQuickMeetingUpdate,
+        ),
       );
     } else {
       show(t("Please-atleast-add-one-organizer"), "error");
@@ -2509,13 +2516,61 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       );
     });
   };
-
   const handleDeleteAttendee = (data, index) => {
-    let user1 = createMeeting.MeetingAttendees;
-    user1.splice(index, 1);
-    addedParticipantNameList.splice(index, 1);
-    setAddedParticipantNameList(addedParticipantNameList);
-    setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+    // Get the user's name from the data
+    const userName = data?.name || data?.User?.name || data?.name;
+
+    // Find which agendas have this user as presenter
+    const agendasWithUser = createMeeting.MeetingAgendas?.filter(
+      (agenda) => agenda.ObjMeetingAgenda?.PresenterName === userName,
+    );
+
+    if (agendasWithUser?.length > 0) {
+      // Function to truncate text if it exceeds 100 characters
+      const truncateText = (text, maxLength = 100) => {
+        if (!text) return "";
+        return text.length > maxLength
+          ? `${text.substring(0, maxLength)}...`
+          : text;
+      };
+
+      // Format agenda titles with truncation
+      const agendaTitles = agendasWithUser
+        .map(
+          (a, idx) => `${idx + 1}. ${truncateText(a.ObjMeetingAgenda?.Title)}`,
+        )
+        .join("\n");
+
+      // If Notification accepts children with HTML
+      const message = (
+        <div>
+          <div>
+            {t(
+              "This-participant-is-added-as-agenda-presenter-in-below-agendas",
+            )}
+          </div>
+          <div style={{ marginTop: "4px", whiteSpace: "pre-line" }}>
+            {agendaTitles}
+          </div>
+        </div>
+      );
+      show(message, "error");
+      return;
+    }
+
+    // If user is not in any agenda, proceed with deletion
+    const updatedNameList = addedParticipantNameList.filter(
+      (_, i) => i !== index,
+    );
+    setAddedParticipantNameList(updatedNameList);
+
+    const updatedAttendees = createMeeting.MeetingAttendees.filter(
+      (attendee, i) => i !== index,
+    );
+    setCreateMeeting({
+      ...createMeeting,
+      MeetingAttendees: updatedAttendees,
+    });
   };
 
   const handleTimeChange = (newTime) => {

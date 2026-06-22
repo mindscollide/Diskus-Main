@@ -1920,18 +1920,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       return;
     }
 
-    const invalidAgenda = createMeeting.MeetingAgendas.find((agenda) => {
-      const presenterName = agenda?.ObjMeetingAgenda?.PresenterName;
-      if (!presenterName) return false;
-      return !addedParticipantNameList.some((ap) => ap.name === presenterName);
-    });
-    if (invalidAgenda) {
-      show(t("Agenda-presenter-is-not-in-attendees"), "error");
-      return;
-    }
-
-    // if(createMeeting.MeetingAgendas.length === 0) {
-
     const newObjMeetingAgenda = {
       ...objMeetingAgenda,
       Title: t("No-agenda-available"),
@@ -2002,11 +1990,60 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   };
 
   const handleDeleteAttendee = (data, index) => {
-    let user1 = createMeeting.MeetingAttendees;
-    user1.splice(index, 1);
-    addedParticipantNameList.splice(index, 1);
-    setAddedParticipantNameList(addedParticipantNameList);
-    setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+    // Get the user's name from the data
+    const userName = data?.name || data?.User?.name || data?.name;
+
+    // Find which agendas have this user as presenter
+    const agendasWithUser = createMeeting.MeetingAgendas?.filter(
+      (agenda) => agenda.ObjMeetingAgenda?.PresenterName === userName,
+    );
+
+    if (agendasWithUser?.length > 0) {
+      // Function to truncate text if it exceeds 100 characters
+      const truncateText = (text, maxLength = 100) => {
+        if (!text) return "";
+        return text.length > maxLength
+          ? `${text.substring(0, maxLength)}...`
+          : text;
+      };
+
+      // Format agenda titles with truncation
+      const agendaTitles = agendasWithUser
+        .map(
+          (a, idx) => `${idx + 1}. ${truncateText(a.ObjMeetingAgenda?.Title)}`,
+        )
+        .join("\n");
+
+      // If Notification accepts children with HTML
+      const message = (
+        <div>
+          <div>
+            {t(
+              "This-participant-is-added-as-agenda-presenter-in-below-agendas",
+            )}
+          </div>
+          <div style={{ marginTop: "4px", whiteSpace: "pre-line" }}>
+            {agendaTitles}
+          </div>
+        </div>
+      );
+      show(message, "error");
+      return;
+    }
+
+    // If user is not in any agenda, proceed with deletion
+    const updatedNameList = addedParticipantNameList.filter(
+      (_, i) => i !== index,
+    );
+    setAddedParticipantNameList(updatedNameList);
+
+    const updatedAttendees = createMeeting.MeetingAttendees.filter(
+      (attendee, i) => i !== index,
+    );
+    setCreateMeeting({
+      ...createMeeting,
+      MeetingAttendees: updatedAttendees,
+    });
   };
 
   function CustomInput({ onFocus, value, onChange }) {

@@ -4512,9 +4512,9 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                   ) {
                     navigate("/Diskus/polling");
                   } else if (
-                    localStorage.getItem("navigateLocation") === "polling"
+                    localStorage.getItem("navigateLocation") === "compliance"
                   ) {
-                    navigate("/Diskus/polling");
+                    navigate("/Diskus/compliance");
                   } else if (
                     localStorage.getItem("navigateLocation") === "calendar"
                   ) {
@@ -4531,6 +4531,15 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
                     navigate("/Diskus/");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "Meeting"
+                  ) {
+                    // Left via the "Meeting" sidebar item — go to the meetings
+                    // list even when leaving from a committee/group context.
+                    navigate("/Diskus/Meeting");
+                    await dispatch(
+                      listOfMeetingsApi(navigate, t, searchData, "", {}),
+                    );
                   } else if (!committeeInfo && !groupInfo) {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),

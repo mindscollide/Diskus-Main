@@ -2851,6 +2851,7 @@ input#Participant::placeholder {
   position: absolute;
   top: -5px;
   right: -36px;
+  cursor: pointer;
 }
 
 .MainContainer {
