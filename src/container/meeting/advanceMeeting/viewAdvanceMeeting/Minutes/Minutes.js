@@ -194,7 +194,7 @@ const Minutes = () => {
         DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t),
       );
       dispatch(
-        AllDocumentsForAgendaWiseMinutesApiFunc(navigate, MeetingDocs, t),
+        AllDocumentsForAgendaWiseMinutesApiFunc(navigate, t, MeetingDocs),
       );
     } else {
       dispatch(
@@ -740,10 +740,12 @@ const Minutes = () => {
         navigate,
         t,
         newData,
-        Number(advanceMeetingModalID),
-        false,
-        false,
-        true,
+        "",
+        {},
+        // Number(advanceMeetingModalID),
+        // false,
+        // false,
+        // true,
       ),
     );
 
@@ -1941,7 +1943,7 @@ const Minutes = () => {
                                   alt=''
                                   src={ArrowDown}
                                   className={
-                                    isOpen
+                                    !isOpen
                                       ? styles["Arrow"]
                                       : styles["Arrow_Expanded"]
                                   }

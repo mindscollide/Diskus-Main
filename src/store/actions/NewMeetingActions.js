@@ -4059,7 +4059,7 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
               await dispatch(
                 showSaveMinutesDocsSuccess(
                   response.data.responseResult,
-                  t("List-updated-successfully"),
+                  "",
                 ),
               );
               const meetingId =
@@ -4314,10 +4314,10 @@ const GetAllAgendaWiseMinutesApiFunc = (
   Data,
   routePath,
   object,
-  currentMeeting,
-  loader,
-  setAddReviewers,
-  clickFlag,
+  // currentMeeting,
+  // loader,
+  // setAddReviewers,
+  // clickFlag,
 ) => {
   return async (dispatch) => {
     dispatch(showGetAllAgendaWiseMinutesInit());
@@ -4338,10 +4338,10 @@ const GetAllAgendaWiseMinutesApiFunc = (
             Data,
             routePath,
             object,
-            currentMeeting,
-            loader,
-            setAddReviewers,
-            clickFlag,
+            // currentMeeting,
+            // loader,
+            // setAddReviewers,
+            // clickFlag,
           ),
         );
       } else if (response.data.responseCode === 200) {
@@ -4380,7 +4380,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
               showGetAllAgendaWiseMinutesSuccess(
                 response.data.responseResult,
                 "",
-                loader,
+                // loader,
               ),
             );
           } else if (

@@ -145,6 +145,16 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   case "publishedMeeting":
+                    dispatch(setAdvanceMeetingRoute(null));
+                    dispatch(resetCreateEditTabs());
+                    dispatch(toggleCreateEditMeetingModal(false));
+                    dispatch(resetCurrentMeetingInfo());
+                       isFunction(setEditorRole) &&
+                      setEditorRole({
+                        status: null,
+                        role: "",
+                        isPrimaryOrganizer: false,
+                      });
                     dispatch(
                       handleSaveMeetingSuccess(
                         response.data.responseResult,
@@ -245,8 +255,6 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                         role: "",
                         isPrimaryOrganizer: false,
                       });
-                    const committeeInfo =
-                      store.getState().CommitteeReducer?.viewCommitteeDetails;
                     // let searchData = {
                     //   CommitteeID: Number(committeeInfo.committeeID),
                     //   Date: "",

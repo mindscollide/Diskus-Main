@@ -870,16 +870,21 @@ const ViewMeetingDetails = () => {
                     )}
                     {meetingDetails.IsVideoCall && (
                       <>
+                        <Button
+                          icon={<img src={CopyLinkBtn} alt='' />}
+                          text={t("Copy-invite-link")}
+                          className={styles["CopyLinkButton"]}
+                          onClick={() => copyToClipboardd()}
+                          disableBtn={
+                            editorRole.status !== 10 || editorRole.status !== 1
+                              ? false
+                              : true
+                          }
+                        />
                         {editorRole.status === "10" ||
                         editorRole.status === 10 ? (
                           <>
                             {" "}
-                            <Button
-                              icon={<img src={CopyLinkBtn} alt='' />}
-                              text={t("Copy-invite-link")}
-                              className={styles["CopyLinkButton"]}
-                              onClick={() => copyToClipboardd()}
-                            />
                             {!MaximizeHostVideoFlag && !NormalHostVideoFlag && (
                               <Button
                                 disableBtn={
@@ -918,15 +923,6 @@ const ViewMeetingDetails = () => {
                           </>
                         ) : (
                           <>
-                            {" "}
-                            <Button
-                              title={t("The-meeting-has-ended")}
-                              icon={<img src={CopyLinkBtn} />}
-                              text={t("Copy-invite-link")}
-                              className={`${
-                                styles["CopyLinkButton_Disabled"]
-                              } ${"grayScaled"}`}
-                            />
                             <Button
                               text={t("Join-video-call")}
                               className={`${

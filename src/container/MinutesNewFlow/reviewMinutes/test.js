@@ -81,8 +81,6 @@ const ReviewMinutes = () => {
   };
 
   const submitReviews = () => {
-    
-
     // Extract minuteData from all agendas and their subMinutes
     const extractMinuteData = (agendas) => {
       let allMinuteData = [];
@@ -107,8 +105,6 @@ const ReviewMinutes = () => {
     };
 
     const allMinuteData = extractMinuteData(minutesAgenda);
-
-    
 
     // Transform the first state data to the required format
     const actorMinuteReviewsFromState1 = allMinuteData.map((minute) => ({
@@ -136,17 +132,14 @@ const ReviewMinutes = () => {
     };
 
     // dispatch(AcceptRejectMinuteReview(Data, navigate, t));
-    
   };
 
   useEffect(() => {
     const div = divRef.current;
 
     if (div.scrollHeight > div.clientHeight) {
-      
       setReviewWrapperScroll(true);
     } else {
-      
       setReviewWrapperScroll(false);
     }
   }, []); // This effect runs once after the component mounts
@@ -159,10 +152,10 @@ const ReviewMinutes = () => {
       MeetingID: MinutesReducer?.currentMeetingMinutesToReviewData?.meetingID,
     };
     dispatch(
-      AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+      AllDocumentsForAgendaWiseMinutesApiFunc(navigate, t, allAgendaWiseDocs),
     );
 
-    dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+    dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
   }, []);
 
   useEffect(() => {
@@ -179,12 +172,12 @@ const ReviewMinutes = () => {
         setWorkflowID(reducerData.workFlowID);
         // Initialize an empty array to hold the transformed data
         let transformedData = [];
-        
+
         // Iterate through each parent agenda in the agenda hierarchy list
         minutesAgendaHierarchy.forEach((parentAgenda) => {
           // Find the parent agenda details in the agendaWiseMinutes array
           let parentAgendaMinutes = reducerData.agendaMinutes.filter(
-            (minute) => minute.agendaID === parentAgenda.pK_MAID
+            (minute) => minute.agendaID === parentAgenda.pK_MAID,
           );
 
           // Initialize an array to hold sub-minutes of the parent agenda
@@ -193,7 +186,7 @@ const ReviewMinutes = () => {
           parentAgenda.childAgendas.forEach((childAgenda) => {
             // Filter the minutes that match the child agenda ID and push to subMinutes
             let childMinutes = reducerData.agendaMinutes.filter(
-              (minute) => minute.agendaID === childAgenda.pK_MAID
+              (minute) => minute.agendaID === childAgenda.pK_MAID,
             );
             subMinutes.push(...childMinutes);
           });
@@ -208,8 +201,8 @@ const ReviewMinutes = () => {
               ? parentAgendaMinutes[0].agendaTitle
               : parentAgenda.childAgendas.find((childAgenda) =>
                   subMinutes.some(
-                    (minute) => minute.agendaID === childAgenda.pK_MAID
-                  )
+                    (minute) => minute.agendaID === childAgenda.pK_MAID,
+                  ),
                 )?.parentTitle || "";
 
             let parentAgendaObj = {
@@ -233,7 +226,7 @@ const ReviewMinutes = () => {
               })),
               subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
                 let childMinutes = subMinutes.filter(
-                  (minute) => minute.agendaID === childAgenda.pK_MAID
+                  (minute) => minute.agendaID === childAgenda.pK_MAID,
                 );
                 return {
                   agendaID: childAgenda.pK_MAID,
@@ -263,17 +256,15 @@ const ReviewMinutes = () => {
             transformedData.push(parentAgendaObj);
           }
         });
-        
 
         // Update attachments in transformedData based on data state
-        
 
         transformedData.forEach((agenda) => {
           agenda.minuteData.forEach((minute) => {
             // Find matching entry in data state by pK_MeetingAgendaMinutesID
             let matchingData =
               NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID,
               );
 
             // If matchingData found, update attachments in minuteData
@@ -287,7 +278,8 @@ const ReviewMinutes = () => {
               // Find matching entry in data state by pK_MeetingAgendaMinutesID
               let matchingData =
                 NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
-                  (entry) => entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                  (entry) =>
+                    entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                 );
 
               // If matchingData found, update attachments in minuteData
@@ -297,35 +289,26 @@ const ReviewMinutes = () => {
             });
           });
         });
-        
 
         // Log the transformed data to the console
         setMinutesAgenda(transformedData);
-        
       } else {
         setMinutesAgenda([]);
         setMinutesAgendaHierarchy([]);
         setMinutesGeneral([]);
         setMinutesToReview([]);
-        
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
 
   // useEffect(() => {
   //   if(MinutesReducer.RejectMinuteData !== null && MinutesReducer.RejectMinuteData !== undefined)
   // }, [MinutesReducer.RejectMinuteData])
 
-  
-
-  
-
   return (
     <section className={styles["pendingApprovalContainer"]}>
       {/* Container for pending approval section */}
-      <Row className="my-3 d-flex align-items-center">
+      <Row className='my-3 d-flex align-items-center'>
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
             {MinutesReducer.currentMeetingMinutesToReviewData.title}
@@ -335,7 +318,7 @@ const ReviewMinutes = () => {
       <Paper className={styles["pendingApprovalPaper"]}>
         {/* Paper component for styling */}
         <div className={styles["main-wrapper"]}>
-          <Row className="py-3 mx-50">
+          <Row className='py-3 mx-50'>
             <Col sm={12} md={6} lg={6}>
               <span className={styles["pendingApprovalHeading"]}>
                 {t("Review Minutes")}
@@ -345,8 +328,7 @@ const ReviewMinutes = () => {
               sm={12}
               md={6}
               lg={6}
-              className="justify-content-end d-flex align-items-center"
-            >
+              className='justify-content-end d-flex align-items-center'>
               <span className={styles["No-of-reviews"]}>
                 {t("Remaining-minutes-to-review") + minutesToReview}
               </span>
@@ -363,13 +345,12 @@ const ReviewMinutes = () => {
                 ? styles["review-minutes-wrapper-scroll"]
                 : styles["review-minutes-wrapper"]
             }
-            ref={divRef}
-          >
+            ref={divRef}>
             {/* CONTENT */}
             {minutesAgenda?.map((data, index) => {
               return (
                 <>
-                  <Row className="mx-50">
+                  <Row className='mx-50'>
                     <Col lg={12} md={12} sm={12}>
                       <p className={styles["Parent-title-heading"]}>
                         {data.agendaTitle}
@@ -385,15 +366,13 @@ const ReviewMinutes = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="position-relative"
-                            >
+                              className='position-relative'>
                               {parentMinutedata.agendaMinutesVersionHistory
                                 .length === 0 ? null : (
                                 <div
                                   className={
                                     styles["version-control-wrapper-with-more"]
-                                  }
-                                >
+                                  }>
                                   <span className={styles["with-text"]}>
                                     {parentMinutedata.versionNumber}.0
                                   </span>
@@ -404,35 +383,30 @@ const ReviewMinutes = () => {
                                   parentMinutedata.actorBundleStatusID === 3
                                     ? styles["uploaded-details-accepted"]
                                     : parentMinutedata.actorBundleStatusID === 4
-                                    ? styles["uploaded-details-rejected"]
-                                    : styles["uploaded-details"]
-                                }
-                              >
+                                      ? styles["uploaded-details-rejected"]
+                                      : styles["uploaded-details"]
+                                }>
                                 <Row className={styles["inherit-height"]}>
                                   <Col lg={8} md={8} sm={12}>
                                     <p
                                       dangerouslySetInnerHTML={{
                                         __html: parentMinutedata.minutesDetails,
                                       }}
-                                      className={styles["minutes-text"]}
-                                    ></p>
+                                      className={styles["minutes-text"]}></p>
                                   </Col>
                                   <Col
                                     lg={4}
                                     md={4}
                                     sm={12}
-                                    className="position-relative"
-                                  >
-                                    <Row className="m-0">
+                                    className='position-relative'>
+                                    <Row className='m-0'>
                                       <Col
                                         lg={6}
                                         md={6}
                                         sm={12}
-                                        className="p-0"
-                                      >
+                                        className='p-0'>
                                         <span
-                                          className={styles["bar-line"]}
-                                        ></span>
+                                          className={styles["bar-line"]}></span>
                                         <p className={styles["uploadedbyuser"]}>
                                           {t("Uploaded-by")}
                                         </p>
@@ -440,12 +414,11 @@ const ReviewMinutes = () => {
                                           <img
                                             src={`data:image/jpeg;base64,${parentMinutedata?.userProfilePicture?.displayProfilePictureName}`}
                                             className={styles["Image"]}
-                                            alt=""
+                                            alt=''
                                             draggable={false}
                                           />
                                           <p
-                                            className={styles["agendaCreater"]}
-                                          >
+                                            className={styles["agendaCreater"]}>
                                             {parentMinutedata.userName}
                                           </p>
                                         </div>
@@ -454,8 +427,7 @@ const ReviewMinutes = () => {
                                         lg={6}
                                         md={6}
                                         sm={12}
-                                        className="d-grid justify-content-end p-0"
-                                      >
+                                        className='d-grid justify-content-end p-0'>
                                         {parentMinutedata.actorBundleStatusID ===
                                         3 ? (
                                           <Button
@@ -493,10 +465,10 @@ const ReviewMinutes = () => {
                                             className={styles["Reject-comment"]}
                                             onClick={() => {
                                               dispatch(
-                                                rejectCommentModal(true)
+                                                rejectCommentModal(true),
                                               );
                                               dispatch(
-                                                RejectMinute(parentMinutedata)
+                                                RejectMinute(parentMinutedata),
                                               );
                                             }}
                                           />
@@ -517,7 +489,7 @@ const ReviewMinutes = () => {
                                               }
                                               onClick={() =>
                                                 dispatch(
-                                                  rejectCommentModal(true)
+                                                  rejectCommentModal(true),
                                                 )
                                               }
                                             />
@@ -530,13 +502,13 @@ const ReviewMinutes = () => {
                                       <Col lg={12} md={12} sm={12}>
                                         <p className={styles["time-uploader"]}>
                                           {convertToGMTMinuteTime(
-                                            parentMinutedata.lastUpdatedTime
+                                            parentMinutedata.lastUpdatedTime,
                                           )}
                                           ,
                                         </p>
                                         <p className={styles["date-uploader"]}>
                                           {convertDateToGMTMinute(
-                                            parentMinutedata.lastUpdatedDate
+                                            parentMinutedata.lastUpdatedDate,
                                           )}
                                         </p>
                                       </Col>
@@ -557,8 +529,7 @@ const ReviewMinutes = () => {
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="position-relative"
-                                    >
+                                      className='position-relative'>
                                       {historyData.declinedReviews.length ===
                                       0 ? (
                                         <div
@@ -570,8 +541,7 @@ const ReviewMinutes = () => {
                                               : styles[
                                                   "version-control-wrapper-with-more-last"
                                                 ]
-                                          }
-                                        >
+                                          }>
                                           <span className={styles["with-text"]}>
                                             {historyData.versionNumber}.0
                                           </span>
@@ -586,8 +556,7 @@ const ReviewMinutes = () => {
                                               : styles[
                                                   "version-control-wrapper-last"
                                                 ]
-                                          }
-                                        ></div>
+                                          }></div>
                                       )}
                                       <div
                                         className={
@@ -596,67 +565,62 @@ const ReviewMinutes = () => {
                                                 "uploaded-details-accepted"
                                               ]
                                             : historyData.actorBundleStatusID ===
-                                                4 &&
-                                              historyData.declinedReviews
-                                                .length === 0
-                                            ? styles[
-                                                "uploaded-details-rejected"
-                                              ]
-                                            : styles["uploaded-details"]
-                                        }
-                                      >
+                                                  4 &&
+                                                historyData.declinedReviews
+                                                  .length === 0
+                                              ? styles[
+                                                  "uploaded-details-rejected"
+                                                ]
+                                              : styles["uploaded-details"]
+                                        }>
                                         <Row
-                                          className={styles["inherit-height"]}
-                                        >
+                                          className={styles["inherit-height"]}>
                                           <Col lg={8} md={8} sm={12}>
                                             <p
                                               dangerouslySetInnerHTML={{
                                                 __html:
                                                   historyData.minutesDetails,
                                               }}
-                                              className={styles["minutes-text"]}
-                                            ></p>
+                                              className={
+                                                styles["minutes-text"]
+                                              }></p>
                                           </Col>
                                           <Col
                                             lg={4}
                                             md={4}
                                             sm={12}
-                                            className="position-relative"
-                                          >
-                                            <Row className="m-0">
+                                            className='position-relative'>
+                                            <Row className='m-0'>
                                               <Col
                                                 lg={6}
                                                 md={6}
                                                 sm={12}
-                                                className="p-0"
-                                              >
+                                                className='p-0'>
                                                 <span
-                                                  className={styles["bar-line"]}
-                                                ></span>
+                                                  className={
+                                                    styles["bar-line"]
+                                                  }></span>
                                                 <p
                                                   className={
                                                     styles["uploadedbyuser"]
-                                                  }
-                                                >
+                                                  }>
                                                   {historyData.declinedReviews
                                                     .length === 0
                                                     ? t("Uploaded-by")
                                                     : t("Reviewed-by")}
                                                 </p>
                                                 <div
-                                                  className={styles["gap-ti"]}
-                                                >
+                                                  className={styles["gap-ti"]}>
                                                   <img
                                                     src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
                                                     className={styles["Image"]}
-                                                    alt=""
+                                                    alt=''
                                                     draggable={false}
                                                   />
                                                   <p
                                                     className={
                                                       styles["agendaCreater"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {minutesAgenda[0].userName}
                                                   </p>
                                                 </div>
@@ -667,8 +631,7 @@ const ReviewMinutes = () => {
                                                   lg={6}
                                                   md={6}
                                                   sm={12}
-                                                  className="d-grid justify-content-end p-0"
-                                                >
+                                                  className='d-grid justify-content-end p-0'>
                                                   {historyData.actorBundleStatusID ===
                                                   3 ? (
                                                     <Button
@@ -717,13 +680,13 @@ const ReviewMinutes = () => {
                                                       onClick={() => {
                                                         dispatch(
                                                           rejectCommentModal(
-                                                            true
-                                                          )
+                                                            true,
+                                                          ),
                                                         );
                                                         dispatch(
                                                           RejectMinute(
-                                                            historyData
-                                                          )
+                                                            historyData,
+                                                          ),
                                                         );
                                                       }}
                                                     />
@@ -749,8 +712,8 @@ const ReviewMinutes = () => {
                                                         onClick={() =>
                                                           dispatch(
                                                             rejectCommentModal(
-                                                              true
-                                                            )
+                                                              true,
+                                                            ),
                                                           )
                                                         }
                                                       />
@@ -762,12 +725,11 @@ const ReviewMinutes = () => {
                                                   lg={6}
                                                   md={6}
                                                   sm={12}
-                                                  className="d-grid justify-content-end p-0"
-                                                >
+                                                  className='d-grid justify-content-end p-0'>
                                                   <Button
                                                     onClick={() =>
                                                       dispatch(
-                                                        editCommentModal(true)
+                                                        editCommentModal(true),
                                                       )
                                                     }
                                                     text={t("Edit")}
@@ -778,7 +740,9 @@ const ReviewMinutes = () => {
                                                   <Button
                                                     onClick={() =>
                                                       dispatch(
-                                                        deleteCommentModal(true)
+                                                        deleteCommentModal(
+                                                          true,
+                                                        ),
                                                       )
                                                     }
                                                     text={t("Delete")}
@@ -795,20 +759,18 @@ const ReviewMinutes = () => {
                                                 <p
                                                   className={
                                                     styles["time-uploader"]
-                                                  }
-                                                >
+                                                  }>
                                                   {convertToGMTMinuteTime(
-                                                    historyData.lastUpdatedTime
+                                                    historyData.lastUpdatedTime,
                                                   )}
                                                   ,
                                                 </p>
                                                 <p
                                                   className={
                                                     styles["date-uploader"]
-                                                  }
-                                                >
+                                                  }>
                                                   {convertDateToGMTMinute(
-                                                    historyData.lastUpdatedDate
+                                                    historyData.lastUpdatedDate,
                                                   )}
                                                 </p>
                                               </Col>
@@ -829,7 +791,7 @@ const ReviewMinutes = () => {
                       return (
                         <div>
                           {subMinuteData.minuteData.length === 0 ? null : (
-                            <Row className="mx-50">
+                            <Row className='mx-50'>
                               <Col lg={12} md={12} sm={12}>
                                 <p className={styles["SUB-title-heading"]}>
                                   {index +
@@ -847,13 +809,12 @@ const ReviewMinutes = () => {
                             (minuteDataSubminute) => {
                               return (
                                 <>
-                                  <Row className="mxl-50">
+                                  <Row className='mxl-50'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="position-relative"
-                                    >
+                                      className='position-relative'>
                                       {minuteDataSubminute
                                         .agendaMinutesVersionHistory.length ===
                                       0 ? null : (
@@ -862,8 +823,7 @@ const ReviewMinutes = () => {
                                             styles[
                                               "version-control-wrapper-with-more"
                                             ]
-                                          }
-                                        >
+                                          }>
                                           <span className={styles["with-text"]}>
                                             {minuteDataSubminute.versionNumber}
                                             .0
@@ -878,62 +838,57 @@ const ReviewMinutes = () => {
                                                 "uploaded-details-accepted"
                                               ]
                                             : minuteDataSubminute.actorBundleStatusID ===
-                                              4
-                                            ? styles[
-                                                "uploaded-details-rejected"
-                                              ]
-                                            : styles["uploaded-details"]
-                                        }
-                                      >
+                                                4
+                                              ? styles[
+                                                  "uploaded-details-rejected"
+                                                ]
+                                              : styles["uploaded-details"]
+                                        }>
                                         <Row
-                                          className={styles["inherit-height"]}
-                                        >
+                                          className={styles["inherit-height"]}>
                                           <Col lg={8} md={8} sm={12}>
                                             <p
                                               dangerouslySetInnerHTML={{
                                                 __html:
                                                   minuteDataSubminute.minutesDetails,
                                               }}
-                                              className={styles["minutes-text"]}
-                                            ></p>
+                                              className={
+                                                styles["minutes-text"]
+                                              }></p>
                                           </Col>
                                           <Col
                                             lg={4}
                                             md={4}
                                             sm={12}
-                                            className="position-relative"
-                                          >
-                                            <Row className="m-0">
+                                            className='position-relative'>
+                                            <Row className='m-0'>
                                               <Col
                                                 lg={6}
                                                 md={6}
                                                 sm={12}
-                                                className="p-0"
-                                              >
+                                                className='p-0'>
                                                 <span
-                                                  className={styles["bar-line"]}
-                                                ></span>
+                                                  className={
+                                                    styles["bar-line"]
+                                                  }></span>
                                                 <p
                                                   className={
                                                     styles["uploadedbyuser"]
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Uploaded-by")}
                                                 </p>
                                                 <div
-                                                  className={styles["gap-ti"]}
-                                                >
+                                                  className={styles["gap-ti"]}>
                                                   <img
                                                     src={`data:image/jpeg;base64,${minuteDataSubminute?.userProfilePicture?.displayProfilePictureName}`}
                                                     className={styles["Image"]}
-                                                    alt=""
+                                                    alt=''
                                                     draggable={false}
                                                   />
                                                   <p
                                                     className={
                                                       styles["agendaCreater"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {
                                                       minuteDataSubminute.userName
                                                     }
@@ -944,8 +899,7 @@ const ReviewMinutes = () => {
                                                 lg={6}
                                                 md={6}
                                                 sm={12}
-                                                className="d-grid justify-content-end p-0"
-                                              >
+                                                className='d-grid justify-content-end p-0'>
                                                 {minuteDataSubminute.actorBundleStatusID ===
                                                 3 ? (
                                                   <Button
@@ -991,12 +945,14 @@ const ReviewMinutes = () => {
                                                     }
                                                     onClick={() => {
                                                       dispatch(
-                                                        rejectCommentModal(true)
+                                                        rejectCommentModal(
+                                                          true,
+                                                        ),
                                                       );
                                                       dispatch(
                                                         RejectMinute(
-                                                          minuteDataSubminute
-                                                        )
+                                                          minuteDataSubminute,
+                                                        ),
                                                       );
                                                     }}
                                                   />
@@ -1020,8 +976,8 @@ const ReviewMinutes = () => {
                                                       onClick={() =>
                                                         dispatch(
                                                           rejectCommentModal(
-                                                            true
-                                                          )
+                                                            true,
+                                                          ),
                                                         )
                                                       }
                                                     />
@@ -1035,20 +991,18 @@ const ReviewMinutes = () => {
                                                 <p
                                                   className={
                                                     styles["time-uploader"]
-                                                  }
-                                                >
+                                                  }>
                                                   {convertToGMTMinuteTime(
-                                                    minuteDataSubminute.lastUpdatedTime
+                                                    minuteDataSubminute.lastUpdatedTime,
                                                   )}
                                                   ,
                                                 </p>
                                                 <p
                                                   className={
                                                     styles["date-uploader"]
-                                                  }
-                                                >
+                                                  }>
                                                   {convertDateToGMTMinute(
-                                                    minuteDataSubminute.lastUpdatedDate
+                                                    minuteDataSubminute.lastUpdatedDate,
                                                   )}
                                                 </p>
                                               </Col>
@@ -1069,8 +1023,7 @@ const ReviewMinutes = () => {
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="position-relative"
-                                            >
+                                              className='position-relative'>
                                               {historyData.declinedReviews
                                                 .length === 0 ? (
                                                 <div
@@ -1082,13 +1035,11 @@ const ReviewMinutes = () => {
                                                       : styles[
                                                           "version-control-wrapper-with-more-last"
                                                         ]
-                                                  }
-                                                >
+                                                  }>
                                                   <span
                                                     className={
                                                       styles["with-text"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {historyData.versionNumber}
                                                     .0
                                                   </span>
@@ -1103,8 +1054,7 @@ const ReviewMinutes = () => {
                                                       : styles[
                                                           "version-control-wrapper-last"
                                                         ]
-                                                  }
-                                                ></div>
+                                                  }></div>
                                               )}
                                               <div
                                                 className={
@@ -1114,21 +1064,21 @@ const ReviewMinutes = () => {
                                                         "uploaded-details-accepted"
                                                       ]
                                                     : historyData.actorBundleStatusID ===
-                                                        4 &&
-                                                      historyData
-                                                        .declinedReviews
-                                                        .length === 0
-                                                    ? styles[
-                                                        "uploaded-details-rejected"
-                                                      ]
-                                                    : styles["uploaded-details"]
-                                                }
-                                              >
+                                                          4 &&
+                                                        historyData
+                                                          .declinedReviews
+                                                          .length === 0
+                                                      ? styles[
+                                                          "uploaded-details-rejected"
+                                                        ]
+                                                      : styles[
+                                                          "uploaded-details"
+                                                        ]
+                                                }>
                                                 <Row
                                                   className={
                                                     styles["inherit-height"]
-                                                  }
-                                                >
+                                                  }>
                                                   <Col lg={8} md={8} sm={12}>
                                                     <p
                                                       dangerouslySetInnerHTML={{
@@ -1137,34 +1087,29 @@ const ReviewMinutes = () => {
                                                       }}
                                                       className={
                                                         styles["minutes-text"]
-                                                      }
-                                                    ></p>
+                                                      }></p>
                                                   </Col>
                                                   <Col
                                                     lg={4}
                                                     md={4}
                                                     sm={12}
-                                                    className="position-relative"
-                                                  >
-                                                    <Row className="m-0">
+                                                    className='position-relative'>
+                                                    <Row className='m-0'>
                                                       <Col
                                                         lg={6}
                                                         md={6}
                                                         sm={12}
-                                                        className="p-0"
-                                                      >
+                                                        className='p-0'>
                                                         <span
                                                           className={
                                                             styles["bar-line"]
-                                                          }
-                                                        ></span>
+                                                          }></span>
                                                         <p
                                                           className={
                                                             styles[
                                                               "uploadedbyuser"
                                                             ]
-                                                          }
-                                                        >
+                                                          }>
                                                           {historyData
                                                             .declinedReviews
                                                             .length === 0
@@ -1174,14 +1119,13 @@ const ReviewMinutes = () => {
                                                         <div
                                                           className={
                                                             styles["gap-ti"]
-                                                          }
-                                                        >
+                                                          }>
                                                           <img
                                                             src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
                                                             className={
                                                               styles["Image"]
                                                             }
-                                                            alt=""
+                                                            alt=''
                                                             draggable={false}
                                                           />
                                                           <p
@@ -1189,8 +1133,7 @@ const ReviewMinutes = () => {
                                                               styles[
                                                                 "agendaCreater"
                                                               ]
-                                                            }
-                                                          >
+                                                            }>
                                                             {
                                                               minutesAgenda[0]
                                                                 .userName
@@ -1205,13 +1148,12 @@ const ReviewMinutes = () => {
                                                           lg={6}
                                                           md={6}
                                                           sm={12}
-                                                          className="d-grid justify-content-end p-0"
-                                                        >
+                                                          className='d-grid justify-content-end p-0'>
                                                           {historyData.actorBundleStatusID ===
                                                           3 ? (
                                                             <Button
                                                               text={t(
-                                                                "Accepted"
+                                                                "Accepted",
                                                               )}
                                                               className={
                                                                 styles[
@@ -1265,13 +1207,13 @@ const ReviewMinutes = () => {
                                                               onClick={() => {
                                                                 dispatch(
                                                                   rejectCommentModal(
-                                                                    true
-                                                                  )
+                                                                    true,
+                                                                  ),
                                                                 );
                                                                 dispatch(
                                                                   RejectMinute(
-                                                                    historyData
-                                                                  )
+                                                                    historyData,
+                                                                  ),
                                                                 );
                                                               }}
                                                             />
@@ -1280,7 +1222,7 @@ const ReviewMinutes = () => {
                                                             <>
                                                               <Button
                                                                 text={t(
-                                                                  "Rejected"
+                                                                  "Rejected",
                                                                 )}
                                                                 className={
                                                                   styles[
@@ -1291,7 +1233,7 @@ const ReviewMinutes = () => {
 
                                                               <Button
                                                                 text={t(
-                                                                  "Hide-comment"
+                                                                  "Hide-comment",
                                                                 )}
                                                                 className={
                                                                   styles[
@@ -1301,8 +1243,8 @@ const ReviewMinutes = () => {
                                                                 onClick={() =>
                                                                   dispatch(
                                                                     rejectCommentModal(
-                                                                      true
-                                                                    )
+                                                                      true,
+                                                                    ),
                                                                   )
                                                                 }
                                                               />
@@ -1314,14 +1256,13 @@ const ReviewMinutes = () => {
                                                           lg={6}
                                                           md={6}
                                                           sm={12}
-                                                          className="d-grid justify-content-end p-0"
-                                                        >
+                                                          className='d-grid justify-content-end p-0'>
                                                           <Button
                                                             onClick={() =>
                                                               dispatch(
                                                                 editCommentModal(
-                                                                  true
-                                                                )
+                                                                  true,
+                                                                ),
                                                               )
                                                             }
                                                             text={t("Edit")}
@@ -1335,8 +1276,8 @@ const ReviewMinutes = () => {
                                                             onClick={() =>
                                                               dispatch(
                                                                 deleteCommentModal(
-                                                                  true
-                                                                )
+                                                                  true,
+                                                                ),
                                                               )
                                                             }
                                                             text={t("Delete")}
@@ -1354,17 +1295,15 @@ const ReviewMinutes = () => {
                                                       <Col
                                                         lg={12}
                                                         md={12}
-                                                        sm={12}
-                                                      >
+                                                        sm={12}>
                                                         <p
                                                           className={
                                                             styles[
                                                               "time-uploader"
                                                             ]
-                                                          }
-                                                        >
+                                                          }>
                                                           {convertToGMTMinuteTime(
-                                                            historyData.lastUpdatedTime
+                                                            historyData.lastUpdatedTime,
                                                           )}
                                                           ,
                                                         </p>
@@ -1373,10 +1312,9 @@ const ReviewMinutes = () => {
                                                             styles[
                                                               "date-uploader"
                                                             ]
-                                                          }
-                                                        >
+                                                          }>
                                                           {convertDateToGMTMinute(
-                                                            historyData.lastUpdatedDate
+                                                            historyData.lastUpdatedDate,
                                                           )}
                                                         </p>
                                                       </Col>
@@ -1391,7 +1329,7 @@ const ReviewMinutes = () => {
                                     })}
                                 </>
                               );
-                            }
+                            },
                           )}
                         </div>
                       );
@@ -1402,10 +1340,9 @@ const ReviewMinutes = () => {
             })}
 
             {minutesGeneral.map((data, index) => {
-              
               return (
                 <>
-                  <Row className="mx-50">
+                  <Row className='mx-50'>
                     <Col lg={12} md={12} sm={12}>
                       <p className={styles["Parent-title-heading"]}>
                         {index + 1 + ". " + t("General-minutes")}
@@ -1413,13 +1350,12 @@ const ReviewMinutes = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="position-relative">
+                    <Col lg={12} md={12} sm={12} className='position-relative'>
                       {data.generalMinutesVersionHistory.length === 0 ? null : (
                         <div
                           className={
                             styles["version-control-wrapper-with-more"]
-                          }
-                        >
+                          }>
                           <span className={styles["with-text"]}>
                             {data.versionNumber}.0
                           </span>
@@ -1430,27 +1366,24 @@ const ReviewMinutes = () => {
                           data.actorBundleStatusID === 3
                             ? styles["uploaded-details-accepted"]
                             : data.actorBundleStatusID === 4
-                            ? styles["uploaded-details-rejected"]
-                            : styles["uploaded-details"]
-                        }
-                      >
+                              ? styles["uploaded-details-rejected"]
+                              : styles["uploaded-details"]
+                        }>
                         <Row className={styles["inherit-height"]}>
                           <Col lg={8} md={8} sm={12}>
                             <p
                               dangerouslySetInnerHTML={{
                                 __html: data.minutesDetails,
                               }}
-                              className={styles["minutes-text"]}
-                            ></p>
+                              className={styles["minutes-text"]}></p>
                           </Col>
                           <Col
                             lg={4}
                             md={4}
                             sm={12}
-                            className="position-relative"
-                          >
-                            <Row className="m-0">
-                              <Col lg={6} md={6} sm={12} className="p-0">
+                            className='position-relative'>
+                            <Row className='m-0'>
+                              <Col lg={6} md={6} sm={12} className='p-0'>
                                 <span className={styles["bar-line"]}></span>
                                 <p className={styles["uploadedbyuser"]}>
                                   {t("Uploaded-by")}
@@ -1459,7 +1392,7 @@ const ReviewMinutes = () => {
                                   <img
                                     src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                     className={styles["Image"]}
-                                    alt=""
+                                    alt=''
                                     draggable={false}
                                   />
                                   <p className={styles["agendaCreater"]}>
@@ -1471,8 +1404,7 @@ const ReviewMinutes = () => {
                                 lg={6}
                                 md={6}
                                 sm={12}
-                                className="d-grid justify-content-end p-0"
-                              >
+                                className='d-grid justify-content-end p-0'>
                                 {data.actorBundleStatusID === 3 ? (
                                   <Button
                                     text={t("Accepted")}
@@ -1552,8 +1484,7 @@ const ReviewMinutes = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="position-relative"
-                            >
+                              className='position-relative'>
                               {historyData.declinedReviews.length === 0 ? (
                                 <div
                                   className={
@@ -1564,8 +1495,7 @@ const ReviewMinutes = () => {
                                       : styles[
                                           "version-control-wrapper-with-more-last"
                                         ]
-                                  }
-                                >
+                                  }>
                                   <span className={styles["with-text"]}>
                                     {historyData.versionNumber}.0
                                   </span>
@@ -1576,44 +1506,38 @@ const ReviewMinutes = () => {
                                     index === 0
                                       ? styles["version-control-wrapper"]
                                       : styles["version-control-wrapper-last"]
-                                  }
-                                ></div>
+                                  }></div>
                               )}
                               <div
                                 className={
                                   historyData.actorBundleStatusID === 3
                                     ? styles["uploaded-details-accepted"]
                                     : historyData.actorBundleStatusID === 4 &&
-                                      historyData.declinedReviews.length === 0
-                                    ? styles["uploaded-details-rejected"]
-                                    : styles["uploaded-details"]
-                                }
-                              >
+                                        historyData.declinedReviews.length === 0
+                                      ? styles["uploaded-details-rejected"]
+                                      : styles["uploaded-details"]
+                                }>
                                 <Row className={styles["inherit-height"]}>
                                   <Col lg={8} md={8} sm={12}>
                                     <p
                                       dangerouslySetInnerHTML={{
                                         __html: historyData.minutesDetails,
                                       }}
-                                      className={styles["minutes-text"]}
-                                    ></p>
+                                      className={styles["minutes-text"]}></p>
                                   </Col>
                                   <Col
                                     lg={4}
                                     md={4}
                                     sm={12}
-                                    className="position-relative"
-                                  >
-                                    <Row className="m-0">
+                                    className='position-relative'>
+                                    <Row className='m-0'>
                                       <Col
                                         lg={6}
                                         md={6}
                                         sm={12}
-                                        className="p-0"
-                                      >
+                                        className='p-0'>
                                         <span
-                                          className={styles["bar-line"]}
-                                        ></span>
+                                          className={styles["bar-line"]}></span>
                                         <p className={styles["uploadedbyuser"]}>
                                           {historyData.declinedReviews
                                             .length === 0
@@ -1624,12 +1548,11 @@ const ReviewMinutes = () => {
                                           <img
                                             src={`data:image/jpeg;base64,${minutesAgenda[0].userProfilePicture.displayProfilePictureName}`}
                                             className={styles["Image"]}
-                                            alt=""
+                                            alt=''
                                             draggable={false}
                                           />
                                           <p
-                                            className={styles["agendaCreater"]}
-                                          >
+                                            className={styles["agendaCreater"]}>
                                             {minutesAgenda[0].userName}
                                           </p>
                                         </div>
@@ -1640,8 +1563,7 @@ const ReviewMinutes = () => {
                                           lg={6}
                                           md={6}
                                           sm={12}
-                                          className="d-grid justify-content-end p-0"
-                                        >
+                                          className='d-grid justify-content-end p-0'>
                                           {historyData.actorBundleStatusID ===
                                           3 ? (
                                             <Button
@@ -1687,10 +1609,10 @@ const ReviewMinutes = () => {
                                               }
                                               onClick={() => {
                                                 dispatch(
-                                                  rejectCommentModal(true)
+                                                  rejectCommentModal(true),
                                                 );
                                                 dispatch(
-                                                  RejectMinute(historyData)
+                                                  RejectMinute(historyData),
                                                 );
                                               }}
                                             />
@@ -1711,7 +1633,7 @@ const ReviewMinutes = () => {
                                                 }
                                                 onClick={() =>
                                                   dispatch(
-                                                    rejectCommentModal(true)
+                                                    rejectCommentModal(true),
                                                   )
                                                 }
                                               />
@@ -1723,8 +1645,7 @@ const ReviewMinutes = () => {
                                           lg={6}
                                           md={6}
                                           sm={12}
-                                          className="d-grid justify-content-end p-0"
-                                        >
+                                          className='d-grid justify-content-end p-0'>
                                           <Button
                                             onClick={() =>
                                               dispatch(editCommentModal(true))
@@ -1747,13 +1668,13 @@ const ReviewMinutes = () => {
                                       <Col lg={12} md={12} sm={12}>
                                         <p className={styles["time-uploader"]}>
                                           {convertToGMTMinuteTime(
-                                            historyData.lastUpdatedTime
+                                            historyData.lastUpdatedTime,
                                           )}
                                           ,
                                         </p>
                                         <p className={styles["date-uploader"]}>
                                           {convertDateToGMTMinute(
-                                            historyData.lastUpdatedDate
+                                            historyData.lastUpdatedDate,
                                           )}
                                         </p>
                                       </Col>
@@ -1771,13 +1692,12 @@ const ReviewMinutes = () => {
             })}
           </div>
 
-          <Row className="mx-50">
+          <Row className='mx-50'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className={currentLanguage === "ar" ? "text-start" : "text-end"}
-            >
+              className={currentLanguage === "ar" ? "text-start" : "text-end"}>
               <Button
                 onClick={() => {
                   dispatch(reviewMinutesPage(false));

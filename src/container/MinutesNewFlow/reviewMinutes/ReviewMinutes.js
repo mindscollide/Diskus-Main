@@ -486,8 +486,8 @@ const ReviewMinutes = () => {
         dispatch(
           AllDocumentsForAgendaWiseMinutesApiFunc(
             navigate,
-            allAgendaWiseDocs,
             t,
+            allAgendaWiseDocs,
           ),
         );
 
@@ -510,8 +510,8 @@ const ReviewMinutes = () => {
         dispatch(
           AllDocumentsForAgendaWiseMinutesApiFunc(
             navigate,
-            allAgendaWiseDocs,
             t,
+            allAgendaWiseDocs,
           ),
         );
 
@@ -525,7 +525,9 @@ const ReviewMinutes = () => {
 
         dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
       }
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
     return () => {
       localStorage.removeItem("MinutesOperations");
       localStorage.removeItem("NotificationClickMinutesMeetingID");

@@ -1008,10 +1008,14 @@ const AgendaWise = ({
                   <Select
                     options={agendaOptions}
                     maxMenuHeight={140}
-                    value={{
-                      value: agendaOptionvalue.value,
-                      label: agendaOptionvalue.label,
-                    }}
+                    value={
+                      agendaOptionvalue.value !== 0
+                        ? {
+                            value: agendaOptionvalue.value,
+                            label: agendaOptionvalue.label,
+                          }
+                        : null
+                    }
                     placeholder={t("Select-agenda")}
                     onChange={handleAgendaSelect}
                     isSearchable={false}
