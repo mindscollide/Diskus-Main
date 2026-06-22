@@ -7610,7 +7610,7 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                   } else if (navigateLocation === "Notes") {
                     navigate("/Diskus/Notes");
                   } else if (navigateLocation === "MainDashBoard") {
-                    navigate("/Diskus/");
+                    navigate(getHomeRoute());
                   } else if (navigateLocation === "Meeting") {
                     navigate("/Diskus/Meeting");
                     await dispatch(

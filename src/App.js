@@ -46,6 +46,7 @@ import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
+import { getHomeRoute } from "./commen/functions/utils";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import useSnackbar from "./components/elements/snack_bar/useSnackbar";
@@ -76,7 +77,6 @@ const App = () => {
     }
 
     const PUBLIC_PATHS = ["/", "/login", "/signup", "/forgot-password"];
-    const DASHBOARD_PATH = "/Diskus/";
 
     const isPublicPath = (pathname) => {
       return PUBLIC_PATHS.some(
@@ -125,7 +125,7 @@ const App = () => {
         sessionStorage.setItem("redirectHandled", "true");
         sessionStorage.setItem("redirecting", "true"); // Flag for the reload
 
-        window.location.replace(DASHBOARD_PATH);
+        window.location.replace(getHomeRoute());
         return true;
       }
       return false;
@@ -180,7 +180,7 @@ const App = () => {
           console.log("User logged in on another tab - redirecting");
           sessionStorage.setItem("redirectHandled", "true");
           sessionStorage.setItem("redirecting", "true");
-          window.location.replace(DASHBOARD_PATH);
+          window.location.replace(getHomeRoute());
         }
       }
     };

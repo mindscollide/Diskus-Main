@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { validateEmailActionToken } from "../../store/actions/EmailAction_action";
+import { getHomeRoute } from "../../commen/functions/utils";
 import { EMAIL_ACTION_ROUTES } from "./emailActionRoutes";
 
 /**
@@ -41,7 +42,7 @@ const EmailActionHandler = () => {
     localStorage.removeItem("emailActionToken");
 
     if (!token) {
-      navigate("/Diskus/", { replace: true });
+      navigate(getHomeRoute(), { replace: true });
       return;
     }
 
@@ -57,12 +58,12 @@ const EmailActionHandler = () => {
             navigate(config.route, { replace: true });
           } else {
             // Unknown action type — go home
-            navigate("/Diskus/", { replace: true });
+            navigate(getHomeRoute(), { replace: true });
           }
         },
         (errMsg) => {
           setErrorMsg(errMsg || t("Something-went-wrong"));
-          setTimeout(() => navigate("/Diskus/", { replace: true }), 2500);
+          setTimeout(() => navigate(getHomeRoute(), { replace: true }), 2500);
         },
       ),
     );

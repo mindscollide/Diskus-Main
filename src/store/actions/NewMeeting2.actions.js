@@ -79,7 +79,11 @@ import {
   presenterViewGlobalState,
   videoIconOrButtonState,
 } from "./VideoFeature_actions";
-import { isFunction, switchOnMessage } from "../../commen/functions/utils";
+import {
+  getHomeRoute,
+  isFunction,
+  switchOnMessage,
+} from "../../commen/functions/utils";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 
@@ -4538,7 +4542,7 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                   } else if (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
-                    navigate("/Diskus/");
+                    navigate(getHomeRoute());
                   } else if (
                     localStorage.getItem("navigateLocation") === "Minutes"
                   ) {
