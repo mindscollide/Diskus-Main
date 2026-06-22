@@ -59,57 +59,138 @@ const App = () => {
   const { signOut } = useAuthContext();
 
   useEffect(() => {
-    const syncSessionAndRedirect = async () => {
-      const localToken = localStorage.getItem("token");
-      const localUser = localStorage.getItem("userID");
-      const sessionToken = sessionStorage.getItem("token");
-      const sessionUser = sessionStorage.getItem("userID");
-      const is2FaEnabled = localStorage.getItem("is2FAEnabled");
+    // 🔥 Check if this is a redirect-induced reload
+    const isRedirectReload = sessionStorage.getItem("redirecting") === "true";
 
-      const isAlreadyInDashboard =
-        window.location.pathname
-          .toLowerCase()
-          .includes("Diskus".toLowerCase()) ||
-        window.location.pathname.toLowerCase().includes("Admin".toLowerCase());
+    // 🔥 If this is a redirect reload, clear the flag and stop
+    if (isRedirectReload) {
+      console.log("Clearing redirect flag after reload");
+      sessionStorage.removeItem("redirecting");
+      return; // Don't run any more logic
+    }
 
-      // Step 1: Sync sessionStorage if different from localStorage
-      if (localToken && localUser && localUser !== "") {
-        if (
-          (sessionToken !== localToken || sessionUser !== localUser) &&
-          isAlreadyInDashboard
-        ) {
-          sessionStorage.setItem("token", localToken);
-          sessionStorage.setItem("userID", localUser);
-          window.location.reload(); // reload to reflect new user session
-          return;
+    // 🔥 Check if we've already handled redirect in this session
+    if (sessionStorage.getItem("redirectHandled") === "true") {
+      console.log("Redirect already handled in this session - skipping");
+      return;
+    }
+
+    const PUBLIC_PATHS = ["/", "/login", "/signup", "/forgot-password"];
+    const DASHBOARD_PATH = "/Diskus/";
+
+    const isPublicPath = (pathname) => {
+      return PUBLIC_PATHS.some(
+        (path) =>
+          pathname.toLowerCase() === path ||
+          pathname.toLowerCase().startsWith(path),
+      );
+    };
+
+    const isDashboardPath = (pathname) => {
+      return (
+        pathname.toLowerCase().includes("diskus") ||
+        pathname.toLowerCase().includes("admin")
+      );
+    };
+
+    const shouldRedirect = () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userID");
+        const is2FaEnabled = localStorage.getItem("is2FAEnabled");
+        const currentPath = window.location.pathname;
+
+        const isAuthenticated = token && userId && userId !== "";
+
+        // If on dashboard, no redirect needed
+        if (isDashboardPath(currentPath)) {
+          sessionStorage.setItem("redirectHandled", "true");
+          return false;
         }
-      }
 
-      // Step 2: Redirect to dashboard if token exists but not on dashboard
-      if (
-        !isAlreadyInDashboard &&
-        localToken &&
-        localUser &&
-        is2FaEnabled === "true"
-      ) {
-        window.location.replace("/Diskus/");
+        // Only redirect if authenticated AND on public page
+        return isAuthenticated && isPublicPath(currentPath);
+      } catch (error) {
+        console.error("Error checking redirect:", error);
+        return false;
       }
     };
 
-    // Run on initial load
-    // syncSessionAndRedirect();
+    // 🔥 Perform redirect with loop protection
+    const performRedirect = () => {
+      if (shouldRedirect()) {
+        console.log("Redirecting to dashboard");
 
-    // Listen for tab visibility changes
+        // 🔥 Set flags to prevent loop
+        sessionStorage.setItem("redirectHandled", "true");
+        sessionStorage.setItem("redirecting", "true"); // Flag for the reload
+
+        window.location.replace(DASHBOARD_PATH);
+        return true;
+      }
+      return false;
+    };
+
+    // 🔥 Run initial redirect check
+    const redirected = performRedirect();
+
+    // 🔥 If redirect happened, no need for listeners
+    if (redirected) {
+      return;
+    }
+
+    // 🔥 Mark as handled if no redirect needed
+    sessionStorage.setItem("redirectHandled", "true");
+
+    // 🔥 Silent sync function (NO reload)
+    const syncSessionStorage = () => {
+      try {
+        const localToken = localStorage.getItem("token");
+        const localUser = localStorage.getItem("userID");
+
+        if (localToken && localUser) {
+          if (sessionStorage.getItem("token") !== localToken) {
+            sessionStorage.setItem("token", localToken);
+          }
+          if (sessionStorage.getItem("userID") !== localUser) {
+            sessionStorage.setItem("userID", localUser);
+          }
+        }
+      } catch (error) {
+        console.error("Error syncing session:", error);
+      }
+    };
+
+    // 🔥 Listen for tab visibility - ONLY sync, NO redirect
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        syncSessionAndRedirect();
+        syncSessionStorage();
+      }
+    };
+
+    // 🔥 Listen for cross-tab login
+    const handleStorageChange = (event) => {
+      if (
+        event.key === "token" ||
+        event.key === "userID" ||
+        event.key === "is2FAEnabled"
+      ) {
+        // Check if we should redirect (user logged in on another tab)
+        if (shouldRedirect()) {
+          console.log("User logged in on another tab - redirecting");
+          sessionStorage.setItem("redirectHandled", "true");
+          sessionStorage.setItem("redirecting", "true");
+          window.location.replace(DASHBOARD_PATH);
+        }
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("storage", handleStorageChange);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 
