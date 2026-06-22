@@ -212,7 +212,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         );
 
         await dispatch(GetAllVotingResultDisplay(navigate, t));
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchData();
@@ -233,7 +235,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             MeetingAgendaReducer.GetCurrentAgendaDetails.agendaVotingID,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
   useEffect(() => {
@@ -241,12 +245,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       if (
         NewMeetingreducer.getAllSavedparticipants !== undefined &&
         NewMeetingreducer.getAllSavedparticipants !== null &&
-        NewMeetingreducer.getAllSavedparticipants.length !== 0 &&
         currentAgendaVotingID === 0
       ) {
         setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
   const MeetingColoumns = [
@@ -363,6 +368,11 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       setOrganizersDropdown(newOrganizerData);
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
+
+  console.log(
+    { MeetingOrganizersReducer, MeetingAgendaReducer },
+    "MeetingAgendaReducerMeetingAgendaReducer",
+  );
   useEffect(() => {
     if (
       MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
@@ -935,8 +945,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           </>
         }
       />
-      
-    {SnackBar}
+
+      {SnackBar}
     </section>
   );
 };

@@ -274,7 +274,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 saveAgendaVoting_success(
                   response.data.responseResult,
-                  t("Voting-saved"),
+                  t("Agenda-poll-created"),
                 ),
               );
               dispatch(
@@ -298,7 +298,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 saveAgendaVoting_success(
                   response.data.responseResult,
-                  t("Voting-updated"),
+                  t("Agenda-poll-updated"),
                 ),
               );
               dispatch(

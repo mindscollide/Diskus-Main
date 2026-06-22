@@ -57,9 +57,7 @@ const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
-  const globalState = useSelector((state) => state);
 
-  console.log({ globalState }, "globalStateglobalState");
   useEffect(() => {
     const syncSessionAndRedirect = async () => {
       const localToken = localStorage.getItem("token");

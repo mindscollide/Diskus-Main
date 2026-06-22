@@ -77,6 +77,9 @@ const ParentAgenda = ({
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails,
@@ -92,7 +95,6 @@ const ParentAgenda = ({
   const { isAgendaUpdateWhenMeetingActive, editorRole } =
     useContext(MeetingContext);
 
-  let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const [subLockArry, setSubLockArray] = useState([]);
@@ -174,12 +176,12 @@ const ParentAgenda = ({
   const openVoteMOdal = async (AgendaID, agendaVotingID, agendaTitle) => {
     let Data = {
       AgendaID: AgendaID,
-      MeetingID: currentMeetingIDLS,
+      MeetingID: meetingID,
       AgendaVotingID: agendaVotingID,
     };
     let dataForAgendaDetails = {
       AgendaVotingID: agendaVotingID,
-      MeetingID: currentMeetingIDLS,
+      MeetingID: meetingID,
     };
     let agendaFiltered = {
       title: agendaTitle,

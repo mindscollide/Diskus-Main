@@ -52,7 +52,6 @@ const PrintExportAgendaModal = ({
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
 
   let meetingTitle = localStorage.getItem("meetingTitle");
 
