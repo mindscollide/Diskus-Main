@@ -321,7 +321,6 @@ const toDoListReducer = (state = initialState, action) => {
         //     : action.response.responseMessage,
         // AllAssigneesData: action.response.user,
         ShowNotification: true,
-        errorSeverity: "error",
       };
 
     case actions.GET_TODOLIST_INIT:
@@ -466,7 +465,6 @@ const toDoListReducer = (state = initialState, action) => {
         //   ? action.response.responseMessage
         //   : action.response.responseMessage,
         ShowNotification: true,
-        errorSeverity: "error",
       };
     case actions.RECENT_TODOCOUNTER: {
       return {

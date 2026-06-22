@@ -225,6 +225,7 @@ const Talk = () => {
       viewAdvanceMeetingModal &&
       advanceMeetingModalID !== 0
     ) {
+      localStorage.setItem("navigateLocation", "compliance");
       dispatch(showEndMeetingModal(true));
       console.log("Currently Meeting is OnGOing");
       return;
@@ -275,6 +276,7 @@ const Talk = () => {
       viewAdvanceMeetingModal &&
       advanceMeetingModalID !== 0
     ) {
+      localStorage.setItem("navigateLocation", "Minutes");
       dispatch(showEndMeetingModal(true));
       console.log("Currently Meeting is OnGOing");
       return;

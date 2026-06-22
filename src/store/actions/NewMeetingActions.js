@@ -7616,6 +7616,8 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
                     );
+                  } else if (navigateLocation === "Minutes") {
+                    navigate("/Diskus/Minutes");
                   } else {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),

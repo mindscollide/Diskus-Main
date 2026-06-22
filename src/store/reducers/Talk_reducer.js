@@ -309,7 +309,6 @@ const initialState = {
   LastMessageDeletionObject: [],
 
   imageData: null,
-  errorSeverity: null,
 };
 
 const talkReducer = (state = initialState, action) => {
