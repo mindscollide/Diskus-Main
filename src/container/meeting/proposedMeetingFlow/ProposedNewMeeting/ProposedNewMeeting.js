@@ -11,7 +11,6 @@ import committeeicon from "../../../../assets/images/committeedropdown.svg";
 import {
   Button,
   TextField,
-  Notification,
   useSnackbar,
 } from "../../../../components/elements";
 import { useState } from "react";
@@ -43,15 +42,12 @@ import {
   incrementDateforPropsedMeeting,
 } from "../../../../commen/functions/time_formatter";
 import {
-  clearResponseNewMeetingReducerMessage,
   GetAllMeetingDetialsData,
   GetAllMeetingTypesNewFunction,
   newMeetingGlobalLoader,
   ParticipantsData,
   proposedMeetingData,
-  SaveMeetingDetialsNewApiFunction,
 } from "../../../../store/actions/NewMeetingActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import { toggleCreateEditProposedMeetingModal } from "../../../../store/actions/ModalStates_actions";
 import {
@@ -63,7 +59,6 @@ const ProposedNewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole, setSceduleMeeting, setEditorRole } = useMeetingContext();
-  const [show] = useSnackbar();
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
@@ -1696,8 +1691,8 @@ const ProposedNewMeeting = () => {
           </span>
         </Col>
       </Row>
-      
-    {SnackBar}
+
+      {SnackBar}
     </section>
   );
 };

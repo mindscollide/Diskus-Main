@@ -430,7 +430,8 @@ const hideUnHideParticipantGuestFail = (message) => {
 };
 
 const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
-
+  return (dispatch) => {
+    let form = new FormData();
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
@@ -509,8 +510,7 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
         dispatch(hideUnHideParticipantGuestFail(t("Something-went-wrong")));
       });
   };
-};
-
+}
 // FOR PARTICIPANT MAX PANEL
 const maxParticipantVideoCallPanel = (response) => {
   return {

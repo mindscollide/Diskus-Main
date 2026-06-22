@@ -52,10 +52,9 @@ import {
 import Select from "react-select";
 import { Tooltip } from "antd";
 
-import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
+import useSnackbar from "@/components/elements/snack_bar/useSnackbar";
 import {
   generateRandomNegativeAuto,
-  maxFileSize,
   openDocumentViewer,
 } from "@/commen/functions/utils";
 import {
@@ -63,15 +62,14 @@ import {
   uploadDocumentsQuickMeetingApi,
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
-import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
-import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { useNewMeetingContext } from "@/context/NewMeetingContext";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
   // checkFlag 5 is for Create Meeting
 
   //For Localization
-  const [show, SnackBar] = useSnackbar();
+  const [notify, SnackBar] = useSnackbar();
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
@@ -106,7 +104,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
 
   const [isPublishMeeting, setIsPublishMeeting] = useState(false);
-  const [notify, SnackBar] = useSnackbar();
 
   // for modal fields error
   const [modalField, setModalField] = useState(false);
@@ -1911,7 +1908,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
     if (objMeetingAgenda.Title !== "") {
       console.log("Checking");
-      show(
+      notify(
         t("Save-your-agenda-before-publish-the-meeting-avoid-losing-it"),
         "error",
       );
@@ -2025,7 +2022,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           </div>
         </div>
       );
-      show(message, "error");
+      notify(message, "error");
       return;
     }
 

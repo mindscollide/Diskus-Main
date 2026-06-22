@@ -1,11 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import {
-  Button,
-  Modal,
-  Notification,
-  useSnackbar,
-} from "../../components/elements";
+import { Button, Modal } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
@@ -148,7 +143,6 @@ const Groups = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
 
-  const [show, SnackBar] = useSnackbar();
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,

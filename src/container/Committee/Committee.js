@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Committee.module.css";
-import { Button, Notification, useSnackbar } from "../../components/elements";
+import { Button } from "../../components/elements";
 import React, { useEffect, useState } from "react";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
 import { useTranslation } from "react-i18next";
@@ -49,7 +49,6 @@ import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
-import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
 import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
@@ -71,7 +70,6 @@ const Committee = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [show, SnackBar] = useSnackbar();
   const { setEditorRole } = useMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {

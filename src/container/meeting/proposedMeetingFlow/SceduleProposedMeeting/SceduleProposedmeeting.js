@@ -6,31 +6,21 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button, Table } from "../../../../components/elements";
 import { useSelector } from "react-redux";
-import {
-  showSceduleProposedMeeting,
-  clearProposedWiseData,
-} from "../../../../store/actions/NewMeetingActions";
+
 import BlueTick from "../../../../assets/images/BlueTick.svg";
 import moment from "moment";
-import { scheduleMeetingMainApi } from "../../../../store/actions/NewMeetingActions";
 import {
-  convertIntoDateObject,
   newTimeFormaterViewPoll,
-  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
-import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
-import BlackCrossIcon from "../../../../../../../assets/images/BlackCrossIconModals.svg";
-import useSnackbar from "../../../../../../../components/elements/snack_bar/useSnackbar";
+import BlackCrossIcon from "@/assets/images/BlackCrossIconModals.svg";
+import useSnackbar from "@/components/elements/snack_bar/useSnackbar";
 import { toggleIsOrganizerProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
 import { scheduleMeetingFromProposedMeetingApi } from "../../../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 
 const SceduleProposedmeeting = () => {
   const [show, SnackBar] = useSnackbar();
-  let viewProposeDatePollMeetingID = Number(
-    localStorage.getItem("viewProposeDatePollMeetingID"),
-  );
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -38,9 +28,6 @@ const SceduleProposedmeeting = () => {
   const { setEditorRole } = useMeetingContext();
   const isOrganizerViewPollProposedMeeting = useSelector(
     (state) => state.ModalStatesReducer.isOrganizerRespondProposedMeeting,
-  );
-  let viewProposeDatePollMeetingID = Number(
-    localStorage.getItem("viewProposeDatePollMeetingID"),
   );
 
   const getUserProposedOrganizerData = useSelector(

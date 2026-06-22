@@ -1857,7 +1857,6 @@ const MeetingDetails = () => {
 
       <CancelButtonModal setRows={setRows} />
 
-      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

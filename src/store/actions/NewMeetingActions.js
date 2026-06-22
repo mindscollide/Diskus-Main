@@ -100,7 +100,6 @@ import {
 } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import {
-
   getHomeRoute,
   handleMeetingNavigation,
   handleNavigationforParticipantVideoFlow,
@@ -1948,8 +1947,8 @@ const saveAgendaContributors_fail = (message) => {
   };
 };
 
-
 const saveAgendaContributors = (navigate, t, data, route, actions) => {
+  return (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", saveAgendaContributorsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -5138,11 +5137,7 @@ const UpdateMinutesGeneralApiFunc = (
                 };
                 if (!fileUploadFlag) {
                   await dispatch(
-                    GetAllGeneralMinutesApiFunc(
-                      navigate,
-                      t,
-                      Meet,
-                    ),
+                    GetAllGeneralMinutesApiFunc(navigate, t, Meet),
                   );
                 }
                 if (resendFlag === true) {
@@ -5199,19 +5194,13 @@ const UpdateMinutesGeneralApiFunc = (
             );
             if (resendFlag === true) {
               dispatch(
-                ResendUpdatedMinuteForReview(
-                  navigate,
-                  t,
-                  resendData,
-                  "",
-                  {
-                    setEditMinute,
-                    setConfirmationEdit,
-                    setResendMinuteForReview,
-                    setShowRevisionHistory,
-                    isAgenda,
-                  },
-                ),
+                ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
+                  setEditMinute,
+                  setConfirmationEdit,
+                  setResendMinuteForReview,
+                  setShowRevisionHistory,
+                  isAgenda,
+                }),
               );
             }
           }
@@ -7444,10 +7433,7 @@ const JoinCurrentMeeting = (
               );
 
               await dispatch(
-                joinMeetingSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                joinMeetingSuccess(response.data.responseResult, ""),
               );
               if (isQuickMeeting === true) {
                 let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
@@ -7581,11 +7567,13 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
+
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", leaveMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
+
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
@@ -7619,75 +7607,87 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                     ? true
                     : false,
               };
+
               const {
                 setEditorRole,
                 isQuickMeeting = false,
                 setEndMeetingConfirmationModal,
-              } = object;
+              } = object || {}; // Added fallback empty object
+
               switch (routePath) {
                 case "FromMeetingDetaislTabLeaveMeeting":
-                  setEditorRole({
-                    status: null,
-                    role: null,
-                    isPrimaryOrganizer: null,
-                  });
+                  if (setEditorRole) {
+                    // Added null check
+                    setEditorRole({
+                      status: null,
+                      role: null,
+                      isPrimaryOrganizer: null,
+                    });
+                  }
                   dispatch(toggleViewMeetingModal(false));
                   dispatch(resetCurrentMeetingInfo());
                   dispatch(resetViewTabs());
-
                   await dispatch(listOfMeetingsApi(navigate, t, searchData));
                   break;
+
                 case "FromEndMeetingModal":
-                  setEditorRole({
-                    status: null,
-                    role: null,
-                    isPrimaryOrganizer: null,
-                  });
+                  if (setEditorRole) {
+                    // Added null check
+                    setEditorRole({
+                      status: null,
+                      role: null,
+                      isPrimaryOrganizer: null,
+                    });
+                  }
                   dispatch(toggleViewMeetingModal(false));
                   dispatch(resetCurrentMeetingInfo());
                   dispatch(resetViewTabs());
-
                   await dispatch(listOfMeetingsApi(navigate, t, searchData));
                   break;
+
                 case "formLeaveMeetingModal":
-                  setEditorRole({
-                    status: null,
-                    role: null,
-                    isPrimaryOrganizer: null,
-                  });
+                  if (setEditorRole) {
+                    // Added null check
+                    setEditorRole({
+                      status: null,
+                      role: null,
+                      isPrimaryOrganizer: null,
+                    });
+                  }
                   dispatch(toggleViewMeetingModal(false));
                   dispatch(resetCurrentMeetingInfo());
                   dispatch(resetViewTabs());
-
                   break;
+
                 default:
                   break;
               }
+
+              // Clean up localStorage
               localStorage.removeItem("meetingTitle");
               localStorage.removeItem("typeOfMeeting");
               localStorage.removeItem("currentMeetingID");
               localStorage.removeItem("currentMeetingLS");
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
+
+              // Reset UI state
               dispatch(showEndMeetingModal(false));
               dispatch(toggleViewMeetingModal(false));
-              try {
-                dispatch(currentMeetingStatus(0));
+              dispatch(currentMeetingStatus(0));
 
+              try {
                 if (isQuickMeeting) {
                   dispatch(
-                    leaveMeetingQuickSuccess(
-                      response.data.responseResult,
-                      "",
-                    ),
+                    leaveMeetingQuickSuccess(response.data.responseResult, ""),
                   );
 
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
+
                   if (ViewCommitteeID !== null) {
                     let userID = localStorage.getItem("userID");
-
                     let searchData = {
                       CommitteeID: Number(ViewCommitteeID),
                       Date: "",
@@ -7699,7 +7699,6 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       PublishedMeetings: true,
                       ProposedMeetings: false,
                     };
-
                     dispatch(
                       getMeetingByCommitteeIdApi(navigate, t, searchData),
                     );
@@ -7716,7 +7715,7 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       ProposedMeetings: false,
                     };
                     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
-                  } 
+                  }
                 } else {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
@@ -7724,54 +7723,36 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       "",
                     ),
                   );
+
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
-                  if (
-                    localStorage.getItem("navigateLocation") === "resolution"
-                  ) {
+
+                  // Handle navigation based on stored location
+                  const navigateLocation =
+                    localStorage.getItem("navigateLocation");
+
+                  if (navigateLocation === "resolution") {
                     navigate("/Diskus/resolution");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "dataroom"
-                  ) {
+                  } else if (navigateLocation === "dataroom") {
                     navigate("/Diskus/dataroom");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "committee"
-                  ) {
+                  } else if (navigateLocation === "committee") {
                     navigate("/Diskus/committee");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "groups"
-                  ) {
+                  } else if (navigateLocation === "groups") {
                     navigate("/Diskus/groups");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "polling"
-                  ) {
+                  } else if (navigateLocation === "polling") {
                     navigate("/Diskus/polling");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "compliance"
-                  ) {
+                  } else if (navigateLocation === "compliance") {
                     navigate("/Diskus/compliance");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "calendar"
-                  ) {
+                  } else if (navigateLocation === "calendar") {
                     navigate("/Diskus/calendar");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "todolist"
-                  ) {
+                  } else if (navigateLocation === "todolist") {
                     navigate("/Diskus/todolist");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "Notes"
-                  ) {
+                  } else if (navigateLocation === "Notes") {
                     navigate("/Diskus/Notes");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "MainDashBoard"
-                  ) {
+                  } else if (navigateLocation === "MainDashBoard") {
                     navigate("/Diskus/");
-                  } else if (
-                    localStorage.getItem("navigateLocation") === "Meeting"
-                  ) {
-                    // Left via the "Meeting" sidebar item (e.g. from inside a
-                    // committee) — go to the meetings list, don't stay put.
+                  } else if (navigateLocation === "Meeting") {
                     navigate("/Diskus/Meeting");
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
@@ -7781,64 +7762,14 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
                     );
                   }
-
-                  // let newName = localStorage.getItem("name");
-                  // let Data = {
-                  //   RoomID: roomID,
-                  //   UserGUID: userGUID,
-                  //   Name: String(newName),
-                  // };
-                  // if (roomID !== "0" && userGUID !== null) {
-                  //   dispatch(normalizeVideoPanelFlag(false));
-                  //   dispatch(maximizeVideoPanelFlag(false));
-                  //   dispatch(minimizeVideoPanelFlag(false));
-
-                  //   localStorage.setItem("activeCall", false);
-
-                  //       localStorage.setItem("isMeeting", false);
-                  sessionStorage.removeItem("isMeeting");
-                  //   localStorage.setItem("meetingTitle", "");
-                  //   localStorage.setItem("acceptedRecipientID", 0);
-                  //   localStorage.setItem("acceptedRoomID", 0);
-                  //   localStorage.setItem("activeRoomID", 0);
-                  //   localStorage.setItem("meetingVideoID", 0);
-                  //   localStorage.setItem("MicOff", true);
-                  //   localStorage.setItem("VidOff", true);
-                  //   dispatch(LeaveMeetingVideo(Data, navigate, t));
-                  // }
-                } catch (error) {
-                  console.log(error);
                 }
-
-                // let newName = localStorage.getItem("name");
-                // let Data = {
-                //   RoomID: roomID,
-                //   UserGUID: userGUID,
-                //   Name: String(newName),
-                // };
-                // if (roomID !== "0" && userGUID !== null) {
-                //   dispatch(normalizeVideoPanelFlag(false));
-                //   dispatch(maximizeVideoPanelFlag(false));
-                //   dispatch(minimizeVideoPanelFlag(false));
-
-                //   localStorage.setItem("activeCall", false);
-
-                //       localStorage.setItem("isMeeting", false);
-                sessionStorage.removeItem("isMeeting");
-                //   localStorage.setItem("meetingTitle", "");
-                //   localStorage.setItem("acceptedRecipientID", 0);
-                //   localStorage.setItem("acceptedRoomID", 0);
-                //   localStorage.setItem("activeRoomID", 0);
-                //   localStorage.setItem("meetingVideoID", 0);
-                //   localStorage.setItem("MicOff", true);
-                //   localStorage.setItem("VidOff", true);
-                //   dispatch(LeaveMeetingVideo(Data, navigate, t));
-                // }
               } catch (error) {
-                console.log(error)
+                console.error("Error in leave meeting process:", error);
+                // Don't rethrow to prevent breaking the flow
               }
 
-              // setViewFlag(false);
+              // Clean up session storage
+              sessionStorage.removeItem("isMeeting");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -7873,7 +7804,8 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
           dispatch(leaveMeetingFail(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
+      .catch((error) => {
+        console.error("API Error:", error);
         dispatch(leaveMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -7950,10 +7882,8 @@ const LeaveCurrentMeetingOtherMenus = (
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(currentMeetingStatus(0));
               dispatch(
-                leaveMeetingAdvancedSuccess(
-                  response.data.responseResult,
-                  "",
-                ),""
+                leaveMeetingAdvancedSuccess(response.data.responseResult, ""),
+                "",
               );
               if (currentMeetingVideoID !== 0) {
               }
@@ -8917,10 +8847,7 @@ const GetMeetingStatusDataAPI = (
                 )
             ) {
               dispatch(
-                GetMeetingStatusDataSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                GetMeetingStatusDataSuccess(response.data.responseResult, ""),
               );
               try {
                 //Send Response By Date for Proposed Meeting
@@ -9636,9 +9563,7 @@ const getMeetingRecordingFilesApi = (
                   MeetingID: Data.MeetingID,
                 },
               };
-              dispatch(
-                getMeetingRecordingFiles_success(apiResonse, ""),
-              );
+              dispatch(getMeetingRecordingFiles_success(apiResonse, ""));
               setDownloadVideoRecordingModal(true);
             } else if (
               response.data.responseResult.responseMessage
@@ -9653,9 +9578,7 @@ const getMeetingRecordingFilesApi = (
                   MeetingID: Data.MeetingID,
                 },
               };
-              dispatch(
-                getMeetingRecordingFiles_success(apiResonse, ""),
-              );
+              dispatch(getMeetingRecordingFiles_success(apiResonse, ""));
               setDownloadVideoRecordingModal(true);
             } else if (
               response.data.responseResult.responseMessage

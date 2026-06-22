@@ -2,7 +2,7 @@ import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
-import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
+import CancelButtonModal from "@/container/meeting/commonComponents/closeMeetingTab/CancelModal";
 import {
   Button,
   Modal,
@@ -210,7 +210,7 @@ import {
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
-import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
+import CancelConfirmationModal from "@/container/meeting/commonComponents/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
   MinuteReviwerCount,

@@ -98,12 +98,12 @@ import {
   recentChatFlag,
 } from "../../../../../store/actions/Talk_Feature_actions";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
-import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
-import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import MaxHostVideoCallComponent from "../../../commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "../../../commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "../../../commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
 import { raiseUnRaisedHandMainApi } from "@/store/actions/Guest_Video";

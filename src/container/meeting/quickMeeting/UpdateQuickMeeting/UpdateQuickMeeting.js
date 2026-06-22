@@ -15,7 +15,6 @@ import {
   Modal,
   Accordian,
   EmployeeCard,
-  Notification,
   Checkbox,
   AttachmentViewer,
 } from "@/components/elements";
@@ -52,11 +51,9 @@ import {
 import {
   ConvertFileSizeInMB,
   isFileSizeValid,
-} from "../../../commen/functions/convertFileSizeInMB";
-import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
+} from "@/commen/functions/convertFileSizeInMB";
 import {
   generateRandomNegativeAuto,
-  maxFileSize,
   openDocumentViewer,
 } from "@/commen/functions/utils";
 import {
@@ -65,7 +62,7 @@ import {
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
-import { useSnackbar } from "../../../../components/elements";
+import { useSnackbar } from "@/components/elements";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
@@ -140,7 +137,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     URLs: "",
     FK_MDID: 0,
   });
-  const [show, SnackBar] = useSnackbar();
 
   // for upload documents
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
