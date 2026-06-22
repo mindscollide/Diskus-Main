@@ -159,6 +159,7 @@ const meetingIdReducer = (state = initialState, action) => {
         MeetingTableData: false,
         UpcomingEventsData: action.response,
         ShowNotification: true,
+        errorSeverity: "success",
       };
 
     case actions.SHOWMORE_UPCOMINGEVENTS_INIT:
@@ -193,6 +194,7 @@ const meetingIdReducer = (state = initialState, action) => {
         //     : action.response.responseMessage,
         ShowNotification: true,
         UpcomingEventsData: [],
+        errorSeverity: "error",
       };
     case actions.MEETINGID_RESPONSE_MESSAGE: {
       return {

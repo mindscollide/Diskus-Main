@@ -236,6 +236,9 @@ export const MeetingProvider = ({ children }) => {
   // state for handRaise Counter
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
 
+  // unread message count badge for the presenter / meeting-video chat icon
+  const [videoChatUnreadCount, setVideoChatUnreadCount] = useState(0);
+
   // state for Start Recording
   const [startRecordingState, setStartRecordingState] = useState(false);
 
@@ -489,6 +492,8 @@ export const MeetingProvider = ({ children }) => {
     setUnansweredCallParticipant,
     handRaiseCounter,
     setHandRaiseCounter,
+    videoChatUnreadCount,
+    setVideoChatUnreadCount,
     startRecordingState,
     setStartRecordingState,
     pauseRecordingState,

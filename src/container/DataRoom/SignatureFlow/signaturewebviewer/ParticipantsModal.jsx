@@ -15,7 +15,7 @@ import PlusSignSignatureFlow from "../../../../assets/images/plus-sign-signature
 import DragIcon from "../../../../assets/images/DragIcon_SignatureFlow.png";
 import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -52,6 +52,7 @@ const ParticipantsModal = ({
   setNotification,
 }) => {
   const { t } = useTranslation();
+  const [notify, SnackBar] = useSnackbar();
 
   const [signerForm, setSignerForm] = useState(EMPTY_FORM);
   const [signerDropdown, setSignerDropdown] = useState(EMPTY_DROPDOWN);
@@ -90,13 +91,13 @@ const ParticipantsModal = ({
     );
 
     if (alreadyExists) {
-      showMessage(t("User-already-is-in-list"), "error", setNotification);
+      notify(t("User-already-is-in-list"), "error");
     } else {
       setSignerData((prev) => [...prev, { Name, EmailAddress, userID: UserID }]);
     }
 
     resetForm();
-  }, [signerForm, signerData, t, setNotification, setSignerData, resetForm]);
+  }, [signerForm, signerData, t, notify, setSignerData, resetForm]);
 
   const handleRemoveSigner = useCallback(
     (index) => setSignerData((prev) => prev.filter((_, i) => i !== index)),
@@ -118,16 +119,12 @@ const ParticipantsModal = ({
 
   const handleSave = useCallback(() => {
     if (!signerData.length) {
-      showMessage(
-        t("Atleast-one-signatory-is-required"),
-        "error",
-        setNotification,
-      );
+      notify(t("Atleast-one-signatory-is-required"), "error");
       return;
     }
     resetForm();
     onSave();
-  }, [signerData.length, t, setNotification, resetForm, onSave]);
+  }, [signerData.length, t, notify, resetForm, onSave]);
 
   const handleClose = useCallback(() => {
     resetForm();
@@ -137,7 +134,8 @@ const ParticipantsModal = ({
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <Modal
+    <>
+      <Modal
       show={show}
       onHide={handleClose}
       setShow={() => {}}
@@ -314,7 +312,9 @@ const ParticipantsModal = ({
           </Col>
         </Row>
       }
-    />
+      />
+      {SnackBar}
+    </>
   );
 };
 

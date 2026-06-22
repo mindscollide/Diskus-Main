@@ -9,7 +9,7 @@ import pdf from "../../../assets/images/222.svg";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 import {
   Button,
@@ -50,11 +50,7 @@ const ModalShareFolder = ({
   const [folderData, setFolderData] = useState({
     Folders: [],
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [getAllAssignees, setGetAllAssignees] = useState([]);
@@ -220,7 +216,7 @@ const ModalShareFolder = ({
             return { ...prev, Folders: [...prev.Folders, Data] };
           });
         } else {
-          showMessage(t("User-is-already-exist"), "error", setOpen);
+          show(t("User-is-already-exist"), "error");
         }
         setPersonValue({
           value: 0,
@@ -237,7 +233,7 @@ const ModalShareFolder = ({
         });
       }
     } else {
-      showMessage(t("All-options-must-be-selected"), "error", setOpen);
+      show(t("All-options-must-be-selected"), "error");
     }
   };
 
@@ -588,7 +584,8 @@ const ModalShareFolder = ({
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

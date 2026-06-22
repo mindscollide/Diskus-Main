@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Notification } from "../../components/elements";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const VideoMeetingBoardDeck = () => {
   const dispatch = useDispatch();
@@ -100,19 +99,7 @@ const VideoMeetingBoardDeck = () => {
     
   }, [videoLink]);
 
-  //Response meesege
-  useEffect(() => {
-    if (
-      responseMessage !== "" &&
-      responseMessage !== t("No-data-available") &&
-      responseMessage !== t("Record-available")
-    ) {
-      showMessage(responseMessage, "success", setOpen);
-      dispatch(clearMessegesUserManagement());
-    } else {
-      dispatch(clearMessegesUserManagement());
-    }
-  }, [responseMessage]);
+
 
   return (
     <>
@@ -139,7 +126,7 @@ const VideoMeetingBoardDeck = () => {
           </Col>
         </Row>
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

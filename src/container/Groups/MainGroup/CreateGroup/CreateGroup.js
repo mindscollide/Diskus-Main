@@ -27,17 +27,13 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
 import { maxFileSize } from "../../../../commen/functions/utils";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 
 const CreateGroup = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const assigneesuserData = useSelector((state) => state.assignees.user);
 
@@ -215,17 +211,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
     
     // Check if there's  a selected user and a role
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      showMessage(
-        t("You-can-add-data-from-only-one-form-option-at-a-time"),
-        "error",
-        setOpen
-      );
+      show(t("You-can-add-data-from-only-one-form-option-at-a-time"), "error");
     } else if (groupMembersRolesVal.value === 0) {
-      showMessage(
-        t("Please-select-a-group-member-type-as-well"),
-        "error",
-        setOpen
-      );
+      show(t("Please-select-a-group-member-type-as-well"), "error");
     } else if (taskAssignedTo !== 0) {
       const foundIndex = newMeetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
@@ -266,7 +254,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
           name: "",
         });
       } else {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        show(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
         setTaskAssignedToInput("");
         setAttendees([]);
@@ -283,7 +271,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       });
 
       if (check === true) {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        show(t("User-already-exists"), "error");
         setAttendees([]);
         setTaskAssignedTo(0);
         setTaskAssignedToInput("");
@@ -323,17 +311,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
           name: "",
         });
       } else {
-        showMessage(
-          t("Please-select-a-group-member-type-as-well"),
-          "error",
-          setOpen
-        );
+        show(t("Please-select-a-group-member-type-as-well"), "error");
         setTaskAssignedTo(0);
         setTaskAssignedToInput("");
         setAttendees([]);
       }
     } else {
-      showMessage(t("Please-select-at-least-one-member"), "error", setOpen);
+      show(t("Please-select-at-least-one-member"), "error");
       setTaskAssignedTo(0);
       setTaskAssignedToInput("");
       setAttendees([]);
@@ -429,7 +413,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       createGroupDetails.CreatorID !== 0
     ) {
       if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
-        showMessage(t("Please-add-atleast-one-group-head"), "error", setOpen);
+        show(t("Please-add-atleast-one-group-head"), "error");
       } else {
         setErrorBar(false);
         let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -450,7 +434,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       }
     } else {
       setErrorBar(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -481,7 +465,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
       fileList.forEach((fileData, index) => {
@@ -499,15 +483,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1298,7 +1278,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         setShowModal={setCloseConfirmationBox}
       />
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

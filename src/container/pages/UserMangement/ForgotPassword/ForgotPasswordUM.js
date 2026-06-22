@@ -16,7 +16,7 @@ import { validateEmail } from "../../../../commen/functions/validations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { cleareMessage } from "../../../../store/actions/Auth2_actions";
 import { message } from "antd";
 
@@ -35,11 +35,7 @@ const ForgotPasswordUM = () => {
   const [email, setEmail] = useState("");
   const [messege, setMessege] = useState("");
   const dispatch = useDispatch();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //  CLEAR OLD MESSAGE ON LOAD (FIXES OLD TOAST ISSUE)
   useEffect(() => {
@@ -54,7 +50,7 @@ const ForgotPasswordUM = () => {
     }
 
     if (ResponseMessageAuthResetPassword) {
-      showMessage(ResponseMessageAuthResetPassword, "error", setOpen);
+      show(ResponseMessageAuthResetPassword, "error");
 
       const timer = setTimeout(() => {
         dispatch(cleareMessage());
@@ -69,7 +65,7 @@ const ForgotPasswordUM = () => {
     e.preventDefault();
 
     if (!email) {
-      showMessage(t("Please-enter-email"), "error", setOpen);
+      show(t("Please-enter-email"), "error");
       setMessege("");
       return;
     }
@@ -244,7 +240,8 @@ const ForgotPasswordUM = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

@@ -29,12 +29,10 @@ const EndMeetingConfirmationModal = ({
               </span>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
-                {t(
-                  "Are-you-sure-you-want-to-end-the-meeting",
-                )}
+                {t("Are-you-sure-you-want-to-end-the-meeting")}
               </span>
             </Col>
           </Row>
@@ -47,8 +45,7 @@ const EndMeetingConfirmationModal = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               <Button
                 text={t("End-meeting")}
                 className={styles["EndMeetingBtn"]}

@@ -25,7 +25,7 @@ import {
 import { useEffect } from "react";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { Tooltip } from "antd";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   resetViewTabs,
@@ -48,11 +48,7 @@ const Participants = () => {
   } = useMeetingContext();
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -239,20 +235,6 @@ const Participants = () => {
     ];
   }
 
-  useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
-    ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [NewMeetingreducer.ResponseMessage]);
-
   return (
     <>
       <section className={styles["height2"]}>
@@ -343,8 +325,9 @@ const Participants = () => {
             setMeetingDetails={setParticipants}
           />
         )}
-        <Notification open={open} setOpen={setOpen} />
+        
       </section>
+    {SnackBar}
     </>
   );
 };

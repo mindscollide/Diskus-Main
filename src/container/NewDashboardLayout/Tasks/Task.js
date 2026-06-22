@@ -317,7 +317,7 @@ const Task = () => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : showTodo ? (
-        <ModalToDoList show={showTodo} setShow={setShowTodo} />
+        <ModalToDoList showModal={showTodo} setShow={setShowTodo} />
       ) : null}
     </>
   );

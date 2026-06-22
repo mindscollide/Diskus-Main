@@ -49,6 +49,7 @@ const postAssigneeComments = (state = initialState, action) => {
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
             : action.response.responseMessage,
+        errorSeverity: "error",
       };
     }
     case actions.POST_COMMENTS: {

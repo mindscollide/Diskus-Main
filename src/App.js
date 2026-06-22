@@ -48,6 +48,7 @@ import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotify
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
+import useSnackbar from "./components/elements/snack_bar/useSnackbar";
 import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
@@ -65,6 +66,8 @@ const App = () => {
       const localUser = localStorage.getItem("userID");
       const sessionToken = sessionStorage.getItem("token");
       const sessionUser = sessionStorage.getItem("userID");
+      const is2FaEnabled = localStorage.getItem("is2FAEnabled");
+
       const isAlreadyInDashboard =
         window.location.pathname
           .toLowerCase()
@@ -85,7 +88,12 @@ const App = () => {
       }
 
       // Step 2: Redirect to dashboard if token exists but not on dashboard
-      if (!isAlreadyInDashboard && localToken && localUser) {
+      if (
+        !isAlreadyInDashboard &&
+        localToken &&
+        localUser &&
+        is2FaEnabled === "true"
+      ) {
         window.location.replace("/Diskus/");
       }
     };
@@ -107,6 +115,9 @@ const App = () => {
     };
   }, []);
 
+  const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
+
+  const [show, SnackBar] = useSnackbar();
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
@@ -218,6 +229,7 @@ const App = () => {
         />
       )}
       <GlobalSnackbar />
+      {SnackBar}
     </>
   );
 };

@@ -69,13 +69,13 @@ import {
 import EndMeetingConfirmationModal from "@/container/meeting/commonComponents/EndMeetingConfirmationModal/EndMeetingConfirmationModal.js";
 import { useMeetingContext } from "@/context/MeetingContext";
 import { useCallback } from "react";
-import { showMessage } from "@/components/elements/snack_bar/utill";
-import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
-import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
+import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
 import {
   getMeetingDetailsByMeetingIdApi,
@@ -206,11 +206,7 @@ const ViewMeetingDetails = () => {
   const [viewFlag, setViewFlag] = useState(false);
 
   //For Custom language datepicker
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [meetingDetails, setMeetingDetailsData] = useState({
     MeetingTitle: "",
@@ -263,7 +259,7 @@ const ViewMeetingDetails = () => {
           t,
           Data,
           "ViewMeetingFromTitle",
-          {}
+          {},
           // true,
           // setAdvanceMeetingModalID,
           // setViewAdvanceMeetingModal,
@@ -279,7 +275,6 @@ const ViewMeetingDetails = () => {
         ),
       );
     } else {
-      
       let Data = {
         MeetingID:
           meetingID === "0" ||
@@ -295,7 +290,7 @@ const ViewMeetingDetails = () => {
           t,
           Data,
           "ViewMeetingFromTitle",
-          {}
+          {},
           // true,
           // setAdvanceMeetingModalID,
           // setViewAdvanceMeetingModal,
@@ -377,7 +372,7 @@ const ViewMeetingDetails = () => {
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingStatus = MeetingData.meetingStatus.status;
-        // 
+        //
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
         setMeetingDetailsData({
@@ -463,7 +458,7 @@ const ViewMeetingDetails = () => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
-    
+
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -509,7 +504,7 @@ const ViewMeetingDetails = () => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
-    
+
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -579,7 +574,6 @@ const ViewMeetingDetails = () => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
-          
         }
       }
     }
@@ -593,7 +587,7 @@ const ViewMeetingDetails = () => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage(t("Link-copied"), "success", setOpen);
+    show(t("Link-copied"), "success");
   };
 
   // const groupChatInitiation = (data) => {
@@ -634,7 +628,6 @@ const ViewMeetingDetails = () => {
   //   }
   // };
   const groupChatInitiation = async (data) => {
-    
     if (data.TalkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -699,30 +692,13 @@ const ViewMeetingDetails = () => {
 
         dispatch(activeChat(foundRecord));
       } else {
-        showMessage(t("Chat-not-found"), "error", setOpen);
+        show(t("Chat-not-found"), "error");
         localStorage.removeItem("activeOtoChatID");
         dispatch(chatBoxActiveFlag(false));
       }
       setTalkGroupID(0);
     }
   }, [AllUserChats.AllUserChatsData, talkGroupID]);
-
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-data-available") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== undefined
-    ) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-      dispatch(ClearResponseMessageGuest());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-      dispatch(ClearResponseMessageGuest());
-    }
-  }, [ResponseMessage]);
 
   const handleClickEndMeeting = useCallback(async () => {
     let requestData = {
@@ -738,7 +714,6 @@ const ViewMeetingDetails = () => {
         { setEndMeetingConfirmationModal },
       ),
     );
-   
 
     localStorage.removeItem("NotificationAdvanceMeetingID");
     localStorage.removeItem("QuickMeetingCheckNotification");
@@ -752,7 +727,7 @@ const ViewMeetingDetails = () => {
   // to show message when join meeting Video Response comes 4
   useEffect(() => {
     if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
-      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      show(t("Could-not-join-call"), "Success");
       dispatch(clearMessegesVideoFeature(""));
     }
   }, [AgendaVideoResponseMessage]);
@@ -761,8 +736,8 @@ const ViewMeetingDetails = () => {
     <>
       <section>
         {meetingStatus === 10 && (
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
               {Number(editorRole.status) === 10 &&
               editorRole.role === "Organizer" ? (
                 <>
@@ -770,7 +745,6 @@ const ViewMeetingDetails = () => {
                     text={t("End-meeting")}
                     className={styles["LeaveMeetinButton"]}
                     onClick={() => {
-                      
                       setEndMeetingConfirmationModal(true);
                     }}
                   />
@@ -780,13 +754,12 @@ const ViewMeetingDetails = () => {
           </Row>
         )}
 
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className={styles["ScrollerMeeting_Active"]}
-          >
+            className={styles["ScrollerMeeting_Active"]}>
             <Row className={meetingStatus === 10 ? "mt-4" : ""}>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_Gray_meeting"]}>
@@ -796,23 +769,23 @@ const ViewMeetingDetails = () => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["MeetingTitle_Heading"]}>
                   {meetingDetails.MeetingTitle}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["ParaGraph_SavedMeeting"]}>
                   {meetingDetails.Description}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={5} md={5} sm={5}>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>
                       {t("Notes")}
@@ -826,7 +799,7 @@ const ViewMeetingDetails = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Scedule_OnHeading"]}>
                       {t("Scheduled-on")}
@@ -836,7 +809,6 @@ const ViewMeetingDetails = () => {
                 <Row>
                   {rows.length > 0 &&
                     rows.map((data, index) => {
-                      
                       if (
                         !data?.selectedOption ||
                         !data?.startDate ||
@@ -846,12 +818,12 @@ const ViewMeetingDetails = () => {
                       }
                       let formattedStartDate1 = `${data.selectedOption}${data.startDate}`;
                       let formattedEndDate1 = `${data.selectedOption}${data.endDate}`;
-                      
+
                       const formattedStartDate =
                         forRecentActivity(formattedStartDate1);
                       const formattedEndDate =
                         forRecentActivity(formattedEndDate1);
-                      
+
                       if (!formattedStartDate || !formattedEndDate) {
                         return null;
                       }
@@ -864,7 +836,7 @@ const ViewMeetingDetails = () => {
 
                       const formattedDate =
                         moment(formattedEndDate).format("DD MMM YYYY");
-                      
+
                       return (
                         <Col key={index} lg={12} md={12} sm={12}>
                           {formattedStartedDate &&
@@ -886,16 +858,15 @@ const ViewMeetingDetails = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex align-items-center gap-1"
-                  >
+                    className='d-flex align-items-center gap-1'>
                     {meetingDetails.groupChat && (
                       <img
                         src={Messegeblue}
-                        height="20.44px"
-                        width="25.68px"
-                        alt=""
+                        height='20.44px'
+                        width='25.68px'
+                        alt=''
                         onClick={() => groupChatInitiation(meetingDetails)}
-                        className="cursor-pointer mx-2"
+                        className='cursor-pointer mx-2'
                       />
                     )}
                     {meetingDetails.IsVideoCall && (
@@ -905,7 +876,7 @@ const ViewMeetingDetails = () => {
                           <>
                             {" "}
                             <Button
-                              icon={<img src={CopyLinkBtn} />}
+                              icon={<img src={CopyLinkBtn} alt='' />}
                               text={t("Copy-invite-link")}
                               className={styles["CopyLinkButton"]}
                               onClick={() => copyToClipboardd()}
@@ -922,7 +893,7 @@ const ViewMeetingDetails = () => {
                                     : false
                                 }
                                 text={t("Join-video-call")}
-                                className="JoinMeetingButton"
+                                className='JoinMeetingButton'
                                 onClick={joinMeetingCall}
                               />
                             )}
@@ -969,7 +940,7 @@ const ViewMeetingDetails = () => {
                     )}
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
                   </Col>
@@ -983,9 +954,9 @@ const ViewMeetingDetails = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Reminder-frequency")}
@@ -1018,7 +989,7 @@ const ViewMeetingDetails = () => {
                     </Row>
                   </Col>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Recurring")}
@@ -1053,7 +1024,6 @@ const ViewMeetingDetails = () => {
             setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           />
         )}
-        <Notification open={open} setOpen={setOpen} />
       </section>
 
       <Modal
@@ -1062,7 +1032,7 @@ const ViewMeetingDetails = () => {
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"sm"}
         ModalBody={
@@ -1073,13 +1043,12 @@ const ViewMeetingDetails = () => {
                   <p> Disconnect current call? </p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -1088,7 +1057,7 @@ const ViewMeetingDetails = () => {
                           ? t("End Participant")
                           : null
                     }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    className='leave-meeting-options__btn leave-meeting-red-button'
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
@@ -1100,7 +1069,7 @@ const ViewMeetingDetails = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className='leave-meeting-options__btn leave-meeting-gray-button'
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>
@@ -1110,6 +1079,7 @@ const ViewMeetingDetails = () => {
         }
       />
       {nonMeetingVideo && <NonMeetingVideoModal />}
+      {SnackBar}
     </>
   );
 };

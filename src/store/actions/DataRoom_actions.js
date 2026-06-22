@@ -132,7 +132,7 @@ const saveFilesApi = (
                 await dispatch(
                   saveFiles_success(
                     response.data.responseMessage,
-                    t("Files-saved-successfully"),
+                    "",
                   ),
                 );
                 if (viewFolderID !== null) {
@@ -3168,13 +3168,15 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
           response.data.responseResult.annotationString || "";
         const ext = Name.split(".").pop().toLowerCase();
         const userName = localStorage.getItem("name") || "";
+        const userEmail = localStorage.getItem("userEmail") || "";
         const dateTimeStr = new Date().toLocaleString();
         const footerText = `Downloaded by: ${userName}  |  ${dateTimeStr}`;
 
         let finalBlob;
 
         if (ext === "pdf") {
-          const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+          const { PDFDocument, rgb, StandardFonts, degrees } =
+            await import("pdf-lib");
 
           let pdfBytes;
 
@@ -3193,7 +3195,7 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
 
           // Step 2: stamp footer (logo + text) on every page using pdf-lib
           const pdfDoc = await PDFDocument.load(pdfBytes);
-          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+          const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
           // ── Embed logo ──────────────────────────────────────────────────────
           // Fetch the PNG bytes from the webpack-resolved asset URL, embed
@@ -3223,12 +3225,12 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
           const FOOTER_HEIGHT = 38;
 
           for (const page of pdfDoc.getPages()) {
-            const { width } = page.getSize();
+            const { width, height } = page.getSize();
 
-            // ── 1. Erase existing footer ──────────────────────────────────
-            // A solid white rectangle spanning the full page width and the
-            // reserved footer height wipes whatever was there — same or
-            // different — so our footer is always clean and never stacked.
+            // =========================================================
+            // FOOTER EXISTING CODE
+            // =========================================================
+
             page.drawRectangle({
               x: 0,
               y: 0,
@@ -3238,7 +3240,6 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               opacity: 1,
             });
 
-            // ── 2. Separator line ─────────────────────────────────────────
             page.drawLine({
               start: { x: 10, y: FOOTER_HEIGHT - 4 },
               end: { x: width - 10, y: FOOTER_HEIGHT - 4 },
@@ -3246,7 +3247,6 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               color: rgb(0.85, 0.85, 0.85),
             });
 
-            // ── 3. Logo — bottom-left ─────────────────────────────────────
             if (embeddedLogo) {
               page.drawImage(embeddedLogo, {
                 x: 10,
@@ -3256,8 +3256,8 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               });
             }
 
-            // ── 4. Text — centred on full page width ──────────────────────
             const textWidth = font.widthOfTextAtSize(footerText, 8);
+
             page.drawText(footerText, {
               x: (width - textWidth) / 2,
               y: 14,
@@ -3265,6 +3265,78 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               font,
               color: rgb(0.4, 0.4, 0.4),
             });
+
+            // =========================================================
+            // WATERMARK START (FIXED CENTERED VERSION)
+            // =========================================================
+
+            const watermarkFontSize = 27;
+
+            const watermarkText = [
+              (userName || "").toUpperCase(),
+              (userEmail || "").toUpperCase(),
+              dateTimeStr.toUpperCase(),
+            ];
+
+            const rotationAngle = degrees(5);
+
+            // Box size
+            const boxWidth = 420;
+            const boxHeight = 180;
+
+            // Page center
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Box center position
+            const boxX = centerX - boxWidth / 2;
+            const boxY = centerY - boxHeight / 2;
+
+            // Draw watermark container
+            page.drawRectangle({
+              x: boxX,
+              y: boxY,
+              width: boxWidth,
+              height: boxHeight,
+              borderWidth: 2,
+              borderColor: rgb(0.38, 0.38, 0.38),
+              color: rgb(1, 1, 1),
+              opacity: 0.02,
+              borderOpacity: 0.45,
+              rotate: rotationAngle,
+            });
+
+            // helper → TRUE CENTER INSIDE BOX (not page)
+            const drawCenteredLine = (text, offsetY) => {
+              const textWidth = font.widthOfTextAtSize(text, watermarkFontSize);
+
+              // position relative to BOX center (not page center)
+              const boxCenterX = boxX + boxWidth / 2;
+              const boxCenterY = boxY + boxHeight / 2;
+
+              page.drawText(text, {
+                x: boxCenterX - textWidth / 2,
+                y: boxCenterY + offsetY,
+
+                size: watermarkFontSize,
+                font,
+                fontWeight: 900,
+
+                rotate: rotationAngle,
+
+                color: rgb(0.38, 0.38, 0.38),
+                opacity: 0.45,
+              });
+            };
+
+            // Vertical spacing inside box (perfect centering)
+            drawCenteredLine(watermarkText[0], 50);
+            drawCenteredLine(watermarkText[1], 0);
+            drawCenteredLine(watermarkText[2], -35);
+
+            // =========================================================
+            // WATERMARK END
+            // =========================================================
           }
 
           const modifiedBytes = await pdfDoc.save();

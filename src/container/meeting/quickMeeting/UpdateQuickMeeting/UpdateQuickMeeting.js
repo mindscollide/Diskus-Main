@@ -52,7 +52,8 @@ import {
 import {
   ConvertFileSizeInMB,
   isFileSizeValid,
-} from "@/commen/functions/convertFileSizeInMB";
+} from "../../../commen/functions/convertFileSizeInMB";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
@@ -139,11 +140,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     URLs: "",
     FK_MDID: 0,
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // for upload documents
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
@@ -3723,6 +3720,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           }
         />
       </Container>
+
       {SnackBar}
     </>
   );

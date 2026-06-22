@@ -568,15 +568,16 @@ p.Attachments {
   color: #5f78d6;
   margin: 0 !important;
 }
+.Arrow {
+  transition: transform 0.5s ease;
+}
 
 .Arrow_Expanded {
   transition: transform 0.5s ease;
+  transform: rotate(180deg);
+
 }
 
-.Arrow {
-  transition: transform 0.5s ease;
-  transform: rotate(180deg);
-}
 
 .pendingApprovalContainer {
   width: 98% !important;

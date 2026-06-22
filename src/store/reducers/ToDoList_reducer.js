@@ -321,6 +321,7 @@ const toDoListReducer = (state = initialState, action) => {
         //     : action.response.responseMessage,
         // AllAssigneesData: action.response.user,
         ShowNotification: true,
+        errorSeverity: "error",
       };
 
     case actions.GET_TODOLIST_INIT:
@@ -370,12 +371,14 @@ const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "success",
       };
     }
     case actions.DELETEGROUPTASK_FAIL: {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "error",
       };
     }
     case actions.DELETECOMMITTEETASK_INIT: {
@@ -388,12 +391,14 @@ const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "success",
       };
     }
     case actions.DELETECOMMITTEETASK_FAIL: {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "error",
       };
     }
     case actions.GET_TODOLIST_FAIL:
@@ -419,6 +424,7 @@ const toDoListReducer = (state = initialState, action) => {
         //     ? action.response.responseMessage
         //     : action.response.responseResult.recordeMessage,
         ToDoDetails: action.response,
+        errorSeverity: "success",
       };
 
     case actions.VIEW_TODO_FAIL:
@@ -460,6 +466,7 @@ const toDoListReducer = (state = initialState, action) => {
         //   ? action.response.responseMessage
         //   : action.response.responseMessage,
         ShowNotification: true,
+        errorSeverity: "error",
       };
     case actions.RECENT_TODOCOUNTER: {
       return {

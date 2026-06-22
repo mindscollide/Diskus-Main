@@ -19,7 +19,7 @@ import {
 import { Col, Row } from "react-bootstrap";
 import featherupload from "../../../../assets/images/featherupload.svg";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import {
   fileFormatforSignatureFlow,
   maxFileSize,
@@ -48,11 +48,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
 
   
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [committeeData, setCommitteeData] = useState({
     committeeTitle: "",
     committeeDescription: "",
@@ -229,16 +225,12 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
 
         // ❌ File size validations
         if (fileObj.size === 0) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
           continue;
         }
 
         if (fileObj.size > maxFileSize) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
           continue;
         }
 
@@ -249,13 +241,13 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
           ) || newFiles.some((f) => f.DisplayAttachmentName === fileObj.name);
 
         if (isDuplicate) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
           continue;
         }
 
         // ❌ Max file limit
         if (totalFiles + newFiles.length >= 15) {
-          showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+          show(t("Not-allowed-more-than-15-files"), "error");
           break;
         }
 
@@ -833,7 +825,8 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

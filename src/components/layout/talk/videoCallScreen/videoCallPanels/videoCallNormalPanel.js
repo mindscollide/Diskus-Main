@@ -34,6 +34,7 @@ import {
   maxParticipantVideoRemoved,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  notifyParticipantsWhenHostIsTransferred,
   participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
@@ -66,7 +67,7 @@ import {
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { useTalkContext } from "../../../../../context/TalkContext";
 import { Tooltip } from "antd";
-import { showMessage } from "../../../../elements/snack_bar/utill";
+import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
@@ -305,9 +306,14 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.startPresenterTriggered,
   );
 
-  console.log(startPresenterTriggered, "startPresenterTriggered");
+  const notifyParticipantHostIsTransfer = useSelector(
+    (state) => state.videoFeatureReducer.notifyParticipantHostIsTransfer,
+  );
 
-  console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
+  console.log(
+    notifyParticipantHostIsTransfer,
+    "notifyParticipantHostIsTransfer",
+  );
 
   const [allParticipant, setAllParticipant] = useState([]);
 
@@ -340,11 +346,7 @@ const VideoPanelNormal = () => {
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "info",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   console.log(
     {
@@ -1036,13 +1038,41 @@ const VideoPanelNormal = () => {
       // Show recording notification
       if (!recordingToastShownRef.current) {
         recordingToastShownRef.current = true;
-        showMessage(t("The-recording-is-started"), "info", setOpen);
+        show(t("The-recording-is-started"), "info");
       }
-
-      // Reset the success flag if needed
-      // dispatch(resetTransferMeetingHostSuccess());
     }
   }, [hostTransferFlag]);
+
+  useEffect(() => {
+    if (notifyParticipantHostIsTransfer) {
+      console.log(
+        "Check Notification for Host Transfer",
+        notifyParticipantHostIsTransfer,
+      );
+      show(t("Host-has-been-changed"), "info");
+      // Reload the participant list from the backend so the new host's isHost
+      // flags are applied for every participant. Without this, non-host clients
+      // (e.g. User C / User D) keep showing the previous host after a manual
+      // host transfer, since the notification only flips a boolean flag.
+      //
+      // Resolve the room reliably: `participantRoomId` can be empty at this
+      // moment, which made the first call go out with a null RoomID (response
+      // code 3). Fall back to the joined/active room keys and only fire when a
+      // valid RoomID is present, so the call succeeds on the first hit.
+      const resolvedRoomID =
+        (presenterViewFlag ? callAcceptedRoomID : participantRoomIds) ||
+        localStorage.getItem("acceptedRoomID") ||
+        localStorage.getItem("activeRoomID") ||
+        localStorage.getItem("newRoomId");
+
+      if (resolvedRoomID && String(resolvedRoomID) !== "0") {
+        let Data = { RoomID: String(resolvedRoomID) };
+        dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      }
+      // RESET AFTER SHOWING TOAST
+      dispatch(notifyParticipantsWhenHostIsTransferred(false));
+    }
+  }, [notifyParticipantHostIsTransfer]);
 
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
@@ -1443,7 +1473,7 @@ const VideoPanelNormal = () => {
             // Show recording notification when stream is connected
             if (isMeetingVideo && !recordingToastShownRef.current) {
               recordingToastShownRef.current = true;
-              showMessage(t("The-recording-is-started"), "info", setOpen);
+              show(t("The-recording-is-started"), "info");
               console.log(" Recording notification shown on StreamConnected");
             }
 
@@ -1477,7 +1507,7 @@ const VideoPanelNormal = () => {
             // Show toast only once per recording session
             if (!recordingToastShownRef.current) {
               recordingToastShownRef.current = true;
-              showMessage(t("The-recording-is-started"), "info", setOpen);
+              show(t("The-recording-is-started"), "info");
             }
 
             // Update recording states
@@ -1783,7 +1813,7 @@ const VideoPanelNormal = () => {
 
     if (!recordingToastShownRef.current) {
       recordingToastShownRef.current = true;
-      showMessage(t("The-recording-is-started"), "info", setOpen);
+      show(t("The-recording-is-started"), "info");
     }
 
     setStartRecordingState(false);
@@ -2067,7 +2097,7 @@ const VideoPanelNormal = () => {
                                 width="100%"
                                 height="100%"
                                 frameBorder="0"
-                                allow="camera;microphone;display-capture"
+                                allow="camera; microphone; fullscreen; display-capture"
                                 // Add these for better cross-browser support
                                 mozallowfullscreen="true"
                                 webkitallowfullscreen="true"
@@ -2231,7 +2261,8 @@ const VideoPanelNormal = () => {
         </Row>
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

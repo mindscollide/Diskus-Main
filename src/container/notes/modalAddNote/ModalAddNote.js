@@ -21,7 +21,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
@@ -58,11 +58,7 @@ const ModalAddNote = ({ ModalTitle }) => {
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -182,7 +178,7 @@ const ModalAddNote = ({ ModalTitle }) => {
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -199,15 +195,11 @@ const ModalAddNote = ({ ModalTitle }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-than-1-5GB"),
-          "error",
-          setOpen
-        );
+        show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        show(t("File-size-should-not-be-zero"), "error");
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        show(t("File-already-exists"), "error");
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -621,7 +613,8 @@ const ModalAddNote = ({ ModalTitle }) => {
             </>
           }
         />
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

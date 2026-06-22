@@ -27,7 +27,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { getTaskCommitteeIDApi } from "../../../store/actions/Polls_actions";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { Select, Checkbox, Dropdown, Menu } from "antd";
 import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
@@ -92,11 +92,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     AssignedToName: "",
     UserID: 0,
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
   const [statusOptions, setStatusOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
@@ -652,22 +648,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducerResponseMessage !== "" &&
-        PollsReducerResponseMessage !== undefined &&
-        PollsReducerResponseMessage !== "" &&
-        PollsReducerResponseMessage !== t("No-records-found")
-      ) {
-        showMessage(PollsReducerResponseMessage, "success", setOpen);
-        dispatch(clearResponce());
-      }
-    } catch (error) {
-      
-    }
-  }, [PollsReducerResponseMessage, assigneesResponseMessage]);
-
-  useEffect(() => {
-    try {
       if (removeTodo !== 0) {
         if (
           getTodosStatusUpdateTodoStatusMessage ===
@@ -685,44 +665,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       
     }
   }, [getTodosStatusUpdateTodoStatusMessage, removeTodo]);
-
-  useEffect(() => {
-    try {
-      if (
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== undefined &&
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== t("No-records-found")
-      ) {
-        showMessage(getTodosStatusResponseMessage, "success", setOpen);
-        dispatch(cleareMessage());
-      } else if (
-        getTodosStatusUpdateTodoStatusMessage !== "" &&
-        getTodosStatusUpdateTodoStatusMessage !== undefined &&
-        getTodosStatusUpdateTodoStatusMessage !== "" &&
-        getTodosStatusUpdateTodoStatusMessage !== t("No-records-found")
-      ) {
-        showMessage(getTodosStatusUpdateTodoStatusMessage, "success", setOpen);
-        dispatch(cleareMessage());
-      } else if (
-        getTodosStatusUpdateTodoStatus !== "" &&
-        getTodosStatusUpdateTodoStatus !== undefined &&
-        getTodosStatusUpdateTodoStatus !== "" &&
-        getTodosStatusUpdateTodoStatus !== t("No-records-found")
-      ) {
-        showMessage(getTodosStatusUpdateTodoStatus, "success", setOpen);
-        dispatch(cleareMessage());
-      } else {
-        dispatch(cleareMessage());
-      }
-    } catch (error) {
-      
-    }
-  }, [
-    getTodosStatusResponseMessage,
-    getTodosStatusUpdateTodoStatusMessage,
-    getTodosStatusUpdateTodoStatus,
-  ]);
 
   const scroll = {
     y: "64vh",
@@ -791,7 +733,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       </div>
       {show ? (
         <ModalToDoList
-          show={show}
+          showModal={show}
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
@@ -803,6 +745,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
+    {SnackBar}
     </>
   );
 };

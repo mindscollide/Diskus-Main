@@ -344,10 +344,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                 .includes("Polls_PollsServiceManager_SavePoll_01".toLowerCase())
             ) {
               await dispatch(
-                savePolls_success(
-                  response.data.responseResult,
-                  "",
-                ),
+                savePolls_success(response.data.responseResult, ""),
               );
               if (value === 1) {
                 let userID = localStorage.getItem("userID");
@@ -1909,7 +1906,7 @@ const deleteCommitteePollApi = (navigate, t, data) => {
               dispatch(
                 deleteCommitteePoll_success(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  t("Poll-deleted"),
                 ),
               );
               let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -2000,7 +1997,7 @@ const deleteGroupPollApi = (navigate, t, data) => {
               dispatch(
                 deleteGroupPoll_success(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  t("Poll-deleted"),
                 ),
               );
               let OrganizationID = localStorage.getItem("organizationID");
@@ -2090,7 +2087,7 @@ const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
               dispatch(
                 deleteMeetingPoll_success(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  t("Poll-deleted"),
                 ),
               );
               let OrganizationID = localStorage.getItem("organizationID");

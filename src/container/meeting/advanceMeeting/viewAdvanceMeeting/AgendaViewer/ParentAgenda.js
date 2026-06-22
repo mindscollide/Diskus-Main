@@ -3,11 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  AttachmentViewer,
-  Button,
-  Notification,
-} from "@/components/elements";
+import { AttachmentViewer, Button, Notification } from "@/components/elements";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
@@ -27,9 +23,10 @@ import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
 import { getFileExtension } from "@/container/DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
-import { useMeetingContext } from "@/context/MeetingContext";
-import ViewVoteModal from "../Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
-import CastVoteAgendaModal from "../Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
+import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const ParentAgenda = ({
   data,
@@ -58,11 +55,7 @@ const ParentAgenda = ({
 
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
@@ -82,11 +75,11 @@ const ParentAgenda = ({
   };
 
   const printFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag,
   );
 
   const exportFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag,
   );
 
   const openAdvancePermissionModal = () => {
@@ -117,7 +110,7 @@ const ParentAgenda = ({
   //Konsa user vote kar sakta hai
   const checkUserAuthentication = (record) => {
     let flag = record.agendaVoters.find(
-      (data, index) => data.userID === Number(currentUserID)
+      (data, index) => data.userID === Number(currentUserID),
     );
     if (flag) {
       return true;
@@ -134,7 +127,7 @@ const ParentAgenda = ({
       DoVotingStart: true,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
     );
   };
 
@@ -146,7 +139,7 @@ const ParentAgenda = ({
       DoVotingStart: false,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
     );
   };
 
@@ -171,8 +164,6 @@ const ParentAgenda = ({
   };
 
   const downloadDocument = (record) => {
-    
-
     let data = {
       FileID: Number(record.originalAttachmentName),
     };
@@ -181,8 +172,8 @@ const ParentAgenda = ({
         navigate,
         data,
         t,
-        record.displayAttachmentName
-      )
+        record.displayAttachmentName,
+      ),
     );
   };
 
@@ -198,16 +189,16 @@ const ParentAgenda = ({
     if (Number(editorRole.status) === 10) {
       window.open(
         `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
-          pdfDataJson
+          pdfDataJson,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -403,8 +394,8 @@ const ParentAgenda = ({
                                     pdfData(
                                       filesData,
                                       getFileExtension(
-                                        filesData?.displayAttachmentName
-                                      )
+                                        filesData?.displayAttachmentName,
+                                      ),
                                     )
                                   }
                                 />
@@ -469,7 +460,8 @@ const ParentAgenda = ({
         {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
         {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
       </div>
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

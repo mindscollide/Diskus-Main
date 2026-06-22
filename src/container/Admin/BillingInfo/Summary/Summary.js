@@ -23,7 +23,7 @@ import {
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 const Summary = () => {
   const navigate = useNavigate();
@@ -73,11 +73,7 @@ const Summary = () => {
     PaidAmount: 0,
   });
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Open Invoice Table State
   const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
@@ -115,64 +111,6 @@ const Summary = () => {
     } catch (error) {}
   }, [searchPaymentHistory]);
 
-  useEffect(() => {
-    if (
-      VerifyOTPEmailResponseMessage !== "" &&
-      VerifyOTPEmailResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(VerifyOTPEmailResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else if (
-      EnterPasswordResponseMessage !== "" &&
-      EnterPasswordResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(EnterPasswordResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else if (
-      OrganizationCreateResponseMessage !== "" &&
-      OrganizationCreateResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(OrganizationCreateResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else if (
-      CreatePasswordResponseMessage !== "" &&
-      CreatePasswordResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(CreatePasswordResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else if (
-      GetSelectedPackageResponseMessage !== "" &&
-      GetSelectedPackageResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(GetSelectedPackageResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else if (
-      EmailValidationResponseMessage !== "" &&
-      EmailValidationResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(EmailValidationResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    EnterPasswordResponseMessage,
-    VerifyOTPEmailResponseMessage,
-    OrganizationCreateResponseMessage,
-    CreatePasswordResponseMessage,
-    EmailValidationResponseMessage,
-    GetSelectedPackageResponseMessage,
-  ]);
   const closeModal = () => {
     setActivateBlur(false);
     dispatch(setLoader());
@@ -438,8 +376,8 @@ const Summary = () => {
             </>
           }
         />
-        <Notification open={open} setOpen={setOpen} />
       </Fragment>
+      {SnackBar}
     </>
   );
 };

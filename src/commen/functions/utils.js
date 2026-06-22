@@ -1,4 +1,3 @@
-import { useMeetingContext } from "../../context/MeetingContext";
 import {
   createCommitteePageFlag,
   updateCommitteePageFlag,
@@ -8,7 +7,6 @@ import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
-import { ViewMeeting } from "../../store/actions/Get_List_Of_Assignees";
 import { getPackageExpiryDetail } from "../../store/actions/GetPackageExpirtyDetails";
 import {
   createGroupPageFlag,
@@ -16,6 +14,11 @@ import {
   viewGroupPageFlag,
 } from "../../store/actions/Groups_actions";
 import { MinutesWorkFlowActorStatusNotificationAPI } from "../../store/actions/Minutes_action";
+// import {
+//   resetCreateEditTabs,
+//   toggleViewMeetingModal,
+// } from "../../store/actions/ModalStates_actions";
+// import { listOfMeetingsApi } from "../../store/actions/NewMeeting2.actions";
 import {
   resetCreateEditTabs,
   toggleViewMeetingModal,
@@ -87,6 +90,14 @@ export function checkFeatureID(id) {
   // Check if the provided ID is in the array of packageFeatureIDs
   return packageFeatureIDs.includes(id);
 }
+
+// Returns the correct home route based on the OnlyComplianceAllowed flag
+// set during login by handleNavigation.
+export const getHomeRoute = () => {
+  return JSON.parse(localStorage.getItem("OnlyComplianceAllowed")) === true
+    ? "/Diskus/compliance"
+    : "/Diskus/";
+};
 
 //Export function userFeatures from the Response
 export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
@@ -433,7 +444,7 @@ export const removeHTMLTags = (htmlString) => {
   return htmlString.replace(/<\/?[^>]+(>|$)/g, "");
 };
 
-export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
+export const removeHTMLTagsAndTruncate = (String, maxLength = 1000) => {
   // Truncate the content to the specified length
   if (String.length > maxLength) {
     return String.substring(0, maxLength);
@@ -3426,7 +3437,6 @@ const handleMeetingCase = (navigate, dispatch, t) => {
   dispatch(uploadGlobalFlag(false));
   resetMeetingFlags(dispatch);
 };
-
 // Function to read storage values
 export const getMeetingValues = () => {
   const local = localStorage.getItem("isMeeting");

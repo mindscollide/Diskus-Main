@@ -162,6 +162,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -170,6 +171,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.EMAILVALIDATION_SUCCESS: {
@@ -294,6 +296,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetSelectedPacakgeDetails: action.response,
+        errorSeverity: "success",
         // GetSelectedPackageResponseMessage: action.message,
       };
     }

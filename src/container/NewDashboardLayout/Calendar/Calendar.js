@@ -25,7 +25,7 @@ import {
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import styles from "./Calendar.module.css";
 const NewCalendar = () => {
   const navigate = useNavigate();
@@ -52,12 +52,7 @@ const NewCalendar = () => {
   const [eventModal, setEventsModal] = useState(false);
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-
+  const [show, SnackBar] = useSnackbar();
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") !== undefined &&
     localStorage.getItem("calenderMonthsSpan") !== null
@@ -282,7 +277,7 @@ const NewCalendar = () => {
             }
           });
         } else {
-          showMessage(t("No-events-available-on-this-date"), "error", setOpen);
+          show(t("No-events-available-on-this-date"), "error");
         }
       }
     } catch (error) {}
@@ -682,7 +677,7 @@ const NewCalendar = () => {
           />
         </>
       )}
-      <Notification open={open} setOpen={setOpen} />
+
       {eventModal && (
         <EventsModal
           events={events}
@@ -690,6 +685,7 @@ const NewCalendar = () => {
           setEventsModal={setEventsModal}
         />
       )}
+      {SnackBar}
     </>
   );
 };

@@ -22,7 +22,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const PasswordVerification = () => {
   const { t } = useTranslation();
@@ -68,11 +68,7 @@ const PasswordVerification = () => {
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorBar, setErrorBar] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Eye Icon Condition
   const showNewPassowrd = () => {
@@ -145,7 +141,7 @@ const PasswordVerification = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (password === "") {
-      showMessage(t("Enter-password"), "error", setOpen);
+      show(t("Enter-password"), "error");
     } else {
       setErrorBar(false);
       setPasswordFieldDisabled(true);
@@ -155,62 +151,6 @@ const PasswordVerification = () => {
   };
 
   //Messeges UseEffect
-  useEffect(() => {
-    if (
-      AuthreducerVerifyOTPEmailResponseMessageData !== "" &&
-      AuthreducerVerifyOTPEmailResponseMessageData !== undefined
-    ) {
-      showMessage(
-        AuthreducerVerifyOTPEmailResponseMessageData,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerOrganizationCreateResponseMessageData !== "" &&
-      AuthreducerOrganizationCreateResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerOrganizationCreateResponseMessageData !== undefined
-    ) {
-      showMessage(
-        AuthreducerOrganizationCreateResponseMessageData,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerCreatePasswordResponseMessageData !== "" &&
-      AuthreducerCreatePasswordResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerCreatePasswordResponseMessageData !== undefined &&
-      AuthreducerCreatePasswordResponseMessageData !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        AuthreducerCreatePasswordResponseMessageData,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerGetSelectedPackageResponseMessageData !== "" &&
-      AuthreducerGetSelectedPackageResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerGetSelectedPackageResponseMessageData !== undefined
-    ) {
-      showMessage(
-        AuthreducerGetSelectedPackageResponseMessageData,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    AuthreducerVerifyOTPEmailResponseMessageData,
-    AuthreducerOrganizationCreateResponseMessageData,
-    AuthreducerCreatePasswordResponseMessageData,
-    AuthreducerEmailValidationResponseMessageData,
-    AuthreducerGetSelectedPackageResponseMessageData,
-  ]);
 
   //Handle Goback functionality
 
@@ -413,7 +353,8 @@ const PasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

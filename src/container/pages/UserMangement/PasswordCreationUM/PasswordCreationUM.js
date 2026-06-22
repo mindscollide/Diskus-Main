@@ -22,7 +22,7 @@ import {
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const PasswordCreationUM = () => {
   const { t } = useTranslation();
@@ -50,11 +50,7 @@ const PasswordCreationUM = () => {
     Password: "",
     ConfirmPassword: "",
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: ""
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Showing Password
   const showNewPassowrd = () => {
@@ -137,11 +133,7 @@ const PasswordCreationUM = () => {
       passwordDetails.ConfirmPassword.length >= 8
     ) {
       setErrorBar(false);
-      setOpen({
-        ...open,
-        open: true,
-        message: "Please Enter Fields Value",
-      });
+      show("Please Enter Fields Value", "error");
     } else if (passwordDetails.Password !== passwordDetails.ConfirmPassword) {
       setErrorBar(true);
     } else {
@@ -168,7 +160,7 @@ const PasswordCreationUM = () => {
 
   useEffect(() => {
     if (passwordCreateResponseMessage !== "" && passwordCreateResponseMessage !== null && passwordCreateResponseMessage !== undefined) {
-      showMessage(passwordCreateResponseMessage, "success", setOpen);
+      show(passwordCreateResponseMessage, "success");
 
       setTimeout(() => {
         dispatch(cleareMessage())
@@ -395,7 +387,8 @@ const PasswordCreationUM = () => {
       {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

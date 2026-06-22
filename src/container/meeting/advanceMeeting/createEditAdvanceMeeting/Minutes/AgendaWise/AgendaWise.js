@@ -33,7 +33,7 @@ import {
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const AgendaWise = ({
@@ -51,11 +51,7 @@ const AgendaWise = ({
   const dispatch = useDispatch();
 
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [isEdit, setisEdit] = useState(false);
   const [accordianExpand, setAccordianExpand] = useState(false);
   const [organizerID, setOrganizerID] = useState(0);
@@ -127,7 +123,6 @@ const AgendaWise = ({
       if (AllAgendas !== null && AllAgendas !== undefined) {
         let NewData = [];
         AllAgendas.agendaList.forEach((agenda, index) => {
-          
           NewData.push({
             value: agenda.id,
             label: agenda.title,
@@ -185,7 +180,6 @@ const AgendaWise = ({
 
         // Convert groupedData object to an array of values
         const combinedDataArray = Object.values(groupedData).flat();
-        
 
         // Store combined data in the messages state
         setMessages(combinedDataArray);
@@ -194,7 +188,6 @@ const AgendaWise = ({
       }
     } catch (error) {
       // Handle any errors here
-      
     }
   }, [agendaWiseMinutesReducer, getallDocumentsForAgendaWiseMinutes]);
 
@@ -232,7 +225,6 @@ const AgendaWise = ({
       });
     }
 
-    
     return acc;
   }, {});
 
@@ -240,7 +232,7 @@ const AgendaWise = ({
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  
+
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -282,8 +274,8 @@ const AgendaWise = ({
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (fileAttachments.length > 4) {
+        show(t("Not-allowed-more-than-5-files"), "error");
         return;
       }
 
@@ -299,15 +291,11 @@ const AgendaWise = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
-            "error",
-            setOpen,
-          );
+          show(t("File-size-should-not-be-greater-then-zero"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -348,7 +336,6 @@ const AgendaWise = ({
       });
     } else {
       if (source === "user" && String(content).length >= 501) {
-        // Update state only if no image is detected in the content
         setAgendaWiseFields({
           ...addAgendaWiseFields,
           Description: {
@@ -440,7 +427,7 @@ const AgendaWise = ({
       }
 
       if (!isAgendaSelected) {
-        showMessage(t("Select-agenda"), "error", setOpen);
+        show(t("Select-agenda"), "error");
       }
     }
   };
@@ -500,7 +487,6 @@ const AgendaWise = ({
   // For getting the MinuteID
   useEffect(() => {
     if (agendaWiseMinuteID !== 0) {
-      
       documentUploadingFunc(agendaWiseMinuteID);
     }
   }, [agendaWiseMinuteID]);
@@ -581,7 +567,6 @@ const AgendaWise = ({
       });
       setisEdit(true);
     } else {
-      
     }
   };
 
@@ -740,23 +725,6 @@ const AgendaWise = ({
     setShowMore((prevState) => !prevState);
   };
 
-  //Handling of the Response Messege
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [ResponseMessage]);
-
   const toggleAcordion = (agendaID) => {
     // setExpanded((prev) => (prev === notesID ? true : false));
     if (accordianExpand === agendaID) {
@@ -781,7 +749,7 @@ const AgendaWise = ({
           editorRole.role === "Agenda Contributor") ? (
         <>
           {" "}
-          <Row className="mt-4">
+          <Row className='mt-4'>
             <Col lg={6} md={6} sm={6}>
               <Select
                 options={agendaOptions}
@@ -795,7 +763,7 @@ const AgendaWise = ({
               />
             </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className='mt-4'>
             <Col lg={6} md={6} sm={6}>
               <Row className={styles["Add-note-QuillRow"]}>
                 <Col
@@ -803,11 +771,10 @@ const AgendaWise = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className={styles["Arabic_font_Applied"]}
-                >
+                  className={styles["Arabic_font_Applied"]}>
                   <ReactQuill
                     ref={editorRef}
-                    theme="snow"
+                    theme='snow'
                     value={addAgendaWiseFields.Description.value || ""}
                     placeholder={t("Minutes-details")}
                     onChange={onTextChange}
@@ -819,7 +786,7 @@ const AgendaWise = ({
                   />
                 </Col>
               </Row>
-              <Row className="mt-5">
+              <Row className='mt-5'>
                 <Col>
                   <p
                     className={
@@ -827,20 +794,18 @@ const AgendaWise = ({
                       addAgendaWiseFields.Description.value === ""
                         ? ` ${styles["errorNotesMessage"]} `
                         : `${styles["errorNotesMessage_hidden"]}`
-                    }
-                  >
+                    }>
                     {addAgendaWiseFields.Description.errorMessage}
                   </p>
                 </Col>
               </Row>
               {/* Button For Saving the The Minutes  */}
-              <Row className="mt-0">
+              <Row className='mt-0'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex gap-2 justify-content-end"
-                >
+                  className='d-flex gap-2 justify-content-end'>
                   <Button
                     text={t("Reset")}
                     className={styles["Previous_Button"]}
@@ -870,10 +835,9 @@ const AgendaWise = ({
               <section className={styles["viewAgendaWiseAttachments"]}>
                 {fileAttachments.length > 0 ? (
                   <>
-                    <Row className="mt-1">
+                    <Row className='mt-1'>
                       {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
-                            
                             return (
                               <>
                                 <Col lg={4} md={4} sm={4}>
@@ -896,21 +860,20 @@ const AgendaWise = ({
                 ) : null}
               </section>
 
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={12} md={12} sm={12}>
                   <Dragger
                     fileList={[]}
                     {...props}
-                    className={styles["dragdrop_attachment_create_resolution"]}
-                  >
-                    <p className="ant-upload-drag-icon">
+                    className={styles["dragdrop_attachment_create_resolution"]}>
+                    <p className='ant-upload-drag-icon'>
                       <span className={styles["create_resolution_dragger"]}>
                         <img
                           src={featherupload}
-                          width="18.87px"
-                          height="18.87px"
-                          draggable="false"
-                          alt=""
+                          width='18.87px'
+                          height='18.87px'
+                          draggable='false'
+                          alt=''
                         />
                       </span>
                     </p>
@@ -930,10 +893,9 @@ const AgendaWise = ({
       ) : null}
 
       {/* Mapping of The Create Minutes */}
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
           {Object.values(groupedMessages).map((data, index) => {
-            
             return (
               <>
                 {/* Display agendaTitle once */}
@@ -942,9 +904,9 @@ const AgendaWise = ({
                 <Row key={data.agendaID}>
                   <Col lg={12} md={12} sm={12} className={` ${"mt-2"}`}>
                     <Accordion
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                      prefix="minutes_accordion"
+                      aria-controls='panel1a-content'
+                      id='panel1a-header'
+                      prefix='minutes_accordion'
                       className={styles["notes_accordion"]}
                       key={data.agendaID}
                       // onChange={handleChangeExpanded(data?.pK_NotesID)}
@@ -952,16 +914,14 @@ const AgendaWise = ({
                       <Accordion.Header
                         onClick={() =>
                           toggleAcordion(JSON.parse(data.agendaID))
-                        }
-                      >
-                        <Row className="w-100">
+                        }>
+                        <Row className='w-100'>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className="mt-2 d-flex align-items-center"
-                          >
-                            <span className="AgendaTitleClass">
+                            className='mt-2 d-flex align-items-center'>
+                            <span className='AgendaTitleClass'>
                               {data.agendaTitle.slice(0, 100)}
                             </span>
                           </Col>
@@ -973,30 +933,26 @@ const AgendaWise = ({
                             sm={12}
                             lg={12}
                             md={12}
-                            className={styles["NotesAttachments"]}
-                          >
+                            className={styles["NotesAttachments"]}>
                             <section className={styles["Sizing_Saved_Minutes"]}>
                               {data.items.map((Itemsdata, detailIndex) => {
-                                
                                 return (
                                   <>
                                     <div key={detailIndex}>
-                                      <Row className="mt-2">
+                                      <Row className='mt-2'>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className={styles["Box_Minutes"]}
-                                        >
+                                          className={styles["Box_Minutes"]}>
                                           <Row>
                                             <Col lg={8} md={8} sm={8}>
-                                              <Row className="mt-3">
+                                              <Row className='mt-3'>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
                                                     className={
                                                       styles["Title_File"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {expanded ? (
                                                       <>
                                                         <span
@@ -1006,8 +962,7 @@ const AgendaWise = ({
                                                                 0,
                                                                 120,
                                                               ),
-                                                          }}
-                                                        ></span>
+                                                          }}></span>
                                                         ...
                                                       </>
                                                     ) : (
@@ -1015,8 +970,7 @@ const AgendaWise = ({
                                                         dangerouslySetInnerHTML={{
                                                           __html:
                                                             Itemsdata.minutesDetails,
-                                                        }}
-                                                      ></span>
+                                                        }}></span>
                                                     )}
 
                                                     <span
@@ -1025,8 +979,7 @@ const AgendaWise = ({
                                                           "Show_more_Styles"
                                                         ]
                                                       }
-                                                      onClick={toggleExpansion}
-                                                    >
+                                                      onClick={toggleExpansion}>
                                                       {expanded &&
                                                       Itemsdata.minutesDetails.substring(
                                                         0,
@@ -1045,8 +998,7 @@ const AgendaWise = ({
                                                       styles[
                                                         "Date_Minutes_And_time"
                                                       ]
-                                                    }
-                                                  >
+                                                    }>
                                                     {newTimeFormaterAsPerUTCFullDate(
                                                       Itemsdata.lastUpdatedDate +
                                                         Itemsdata.lastUpdatedTime,
@@ -1055,7 +1007,7 @@ const AgendaWise = ({
                                                   </span>
                                                 </Col>
                                               </Row>
-                                              <Row className="mt-2">
+                                              <Row className='mt-2'>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
                                                     className={
@@ -1065,8 +1017,7 @@ const AgendaWise = ({
                                                       handleshowMore(
                                                         detailIndex,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {showMoreIndex ===
                                                     detailIndex
                                                       ? t("Hide-details")
@@ -1085,15 +1036,14 @@ const AgendaWise = ({
                                               lg={4}
                                               md={4}
                                               sm={4}
-                                              className="mt-4"
-                                            >
-                                              <section className="d-flex justify-content-end gap-4">
+                                              className='mt-4'>
+                                              <section className='d-flex justify-content-end gap-4'>
                                                 <img
                                                   draggable={false}
                                                   src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
-                                                  height="39px"
-                                                  width="39px"
-                                                  alt=""
+                                                  height='39px'
+                                                  width='39px'
+                                                  alt=''
                                                   className={
                                                     styles["Profile_minutes"]
                                                   }
@@ -1102,18 +1052,15 @@ const AgendaWise = ({
                                                   className={`
                                                      ${
                                                        styles["Line_heigh"]
-                                                     } ${"d-flex flex-column"} `}
-                                                >
+                                                     } ${"d-flex flex-column"} `}>
                                                   <span
                                                     className={
                                                       styles["Uploaded_heading"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Uploaded-by")}
                                                   </span>
                                                   <span
-                                                    className={styles["Name"]}
-                                                  >
+                                                    className={styles["Name"]}>
                                                     {Itemsdata.userName}
                                                   </span>
                                                 </div>
@@ -1143,10 +1090,10 @@ const AgendaWise = ({
                                                   <img
                                                     draggable={false}
                                                     src={EditIcon}
-                                                    alt=""
-                                                    height="21.55px"
-                                                    width="21.55px"
-                                                    className="cursor-pointer mt-2"
+                                                    alt=''
+                                                    height='21.55px'
+                                                    width='21.55px'
+                                                    className='cursor-pointer mt-2'
                                                     onClick={() =>
                                                       handleEditFunc(Itemsdata)
                                                     }
@@ -1176,9 +1123,9 @@ const AgendaWise = ({
                                             <img
                                               draggable={false}
                                               src={RedCroseeIcon}
-                                              height="20.76px"
-                                              alt=""
-                                              width="20.76px"
+                                              height='20.76px'
+                                              alt=''
+                                              width='20.76px'
                                               className={
                                                 styles["RedCrossClass"]
                                               }
@@ -1208,7 +1155,7 @@ const AgendaWise = ({
         </Col>
       </Row>
 
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </section>
   );
 };

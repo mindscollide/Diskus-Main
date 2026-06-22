@@ -11,7 +11,7 @@ import ViewComplianceTasks from "./ViewComplianceTasks";
 import { Button, Notification } from "../../../../components/elements";
 import ReopenOrOnHoldDetailsModal from "../ReopenOrOnHoldDetailsModal";
 import ArrowBack from "../../../../assets/images/arrow-left-compliance.png";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { useDispatch } from "react-redux";
 import {
   clearAuthorityMessage,
@@ -24,11 +24,7 @@ const ViewCompliance = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const complainceRespnseMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
@@ -188,11 +184,7 @@ const ViewCompliance = () => {
       complainceSeverityMessage !== null
     ) {
       try {
-        showMessage(
-          complainceRespnseMessage,
-          complainceSeverityMessage,
-          setOpen,
-        );
+        show(complainceRespnseMessage, complainceSeverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -340,9 +332,10 @@ const ViewCompliance = () => {
           {viewComplianceDetailsTab === 2 && <ViewComplianceTasks />}
         </section>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
 
       <ReopenOrOnHoldDetailsModal />
+    {SnackBar}
     </>
   );
 };

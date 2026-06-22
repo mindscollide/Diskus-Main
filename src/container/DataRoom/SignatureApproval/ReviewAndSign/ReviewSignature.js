@@ -33,7 +33,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
@@ -88,11 +88,7 @@ const ReviewSignature = () => {
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -588,16 +584,6 @@ const ReviewSignature = () => {
     }
   }, [signatureDocumentStatusChangeForSignees]);
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== null &&
-      ResponseMessage !== undefined
-    ) {
-      showMessage(ResponseMessage, "error", setOpen);
-      dispatch(clearWorkFlowResponseMessage());
-    }
-  }, [ResponseMessage]);
   return (
     <>
       <Row>
@@ -727,18 +713,14 @@ const ReviewSignature = () => {
           {/* )} */}
         </Col>
       </Row>{" "}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+   
       {signatoriesList && (
         <SignatoriesListModal
           signatories_List={signatoriesList}
           setSignatoriesList={setSignatoriesList}
         />
       )}
+    {SnackBar}
     </>
   );
 };

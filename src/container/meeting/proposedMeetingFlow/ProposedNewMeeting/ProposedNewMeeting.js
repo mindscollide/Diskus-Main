@@ -183,11 +183,7 @@ const ProposedNewMeeting = () => {
     } catch (error) {}
   }, [getAllParticipants]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Setting Minutes hours and second for Send Response by Date Seperately
   let newDateValue = getCurrentDateforMeeting.DateGMT;
@@ -1700,7 +1696,8 @@ const ProposedNewMeeting = () => {
           </span>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </section>
   );
 };

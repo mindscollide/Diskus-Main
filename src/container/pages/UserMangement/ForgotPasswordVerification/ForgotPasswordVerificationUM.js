@@ -315,7 +315,7 @@ const ForgotPasswordVerificationUM = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -15,12 +15,12 @@ import {
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
-import { showMessage } from "../snack_bar/utill";
 import "./DocumentViwer.css";
 import { checkXFDFContent } from "./utils";
 import CustomModal from "../modal/Modal";
 import { Col, Row } from "react-bootstrap";
 import CustomButton from "../button/Button";
+import useSnackbar from "../snack_bar/useSnackbar";
 
 const DocumentViewer = () => {
   const viewer = useRef(null);
@@ -29,7 +29,7 @@ const DocumentViewer = () => {
   const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
   const hasUnsavedChangesRef = useRef(false);
-
+  const [show, SnackBar] = useSnackbar();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [instance, setInstance] = useState(null);
 
@@ -48,7 +48,7 @@ const DocumentViewer = () => {
   const FileRemoveMQTT = useSelector(
     (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
+  const { attachmentBlob, xfdfData, } = useSelector(
     (state) => state.webViewer,
   );
 
@@ -249,11 +249,7 @@ const DocumentViewer = () => {
               filename: fileName,
             });
           } else {
-            showMessage(
-              t("file_format_not_supported_for_preview"),
-              "error",
-              setOpen,
-            );
+            show(t("file_format_not_supported_for_preview"), "error");
             return;
           }
 
@@ -404,25 +400,12 @@ const DocumentViewer = () => {
     instance.UI.disableElements(disabledElements);
   }; // Set Permissions
 
-  // Handle Notifications
-  useEffect(() => {
-    if (ResponseMessage) {
-      // Reset unsaved changes on successful save
-      setHasUnsavedChanges(false);
-      showMessage(ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
-    }
-  }, [ResponseMessage]);
-
   return (
     <>
       <div className='document-viewer'>
         <div className='webviewer' ref={viewer}></div>
       </div>
-
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

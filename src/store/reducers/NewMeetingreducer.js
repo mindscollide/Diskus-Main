@@ -576,6 +576,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: action.loader,
           getALlMeetingTypes: action.response,
+          errorSeverity: "success",
         };
       }
 
@@ -876,6 +877,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: action.loader,
           getAllSavedparticipantsIsPublished: action.response,
+          errorSeverity: "success",
         };
       }
 
@@ -1191,6 +1193,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
           Loading: false,
           meetingMaterialIsPublished: action.response,
+          errorSeverity: "success",
         };
       }
 

@@ -54,6 +54,7 @@ import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 
 import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
@@ -103,7 +104,7 @@ const Polling = () => {
   );
   const [enterpressed, setEnterpressed] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-
+  const [show, SnackBar] = useSnackbar();
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
@@ -1254,6 +1255,8 @@ const Polling = () => {
       {PollsReducerviewVotesDetails && <PollDetails />}
       {PollsReducerdeletePollsModal && <DeletePoll id={idForDelete} />}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
+
+      {SnackBar}
     </>
   );
 };

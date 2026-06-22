@@ -23,6 +23,7 @@ import {
 import { toggleIsParticipantProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
 import { SetMeetingResponseApi } from "@/store/actions/NewMeeting2.actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
+import { useSnackbar } from "../../../../components/elements";
 
 const ViewParticipantsDates = () => {
   const { t } = useTranslation();
@@ -35,6 +36,8 @@ const ViewParticipantsDates = () => {
 
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
+
+  const [show, SnackBar] = useSnackbar();
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails,
@@ -342,6 +345,7 @@ const ViewParticipantsDates = () => {
       };
       dispatch(SetMeetingResponseApi(navigate, t, Data, "", {}));
     } else if (!selectAll) {
+      show(t("Please-select-any-of-the-given-options"), "error");
     }
   };
 
@@ -578,6 +582,8 @@ const ViewParticipantsDates = () => {
           </span>
         </Col>
       </Row>
+      
+    {SnackBar}
     </section>
   );
 };

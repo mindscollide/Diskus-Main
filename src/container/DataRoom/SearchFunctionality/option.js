@@ -398,8 +398,8 @@ export const optionsLastmodified = (t) => [
   { value: 2, label: t("Today") },
   { value: 3, label: t("Last-7-days") },
   { value: 4, label: t("Last-30-days") },
-  { value: 5, label: t("This-year-(2023)") },
-  { value: 6, label: t("Last-year-(2022)") },
+  { value: 5, label: t("This-year-(2026)") },
+  { value: 6, label: t("Last-year-(2025)") },
   { value: 7, label: t("Custome-range") },
 ];
 

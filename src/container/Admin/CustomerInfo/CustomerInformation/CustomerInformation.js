@@ -19,7 +19,7 @@ import {
 } from "../../../../store/actions/Admin_Customer_Information";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -76,11 +76,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [select, setSelect] = useState("");
   const [selectCountryFullName, setSelectCountryFullName] = useState("");
   const [isFlagEnable, setIsFlagEnable] = useState(true);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   // for edit countryname field
   const countrySelectHandler = () => {
@@ -490,17 +486,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     adminReducer.CustomerInformationData,
     countryNamesReducer.CountryNamesData,
   ]);
-
-  useEffect(() => {
-    if (adminReducer.UpdateCustomerInformationResponseMessage !== "") {
-      showMessage(
-        adminReducer.UpdateCustomerInformationResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    }
-  }, [adminReducer.UpdateCustomerInformationResponseMessage]);
 
   return (
     <>
@@ -1074,7 +1059,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

@@ -25,7 +25,7 @@ import {
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -48,12 +48,8 @@ const AgendaContributers = () => {
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [columnsData, setColumnsData] = useState([]);
-  
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  console.log(columnsData, "columnsDatacolumnsData");
+  const [show, SnackBar] = useSnackbar();
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -302,21 +298,6 @@ const AgendaContributers = () => {
     setColumnsData(AgendaContributorViewColoumns);
   }, [NewMeetingreducer?.getAllAgendaContributorsAllowRSVP]);
 
-  useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== undefined
-    ) {
-      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [NewMeetingreducer.ResponseMessage]);
-
   return (
     <>
       <section>
@@ -407,7 +388,8 @@ const AgendaContributers = () => {
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

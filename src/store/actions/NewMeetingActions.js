@@ -100,6 +100,9 @@ import {
 } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import {
+
+  getHomeRoute,
+  handleMeetingNavigation,
   handleNavigationforParticipantVideoFlow,
   isFunction,
 } from "../../commen/functions/utils";
@@ -1945,9 +1948,8 @@ const saveAgendaContributors_fail = (message) => {
   };
 };
 
+
 const saveAgendaContributors = (navigate, t, data, route, actions) => {
-  return (dispatch) => {
-    dispatch(saveAgendaContributors_init());
     let form = new FormData();
     form.append("RequestMethod", saveAgendaContributorsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -3965,7 +3967,8 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
               await dispatch(
                 saveFiles_success(
                   response.data.responseResult,
-                  t("Files-saved-successfully"),
+
+                  "",
                 ),
               );
             } else if (
@@ -5401,10 +5404,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
                 });
               } catch (error) {}
               await dispatch(
-                saveFiles_success_agenda_wise(
-                  response.data.responseResult,
-                  t("Files-saved-successfully"),
-                ),
+                saveFiles_success_agenda_wise(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -7781,6 +7781,33 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
                     );
                   }
+
+                  // let newName = localStorage.getItem("name");
+                  // let Data = {
+                  //   RoomID: roomID,
+                  //   UserGUID: userGUID,
+                  //   Name: String(newName),
+                  // };
+                  // if (roomID !== "0" && userGUID !== null) {
+                  //   dispatch(normalizeVideoPanelFlag(false));
+                  //   dispatch(maximizeVideoPanelFlag(false));
+                  //   dispatch(minimizeVideoPanelFlag(false));
+
+                  //   localStorage.setItem("activeCall", false);
+
+                  //       localStorage.setItem("isMeeting", false);
+                  sessionStorage.removeItem("isMeeting");
+                  //   localStorage.setItem("meetingTitle", "");
+                  //   localStorage.setItem("acceptedRecipientID", 0);
+                  //   localStorage.setItem("acceptedRoomID", 0);
+                  //   localStorage.setItem("activeRoomID", 0);
+                  //   localStorage.setItem("meetingVideoID", 0);
+                  //   localStorage.setItem("MicOff", true);
+                  //   localStorage.setItem("VidOff", true);
+                  //   dispatch(LeaveMeetingVideo(Data, navigate, t));
+                  // }
+                } catch (error) {
+                  console.log(error);
                 }
 
                 // let newName = localStorage.getItem("name");
@@ -7807,7 +7834,9 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                 //   localStorage.setItem("VidOff", true);
                 //   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 // }
-              } catch (error) {}
+              } catch (error) {
+                console.log(error)
+              }
 
               // setViewFlag(false);
             } else if (
@@ -9389,12 +9418,7 @@ const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
               });
             } catch (error) {}
 
-            dispatch(
-              saveFilesQuickMeeting_Success(
-                responseResult,
-                t("Files-saved-successfully"),
-              ),
-            );
+            dispatch(saveFilesQuickMeeting_Success(responseResult, ""));
 
             return {
               isExecuted: true,

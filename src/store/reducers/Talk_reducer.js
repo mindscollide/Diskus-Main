@@ -309,6 +309,7 @@ const initialState = {
   LastMessageDeletionObject: [],
 
   imageData: null,
+  errorSeverity: null,
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -337,6 +338,7 @@ const talkReducer = (state = initialState, action) => {
         SessionExpireResponseMessage: action.message,
         Token: "",
         Refresh: "",
+        errorSeverity: "error",
       };
     }
 
@@ -398,6 +400,7 @@ const talkReducer = (state = initialState, action) => {
           AllUserChatsData: action.response,
           ResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -409,6 +412,7 @@ const talkReducer = (state = initialState, action) => {
           AllUserChatsData: [],
           ResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -433,6 +437,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
+        errorSeverity: "success",
       };
     }
 
@@ -445,6 +450,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
+        errorSeverity: "error",
       };
     }
 
@@ -462,6 +468,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           UserOTOUndeliveredMessagesData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -472,6 +479,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           UserOTOUndeliveredMessagesData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -496,6 +504,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
+        errorSeverity: "success",
       };
     }
 
@@ -508,6 +517,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
+        errorSeverity: "error",
       };
     }
 
@@ -532,6 +542,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
+        errorSeverity: "success",
       };
     }
 
@@ -544,6 +555,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
+        errorSeverity: "error",
       };
     }
 
@@ -561,6 +573,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ArchivedDataByUserIDData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -571,6 +584,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ArchivedDataByUserIDData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -588,6 +602,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FlagMessagesData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -598,6 +613,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FlagMessagesData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -615,6 +631,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FollowMessagesData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -625,6 +642,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FollowMessagesData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -642,6 +660,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentTagsData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -652,6 +671,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentTagsData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -669,6 +689,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           TagsMessagesData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -679,6 +700,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           TagsMessagesData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -696,6 +718,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           MessageSentReceiveTimeData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -706,6 +729,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           MessageSentReceiveTimeData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -723,6 +747,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.response,
           RecentFlagCountData: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -733,6 +758,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentFlagCountData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -750,6 +776,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentFollowDataCountByUserIDData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -760,6 +787,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentFollowDataCountByUserIDData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -777,6 +805,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllRecentTagsCountData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -787,6 +816,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllRecentTagsCountData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -804,6 +834,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentDataArchiveCountByUserIDData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -814,6 +845,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentDataArchiveCountByUserIDData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -831,6 +863,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           BlockedUsersCountData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -841,6 +874,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           BlockedUsersCountData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -863,6 +897,7 @@ const talkReducer = (state = initialState, action) => {
           BlockedUsersData: action.response,
           Loading: false,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -874,6 +909,7 @@ const talkReducer = (state = initialState, action) => {
           BlockedUsersData: [],
           Loading: false,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -891,6 +927,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -901,6 +938,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -918,6 +956,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersGroupsRoomsListData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -928,6 +967,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersGroupsRoomsListData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -945,6 +985,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.response,
           ActiveUsersByGroupIDData: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -955,6 +996,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByGroupIDData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -972,6 +1014,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByRoomIDData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -982,6 +1025,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByRoomIDData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -999,6 +1043,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByBroadcastIDData: action.response,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1009,6 +1054,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByBroadcastIDData: [],
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1034,6 +1080,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           MessageSendResponseData: action.response,
         },
+        errorSeverity: "success",
       };
 
     case actions.OTO_MESSAGESEND_FAIL:
@@ -1043,6 +1090,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           MessageSendResponseData: [],
         },
+        errorSeverity: "error",
       };
 
     case actions.PRIVATEGROUP_MESSAGESEND_INIT:
@@ -1090,6 +1138,7 @@ const talkReducer = (state = initialState, action) => {
           DeleteMessageResponse: action.response,
           DeleteMessageResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
     case actions.DELETE_SINGLEMESSAGE_FAIL: {
@@ -1099,6 +1148,7 @@ const talkReducer = (state = initialState, action) => {
           DeleteMessageResponse: [],
           DeleteMessageResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1193,6 +1243,7 @@ const talkReducer = (state = initialState, action) => {
           GetPrivateGroupMembersResponse: action.response,
           GetPrivateGroupMembersResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
     case actions.GET_PRIVATEGROUPMEMBERS_FAIL: {
@@ -1202,6 +1253,7 @@ const talkReducer = (state = initialState, action) => {
           GetPrivateGroupMembersResponse: [],
           GetPrivateGroupMembersResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1376,6 +1428,7 @@ const talkReducer = (state = initialState, action) => {
           CreateShoutAllListResponse: action.response,
           CreateShoutAllListResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1386,6 +1439,7 @@ const talkReducer = (state = initialState, action) => {
           CreateShoutAllListResponse: [],
           CreateShoutAllListResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1425,6 +1479,7 @@ const talkReducer = (state = initialState, action) => {
           DeleteShoutResponse: action.response,
           DeleteShoutResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1435,6 +1490,7 @@ const talkReducer = (state = initialState, action) => {
           DeleteShoutResponse: [],
           DeleteShoutResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1455,6 +1511,7 @@ const talkReducer = (state = initialState, action) => {
           UpdateShoutAllResponse: action.response,
           UpdateShoutAllResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1465,6 +1522,7 @@ const talkReducer = (state = initialState, action) => {
           UpdateShoutAllResponse: [],
           UpdateShoutAllResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1485,6 +1543,7 @@ const talkReducer = (state = initialState, action) => {
           InsertBulkMessageResponse: action.response,
           InsertBulkMessageResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1495,6 +1554,7 @@ const talkReducer = (state = initialState, action) => {
           InsertBulkMessageResponse: [],
           InsertBulkMessageResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1515,6 +1575,7 @@ const talkReducer = (state = initialState, action) => {
           DownloadChatResponse: action.response,
           DownloadChatResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1525,6 +1586,7 @@ const talkReducer = (state = initialState, action) => {
           DownloadChatResponse: [],
           DownloadChatResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1545,6 +1607,7 @@ const talkReducer = (state = initialState, action) => {
           EmailChatResponse: action.response,
           EmailChatResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1555,6 +1618,7 @@ const talkReducer = (state = initialState, action) => {
           EmailChatResponse: [],
           EmailChatResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1621,6 +1685,7 @@ const talkReducer = (state = initialState, action) => {
           AllStarMessagesResponseMessage: action.message,
           Loading: false,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1632,6 +1697,7 @@ const talkReducer = (state = initialState, action) => {
           AllStarMessagesResponseMessage: action.message,
           Loading: false,
         },
+        errorSeverity: "error",
       };
     }
 
@@ -1664,6 +1730,7 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         AllMessagesData: action.response,
         Loading: false,
+        errorSeverity: "success",
       };
     }
 
@@ -1672,6 +1739,7 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         AllMessagesData: action.response,
         Loading: false,
+        errorSeverity: "error",
       };
     }
 
@@ -1721,6 +1789,7 @@ const talkReducer = (state = initialState, action) => {
           MultipleMessagesDeletedResponse: action.response,
           MultipleMessagesDeletedResponseMessage: action.message,
         },
+        errorSeverity: "success",
       };
     }
 
@@ -1731,6 +1800,7 @@ const talkReducer = (state = initialState, action) => {
           MultipleMessagesDeletedResponse: [],
           MultipleMessagesDeletedResponseMessage: action.message,
         },
+        errorSeverity: "error",
       };
     }
 

@@ -14,18 +14,14 @@ import { Progress, Tooltip } from "antd";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -52,7 +48,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, meetingID));
     } else {
       // open sncak bar for atleast select one option
-      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
+      show(t("Required-atleast-one-vote"), "error");
     }
   };
   const handleForCheck = (value) => {
@@ -311,7 +307,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

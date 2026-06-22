@@ -16,7 +16,7 @@ import featherupload from "../../../../../assets/images/featherupload.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 
 import {
   ADDGeneralMinutesApiFunc,
@@ -53,6 +53,7 @@ import { MeetingContext } from "../../../../../context/MeetingContext";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 import { meetingIdReducer } from "../../../../../store/reducers";
 import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const Minutes = ({
   setMinutes,
@@ -111,11 +112,7 @@ const Minutes = ({
   const [isEdit, setisEdit] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -266,12 +263,11 @@ const Minutes = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
-      if (fileAttachments.length > 9) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (fileAttachments.length > 4) {
+        show(t("Not-allowed-more-than-5-files"), "error");
         return;
       }
 
@@ -287,15 +283,11 @@ const Minutes = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-zero"),
-            "error",
-            setOpen,
-          );
+          show(t("File-size-should-not-be-greater-then-zero"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -736,24 +728,14 @@ const Minutes = ({
     // dispatch(showPreviousConfirmationModal(true));
   };
 
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessage.trim() !== "" &&
-        ResponseMessage !== t("No-record-found") &&
-        ResponseMessage !== t("No-records-found") &&
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("No-record-found") &&
-        ResponseMessage !== t("List-updated-successfully") &&
-        ResponseMessage !== t("No-data-available")
-      ) {
-        // showMessage(ResponseMessage, "success", setOpen);
-        //   dispatch(CleareMessegeNewMeeting());
-      } else {
-        dispatch(CleareMessegeNewMeeting());
-      }
-    } catch {}
-  }, [ResponseMessage]);
+  const downloadDocument = (record) => {
+    let data = {
+      FileID: record.pK_FileID,
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+    );
+  };
 
   return (
     <section>
@@ -890,6 +872,9 @@ const Minutes = ({
                                       data={fileAttachments}
                                       id={0}
                                       name={data.DisplayAttachmentName}
+                                      handleClickDownload={() => {
+                                        downloadDocument(data);
+                                      }}
                                     />
                                   </Col>
                                 </>
@@ -1085,11 +1070,15 @@ const Minutes = ({
                                       (filesname, index) => {
                                         return (
                                           <>
-                                            <Col lg={3} md={3} sm={3}>
+                                            <Col lg={3} md={3} sm={12}>
                                               <AttachmentViewer
                                                 name={filesname.displayFileName}
                                                 data={filesname}
-                                                id={0}
+                                                id={filesname}
+                                                fk_UID={filesname.fK_UserID}
+                                                handleClickDownload={() => {
+                                                  downloadDocument(filesname);
+                                                }}
                                               />
                                               {/* <section
                                                 className={styles["Outer_Box"]}
@@ -1240,7 +1229,8 @@ const Minutes = ({
           prevFlag={prevFlag}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </section>
   );
 };

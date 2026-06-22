@@ -78,6 +78,7 @@ const assigneesReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         errorSeverity: "error",
         Loading: false,
+        errorSeverity: "error",
         // ResponseMessage:
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage

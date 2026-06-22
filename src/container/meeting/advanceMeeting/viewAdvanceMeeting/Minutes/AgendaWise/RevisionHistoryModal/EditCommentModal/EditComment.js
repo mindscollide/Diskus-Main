@@ -64,7 +64,7 @@ const EditCommentModal = ({
     } else {
       if (source === "user") {
         let isEmptyContent = content === "<p><br></p>";
-        if (String(content).length >= 501) {
+        if (String(content).length >= 1001) {
           setUpdateMinutedata((prevState) => ({
             ...prevState,
             MinuteText: isEmptyContent

@@ -224,6 +224,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         hostTransferFlag: action.response,
+        errorSeverity: "success",
       };
     }
 

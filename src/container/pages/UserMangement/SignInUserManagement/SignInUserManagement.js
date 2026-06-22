@@ -27,7 +27,7 @@ import {
 } from "../../../../store/actions/UserManagementActions";
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import SwitchToChromeBox from "../../../../components/elements/SwitchToChromeBox/SwitchToChromeBox";
 
 const SignInUserManagement = () => {
@@ -40,11 +40,11 @@ const SignInUserManagement = () => {
   const emailRef = useRef();
 
   const adminReducerDeleteOrganizationResponseMessageData = useSelector(
-    (state) => state.adminReducer.DeleteOrganizationResponseMessage
+    (state) => state.adminReducer.DeleteOrganizationResponseMessage,
   );
 
   const UserManagementModalsmobileAppPopUpData = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp
+    (state) => state.UserManagementModals.mobileAppPopUp,
   );
 
   const currentUrl = window.location.href;
@@ -59,11 +59,7 @@ const SignInUserManagement = () => {
   const [errorBar, setErrorBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberEmail, setRemeberEmail] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [bestExperienceBox, setBestExperienceBox] = useState(false);
 
@@ -76,7 +72,7 @@ const SignInUserManagement = () => {
     } else {
       setErrorBar(false);
       let RememberEmailLocal = JSON.parse(
-        localStorage.getItem("rememberEmail")
+        localStorage.getItem("rememberEmail"),
       );
       if (RememberEmailLocal === true) {
         setEmail(nValue);
@@ -91,10 +87,10 @@ const SignInUserManagement = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (email === "") {
-      showMessage(t("Please-enter-email"), "error", setOpen);
+      show(t("Please-enter-email"), "error");
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      showMessage(t("Email-format-is-invalid"), "error", setOpen);
+      show(t("Email-format-is-invalid"), "error");
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));
@@ -142,13 +138,13 @@ const SignInUserManagement = () => {
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
     const vendor = navigator.vendor?.toLowerCase() || "";
-  
+
     const detectBrowser = async () => {
       // ✅ Step 1: Try identifying Brave by its built-in API
       if (navigator.brave && (await navigator.brave.isBrave?.())) {
         return "Brave";
       }
-  
+
       // ✅ Step 2: Fallbacks using userAgent and vendor (for other browsers)
       if (
         vendor.includes("google") &&
@@ -178,7 +174,7 @@ const SignInUserManagement = () => {
       if (userAgent.includes("puffin")) return "Puffin";
       return "Unknown";
     };
-  
+
     // 🕵️ Detect Chrome Incognito mode
     const checkIncognito = () => {
       return new Promise((resolve) => {
@@ -188,26 +184,21 @@ const SignInUserManagement = () => {
           window.TEMPORARY,
           100,
           () => resolve(false), // normal mode
-          () => resolve(true) // incognito mode
+          () => resolve(true), // incognito mode
         );
       });
     };
-  
+
     // 🚀 Main logic wrapped in async IIFE
     (async () => {
       const browser = await detectBrowser();
-      
-  
-      const isIncognito =
-        browser === "Chrome" ? await checkIncognito() : false;
-  
+
+      const isIncognito = browser === "Chrome" ? await checkIncognito() : false;
+
       if (browser !== "Chrome") {
         setBestExperienceBox(true);
       }
-  
-      
-      
-  
+
       if (code) {
         localStorage.setItem("Ms", code);
         window.close();
@@ -222,24 +213,11 @@ const SignInUserManagement = () => {
           setErrorMessage,
           setErrorBar,
           setRemeberEmail,
-          setEmail
+          setEmail,
         );
       }
     })();
   }, [code, getpayemntString, currentUrl, emailRef]);
-  
-
-  useEffect(() => {
-    if (adminReducerDeleteOrganizationResponseMessageData !== "") {
-      
-      showMessage(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "error",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    }
-  }, [adminReducerDeleteOrganizationResponseMessageData, setOpen]);
 
   return (
     <>
@@ -424,12 +402,12 @@ const SignInUserManagement = () => {
                 </Col>
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
           </>
         )}
       </Container>
       {getpayemntString && getpayemntString !== "" && <Loader />}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
+      {SnackBar}
     </>
   );
 };

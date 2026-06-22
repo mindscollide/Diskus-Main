@@ -47,6 +47,7 @@ const getTodosStatus = (state = initialState, action) => {
         ...state,
         Loading: false,
         UpdateTodoStatusMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_TODOSTATUS_FAIL: {
@@ -54,6 +55,7 @@ const getTodosStatus = (state = initialState, action) => {
         ...state,
         Loading: false,
         UpdateTodoStatusMessage: "",
+        errorSeverity: "error",
       };
     }
     // case actions.POST_ASSIGNEEECOMMENTS_INIT: {

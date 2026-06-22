@@ -43,7 +43,7 @@ import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunc
 import { Check2 } from "react-bootstrap-icons";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceStatusCancelModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCancel";
 import StatusSubmitForApprovalModal from "../../../../CommonComponents/StatusChangeModals/SubmitForApproval";
 import ComplianceStatusCompleteExceptionModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCompleteModal";
@@ -150,11 +150,7 @@ const ComplainceDetails = () => {
 
   
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [editComplianceData, setEditComplianceData] = useState(null);
 
   //   tags Selection
@@ -410,7 +406,7 @@ const ComplainceDetails = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -1239,13 +1235,14 @@ const ComplainceDetails = () => {
           }
         />
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
       <ComplianceCloseConfirmationModal />
       {complianceOnHoldModal && <CompliaceStatusOnHoldModal />}
       <ComplianceStatusCancelModal />
       <StatusSubmitForApprovalModal />
       <ComplianceStatusCompleteExceptionModal />
       {comlianceStatusReopenedModal && <ComplianceStatusReopenedModal />}
+    {SnackBar}
     </>
   );
 };

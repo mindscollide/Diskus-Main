@@ -67,7 +67,7 @@ import {
 } from "../../../../../commen/functions/utils";
 import ApprovalIncompleteModal from "./approvalIncompleteModal/ApprovalIncompleteModal";
 import PublishAnywayModal from "./publishAnywayModal/PublishAnywayModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const Minutes = () => {
@@ -128,11 +128,7 @@ const Minutes = () => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [isEdit, setisEdit] = useState(false);
   const [updateData, setupdateData] = useState(null);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -236,7 +232,7 @@ const Minutes = () => {
         });
       } else {
         let isEmptyContent = content === "<p><br></p>";
-        if (String(content).length >= 501) {
+        if (String(content).length >= 1001) {
           setAddNoteFields({
             ...addNoteFields,
             Description: {
@@ -274,13 +270,12 @@ const Minutes = () => {
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
-
-      if (fileList.length > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      if (fileList.length > 5) {
+        show(t("Not-allowed-more-than-5-files"), "error");
         return;
       } else {
-        if (fileAttachments.length > 9) {
-          showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        if (fileAttachments.length > 4) {
+          show(t("Not-allowed-more-than-5-files"), "error");
           return;
         } else {
           fileList.forEach((fileData, index) => {
@@ -296,15 +291,11 @@ const Minutes = () => {
             );
 
             if (!size) {
-              showMessage(
-                t("File-size-should-not-be-greater-then-zero"),
-                "error",
-                setOpen,
-              );
+              show(t("File-size-should-not-be-greater-then-zero"), "error");
             } else if (!sizezero) {
-              showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+              show(t("File-size-should-not-be-zero"), "error");
             } else if (fileExists) {
-              showMessage(t("File-already-exists"), "error", setOpen);
+              show(t("File-already-exists"), "error");
             } else {
               let file = {
                 DisplayAttachmentName: fileData.name,
@@ -760,6 +751,10 @@ const Minutes = () => {
   };
 
   const accordianClick = (data, id, index) => {
+    console.log(
+      { data, id, index },
+      "minutesDataminutesDataminutesDataminutesData",
+    );
     setOpenIndices((prevIndices) =>
       prevIndices.includes(index)
         ? prevIndices.filter((i) => i !== index)
@@ -1074,6 +1069,14 @@ const Minutes = () => {
     <>
       {publishMinutesDataAgenda.map((data, index) => {
         const isOpen = openIndices.includes(index);
+        const hasMainAgendaAttachments = data?.agendaMinutes?.some(
+          (childAgendaData) => childAgendaData?.minutesAttachmets?.length > 0,
+        );
+
+        console.log(
+          { data, hasMainAgendaAttachments },
+          "hasMainAgendaAttachments",
+        );
         const hasAttachments = data?.childAgendas?.some((childAgendaData) =>
           childAgendaData?.agendaMinutes?.some(
             (childAgendaMinuteData) =>
@@ -1100,8 +1103,7 @@ const Minutes = () => {
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
                         <span className='d-flex justify-content-center align-items-center'>
-                          {data?.agendaMinutes?.minutesAttachmets?.length > 0 ||
-                          hasAttachments ? (
+                          {hasMainAgendaAttachments ? (
                             <img
                               className={styles["Attachment"]}
                               alt=''
@@ -2467,9 +2469,8 @@ const Minutes = () => {
             advanceMeetingModalID={advanceMeetingModalID}
           />
         ) : null}
-
-        <Notification open={open} setOpen={setOpen} />
       </section>
+      {SnackBar}
     </>
   );
 };

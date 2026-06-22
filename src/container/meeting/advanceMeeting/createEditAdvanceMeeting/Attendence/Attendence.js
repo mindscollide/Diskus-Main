@@ -21,8 +21,13 @@ import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import { useSelector } from "react-redux";
-
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
+import {
+  searchNewUserMeeting,
+  showAttendanceConfirmationModal,
+} from "../../../../../store/actions/NewMeetingActions";
+import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { resetCreateEditTabs, toggleCreateEditMeetingModal } from "../../../../../store/actions/ModalStates_actions";
 
@@ -42,12 +47,15 @@ const Attendence = () => {
   const attendanceMeetings = useSelector(
     (state) => state.attendanceMeetingReducer.attendanceMeetings,
   );
- 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const attendanceConfirmationModal = useSelector(
+    (state) => state.NewMeetingreducer.attendanceConfirmationModal,
+  );
+  const [useCase, setUseCase] = useState(0);
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let userID = localStorage.getItem("userID");
+  const [show, SnackBar] = useSnackbar();
 
   const [attendenceRows, setAttendenceRows] = useState([]);
 
@@ -266,7 +274,7 @@ const Attendence = () => {
 
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
+      show(ResponseMessage, "success");
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
     }
@@ -393,7 +401,8 @@ const Attendence = () => {
 
    
 
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

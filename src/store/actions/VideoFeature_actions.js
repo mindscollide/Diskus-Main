@@ -430,11 +430,6 @@ const hideUnHideParticipantGuestFail = (message) => {
 };
 
 const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
-  return (dispatch) => {
-    dispatch(hideUnHideParticipantGuestInit());
-    let form = new FormData();
-    form.append("RequestMethod", hideUnHidePaticipantVideo.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
       .post(meetingApi, form)
@@ -2731,8 +2726,12 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
             ) {
               if (data.ShareScreen === true) {
                 localStorage.setItem("isSharedSceenEnable", true);
+                // Mark that THIS user is the active screen sharer. Used by the
+                // tab-close handler to stop the share if the sharer leaves.
+                localStorage.setItem("isScreenShareEnabled", true);
               } else {
                 localStorage.removeItem("isSharedSceenEnable");
+                localStorage.removeItem("isScreenShareEnabled");
               }
               await dispatch(
                 isSharedScreenSuccess(
@@ -2782,6 +2781,14 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
 const screenShareTriggeredGlobally = (response) => {
   return {
     type: actions.GLOBAL_SCREEN_SHARE_TRIGGERED,
+    response: response,
+  };
+};
+
+// Notify Participants when Host is Transferred
+const notifyParticipantsWhenHostIsTransferred = (response) => {
+  return {
+    type: actions.NOTIFY_PARTICIPANTS_WHEN_HOST_IS_TRANSFERRED,
     response: response,
   };
 };
@@ -2889,4 +2896,5 @@ export {
   stopScreenShareOnPresenterStarting,
   isSharedScreenTriggeredApi,
   screenShareTriggeredGlobally,
+  notifyParticipantsWhenHostIsTransferred,
 };

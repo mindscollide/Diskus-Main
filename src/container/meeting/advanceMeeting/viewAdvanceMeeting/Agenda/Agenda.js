@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import {  Notification } from "../../../../../components/elements";
+import { Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
-import {
-} from "../../../../../store/actions/NewMeetingActions";
+import {} from "../../../../../store/actions/NewMeetingActions";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearAgendaReducerState,
@@ -26,10 +25,8 @@ import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import {
-  useMeetingContext,
-} from "../../../../../context/MeetingContext";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -44,30 +41,31 @@ const Agenda = () => {
     advanceMeetingModalID,
   } = useMeetingContext();
   const agendaItemRemoved = useSelector(
-    (state) => state.NewMeetingreducer.agendaItemRemoved
+    (state) => state.NewMeetingreducer.agendaItemRemoved,
   );
   const mainAgendaItemRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mainAgendaItemRemoved
+    (state) => state.NewMeetingreducer.mainAgendaItemRemoved,
   );
   const advancePermissionConfirmation = useSelector(
-    (state) => state.NewMeetingreducer.advancePermissionConfirmation
+    (state) => state.NewMeetingreducer.advancePermissionConfirmation,
   );
   const voteAgendaModal = useSelector(
-    (state) => state.NewMeetingreducer.voteAgendaModal
+    (state) => state.NewMeetingreducer.voteAgendaModal,
   );
   const voteConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.voteConfirmationModal
+    (state) => state.NewMeetingreducer.voteConfirmationModal,
   );
 
   const cancelAgenda = useSelector(
-    (state) => state.NewMeetingreducer.cancelAgenda
+    (state) => state.NewMeetingreducer.cancelAgenda,
   );
   const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
   );
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const [enableVotingPage, setenableVotingPage] = useState(false);
@@ -76,13 +74,7 @@ const Agenda = () => {
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-
-;
+  const [show, SnackBar] = useSnackbar();
 
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
@@ -98,7 +90,6 @@ const Agenda = () => {
     };
   }, []);
 
-
   useEffect(() => {
     if (
       GetAdvanceMeetingAgendabyMeetingIDData !== null &&
@@ -111,9 +102,9 @@ const Agenda = () => {
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      showMessage(t("Record-saved"), "success", setOpen);
+      show(t("Record-saved"), "success");
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      showMessage(t("Record-updated"), "success", setOpen);
+      show(t("Record-updated"), "success");
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -139,7 +130,7 @@ const Agenda = () => {
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
-                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID,
             )
           ) {
             return {
@@ -190,7 +181,7 @@ const Agenda = () => {
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
-                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
+                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID,
             )
           ) {
             return {
@@ -372,7 +363,7 @@ const Agenda = () => {
                                       styles["Empty_state_Subheading"]
                                     }>
                                     {t(
-                                      "Add-some-purpose-start-by-creating-your-agenda"
+                                      "Add-some-purpose-start-by-creating-your-agenda",
                                     )}
                                   </span>
                                 </Col>
@@ -452,7 +443,6 @@ const Agenda = () => {
           setMinutes={setMinutes}
         />
       )} */}
-      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

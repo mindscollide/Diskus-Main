@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./EditPollsMeeting.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 import {
   Button,
@@ -66,11 +66,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [members, setMembers] = useState([]);
   const [options, setOptions] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
     optionscross.splice(index, 1);
@@ -97,10 +93,10 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        show(t("Please-fill-options"), "error");
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      show(t("Please-fill-options"), "error");
     }
   };
 
@@ -244,17 +240,17 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       setError(true);
 
       if (updatePolls.Title === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        show(t("Title-is-required"), "error");
       } else if (updatePolls.date === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        show(t("Select-date"), "error");
       } else if (Object.keys(members).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        show(t("Atleat-one-member-required"), "error");
       } else if (Object.keys(options).length <= 2) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        show(t("Required-atleast-two-options"), "error");
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        show(t("Please-fill-all-open-option-fields"), "error");
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        show(t("Please-fill-all-reqired-fields"), "error");
       }
     }
   };
@@ -661,7 +657,8 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       {unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </section>
   );
 };

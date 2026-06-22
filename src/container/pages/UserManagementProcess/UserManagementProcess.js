@@ -23,10 +23,11 @@ import { useTranslation } from "react-i18next";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
+import { getHomeRoute } from "../../../commen/functions/utils";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -58,11 +59,7 @@ const UserManagementProcess = () => {
   );
 
   //state to show snackbar
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
@@ -109,35 +106,6 @@ const UserManagementProcess = () => {
     }
   }, [userManagementRoute]);
 
-  useEffect(() => {
-    if (
-      AuthreducerEmailValidationResponseMessage !== "" &&
-      AuthreducerEmailValidationResponseMessage !==
-        t("Users-password-is-created")
-    ) {
-      showMessage(
-        AuthreducerEmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerEnterPasswordResponseMessage !== "" &&
-      AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled") &&
-      AuthreducerEnterPasswordResponseMessage !== undefined &&
-      AuthreducerEnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    AuthreducerEmailValidationResponseMessage,
-    AuthreducerEnterPasswordResponseMessage,
-  ]);
-
   //MQTT
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
@@ -170,7 +138,7 @@ const UserManagementProcess = () => {
               ) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               }
             }
           }
@@ -200,34 +168,6 @@ const UserManagementProcess = () => {
   }, [Helper.socket]);
 
   //User Password Verification After forget password
-  useEffect(() => {
-    if (
-      AuthreducerVerifyOTPEmailResponseMessage !== "" &&
-      AuthreducerVerifyOTPEmailResponseMessage !== undefined
-    ) {
-      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerVerifyOTPEmailResponseMessage]);
-
-  useEffect(() => {
-    if (
-      AuthreducerAuthenticateAFAResponseMessage !== "" &&
-      AuthreducerAuthenticateAFAResponseMessage !== undefined
-    ) {
-      showMessage(
-        AuthreducerAuthenticateAFAResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerAuthenticateAFAResponseMessage]);
 
   let componentToRender;
   
@@ -273,7 +213,8 @@ const UserManagementProcess = () => {
   return (
     <>
       {componentToRender}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

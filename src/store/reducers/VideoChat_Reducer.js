@@ -11,6 +11,7 @@ const initialState = {
   MeetingAttachmentMessage: "",
   MeetingAgendaAttachmentResponse: "",
   MeetingAgendaAttachmentMessage: "",
+  errorSeverity: null,
 };
 
 const VideoChatReducer = (state = initialState, action) => {
@@ -44,12 +45,14 @@ const VideoChatReducer = (state = initialState, action) => {
         ...state,
         MeetingAgendasResponse: action.response.meetingAgendaAttachments,
         MeetingAgendasMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_MEETINGAGENDAS_FAIL: {
       return {
         ...state,
         MeetingAgendasMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_ATTACHMENTSBYMEETINGID_INIT: {
@@ -64,6 +67,7 @@ const VideoChatReducer = (state = initialState, action) => {
         // Loading: false,
         MeetingAttachmentsResponse: action.response.meetingAgendaAttachments,
         MeetingAttachmentMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ATTACHMENTSBYMEETINGID_FAIL: {
@@ -72,6 +76,7 @@ const VideoChatReducer = (state = initialState, action) => {
         // Loading: false,
         MeetingAttachmentsResponse: [],
         MeetingAttachmentMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.AGENDA_ATTACHMENTUPDATE_INIT: {
@@ -86,6 +91,7 @@ const VideoChatReducer = (state = initialState, action) => {
         // Loading: false,
         MeetingAgendaAttachmentResponse: action.response,
         MeetingAgendaAttachmentMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.AGENDA_ATTACHMENTUPDATE_FAIL: {
@@ -93,6 +99,7 @@ const VideoChatReducer = (state = initialState, action) => {
         ...state,
         // Loading: false,
         MeetingAgendaAttachmentMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -107,6 +114,7 @@ const VideoChatReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "success",
       };
     }
 

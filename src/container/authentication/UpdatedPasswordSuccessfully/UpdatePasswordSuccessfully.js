@@ -11,7 +11,7 @@ import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newR
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UpdatePasswordSuccessfully = () => {
   const { Authreducer } = useSelector((state) => state);
@@ -19,31 +19,11 @@ const UpdatePasswordSuccessfully = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const handlechange = (e) => {
     e.preventDefault();
     navigate("/");
   };
-
-  useEffect(() => {
-    if (
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t("Password-updated-successfully")
-    ) {
-      showMessage(
-        Authreducer.passwordUpdateOnForgotPasswordMessege,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.passwordUpdateOnForgotPasswordMessege]);
 
   return (
     <>
@@ -161,7 +141,8 @@ const UpdatePasswordSuccessfully = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

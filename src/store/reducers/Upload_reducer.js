@@ -23,6 +23,7 @@ const uploadReducer = (state = initialState, action) => {
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
             : action.response.responseResult.recordeMessage,
+        errorSeverity: "error",
       };
 
     case actions.SET_LOADER_FALSE_UPLOAD:

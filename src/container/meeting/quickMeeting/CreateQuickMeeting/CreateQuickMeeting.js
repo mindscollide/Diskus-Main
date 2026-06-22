@@ -51,6 +51,8 @@ import {
 } from "@/commen/functions/convertFileSizeInMB";
 import Select from "react-select";
 import { Tooltip } from "antd";
+
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
@@ -104,11 +106,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
 
   const [isPublishMeeting, setIsPublishMeeting] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   // for modal fields error
   const [modalField, setModalField] = useState(false);
@@ -360,7 +358,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         const currentDateTime = convertDateTimeObject(getformattedDateTIme);
 
         if (dateTimeFormat < currentDateTime) {
-          show(t("Time-should-be-greater-then-system-time"), "error");
+          notify(t("Time-should-be-greater-then-system-time"), "error");
           setTimeout(() => {
             setCreateMeeting({
               ...createMeeting,
@@ -445,7 +443,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        show(
+        notify(
           t("Date-and-time-should-be-greater-than-current-system-time"),
           "error",
         );
@@ -507,7 +505,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     let sizezero = true;
 
     if (attachments.length + filesArray.length > 10) {
-      show(t("Not-allowed-more-than-10-files"), "error");
+      notify(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
 
@@ -526,11 +524,11 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       }
 
       if (fileExists) {
-        show(t("This-file-already-exist"), "error");
+        notify(t("This-file-already-exist"), "error");
       } else if (!size) {
-        show(t("File-size-should-not-be-more-than-1-5GB"), "error", setOpen);
+        notify(t("File-size-should-not-be-more-than-1-5GB"), "error");
       } else if (!sizezero) {
-        show(t("File-size-is-0mb"), "error");
+        notify(t("File-size-is-0mb"), "error");
       } else {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
@@ -1789,7 +1787,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        show(t("User-already-exists"), "error");
+        notify(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
         setParticipantRoleValue({
           label: t("Participant"),
@@ -1868,7 +1866,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       }
     } else {
       if (found === undefined) {
-        show(t("Please-add-valid-user"), "error");
+        notify(t("Please-add-valid-user"), "error");
         setTaskAssignedTo(0);
         setParticipantRoleValue({
           label: t("Participant"),
@@ -1906,7 +1904,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     );
 
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      show(t("Please-add-atleast-one-participant"), "error");
+      notify(t("Please-add-atleast-one-participant"), "error");
       return;
     }
     console.log("Checking");
@@ -2884,6 +2882,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           </>
         }
       />
+
       {SnackBar}
     </>
   );

@@ -6,7 +6,7 @@ import PendingApproval from "./pendingApprovals/PendingApprovals";
 import ReviewMinutes from "./reviewMinutes/ReviewMinutes";
 import { Notification } from "../../components/elements";
 import { CleareMessegeMinutes } from "../../store/actions/Minutes_action";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 
 // Functional component for Minutes Flow section
 const MinutesFlow = () => {
@@ -22,27 +22,7 @@ const MinutesFlow = () => {
   const showReviewMinutesPage = useSelector(
     (state) => state.MinutesReducer.showReviewMinutesPage
   );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-
-  useEffect(() => {
-    if (
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(ResponseMessage, "sucess", setOpen);
-      dispatch(CleareMessegeMinutes());
-    } else {
-      dispatch(CleareMessegeMinutes());
-    }
-  }, [ResponseMessage]);
+  const [show, SnackBar] = useSnackbar();
 
   return (
     <>
@@ -52,12 +32,7 @@ const MinutesFlow = () => {
         <ReviewMinutes />
       ) : null}
 
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+    {SnackBar}
     </>
   );
 };

@@ -48,7 +48,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import DeletePollConfirmModal from "./DeletePollsConfirmationModal/DeletePollConfirmModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -125,11 +125,7 @@ const Polls = () => {
   const [pollsRows, setPollsRows] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -781,35 +777,32 @@ const Polls = () => {
     setCreatepoll(true);
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessagePoll !== "" &&
-      ResponseMessagePoll !== t("No-data-available") &&
-      ResponseMessagePoll !== "" &&
-      ResponseMessagePoll !== t("No-records-found") &&
-      ResponseMessagePoll !== t("No-record-found")
-    ) {
-      showMessage(ResponseMessagePoll, "success", setOpen);
-      dispatch(clearPollsMesseges());
-    } else {
-      dispatch(clearPollsMesseges());
-    }
-  }, [ResponseMessagePoll]);
+  const handleCancelPolls = () => {
+    setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
+    setEditorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationAdvanceMeetingID");
+    localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
+  };
 
-  useEffect(() => {
-    if (
-      ResponseMessageMeeting !== "" &&
-      ResponseMessageMeeting !== t("No-data-available") &&
-      ResponseMessageMeeting !== "" &&
-      ResponseMessageMeeting !== t("No-records-found") &&
-      ResponseMessageMeeting !== t("No-record-found")
-    ) {
-      showMessage(ResponseMessageMeeting, "success", setOpen);
-      dispatch(clearResponseNewMeetingReducerMessage());
-    } else {
-      dispatch(clearResponseNewMeetingReducerMessage());
-    }
-  }, [ResponseMessageMeeting]);
+
 
   return (
     <>
@@ -979,9 +972,10 @@ const Polls = () => {
         )}
         {deletPollsMeeting && <DeletePollConfirmModal pollID={pollID} />}
 
-        <Notification open={open} setOpen={setOpen} />
+        
         {AccessDeniedGlobalState && <AccessDeniedModal />}
       </section>
+    {SnackBar}
     </>
   );
 };

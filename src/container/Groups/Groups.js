@@ -52,7 +52,7 @@ import {
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
@@ -148,6 +148,7 @@ const Groups = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
 
+  const [show, SnackBar] = useSnackbar();
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
@@ -889,6 +890,7 @@ const Groups = () => {
         />
       ) : null}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
+
       {SnackBar}
     </>
   );

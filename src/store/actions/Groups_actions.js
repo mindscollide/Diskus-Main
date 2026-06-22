@@ -1952,10 +1952,7 @@ const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
                 )
             ) {
               dispatch(
-                setMeetingByGroupID_success(
-                  response.data.responseResult,
-                  "",
-                ),
+                setMeetingByGroupID_success(response.data.responseResult, ""),
               );
               switch (routePath) {
                 case "fromGroupAdvanceMeeting":

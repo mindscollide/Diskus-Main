@@ -19,7 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -35,11 +35,7 @@ const ChangePassword = () => {
     ConfirmPassword: "",
   });
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const dispatch = useDispatch();
 
@@ -77,40 +73,6 @@ const ChangePassword = () => {
   const cancelHandler = () => {
     setmMdalFlag(false);
   };
-
-  useEffect(() => {
-    if (
-      Authreducer.ChangeUserPasswordResponseMessage != t("Change-password") &&
-      Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Your-password-has-been-updated") &&
-      Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Your-password-has-been-changed-successfully") &&
-      Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Password-updated-successfully") &&
-      Authreducer.ChangeUserPasswordResponseMessage != ""
-    ) {
-      showMessage(
-        Authreducer.ChangeUserPasswordResponseMessage,
-        "success",
-        setOpen,
-      );
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-    if (
-      Authreducer.ChangeUserPasswordResponseMessage.toLowerCase().includes(
-        t("Password-updated-successfully").toLowerCase(),
-      )
-    ) {
-      setOldPassword("");
-      setShowOldPasssword(false);
-      setShowNewPasswordIcon(false);
-      setConfirmShowPasswordIcon(false);
-      setmMdalFlag(true);
-      setPassword({ ...Password, newPassword: "", ConfirmPassword: "" });
-    }
-  }, [Authreducer.ChangeUserPasswordResponseMessage]);
 
   const handlerevert = () => {
     setShowOldPasssword(false);
@@ -349,7 +311,8 @@ const ChangePassword = () => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

@@ -53,7 +53,7 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
 import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
@@ -130,11 +130,7 @@ const MeetingDetails = () => {
   const calendRef = useRef();
   const [error, seterror] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingID: 0,
     MeetingTitle: "",
@@ -269,7 +265,7 @@ const MeetingDetails = () => {
       // If date is today, time must be in the future
       if (selectedDate.toDateString() === now.toDateString()) {
         if (newDate <= now) {
-          showMessage("Start time must be in the future", "error", setOpen);
+          show("Start time must be in the future", "error");
           updatedRows[index].startTime = getStartTime?.newFormatTime;
           return;
         }
@@ -283,11 +279,7 @@ const MeetingDetails = () => {
       ) {
         const prevEndTime = new Date(updatedRows[index - 1].endTime);
         if (newDate <= prevEndTime) {
-          showMessage(
-            "Start time must be after previous end time",
-            "error",
-            setOpen,
-          );
+          show("Start time must be after previous end time", "error");
           return;
         }
       }
@@ -297,7 +289,7 @@ const MeetingDetails = () => {
         updatedRows[index].endTime &&
         newDate >= new Date(updatedRows[index].endTime)
       ) {
-        showMessage("Start time must be before end time", "error", setOpen);
+        show("Start time must be before end time", "error");
         updatedRows[index].startTime = getStartTime?.newFormatTime;
         return;
       }
@@ -315,7 +307,7 @@ const MeetingDetails = () => {
       const startTime = new Date(updatedRows[index].startTime);
 
       if (newDate <= startTime) {
-        showMessage("End time must be after start time", "error", setOpen);
+        show("End time must be after start time", "error");
         updatedRows[index].endTime = getEndTime?.newFormatTime;
         return;
       }
@@ -332,7 +324,7 @@ const MeetingDetails = () => {
       today.setHours(0, 0, 0, 0); // set to start of today
 
       if (newDate < today) {
-        showMessage("Date should not be in the past", "error", setOpen);
+        show("Date should not be in the past", "error");
         return;
       }
 
@@ -869,19 +861,6 @@ const MeetingDetails = () => {
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   // Showing The reposnse messege
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== undefined &&
-      ResponseMessage !== null
-    ) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(clearResponseNewMeetingReducerMessage());
-    }
-  }, [ResponseMessage]);
 
   //Fetching All Saved Data
   useEffect(() => {

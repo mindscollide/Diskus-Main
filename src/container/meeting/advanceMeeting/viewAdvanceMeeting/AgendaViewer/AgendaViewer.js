@@ -96,15 +96,15 @@ import {
   footerShowHideStatus,
   headerShowHideStatus,
   recentChatFlag,
-} from "@/store/actions/Talk_Feature_actions";
-import { showMessage } from "@/components/elements/snack_bar/utill";
-import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
-import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
-import { useMeetingContext } from "@/context/MeetingContext";
+} from "../../../../../store/actions/Talk_Feature_actions";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
+import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
 import { raiseUnRaisedHandMainApi } from "@/store/actions/Guest_Video";
 
@@ -275,11 +275,7 @@ const AgendaViewer = () => {
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -546,7 +542,7 @@ const AgendaViewer = () => {
 
         dispatch(activeChat(foundRecord));
       } else {
-        showMessage(t("Chat-not-found"), "error", setOpen);
+        show(t("Chat-not-found"), "error");
         localStorage.removeItem("activeOtoChatID");
         dispatch(chatBoxActiveFlag(false));
       }
@@ -556,18 +552,18 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      showMessage(t("Email-sent"), "Success", setOpen);
+      show(t("Email-sent"), "Success");
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {
-      showMessage(t("Invalid-data"), "error", setOpen);
+      show(t("Invalid-data"), "error");
       dispatch(clearResponseMessage(""));
     }
   }, [agendaResponseMessage]);
 
   useEffect(() => {
     if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
-      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      show(t("Could-not-join-call"), "Success");
       dispatch(clearMessegesVideoFeature(""));
     }
   }, [AgendaVideoResponseMessage]);
@@ -1198,7 +1194,7 @@ const AgendaViewer = () => {
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
 
       {/* {fullScreenView ? (
         <FullScreenAgendaModal
@@ -1273,6 +1269,7 @@ const AgendaViewer = () => {
         <MaxParticipantVideoRemovedComponent />
       )}
       {nonMeetingVideo && <NonMeetingVideoModal />}
+    {SnackBar}
     </>
   );
 };

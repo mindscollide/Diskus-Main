@@ -17,6 +17,7 @@ import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { getHomeRoute } from "../../../../../commen/functions/utils";
 const VerificationCodeThree = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -105,7 +106,7 @@ const VerificationCodeThree = () => {
               ) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               }
             }
           }

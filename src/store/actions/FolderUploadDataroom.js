@@ -292,7 +292,7 @@ const saveFilesApi = (
               await dispatch(
                 saveFiles_success(
                   response.data.responseMessage,
-                  t("Files-saved-successfully")
+                  ""
                 )
               );
               setShowbarupload(false);
@@ -681,7 +681,7 @@ const saveFilesandFoldersApi = (
                 await dispatch(
                   savefilesandfolders_success(
                     response.data.responseMessage,
-                    t("Files-saved-successfully")
+                    ""
                   )
                 );
               } else if (

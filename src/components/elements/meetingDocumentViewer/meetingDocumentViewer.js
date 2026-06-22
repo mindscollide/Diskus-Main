@@ -32,8 +32,8 @@ import {
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
-import { showMessage } from "../snack_bar/utill";
 import "./meetingDocumentViewer.css";
+import useSnackbar from "../snack_bar/useSnackbar";
 
 const MeetingDocumentViewer = () => {
   const viewer = useRef(null);
@@ -41,7 +41,7 @@ const MeetingDocumentViewer = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
-
+  const [show, SnackBar] = useSnackbar();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [instance, setInstance] = useState(null);
 
@@ -60,7 +60,7 @@ const MeetingDocumentViewer = () => {
   const FileRemoveMQTT = useSelector(
     (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
+  const { attachmentBlob, xfdfData, } = useSelector(
     (state) => state.webViewer,
   );
 
@@ -266,11 +266,7 @@ const MeetingDocumentViewer = () => {
               filename: fileName,
             });
           } else {
-            showMessage(
-              t("file_format_not_supported_for_preview"),
-              "error",
-              setOpen,
-            );
+            show(t("file_format_not_supported_for_preview"), "error");
             return;
           }
 
@@ -399,23 +395,13 @@ const MeetingDocumentViewer = () => {
     instance.UI.disableElements(disabledElements);
   };
 
-  // Handle Notifications
-  useEffect(() => {
-    if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
-    }
-  }, [ResponseMessage]);
-
   return (
     <>
       <div className='document-viewer'>
         <div className='webviewer' ref={viewer}></div>
       </div>
 
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

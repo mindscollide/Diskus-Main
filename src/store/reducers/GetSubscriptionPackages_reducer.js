@@ -51,6 +51,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getCurrentActiveSubscriptionPackage: action.response,
         getCurrentActiveSubscriptionPackageResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETSUBSCRIBEORGANIZATIONPACKAGE_FAIL: {
@@ -59,6 +60,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getCurrentActiveSubscriptionPackage: null,
         getCurrentActiveSubscriptionPackageResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETUPGRADABLESUBSCRIPTIONPACAKGE_INIT: {
@@ -73,6 +75,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getSubscriptionPackageforUpgradeResponse: action.response,
         getSubscriptionPackageforUpgradeResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETUPGRADABLESUBSCRIPTIONPACAKGE_FAIL: {
@@ -81,6 +84,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getSubscriptionPackageforUpgradeResponse: [],
         getSubscriptionPackageforUpgradeResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPGRADESUBSRIPTIONPACKAGE_INIT: {
@@ -95,6 +99,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         upgradeSubscriptionPackageResponse: action.response,
         upgradeSubscriptionPackageResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPGRADESUBSRIPTIONPACKAGE_FAIL: {
@@ -103,6 +108,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         upgradeSubscriptionPackageResponse: null,
         upgradeSubscriptionPackageResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CANCELSUBCRIPTIONPACKAGE_INIT: {
@@ -117,6 +123,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getCancelSubscriptionResponse: action.response,
         getCancelSubscriptionResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CANCELSUBCRIPTIONPACKAGE_FAIL: {
@@ -125,6 +132,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: false,
         getCancelSubscriptionResponse: action.response,
         getCancelSubscriptionResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETPACKAGEEXPIRYDETAILS_INIT: {

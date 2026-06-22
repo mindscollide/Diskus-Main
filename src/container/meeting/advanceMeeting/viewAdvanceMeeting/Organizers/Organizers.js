@@ -26,7 +26,7 @@ import {
   GetAllMeetingOrganizers,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import {
   MeetingContext,
   useMeetingContext,
@@ -76,11 +76,7 @@ const Organizers = () => {
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   useEffect(() => {
     if (advanceMeetingModalID) {
@@ -453,20 +449,6 @@ const Organizers = () => {
     setRowsData(updatedRowsData);
   }, [MeetingOrganizersReducer.NotificationUpdateData]);
 
-  useEffect(() => {
-    if (
-      MeetingOrganizersReducer.ResponseMessage !== "" ||
-      MeetingOrganizersReducer.ResponseMessage !== t("No-record-found") ||
-      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
-      MeetingOrganizersReducer.ResponseMessage !== ""
-    ) {
-      showMessage(MeetingOrganizersReducer.ResponseMessage, "success", setOpen);
-      dispatch(clearResponseMessage(""));
-    } else {
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingOrganizersReducer.ResponseMessage]);
-
   return (
     <>
       <section className={`${"position-relative"} ${styles["height2"]}`}>
@@ -504,7 +486,7 @@ const Organizers = () => {
         </Row> */}
       </section>
 
-      <Notification open={open} setOpen={setOpen} />
+      
 
       {cancelModalView && (
         <CancelButtonModal
@@ -514,6 +496,7 @@ const Organizers = () => {
           setMeetingDetails={setorganizers}
         />
       )}
+    {SnackBar}
     </>
   );
 };

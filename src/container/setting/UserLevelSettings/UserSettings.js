@@ -27,7 +27,6 @@ import {
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UserSettings = ({ googleClientIDs }) => {
   const { t } = useTranslation();
@@ -58,12 +57,6 @@ const UserSettings = ({ googleClientIDs }) => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
-
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-    severity: "success",
-  });
 
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
@@ -258,23 +251,6 @@ const UserSettings = ({ googleClientIDs }) => {
       }
     }
   }, [settingReducerData]);
-
-  // Add this useEffect for showing toast
-  useEffect(() => {
-    if (
-      userSettingsResponseMessagesData &&
-      userSettingsResponseMessagesData !== "" &&
-      userSettingsResponseMessagesData !== null &&
-      userSettingsResponseMessagesData !== undefined
-    ) {
-      showMessage(
-        userSettingsResponseMessagesData,
-        userSettingsResponseSeverity || "success",
-        setOpen,
-      );
-      dispatch(updateUserMessageCleare());
-    }
-  }, [userSettingsResponseMessagesData, userSettingsResponseSeverity]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -2235,7 +2211,6 @@ const UserSettings = ({ googleClientIDs }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

@@ -20,19 +20,15 @@ import {
   verificationEmailOTP,
 } from "../../../../src/store/actions/Auth2_actions";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ForgotPasswordVerification = () => {
-  const { auth, Authreducer } = useSelector((state) => state);
+  const { Authreducer } = useSelector((state) => state);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   // Constants for timer
   const timerDurationMinutes = 5;
   const initialSeconds = 0;
@@ -42,12 +38,12 @@ const ForgotPasswordVerification = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds")
       ? parseInt(localStorage.getItem("seconds"))
-      : initialSeconds
+      : initialSeconds,
   );
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes")
       ? parseInt(localStorage.getItem("minutes"))
-      : initialMinutes
+      : initialMinutes,
   );
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -110,30 +106,6 @@ const ForgotPasswordVerification = () => {
   }, []);
 
   //for messeges shown in the snack-bar
-  useEffect(() => {
-    if (auth.ResponseMessage !== "") {
-      showMessage(auth.ResponseMessage, "success", setOpen);
-
-      dispatch(cleareChangePasswordMessage());
-    } else {
-      dispatch(cleareChangePasswordMessage());
-    }
-  }, [auth.ResponseMessage]);
-
-  //for showing the responses in the snackbar
-  useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.VerifyOTPEmailResponseMessage]);
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
@@ -159,8 +131,8 @@ const ForgotPasswordVerification = () => {
           t,
           true,
           setSeconds,
-          setMinutes
-        )
+          setMinutes,
+        ),
       );
     }
   };
@@ -325,7 +297,8 @@ const ForgotPasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

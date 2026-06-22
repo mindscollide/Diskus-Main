@@ -55,7 +55,6 @@ const getMeetingAgendasFail = (message) => {
 };
 
 const getMeetingAgendas = (navigate, data, t) => {
-
   return (dispatch) => {
     dispatch(getMeetingAgendasInit());
     let form = new FormData();
@@ -107,7 +106,6 @@ const getMeetingAttachmentsFail = (message) => {
   };
 };
 const getMeetingAttachments = (navigate, data, t) => {
-
   return (dispatch) => {
     dispatch(getMeetingAttachmentsInit());
     let form = new FormData();
@@ -215,7 +213,6 @@ const downloadCallRecording_success = () => {
 // For Video Call Title ->  VideoCall-ddMMyyyy-starttime-Recording.mp4
 
 const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
-
   let form = new FormData();
   form.append("RequestMethod", downloadCallRecording.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -257,7 +254,6 @@ const DownloadMeetingRecording = (
   utcDate,
   utcTime,
 ) => {
-
   let form = new FormData();
   form.append("RequestMethod", downloadMeetingRecording.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));

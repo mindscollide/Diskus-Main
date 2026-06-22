@@ -1922,7 +1922,7 @@ const Resolution = () => {
         setCancelresolution={setCancelResolutionModal}
         Id={resolutionIDForCancel}
       />
-      <Notification open={open} setOpen={setOpen} />
+      
       {AccessDeniedGlobalState && <AccessDeniedModal />}
     </>
   );

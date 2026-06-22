@@ -29,7 +29,7 @@ import { LoginHistoryReport } from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
 import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Reports = () => {
@@ -50,11 +50,7 @@ const Reports = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchText, setSearchText] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [isIpAddressValid, setIsIpAddressValid] = useState(false);
   const [userLoginHistorySearch, setUserLoginHistorySearch] = useState({
     userName: "",
@@ -487,7 +483,7 @@ const Reports = () => {
     if (
       !validateEmailEnglishAndArabicFormat(userLoginHistorySearch.userEmail)
     ) {
-      showMessage(t("Email-is-not-valid"), "error", setOpen);
+      show(t("Email-is-not-valid"), "error");
     } else {
     }
   };
@@ -878,7 +874,8 @@ const Reports = () => {
           </span>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </Fragment>
   );
 };

@@ -4,6 +4,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   severity: null, // success | error | ""
   errorSeverity: null,
   GetAllAuthorities: null,
@@ -996,6 +997,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "success",
         ComplianceDataRoomMapFolderId: 0,
         addReopenComplianceDetails: null,
+        errorSeverity: "success",
       };
 
     case actions.EDIT_COMPLIANCE_FAIL:
@@ -1007,6 +1009,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "error",
         ComplianceDataRoomMapFolderId: 0,
         addReopenComplianceDetails: null,
+        errorSeverity: "error",
       };
 
     //API For Report Compliance Listing

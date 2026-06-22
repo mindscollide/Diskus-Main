@@ -17,7 +17,65 @@ import {
   processXmlToHideFields,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+
+/**
+ * Async: strip only <apref> elements whose referenced PDF object does NOT exist
+ * in the document's XRef table.
+ *
+ * When <apref> nodes reference PDF objects that have been removed or were never
+ * embedded (e.g. after server-side re-processing), Apryse logs:
+ *   "Error in Promise.all for appearanceReference N on page M"
+ *   {type: 'PDFWorkerError', message: '…Can not find any annotation…'}
+ * followed by a cascade TypeError (reading 'children').
+ *
+ * Valid appearance references are preserved (they resolve successfully against
+ * the XRef table).  In this view-only component all Sig widgets are removed
+ * beforehand by processXmlToHideFields, so no signature visuals are at risk.
+ *
+ * @param {string} xfdfStr - processed XFDF string
+ * @param {object} pdfDoc  - Apryse PDFDoc (requires fullAPI: true)
+ * @returns {Promise<string>}
+ */
+const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc) => {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xfdfStr, "text/xml");
+    const aprefs = Array.from(doc.querySelectorAll("apref"));
+
+    if (!aprefs.length) return xfdfStr;
+
+    if (pdfDoc) {
+      for (const apref of aprefs) {
+        const objnum = parseInt(apref.getAttribute("objnum") ?? "0", 10);
+
+        // PDF object 0 is the null/free object — never a valid appearance stream
+        if (objnum === 0) {
+          apref.remove();
+          continue;
+        }
+
+        try {
+          const obj = await pdfDoc.getXRefTableEntry(objnum);
+          const missing =
+            !obj ||
+            (typeof obj.isNull === "function" && (await obj.isNull()));
+          if (missing) apref.remove();
+        } catch {
+          // Object unreachable — strip defensively
+          apref.remove();
+        }
+      }
+    } else {
+      // No pdfDoc available — strip all apref as safe fallback
+      doc.querySelectorAll("apref").forEach((node) => node.remove());
+    }
+
+    return new XMLSerializer().serializeToString(doc);
+  } catch {
+    return xfdfStr; // parsing failed — return original unchanged
+  }
+};
 
 const ViewSignatureDocument = () => {
   const location = useLocation();
@@ -50,11 +108,7 @@ const ViewSignatureDocument = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -110,6 +164,35 @@ const ViewSignatureDocument = () => {
   }, [signerData]);
 
   // === End === //
+
+  // ── Suppress Apryse internal appearance-stream crash ──────────────────────
+  // Apryse's appearance-loading runs in an un-caught internal Promise; when an
+  // <apref> object is missing from the PDF it rejects with a TypeError reading
+  // 'children'.  The rejection is unhandled inside webviewer-core.min.js —
+  // our try/catch around importAnnotations never sees it.  This handler
+  // silences only that specific internal rejection; all other unhandled
+  // rejections are left untouched.
+  useEffect(() => {
+    const suppressApryseChildrenError = (event) => {
+      const reason = event?.reason;
+      if (
+        reason instanceof TypeError &&
+        typeof reason.message === "string" &&
+        reason.message.includes("children") &&
+        typeof reason.stack === "string" &&
+        reason.stack.includes("webviewer-core.min.js")
+      ) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", suppressApryseChildrenError);
+    return () => {
+      window.removeEventListener(
+        "unhandledrejection",
+        suppressApryseChildrenError,
+      );
+    };
+  }, []);
 
   // === Api calling === //
   async function apiCall(Data) {
@@ -446,9 +529,16 @@ const ViewSignatureDocument = () => {
 
           if (pdfResponceDataRef.current && annotationManager) {
             try {
-              await annotationManager.importAnnotations(
+              // Validate each <apref> objnum against the PDF XRef table;
+              // strip references to missing objects (they cause the
+              // PDFWorkerError "Can not find any annotation") while keeping
+              // any valid appearance references intact.
+              const pdfDoc = await documentViewer.getDocument().getPDFDoc();
+              const cleanedXFDF = await stripInvalidAppearanceRefs(
                 pdfResponceDataRef.current,
+                pdfDoc,
               );
+              await annotationManager.importAnnotations(cleanedXFDF);
 
               // Lock every annotation object
               annotationManager.getAnnotationsList().forEach((annot) => {
@@ -523,15 +613,6 @@ const ViewSignatureDocument = () => {
     disableSignatureActions(Instance);
   }, [Instance]);
 
-  // === this is for Response Message===//
-  useEffect(() => {
-    if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(ClearMessageAnnotations());
-    }
-  }, [ResponseMessage]);
-  // === End ===//
-
   const handleClickDeclineBtn = () => {
     if (declineReasonMessage !== "") {
       let userID = localStorage.getItem("userID");
@@ -584,12 +665,8 @@ const ViewSignatureDocument = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+   
+    {SnackBar}
     </>
   );
 };

@@ -770,7 +770,7 @@ const ParentAgenda = ({
                                     change={(e) =>
                                       handleAgendaDescription(index, e)
                                     }
-                                    rows='5'
+                                    rows='3'
                                     maxLength={5000}
                                     placeholder={t("Agenda-description")}
                                     required={true}

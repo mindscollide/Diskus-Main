@@ -19,13 +19,19 @@ import {
   resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
-// import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
-import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
+import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
+import BlackCrossIcon from "../../../../../../../assets/images/BlackCrossIconModals.svg";
+import useSnackbar from "../../../../../../../components/elements/snack_bar/useSnackbar";
 import { toggleIsOrganizerProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
 import { scheduleMeetingFromProposedMeetingApi } from "../../../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../../../context/MeetingContext";
-// import { showMessage } from "../../../../components/elements/snack_bar/utill";
+
 const SceduleProposedmeeting = () => {
+  const [show, SnackBar] = useSnackbar();
+  let viewProposeDatePollMeetingID = Number(
+    localStorage.getItem("viewProposeDatePollMeetingID"),
+  );
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -369,6 +375,8 @@ const SceduleProposedmeeting = () => {
           </>
         }
       />
+
+      {SnackBar}
     </section>
   );
 };

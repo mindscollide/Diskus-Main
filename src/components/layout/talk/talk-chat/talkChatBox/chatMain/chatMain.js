@@ -103,11 +103,11 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
 import enUS from "antd/es/date-picker/locale/en_US";
-import { showMessage } from "../../../../../elements/snack_bar/utill";
+import useSnackbar from "../../../../../elements/snack_bar/useSnackbar";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
-
+  const [show, SnackBar] = useSnackbar();
   let currentUserId = localStorage.getItem("userID");
 
   let currentOrganizationId = localStorage.getItem("organizationID");
@@ -302,13 +302,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       message: "",
     });
   };
-
-  //Toast Messeges States
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   const autoResize = (event) => {
     const textarea = event.target;
@@ -822,6 +815,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setCustomCheckState(false);
   };
 
+  const cancelButtonHandler = () => {
+    setSave(false);
+    setTodayCheckState(false);
+    setLeave(false);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+  };
+
   const printChat = () => {
     let Data = {
       TalkRequest: {
@@ -863,6 +864,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(PrintChat(Data, t, navigate));
+    setPrint(false);
+    setTodayCheckState(false);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+  };
+
+  const cancelPrintHandler = () => {
     setPrint(false);
     setTodayCheckState(false);
     setAllCheckState(false);
@@ -915,6 +923,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
       message: t("Email-initiated"),
     });
     setNotificationID(id);
+    setEmail(false);
+    setTodayCheckState(false);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+  };
+  const cancelPrintemailChatHandler = () => {
     setEmail(false);
     setTodayCheckState(false);
     setAllCheckState(false);
@@ -1190,7 +1204,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       editShoutUsersChecked.length === 1 &&
       editShoutUsersChecked.includes(id)
     ) {
-      showMessage(t("At least one user must be selected."), "error", setOpen);
+      show(t("At least one user must be selected."), "error");
       return; // Prevent unchecking the last user
     }
     if (editShoutUsersChecked.includes(id)) {
@@ -3256,7 +3270,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   return (
     <>
-      <div className="positionRelative">
+      <div className='positionRelative'>
         <div className={chatMessageClass}>
           <Container>
             <Row>
@@ -3270,37 +3284,36 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     leave === true
                       ? "chat-header applyBlur"
                       : "chat-header"
-                  }
-                >
+                  }>
                   <Row>
                     <Col lg={1} md={1} sm={12}>
-                      <div className="chat-profile-icon">
+                      <div className='chat-profile-icon'>
                         {talkStateData.ActiveChatData.messageType === "O" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={SingleIcon}
                             width={25}
-                            alt=""
+                            alt=''
                           />
                         ) : talkStateData.ActiveChatData.messageType === "G" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={GroupIcon}
                             width={30}
-                            alt=""
+                            alt=''
                           />
                         ) : talkStateData.ActiveChatData.messageType === "B" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={ShoutIcon}
                             width={20}
-                            alt=""
+                            alt=''
                           />
                         ) : null}
                       </div>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
-                      <p className="chat-username chathead">
+                      <p className='chat-username chathead'>
                         {talkStateData.ActiveChatData.fullName}
                       </p>
                     </Col>
@@ -3310,23 +3323,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <Col lg={1} md={1} sm={12}></Col>
                     <Col lg={1} md={1} sm={12}>
                       {" "}
-                      <div className="chat-box-icons">
+                      <div className='chat-box-icons'>
                         <img
-                          draggable="false"
+                          draggable='false'
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
-                          alt=""
+                          alt=''
                         />
                       </div>
                     </Col>
                     <Col lg={1} md={1} sm={12}>
-                      <Dropdown className="chat-box-icons cursor-pointer positionRelative">
+                      <Dropdown className='chat-box-icons cursor-pointer positionRelative'>
                         <Dropdown.Toggle
                           // as="div"
-                          className="talk-dropdown-toggle"
-                          id="dropdown-basic"
-                        >
-                          <img draggable="false" src={MenuIcon} alt="" />
+                          className='talk-dropdown-toggle'
+                          id='dropdown-basic'>
+                          <img draggable='false' src={MenuIcon} alt='' />
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
@@ -3335,8 +3347,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerSave(talkStateData.ActiveChatData)
-                                }
-                              >
+                                }>
                                 {t("Save")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3344,8 +3355,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   modalHandlerPrint(
                                     talkStateData.ActiveChatData,
                                   )
-                                }
-                              >
+                                }>
                                 {t("Print")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3354,8 +3364,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   modalHandlerEmail(
                                     talkStateData.ActiveChatData,
                                   )
-                                }
-                              >
+                                }>
                                 {t("Email")}
                               </Dropdown.Item>
                             </>
@@ -3365,8 +3374,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerSave(talkStateData.ActiveChatData)
-                                }
-                              >
+                                }>
                                 {t("Save")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3374,8 +3382,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   modalHandlerPrint(
                                     talkStateData.ActiveChatData,
                                   )
-                                }
-                              >
+                                }>
                                 {t("Print")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3383,8 +3390,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   modalHandlerEmail(
                                     talkStateData.ActiveChatData,
                                   )
-                                }
-                              >
+                                }>
                                 {t("Email")}
                               </Dropdown.Item>
                               <Dropdown.Item onClick={modalHandlerGroupInfo}>
@@ -3398,8 +3404,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               </Dropdown.Item>
                               <Dropdown.Item
                                 style={{ borderBottom: "none" }}
-                                onClick={modalHandlerGroupEdit}
-                              >
+                                onClick={modalHandlerGroupEdit}>
                                 {t("Edit-Info")}
                               </Dropdown.Item>
                             </>
@@ -3409,8 +3414,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item
                                 onClick={() =>
                                   modalHandlerSave(talkStateData.ActiveChatData)
-                                }
-                              >
+                                }>
                                 {t("Save")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3418,8 +3422,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   modalHandlerPrint(
                                     talkStateData.ActiveChatData,
                                   )
-                                }
-                              >
+                                }>
                                 {t("Print")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3427,8 +3430,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   modalHandlerEmail(
                                     talkStateData.ActiveChatData,
                                   )
-                                }
-                              >
+                                }>
                                 {t("Email")}
                               </Dropdown.Item>
                               <Dropdown.Item onClick={deleteShoutFunction}>
@@ -3444,7 +3446,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     </Col>
                     {activeCall === false && checkFeatureIDAvailability(5) ? (
                       <Col lg={1} md={1} sm={12}>
-                        <div className="chat-box-icons">
+                        <div className='chat-box-icons'>
                           <img
                             onClick={
                               activeChatType === "O"
@@ -3453,9 +3455,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   ? initiateGroupCall
                                   : null
                             }
-                            draggable="false"
+                            draggable='false'
                             src={VideoCallIcon}
-                            alt=""
+                            alt=''
                           />
                         </div>
                       </Col>
@@ -3463,15 +3465,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <Col lg={1} md={1} sm={12}>
                       {" "}
                       <div
-                        className="chat-box-icons closechat"
-                        onClick={closeChat}
-                      >
+                        className='chat-box-icons closechat'
+                        onClick={closeChat}>
                         <img
                           width={14}
-                          draggable="false"
+                          draggable='false'
                           src={CloseChatIcon}
-                          className="cursor-pointer"
-                          alt=""
+                          className='cursor-pointer'
+                          alt=''
                         />
                       </div>
                     </Col>
@@ -3480,21 +3481,21 @@ const ChatMainBody = ({ chatMessageClass }) => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12} className="p-0">
-                <div className="encryption-level-chat">
+              <Col lg={12} md={12} sm={12} className='p-0'>
+                <div className='encryption-level-chat'>
                   <Row>
                     <Col lg={7} md={7} sm={12}>
-                      <p className="level-heading">{t("Crypto-Level")}</p>
+                      <p className='level-heading'>{t("Crypto-Level")}</p>
                     </Col>
-                    <Col lg={5} md={5} sm={12} className="positionRelative">
-                      <p className="level">{t("NIAP-+-PQC")}</p>
+                    <Col lg={5} md={5} sm={12} className='positionRelative'>
+                      <p className='level'>{t("NIAP-+-PQC")}</p>
 
-                      <span className="securityicon-box">
+                      <span className='securityicon-box'>
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={SecurityIconMessasgeBox}
                           style={{ width: "17px" }}
-                          alt=""
+                          alt=''
                         />
                       </span>
                     </Col>
@@ -3505,24 +3506,24 @@ const ChatMainBody = ({ chatMessageClass }) => {
             {showChatSearch === true ? (
               <>
                 <Row>
-                  <Col className="p-0">
-                    <div className="chat-searchfield">
+                  <Col className='p-0'>
+                    <div className='chat-searchfield'>
                       <TextField
                         maxLength={200}
-                        applyClass="form-control2"
-                        autoComplete="off"
-                        name="Name"
+                        applyClass='form-control2'
+                        autoComplete='off'
+                        name='Name'
                         change={chatSearchChange}
                         value={searchChatWord}
                         placeholder={t("Search-Chat")}
                         labelclass={"d-none"}
                         inputicon={
-                          <span className="background-close-search">
+                          <span className='background-close-search'>
                             <img
                               onClick={closeChatSearch}
-                              className="cursor-pointer"
+                              className='cursor-pointer'
                               src={CrossIcon}
-                              alt=""
+                              alt=''
                             />
                           </span>
                         }
@@ -3540,7 +3541,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             showGroupEdit === false ? (
               <>
                 <Row>
-                  <Col className="p-0">
+                  <Col className='p-0'>
                     <div
                       className={
                         save === true ||
@@ -3564,8 +3565,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 tasksAttachments.TasksAttachments.length > 0)
                                 ? "chat-messages-section"
                                 : ""
-                            }
-                          >
+                            }>
                             {allMessages.length > 0 &&
                             talkStateData.ActiveChatData.messageType === "O" &&
                             talkStateData.ChatSpinner === false ? (
@@ -3585,24 +3585,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         key={index}
                                         className={`direct-chat-msg text-right mb-2 ${
                                           isLastMessage ? "last-message" : ""
-                                        }`}
-                                      >
-                                        <div className="direct-chat-text message-outbox message-box text-start">
+                                        }`}>
+                                        <div className='direct-chat-text message-outbox message-box text-start'>
                                           <div
-                                            className="chatmessage-box-icons"
+                                            className='chatmessage-box-icons'
                                             ref={
                                               chatMessageRefs[
                                                 messageData.messageID
                                               ]
-                                            }
-                                          >
-                                            <Dropdown className="ChatsOneToOneDropDownSender border-none">
-                                              <Dropdown.Toggle id="dropdown-basic">
+                                            }>
+                                            <Dropdown className='ChatsOneToOneDropDownSender border-none'>
+                                              <Dropdown.Toggle id='dropdown-basic'>
                                                 <img
-                                                  draggable="false"
-                                                  className="dropdown-icon"
+                                                  draggable='false'
+                                                  className='dropdown-icon'
                                                   src={DropDownIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu
@@ -3610,23 +3608,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   isLastMessage
                                                     ? "dropdown-menu-upwardsSender"
                                                     : "ChatsOneToOneDropDownMenuSender"
-                                                }
-                                              >
+                                                }>
                                                 <>
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       replyFeatureHandler(
                                                         messageData,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Reply")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
                                                     onClick={
                                                       forwardFeatureHandler
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Forward")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
@@ -3634,8 +3629,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       deleteFeatureHandler(
                                                         messageData,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Delete for me")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
@@ -3643,8 +3637,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageInfoHandler(
                                                         messageData,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Message-Info")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
@@ -3655,8 +3648,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     }
                                                     style={{
                                                       borderBottom: "none",
-                                                    }}
-                                                  >
+                                                    }}>
                                                     {messageData.isFlag ===
                                                     0 ? (
                                                       <>{t("Star-Message")}</>
@@ -3680,13 +3672,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "jpeg" ||
                                                 ext === "JPEG") ? (
                                                 <div
-                                                  className="image-thumbnail-chat"
+                                                  className='image-thumbnail-chat'
                                                   onClick={() =>
                                                     imageClickFunction(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {/* <a
                                                     href={
                                                       filesUrlTalk +
@@ -3696,14 +3687,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     rel="noopener noreferrer"
                                                   > */}
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     // src={
                                                     //   filesUrlTalk +
                                                     //   messageData.attachmentLocation
                                                     // }
                                                     src={`data:image/jpeg;base64,${messageData.base64Image}`}
-                                                    alt=""
-                                                    className="cursor-pointer"
+                                                    alt=''
+                                                    className='cursor-pointer'
                                                   />
                                                   {/* </a> */}
                                                 </div>
@@ -3717,20 +3708,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ext === "txt" ||
                                                   ext === "gif") ? (
                                                 <div
-                                                  className="file-uploaded-chat cursor-pointer"
+                                                  className='file-uploaded-chat cursor-pointer'
                                                   onClick={() =>
                                                     DownloadFileFunction(
                                                       messageData,
                                                       ext,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DocumentIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
-                                                  <span className="attached-file">
+                                                  <span className='attached-file'>
                                                     {messageData.attachmentLocation
                                                       .substring(
                                                         messageData.attachmentLocation.lastIndexOf(
@@ -3748,14 +3738,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     rel="noopener noreferrer"
                                                   > */}
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DownloadIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                   {/* </a> */}
                                                 </div>
                                               ) : null}
-                                              <span className="direct-chat-body color-5a5a5a">
+                                              <span className='direct-chat-body color-5a5a5a'>
                                                 {messageData.messageBody}
                                               </span>
                                             </>
@@ -3776,8 +3766,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageData,
                                                     )
                                                   }
-                                                  className="image-thumbnail-chat"
-                                                >
+                                                  className='image-thumbnail-chat'>
                                                   {/* <a
                                                     href={
                                                       filesUrlTalk +
@@ -3787,14 +3776,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     rel="noopener noreferrer"
                                                   > */}
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     // src={
                                                     //   filesUrlTalk +
                                                     //   messageData.attachmentLocation
                                                     // }
                                                     src={`data:image/jpeg;base64,${messageData.base64Image}`}
-                                                    alt=""
-                                                    className="cursor-pointer"
+                                                    alt=''
+                                                    className='cursor-pointer'
                                                   />
                                                   {/* </a> */}
                                                 </div>
@@ -3808,20 +3797,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ext === "txt" ||
                                                   ext === "gif") ? (
                                                 <div
-                                                  className="file-uploaded-chat cursor-pointer"
+                                                  className='file-uploaded-chat cursor-pointer'
                                                   onClick={() =>
                                                     DownloadFileFunction(
                                                       messageData,
                                                       ext,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DocumentIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
-                                                  <span className="attached-file">
+                                                  <span className='attached-file'>
                                                     {messageData.attachmentLocation
                                                       .substring(
                                                         messageData.attachmentLocation.lastIndexOf(
@@ -3839,18 +3827,18 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     rel="noopener noreferrer"
                                                   > */}
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DownloadIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                   {/* </a> */}
                                                 </div>
                                               ) : (
-                                                <div className="replied-message-send">
-                                                  <p className="replied-message-sender m-0">
+                                                <div className='replied-message-send'>
+                                                  <p className='replied-message-sender m-0'>
                                                     {messageData.frMessages[3]}
                                                   </p>
-                                                  <p className="replied-message m-0">
+                                                  <p className='replied-message m-0'>
                                                     {messageData.sourceMessageBody !==
                                                     ""
                                                       ? messageData.sourceMessageBody
@@ -3860,41 +3848,41 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </div>
                                               )}
 
-                                              <span className="direct-chat-body color-5a5a5a">
+                                              <span className='direct-chat-body color-5a5a5a'>
                                                 {messageData.messageBody}
                                               </span>
                                             </>
                                           ) : (
                                             <>
-                                              <div className="replied-message-send">
-                                                <p className="replied-message-sender m-0">
+                                              <div className='replied-message-send'>
+                                                <p className='replied-message-sender m-0'>
                                                   {messageData.frMessages[3]}
                                                 </p>
-                                                <p className="replied-message m-0">
+                                                <p className='replied-message m-0'>
                                                   {messageData.sourceMessageBody !==
                                                   ""
                                                     ? messageData.sourceMessageBody
                                                     : messageData.frMessages[4]}
                                                 </p>
                                               </div>
-                                              <span className="direct-chat-body color-5a5a5a">
+                                              <span className='direct-chat-body color-5a5a5a'>
                                                 {messageData.messageBody}
                                               </span>
                                             </>
                                           )}
 
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status">
+                                          <div className='d-flex mt-1 justify-content-end'>
+                                            <div className='star-time-status ml-auto text-end'>
+                                              <span className='starred-status'>
                                                 {messageData.isFlag === 1 ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={StarredMessageIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : null}
                                               </span>
-                                              <span className="direct-chat-sent-time chat-datetime">
+                                              <span className='direct-chat-sent-time chat-datetime'>
                                                 {messageData.sentDate.slice(
                                                   0,
                                                   8,
@@ -3926,29 +3914,29 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   </>
                                                 )}
                                               </span>
-                                              <div className="message-status">
+                                              <div className='message-status'>
                                                 {messageData.messageStatus ===
                                                 "Sent" ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={SingleTickIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   "Delivered" ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={
                                                       DoubleTickDeliveredIcon
                                                     }
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   "Seen" ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DoubleTickIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : messageData.messageStatus ===
                                                     "Undelivered" &&
@@ -3957,16 +3945,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   messageData.isRetry ===
                                                     false ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={TimerIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : null}
                                               </div>
                                             </div>
                                           </div>
                                           {messageData.isRetry === true ? (
-                                            <div className="options-rd">
+                                            <div className='options-rd'>
                                               <span
                                                 onClick={() =>
                                                   retrySendingMessage(
@@ -3974,8 +3962,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageData.messageID,
                                                   )
                                                 }
-                                                className="option-r"
-                                              >
+                                                className='option-r'>
                                                 Retry
                                               </span>
                                               <span
@@ -3985,8 +3972,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageData.messageID,
                                                   )
                                                 }
-                                                className="option-d"
-                                              >
+                                                className='option-d'>
                                                 Delete
                                               </span>
                                             </div>
@@ -4007,7 +3993,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 index,
                                               )
                                             }
-                                            className="chat-message-checkbox-receiver"
+                                            className='chat-message-checkbox-receiver'
                                           />
                                         ) : null}
                                       </div>
@@ -4023,8 +4009,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     <div
                                       className={`direct-chat-msg text-left mb-2 ${
                                         isLastMessage ? "last-message" : ""
-                                      }`}
-                                    >
+                                      }`}>
                                       {showCheckboxes === true ? (
                                         <Checkbox
                                           checked={
@@ -4040,26 +4025,25 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               index,
                                             )
                                           }
-                                          className="chat-message-checkbox-sender"
+                                          className='chat-message-checkbox-sender'
                                         />
                                       ) : null}
 
-                                      <div className="direct-chat-text message-inbox message-box text-start ChatsOneToOne">
+                                      <div className='direct-chat-text message-inbox message-box text-start ChatsOneToOne'>
                                         <div
-                                          className="chatmessage-box-icons"
+                                          className='chatmessage-box-icons'
                                           ref={
                                             chatMessageRefs[
                                               messageData.messageID
                                             ]
-                                          }
-                                        >
-                                          <Dropdown className="ChatsOneToOneDropDownReciever border-none">
-                                            <Dropdown.Toggle id="ChatsOneToOneDropDownRecieverToggle">
+                                          }>
+                                          <Dropdown className='ChatsOneToOneDropDownReciever border-none'>
+                                            <Dropdown.Toggle id='ChatsOneToOneDropDownRecieverToggle'>
                                               <img
-                                                draggable="false"
-                                                className="dropdown-icon"
+                                                draggable='false'
+                                                className='dropdown-icon'
                                                 src={DropDownIcon}
-                                                alt=""
+                                                alt=''
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4075,23 +4059,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     enabled: false,
                                                   },
                                                 ],
-                                              }}
-                                            >
+                                              }}>
                                               <>
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     replyFeatureHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Reply")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={
                                                     forwardFeatureHandler
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Forward")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4099,8 +4080,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     deleteFeatureHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Delete for me")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4108,8 +4088,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageInfoHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Message-Info")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4120,8 +4099,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   }
                                                   style={{
                                                     borderBottom: "none",
-                                                  }}
-                                                >
+                                                  }}>
                                                   {messageData.isFlag === 0 ? (
                                                     <>{t("Star-Message")}</>
                                                   ) : (
@@ -4151,8 +4129,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageData,
                                                   )
                                                 }
-                                                className="image-thumbnail-chat"
-                                              >
+                                                className='image-thumbnail-chat'>
                                                 {/* <a
                                                   href={
                                                     filesUrlTalk +
@@ -4162,14 +4139,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   rel="noopener noreferrer"
                                                 > */}
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   // src={
                                                   //   filesUrlTalk +
                                                   //   messageData.attachmentLocation
                                                   // }
                                                   src={`data:image/jpeg;base64,${messageData.base64Image}`}
-                                                  alt=""
-                                                  className="cursor-pointer"
+                                                  alt=''
+                                                  className='cursor-pointer'
                                                 />
                                                 {/* </a> */}
                                               </div>
@@ -4183,20 +4160,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "txt" ||
                                                 ext === "gif") ? (
                                               <div
-                                                className="file-uploaded-chat received cursor-pointer"
+                                                className='file-uploaded-chat received cursor-pointer'
                                                 onClick={() =>
                                                   DownloadFileFunction(
                                                     messageData,
                                                     ext,
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DocumentIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
-                                                <span className="attached-file">
+                                                <span className='attached-file'>
                                                   {messageData.attachmentLocation
                                                     .substring(
                                                       messageData.attachmentLocation.lastIndexOf(
@@ -4214,47 +4190,47 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   rel="noopener noreferrer"
                                                 > */}
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DownloadIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                                 {/* </a> */}
                                               </div>
                                             ) : null}
-                                            <span className="direct-chat-body color-white">
+                                            <span className='direct-chat-body color-white'>
                                               {messageData.messageBody}
                                             </span>
                                           </>
                                         ) : (
                                           <>
-                                            <div className="replied-message-receive">
-                                              <p className="replied-message-receiver m-0">
+                                            <div className='replied-message-receive'>
+                                              <p className='replied-message-receiver m-0'>
                                                 {messageData.frMessages[3]}
                                               </p>
-                                              <p className="replied-message m-0">
+                                              <p className='replied-message m-0'>
                                                 {messageData.sourceMessageBody !==
                                                 ""
                                                   ? messageData.sourceMessageBody
                                                   : messageData.frMessages[4]}
                                               </p>
                                             </div>
-                                            <span className="direct-chat-body color-white">
+                                            <span className='direct-chat-body color-white'>
                                               {messageData.messageBody}
                                             </span>
                                           </>
                                         )}
-                                        <div className="d-flex mt-1 justify-content-end">
-                                          <div className="star-time-status ml-auto text-end">
-                                            <span className="starred-status">
+                                        <div className='d-flex mt-1 justify-content-end'>
+                                          <div className='star-time-status ml-auto text-end'>
+                                            <span className='starred-status'>
                                               {messageData.isFlag === 1 ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={StarredMessageIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : null}
                                             </span>
-                                            <span className="direct-chat-sent-time chat-datetime">
+                                            <span className='direct-chat-sent-time chat-datetime'>
                                               {messageData.sentDate.slice(
                                                 0,
                                                 8,
@@ -4285,7 +4261,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </>
                                               )}
                                             </span>
-                                            <div className="message-status"></div>
+                                            <div className='message-status'></div>
                                           </div>
                                         </div>
                                       </div>
@@ -4315,27 +4291,25 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     <div
                                       className={`direct-chat-msg text-right mb-2 ${
                                         isLastMessage ? "last-message" : ""
-                                      }`}
-                                    >
-                                      <div className="direct-chat-text message-outbox message-box text-start">
-                                        <p className="group-sender-name">
+                                      }`}>
+                                      <div className='direct-chat-text message-outbox message-box text-start'>
+                                        <p className='group-sender-name'>
                                           {messageData.senderName}
                                         </p>
                                         <div
-                                          className="chatmessage-box-icons"
+                                          className='chatmessage-box-icons'
                                           ref={
                                             chatMessageRefs[
                                               messageData.messageID
                                             ]
-                                          }
-                                        >
-                                          <Dropdown className="border-none">
-                                            <Dropdown.Toggle id="dropdown-basic">
+                                          }>
+                                          <Dropdown className='border-none'>
+                                            <Dropdown.Toggle id='dropdown-basic'>
                                               <img
-                                                draggable="false"
-                                                className="dropdown-icon"
+                                                draggable='false'
+                                                className='dropdown-icon'
                                                 src={DropDownIcon}
-                                                alt=""
+                                                alt=''
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4343,23 +4317,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 isLastMessage
                                                   ? "dropdown-menu-upwards"
                                                   : ""
-                                              }
-                                            >
+                                              }>
                                               <>
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     replyFeatureHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Reply")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={
                                                     forwardFeatureHandler
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Forward")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4367,8 +4338,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     deleteFeatureHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Delete for me")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4376,8 +4346,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageInfoHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Message-Info")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4388,8 +4357,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   }
                                                   style={{
                                                     borderBottom: "none",
-                                                  }}
-                                                >
+                                                  }}>
                                                   {messageData.isFlag === 0 ? (
                                                     <>{t("Star-Message")}</>
                                                   ) : (
@@ -4419,13 +4387,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageData,
                                                   )
                                                 }
-                                                className="image-thumbnail-chat"
-                                              >
+                                                className='image-thumbnail-chat'>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={`data:image/jpeg;base64,${messageData.base64Image}`}
-                                                  alt=""
-                                                  className="cursor-pointer"
+                                                  alt=''
+                                                  className='cursor-pointer'
                                                 />
                                               </div>
                                             ) : messageData.attachmentLocation !==
@@ -4438,20 +4405,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "txt" ||
                                                 ext === "gif") ? (
                                               <div
-                                                className="file-uploaded-chat cursor-pointer"
+                                                className='file-uploaded-chat cursor-pointer'
                                                 onClick={() =>
                                                   DownloadFileFunction(
                                                     messageData,
                                                     ext,
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DocumentIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
-                                                <span className="attached-file">
+                                                <span className='attached-file'>
                                                   {messageData.attachmentLocation
                                                     .substring(
                                                       messageData.attachmentLocation.lastIndexOf(
@@ -4461,46 +4427,46 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     .replace(/^\d+_/, "")}
                                                 </span>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DownloadIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               </div>
                                             ) : null}
-                                            <span className="direct-chat-body color-5a5a5a">
+                                            <span className='direct-chat-body color-5a5a5a'>
                                               {messageData.messageBody}
                                             </span>
                                           </>
                                         ) : (
                                           <>
-                                            <div className="replied-message-send">
-                                              <p className="replied-message-sender m-0">
+                                            <div className='replied-message-send'>
+                                              <p className='replied-message-sender m-0'>
                                                 {messageData.frMessages[3]}
                                               </p>
-                                              <p className="replied-message m-0">
+                                              <p className='replied-message m-0'>
                                                 {messageData.sourceMessageBody !==
                                                 ""
                                                   ? messageData.sourceMessageBody
                                                   : messageData.frMessages[4]}
                                               </p>
                                             </div>
-                                            <span className="direct-chat-body color-5a5a5a">
+                                            <span className='direct-chat-body color-5a5a5a'>
                                               {messageData.messageBody}
                                             </span>
                                           </>
                                         )}
-                                        <div className="d-flex mt-1 justify-content-end">
-                                          <div className="star-time-status ml-auto text-end">
-                                            <span className="starred-status">
+                                        <div className='d-flex mt-1 justify-content-end'>
+                                          <div className='star-time-status ml-auto text-end'>
+                                            <span className='starred-status'>
                                               {messageData.isFlag === 1 ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={StarredMessageIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : null}
                                             </span>
-                                            <span className="direct-chat-sent-time chat-datetime">
+                                            <span className='direct-chat-sent-time chat-datetime'>
                                               {messageData.sentDate.slice(
                                                 0,
                                                 8,
@@ -4531,27 +4497,27 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </>
                                               )}
                                             </span>
-                                            <div className="message-status">
+                                            <div className='message-status'>
                                               {messageData.messageStatus ===
                                               "Sent" ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={SingleTickIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : messageData.messageStatus ===
                                                 "Delivered" ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DoubleTickDeliveredIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : messageData.messageStatus ===
                                                 "Seen" ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DoubleTickIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : messageData.messageStatus ===
                                                   "Undelivered" &&
@@ -4560,9 +4526,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 messageData.isRetry ===
                                                   false ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={TimerIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : null}
                                             </div>
@@ -4584,7 +4550,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               index,
                                             )
                                           }
-                                          className="chat-message-checkbox-receiver"
+                                          className='chat-message-checkbox-receiver'
                                         />
                                       ) : null}
                                     </div>
@@ -4596,8 +4562,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     <div
                                       className={`direct-chat-msg text-left mb-2 ${
                                         isLastMessage ? "last-message" : ""
-                                      }`}
-                                    >
+                                      }`}>
                                       {showCheckboxes === true ? (
                                         <Checkbox
                                           checked={
@@ -4613,26 +4578,25 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               index,
                                             )
                                           }
-                                          className="chat-message-checkbox-sender"
+                                          className='chat-message-checkbox-sender'
                                         />
                                       ) : null}
 
-                                      <div className="direct-chat-text message-inbox message-box text-start">
+                                      <div className='direct-chat-text message-inbox message-box text-start'>
                                         <div
-                                          className="chatmessage-box-icons"
+                                          className='chatmessage-box-icons'
                                           ref={
                                             chatMessageRefs[
                                               messageData.messageID
                                             ]
-                                          }
-                                        >
-                                          <Dropdown className="border-none">
-                                            <Dropdown.Toggle id="dropdown-basic">
+                                          }>
+                                          <Dropdown className='border-none'>
+                                            <Dropdown.Toggle id='dropdown-basic'>
                                               <img
-                                                draggable="false"
-                                                className="dropdown-icon"
+                                                draggable='false'
+                                                className='dropdown-icon'
                                                 src={DropDownIcon}
-                                                alt=""
+                                                alt=''
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4640,23 +4604,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 isLastMessage
                                                   ? "dropdown-menu-upwards"
                                                   : ""
-                                              }
-                                            >
+                                              }>
                                               <>
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     replyFeatureHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Reply")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={
                                                     forwardFeatureHandler
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Forward")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4664,8 +4625,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     deleteFeatureHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Delete for me")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4673,8 +4633,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageInfoHandler(
                                                       messageData,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   {t("Message-Info")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
@@ -4685,8 +4644,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   }
                                                   style={{
                                                     borderBottom: "none",
-                                                  }}
-                                                >
+                                                  }}>
                                                   {messageData.isFlag === 0 ? (
                                                     <>{t("Star-Message")}</>
                                                   ) : (
@@ -4702,10 +4660,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         messageData.frMessages ===
                                           "Broadcast Message" ? (
                                           <>
-                                            <p className="group-sender-name">
+                                            <p className='group-sender-name'>
                                               {messageData.senderName}
                                             </p>
-                                            <span className="direct-chat-body color-white">
+                                            <span className='direct-chat-body color-white'>
                                               {messageData.messageBody}
                                             </span>
                                             {messageData.attachmentLocation !==
@@ -4722,13 +4680,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     messageData,
                                                   )
                                                 }
-                                                className="image-thumbnail-chat"
-                                              >
+                                                className='image-thumbnail-chat'>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={`data:image/jpeg;base64,${messageData.base64Image}`}
-                                                  alt=""
-                                                  className="cursor-pointer"
+                                                  alt=''
+                                                  className='cursor-pointer'
                                                 />
                                               </div>
                                             ) : messageData.attachmentLocation !==
@@ -4741,20 +4698,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ext === "txt" ||
                                                 ext === "gif") ? (
                                               <div
-                                                className="file-uploaded-chat cursor-pointer"
+                                                className='file-uploaded-chat cursor-pointer'
                                                 onClick={() =>
                                                   DownloadFileFunction(
                                                     messageData,
                                                     ext,
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DocumentIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
-                                                <span className="attached-file">
+                                                <span className='attached-file'>
                                                   {messageData.attachmentLocation
                                                     .substring(
                                                       messageData.attachmentLocation.lastIndexOf(
@@ -4764,9 +4720,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     .replace(/^\d+_/, "")}
                                                 </span>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DownloadIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               </div>
                                             ) : null}
@@ -4776,37 +4732,37 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           </>
                                         ) : (
                                           <>
-                                            <p className="group-sender-name">
+                                            <p className='group-sender-name'>
                                               {messageData.senderName}
                                             </p>
-                                            <div className="replied-message-receive">
-                                              <p className="replied-message-receiver m-0">
+                                            <div className='replied-message-receive'>
+                                              <p className='replied-message-receiver m-0'>
                                                 {messageData.frMessages[3]}
                                               </p>
-                                              <p className="replied-message m-0">
+                                              <p className='replied-message m-0'>
                                                 {messageData.sourceMessageBody !==
                                                 ""
                                                   ? messageData.sourceMessageBody
                                                   : messageData.frMessages[4]}
                                               </p>
                                             </div>
-                                            <span className="direct-chat-body color-white">
+                                            <span className='direct-chat-body color-white'>
                                               {messageData.messageBody}
                                             </span>
                                           </>
                                         )}
-                                        <div className="d-flex mt-1 justify-content-end">
-                                          <div className="star-time-status ml-auto text-end">
-                                            <span className="starred-status">
+                                        <div className='d-flex mt-1 justify-content-end'>
+                                          <div className='star-time-status ml-auto text-end'>
+                                            <span className='starred-status'>
                                               {messageData.isFlag === 1 ? (
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={StarredMessageIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               ) : null}
                                             </span>
-                                            <span className="direct-chat-sent-time chat-datetime">
+                                            <span className='direct-chat-sent-time chat-datetime'>
                                               {messageData.sentDate.slice(
                                                 0,
                                                 8,
@@ -4837,7 +4793,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </>
                                               )}
                                             </span>
-                                            <div className="message-status"></div>
+                                            <div className='message-status'></div>
                                           </div>
                                         </div>
                                       </div>
@@ -4864,24 +4820,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                       <div
                                         className={`direct-chat-msg text-right mb-2 ${
                                           isLastMessage ? "last-message" : ""
-                                        }`}
-                                      >
-                                        <div className="direct-chat-text message-outbox message-box text-start">
+                                        }`}>
+                                        <div className='direct-chat-text message-outbox message-box text-start'>
                                           <div
-                                            className="chatmessage-box-icons"
+                                            className='chatmessage-box-icons'
                                             ref={
                                               chatMessageRefs[
                                                 messageData.messageID
                                               ]
-                                            }
-                                          >
-                                            <Dropdown className="border-none">
-                                              <Dropdown.Toggle id="dropdown-basic">
+                                            }>
+                                            <Dropdown className='border-none'>
+                                              <Dropdown.Toggle id='dropdown-basic'>
                                                 <img
-                                                  draggable="false"
-                                                  className="dropdown-icon"
+                                                  draggable='false'
+                                                  className='dropdown-icon'
                                                   src={DropDownIcon}
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu
@@ -4889,23 +4843,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   isLastMessage
                                                     ? "dropdown-menu-upwards"
                                                     : ""
-                                                }
-                                              >
+                                                }>
                                                 <>
                                                   <Dropdown.Item
                                                     onClick={() =>
                                                       replyFeatureHandler(
                                                         messageData,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Reply")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
                                                     onClick={
                                                       forwardFeatureHandler
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Forward")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
@@ -4913,8 +4864,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       deleteFeatureHandler(
                                                         messageData,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Delete for me")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
@@ -4922,8 +4872,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageInfoHandler(
                                                         messageData,
                                                       )
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Message-Info")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
@@ -4934,8 +4883,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     }
                                                     style={{
                                                       borderBottom: "none",
-                                                    }}
-                                                  >
+                                                    }}>
                                                     {messageData.isFlag ===
                                                     0 ? (
                                                       <>{t("Star-Message")}</>
@@ -4966,8 +4914,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageData,
                                                     )
                                                   }
-                                                  className="image-thumbnail-chat"
-                                                >
+                                                  className='image-thumbnail-chat'>
                                                   {/* <a
                                                     href={
                                                       filesUrlTalk +
@@ -4977,14 +4924,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     rel="noopener noreferrer"
                                                   > */}
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     // src={
                                                     //   filesUrlTalk +
                                                     //   messageData.attachmentLocation
                                                     // }
                                                     src={`data:image/jpeg;base64,${messageData.base64Image}`}
-                                                    alt=""
-                                                    className="cursor-pointer"
+                                                    alt=''
+                                                    className='cursor-pointer'
                                                   />
                                                   {/* </a> */}
                                                 </div>
@@ -4998,20 +4945,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ext === "txt" ||
                                                   ext === "gif") ? (
                                                 <div
-                                                  className="file-uploaded-chat cursor-pointer"
+                                                  className='file-uploaded-chat cursor-pointer'
                                                   onClick={() =>
                                                     DownloadFileFunction(
                                                       messageData,
                                                       ext,
                                                     )
-                                                  }
-                                                >
+                                                  }>
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DocumentIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
-                                                  <span className="attached-file">
+                                                  <span className='attached-file'>
                                                     {messageData.attachmentLocation
                                                       .substring(
                                                         messageData.attachmentLocation.lastIndexOf(
@@ -5029,48 +4975,48 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     rel="noopener noreferrer"
                                                   > */}
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DownloadIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                   {/* </a> */}
                                                 </div>
                                               ) : null}
-                                              <span className="direct-chat-body color-5a5a5a">
+                                              <span className='direct-chat-body color-5a5a5a'>
                                                 {messageData.messageBody}
                                               </span>
                                             </>
                                           ) : (
                                             <>
-                                              <div className="replied-message-send">
-                                                <p className="replied-message-sender m-0">
+                                              <div className='replied-message-send'>
+                                                <p className='replied-message-sender m-0'>
                                                   {messageData.frMessages[3]}
                                                 </p>
-                                                <p className="replied-message m-0">
+                                                <p className='replied-message m-0'>
                                                   {messageData.sourceMessageBody !==
                                                   ""
                                                     ? messageData.sourceMessageBody
                                                     : messageData.frMessages[4]}
                                                 </p>
                                               </div>
-                                              <span className="direct-chat-body color-5a5a5a">
+                                              <span className='direct-chat-body color-5a5a5a'>
                                                 {messageData.messageBody}
                                               </span>
                                             </>
                                           )}
 
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status">
+                                          <div className='d-flex mt-1 justify-content-end'>
+                                            <div className='star-time-status ml-auto text-end'>
+                                              <span className='starred-status'>
                                                 {messageData.isFlag === 1 ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={StarredMessageIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : null}
                                               </span>
-                                              <span className="direct-chat-sent-time chat-datetime">
+                                              <span className='direct-chat-sent-time chat-datetime'>
                                                 {messageData.sentDate.slice(
                                                   0,
                                                   8,
@@ -5102,29 +5048,29 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   </>
                                                 )}
                                               </span>
-                                              <div className="message-status">
+                                              <div className='message-status'>
                                                 {messageData.messageStatus ===
                                                 "Sent" ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={SingleTickIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   "Delivered" ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={
                                                       DoubleTickDeliveredIcon
                                                     }
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   "Seen" ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={DoubleTickIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : messageData.messageStatus ===
                                                     "Undelivered" &&
@@ -5133,9 +5079,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   messageData.isRetry ===
                                                     false ? (
                                                   <img
-                                                    draggable="false"
+                                                    draggable='false'
                                                     src={TimerIcon}
-                                                    alt=""
+                                                    alt=''
                                                   />
                                                 ) : null}
                                               </div>
@@ -5157,7 +5103,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 index,
                                               )
                                             }
-                                            className="chat-message-checkbox-receiver"
+                                            className='chat-message-checkbox-receiver'
                                           />
                                         ) : null}
                                       </div>
@@ -5167,28 +5113,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               })
                             ) : talkStateData.ChatSpinner === true ? (
                               <>
-                                <Spin className="talk-overallchat-spinner" />
+                                <Spin className='talk-overallchat-spinner' />
                               </>
                             ) : null}
                             <div ref={chatMessages} />
                           </div>
                         ) : (
                           <>
-                            <div className="removeImage-thumbnail">
+                            <div className='removeImage-thumbnail'>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 onClick={removeFileFunction}
                                 src={CrossIcon}
-                                className="cursor-pointer"
-                                alt=""
+                                className='cursor-pointer'
+                                alt=''
                               />
                             </div>
-                            <div className="image-thumbnail">
+                            <div className='image-thumbnail'>
                               <img
-                                draggable="false"
-                                className="img-cover thumbnailImage"
+                                draggable='false'
+                                className='img-cover thumbnailImage'
                                 src={file}
-                                alt=""
+                                alt=''
                               />
                             </div>
                           </>
@@ -5196,11 +5142,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       </>
 
                       {replyFeature === true ? (
-                        <div className="chat-feature-action">
-                          <p className="feature-name">Replying to</p>
-                          <div className="chat-feature">
-                            <div className="chat-feature-option">
-                              <p className="chat-feature-text">
+                        <div className='chat-feature-action'>
+                          <p className='feature-name'>Replying to</p>
+                          <div className='chat-feature'>
+                            <div className='chat-feature-option'>
+                              <p className='chat-feature-text'>
                                 <span>
                                   {replyData.senderName === currentUserName
                                     ? "You"
@@ -5211,16 +5157,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   ? replyData.messageBody
                                   : replyData.fileName}
                               </p>
-                              <div className="positionRelative"></div>
+                              <div className='positionRelative'></div>
                             </div>
                           </div>
-                          <div className="remove-chat-feature">
+                          <div className='remove-chat-feature'>
                             <img
-                              draggable="false"
+                              draggable='false'
                               src={DeleteChatFeature}
-                              className="Remove-feature"
+                              className='Remove-feature'
                               onClick={replyFeatureHandler}
-                              alt=""
+                              alt=''
                             />
                           </div>
                         </div>
@@ -5230,38 +5176,45 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 </Row>
 
                 <Row>
-                  <Col className="p-0">
+                  <Col className='p-0'>
                     <>
                       {save === true ? (
                         <>
-                          <div className="chat-menu-popups">
+                          <div className='chat-menu-popups'>
+                            <Row className='mt-3'>
+                              <Col className='d-flex justify-content-end crossIcon-class'>
+                                <img
+                                  src={CrossIcon}
+                                  width={10}
+                                  height={10}
+                                  onClick={cancelButtonHandler}
+                                />
+                              </Col>
+                            </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
-                                <div className="chat-modal-Heading">
+                                <div className='chat-modal-Heading'>
                                   <h1>{t("Save-Messages")}</h1>
                                 </div>
                               </Col>
                             </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
-                                <div className="chat-options">
+                                <div className='chat-options'>
                                   <Checkbox
                                     checked={todayCheckState}
-                                    onChange={onChangeToday}
-                                  >
+                                    onChange={onChangeToday}>
                                     {t("Today")}
                                   </Checkbox>
                                   <Checkbox
                                     checked={allCheckState}
-                                    onChange={onChangeAll}
-                                  >
+                                    onChange={onChangeAll}>
                                     {t("All")}
                                   </Checkbox>
                                   <Checkbox
                                     checked={customCheckState}
-                                    onChange={onChangeCustom}
-                                  >
+                                    onChange={onChangeCustom}>
                                     {t("Custom")}
                                   </Checkbox>
                                 </div>
@@ -5275,9 +5228,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </b>
                                       </label>{" "}
                                       <InputDatePicker
-                                        name="StartDate"
-                                        size="large"
-                                        width="100%"
+                                        name='StartDate'
+                                        size='large'
+                                        width='100%'
                                         value={
                                           chatDateState.StartDate
                                             ? DateDisplayFormat(
@@ -5298,9 +5251,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </b>
                                       </label>
                                       <InputDatePicker
-                                        name="EndDate"
-                                        size="large"
-                                        width="100%"
+                                        name='EndDate'
+                                        size='large'
+                                        width='100%'
                                         value={
                                           chatDateState.EndDate
                                             ? DateDisplayFormat(
@@ -5325,10 +5278,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
-                              >
+                                className='d-flex justify-content-center gap-2'>
                                 <Button
-                                  className=" Ok-btn"
+                                  className='Ok-btn'
                                   text={t("Okay")}
                                   onClick={downloadChat}
                                 />
@@ -5338,11 +5290,21 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         </>
                       ) : print === true ? (
                         <>
-                          <div className="chat-menu-popups">
+                          <div className='chat-menu-popups'>
+                            <Row className='mt-3'>
+                              <Col className='d-flex justify-content-end crossIcon-class'>
+                                <img
+                                  src={CrossIcon}
+                                  width={10}
+                                  height={10}
+                                  onClick={cancelPrintHandler}
+                                />
+                              </Col>
+                            </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
-                                <div className="chat-modal-Heading">
+                                <div className='chat-modal-Heading'>
                                   <h1>{t("Print-Messages")}</h1>
                                 </div>
                               </Col>
@@ -5350,23 +5312,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
-                                <div className="chat-options">
+                                <div className='chat-options'>
                                   <Checkbox
                                     checked={todayCheckState}
-                                    onChange={onChangeToday}
-                                  >
+                                    onChange={onChangeToday}>
                                     {t("Today")}
                                   </Checkbox>
                                   <Checkbox
                                     checked={allCheckState}
-                                    onChange={onChangeAll}
-                                  >
+                                    onChange={onChangeAll}>
                                     {t("All")}
                                   </Checkbox>
                                   <Checkbox
                                     checked={customCheckState}
-                                    onChange={onChangeCustom}
-                                  >
+                                    onChange={onChangeCustom}>
                                     {t("Custom")}
                                   </Checkbox>
                                 </div>
@@ -5379,9 +5338,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </b>
                                       </label>{" "}
                                       <InputDatePicker
-                                        name="StartDate"
-                                        size="large"
-                                        width="100%"
+                                        name='StartDate'
+                                        size='large'
+                                        width='100%'
                                         value={
                                           chatDateState.StartDate
                                             ? DateDisplayFormat(
@@ -5401,9 +5360,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </b>
                                       </label>
                                       <InputDatePicker
-                                        name="EndDate"
-                                        size="large"
-                                        width="100%"
+                                        name='EndDate'
+                                        size='large'
+                                        width='100%'
                                         value={
                                           chatDateState.EndDate
                                             ? DateDisplayFormat(
@@ -5426,10 +5385,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
-                              >
+                                className='d-flex justify-content-center gap-2'>
                                 <Button
-                                  className=" Ok-btn"
+                                  className=' Ok-btn'
                                   text={t("Okay")}
                                   onClick={printChat}
                                 />
@@ -5439,11 +5397,21 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         </>
                       ) : email === true ? (
                         <>
-                          <div className="chat-menu-popups">
+                          <div className='chat-menu-popups'>
+                            <Row className='mt-3'>
+                              <Col className='d-flex justify-content-end crossIcon-class'>
+                                <img
+                                  src={CrossIcon}
+                                  width={10}
+                                  height={10}
+                                  onClick={cancelPrintemailChatHandler}
+                                />
+                              </Col>
+                            </Row>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
-                                <div className="chat-modal-Heading">
+                                <div className='chat-modal-Heading'>
                                   <h1>{t("Email-Messages")}</h1>
                                 </div>
                               </Col>
@@ -5451,23 +5419,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
-                                <div className="chat-options">
+                                <div className='chat-options'>
                                   <Checkbox
                                     checked={todayCheckState}
-                                    onChange={onChangeToday}
-                                  >
+                                    onChange={onChangeToday}>
                                     {t("Today")}
                                   </Checkbox>
                                   <Checkbox
                                     checked={allCheckState}
-                                    onChange={onChangeAll}
-                                  >
+                                    onChange={onChangeAll}>
                                     {t("All")}
                                   </Checkbox>
                                   <Checkbox
                                     checked={customCheckState}
-                                    onChange={onChangeCustom}
-                                  >
+                                    onChange={onChangeCustom}>
                                     Custom
                                   </Checkbox>
                                 </div>
@@ -5480,9 +5445,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </b>
                                       </label>{" "}
                                       <InputDatePicker
-                                        name="StartDate"
-                                        size="large"
-                                        width="100%"
+                                        name='StartDate'
+                                        size='large'
+                                        width='100%'
                                         value={
                                           chatDateState.StartDate
                                             ? DateDisplayFormat(
@@ -5502,9 +5467,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         </b>
                                       </label>
                                       <InputDatePicker
-                                        name="EndDate"
-                                        size="large"
-                                        width="100%"
+                                        name='EndDate'
+                                        size='large'
+                                        width='100%'
                                         value={
                                           chatDateState.EndDate
                                             ? DateDisplayFormat(
@@ -5527,11 +5492,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
-                              >
+                                className='d-flex justify-content-center gap-2'>
                                 <Button
-                                  className=" Ok-btn"
-                                  text="Okay"
+                                  className=' Ok-btn'
+                                  text='Okay'
                                   onClick={emailChat}
                                 />
                               </Col>
@@ -5540,10 +5504,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         </>
                       ) : deleteMessage === true ? (
                         <>
-                          <div className="chat-menu-popups">
+                          <div className='chat-menu-popups'>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
-                                <div className="chat-modal-Heading">
+                                <div className='chat-modal-Heading'>
                                   <h1>Delete Messages</h1>
                                 </div>
                               </Col>
@@ -5552,8 +5516,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Col lg={2} md={2} sm={12}></Col>
                               <Col lg={4} md={4} sm={12}>
                                 <Button
-                                  className=" Ok-btn"
-                                  text="Delete"
+                                  className=' Ok-btn'
+                                  text='Delete'
                                   onClick={() =>
                                     deleteSingleMessage(deleteMessageData)
                                   }
@@ -5561,8 +5525,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               </Col>
                               <Col lg={4} md={4} sm={12}>
                                 <Button
-                                  className=" White-btn"
-                                  text="Cancel"
+                                  className=' White-btn'
+                                  text='Cancel'
                                   onClick={handleCancel}
                                 />
                               </Col>
@@ -5572,11 +5536,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         </>
                       ) : leave === true ? (
                         <>
-                          <div className="chat-menu-popups">
+                          <div className='chat-menu-popups'>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 {" "}
-                                <div className="chat-modal-Heading">
+                                <div className='chat-modal-Heading'>
                                   <h1>
                                     {t("Are-you-sure-you-want-to-leave-group")}
                                   </h1>
@@ -5588,10 +5552,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="text-center"
-                              >
+                                className='text-center'>
                                 <Button
-                                  className=" Ok-btn mx-2"
+                                  className=' Ok-btn mx-2'
                                   text={t("Yes")}
                                   onClick={() =>
                                     leaveGroupHandlerChat(
@@ -5600,7 +5563,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   }
                                 />
                                 <Button
-                                  className=" White-btn"
+                                  className=' White-btn'
                                   text={t("Cancel")}
                                   onClick={() => setLeave(false)}
                                 />
@@ -5614,7 +5577,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 </Row>
 
                 <Row>
-                  <Col className="positionRelative p-0">
+                  <Col className='positionRelative p-0'>
                     <div
                       className={
                         save === true ||
@@ -5623,14 +5586,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         deleteMessage === true
                           ? "chat-input-section applyBlur"
                           : "chat-input-section"
-                      }
-                    >
+                      }>
                       {showCheckboxes === false ? (
                         <>
                           {file === "" &&
                           tasksAttachments.TasksAttachments.length > 0 ? (
-                            <div className="uploaded-file-section">
-                              <div className="file-upload">
+                            <div className='uploaded-file-section'>
+                              <div className='file-upload'>
                                 <Row>
                                   {tasksAttachments.TasksAttachments.length > 0
                                     ? tasksAttachments.TasksAttachments.map(
@@ -5649,30 +5611,29 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               sm={12}
                                               lg={3}
                                               md={3}
-                                              className="chat-upload-icon"
-                                            >
+                                              className='chat-upload-icon'>
                                               <img
-                                                draggable="false"
+                                                draggable='false'
                                                 src={DocumentIcon}
-                                                className="attachment-icon"
+                                                className='attachment-icon'
                                                 extension={ext}
-                                                alt=""
+                                                alt=''
                                               />
-                                              <p className="chat-upload-text">
+                                              <p className='chat-upload-text'>
                                                 {first}
                                               </p>
-                                              <div className="delete-uplaoded-file">
+                                              <div className='delete-uplaoded-file'>
                                                 <img
-                                                  draggable="false"
+                                                  draggable='false'
                                                   src={DeleteUploadIcon}
-                                                  className="delete-upload-file cursor-pointer"
+                                                  className='delete-upload-file cursor-pointer'
                                                   onClick={() =>
                                                     deleteFilefromAttachments(
                                                       data,
                                                       index,
                                                     )
                                                   }
-                                                  alt=""
+                                                  alt=''
                                                 />
                                               </div>
                                             </Col>
@@ -5684,9 +5645,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               </div>
                             </div>
                           ) : null}
-                          <div className="emoji-section" ref={emojiMenuRef}>
-                            <div className="emoji-click" onClick={emojiClick}>
-                              <img draggable="false" src={EmojiIcon} alt="" />
+                          <div className='emoji-section' ref={emojiMenuRef}>
+                            <div className='emoji-click' onClick={emojiClick}>
+                              <img draggable='false' src={EmojiIcon} alt='' />
                             </div>
                             {emojiActive === true ? (
                               <Picker
@@ -5698,36 +5659,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           </div>
                           {file === "" ? (
                             <div
-                              className="upload-click positionRelative"
-                              ref={uploadFileRef}
-                            >
-                              <span className="custom-upload-input">
+                              className='upload-click positionRelative'
+                              ref={uploadFileRef}>
+                              <span className='custom-upload-input'>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={UploadChatIcon}
-                                  alt=""
+                                  alt=''
                                   onClick={showUploadOptions}
                                 />
                                 {uploadOptions === true ? (
-                                  <div className="upload-options">
+                                  <div className='upload-options'>
                                     <Tooltip
-                                      placement="topRight"
-                                      title={t("Document")}
-                                    >
-                                      <div className="file-upload-options">
+                                      placement='topRight'
+                                      title={t("Document")}>
+                                      <div className='file-upload-options'>
                                         <label
-                                          className="image-upload"
-                                          htmlFor="document-upload"
-                                        >
+                                          className='image-upload'
+                                          htmlFor='document-upload'>
                                           <img
-                                            draggable="false"
+                                            draggable='false'
                                             src={UploadDocument}
-                                            alt=""
+                                            alt=''
                                           />
                                         </label>
                                         <input
-                                          id="document-upload"
-                                          type="file"
+                                          id='document-upload'
+                                          type='file'
                                           onChange={(event) =>
                                             handleFileUpload(event, "document")
                                           }
@@ -5735,30 +5693,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             event.target.value = null;
                                           }}
                                           maxfilesize={10000000}
-                                          accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+                                          accept='.doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif'
                                           style={{ display: "none" }}
                                         />
                                       </div>
                                     </Tooltip>
 
                                     <Tooltip
-                                      placement="topRight"
-                                      title={t("Upload-image")}
-                                    >
-                                      <div className="file-upload-options">
+                                      placement='topRight'
+                                      title={t("Upload-image")}>
+                                      <div className='file-upload-options'>
                                         <label
-                                          className="image-upload"
-                                          htmlFor="image-upload"
-                                        >
+                                          className='image-upload'
+                                          htmlFor='image-upload'>
                                           <img
-                                            draggable="false"
+                                            draggable='false'
                                             src={UploadPicVid}
-                                            alt=""
+                                            alt=''
                                           />
                                         </label>
                                         <input
-                                          id="image-upload"
-                                          type="file"
+                                          id='image-upload'
+                                          type='file'
                                           onChange={(event) =>
                                             handleFileUpload(event, "image")
                                           }
@@ -5766,7 +5722,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             event.target.value = null;
                                           }}
                                           maxfilesize={10000000}
-                                          accept="image/*"
+                                          accept='image/*'
                                           style={{ display: "none" }}
                                         />
                                       </div>
@@ -5782,19 +5738,18 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               file === ""
                                 ? "chat-input-field"
                                 : "chat-input-field no-upload-options"
-                            }
-                          >
+                            }>
                             <Form>
                               <Form.Control
                                 onPaste={handlePaste}
                                 ref={inputRef}
                                 value={messageSendData.Body}
-                                className="chat-message-input"
-                                name="ChatMessage"
+                                className='chat-message-input'
+                                name='ChatMessage'
                                 placeholder={"Type a Message"}
                                 maxLength={200}
                                 onChange={chatMessageHandler}
-                                autoComplete="off"
+                                autoComplete='off'
                                 disabled={
                                   talkStateData.ActiveChatData.isBlock === 1
                                     ? true
@@ -5802,7 +5757,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 }
                                 autoFocus={inputChat}
                                 style={{ resize: "none", height: "100%" }}
-                                as="textarea"
+                                as='textarea'
                                 rows={1}
                                 onInput={autoResize}
                                 onKeyPress={(event) => {
@@ -5814,25 +5769,25 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               />
                             </Form>
                           </div>
-                          <div className="sendChat-click">
+                          <div className='sendChat-click'>
                             <img
-                              draggable="false"
+                              draggable='false'
                               onClick={sendChat}
                               src={ChatSendIcon}
-                              alt=""
+                              alt=''
                             />
                           </div>
                         </>
                       ) : forwardFlag === true ? (
                         <>
                           <Button
-                            className=" White-btn"
-                            text="Cancel"
+                            className=' White-btn'
+                            text='Cancel'
                             onClick={cancelMessagesCheck}
                           />
                           <Button
-                            className=" Ok-btn"
-                            text="Forward"
+                            className=' Ok-btn'
+                            text='Forward'
                             onClick={
                               forwardMessageUsersSection === true
                                 ? submitForwardMessages
@@ -5846,13 +5801,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       ) : deleteFlag === true ? (
                         <>
                           <Button
-                            className=" White-btn"
-                            text="Cancel"
+                            className=' White-btn'
+                            text='Cancel'
                             onClick={cancelMessagesCheck}
                           />
                           <Button
-                            className=" Ok-btn"
-                            text="Delete"
+                            className=' Ok-btn'
+                            text='Delete'
                             onClick={deleteMultipleMessagesButton}
                             disableBtn={
                               messagesChecked.length > 0 ? false : true
@@ -5869,29 +5824,29 @@ const ChatMainBody = ({ chatMessageClass }) => {
               showGroupInfo === false &&
               showEditShoutField === false &&
               showGroupEdit === false ? (
-              <div className="talk-screen-innerwrapper">
-                <div className="message-body talk-screen-content">
-                  <div className="message-heading d-flex mb-2">
-                    <span className="text-left heading-info">Message info</span>
-                    <span className="text-right ml-auto">
+              <div className='talk-screen-innerwrapper'>
+                <div className='message-body talk-screen-content'>
+                  <div className='message-heading d-flex mb-2'>
+                    <span className='text-left heading-info'>Message info</span>
+                    <span className='text-right ml-auto'>
                       <img
-                        draggable="false"
+                        draggable='false'
                         onClick={handleCancel}
                         src={CloseChatIcon}
-                        alt=""
+                        alt=''
                         width={10}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                       />
                     </span>
                   </div>
-                  <div className="message-info-item">
-                    <div className="Sent-with-icon">
-                      <div className="heading-info status">Sent</div>
-                      <img draggable="false" src={SingleTickIcon} alt="" />
+                  <div className='message-info-item'>
+                    <div className='Sent-with-icon'>
+                      <div className='heading-info status'>Sent</div>
+                      <img draggable='false' src={SingleTickIcon} alt='' />
                     </div>
-                    <div className="time-info">
+                    <div className='time-info'>
                       {messageInfoData.sentDate === undefined ? (
-                        <p className="m-0">-</p>
+                        <p className='m-0'>-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.sentDate,
@@ -5900,18 +5855,18 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       )}
                     </div>
                   </div>
-                  <div className="message-info-item">
-                    <div className="Sent-with-icon">
-                      <div className="heading-info status">Delivered</div>
+                  <div className='message-info-item'>
+                    <div className='Sent-with-icon'>
+                      <div className='heading-info status'>Delivered</div>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={DoubleTickDeliveredIcon}
-                        alt=""
+                        alt=''
                       />
                     </div>
-                    <div className="time-info">
+                    <div className='time-info'>
                       {messageInfoData.receivedDate === undefined ? (
-                        <p className="m-0">-</p>
+                        <p className='m-0'>-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.receivedDate,
@@ -5920,14 +5875,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       )}
                     </div>
                   </div>
-                  <div className="message-info-item">
-                    <div className="Sent-with-icon">
-                      <div className="heading-info status">Read</div>
-                      <img draggable="false" src={DoubleTickIcon} alt="" />
+                  <div className='message-info-item'>
+                    <div className='Sent-with-icon'>
+                      <div className='heading-info status'>Read</div>
+                      <img draggable='false' src={DoubleTickIcon} alt='' />
                     </div>
-                    <div className="time-info">
+                    <div className='time-info'>
                       {messageInfoData.seenDate === undefined ? (
-                        <p className="m-0">-</p>
+                        <p className='m-0'>-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.seenDate,
@@ -5944,18 +5899,18 @@ const ChatMainBody = ({ chatMessageClass }) => {
               showEditShoutField === false &&
               showGroupEdit === false ? (
               <>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={6} md={6} sm={12}>
-                    <p className="fw-bold">Forward to:</p>
+                    <p className='fw-bold'>Forward to:</p>
                   </Col>
-                  <Col lg={6} md={6} sm={12} className="text-end">
+                  <Col lg={6} md={6} sm={12} className='text-end'>
                     <img
-                      draggable="false"
+                      draggable='false'
                       onClick={cancelForwardSection}
                       src={CloseChatIcon}
-                      alt=""
+                      alt=''
                       width={10}
-                      className="cursor-pointer"
+                      className='cursor-pointer'
                     />
                   </Col>
                 </Row>
@@ -5963,18 +5918,18 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   <Col lg={12} md={12} sm={12} style={{ marginBottom: "10px" }}>
                     <TextField
                       maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
+                      applyClass='form-control2'
+                      name='Name'
                       change={(e) => {
                         searchUsers(e.target.value);
                       }}
                       value={searchUserValue}
-                      placeholder="Search Users"
+                      placeholder='Search Users'
                       labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
-                <div className="users-list-forward">
+                <div className='users-list-forward'>
                   {allUsersGroupsRooms !== undefined &&
                   allUsersGroupsRooms !== null &&
                   allUsersGroupsRooms.length > 0
@@ -5985,8 +5940,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               lg={2}
                               md={2}
                               sm={2}
-                              style={{ paddingTop: "5px" }}
-                            >
+                              style={{ paddingTop: "5px" }}>
                               <Checkbox
                                 checked={
                                   forwardUsersChecked.includes(dataItem)
@@ -6000,49 +5954,49 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     index,
                                   )
                                 }
-                                className=""
+                                className=''
                               />
                             </Col>
                             <Col lg={10} md={10} sm={10}>
-                              <div className="users-forward">
-                                <div className="chat-profile-icon forward">
+                              <div className='users-forward'>
+                                <div className='chat-profile-icon forward'>
                                   {dataItem.messageType === "O" ? (
                                     <>
                                       <img
-                                        draggable="false"
+                                        draggable='false'
                                         src={SingleIcon}
                                         width={15}
-                                        alt=""
+                                        alt=''
                                       />
                                     </>
                                   ) : dataItem.messageType === "G" ? (
                                     <>
                                       <img
-                                        draggable="false"
+                                        draggable='false'
                                         src={GroupIcon}
                                         width={15}
-                                        alt=""
+                                        alt=''
                                       />
                                     </>
                                   ) : dataItem.messageType === "B" ? (
                                     <>
                                       <img
-                                        draggable="false"
+                                        draggable='false'
                                         src={ShoutIcon}
                                         width={15}
-                                        alt=""
+                                        alt=''
                                       />
                                     </>
                                   ) : (
                                     <img
-                                      draggable="false"
+                                      draggable='false'
                                       src={SingleIcon}
                                       width={15}
-                                      alt=""
+                                      alt=''
                                     />
                                   )}
                                 </div>
-                                <p className=" m-0">{dataItem.name}</p>
+                                <p className=' m-0'>{dataItem.name}</p>
                               </div>
                             </Col>
                           </Row>
@@ -6051,10 +6005,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     : null}
                 </div>
                 <Row>
-                  <Col className="text-center">
+                  <Col className='text-center'>
                     <Button
-                      className=" Ok-btn forward-user"
-                      text="Forward"
+                      className=' Ok-btn forward-user'
+                      text='Forward'
                       onClick={submitForwardMessages}
                       disableBtn={forwardUsersChecked.length > 0 ? false : true}
                     />
@@ -6067,43 +6021,42 @@ const ChatMainBody = ({ chatMessageClass }) => {
               showEditShoutField === false &&
               showGroupEdit === false ? (
               <>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={4} md={4} sm={12}></Col>
                   <Col
                     lg={4}
                     md={4}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <div className="chat-groupinfo-icon">
+                    className='d-flex justify-content-center'>
+                    <div className='chat-groupinfo-icon'>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={GroupIcon}
                         width={28}
-                        alt=""
+                        alt=''
                       />
                     </div>
                   </Col>
-                  <Col lg={4} md={4} sm={12} className="text-end">
+                  <Col lg={4} md={4} sm={12} className='text-end'>
                     <img
-                      className="cursor-pointer"
-                      draggable="false"
+                      className='cursor-pointer'
+                      draggable='false'
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
-                      alt=""
+                      alt=''
                     />
                   </Col>
                 </Row>
-                <Row className="">
+                <Row className=''>
                   <Col lg={2} md={2} sm={12}></Col>
-                  <Col lg={8} md={8} sm={12} className="text-center">
-                    <p className="groupinfo-groupname m-0">
+                  <Col lg={8} md={8} sm={12} className='text-center'>
+                    <p className='groupinfo-groupname m-0'>
                       {groupInfoData === undefined || groupInfoData.length === 0
                         ? ""
                         : groupInfoData[0].name}
                     </p>
-                    <p className="groupinfo-createdon m-0">
+                    <p className='groupinfo-createdon m-0'>
                       Created on:{" "}
                       {groupInfoData === undefined || groupInfoData.length === 0
                         ? ""
@@ -6113,24 +6066,24 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           )}
                     </p>
                   </Col>
-                  <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  <Col lg={2} md={2} sm={12} className='text-end'></Col>
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
                     <TextField
                       maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
+                      applyClass='form-control2'
+                      name='Name'
                       change={(e) => {
                         searchGroupInfoUser(e.target.value);
                       }}
                       value={searchGroupUserInfoValue}
-                      placeholder="Search Users"
+                      placeholder='Search Users'
                       labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
-                <div className="users-list-groupinfo">
+                <div className='users-list-groupinfo'>
                   {groupInfoData !== undefined &&
                   groupInfoData !== null &&
                   groupInfoData.length > 0
@@ -6145,22 +6098,21 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              style={{ paddingRight: "20px" }}
-                            >
-                              <div className="users-groupinfo">
-                                <div className="chat-profile-icon groupinfo">
+                              style={{ paddingRight: "20px" }}>
+                              <div className='users-groupinfo'>
+                                <div className='chat-profile-icon groupinfo'>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={SingleIcon}
                                     width={15}
-                                    alt=""
+                                    alt=''
                                   />
                                 </div>
-                                <p className="groupinfo-groupusersname m-0">
+                                <p className='groupinfo-groupusersname m-0'>
                                   {dataItem.userName}
 
                                   {dataItem.adminUser === dataItem.userID ? (
-                                    <span className="groupinfo-admin">
+                                    <span className='groupinfo-admin'>
                                       Admin
                                     </span>
                                   ) : null}
@@ -6179,54 +6131,52 @@ const ChatMainBody = ({ chatMessageClass }) => {
               showEditShoutField === false &&
               showGroupEdit === true ? (
               <>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={4} md={4} sm={12}></Col>
                   <Col
                     lg={4}
                     md={4}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <div className="chat-groupinfo-icon">
+                    className='d-flex justify-content-center'>
+                    <div className='chat-groupinfo-icon'>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={GroupIcon}
                         width={28}
-                        alt=""
+                        alt=''
                       />
                     </div>
                   </Col>
-                  <Col lg={4} md={4} sm={12} className="text-end">
+                  <Col lg={4} md={4} sm={12} className='text-end'>
                     <img
-                      className="cursor-pointer"
-                      draggable="false"
+                      className='cursor-pointer'
+                      draggable='false'
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
-                      alt=""
+                      alt=''
                     />
                   </Col>
                 </Row>
-                <Row className="">
+                <Row className=''>
                   <Col lg={2} md={2} sm={12}></Col>
                   {showEditGroupField === false ? (
                     <Col
                       lg={8}
                       md={8}
                       sm={12}
-                      className="text-center d-flex align-items-center justify-content-center"
-                    >
-                      <p className="groupinfo-groupname m-0">
+                      className='text-center d-flex align-items-center justify-content-center'>
+                      <p className='groupinfo-groupname m-0'>
                         {groupName !== undefined && groupName !== null
                           ? groupName
                           : null}
                       </p>
                       <img
-                        draggable="false"
+                        draggable='false'
                         onClick={editGroupTitle}
-                        className="Edit-Group-Title-Icon cursor-pointer"
+                        className='Edit-Group-Title-Icon cursor-pointer'
                         src={EditIcon}
-                        alt=""
+                        alt=''
                       />
                     </Col>
                   ) : (
@@ -6234,38 +6184,37 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       lg={8}
                       md={8}
                       sm={12}
-                      className="text-center d-flex align-items-center justify-content-center"
-                    >
+                      className='text-center d-flex align-items-center justify-content-center'>
                       <TextField
                         value={groupName}
-                        className="chat-message-input"
-                        name="ChatMessage"
+                        className='chat-message-input'
+                        name='ChatMessage'
                         placeholder={"Group Name"}
                         maxLength={200}
                         change={groupNameHandler}
-                        autoComplete="off"
+                        autoComplete='off'
                         labelclass={"d-none"}
                       />
                     </Col>
                   )}
-                  <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  <Col lg={2} md={2} sm={12} className='text-end'></Col>
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
                     <TextField
                       maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
+                      applyClass='form-control2'
+                      name='Name'
                       change={(e) => {
                         searchGroupEditUser(e.target.value);
                       }}
                       value={searchGroupUserInfoValue}
-                      placeholder="Search Users"
+                      placeholder='Search Users'
                       labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
-                <div className="users-list-groupinfo">
+                <div className='users-list-groupinfo'>
                   {allUsers !== undefined &&
                   allUsers !== null &&
                   allUsers.length > 0
@@ -6276,9 +6225,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              style={{ paddingRight: "20px" }}
-                            >
-                              <div className="users-groupinfo">
+                              style={{ paddingRight: "20px" }}>
+                              <div className='users-groupinfo'>
                                 <Checkbox
                                   checked={
                                     Array.isArray(editGroupUsersChecked) &&
@@ -6299,17 +6247,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                       index,
                                     )
                                   }
-                                  className="group-edit-users-add"
+                                  className='group-edit-users-add'
                                 />
-                                <div className="chat-profile-icon groupinfo">
+                                <div className='chat-profile-icon groupinfo'>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={SingleIcon}
                                     width={15}
-                                    alt=""
+                                    alt=''
                                   />
                                 </div>
-                                <p className="groupinfo-groupusersname m-0">
+                                <p className='groupinfo-groupusersname m-0'>
                                   {dataItem.fullName}
                                 </p>
                               </div>
@@ -6321,10 +6269,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 </div>
                 <Row>
                   <Col>
-                    <div className="edit-group-button">
+                    <div className='edit-group-button'>
                       <Button
-                        className=" Ok-btn forward-user"
-                        text="Edit Group"
+                        className=' Ok-btn forward-user'
+                        text='Edit Group'
                         onClick={editGroup}
                       />
                     </div>
@@ -6337,54 +6285,52 @@ const ChatMainBody = ({ chatMessageClass }) => {
               showGroupEdit === false &&
               showEditShoutField === true ? (
               <>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={4} md={4} sm={12}></Col>
                   <Col
                     lg={4}
                     md={4}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <div className="chat-groupinfo-icon">
+                    className='d-flex justify-content-center'>
+                    <div className='chat-groupinfo-icon'>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={ShoutIcon}
                         width={20}
-                        alt=""
+                        alt=''
                       />
                     </div>
                   </Col>
-                  <Col lg={4} md={4} sm={12} className="text-end">
+                  <Col lg={4} md={4} sm={12} className='text-end'>
                     <img
-                      draggable="false"
+                      draggable='false'
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
-                      alt=""
-                      className="cursor-pointer"
+                      alt=''
+                      className='cursor-pointer'
                     />
                   </Col>
                 </Row>
-                <Row className="">
+                <Row className=''>
                   <Col lg={2} md={2} sm={12}></Col>
                   {showEditShoutField === false ? (
                     <Col
                       lg={8}
                       md={8}
                       sm={12}
-                      className="text-center d-flex align-items-center justify-content-center"
-                    >
-                      <p className="groupinfo-groupname m-0">
+                      className='text-center d-flex align-items-center justify-content-center'>
+                      <p className='groupinfo-groupname m-0'>
                         {shoutName !== undefined && shoutName !== null
                           ? shoutName
                           : null}
                       </p>
                       <img
-                        draggable="false"
+                        draggable='false'
                         onClick={editShoutTitle}
-                        className="Edit-Group-Title-Icon cursor-pointer"
+                        className='Edit-Group-Title-Icon cursor-pointer'
                         src={EditIcon}
-                        alt=""
+                        alt=''
                       />
                     </Col>
                   ) : (
@@ -6392,38 +6338,37 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       lg={8}
                       md={8}
                       sm={12}
-                      className="text-center d-flex align-items-center justify-content-center"
-                    >
+                      className='text-center d-flex align-items-center justify-content-center'>
                       <TextField
                         value={shoutName}
-                        className="chat-message-input"
-                        name="ChatMessage"
+                        className='chat-message-input'
+                        name='ChatMessage'
                         placeholder={"Shout Name"}
                         maxLength={200}
                         change={shoutNameHandler}
-                        autoComplete="off"
+                        autoComplete='off'
                         labelclass={"d-none"}
                       />
                     </Col>
                   )}
-                  <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  <Col lg={2} md={2} sm={12} className='text-end'></Col>
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
                     <TextField
                       maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
+                      applyClass='form-control2'
+                      name='Name'
                       change={(e) => {
                         searchShoutEditUser(e.target.value);
                       }}
                       value={searchUserShoutValue}
-                      placeholder="Search Users"
+                      placeholder='Search Users'
                       labelclass={"d-none"}
                     />
                   </Col>
                 </Row>
-                <div className="users-list-groupinfo">
+                <div className='users-list-groupinfo'>
                   {allUsers !== undefined &&
                   allUsers !== null &&
                   allUsers.length > 0
@@ -6434,9 +6379,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              style={{ paddingRight: "20px" }}
-                            >
-                              <div className="users-groupinfo">
+                              style={{ paddingRight: "20px" }}>
+                              <div className='users-groupinfo'>
                                 <Checkbox
                                   checked={
                                     Array.isArray(editShoutUsersChecked) &&
@@ -6457,17 +6401,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                       index,
                                     )
                                   }
-                                  className="group-edit-users-add"
+                                  className='group-edit-users-add'
                                 />
-                                <div className="chat-profile-icon groupinfo">
+                                <div className='chat-profile-icon groupinfo'>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={SingleIcon}
-                                    alt=""
+                                    alt=''
                                     width={15}
                                   />
                                 </div>
-                                <p className="groupinfo-groupusersname m-0">
+                                <p className='groupinfo-groupusersname m-0'>
                                   {dataItem.fullName}
                                 </p>
                               </div>
@@ -6479,9 +6423,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 </div>
                 <Row>
                   <Col>
-                    <div className="edit-group-button">
+                    <div className='edit-group-button'>
                       <Button
-                        className=" Ok-btn forward-user"
+                        className=' Ok-btn forward-user'
                         text={t("Edit-shout")}
                         onClick={editShoutAll}
                       />
@@ -6494,7 +6438,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         </div>
       </div>
       <NotificationBar
-        iconName={<img draggable="false" src={SecurityIcon} alt="" />}
+        iconName={<img draggable='false' src={SecurityIcon} alt='' />}
         notificationMessage={notification.message}
         notificationState={notification.notificationShow}
         setNotification={setNotification}
@@ -6502,11 +6446,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
         id={notificationID}
       />
       {/* Toast Messege Notificaiton Component */}
-      <Notification open={open} setOpen={setOpen} />
+
       <Modal
         show={showImageModal}
-        size="lg"
-        modalHeaderClassName="image-modal"
+        size='lg'
+        modalHeaderClassName='image-modal'
         setShow={setShowImageModal}
         onHide={() => dispatch(getImageData(null), setShowImageModal(false))}
         ModalTitle={
@@ -6515,21 +6459,21 @@ const ChatMainBody = ({ chatMessageClass }) => {
               lg={12}
               md={12}
               sm={12}
-              className="position-relative"
-              onClick={closeImageModal}
-            >
-              <img className={"image-close"} src={CrossIconn} alt="" />
+              className='position-relative'
+              onClick={closeImageModal}>
+              <img className={"image-close"} src={CrossIconn} alt='' />
             </Col>
           </Row>
         }
         ModalBody={
           <img
-            className="w-100"
+            className='w-100'
             src={`data:image/jpeg;base64,${talkStateData?.imageData?.base64Image}`}
-            alt=""
+            alt=''
           />
         }
       />
+      {SnackBar}
     </>
   );
 };

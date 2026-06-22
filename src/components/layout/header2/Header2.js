@@ -32,7 +32,9 @@ import { Button, Modal, UploadTextField, Notification } from "../../elements";
 import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import {
+  checkFeatureID,
   checkFeatureIDAvailability,
+  getHomeRoute,
   getLocalStorageItemNonActiveCheck,
   SideBarGlobalNavigationFunction,
   SideBarGlobalNavigationFunctionNew,
@@ -40,7 +42,7 @@ import {
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
 import ModalToDoList from "../../../container/todolistModal/ModalToDoList.js";
-import { showMessage } from "../../elements/snack_bar/utill.js";
+import useSnackbar from "../../elements/snack_bar/useSnackbar";
 import { ClearNotesResponseMessage } from "../../../store/actions/Notes_actions.js";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees.js";
 import { clearResponce } from "../../../store/actions/ToDoList_action.js";
@@ -123,17 +125,7 @@ const Header2 = ({ isVideo }) => {
     (state) => state.UserManagementModals.requestExtentionModal,
   );
 
-  const NotesReponseMessege = useSelector(
-    (state) => state.NotesReducer.ResponseMessage,
-  );
 
-  const ResponseMessageTodoReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage,
-  );
-
-  const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage,
-  );
 
   const getAllNotificationData = useSelector(
     (state) => state.settingReducer.diskusWebNotificationData,
@@ -208,11 +200,7 @@ const Header2 = ({ isVideo }) => {
 
   const [show, setShow] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   useEffect(() => {
     if (Blur !== null) {
@@ -308,44 +296,7 @@ const Header2 = ({ isVideo }) => {
     }
   }, [UserProfileData]);
 
-  //Notes Response Messege as per CR
-  useEffect(() => {
-    try {
-      if (
-        NotesReponseMessege !== "" &&
-        NotesReponseMessege !== t("No-data-available") &&
-        NotesReponseMessege !== t("Data-available") &&
-        NotesReponseMessege !== t("Updated")
-      ) {
-        showMessage(NotesReponseMessege, "success", setOpen);
-        dispatch(ClearNotesResponseMessage());
-      }
-    } catch (error) {}
-  }, [NotesReponseMessege]);
 
-  //Todolist tast Response messeges as per CR
-  useEffect(() => {
-    if (
-      ResponseMessageTodoReducer !== "" &&
-      ResponseMessageTodoReducer !== undefined &&
-      ResponseMessageTodoReducer !== "" &&
-      ResponseMessageTodoReducer !== t("No-records-found")
-    ) {
-      showMessage(ResponseMessageTodoReducer, "success", setOpen);
-      dispatch(clearResponce());
-    } else if (
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== "" &&
-      ResponseMessageAssigneesReducer !== t("No-records-found") &&
-      ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
-    ) {
-      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
-      dispatch(clearResponseMessage());
-    } else {
-      dispatch(clearResponce());
-      dispatch(clearResponseMessage());
-    }
-  }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
   const forgotPasswordCheck = (e) => {
     e?.preventDefault(); // 🚫 stop auto navigation
@@ -733,7 +684,8 @@ const Header2 = ({ isVideo }) => {
               // dispatch(ProposedMeetingViewFlagAction(false));
 
               if (proposedMeetingViewFlag) {
-                navigate("/Diskus");
+                let value = getHomeRoute();
+                navigate(value);
                 // let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 // let meetingPageCurrent =
                 //   localStorage.getItem("MeetingPageCurrent");
@@ -774,6 +726,9 @@ const Header2 = ({ isVideo }) => {
 
   const checkifMeetingOngoing =
     Number(editorRole.status) === 10 && viewAdvanceMeetingModal ? true : false;
+
+  const shouldShowApprovals =
+    checkFeatureID(19) || checkFeatureID(20) || checkFeatureID(21);
   return (
     <>
       {activateBlur ? (
@@ -1387,62 +1342,68 @@ const Header2 = ({ isVideo }) => {
                                 </Dropdown.Item>
                               </>
                             ) : null}
-                            <Dropdown.Item className='d-flex title-className'>
-                              <Nav.Link
-                                as={Link}
-                                to={
-                                  (scheduleMeetingPageFlagReducer === true ||
-                                    viewProposeDateMeetingPageFlagReducer ===
-                                      true ||
-                                    viewAdvanceMeetingPublishPageFlagReducer ===
-                                      true ||
-                                    viewAdvanceMeetingUnpublishPageFlagReducer ===
-                                      true ||
-                                    viewProposeOrganizerMeetingPageFlagReducer ===
-                                      true ||
-                                    proposeNewMeetingPageFlagReducer ===
-                                      true) &&
-                                  viewMeetingFlagReducer === false
-                                    ? "/Diskus/Meeting"
-                                    : "/Diskus/Minutes"
-                                }
-                                onClick={(e) => {
-                                  // Prevent default behavior
-                                  e.preventDefault();
-                                  const activeCall = JSON.parse(
-                                    localStorage.getItem("activeCall"),
-                                  );
-                                  // Explicitly evaluate activeCall
-                                  if (
-                                    activeCall === false ||
-                                    activeCall === undefined ||
-                                    activeCall === null
-                                  ) {
-                                    handleMeetingPendingApprovalsNoCall();
-                                  } else {
-                                    handleMeetingPendingApprovals();
+                            {shouldShowApprovals && (
+                              <Dropdown.Item className='d-flex title-className'>
+                                <Nav.Link
+                                  as={Link}
+                                  to={
+                                    (scheduleMeetingPageFlagReducer === true ||
+                                      viewProposeDateMeetingPageFlagReducer ===
+                                        true ||
+                                      viewAdvanceMeetingPublishPageFlagReducer ===
+                                        true ||
+                                      viewAdvanceMeetingUnpublishPageFlagReducer ===
+                                        true ||
+                                      viewProposeOrganizerMeetingPageFlagReducer ===
+                                        true ||
+                                      proposeNewMeetingPageFlagReducer ===
+                                        true) &&
+                                    viewMeetingFlagReducer === false
+                                      ? "/Diskus/Meeting"
+                                      : "/Diskus/Minutes"
                                   }
-                                }}
-                                className='pendingApprovalsNav'>
+                                  onClick={(e) => {
+                                    // Prevent default behavior
+                                    e.preventDefault();
+                                    const activeCall = JSON.parse(
+                                      localStorage.getItem("activeCall"),
+                                    );
+                                    // Explicitly evaluate activeCall
+                                    if (
+                                      activeCall === false ||
+                                      activeCall === undefined ||
+                                      activeCall === null
+                                    ) {
+                                      handleMeetingPendingApprovalsNoCall();
+                                    } else {
+                                      handleMeetingPendingApprovals();
+                                    }
+                                  }}
+                                  className='pendingApprovalsNav'>
+                                  <span className='New_folder_shortcutkeys'>
+                                    {t("Pending-approvals")}
+                                  </span>
+                                </Nav.Link>
+                              </Dropdown.Item>
+                            )}
+                            {checkFeatureID(6) && (
+                              <Dropdown.Item
+                                className='d-flex title-className'
+                                onClick={openModalAddNote}>
                                 <span className='New_folder_shortcutkeys'>
-                                  {t("Pending-approvals")}
+                                  {t("Add-a-note")}
                                 </span>
-                              </Nav.Link>
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              className='d-flex title-className'
-                              onClick={openModalAddNote}>
-                              <span className='New_folder_shortcutkeys'>
-                                {t("Add-a-note")}
-                              </span>
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              className='d-flex title-className'
-                              onClick={openHeaderCreateTaskModal}>
-                              <span className='New_folder_shortcutkeys'>
-                                {t("Create-a-task")}
-                              </span>
-                            </Dropdown.Item>
+                              </Dropdown.Item>
+                            )}
+                            {checkFeatureID(14) && (
+                              <Dropdown.Item
+                                className='d-flex title-className'
+                                onClick={openHeaderCreateTaskModal}>
+                                <span className='New_folder_shortcutkeys'>
+                                  {t("Create-a-task")}
+                                </span>
+                              </Dropdown.Item>
+                            )}
                           </DropdownButton>
                         )}
                       </div>
@@ -1848,7 +1809,7 @@ const Header2 = ({ isVideo }) => {
       {createNotesModal && <ModalAddNote />}
       {showTaskModalHeader && (
         <ModalToDoList
-          show={showTaskModalHeader}
+          showModal={showTaskModalHeader}
           setShow={setShowModalHeader}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
@@ -1858,7 +1819,8 @@ const Header2 = ({ isVideo }) => {
 
       {UpgradeNowModalReducer && <UpgradeNowModal />}
       {requestExtentionModal && <RequestExtensionModal />}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

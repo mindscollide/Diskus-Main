@@ -49,6 +49,8 @@ const ignoredMessages = new Set(
     "record save",
     "no data available",
     "record saved",
+    'Successful',
+    'No Data available"'
   ].map((m) => m.toLowerCase().trim()),
 );
 

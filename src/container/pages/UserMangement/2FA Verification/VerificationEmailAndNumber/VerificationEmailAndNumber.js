@@ -25,7 +25,7 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const VerificationEmailAndNumber = () => {
   const { t } = useTranslation();
 
@@ -47,11 +47,7 @@ const VerificationEmailAndNumber = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [worldCountryIDS, setWorldCountryIDS] = useState("");
   const [otpCode, setOtpCode] = useState("");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
@@ -127,15 +123,6 @@ const VerificationEmailAndNumber = () => {
       );
     }
   }, [AuthreducerAuthenticateAFAResponse]);
-
-  useEffect(() => {
-    if (AuthreducerSendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")) {
-      showMessage(AuthreducerSendTwoFacOTPResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerSendTwoFacOTPResponseMessage]);
 
   useEffect(() => {
     let value = localStorage.getItem("value");
@@ -371,7 +358,8 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </div>
   );
 };

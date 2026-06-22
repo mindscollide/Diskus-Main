@@ -48,6 +48,8 @@ import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommi
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
+import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
 import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
@@ -146,7 +148,8 @@ const Committee = () => {
 
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-
+  const [ViewcommitteeID, setViewCommitteeID] = useState(0);
+  const [show, SnackBar] = useSnackbar();
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -1021,7 +1024,6 @@ const Committee = () => {
           </>
         )}
       </div>
-      {SnackBar}
       {showModal ? (
         <ModalArchivedCommittee
           archivedCommittee={showModal}
@@ -1052,6 +1054,7 @@ const Committee = () => {
         />
       )}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
+      {SnackBar}
     </>
   );
 };

@@ -21,10 +21,10 @@ const refreshtokenSuccess = (response, message) => {
 };
 
 const RefreshToken = (navigate, t) => {
-  let Token = JSON.parse(localStorage.getItem("token"));
+
   let RefreshToken = JSON.parse(localStorage.getItem("refreshToken"));
   let Data = {
-    Token: Token,
+    Token: localStorage.getItem("token"),
     RefreshToken: RefreshToken,
   };
   return async (dispatch) => {

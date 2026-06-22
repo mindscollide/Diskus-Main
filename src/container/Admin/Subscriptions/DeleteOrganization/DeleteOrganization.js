@@ -10,13 +10,9 @@ import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../../../store/actions/Admin_PackageUpgrade";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 const DeleteOrganization = () => {
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const { adminReducer } = useSelector((state) => state);
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
@@ -44,17 +40,6 @@ const DeleteOrganization = () => {
       )
     );
   };
-  
-  useEffect(() => {
-    if (adminReducer.DeleteOrganizationResponseMessage !== "") {
-      showMessage(
-        adminReducer.DeleteOrganizationResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    }
-  }, [adminReducer.DeleteOrganizationResponseMessage]);
   return (
     <>
       <Container>
@@ -106,7 +91,8 @@ const DeleteOrganization = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

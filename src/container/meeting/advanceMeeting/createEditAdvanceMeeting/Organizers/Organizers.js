@@ -63,7 +63,7 @@ import {
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
 import {
@@ -129,11 +129,7 @@ const Organizers = () => {
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   useEffect(() => {
     let Data = { MeetingID: currentMeetingInfo.meetingID };
@@ -247,7 +243,6 @@ const Organizers = () => {
         align: "center",
         ellipsis: "120px",
         render: (text, record, rowIndex) => {
-          
           return (
             <Row>
               <Col
@@ -393,7 +388,6 @@ const Organizers = () => {
         align: "left",
 
         render: (text, record) => {
-          
           if (
             record.isPrimaryOrganizer ||
             Number(record.userID) === Number(UserID)
@@ -637,7 +631,7 @@ const Organizers = () => {
     );
     if (recordToDelete.isPrimaryOrganizer) {
       if (findisPrimary.length === 1) {
-        showMessage(t("Primary-organizer-doesn't-deleted"), "error", setOpen);
+        show(t("Primary-organizer-doesn't-deleted"), "error");
       } else {
       }
     } else {
@@ -657,7 +651,7 @@ const Organizers = () => {
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeetingInfo.meetingID, StatusID: 1 };
-    
+
     dispatch(
       UpdateMeetingStatusApi(navigate, t, Data, "publishMeetingFromOrganizer", {
         setEditorRole, // shorthand if variable name matches key
@@ -741,7 +735,6 @@ const Organizers = () => {
       UpdatedUsers: newarry,
     };
     if (findisOrganizerisExist) {
-      
       dispatch(
         UpdateMeetingUserApi(navigate, t, Data, "saveMeetingOrganizer", {
           rowsData,
@@ -751,11 +744,7 @@ const Organizers = () => {
         }),
       );
     } else {
-      showMessage(
-        t("At-least-one-primary-organizer-is-required"),
-        "error",
-        setOpen,
-      );
+      show(t("At-least-one-primary-organizer-is-required"), "error");
     }
   };
 
@@ -877,17 +866,17 @@ const Organizers = () => {
       MeetingOrganizersReducer.ResponseMessage ===
       "Organizers-saved-successfully"
     ) {
-      showMessage(t("Organizers-saved-successfully"), "error", setOpen);
+      show(t("Organizers-saved-successfully"), "error");
     } else if (
       MeetingOrganizersReducer.ResponseMessage ===
       "Notification-sent-successfully"
     ) {
-      showMessage(t("Notification-sent-successfully"), "error", setOpen);
+      show(t("Notification-sent-successfully"), "error");
     } else if (
       MeetingOrganizersReducer.ResponseMessage ===
       "Notification-not-sent-successfully"
     ) {
-      showMessage(t("Notification-not-sent-successfully"), "error", setOpen);
+      show(t("Notification-not-sent-successfully"), "error");
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
@@ -1016,7 +1005,6 @@ const Organizers = () => {
           </section>
         </section>
       </>
-      <Notification open={open} setOpen={setOpen} />
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyOrganizors && (
@@ -1029,7 +1017,6 @@ const Organizers = () => {
       {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
         <SendNotificationOrganizer />
       ) : null}
-   
 
       {NewMeetingreducer.ShowPreviousModal && (
         <PreviousModal
@@ -1047,6 +1034,7 @@ const Organizers = () => {
           prevFlag={prevFlag}
         />
       )}
+      {SnackBar}
     </>
   );
 };

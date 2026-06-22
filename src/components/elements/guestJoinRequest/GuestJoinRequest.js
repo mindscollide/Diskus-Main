@@ -26,7 +26,7 @@ const GuestJoinRequest = () => {
 
   const [waitingOnParticipant, setWaitingOnParticipant] = useState([]);
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const [loadingAdmit, setLoadingAdmit] = useState(false);
@@ -40,7 +40,10 @@ const GuestJoinRequest = () => {
   const [getRoomId, setGetRoomId] = useState("");
 
   // let roomID = localStorage.getItem("activeRoomID");
-  
+  console.log(
+    GuestVideoReducer?.admitGuestUserRequestData,
+    "waitingOnParticipantwaitingOnParticipant",
+  );
   const {
     name = "",
     meetingID = "",
@@ -53,8 +56,19 @@ const GuestJoinRequest = () => {
     isGuest = true,
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
 
-  
-  
+  console.log(GuestVideoReducer?.admitGuestUserRequestData, "Datatatacatcas");
+  console.log(
+    name,
+    meetingID,
+    guid,
+    UserID,
+    email,
+    hideCamera,
+    raiseHand,
+    mute,
+    isGuest,
+    "Datatatacatcas",
+  );
 
   useEffect(() => {
     if (GuestVideoReducer?.admitGuestUserRequestData !== null) {
@@ -70,17 +84,8 @@ const GuestJoinRequest = () => {
 
     if (Array.isArray(list) && list.length > 0) {
       // Deduplicate by meetingID + userID
-      const uniqueByUser = Object.values(
-        list.reduce((acc, item) => {
-          const key = `${item.meetingID}_${item.userID}`;
-          if (!acc[key]) {
-            acc[key] = item; // keep first occurrence
-          }
-          return acc;
-        }, {})
-      );
 
-      setFilteredWaitingParticipants(uniqueByUser);
+      setFilteredWaitingParticipants(list);
     } else {
       setFilteredWaitingParticipants([]);
     }
@@ -95,6 +100,17 @@ const GuestJoinRequest = () => {
     const participantsToProcess = participantInfo
       ? [participantInfo] // Single participant
       : filteredWaitingParticipants; // All participants
+
+    // Pehle waiting list se remove karo
+    dispatch(
+      participantAcceptandReject(
+        participantsToProcess.map((p) => ({
+          ...p,
+          meetingID: p.meetingID,
+          userID: p.userID,
+        })),
+      ),
+    );
 
     // Prepare API data
     const Data = {
@@ -117,18 +133,8 @@ const GuestJoinRequest = () => {
         flag,
         "",
         setLoadingAdmit,
-        setLoadingDeny
-      )
-    );
-
-    // Remove participants from waiting list in Redux
-    dispatch(
-      participantAcceptandReject(
-        participantsToProcess.map((p) => ({
-          meetingID: p.meetingID,
-          userID: p.userID,
-        }))
-      )
+        setLoadingDeny,
+      ),
     );
   };
 
@@ -162,17 +168,7 @@ const GuestJoinRequest = () => {
     const list = videoFeatureReducer.waitingParticipantsList;
 
     if (Array.isArray(list) && list.length > 0) {
-      const uniqueByUser = Object.values(
-        list.reduce((acc, item) => {
-          const key = `${item.meetingID}_${item.userID}`;
-          if (!acc[key]) {
-            acc[key] = item;
-          }
-          return acc;
-        }, {})
-      );
-
-      setWaitingOnParticipant(uniqueByUser);
+      setWaitingOnParticipant(list);
     } else {
       setWaitingOnParticipant([]);
     }
@@ -210,7 +206,7 @@ const GuestJoinRequest = () => {
                         <div key={index}>{participant.name}</div>
                       ) : (
                         <>{name + " "}</>
-                      )
+                      ),
                     )}
                   </strong>
                   {t("has-requested-to-join-this-video-call")}

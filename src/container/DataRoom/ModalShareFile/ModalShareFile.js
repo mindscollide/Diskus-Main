@@ -26,7 +26,7 @@ import {
 } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 import copyToClipboard from "../../../hooks/useClipBoard";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const ModalShareFile = ({
   ModalTitle,
@@ -51,11 +51,7 @@ const ModalShareFile = ({
   const [message, setMessage] = useState("");
   const [EditNotification, setEditNotification] = useState(false);
   const [accessupdate, setAccessupdate] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [fileData, setFileData] = useState({
     Files: [],
   });
@@ -229,7 +225,7 @@ const ModalShareFile = ({
             return { ...prev, Files: [...prev.Files, Data] };
           });
         } else {
-          showMessage(t("User-is-already-exist"), "error", setOpen);
+          show(t("User-is-already-exist"), "error");
         }
         setPersonValue({
           value: 0,
@@ -247,7 +243,7 @@ const ModalShareFile = ({
         // showMessage(t("User-select-must"), "error", setOpen);
       }
     } else {
-      showMessage(t("All-options-must-be-selected"), "error", setOpen);
+      show(t("All-options-must-be-selected"), "error");
     }
   };
 
@@ -588,7 +584,8 @@ const ModalShareFile = ({
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

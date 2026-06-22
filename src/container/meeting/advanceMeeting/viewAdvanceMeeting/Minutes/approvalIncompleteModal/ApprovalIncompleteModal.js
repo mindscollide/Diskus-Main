@@ -99,7 +99,7 @@ const ApprovalIncompleteModal = ({
         <>
           <div className={styles["list-section"]}>
             <p className={styles["rejected-heading"]}>
-              {t("Total-rejected")} ({totalRejectedMinutes})
+              {t("Total-reviewed")} ({totalRejectedMinutes})
             </p>
             <ol className={styles["ordered-list"]}>
               {rejectedUserData?.map((data, index) => {

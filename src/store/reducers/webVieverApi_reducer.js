@@ -199,7 +199,8 @@ const webViewerReducer = (state = initialState, action) => {
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: "",
-        isHTML: action.checking
+        isHTML: action.checking,
+        errorSeverity: "success",
       };
     }
     case actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_FAIL: {
