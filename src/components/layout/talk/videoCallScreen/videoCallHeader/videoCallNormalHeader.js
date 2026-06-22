@@ -503,17 +503,58 @@ const VideoCallNormalHeader = ({
 
   console.log(pendingCallParticipantList, "pendingCallParticipantList");
 
+  // A pending invitee is only kept in the roster while still being called. The
+  // backend retains rejected / unanswered / declined invitees in the pending
+  // list (with a status), but they must be REMOVED from the participant list on
+  // every client (caller and participants), not shown with a "Reject" status.
+  const isActiveInvitee = (p) => {
+    const status = String(p?.callStatus || "").toLowerCase();
+    return (
+      !status.includes("reject") &&
+      !status.includes("unanswer") &&
+      !status.includes("declin")
+    );
+  };
+
   useEffect(() => {
-    if (
-      pendingCallParticipantList !== undefined &&
-      pendingCallParticipantList !== null &&
-      pendingCallParticipantList.length !== 0
-    ) {
-      setGroupCallParticipantList(pendingCallParticipantList);
-    } else {
-      setGroupCallParticipantList([]);
+    // Caller roster = in-call (accepted) + pending (still ringing), deduped by
+    // userID. Previously this was sourced from the pending/ringing list ONLY, so
+    // once every invitee accepted/rejected/unanswered, the ringing list emptied
+    // and the caller's participant list + counter went blank / 0. Merging the
+    // in-call list (the same source participants already use) keeps accepted
+    // users visible to the caller for the whole call.
+    const pending = (
+      Array.isArray(pendingCallParticipantList)
+        ? pendingCallParticipantList
+        : []
+    ).filter(isActiveInvitee);
+    const inCall = Array.isArray(inCallParticipantList)
+      ? inCallParticipantList
+      : [];
+
+    const mergedMap = new Map();
+
+    // The caller never appears in the in-call/pending lists (they didn't
+    // "accept" and aren't "ringing"), so seed the caller's own entry first so
+    // they always see themselves in their roster.
+    if (isCaller) {
+      mergedMap.set(currentUserID, {
+        userID: currentUserID,
+        name: localStorage.getItem("name"),
+        callStatus: "In Call",
+        isHost: true,
+      });
     }
-  }, [pendingCallParticipantList]);
+
+    inCall.forEach((p) => {
+      if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
+    });
+    pending.forEach((p) => {
+      if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
+    });
+
+    setGroupCallParticipantList(Array.from(mergedMap.values()));
+  }, [pendingCallParticipantList, inCallParticipantList, isCaller, currentUserID]);
 
   // For InCall Participant List
   useEffect(() => {
@@ -521,12 +562,10 @@ const VideoCallNormalHeader = ({
       Array.isArray(inCallParticipantList) &&
       inCallParticipantList.length > 0
     ) {
-      // Filter out the current user
-      const filteredList = inCallParticipantList.filter(
-        (participant) => participant.userID !== currentUserID,
-      );
-
-      setInCallParticipantsList(filteredList); // set filtered list
+      // Use the backend in-call list as-is. It already contains every user who
+      // accepted (INCLUDING the current user), so the previous "filter out the
+      // current user" step is what hid each user's own name from their list.
+      setInCallParticipantsList(inCallParticipantList);
     } else {
       setInCallParticipantsList([]); // no participants
     }
@@ -2239,11 +2278,13 @@ const VideoCallNormalHeader = ({
                           )
                             ? inCallParticipantsList
                             : [];
-                          const pendingList = Array.isArray(
-                            pendingCallParticipantList,
-                          )
-                            ? pendingCallParticipantList
-                            : [];
+                          // Drop rejected / unanswered / declined invitees so they
+                          // are removed from the participant list (not shown).
+                          const pendingList = (
+                            Array.isArray(pendingCallParticipantList)
+                              ? pendingCallParticipantList
+                              : []
+                          ).filter(isActiveInvitee);
 
                           // Create a Map to deduplicate by userID
                           const mergedMap = new Map();
@@ -2455,11 +2496,11 @@ const VideoCallNormalHeader = ({
                                   )
                                     ? inCallParticipantsList
                                     : [];
-                                  const pendingList = Array.isArray(
-                                    pendingCallParticipantList,
-                                  )
-                                    ? pendingCallParticipantList
-                                    : [];
+                                  const pendingList = (
+                                    Array.isArray(pendingCallParticipantList)
+                                      ? pendingCallParticipantList
+                                      : []
+                                  ).filter(isActiveInvitee);
 
                                   // Merge and deduplicate by userID
                                   const mergedSet = new Set();
