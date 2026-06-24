@@ -16,6 +16,7 @@ import SortIconAscend from "../../../../assets/images/sortingIcons/SorterIconAsc
 import SortIconDescend from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import CancelMeetingIcon from "../../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
+import PublishMeetingIcon from "../../../../assets/images/New Meeting Listing Icons/Publish Meeting 1.png";
 import ChevronDownIcon from "../../../../assets/images/dropdown-icon.png";
 import DoubleArrowIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 
@@ -383,7 +384,7 @@ const DraftMeeting = () => {
           <span>{t("Delete-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleClickPublish}>
-          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+          <img src={PublishMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Publish-meeting")}</span>
         </div>
       </div>
