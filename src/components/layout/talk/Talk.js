@@ -62,6 +62,7 @@ import { MeetingContext } from "../../../context/MeetingContext";
 import { useTalkContext } from "../../../context/TalkContext.js";
 import ComplianceFeatureIcon from "../../../assets/images/ComplianceFeatureIcon.svg";
 import { useComplianceContext } from "../../../context/ComplianceContext.js";
+import { HIDE_VIDEO } from "../../../commen/featureFlags.js";
 const Talk = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -695,7 +696,7 @@ const Talk = () => {
               </div>
             </Tooltip>
           ) : null} */}
-          {checkFeatureIDAvailability(4) ? (
+          {checkFeatureIDAvailability(4) && !HIDE_VIDEO ? (
             <Tooltip placement='leftTop' title={t("Video-call")}>
               <div
                 // className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"

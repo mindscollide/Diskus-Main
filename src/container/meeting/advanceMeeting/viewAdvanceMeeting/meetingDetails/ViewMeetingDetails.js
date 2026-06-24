@@ -81,6 +81,7 @@ import {
   getMeetingDetailsByMeetingIdApi,
   UpdateMeetingStatusApi,
 } from "../../../../../store/actions/NewMeeting2.actions";
+import { HIDE_VIDEO } from "../../../../../commen/featureFlags";
 
 const ViewMeetingDetails = () => {
   const { t } = useTranslation();
@@ -868,7 +869,7 @@ const ViewMeetingDetails = () => {
                         className='cursor-pointer mx-2'
                       />
                     )}
-                    {meetingDetails.IsVideoCall && (
+                    {meetingDetails.IsVideoCall && !HIDE_VIDEO && (
                       <>
                         <Button
                           icon={<img src={CopyLinkBtn} alt='' />}

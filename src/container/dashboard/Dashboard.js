@@ -253,6 +253,7 @@ import {
   UpcomingDeadlineUserDashboardMqtt,
 } from "../../store/actions/ComplainSettingActions";
 import { useComplianceContext } from "../../context/ComplianceContext";
+import { HIDE_VIDEO } from "../../commen/featureFlags";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -979,7 +980,7 @@ const Dashboard = () => {
       if (isMeetingVideo && isMeetingVideoHostCheck) {
         // ⭐ ENSURE meetingID IS IN THE PAYLOAD
         const participantData = {
-          ...mqttData.payload
+          ...mqttData.payload,
         };
 
         if (mqttData.payload.isGuest) {
@@ -1099,7 +1100,7 @@ const Dashboard = () => {
     let data = JSON.parse(msg.payloadString);
     console.log(data, "MQTT onMessageArrived");
     if (!data.payload.message) {
-      data.payload.message = data.message
+      data.payload.message = data.message;
     }
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
@@ -1244,8 +1245,11 @@ const Dashboard = () => {
                   ),
                 });
               }
-            } else if(data.payload.message.toLowerCase() === "MEETING_POLL_RESPONSE".toLowerCase()) {
-               dispatch(meetingStatusProposedMqtt(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_POLL_RESPONSE".toLowerCase()
+            ) {
+              dispatch(meetingStatusProposedMqtt(data.payload));
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -7987,8 +7991,6 @@ const Dashboard = () => {
     MaximizeVideoFlag,
   ]);
 
-
-
   useEffect(() => {
     if (Blur !== null) {
       setActivateBlur(true);
@@ -8121,12 +8123,11 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -8134,7 +8135,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -8145,8 +8146,7 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -8172,7 +8172,7 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -8181,7 +8181,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+                <img src={IconMetroAttachment} alt='' draggable='false' />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -8199,14 +8199,15 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-          {NormalizeVideoFlag === true ||
-          MinimizeVideoFlag === true ||
-          MaximizeVideoFlag === true ? (
+          {!HIDE_VIDEO &&
+          (NormalizeVideoFlag === true ||
+            MinimizeVideoFlag === true ||
+            MaximizeVideoFlag === true) ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
@@ -8215,7 +8216,7 @@ const Dashboard = () => {
               open={isInternetDisconnectModalVisible}
             />
           )}
-          
+
           {cancelModalMeetingDetails && <CancelButtonModal />}
           {roleRoute && (
             <Modal
@@ -8226,24 +8227,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
-                  <Row className="mb-1">
+                  <Row className='mb-1'>
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className="d-flex justify-content-center">
+                        <Col className='d-flex justify-content-center'>
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
+                            alt=''
+                            draggable='false'
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="text-center mt-4">
+                        <Col className='text-center mt-4'>
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -8256,13 +8257,12 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}
@@ -8280,7 +8280,7 @@ const Dashboard = () => {
           )}
         </Layout>
       </ConfigProvider>
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };

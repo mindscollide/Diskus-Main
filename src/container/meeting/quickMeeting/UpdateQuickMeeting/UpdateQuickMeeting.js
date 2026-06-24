@@ -63,6 +63,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 import { useSnackbar } from "@/components/elements";
+import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
@@ -2900,24 +2901,27 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   </Row>
 
                   <Row className='updatemeetingvideoiconbtrrow'>
-                    <Col
-                      lg={1}
-                      md={1}
-                      sm={2}
-                      xs={12}
-                      className='CreateMeetingInput'>
-                      <Button
-                        disableBtn={endMeetingStatus}
-                        text={<CameraVideo />}
-                        name='IsVideoCall'
-                        className={
-                          createMeeting.IsVideoCall === false
-                            ? "cameraButton update"
-                            : "cameraButton update Enable"
-                        }
-                        onClick={videoEnableButton}
-                      />
-                    </Col>
+                    {HIDE_VIDEO && (
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={2}
+                        xs={12}
+                        className='CreateMeetingInput'>
+                        <Button
+                          disableBtn={endMeetingStatus}
+                          text={<CameraVideo />}
+                          name='IsVideoCall'
+                          className={
+                            createMeeting.IsVideoCall === false
+                              ? "cameraButton update"
+                              : "cameraButton update Enable"
+                          }
+                          onClick={videoEnableButton}
+                        />
+                      </Col>
+                    )}
+
                     <Col
                       lg={7}
                       md={7}

@@ -63,6 +63,7 @@ import {
 } from "@/store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
+import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -2317,37 +2318,40 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                 </Row>
 
                 <Row className='createmeetingInput-row mt-1'>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={12}
-                    xs={12}
-                    className='CreateMeetingInput'>
-                    <Button
-                      text={
-                        createMeeting.IsVideoCall === false ? (
-                          <Tooltip
-                            placement='bottomLeft'
-                            title={t("Enable-video-call")}>
-                            <img src={MeetingVideoChatIcon} alt='' />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip
-                            placement='bottomLeft'
-                            title={t("Disable-video-call")}>
-                            <img src={MeetingVideoChatIconActive} alt='' />
-                          </Tooltip>
-                        )
-                      }
-                      name='IsVideoCall'
-                      className={
-                        createMeeting.IsVideoCall === false
-                          ? "cameraButton"
-                          : "cameraButton Enable"
-                      }
-                      onClick={videoEnableButton}
-                    />
-                  </Col>
+                  {!HIDE_VIDEO && (
+                    <Col
+                      lg={1}
+                      md={1}
+                      sm={12}
+                      xs={12}
+                      className='CreateMeetingInput'>
+                      <Button
+                        text={
+                          createMeeting.IsVideoCall === false ? (
+                            <Tooltip
+                              placement='bottomLeft'
+                              title={t("Enable-video-call")}>
+                              <img src={MeetingVideoChatIcon} alt='' />
+                            </Tooltip>
+                          ) : (
+                            <Tooltip
+                              placement='bottomLeft'
+                              title={t("Disable-video-call")}>
+                              <img src={MeetingVideoChatIconActive} alt='' />
+                            </Tooltip>
+                          )
+                        }
+                        name='IsVideoCall'
+                        className={
+                          createMeeting.IsVideoCall === false
+                            ? "cameraButton"
+                            : "cameraButton Enable"
+                        }
+                        onClick={videoEnableButton}
+                      />
+                    </Col>
+                  )}
+
                   <Col
                     lg={7}
                     md={7}
