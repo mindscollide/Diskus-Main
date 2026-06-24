@@ -73,13 +73,25 @@ import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 import { useSnackbar } from "../../../../components/elements";
 import { meetingApi } from "../../../../commen/apis/Api_ends_points";
 import { isSharedScreenCall } from "../../../../commen/apis/Api_config";
+import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 
 const ModalView = ({ ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+  const infoCommittee = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+  const infoGroup = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
 
+  console.log(
+    { infoCommittee, infoGroup },
+    "infoGroupinfoGroupinfoGroupinfoGroup",
+  );
   const navigate = useNavigate();
   const { isQuickMeetingView, setIsQuickMeetingView } = useNewMeetingContext();
 
@@ -1003,6 +1015,38 @@ const ModalView = ({ ModalTitle }) => {
   };
 
   const handleClickClose = async () => {
+    setIsQuickMeetingView(false);
+
+    if (infoCommittee !== null) {
+      let Data = {
+        CommitteeID: Number(infoCommittee?.committeeID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(createrID),
+        PageNumber: 1,
+        Length: 30,
+        PublishedMeetings: true,
+        ProposedMeetings: false,
+      };
+      dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
+      return;
+    }
+    if (infoGroup !== null) {
+      let Data = {
+        GroupID: Number(infoGroup?.groupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(createrID),
+        PageNumber: 1,
+        Length: 30,
+        PublishedMeetings: true,
+        ProposedMeetings: false,
+      };
+      dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
+      return;
+    }
     let searchData = {
       Date: "",
       Title: "",
@@ -1014,7 +1058,6 @@ const ModalView = ({ ModalTitle }) => {
       ProposedMeetings: false,
     };
     await dispatch(listOfMeetingsApi(navigate, t, searchData));
-    setIsQuickMeetingView(false);
   };
 
   const handleClickEndMeeting = useCallback(async () => {

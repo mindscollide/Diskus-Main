@@ -70,7 +70,7 @@ const Header2 = ({ isVideo }) => {
   const { t } = useTranslation();
   const WebNotificationBell = useRef();
   const remainingDays = localStorage.getItem("remainingDays");
-
+  let defaultDashboard = getHomeRoute();
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
   );
@@ -90,7 +90,7 @@ const Header2 = ({ isVideo }) => {
     setSceduleMeeting,
     setGoBackCancelModal,
     unReadCountNotification,
-    
+
     setUnReadCountNotification,
   } = useMeetingContext();
   const viewProposeDateMeetingPageFlagReducer = useSelector(
@@ -124,8 +124,6 @@ const Header2 = ({ isVideo }) => {
   const requestExtentionModal = useSelector(
     (state) => state.UserManagementModals.requestExtentionModal,
   );
-
-
 
   const getAllNotificationData = useSelector(
     (state) => state.settingReducer.diskusWebNotificationData,
@@ -295,8 +293,6 @@ const Header2 = ({ isVideo }) => {
       );
     }
   }, [UserProfileData]);
-
-
 
   const forgotPasswordCheck = (e) => {
     e?.preventDefault(); // 🚫 stop auto navigation
@@ -548,7 +544,7 @@ const Header2 = ({ isVideo }) => {
       dispatch,
       navigate,
       t,
-      "/Diskus/",
+      defaultDashboard,
       editorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
@@ -713,9 +709,12 @@ const Header2 = ({ isVideo }) => {
               homePageDashboardClick();
             }
           } else {
+            let value = getHomeRoute();
+            navigate(value);
             // Handle case when activeCall is null or not available
           }
         } catch (error) {
+          console.log(error);
           // Handle any errors that occur during parsing or function calls
         }
       }
@@ -729,6 +728,7 @@ const Header2 = ({ isVideo }) => {
 
   const shouldShowApprovals =
     checkFeatureID(19) || checkFeatureID(20) || checkFeatureID(21);
+
   return (
     <>
       {activateBlur ? (
@@ -746,7 +746,7 @@ const Header2 = ({ isVideo }) => {
                       : cancelSub
                         ? "/Admin/ManageUsers"
                         : "/Admin/ManageUsers"
-                  : "/Diskus"
+                  : defaultDashboard
               }>
               <img
                 src={
@@ -1083,7 +1083,7 @@ const Header2 = ({ isVideo }) => {
                         : cancelSub
                           ? "/Admin/ManageUsers"
                           : "/Admin/ManageUsers"
-                    : "/Diskus"
+                    : defaultDashboard
               }
               onClick={handleClickLogo}
               // onClick={(e) => {
@@ -1819,8 +1819,8 @@ const Header2 = ({ isVideo }) => {
 
       {UpgradeNowModalReducer && <UpgradeNowModal />}
       {requestExtentionModal && <RequestExtensionModal />}
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

@@ -1,0 +1,16 @@
+export const MEETING_STATUS = {
+  ACTIVE: 10,
+  PUBLISHED: 1,
+};
+
+export const PARTICIPANT_ROLE = {
+  ORGANIZER: 1,
+  PARTICIPANT: 2,
+  AGENDA_CONTRIBUTOR: 4,
+};
+
+export const MEETING_VIEWS = {
+  PUBLISHED: 1,
+  PROPOSED: 2,
+  DRAFT: 3,
+};

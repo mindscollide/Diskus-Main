@@ -73,8 +73,9 @@ body[dir="rtl"] span.No-of-reviews {
   border-radius: 8px !important;
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  --Paper-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   box-shadow: var(--Paper-shadow);
   display: inline-block !important;
   background: #fff !important;
@@ -108,7 +109,7 @@ p.minutes-text {
   font-size: 12px;
   color: #5a5a5a;
   margin: 0 !important;
-  word-wrap: break-word;
+  white-space: break-spaces;
 }
 
 p.minutes-text p {

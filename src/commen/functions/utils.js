@@ -119,6 +119,8 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     { id: 17, name: "groups" },
     { id: 48, name: "committee" },
     { id: 18, name: "resolution" },
+    { id: 77, name: "compliance" },
+
   ];
   try {
     // Iterate through each feature from the API response
@@ -293,6 +295,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
           { name: "setting", id: 105 },
           { name: "onboard", id: 106 },
           { name: "Minutes", id: 115 },
+          { name: "compliance", id: 77 },
+
         ]
       : [];
     let LocalAdminRoutes = response.hasAdminRights
@@ -329,6 +333,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
           { name: "documentViewer", id: 20 },
           { name: "Payment", id: 109 },
           { name: "Minutes", id: 115 },
+          { name: "compliance", id: 77 },
+
         );
       }
       if (response.hasAdminRights) {
@@ -2942,6 +2948,7 @@ export const generateRandomPositiveId = () => {
 
 export const handleNavigation = (
   navigate,
+  response,
   isFirstLogin,
   userRights,
   adminRights,

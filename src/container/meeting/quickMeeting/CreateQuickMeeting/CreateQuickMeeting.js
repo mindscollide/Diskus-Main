@@ -2593,7 +2593,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                         value={data.ObjMeetingAgenda.URLs}
                                         applyClass='form-control2'
                                         type='text'
-                                        placeholder={t("URL-Title-Placeholder")}
                                       />
                                     </Col>
                                   </Row>

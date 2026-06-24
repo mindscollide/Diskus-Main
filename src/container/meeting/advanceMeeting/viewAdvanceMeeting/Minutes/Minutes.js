@@ -351,10 +351,12 @@ const Minutes = () => {
     try {
       if (
         generalMinutesDocument !== undefined &&
-        generalMinutesDocument !== null
+        generalMinutesDocument !== null &&
+        generalMinutesDocument?.length > 0
       ) {
         let files = [];
         let prevData = [];
+        console.log(generalMinutesDocument, "generalMinutesDocument");
         generalMinutesDocument.data.forEach((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
@@ -1025,13 +1027,10 @@ const Minutes = () => {
         .pK_WorkFlow_ID;
     let Data = { WorkFlowID: workFlowID };
     dispatch(
-      GetStatsForPublishingMinutesByWorkFlowId(
-        Data,
-        navigate,
-        t,
+      GetStatsForPublishingMinutesByWorkFlowId(navigate, t, Data, "", {
         setApprovalModal,
         setPublishAnywayModal,
-      ),
+      }),
     );
   };
 

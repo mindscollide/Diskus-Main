@@ -153,7 +153,7 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     dispatch(resetCreateEditTabs());
                     dispatch(toggleCreateEditMeetingModal(false));
                     dispatch(resetCurrentMeetingInfo());
-                       isFunction(setEditorRole) &&
+                    isFunction(setEditorRole) &&
                       setEditorRole({
                         status: null,
                         role: "",
@@ -2349,10 +2349,35 @@ export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                     "",
                   ),
                 );
-                const { setShow } = object;
+                const { setShow, checkFlag } = object;
                 if (setShow) setShow(false);
 
-                switch (routePath) {
+                switch (checkFlag) {
+                  case 6:
+                    let ViewCommitteeID =
+                      localStorage.getItem("ViewCommitteeID");
+                    let CommitteeMeetingData = {
+                      MeetingID: Number(data.MeetingID),
+                      CommitteeID: Number(ViewCommitteeID),
+                    };
+                    dispatch(
+                      setMeetingbyCommitteeIdApi(
+                        navigate,
+                        t,
+                        CommitteeMeetingData,
+                      ),
+                    );
+                    break;
+                  case 7:
+                    let ViewGroupID = localStorage.getItem("ViewGroupID");
+                    let GroupMeetingData = {
+                      MeetingID: Number(data.MeetingID),
+                      GroupID: Number(ViewGroupID),
+                    };
+                    dispatch(
+                      setMeetingByGroupIdApi(navigate, t, GroupMeetingData),
+                    );
+                    break;
                   default:
                     break;
                 }

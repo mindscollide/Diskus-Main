@@ -735,12 +735,12 @@ const OnboardDashboard = () => {
         </Row>
       </Container>
 
-      <CreateQuickMeeting
+      {/* <CreateQuickMeeting
         show={show}
         setShow={setShow}
         // this is check from where its called 5 is from OnboardDashboard
         checkFlag={5}
-      />
+      /> */}
       <Modal
         show={activateBlur}
         setShow={() => {

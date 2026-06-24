@@ -1098,6 +1098,9 @@ const Dashboard = () => {
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
     console.log(data, "MQTT onMessageArrived");
+    if (!data.payload.message) {
+      data.payload.message = data.message
+    }
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
         if (data.action && data.payload) {
@@ -1230,6 +1233,19 @@ const Dashboard = () => {
               "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
             ) {
               dispatch(meetingStatusProposedMqtt(data.payload.meeting));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+              }
+            } else if(data.payload.message.toLowerCase() === "MEETING_POLL_RESPONSE".toLowerCase()) {
+               dispatch(meetingStatusProposedMqtt(data.payload));
               if (data.viewable) {
                 setNotification({
                   ...notification,

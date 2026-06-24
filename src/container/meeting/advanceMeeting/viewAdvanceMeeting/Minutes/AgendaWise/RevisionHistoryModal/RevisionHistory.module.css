@@ -85,7 +85,7 @@ p.minutes-text {
   font-size: 12px;
   color: #5a5a5a;
   margin: 0 !important;
-  overflow-wrap: break-word !important;
+  white-space: break-spaces !important;
   max-width: 100% !important;
 }
 
@@ -392,8 +392,8 @@ body[dir="rtl"] .gap-ti {
 
 p.time-uploader {
   margin: 0;
-  position: absolute;
-  bottom: 20px;
+  /* position: absolute; */
+  /* bottom: 20px; */
   margin-left: 10px;
   color: #5f78d6 !important;
   font-weight: 500;
@@ -412,8 +412,8 @@ body[dir="rtl"] p.time-uploader {
 
 p.date-uploader {
   margin: 0;
-  position: absolute;
-  bottom: 0;
+  /* position: absolute; */
+  /* bottom: 0; */
   margin-left: 10px;
   color: #5f78d6 !important;
   font-weight: 500;

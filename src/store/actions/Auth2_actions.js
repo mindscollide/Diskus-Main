@@ -38,7 +38,6 @@ import {
   USERSPASSWORDCREATION,
 } from "../../commen/functions/responce_message";
 import { changeNewLanguage } from "./Language_actions";
-import { endMeetingStatusApi } from "./NewMeetingActions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { UpdateMeetingStatusApi } from "./NewMeeting2.actions";
 const createOrganizationInit = () => {
@@ -600,6 +599,7 @@ const enterPasswordvalidation = (
 
           handleNavigation(
             navigate,
+            response.data.responseResult,
             response.data.responseResult.authToken.isFirstLogIn,
             response.data.responseResult.userFeatures,
             response.data.responseResult.adminFeatures,
@@ -645,9 +645,10 @@ const enterPasswordvalidation = (
           );
           handleNavigation(
             navigate,
+            response.data.responseResult,
             response.data.responseResult.authToken.isFirstLogIn,
-            response.data.responseResult.hasUserRights,
-            response.data.responseResult.hasAdminRights,
+            response.data.responseResult.userFeatures,
+            response.data.responseResult.adminFeatures,
             dispatch,
           );
 
@@ -1976,7 +1977,10 @@ const createPasswordAction = (value, navigate, t) => {
           // Password Created and this is a user
           handleNavigation(
             navigate,
+            response.data.responseResult,
             response.data.responseResult.authToken.isFirstLogIn,
+            response.data.responseResult.userFeatures,
+            response.data.responseResult.adminFeatures,
             dispatch,
           );
           dispatch(createPasswordSuccess(response.data.responseResult, ""));

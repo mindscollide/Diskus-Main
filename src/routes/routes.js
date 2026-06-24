@@ -515,7 +515,7 @@ export const router = createBrowserRouter(
           <Route
             path='compliance'
             element={
-              <RouteWrapperUser name='polling'>
+              <RouteWrapperUser name='compliance'>
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
                   onError={logErrors}>
