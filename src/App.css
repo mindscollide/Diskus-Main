@@ -8347,6 +8347,15 @@ td.ant-table-column-sort {
 .SelectOptions_drop_active__menu {
   z-index: 4 !important;
 }
+/* Bootstrap's .modal-backdrop sits at z-index 1050 and .modal at 1055
+   (see Modal.css — the backdrop is only made transparent, not removed from
+   the click-interception stack). When this Popover is opened from a Card
+   rendered inside a Bootstrap <Modal> (e.g. ModalArchivedCommittee), AntD's
+   default popover z-index loses to that stack, so status-option clicks land
+   on the invisible backdrop instead of the dropdown item. */
+.editDropdownPopoverOverLay {
+  z-index: 1100 !important;
+}
 .editDropdownPopoverOverLay .ant-popover-inner-content {
   width: 112px !important;
   padding: 12px 0 !important;

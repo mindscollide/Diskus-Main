@@ -338,7 +338,9 @@ const AgendaWise = ({
         MinuteText: content,
       };
       dispatch(
-        AddAgendaWiseMinutesApiFunc(navigate, t, Data, setAgendaOptionValue),
+        AddAgendaWiseMinutesApiFunc(navigate, t, Data, "", {
+          setAgendaOptionValue,
+        }),
       );
     } else {
       if (!isDescriptionNotEmpty) {

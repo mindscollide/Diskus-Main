@@ -350,95 +350,6 @@ const ExpandedMenu = ({
     // );
   };
 
-  const handleSidebarClickForExpand = ({
-    targetPath,
-    navigateLocationKey,
-    handleWithCall,
-    handleNoCall,
-  }) => {
-    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-    const isHost = JSON.parse(localStorage.getItem("isHost"));
-    
-    
-    
-    if (createEditCompliance) {
-      
-      setPendingNavigation(targetPath);
-      setCloseConfirmationModal(true);
-      return true;
-    }
-
-    if (isMeeting) {
-      
-      if (location.pathname !== targetPath && isViewMeetingModal) {
-        
-        navigate(targetPath);
-        dispatch(resetCurrentMeetingInfo());
-        dispatch(toggleViewMeetingModal(false));
-        dispatch(resetViewTabs());
-        return "";
-      }
-
-      
-
-      if (!isMeetingVideo) {
-        
-        // show Modal in which when anyone is not in the meeting Video
-        dispatch(showEndMeetingModal(true));
-      } else {
-        
-        if (
-          (activeCall === false ||
-            activeCall === undefined ||
-            activeCall === null) &&
-          isMeetingVideo
-        ) {
-          //this will open when activeCall is false and this come from Host side
-          
-          handleNoCall();
-        } else {
-          if (isMeetingVideo) {
-            
-            //this will open when activeCall is true and this come from participant side
-            handleWithCall();
-          }
-        }
-      }
-
-      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
-        
-        localStorage.removeItem("navigateLocation");
-      }
-
-      localStorage.setItem("navigateLocation", navigateLocationKey);
-      return true;
-    }
-
-    if (endMeetingModal) {
-      
-      
-      return true;
-    }
-
-    const shouldRedirectToMeeting =
-      (scheduleMeetingPageFlagReducer ||
-        viewProposeDateMeetingPageFlagReducer ||
-        viewAdvanceMeetingPublishPageFlagReducer ||
-        viewAdvanceMeetingUnpublishPageFlagReducer ||
-        viewProposeOrganizerMeetingPageFlagReducer ||
-        proposeNewMeetingPageFlagReducer) &&
-      !viewMeetingFlagReducer;
-
-    if (shouldRedirectToMeeting) {
-      
-      navigate("/Diskus/Meeting");
-    } else {
-      
-      navigate(targetPath);
-    }
-
-    return false;
-  };
 
   return (
     <Nav className={styles.iconGrid}>
@@ -457,7 +368,7 @@ const ExpandedMenu = ({
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/calendar",
               navigateLocationKey: "calendar",
               handleWithCall: handleMeetingSidebarCalendar,
@@ -493,7 +404,7 @@ const ExpandedMenu = ({
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/groups",
               navigateLocationKey: "groups",
               handleWithCall: handleMeetingSidebarGroups,
@@ -530,7 +441,7 @@ const ExpandedMenu = ({
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/todolist",
               navigateLocationKey: "todolist",
               handleWithCall: handleMeetingSidebarTodo,
@@ -566,7 +477,7 @@ const ExpandedMenu = ({
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/Notes",
               navigateLocationKey: "Notes",
               handleWithCall: handleMeetingSidebarNotes,
@@ -602,7 +513,7 @@ const ExpandedMenu = ({
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/polling",
               navigateLocationKey: "polling",
               handleWithCall: handleMeetingSidebarPolls,

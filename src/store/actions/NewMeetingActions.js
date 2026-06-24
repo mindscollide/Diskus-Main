@@ -4057,10 +4057,7 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
                 )
             ) {
               await dispatch(
-                showSaveMinutesDocsSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                showSaveMinutesDocsSuccess(response.data.responseResult, ""),
               );
               const meetingId =
                 store.getState().NewMeetingreducer?.currentMeetingInfo
@@ -4857,50 +4854,62 @@ const AddAgendaWiseMinutesApiFunc = (navigate, t, Data, routeValue, object) => {
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            AddAgendaWiseMinutesApiFunc(navigate, t, Data, routeValue, object),
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_01".toLowerCase(),
-                )
-            ) {
-              await dispatch(
-                showAgendaWiseAddMinutesSuccess(
-                  response.data.responseResult.minuteID,
-                  t("Record-saved"),
-                ),
-              );
-              const { setAgendaOptionValue } = object;
-              (await isFunction(setAgendaOptionValue)) &&
-                setAgendaOptionValue({
-                  value: 0,
-                  label: "",
-                });
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_02".toLowerCase(),
-                )
-            ) {
-              dispatch(showAgendaWiseAddMinutesFailed(t("No-record-saved")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_03".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                showAgendaWiseAddMinutesFailed(t("Something-went-wrong")),
-              );
+        try {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(
+              AddAgendaWiseMinutesApiFunc(
+                navigate,
+                t,
+                Data,
+                routeValue,
+                object,
+              ),
+            );
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_01".toLowerCase(),
+                  )
+              ) {
+                await dispatch(
+                  showAgendaWiseAddMinutesSuccess(
+                    response.data.responseResult.minuteID,
+                    t("Record-saved"),
+                  ),
+                );
+                const { setAgendaOptionValue } = object;
+                (await isFunction(setAgendaOptionValue)) &&
+                  setAgendaOptionValue({
+                    value: 0,
+                    label: "",
+                  });
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_02".toLowerCase(),
+                  )
+              ) {
+                dispatch(showAgendaWiseAddMinutesFailed(t("No-record-saved")));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_03".toLowerCase(),
+                  )
+              ) {
+                dispatch(
+                  showAgendaWiseAddMinutesFailed(t("Something-went-wrong")),
+                );
+              } else {
+                dispatch(
+                  showAgendaWiseAddMinutesFailed(t("Something-went-wrong")),
+                );
+              }
             } else {
               dispatch(
                 showAgendaWiseAddMinutesFailed(t("Something-went-wrong")),
@@ -4909,8 +4918,8 @@ const AddAgendaWiseMinutesApiFunc = (navigate, t, Data, routeValue, object) => {
           } else {
             dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
           }
-        } else {
-          dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
+        } catch (error) {
+          console.log(error);
         }
       })
       .catch((response) => {
@@ -5116,11 +5125,10 @@ const UpdateMinutesGeneralApiFunc = (
                 t("Record-updated"),
               ),
             );
+            const meetingId =
+              store.getState().NewMeetingreducer?.currentMeetingInfo?.meetingID;
             switch (routePath) {
               case "updateGeneralMinutes":
-                const meetingId =
-                  store.getState().NewMeetingreducer?.currentMeetingInfo
-                    ?.meetingID;
                 await dispatch(
                   GetAllGeneralMinutesApiFunc(
                     navigate,
@@ -5211,6 +5219,7 @@ const UpdateMinutesGeneralApiFunc = (
         dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
       }
     } catch (error) {
+      console.log(error);
       dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
     }
   };

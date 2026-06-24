@@ -111,11 +111,7 @@ const Minutes = () => {
   const addMinuteID = useSelector(
     (state) => state.NewMeetingreducer.addMinuteID,
   );
-  console.log(
-    generalminutesDocumentForMeeting,
-    generalMinutesDocument,
-    "generalMinutesDocumentgeneralMinutesDocument",
-  );
+
   // Initialize previousFileList to an empty array
   let previousFileList = [];
   const [fileSize, setFileSize] = useState(0);
@@ -136,7 +132,7 @@ const Minutes = () => {
       errorStatus: false,
     },
   });
-
+  console.log(fileAttachments, "fileAttachmentsfileAttachments")
   const [addAgendaWiseFields, setAgendaWiseFields] = useState({
     Description: {
       value: "",
@@ -335,8 +331,7 @@ const Minutes = () => {
         },
       });
       setisEdit(true);
-    } else {
-    }
+    } 
     let Retrive = {
       FK_MeetingGeneralMinutesID: data.minuteID,
     };
@@ -345,19 +340,19 @@ const Minutes = () => {
     );
     // Ensure data.minutesDetails is not undefined or null before setting the state
   };
-
+  console.log(generalMinutesDocument, "generalMinutesDocumentgeneralMinutesDocument")
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
     try {
       if (
         generalMinutesDocument !== undefined &&
-        generalMinutesDocument !== null &&
-        generalMinutesDocument?.length > 0
+        generalMinutesDocument !== null 
       ) {
         let files = [];
         let prevData = [];
-        console.log(generalMinutesDocument, "generalMinutesDocument");
-        generalMinutesDocument.data.forEach((data, index) => {
+        const {data = []} = generalMinutesDocument
+        console.log(data, "generalMinutesDocument");
+        data.forEach((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,

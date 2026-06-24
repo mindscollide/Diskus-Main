@@ -218,11 +218,12 @@ const ModalArchivedCommittee = ({
                   <Row className='text-center mt-4'>
                     {getcommitteedata.length > 0 &&
                     Object.values(getcommitteedata).length > 0 ? (
-                      getcommitteedata.map((data) => {
+                      getcommitteedata.map((data, index) => {
                         return (
                           <Col lg={4} md={4} sm={12} className='mb-3'>
                             <Card
                               setUniqCardID={setUniqCardID}
+                              key={index}
                               uniqCardID={uniqCardID}
                               CardID={data.committeeID}
                               CardHeading={data.committeesTitle}
