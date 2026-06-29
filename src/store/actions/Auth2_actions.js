@@ -646,8 +646,8 @@ const enterPasswordvalidation = (
           handleNavigation(
             navigate,
             response.data.responseResult.authToken.isFirstLogIn,
-            response.data.responseResult.hasUserRights,
-            response.data.responseResult.hasAdminRights,
+            response.data.responseResult.userFeatures,
+            response.data.responseResult.adminFeatures,
             dispatch,
           );
 
@@ -1978,6 +1978,8 @@ const createPasswordAction = (value, navigate, t) => {
           handleNavigation(
             navigate,
             response.data.responseResult.authToken.isFirstLogIn,
+            response.data.responseResult.userFeatures,
+            response.data.responseResult.adminFeatures,
             dispatch,
           );
           dispatch(createPasswordSuccess(response.data.responseResult, ""));

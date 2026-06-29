@@ -48,6 +48,8 @@ const ignoredMessages = new Set([
   "Record save",
   "No Data available",
   "Successful",
+  "No Data Available"
+
 ]);
 
 const useSnackbar = (watchConfigs = []) => {
