@@ -383,6 +383,7 @@ export const CommitteeProvider = ({ children }) => {
         const updateMeetingData = async () => {
           const { meeting, committeeID } =
             committeeProposedMeetingStatusProposedMqttData;
+
           if (Number(committeeID) === Number(committeeInfo.committeeID)) {
           }
 
@@ -415,7 +416,9 @@ export const CommitteeProvider = ({ children }) => {
         };
         updateMeetingData();
         dispatch(committeeProposedMeetingAction(null));
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [committeeProposedMeetingStatusProposedMqttData]);
 

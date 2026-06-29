@@ -1248,7 +1248,7 @@ const Dashboard = () => {
                 });
               }
             } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()) {
-              dispatch(committeeProposedMeetingAction(data.payload.meeting));
+              dispatch(committeeProposedMeetingAction(data.payload));
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1261,7 +1261,7 @@ const Dashboard = () => {
                 });
               }
             } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()) {
-              dispatch(groupProposedMeetingAction(data.payload.meeting));
+              dispatch(groupProposedMeetingAction(data.payload));
               if (data.viewable) {
                 setNotification({
                   ...notification,

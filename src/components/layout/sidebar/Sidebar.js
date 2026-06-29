@@ -32,6 +32,7 @@ import {
 } from "../../../store/actions/NewMeeting2.actions";
 import { useGroupsContext } from "../../../context/GroupsContext";
 import { useCommitteeContext } from "../../../context/CommitteeContext";
+import TaskImage from "../../../assets/images/sidebar_icons/NewTaskSideBar.png";
 const Sidebar = () => {
   const location = useLocation();
   const { t } = useTranslation();
@@ -159,6 +160,50 @@ const Sidebar = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
+  const handleMeetingSidebarTodo = () => {
+    localStorage.setItem("navigateLocation", "todolist");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  const handleMeetingSidebarTodoNoCall = async () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+
+    localStorage.setItem("navigateLocation", "todolist");
+    SideBarGlobalNavigationFunctionNew(
+      dispatch,
+      navigate,
+      t,
+      "/Diskus/todolist",
+      editorRole,
+      setUnSaveChangesModalForMeeting,
+      unSaveChangesModalForMeeting,
+    );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/todolist",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
+  };
 
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
@@ -1176,11 +1221,48 @@ const Sidebar = () => {
                 ) : null}
 
                 {/* Add more btn */}
-                {checkFeatureIDAvailability(13) ||
-                checkFeatureIDAvailability(17) ||
-                checkFeatureIDAvailability(18) ||
-                checkFeatureIDAvailability(15) ||
-                checkFeatureIDAvailability(48) ? (
+
+                {localStorage.getItem("OnlyComplianceAllowed") !== null &&
+                JSON.parse(localStorage.getItem("OnlyComplianceAllowed")) ? (
+                  <>
+                    {" "}
+                    {checkFeatureIDAvailability(14) ? (
+                      <Nav.Link
+                        as={Link}
+                        to={"/Diskus/todolist"}
+                        eventKey='link-3'
+                        className={
+                          location.pathname === "/Diskus/todolist" ||
+                          location.pathname === "/Diskus/todolist"
+                            ? "m-0 p-0 iconItem_activeSideBarMain"
+                            : "m-0 p-0 iconItemSideBarMain"
+                        }
+                        onClick={(e) => {
+                          // Prevent default behavior
+                          e.preventDefault();
+                          const handled = handleSidebarNavigation({
+                            targetPath: "/Diskus/todolist",
+                            navigateLocationKey: "todolist",
+                            handleWithCall: handleMeetingSidebarTodo,
+                            handleNoCall: handleMeetingSidebarTodoNoCall,
+                          });
+
+                          if (handled) return;
+                        }}>
+                        <div
+                          className='d-flex flex-column justify-content-center align-items-center'
+                          draggable='false'>
+                          <img src={TaskImage} alt='TaskImage' />
+                          <span>{t("Tasks")}</span>
+                        </div>
+                      </Nav.Link>
+                    ) : null}{" "}
+                  </>
+                ) : checkFeatureIDAvailability(13) ||
+                  checkFeatureIDAvailability(17) ||
+                  checkFeatureIDAvailability(18) ||
+                  checkFeatureIDAvailability(15) ||
+                  checkFeatureIDAvailability(48) ? (
                   <>
                     <Nav.Link
                       disabled={false}
