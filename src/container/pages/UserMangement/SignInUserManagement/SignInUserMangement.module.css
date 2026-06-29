@@ -435,8 +435,8 @@ body[dir="rtl"] .languageSelector {
   }
   .Login_page_text {
     position: fixed;
-    top: 0;
-    margin-top: 20px;
+    top: 100px;
+    /* margin-top: 20px; */
   }
   .EmailVerifyBox {
     display: flex;
@@ -522,4 +522,10 @@ body[dir="rtl"] .languageSelector {
     margin-bottom: 10px;
     z-index: 2;
   }
+}
+
+.PoweredIcon_Diskus_Icon{
+  position: absolute;
+  bottom: 10px;
+  right: 100px;
 }
