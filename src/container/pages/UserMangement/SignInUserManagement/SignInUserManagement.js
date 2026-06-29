@@ -41,9 +41,6 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const adminReducerDeleteOrganizationResponseMessageData = useSelector(
-    (state) => state.adminReducer.DeleteOrganizationResponseMessage,
-  );
 
   const UserManagementModalsmobileAppPopUpData = useSelector(
     (state) => state.UserManagementModals.mobileAppPopUp,
@@ -279,7 +276,7 @@ const SignInUserManagement = () => {
                                 : DiskusLogo
                           }
                           alt='diskus_logo'
-                          width={120}
+                          width={PSO_LOGO ? 120 : 200}
                         />
                       </Col>
                     </Row>
@@ -389,7 +386,7 @@ const SignInUserManagement = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className='position-relative d-flex overflow-hidden'>
+                className='position-relative d-flex'>
                 <Col
                   md={8}
                   lg={8}
