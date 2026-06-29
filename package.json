@@ -101,8 +101,13 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "env-cmd -f .env.local craco start",
+    "build:local": "env-cmd -f .env.local craco build",
+    "build:pso": "env-cmd -f .env.pso craco build",
+    "build:uat": "env-cmd -f .env.uat craco build",
+    "build:staging": "env-cmd -f .env.staging craco build",
+    "build:optimize": "env-cmd -f .env.optimized craco build",
+    "build:production": "env-cmd -f .env.production craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
