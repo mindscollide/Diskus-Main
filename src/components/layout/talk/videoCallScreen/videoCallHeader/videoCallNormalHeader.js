@@ -6,7 +6,10 @@ import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
-import { isSharedScreenCall } from "../../../../../commen/apis/Api_config";
+import {
+  isSharedScreenCall,
+  stopPresenterView,
+} from "../../../../../commen/apis/Api_config";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
@@ -122,7 +125,7 @@ const VideoCallNormalHeader = ({
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-  const [show, SnackBar] =useSnackbar()
+  const [show, SnackBar] = useSnackbar();
 
   const {
     editorRole,
@@ -449,9 +452,7 @@ const VideoCallNormalHeader = ({
         let isMeetingVideoHostCheck = JSON.parse(
           localStorage.getItem("isMeetingVideoHostCheck"),
         );
-        let isMeetingVideo = JSON.parse(
-          localStorage.getItem("isMeetingVideo"),
-        );
+        let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
         let userID = localStorage.getItem("userID");
         let isGuid = localStorage.getItem("isGuid");
         let participantUID = localStorage.getItem("participantUID");
@@ -492,6 +493,42 @@ const VideoCallNormalHeader = ({
         }
         localStorage.removeItem("isScreenShareEnabled");
       }
+
+      // If THIS user is the PRESENTER who started the presentation and
+      // closes the tab/browser, stop the presentation entirely for everyone
+      // (StopPresenterView) rather than leaving it dangling active with no
+      // one to manage it. Same reliability reasoning as above: a normal
+      // axios/Redux-thunk call would be cancelled by the browser before it
+      // completes, so use fetch with `keepalive: true` to guarantee delivery
+      // during unload.
+      if (presenterViewFlag && presenterViewHostFlag) {
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const currentMeetingIDOnClose = Number(
+            localStorage.getItem("currentMeetingID"),
+          );
+          const roomIDOnClose = localStorage.getItem("acceptedRoomID");
+          const videoCallUrlOnClose = Number(
+            localStorage.getItem("videoCallURL"),
+          );
+          const stopPresenterData = {
+            MeetingID: currentMeetingIDOnClose,
+            RoomID: String(roomIDOnClose),
+            VideoCallUrl: videoCallUrlOnClose,
+          };
+          const stopForm = new FormData();
+          stopForm.append("RequestMethod", stopPresenterView.RequestMethod);
+          stopForm.append("RequestData", JSON.stringify(stopPresenterData));
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: stopForm,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopPresenterViewOnTabClose error", error);
+        }
+      }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     window.addEventListener("pagehide", handleBeforeUnload);
@@ -503,17 +540,63 @@ const VideoCallNormalHeader = ({
 
   console.log(pendingCallParticipantList, "pendingCallParticipantList");
 
+  // A pending invitee is only kept in the roster while still being called. The
+  // backend retains rejected / unanswered / declined invitees in the pending
+  // list (with a status), but they must be REMOVED from the participant list on
+  // every client (caller and participants), not shown with a "Reject" status.
+  const isActiveInvitee = (p) => {
+    const status = String(p?.callStatus || "").toLowerCase();
+    return (
+      !status.includes("reject") &&
+      !status.includes("unanswer") &&
+      !status.includes("declin")
+    );
+  };
+
   useEffect(() => {
-    if (
-      pendingCallParticipantList !== undefined &&
-      pendingCallParticipantList !== null &&
-      pendingCallParticipantList.length !== 0
-    ) {
-      setGroupCallParticipantList(pendingCallParticipantList);
-    } else {
-      setGroupCallParticipantList([]);
+    // Caller roster = in-call (accepted) + pending (still ringing), deduped by
+    // userID. Previously this was sourced from the pending/ringing list ONLY, so
+    // once every invitee accepted/rejected/unanswered, the ringing list emptied
+    // and the caller's participant list + counter went blank / 0. Merging the
+    // in-call list (the same source participants already use) keeps accepted
+    // users visible to the caller for the whole call.
+    const pending = (
+      Array.isArray(pendingCallParticipantList)
+        ? pendingCallParticipantList
+        : []
+    ).filter(isActiveInvitee);
+    const inCall = Array.isArray(inCallParticipantList)
+      ? inCallParticipantList
+      : [];
+
+    const mergedMap = new Map();
+
+    // The caller never appears in the in-call/pending lists (they didn't
+    // "accept" and aren't "ringing"), so seed the caller's own entry first so
+    // they always see themselves in their roster.
+    if (isCaller) {
+      mergedMap.set(currentUserID, {
+        userID: currentUserID,
+        name: localStorage.getItem("name"),
+        callStatus: "In Call",
+        isHost: true,
+      });
     }
-  }, [pendingCallParticipantList]);
+
+    inCall.forEach((p) => {
+      if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
+    });
+    pending.forEach((p) => {
+      if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
+    });
+
+    setGroupCallParticipantList(Array.from(mergedMap.values()));
+  }, [
+    pendingCallParticipantList,
+    inCallParticipantList,
+    isCaller,
+    currentUserID,
+  ]);
 
   // For InCall Participant List
   useEffect(() => {
@@ -521,12 +604,10 @@ const VideoCallNormalHeader = ({
       Array.isArray(inCallParticipantList) &&
       inCallParticipantList.length > 0
     ) {
-      // Filter out the current user
-      const filteredList = inCallParticipantList.filter(
-        (participant) => participant.userID !== currentUserID,
-      );
-
-      setInCallParticipantsList(filteredList); // set filtered list
+      // Use the backend in-call list as-is. It already contains every user who
+      // accepted (INCLUDING the current user), so the previous "filter out the
+      // current user" step is what hid each user's own name from their list.
+      setInCallParticipantsList(inCallParticipantList);
     } else {
       setInCallParticipantsList([]); // no participants
     }
@@ -866,9 +947,16 @@ const VideoCallNormalHeader = ({
       GetAllUserChats(navigate, currentUserID, currentOrganization, t),
     );
     await dispatch(GetGroupMessages(navigate, chatGroupData, t));
-    await dispatch(GetAllUsers(navigate, currentUserID, currentOrganization, t));
     await dispatch(
-      GetAllUsersGroupsRoomsList(navigate, currentUserID, currentOrganization, t),
+      GetAllUsers(navigate, currentUserID, currentOrganization, t),
+    );
+    await dispatch(
+      GetAllUsersGroupsRoomsList(
+        navigate,
+        currentUserID,
+        currentOrganization,
+        t,
+      ),
     );
   };
 
@@ -1778,7 +1866,7 @@ const VideoCallNormalHeader = ({
                 !presenterViewHostFlag ? (
                   <>
                     {/* if Recording is start */}
-                    {/* {startRecordingState && (
+                    {startRecordingState && (
                       <div
                         className="start-Recording-div"
                         onClick={onStartRecording}
@@ -1799,10 +1887,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
 
                     {/* if Recording is Pause and Stop */}
-                    {/* {pauseRecordingState && (
+                    {pauseRecordingState && (
                       <div className={"Record-Start-Background-MeetingVideo"}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
@@ -1839,10 +1927,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
 
                     {/* if Recording is Pause and Resume */}
-                    {/* {resumeRecordingState && (
+                    {resumeRecordingState && (
                       <div
                         className={"Record-Start-BackgroundRed-VideoMeeting"}
                       >
@@ -1866,7 +1954,7 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
                   </>
                 ) : null}
               </>
@@ -2239,11 +2327,13 @@ const VideoCallNormalHeader = ({
                           )
                             ? inCallParticipantsList
                             : [];
-                          const pendingList = Array.isArray(
-                            pendingCallParticipantList,
-                          )
-                            ? pendingCallParticipantList
-                            : [];
+                          // Drop rejected / unanswered / declined invitees so they
+                          // are removed from the participant list (not shown).
+                          const pendingList = (
+                            Array.isArray(pendingCallParticipantList)
+                              ? pendingCallParticipantList
+                              : []
+                          ).filter(isActiveInvitee);
 
                           // Create a Map to deduplicate by userID
                           const mergedMap = new Map();
@@ -2455,11 +2545,11 @@ const VideoCallNormalHeader = ({
                                   )
                                     ? inCallParticipantsList
                                     : [];
-                                  const pendingList = Array.isArray(
-                                    pendingCallParticipantList,
-                                  )
-                                    ? pendingCallParticipantList
-                                    : [];
+                                  const pendingList = (
+                                    Array.isArray(pendingCallParticipantList)
+                                      ? pendingCallParticipantList
+                                      : []
+                                  ).filter(isActiveInvitee);
 
                                   // Merge and deduplicate by userID
                                   const mergedSet = new Set();
@@ -2672,7 +2762,6 @@ const VideoCallNormalHeader = ({
                 </div>
               </div>
             ) : null}
-
           </div>
         </>
       </>

@@ -58,6 +58,7 @@ import {
   participantWaitingListBox,
   toggleParticipantsVisibility,
   getVideoCallParticipantsMainApi,
+  getGroupCallParticipantsMainApi,
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
   presenterLeaveParticipant,
@@ -979,7 +980,7 @@ const Dashboard = () => {
       if (isMeetingVideo && isMeetingVideoHostCheck) {
         // ⭐ ENSURE meetingID IS IN THE PAYLOAD
         const participantData = {
-          ...mqttData.payload
+          ...mqttData.payload,
         };
 
         if (mqttData.payload.isGuest) {
@@ -1946,6 +1947,26 @@ const Dashboard = () => {
                 dispatch(participantVideoButtonState(false));
                 localStorage.setItem("isMeetingVideoHostCheck", true);
                 localStorage.setItem("isHost", true);
+                // Force-correct this client's recording-status UI now that it
+                // is host. Without this, the locally-set startRecordingState/
+                // pauseRecordingState (set much earlier, e.g. by the initial
+                // join-time auto-start trigger) stays stale and may show
+                // "Recording started" even if the previous host had it
+                // Paused. This explicitly asks the iframe for the CURRENT
+                // real Zoom recording status instead of trusting stale local
+                // state or waiting on a recording-change event that may not
+                // refire on its own.
+                (() => {
+                  const hostSyncIframe = iframeRef.current;
+                  if (hostSyncIframe && hostSyncIframe.contentWindow) {
+                    setTimeout(() => {
+                      hostSyncIframe.contentWindow.postMessage(
+                        "RequestRecordingStatus",
+                        "*",
+                      );
+                    }, 1000);
+                  }
+                })();
                 // change room id for host
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
@@ -1964,17 +1985,16 @@ const Dashboard = () => {
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
-                const wasRecordingPaused =
-                  localStorage.getItem("pauseRecordingState") === "true";
-                console.log(wasRecordingPaused, "Check is paused is true");
-
-                if (wasRecordingPaused) {
-                  console.log("Check is paused is true");
-                  setPauseRecordingState(true);
-                  setStartRecordingState(false);
-                  setResumeRecordingState(false);
-                  setStopRecordingState(false);
-                }
+                // NOTE: recording-state continuity for the new host is no
+                // longer guessed here. Zoom's own `recording-change` event
+                // fires on every client (recording is a session-level, not
+                // per-user, property), and the ZoomSDK project relays that
+                // authoritative status to this client's parent via the
+                // existing RecordingStart/Pause/Resume/StopMsgFromIframe
+                // postMessage channel as soon as it fires for this user. The
+                // previous check here read `localStorage.getItem(
+                // "pauseRecordingState")`, a key that is never written
+                // anywhere in the app, so it was always a no-op.
                 let newRoomId = localStorage.getItem("newRoomId");
                 console.log("mqtt check 22", newRoomId);
                 let Data = {
@@ -3356,8 +3376,17 @@ const Dashboard = () => {
             });
           }
 
-          if (CallType === 2) {
+          if (data.payload.callTypeID === 2) {
             console.log("mqtt");
+            // Authoritative refresh: re-pull the group-call roster from the
+            // backend on EVERY client so the in-call list (accepted users) stays
+            // identical across caller and participants. `inCallParticipants`
+            // already includes accepters and excludes rejected/disconnected.
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, {
+                RoomID: data.payload.roomID,
+              }),
+            );
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
@@ -3368,6 +3397,24 @@ const Dashboard = () => {
               }
               return prevState;
             });
+            // Ensure the accepted participant appears in EVERY client's in-call
+            // roster. Participants render `inCallParticipantsList`, so without
+            // this they never saw peers who accepted. Gated on the payload
+            // callTypeID (not localStorage CallType, which was unreliable on
+            // participant clients) and de-duplicated by userID.
+            if (!isZoomEnabled) {
+              const acceptedParticipant = {
+                userID: data.payload.recepientID,
+                name: data.payload.recepientName,
+                callStatus: "In Call",
+              };
+              setInCallParticipantsList((prev) => {
+                const list = Array.isArray(prev) ? prev : [];
+                return list.some((u) => u.userID === data.payload.recepientID)
+                  ? list
+                  : [...list, acceptedParticipant];
+              });
+            }
           }
           let falgCheck1 = false;
           if (isZoomEnabled) {
@@ -3504,10 +3551,36 @@ const Dashboard = () => {
             }
           }
 
-          if (CallType === 2) {
+          if (data.payload.callTypeID === 2) {
+            // Authoritative refresh: re-pull the roster so the rejected user is
+            // dropped consistently on every client. IMPORTANT: a reject from a
+            // still-ringing invitee carries THAT invitee's ringer room, not the
+            // active call room — so we must fetch using OUR OWN active call room
+            // (caller -> initiateCallRoomID, participant -> activeRoomID),
+            // otherwise the active call's roster is never refreshed.
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, {
+                RoomID:
+                  (isCaller ? initiateCallRoomID : activeRoomID) ||
+                  data.payload.roomID,
+              }),
+            );
+            // Remove the rejecter from EVERY roster list so all clients
+            // (caller renders groupCallParticipantList, participants render
+            // inCallParticipantsList) drop them consistently.
             setGroupCallParticipantList((prevState) =>
-              prevState.filter(
+              (Array.isArray(prevState) ? prevState : []).filter(
                 (user) => user.userID !== data.payload.recepientID,
+              ),
+            );
+            setInCallParticipantsList((prevState) =>
+              (Array.isArray(prevState) ? prevState : []).filter(
+                (user) => user.userID !== data.payload.recepientID,
+              ),
+            );
+            setGroupVideoCallAccepted((prevState) =>
+              (Array.isArray(prevState) ? prevState : []).filter(
+                (user) => user.recepientID !== data.payload.recepientID,
               ),
             );
           }
@@ -3565,7 +3638,13 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
               }
-            } else if (data.payload.callTypeID === 2) {
+            } else if (data.payload.callTypeID === 2 && isCaller) {
+              // Caller-only: the counters and auto-leave/close logic below use
+              // caller-only state (RecipentIDsOninitiateVideoCall /
+              // callerStatusObject), which is empty on participants and made
+              // their panel close when ANOTHER participant rejected. Restricting
+              // to the caller keeps still-connected participants in the call;
+              // they only drop the rejecter (handled by the list removal above).
               let newData = {
                 RecipientName: data.payload.recepientName,
                 RecipientID: data.payload.recepientID,
@@ -3714,6 +3793,16 @@ const Dashboard = () => {
           );
           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
+          // Group call: an unanswered invitee carries their own ringer room, not
+          // the active call room, so refresh the roster using OUR active call
+          // room (`RoomID`, computed above) so the unanswered user is dropped
+          // from every client's participant list.
+          if (data.payload.callTypeID === 2 && !isMeetingVideo) {
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, { RoomID: RoomID }),
+            );
+          }
+
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
           console.log("mqtt", typeof data.payload.roomID);
@@ -3837,8 +3926,15 @@ const Dashboard = () => {
                 checkCallStatus(remainingCallerStatus),
               );
 
-              // Step 4: Final condition
+              // Step 4: Final condition — CALLER ONLY. The counters below
+              // (RecipentIDsOninitiateVideoCall / callerStatusObject) are
+              // caller-only state and are empty on participants, so without the
+              // `isCaller` guard a participant's panel closed when ANOTHER
+              // invitee was unanswered. Restricting to the caller keeps
+              // still-connected participants in the call; the unanswered user is
+              // only removed from the roster (handled elsewhere).
               if (
+                isCaller &&
                 remainingRecipients.length === 0 &&
                 remainingCallerStatus.length === 0
               ) {
@@ -4213,8 +4309,15 @@ const Dashboard = () => {
           console.log("mqtt");
           console.log("mqtt", RoomID);
 
-          if (CallType === 2) {
-            // Also remove the user from groupCallParticipantList
+          if (data.payload.callTypeID === 2) {
+            // Authoritative refresh: re-pull the group-call roster so the
+            // disconnected user is dropped consistently on every client.
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, {
+                RoomID: data.payload.roomID,
+              }),
+            );
+            // Also remove the user from groupCallParticipantList (instant feedback)
             setGroupCallParticipantList((prevList) =>
               prevList.filter(
                 (participant) =>
@@ -8199,7 +8302,7 @@ const Dashboard = () => {
               open={isInternetDisconnectModalVisible}
             />
           )}
-          
+
           {cancelModalMeetingDetails && <CancelButtonModal />}
           {roleRoute && (
             <Modal
@@ -8264,7 +8367,7 @@ const Dashboard = () => {
           )}
         </Layout>
       </ConfigProvider>
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
