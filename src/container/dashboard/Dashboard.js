@@ -151,8 +151,10 @@ import {
   realtimeGroupStatusResponse,
   realtimeGroupResponse,
   removeGroupMemberMQTT,
+  groupProposedMeetingAction,
 } from "../../store/actions/Groups_actions";
 import {
+  committeeProposedMeetingAction,
   realtimeCommitteeResponse,
   realtimeCommitteeStatusResponse,
   removeCommitteeMemberMQTT,
@@ -1234,6 +1236,32 @@ const Dashboard = () => {
               "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
             ) {
               dispatch(meetingStatusProposedMqtt(data.payload.meeting));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+              }
+            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()) {
+              dispatch(committeeProposedMeetingAction(data.payload.meeting));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+              }
+            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()) {
+              dispatch(groupProposedMeetingAction(data.payload.meeting));
               if (data.viewable) {
                 setNotification({
                   ...notification,

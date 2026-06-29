@@ -13,6 +13,7 @@ import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
 } from "../hooks/meetingResponse/response";
+import { committeeProposedMeetingAction } from "../store/actions/Committee_actions";
 
 export const CommitteeContext = createContext();
 
@@ -46,8 +47,8 @@ export const CommitteeProvider = ({ children }) => {
     (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
   );
 
-  const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+  const committeeProposedMeetingStatusProposedMqttData = useSelector(
+    (state) => state.CommitteeReducer.committeeProposedMeeting,
   );
   const { CommitteeMeetingMQTT, MeetingStatusSocket, MeetingStatusEnded } =
     useSelector((state) => state.meetingIdReducer);
@@ -375,20 +376,23 @@ export const CommitteeProvider = ({ children }) => {
 
   useEffect(() => {
     if (
-      meetingStatusProposedMqttData !== null &&
-      meetingStatusProposedMqttData !== undefined
+      committeeProposedMeetingStatusProposedMqttData !== null &&
+      committeeProposedMeetingStatusProposedMqttData !== undefined
     ) {
       try {
         const updateMeetingData = async () => {
-          let meetingData = meetingStatusProposedMqttData;
+          const { meeting, committeeID } =
+            committeeProposedMeetingStatusProposedMqttData;
+          if (Number(committeeID) === Number(committeeInfo.committeeID)) {
+          }
 
           const indexToUpdate = committeeProposedMeetingData.findIndex(
-            (obj) => obj.pK_MDID === meetingData.pK_MDID,
+            (obj) => obj.pK_MDID === meeting.pK_MDID,
           );
 
           // Fetching unpublished meeting data
           let getMeetingDataArray = await getAllUnpublishedMeetingData(
-            [meetingData],
+            [meeting],
             1,
           );
 
@@ -410,10 +414,10 @@ export const CommitteeProvider = ({ children }) => {
           }
         };
         updateMeetingData();
-        dispatch(meetingStatusProposedMqtt(null));
+        dispatch(committeeProposedMeetingAction(null));
       } catch (error) {}
     }
-  }, [meetingStatusProposedMqttData]);
+  }, [committeeProposedMeetingStatusProposedMqttData]);
 
   useEffect(() => {
     if (MeetingStatusSocket == null) return;

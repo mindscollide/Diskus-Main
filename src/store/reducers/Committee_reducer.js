@@ -27,6 +27,7 @@ const initialState = {
   viewCommitteesList: null,
   viewCommitteeDetailLink: null,
   viewCommitteeDetails: null,
+  committeeProposedMeeting :null
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -499,6 +500,13 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         viewCommitteeDetails: null,
       };
+    }
+
+    case actions.COMMITTEE_PROPOSED_MEETING: {
+      return {
+        ...state,
+        committeeProposedMeeting: action.payload
+      }
     }
 
     default:

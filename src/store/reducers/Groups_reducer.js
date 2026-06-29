@@ -27,6 +27,7 @@ const initialState = {
   viewGroupsList: null,
   viewGroupDetailLink: null,
   viewGroupDetails: null,
+  groupProposedMeeting: null
 };
 
 const GroupsReducer = (state = initialState, action) => {
@@ -495,6 +496,12 @@ const GroupsReducer = (state = initialState, action) => {
         ...state,
         viewGroupDetails: null,
       };
+    }
+    case actions.GROUP_PROPOSED_MEETING: {
+      return {
+        ...state,
+        groupProposedMeeting: action.payload
+      }
     }
     default:
       return { ...state };

@@ -396,7 +396,7 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (
               let data = [];
               dispatch(
                 getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("Minute-review-flow-stats-not-available", data),
+                  t("", data),
                 ),
               );
             } else if (
@@ -1047,7 +1047,13 @@ const SaveMinutesReviewFlow = (
                 ),
               );
               dispatch(
-                GetMinuteReviewFlowByMeetingId(reviewFlowData, navigate, t),
+                GetMinuteReviewFlowByMeetingId(
+                  navigate,
+                  t,
+                  reviewFlowData,
+                  "",
+                  {},
+                ),
               );
 
               isFunction(setAddReviewers) && setAddReviewers(false);

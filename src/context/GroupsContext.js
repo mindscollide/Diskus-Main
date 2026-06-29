@@ -65,8 +65,8 @@ export const GroupsProvider = ({ children }) => {
   const mqttMeetingOrgRemoved = useSelector(
     (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
   );
-  const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+  const groupProposedMeetingStatusProposedMqttData = useSelector(
+    (state) => state.GroupsReducer.groupProposedMeeting,
   );
   const getMeetingbyGroupID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingbyGroupID,
@@ -400,31 +400,32 @@ export const GroupsProvider = ({ children }) => {
   // EFFECT: meetingStatusProposedMqttData
   // =========================
   useEffect(() => {
-    if (!meetingStatusProposedMqttData) return;
+    if (!groupProposedMeetingStatusProposedMqttData) return;
 
     const updateMeetingData = async () => {
       try {
-        const meetingData = meetingStatusProposedMqttData;
-
-        const getMeetingDataArray = await getAllUnpublishedMeetingData(
-          [meetingData],
-          1,
-        );
-        const getMeetingData = getMeetingDataArray?.[0];
-        if (!getMeetingData) return;
-
-        setGroupProposedMeetingData((prev) => {
-          const indexToUpdate = prev.findIndex(
-            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+        const { groupID, meeting } = groupProposedMeetingStatusProposedMqttData;
+        if (groupID === groupInfo.groupID) {
+          const getMeetingDataArray = await getAllUnpublishedMeetingData(
+            [meeting],
+            1,
           );
+          const getMeetingData = getMeetingDataArray?.[0];
+          if (!getMeetingData) return;
 
-          if (indexToUpdate !== -1) {
-            const updated = [...prev];
-            updated[indexToUpdate] = getMeetingData;
-            return updated;
-          }
-          return [getMeetingData, ...prev];
-        });
+          setGroupProposedMeetingData((prev) => {
+            const indexToUpdate = prev.findIndex(
+              (obj) => Number(obj.pK_MDID) === Number(meeting.pK_MDID),
+            );
+
+            if (indexToUpdate !== -1) {
+              const updated = [...prev];
+              updated[indexToUpdate] = getMeetingData;
+              return updated;
+            }
+            return [getMeetingData, ...prev];
+          });
+        }
 
         // Only increment record count if it's a new entry
         // setGroupProposedMeetingData((prev) => {
@@ -439,7 +440,7 @@ export const GroupsProvider = ({ children }) => {
 
     updateMeetingData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [meetingStatusProposedMqttData]);
+  }, [groupProposedMeetingStatusProposedMqttData]);
 
   useEffect(() => {
     if (MeetingStatusSocket == null) return;

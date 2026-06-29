@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import * as actions from "../action_types";
 
 import {
@@ -2053,6 +2054,13 @@ export const viewCommitteeDetails = (data) => {
 export const resetViewCommitteeDetails = () => {
   return {
     type: actions.RESET_VIEW_COMMITTEE_DETAILS,
+  };
+};
+
+export const committeeProposedMeetingAction = (payload) => {
+  return {
+    type: actions.COMMITTEE_PROPOSED_MEETING,
+    payload,
   };
 };
 

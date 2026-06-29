@@ -2031,6 +2031,13 @@ export const resetViewGroupDetails = () => {
   };
 };
 
+export const groupProposedMeetingAction = (payload) => {
+  return {
+    type: actions.GROUP_PROPOSED_MEETING,
+    payload,
+  };
+};
+
 export {
   setMeetingByGroupIdApi,
   getMeetingbyGroupIdApi,
