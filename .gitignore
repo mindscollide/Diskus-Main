@@ -13,7 +13,8 @@
 .DS_Store
 # Claude Code internal directories
 .claude/worktrees/
-.env.local
+# .env.local
+.env
 .env.*
 .env.development.local
 .env.test.local

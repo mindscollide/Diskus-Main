@@ -1992,6 +1992,30 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               let isMeetingVideoHostCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck"),
               );
+              // The ORIGINAL PRESENTER must be restored as host of the
+              // presentation when they rejoin (e.g. after closing/refreshing
+              // the browser) — not silently downgraded to a viewer.
+              // `isMeetingVideoHostCheck` reflects the underlying MEETING
+              // host, a different role from "who started this presentation"
+              // — they are not always the same person. The response already
+              // tells us the real presenter via `presenterID`; compare it to
+              // this client's own userID to decide host vs. join correctly.
+              let currentUserID = Number(localStorage.getItem("userID"));
+              let isOriginalPresenterRejoining =
+                Number(response.data.responseResult.presenterID) ===
+                currentUserID;
+              // Mark this moment so the next "Share" click in the iframe
+              // knows the presentation is already active on the backend
+              // (this client is just reconnecting to it) and must NOT call
+              // StartPresenterView again. Consumed once, then cleared — see
+              // the ScreenSharedMsgFromIframe handler in videoCallNormalPanel.js.
+              localStorage.setItem(
+                "isRejoiningOwnPresentation",
+                isOriginalPresenterRejoining,
+              );
+              console.log("Check 12");
+              if (isMeetingVideo) {
+                console.log("Check 12");
 
               if (isMeetingVideo) {
                 sessionStorage.setItem("alreadyInMeetingVideo", true);
@@ -2006,7 +2030,8 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                   "meetinHostInfo",
                   JSON.stringify(meetingHost),
                 );
-                if (isMeetingVideoHostCheck) {
+                if (isOriginalPresenterRejoining) {
+                  console.log("Check 12");
                   localStorage.setItem(
                     "isGuid",
                     response.data.responseResult.guid,
@@ -2033,8 +2058,28 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               localStorage.removeItem("activeCall");
 
               await dispatch(
-                presenterViewGlobalState(currentMeetingID, true, false, true),
+                presenterViewGlobalState(
+                  currentMeetingID,
+                  true,
+                  isOriginalPresenterRejoining,
+                  !isOriginalPresenterRejoining,
+                ),
               );
+              // ROOT CAUSE of "LeavePresenterView fires instead of
+              // StopPresenterView" for a rejoining presenter:
+              // presenterStartedFlag (videoFeatureReducer) is ONLY ever set
+              // true by the original "start presenting" flow
+              // (startPresenterViewMainApi). Every stop-vs-leave decision
+              // across the app (handlePresenterViewFunc in
+              // videoCallNormalHeader.js, plus the same pattern in
+              // videoCallMinimizeHeader.js / LeaveVideoIntimationModal.js /
+              // NewEndMeetingModal.js / AgendaViewer.js) checks
+              // presenterStartedFlag — not presenterViewHostFlag — to decide
+              // whether to call Stop vs Leave. Without this, a rejoining
+              // presenter has presenterViewHostFlag=true but
+              // presenterStartedFlag stuck at its default false, so clicking
+              // stop/leave always took the wrong (Leave) branch.
+              dispatch(presenterStartedMainFlag(isOriginalPresenterRejoining));
               dispatch(maximizeVideoPanelFlag(true));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));

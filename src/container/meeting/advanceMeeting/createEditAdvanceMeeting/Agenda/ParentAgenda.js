@@ -57,6 +57,7 @@ import {
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
+import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
 
 const ParentAgenda = ({
   data,
@@ -536,7 +537,10 @@ const ParentAgenda = ({
                                 }
                               />
                             </Col>
-                            <Col lg={6} md={6} sm={12}>
+                            <Col
+                              lg={ALLOW_AGENDA_START_TIME_AND_END_TIME ? 2 : 6}
+                              md={ALLOW_AGENDA_START_TIME_AND_END_TIME ? 2 : 6}
+                              sm={12}>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
@@ -581,108 +585,112 @@ const ParentAgenda = ({
                               md={4}
                               lg={4}
                               className='d-flex gap-4 justify-content-start align-items-center'>
-                              {/* <Row>
-                                <Col lg={5} md={5} sm={5}>
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span
-                                        className={
-                                          styles["Meeting_title_heading"]
-                                        }>
-                                        {t("Start-date")}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                  <DatePicker
-                                    arrowClassName='arrowClass'
-                                    containerClassName='containerClassTimePicker'
-                                    className='timePicker'
-                                    disableDayPicker
-                                    inputClass='inputTImeMeeting'
-                                    calendar={calendarValue}
-                                    locale={localValue}
-                                    format='hh:mm A'
-                                    selected={data.startDate}
-                                    value={data.startDate}
-                                    plugins={[<TimePicker hideSeconds />]}
-                                    onChange={(date) =>
-                                      handleStartDateChange(index, date)
-                                    }
-                                    disabled={
-                                      data.isLocked
-                                        ? data.isLocked
-                                        : editorRole.role === "Participant" ||
-                                          editorRole.role ===
-                                            "Agenda Contributor"
-                                        ? true
-                                        : editorRole.status === 9 ||
-                                          editorRole.status === "9"
-                                        ? true
-                                        : Number(editorRole.status) === 10 &&
-                                          !isAgendaUpdateWhenMeetingActive
-                                        ? true
-                                        : false
-                                    }
-                                    editable={false}
-                                  />
-                                </Col>
-                                <Col
-                                  lg={2}
-                                  md={2}
-                                  sm={2}
-                                  className='d-flex justify-content-center align-items-center marginTop20'>
-                                  <img
-                                    alt=''
-                                    draggable={false}
-                                    src={desh}
-                                    width='19.02px'
-                                  />
-                                </Col>
-                                <Col lg={5} md={5} sm={5}>
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span
-                                        className={
-                                          styles["Meeting_title_heading"]
-                                        }>
-                                        {t("End-date")}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                  <DatePicker
-                                    arrowClassName='arrowClass'
-                                    containerClassName='containerClassTimePicker'
-                                    className='timePicker'
-                                    disableDayPicker
-                                    inputClass='inputTImeMeeting'
-                                    format='hh:mm A'
-                                    calendar={calendarValue}
-                                    locale={localValue}
-                                    selected={data.endDate}
-                                    value={data.endDate}
-                                    plugins={[<TimePicker hideSeconds />]}
-                                    onChange={(date) =>
-                                      handleEndDateChange(index, date)
-                                    } // Update end date
-                                    disabled={
-                                      data.isLocked
-                                        ? data.isLocked
-                                        : editorRole.role === "Participant" ||
-                                          editorRole.role ===
-                                            "Agenda Contributor"
-                                        ? true
-                                        : editorRole.status === 9 ||
-                                          editorRole.status === "9"
-                                        ? true
-                                        : Number(editorRole.status) === 10 &&
-                                          !isAgendaUpdateWhenMeetingActive
-                                        ? true
-                                        : false
-                                    }
-                                    editable={false}
-                                  />
-                                </Col>
-                              </Row> */}
+                              {ALLOW_AGENDA_START_TIME_AND_END_TIME && (
+                                <Row>
+                                  <Col lg={5} md={5} sm={5}>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={
+                                            styles["Meeting_title_heading"]
+                                          }>
+                                          {t("Start-date")}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                    <DatePicker
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
+                                      disableDayPicker
+                                      inputClass='inputTImeMeeting'
+                                      calendar={calendarValue}
+                                      locale={localValue}
+                                      format='hh:mm A'
+                                      selected={data.startDate}
+                                      value={data.startDate}
+                                      plugins={[<TimePicker hideSeconds />]}
+                                      onChange={(date) =>
+                                        handleStartDateChange(index, date)
+                                      }
+                                      disabled={
+                                        data.isLocked
+                                          ? data.isLocked
+                                          : editorRole.role === "Participant" ||
+                                              editorRole.role ===
+                                                "Agenda Contributor"
+                                            ? true
+                                            : editorRole.status === 9 ||
+                                                editorRole.status === "9"
+                                              ? true
+                                              : Number(editorRole.status) ===
+                                                    10 &&
+                                                  !isAgendaUpdateWhenMeetingActive
+                                                ? true
+                                                : false
+                                      }
+                                      editable={false}
+                                    />
+                                  </Col>
+                                  <Col
+                                    lg={2}
+                                    md={2}
+                                    sm={2}
+                                    className='d-flex justify-content-center align-items-center marginTop20'>
+                                    <img
+                                      alt=''
+                                      draggable={false}
+                                      src={desh}
+                                      width='19.02px'
+                                    />
+                                  </Col>
+                                  <Col lg={5} md={5} sm={5}>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={
+                                            styles["Meeting_title_heading"]
+                                          }>
+                                          {t("End-date")}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                    <DatePicker
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
+                                      disableDayPicker
+                                      inputClass='inputTImeMeeting'
+                                      format='hh:mm A'
+                                      calendar={calendarValue}
+                                      locale={localValue}
+                                      selected={data.endDate}
+                                      value={data.endDate}
+                                      plugins={[<TimePicker hideSeconds />]}
+                                      onChange={(date) =>
+                                        handleEndDateChange(index, date)
+                                      } // Update end date
+                                      disabled={
+                                        data.isLocked
+                                          ? data.isLocked
+                                          : editorRole.role === "Participant" ||
+                                              editorRole.role ===
+                                                "Agenda Contributor"
+                                            ? true
+                                            : editorRole.status === 9 ||
+                                                editorRole.status === "9"
+                                              ? true
+                                              : Number(editorRole.status) ===
+                                                    10 &&
+                                                  !isAgendaUpdateWhenMeetingActive
+                                                ? true
+                                                : false
+                                      }
+                                      editable={false}
+                                    />
+                                  </Col>
+                                </Row>
+                              )}
                               {index !== 0 &&
                                 (editorRole.role === "Participant" ||
                                 editorRole.role === "Agenda Contributor" ||

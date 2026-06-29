@@ -2598,5 +2598,9 @@
   "Poll-deleted": "Poll Deleted",
   "This-year-(2026)": "هذا العام (۲۰۲٦)",
   "Last-year-(2025)": "العام الماضي (۲۰۲٥)",
-  "Task-created": "Task created"
+  "Task-created": "Task created",
+  "Enable-video-recording-for-one-to-one-call": "Enable video recording for One to One call",
+  "Enable-video-recording-for-group-call": "Enable video recording for group call",
+  "By-signing-in-you-agree-to-our": "By signing in you agree to our",
+  "Terms-of-use": "Terms of Use"
 }

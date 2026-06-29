@@ -15,3 +15,8 @@
  */
 
 export const HIDE_VIDEO = process.env.REACT_APP_HIDE_VIDEO === "true";
+export const ALLOW_AGENDA_START_TIME_AND_END_TIME =
+  process.env.REACT_APP_MANAGE_AGENDA_START_END_TIME === "true";
+export const HIDE_FREETRAIL_BAR =
+  process.env.REACT_APP_HIDE_HEADER_FREETRAIL_BAR === "true";
+export const PSO_LOGO = process.env.REACT_APP_SHOW_PSO_LOGO === "true";

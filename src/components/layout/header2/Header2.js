@@ -6,6 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
 import DiskusLogoArabic from "../../../assets/images/Diskus Arabic Logo/Diskus Arabic-Header.png";
+import PSOLogo from "../../../assets/images/Logos/PSO_Logo.png";
 
 import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg";
 import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg";
@@ -62,6 +63,7 @@ import CreateQuickMeeting from "../../../container/meeting/quickMeeting/CreateQu
 import { useMeetingContext } from "../../../context/MeetingContext.js";
 import { convertToArabicNumerals } from "../../../commen/functions/regex.js";
 import { convertToArabicNumber } from "../../../commen/functions/customPagination/utils.js";
+import { PSO_LOGO } from "../../../commen/featureFlags.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -750,7 +752,11 @@ const Header2 = ({ isVideo }) => {
               }>
               <img
                 src={
-                  currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader
+                  PSO_LOGO
+                    ? PSOLogo
+                    : currentLanguage === "ar"
+                      ? DiskusLogoArabic
+                      : DiskusLogoHeader
                 }
                 alt=''
                 width={120}
@@ -1128,10 +1134,14 @@ const Header2 = ({ isVideo }) => {
             >
               <img
                 src={
-                  currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader
+                  PSO_LOGO
+                    ? PSOLogo
+                    : currentLanguage === "ar"
+                      ? DiskusLogoArabic
+                      : DiskusLogoHeader
                 }
                 alt='Logo'
-                width={140}
+                width={PSO_LOGO ? 60 : 140}
                 draggable='false'
               />
             </Navbar.Brand>

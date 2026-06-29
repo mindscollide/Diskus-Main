@@ -327,7 +327,7 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Users-password-is-created"),
+                 "",
                 ),
               );
               localStorage.setItem("LoginFlowPageRoute", 2);

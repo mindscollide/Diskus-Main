@@ -1219,20 +1219,38 @@ const VideoPanelNormal = () => {
       sessionStorage.removeItem("alreadyInMeetingVideo");
     } else if (presenterViewFlag && presenterViewHostFlag) {
       console.log("Check triggered or not");
-      let currentName = localStorage.getItem("name");
+      // The PRESENTER stopping their own screen-share must call
+      // StopPresenterView (ends the presentation for everyone), never
+      // LeavePresenterView. LeavePresenterView is only for viewers/
+      // non-presenters leaving a presentation that is still running for
+      // others — see the identical host-vs-viewer branching already used
+      // for the logout flow in Header2.js / videoCallNormalHeader.js, and
+      // the other stopPresenterViewMainApi call site in this same file.
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-      let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck"),
-      );
-      let participantUID = localStorage.getItem("participantUID");
-      let isGuid = localStorage.getItem("isGuid");
       localStorage.setItem("VidOff", false);
       let data = {
+        MeetingID: currentMeetingID,
         RoomID: String(callAcceptedRoomID),
-        UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-        Name: String(currentName),
+        VideoCallUrl: Number(localStorage.getItem("videoCallURL")),
       };
-      dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
+      sessionStorage.setItem("StopPresenterViewAwait", true);
+      setLeavePresenterViewToJoinOneToOne(false);
+      if (stopApiCalledRef.current) {
+        console.log("⛔ Blocked — StopPresenterView already called elsewhere");
+        return;
+      }
+      dispatch(
+        stopPresenterViewMainApi(
+          navigate,
+          t,
+          data,
+          leavePresenterViewToJoinOneToOne ? 3 : 0,
+          setLeaveMeetingVideoForOneToOneOrGroup,
+          setJoiningOneToOneAfterLeavingPresenterView,
+          setLeavePresenterViewToJoinOneToOne,
+          stopApiCalledRef,
+        ),
+      );
     }
   };
 
@@ -1338,7 +1356,23 @@ const VideoPanelNormal = () => {
               handlerForStaringPresenterView();
             } else if (presenterViewFlag && presenterViewHostFlag) {
               console.log("handlePostMessage", presenterViewHostFlag);
-              handlerForStaringPresenterView();
+              // If this presenter is REJOINING their own already-active
+              // presentation (presenterID === userID on JoinPresenterView —
+              // e.g. after closing/refreshing the browser), the presentation
+              // is already started on the backend. Calling StartPresenterView
+              // again here would incorrectly restart/duplicate the existing
+              // session, so skip it for this one resumed share-click only.
+              const isRejoiningOwnPresentation = JSON.parse(
+                localStorage.getItem("isRejoiningOwnPresentation") || "false",
+              );
+              if (isRejoiningOwnPresentation) {
+                console.log(
+                  "handlePostMessage: skipping StartPresenterView — rejoining own active presentation",
+                );
+                localStorage.setItem("isRejoiningOwnPresentation", false);
+              } else {
+                handlerForStaringPresenterView();
+              }
             }
 
             break;
@@ -1521,14 +1555,35 @@ const VideoPanelNormal = () => {
           case "RecordingStopMsgFromIframe":
             console.log("recording Stop");
             recordingToastShownRef.current = false;
+            // Recording has actually stopped — reflect that in the UI state.
+            // Previously this case never updated these flags, so the badge
+            // stayed frozen at whatever it last was (e.g. still showing
+            // "Recording..." after a host-transferred user's stale state).
+            setStartRecordingState(true);
+            setPauseRecordingState(false);
+            setResumeRecordingState(false);
+            setStopRecordingState(false);
             break;
 
           case "RecordingPauseMsgFromIframe":
             console.log("recording Pause");
+            // Recording is now paused — show the "Recording Paused" /
+            // Resume state. (Same gap as above: this case never updated the
+            // state flags before.)
+            setStartRecordingState(false);
+            setPauseRecordingState(false);
+            setResumeRecordingState(true);
+            setStopRecordingState(false);
             break;
 
           case "RecordingResumeMsgFromIframe":
             console.log("recording Resume");
+            // Recording is active again after a resume — same end state as
+            // a fresh start (Pause/Stop controls visible).
+            setStartRecordingState(false);
+            setPauseRecordingState(true);
+            setResumeRecordingState(false);
+            setStopRecordingState(false);
             break;
 
           case "HostTransferEvent":

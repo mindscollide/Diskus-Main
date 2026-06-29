@@ -39,6 +39,7 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
+import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -578,7 +579,18 @@ const SubAgendaMappingDragging = ({
                                                 }
                                               />
                                             </Col>
-                                            <Col lg={6} md={6} sm={12}>
+                                            <Col
+                                              lg={
+                                                ALLOW_AGENDA_START_TIME_AND_END_TIME
+                                                  ? 2
+                                                  : 6
+                                              }
+                                              md={
+                                                ALLOW_AGENDA_START_TIME_AND_END_TIME
+                                                  ? 2
+                                                  : 6
+                                              }
+                                              sm={12}>
                                               <Row>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
@@ -642,163 +654,160 @@ const SubAgendaMappingDragging = ({
                                               md={4}
                                               lg={4}
                                               className='d-flex gap-4 justify-content-start align-items-center'>
-                                              {/* <Row>
-                                                <Col lg={5} md={5} sm={5}>
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    >
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Meeting_subAgenda"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Start-date")}
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                  <DatePicker
-                                                    arrowClassName="arrowClass"
-                                                    containerClassName="containerClassTimePicker"
-                                                    className="timePicker"
-                                                    calendar={calendarValue}
-                                                    locale={localValue}
-                                                    disableDayPicker
-                                                    inputClass="inputTImeMeeting"
-                                                    disabled={
-                                                      parentIslockedCheck ||
-                                                      subAgendaData.isLocked ||
-                                                      editorRole.status ===
-                                                        "9" ||
-                                                      editorRole.status === 9
-                                                        ? true
-                                                        : editorRole.role ===
-                                                            "Participant" ||
-                                                          editorRole.role ===
-                                                            "Agenda Contributor" ||
-                                                          editorRole.status ===
-                                                            "9" ||
-                                                          editorRole.status ===
-                                                            9
-                                                        ? true
-                                                        : Number(
-                                                            editorRole.status
-                                                          ) === 10 &&
-                                                          !isAgendaUpdateWhenMeetingActive
-                                                        ? true
-                                                        : false
-                                                    }
-                                                    format="hh:mm A"
-                                                    selected={
-                                                      subAgendaData.startDate
-                                                    }
-                                                    value={
-                                                      subAgendaData.startDate
-                                                    }
-                                                    onChange={(date) =>
-                                                      handleSubAgendaStartDateChange(
-                                                        index,
-                                                        subIndex,
-                                                        date
-                                                      )
-                                                    }
-                                                    plugins={[
-                                                      <TimePicker
-                                                        hideSeconds
-                                                      />,
-                                                    ]}
-                                                    editable={false}
-                                                  />
-                                                </Col>
-                                                <Col
-                                                  lg={2}
-                                                  md={2}
-                                                  sm={2}
-                                                  className="d-flex justify-content-center align-items-center marginTop20"
-                                                >
-                                                  <img
-                                                    alt=""
-                                                    draggable={false}
-                                                    src={desh}
-                                                    width="19.02px"
-                                                  />
-                                                </Col>
-                                                <Col lg={5} md={5} sm={5}>
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    >
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Meeting_subAgenda"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("End-date")}
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                  <DatePicker
-                                                    arrowClassName="arrowClass"
-                                                    containerClassName="containerClassTimePicker"
-                                                    className="timePicker"
-                                                    calendar={calendarValue}
-                                                    locale={localValue}
-                                                    disableDayPicker
-                                                    inputClass="inputTImeMeeting"
-                                                    disabled={
-                                                      parentIslockedCheck ||
-                                                      subAgendaData.isLocked ||
-                                                      editorRole.status ===
-                                                        "9" ||
-                                                      editorRole.status === 9
-                                                        ? true
-                                                        : editorRole.role ===
-                                                            "Participant" ||
-                                                          editorRole.role ===
-                                                            "Agenda Contributor" ||
-                                                          editorRole.status ===
-                                                            "9" ||
-                                                          editorRole.status ===
-                                                            9
-                                                        ? true
-                                                        : Number(
-                                                            editorRole.status
-                                                          ) === 10 &&
-                                                          !isAgendaUpdateWhenMeetingActive
-                                                        ? true
-                                                        : false
-                                                    }
-                                                    format="hh:mm A"
-                                                    selected={
-                                                      subAgendaData.endDate
-                                                    }
-                                                    value={
-                                                      subAgendaData.endDate
-                                                    }
-                                                    onChange={(date) =>
-                                                      handleSubAgendaEndDateChange(
-                                                        index,
-                                                        subIndex,
-                                                        date
-                                                      )
-                                                    }
-                                                    plugins={[
-                                                      <TimePicker
-                                                        hideSeconds
-                                                      />,
-                                                    ]}
-                                                    editable={false}
-                                                  />
-                                                </Col>
-                                              </Row> */}
+                                              {ALLOW_AGENDA_START_TIME_AND_END_TIME && (
+                                                <Row>
+                                                  <Col lg={5} md={5} sm={5}>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}>
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Meeting_subAgenda"
+                                                            ]
+                                                          }>
+                                                          {t("Start-date")}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <DatePicker
+                                                      arrowClassName='arrowClass'
+                                                      containerClassName='containerClassTimePicker'
+                                                      className='timePicker'
+                                                      calendar={calendarValue}
+                                                      locale={localValue}
+                                                      disableDayPicker
+                                                      inputClass='inputTImeMeeting'
+                                                      disabled={
+                                                        parentIslockedCheck ||
+                                                        subAgendaData.isLocked ||
+                                                        editorRole.status ===
+                                                          "9" ||
+                                                        editorRole.status === 9
+                                                          ? true
+                                                          : editorRole.role ===
+                                                                "Participant" ||
+                                                              editorRole.role ===
+                                                                "Agenda Contributor" ||
+                                                              editorRole.status ===
+                                                                "9" ||
+                                                              editorRole.status ===
+                                                                9
+                                                            ? true
+                                                            : Number(
+                                                                  editorRole.status,
+                                                                ) === 10 &&
+                                                                !isAgendaUpdateWhenMeetingActive
+                                                              ? true
+                                                              : false
+                                                      }
+                                                      format='hh:mm A'
+                                                      selected={
+                                                        subAgendaData.startDate
+                                                      }
+                                                      value={
+                                                        subAgendaData.startDate
+                                                      }
+                                                      onChange={(date) =>
+                                                        handleSubAgendaStartDateChange(
+                                                          index,
+                                                          subIndex,
+                                                          date,
+                                                        )
+                                                      }
+                                                      plugins={[
+                                                        <TimePicker
+                                                          hideSeconds
+                                                        />,
+                                                      ]}
+                                                      editable={false}
+                                                    />
+                                                  </Col>
+                                                  <Col
+                                                    lg={2}
+                                                    md={2}
+                                                    sm={2}
+                                                    className='d-flex justify-content-center align-items-center marginTop20'>
+                                                    <img
+                                                      alt=''
+                                                      draggable={false}
+                                                      src={desh}
+                                                      width='19.02px'
+                                                    />
+                                                  </Col>
+                                                  <Col lg={5} md={5} sm={5}>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}>
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Meeting_subAgenda"
+                                                            ]
+                                                          }>
+                                                          {t("End-date")}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <DatePicker
+                                                      arrowClassName='arrowClass'
+                                                      containerClassName='containerClassTimePicker'
+                                                      className='timePicker'
+                                                      calendar={calendarValue}
+                                                      locale={localValue}
+                                                      disableDayPicker
+                                                      inputClass='inputTImeMeeting'
+                                                      disabled={
+                                                        parentIslockedCheck ||
+                                                        subAgendaData.isLocked ||
+                                                        editorRole.status ===
+                                                          "9" ||
+                                                        editorRole.status === 9
+                                                          ? true
+                                                          : editorRole.role ===
+                                                                "Participant" ||
+                                                              editorRole.role ===
+                                                                "Agenda Contributor" ||
+                                                              editorRole.status ===
+                                                                "9" ||
+                                                              editorRole.status ===
+                                                                9
+                                                            ? true
+                                                            : Number(
+                                                                  editorRole.status,
+                                                                ) === 10 &&
+                                                                !isAgendaUpdateWhenMeetingActive
+                                                              ? true
+                                                              : false
+                                                      }
+                                                      format='hh:mm A'
+                                                      selected={
+                                                        subAgendaData.endDate
+                                                      }
+                                                      value={
+                                                        subAgendaData.endDate
+                                                      }
+                                                      onChange={(date) =>
+                                                        handleSubAgendaEndDateChange(
+                                                          index,
+                                                          subIndex,
+                                                          date,
+                                                        )
+                                                      }
+                                                      plugins={[
+                                                        <TimePicker
+                                                          hideSeconds
+                                                        />,
+                                                      ]}
+                                                      editable={false}
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                              )}
                                               {editorRole.role ===
                                                 "Participant" ||
                                               editorRole.role ===

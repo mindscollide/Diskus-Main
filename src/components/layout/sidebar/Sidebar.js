@@ -22,8 +22,8 @@ import NewShowMoreIcon from "../../../assets/images/sidebar_icons/NewSideBarShow
 import { showEndMeetingModal } from "../../../store/actions/NewMeetingActions";
 import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
 import { useMeetingContext } from "../../../context/MeetingContext";
-// import CancelButtonModal from "../../../container/meeting/";
 import { useComplianceContext } from "../../../context/ComplianceContext";
+
 import CancelButtonModal from "../../../container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/CancelButtonModal/CancelButtonModal";
 import { toggleViewMeetingModal } from "../../../store/actions/ModalStates_actions";
 import {
@@ -161,7 +161,7 @@ const Sidebar = () => {
     }
   }, [Blur]);
 
-  const handleMeetingSidebarTodo = () => {
+    const handleMeetingSidebarTodo = () => {
     localStorage.setItem("navigateLocation", "todolist");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
@@ -204,7 +204,6 @@ const Sidebar = () => {
     //   setGoBackCancelModal,
     // );
   };
-
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
     localStorage.setItem("navigateLocation", "Meeting");
@@ -1221,10 +1220,8 @@ const Sidebar = () => {
                 ) : null}
 
                 {/* Add more btn */}
-
                 {localStorage.getItem("OnlyComplianceAllowed") !== null &&
-                JSON.parse(localStorage.getItem("OnlyComplianceAllowed")) ? (
-                  <>
+                JSON.parse(localStorage.getItem("OnlyComplianceAllowed")) ?  <>
                     {" "}
                     {checkFeatureIDAvailability(14) ? (
                       <Nav.Link
@@ -1257,12 +1254,11 @@ const Sidebar = () => {
                         </div>
                       </Nav.Link>
                     ) : null}{" "}
-                  </>
-                ) : checkFeatureIDAvailability(13) ||
-                  checkFeatureIDAvailability(17) ||
-                  checkFeatureIDAvailability(18) ||
-                  checkFeatureIDAvailability(15) ||
-                  checkFeatureIDAvailability(48) ? (
+                  </> :checkFeatureIDAvailability(13) ||
+                checkFeatureIDAvailability(17) ||
+                checkFeatureIDAvailability(18) ||
+                checkFeatureIDAvailability(15) ||
+                checkFeatureIDAvailability(48) ? (
                   <>
                     <Nav.Link
                       disabled={false}

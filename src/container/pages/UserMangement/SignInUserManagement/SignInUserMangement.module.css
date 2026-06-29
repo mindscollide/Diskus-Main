@@ -1,3 +1,28 @@
+/* Locks the whole sign-in page to exactly one viewport: fixed height/width,
+   no scrollbar in either direction. The decorative swirl's intentional
+   bleed (negative right/bottom offsets on .Auth_Icon) is clipped here, at
+   the full-page container, instead of the narrow column it sits in — so it
+   can't trigger a scrollbar without being cut off relative to its own
+   (much shorter) column. */
+.auth_container {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Below the 1600x900 design size the content no longer reliably fits in one
+   viewport — allow vertical scrolling so nothing is silently clipped, but
+   keep horizontal scroll disabled (the layout is fixed-width, not narrow
+   enough to ever need to scroll sideways). */
+/* @media (max-width: 1599.98px), (max-height: 749.98px) {
+  .auth_container {
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+} */
+
 .EmailVerifyBox {
   display: flex;
   justify-content: center;
@@ -127,7 +152,10 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 }
 
 .Auth_Icon {
-  position: fixed;
+  /* absolute (not fixed) so it scales/reflows with its own column
+     (the parent Col has position-relative) instead of staying pinned to
+     the raw browser viewport when zoom shifts the effective breakpoint */
+  position: absolute;
   right: -115px;
   bottom: -190px;
   transform: rotate(0deg);
@@ -141,13 +169,15 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .Login_page_text {
-  display: flex
-  ;
-      margin-top: 200px;
-      flex-direction: column;
-      margin-left: 20px;
-      justify-content: flex-start;
-      align-items: flex-start;
+  /* centered via flex (proportional to the column's actual height) instead
+     of a flat margin-top, so it stays aligned with its column at any zoom
+     level instead of going stale once the column reflows */
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  margin-left: 20px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .Login_page_text h1 {
@@ -399,12 +429,17 @@ body[dir="rtl"] .languageSelector {
   margin-top: 20px;
   border-radius: 4px;
 }
-
+.PoweredIcon_Diskus_Icon{
+  position: absolute;
+  bottom: 75px;
+  right: 100px;
+}
 /* This is to be commented when the build is given for production */
 @media screen and (max-width: 480px) {
-  .auth_container {
-    overflow: hidden;
-  }
+  /* .auth_container's overflow at this width is already governed by the
+     (max-width: 1599px), (max-height: 899px) rule above — don't redeclare
+     "overflow: hidden" here, it would silence the vertical scroll that
+     rule enables and re-clip content on the smallest screens. */
   .freetrail_banner {
     position: fixed;
     bottom: 0;
@@ -432,11 +467,6 @@ body[dir="rtl"] .languageSelector {
     display: none;
     opacity: 50%;
     z-index: -1;
-  }
-  .Login_page_text {
-    position: fixed;
-    top: 0;
-    margin-top: 20px;
   }
   .EmailVerifyBox {
     display: flex;
@@ -469,10 +499,16 @@ body[dir="rtl"] .languageSelector {
     width: 100%;
     max-height: 100vh;
   }
+  .PoweredIcon_Diskus_Icon{
+    display: none !important;
+  }
 }
 /* Styles for landscape orientation */
 @media screen and (max-height: 480px) and (orientation: landscape) {
   .Auth_Icon {
+    display: none !important;
+  }
+    .PoweredIcon_Diskus_Icon{
     display: none !important;
   }
   .languageSelector {
@@ -523,3 +559,4 @@ body[dir="rtl"] .languageSelector {
     z-index: 2;
   }
 }
+

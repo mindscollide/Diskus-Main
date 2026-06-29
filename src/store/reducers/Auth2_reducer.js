@@ -176,12 +176,12 @@ const AuthReducer = (state = initialState, action) => {
     }
     case actions.EMAILVALIDATION_SUCCESS: {
       localStorage.setItem("userID", action.response.userID);
-
+    
       return {
         ...state,
         Loading: false,
         EmailValidationResponse: action.response,
-        EmailValidationResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -189,7 +189,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        EmailValidationResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -204,7 +204,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         EnterPasswordResponse: action.response,
-        EnterPasswordResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -213,7 +213,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         EnterPasswordResponse: null,
-        EnterPasswordResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -228,7 +228,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         VerifyOTPEmailResponse: action.response,
-        VerifyOTPEmailResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -236,7 +236,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        VerifyOTPEmailResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -251,7 +251,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CreatePasswordResponse: action.response,
-        CreatePasswordResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -260,7 +260,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CreatePasswordResponse: null,
-        CreatePasswordResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -274,7 +274,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         OrganizationCreateResponse: action.response,
-        OrganizationCreateResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     case actions.SIGNUPORGANIZATION_FAIL:
@@ -282,7 +282,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         OrganizationCreateResponse: null,
-        OrganizationCreateResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_INIT: {
@@ -305,7 +305,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetSelectedPacakgeDetails: null,
-        GetSelectedPackageResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -320,7 +320,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         // ChangeUserPasswordResponse: action.response,
-        ChangeUserPasswordResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -329,7 +329,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ChangeUserPasswordResponse: null,
-        ChangeUserPasswordResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -343,7 +343,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        OrganizationCreateResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -351,7 +351,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        OrganizationCreateResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -366,7 +366,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         AuthenticateAFAResponse: action.response,
-        AuthenticateAFAResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -375,7 +375,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         AuthenticateAFAResponse: null,
-        AuthenticateAFAResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -390,7 +390,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SendTwoFacOTPResponse: action.response,
-        SendTwoFacOTPResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -399,7 +399,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SendTwoFacOTPResponse: null,
-        SendTwoFacOTPResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -414,7 +414,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         VerifyTwoFacOTPResponse: action.response,
-        VerifyTwoFacOTPResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -423,7 +423,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         VerifyTwoFacOTPResponse: null,
-        VerifyTwoFacOTPResponseMessage: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
@@ -437,7 +437,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        passwordUpdateOnForgotPasswordMessege: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }
@@ -445,7 +445,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        passwordUpdateOnForgotPasswordMessege: action.message,
+        ResponseMessage: action.message,
         errorSeverity: "error",
       };
     }
