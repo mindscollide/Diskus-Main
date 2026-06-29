@@ -6,7 +6,10 @@ import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
-import { isSharedScreenCall } from "../../../../../commen/apis/Api_config";
+import {
+  isSharedScreenCall,
+  stopPresenterView,
+} from "../../../../../commen/apis/Api_config";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
@@ -122,7 +125,7 @@ const VideoCallNormalHeader = ({
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-  const [show, SnackBar] =useSnackbar()
+  const [show, SnackBar] = useSnackbar();
 
   const {
     editorRole,
@@ -449,9 +452,7 @@ const VideoCallNormalHeader = ({
         let isMeetingVideoHostCheck = JSON.parse(
           localStorage.getItem("isMeetingVideoHostCheck"),
         );
-        let isMeetingVideo = JSON.parse(
-          localStorage.getItem("isMeetingVideo"),
-        );
+        let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
         let userID = localStorage.getItem("userID");
         let isGuid = localStorage.getItem("isGuid");
         let participantUID = localStorage.getItem("participantUID");
@@ -491,6 +492,42 @@ const VideoCallNormalHeader = ({
           console.log("stopShareOnTabClose error", error);
         }
         localStorage.removeItem("isScreenShareEnabled");
+      }
+
+      // If THIS user is the PRESENTER who started the presentation and
+      // closes the tab/browser, stop the presentation entirely for everyone
+      // (StopPresenterView) rather than leaving it dangling active with no
+      // one to manage it. Same reliability reasoning as above: a normal
+      // axios/Redux-thunk call would be cancelled by the browser before it
+      // completes, so use fetch with `keepalive: true` to guarantee delivery
+      // during unload.
+      if (presenterViewFlag && presenterViewHostFlag) {
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const currentMeetingIDOnClose = Number(
+            localStorage.getItem("currentMeetingID"),
+          );
+          const roomIDOnClose = localStorage.getItem("acceptedRoomID");
+          const videoCallUrlOnClose = Number(
+            localStorage.getItem("videoCallURL"),
+          );
+          const stopPresenterData = {
+            MeetingID: currentMeetingIDOnClose,
+            RoomID: String(roomIDOnClose),
+            VideoCallUrl: videoCallUrlOnClose,
+          };
+          const stopForm = new FormData();
+          stopForm.append("RequestMethod", stopPresenterView.RequestMethod);
+          stopForm.append("RequestData", JSON.stringify(stopPresenterData));
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: stopForm,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopPresenterViewOnTabClose error", error);
+        }
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -554,7 +591,12 @@ const VideoCallNormalHeader = ({
     });
 
     setGroupCallParticipantList(Array.from(mergedMap.values()));
-  }, [pendingCallParticipantList, inCallParticipantList, isCaller, currentUserID]);
+  }, [
+    pendingCallParticipantList,
+    inCallParticipantList,
+    isCaller,
+    currentUserID,
+  ]);
 
   // For InCall Participant List
   useEffect(() => {
@@ -905,9 +947,16 @@ const VideoCallNormalHeader = ({
       GetAllUserChats(navigate, currentUserID, currentOrganization, t),
     );
     await dispatch(GetGroupMessages(navigate, chatGroupData, t));
-    await dispatch(GetAllUsers(navigate, currentUserID, currentOrganization, t));
     await dispatch(
-      GetAllUsersGroupsRoomsList(navigate, currentUserID, currentOrganization, t),
+      GetAllUsers(navigate, currentUserID, currentOrganization, t),
+    );
+    await dispatch(
+      GetAllUsersGroupsRoomsList(
+        navigate,
+        currentUserID,
+        currentOrganization,
+        t,
+      ),
     );
   };
 
@@ -1817,7 +1866,7 @@ const VideoCallNormalHeader = ({
                 !presenterViewHostFlag ? (
                   <>
                     {/* if Recording is start */}
-                    {/* {startRecordingState && (
+                    {startRecordingState && (
                       <div
                         className="start-Recording-div"
                         onClick={onStartRecording}
@@ -1838,10 +1887,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
 
                     {/* if Recording is Pause and Stop */}
-                    {/* {pauseRecordingState && (
+                    {pauseRecordingState && (
                       <div className={"Record-Start-Background-MeetingVideo"}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
@@ -1878,10 +1927,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
 
                     {/* if Recording is Pause and Resume */}
-                    {/* {resumeRecordingState && (
+                    {resumeRecordingState && (
                       <div
                         className={"Record-Start-BackgroundRed-VideoMeeting"}
                       >
@@ -1905,7 +1954,7 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
                   </>
                 ) : null}
               </>
@@ -2713,7 +2762,6 @@ const VideoCallNormalHeader = ({
                 </div>
               </div>
             ) : null}
-
           </div>
         </>
       </>

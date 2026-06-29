@@ -1951,6 +1951,26 @@ const Dashboard = () => {
                 dispatch(participantVideoButtonState(false));
                 localStorage.setItem("isMeetingVideoHostCheck", true);
                 localStorage.setItem("isHost", true);
+                // Force-correct this client's recording-status UI now that it
+                // is host. Without this, the locally-set startRecordingState/
+                // pauseRecordingState (set much earlier, e.g. by the initial
+                // join-time auto-start trigger) stays stale and may show
+                // "Recording started" even if the previous host had it
+                // Paused. This explicitly asks the iframe for the CURRENT
+                // real Zoom recording status instead of trusting stale local
+                // state or waiting on a recording-change event that may not
+                // refire on its own.
+                (() => {
+                  const hostSyncIframe = iframeRef.current;
+                  if (hostSyncIframe && hostSyncIframe.contentWindow) {
+                    setTimeout(() => {
+                      hostSyncIframe.contentWindow.postMessage(
+                        "RequestRecordingStatus",
+                        "*",
+                      );
+                    }, 1000);
+                  }
+                })();
                 // change room id for host
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
@@ -1969,17 +1989,16 @@ const Dashboard = () => {
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
-                const wasRecordingPaused =
-                  localStorage.getItem("pauseRecordingState") === "true";
-                console.log(wasRecordingPaused, "Check is paused is true");
-
-                if (wasRecordingPaused) {
-                  console.log("Check is paused is true");
-                  setPauseRecordingState(true);
-                  setStartRecordingState(false);
-                  setResumeRecordingState(false);
-                  setStopRecordingState(false);
-                }
+                // NOTE: recording-state continuity for the new host is no
+                // longer guessed here. Zoom's own `recording-change` event
+                // fires on every client (recording is a session-level, not
+                // per-user, property), and the ZoomSDK project relays that
+                // authoritative status to this client's parent via the
+                // existing RecordingStart/Pause/Resume/StopMsgFromIframe
+                // postMessage channel as soon as it fires for this user. The
+                // previous check here read `localStorage.getItem(
+                // "pauseRecordingState")`, a key that is never written
+                // anywhere in the app, so it was always a no-op.
                 let newRoomId = localStorage.getItem("newRoomId");
                 console.log("mqtt check 22", newRoomId);
                 let Data = {
