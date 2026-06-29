@@ -227,18 +227,12 @@ const DataRoom = () => {
   // ─── Redux selectors ─────────────────────────────────────────────────────
   /** Full DataRoom reducer slice + webViewer attachment state. */
   const { DataRoomReducer, webViewer } = useSelector((state) => state);
-  /** Toast message from the signature workflow reducer. */
-  const SignatureResponseMessage = useSelector(
-    (state) => state.SignatureWorkFlowReducer.ResponseMessage,
-  );
+
   /** Breadcrumb path array for folder navigation. */
   const BreadCrumbsListArr = useSelector(
     (state) => state.DataRoomReducer.BreadCrumbsList,
   );
-  /** Toast message from the file/folder details reducer. */
-  const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage,
-  );
+
   /** Severity level ("success" | "error" | "warning") for details reducer messages. */
   const errorSeverityState2 = useSelector(
     (state) => state.DataRoomFileAndFoldersDetailsReducer.errorSeverity,
@@ -3621,81 +3615,8 @@ const DataRoom = () => {
     };
   }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
-  /**
-   * Watches three DataRoom reducer message fields and surfaces them as
-   * snackbar notifications via `showMessage`:
-   *   - `ResponseMessage`       — generic API responses (errors, successes),
-   *                               excluding several known non-error strings.
-   *   - `FolderisExistMessage`  — folder duplicate check messages, excluding
-   *                               "Folder-already-exist" (handled by modal).
-   *   - `FileisExistMessage`    — file duplicate check messages, excluding
-   *                               "File-already-exist" (handled by modal).
-   * Dispatches `clearDataResponseMessage` after showing each message.
-   */
-  useEffect(() => {
-    if (
-      DataRoomReducer.ResponseMessage !== "" &&
-      DataRoomReducer.ResponseMessage !== t("No-record-found") &&
-      DataRoomReducer.ResponseMessage !==
-        t("No-folder-exist-against-this-name") &&
-      DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
-      DataRoomReducer.ResponseMessage !== "" &&
-      DataRoomReducer.ResponseMessage !== t("Document-uploaded-successfully") &&
-      DataRoomReducer.ResponseMessage !== t("Files-saved-successfully") &&
-      errorSeverityState !== null
-    ) {
-      show(DataRoomReducer.ResponseMessage, errorSeverityState);
-      dispatch(clearDataResponseMessage());
-    }
-    if (
-      DataRoomReducer.FolderisExistMessage !== "" &&
-      DataRoomReducer.FolderisExistMessage !== t("Folder-already-exist")
-    ) {
-      show(DataRoomReducer.FolderisExistMessage, errorSeverityState);
-      dispatch(clearDataResponseMessage());
-    }
-    if (
-      DataRoomReducer.FileisExistMessage !== "" &&
-      DataRoomReducer.FileisExistMessage !== t("File-already-exist")
-    ) {
-      show(DataRoomReducer.FileisExistMessage, errorSeverityState);
-      dispatch(clearDataResponseMessage());
-    }
-  }, [
-    DataRoomReducer.FileisExistMessage,
-    DataRoomReducer.FolderisExistMessage,
-    DataRoomReducer.ResponseMessage,
-    errorSeverityState,
-  ]);
-  /**
-   * Shows snackbar messages from the DataRoom2 slice
-   * (`DataRoomFileAndFoldersDetailsResponseMessage`) and clears them via
-   * `clearDataResponseMessageDataRoom2` after display.
-   */
-  useEffect(() => {
-    if (DataRoomFileAndFoldersDetailsResponseMessage !== "") {
-      show(DataRoomFileAndFoldersDetailsResponseMessage, errorSeverityState2);
-      dispatch(clearDataResponseMessageDataRoom2());
-    }
-  }, [DataRoomFileAndFoldersDetailsResponseMessage, errorSeverityState2]);
 
-  /**
-   * Shows snackbar messages from the Signature workflow slice
-   * (`SignatureResponseMessage`), skipping blank/undefined/null values and
-   * "Created-successfully" (that state is handled elsewhere). Clears the
-   * message via `clearWorkFlowResponseMessage` after display.
-   */
-  useEffect(() => {
-    if (
-      SignatureResponseMessage !== "" &&
-      SignatureResponseMessage !== undefined &&
-      SignatureResponseMessage !== null &&
-      SignatureResponseMessage !== t("Created-successfully")
-    ) {
-      show(SignatureResponseMessage, "success");
-      dispatch(clearWorkFlowResponseMessage());
-    }
-  }, [SignatureResponseMessage]);
+
 
   /**
    * Confirms folder deletion — dispatches `deleteFolder` with the pending

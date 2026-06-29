@@ -480,20 +480,6 @@ const Organizers = () => {
     setRowsData(updatedRowsData);
   }, [MeetingOrganizersReducer.NotificationUpdateData]);
 
-  useEffect(() => {
-    if (
-      MeetingOrganizersReducer.ResponseMessage !== "" ||
-      MeetingOrganizersReducer.ResponseMessage !== t("No-record-found") ||
-      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
-      MeetingOrganizersReducer.ResponseMessage !== ""
-    ) {
-      show(MeetingOrganizersReducer.ResponseMessage, "success");
-      dispatch(clearResponseMessage(""));
-    } else {
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingOrganizersReducer.ResponseMessage]);
-
   return (
     <>
       <section className={`${"position-relative"} ${styles["height2"]}`}>

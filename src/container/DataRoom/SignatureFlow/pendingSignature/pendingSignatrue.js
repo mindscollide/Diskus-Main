@@ -557,8 +557,8 @@ const PendingSignatureViewer = () => {
    */
   const currentUserFieldNamesRef = useRef(new Set());
 
-  // ✅ Store original mouseLeftUp function to restore if needed
-  const originalMouseLeftUpRef = useRef(null);
+  // Guard so the SignatureCreateTool mouse handlers are patched only once.
+  const signatureToolPatchedRef = useRef(false);
 
   /**
    * Set of field names that the current user has already filled / signed during
@@ -625,10 +625,6 @@ const PendingSignatureViewer = () => {
     dispatch(allAssignessList(navigate, t, false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docWorkflowID]);
-
-  useEffect(() => {
-    if (ResponseMessage) show(ResponseMessage, "error");
-  }, [ResponseMessage]);
 
   // ── getAllFieldsByWorkflowID ────────────────────────────────────────────────
   useEffect(() => {
@@ -973,6 +969,53 @@ const PendingSignatureViewer = () => {
         const { UI, Core } = inst;
         const { documentViewer, annotationManager, Tools } = Core;
 
+        // ── Restrict signature creation to the current user's own field ──────
+        //
+        // Apryse's SignatureCreateTool, once active, opens the "Create
+        // Signature" modal on ANY click on the page. The modal can be triggered
+        // from either the mouse-DOWN or the mouse-UP handler, so we must gate
+        // BOTH; gating only mouseLeftUp (as before) let the mouse-down path
+        // open the modal anywhere on the page.
+        //
+        // We install the patch here — unconditionally and before the document
+        // loads — so it is always in place regardless of XFDF timing. The
+        // handlers read currentUserFieldNamesRef lazily at click time, so the
+        // ref being empty at install time is fine.
+        const SignatureCreateTool = Tools.SignatureCreateTool;
+        if (SignatureCreateTool && !signatureToolPatchedRef.current) {
+          signatureToolPatchedRef.current = true;
+
+          const origMouseDown = SignatureCreateTool.prototype.mouseLeftDown;
+          const origMouseUp = SignatureCreateTool.prototype.mouseLeftUp;
+
+          // True only when the click lands on a signature widget that belongs
+          // to the current user and is still signable (not signed, not locked).
+          const isOwnSignableWidget = (e) => {
+            try {
+              const widget = annotationManager.getAnnotationByMouseEvent(e);
+              if (!widget || typeof widget.getField !== "function") return false;
+              const fieldName = widget.getField()?.name;
+              return (
+                !!fieldName &&
+                currentUserFieldNamesRef.current.has(fieldName) &&
+                !widget.getAssociatedSignatureAnnotation() &&
+                !widget.ReadOnly
+              );
+            } catch {
+              return false;
+            }
+          };
+
+          SignatureCreateTool.prototype.mouseLeftDown = function (e) {
+            if (isOwnSignableWidget(e)) return origMouseDown.call(this, e);
+            // click outside an owned signature field — ignore
+          };
+          SignatureCreateTool.prototype.mouseLeftUp = function (e) {
+            if (isOwnSignableWidget(e)) return origMouseUp.call(this, e);
+            // click outside an owned signature field — ignore
+          };
+        }
+
         UI.loadDocument(handleBlobFiles(pdfData.attachmentBlob), {
           filename: pdfData.title,
         });
@@ -1061,61 +1104,6 @@ const PendingSignatureViewer = () => {
                 currentUserID,
                 currentUserFieldNamesRef.current,
               );
-
-              // ✅ CRITICAL: Override SignatureCreateTool to block clicks on non-owner fields
-              const SignatureCreateTool = Tools.SignatureCreateTool;
-              if (SignatureCreateTool && !originalMouseLeftUpRef.current) {
-                // Store original function
-                originalMouseLeftUpRef.current =
-                  SignatureCreateTool.prototype.mouseLeftUp;
-
-                // Override with our custom logic
-                SignatureCreateTool.prototype.mouseLeftUp = function (e) {
-                  const widget = annotationManager.getAnnotationByMouseEvent(e);
-
-                  // Check if clicked on a signature widget
-                  if (
-                    widget &&
-                    widget.getField &&
-                    typeof widget.getField === "function"
-                  ) {
-                    const field = widget.getField();
-                    const fieldName = field?.name;
-                    const isOwner =
-                      currentUserFieldNamesRef.current.has(fieldName);
-
-                    console.log(
-                      `Widget clicked: ${fieldName}, isOwner: ${isOwner}`,
-                    );
-
-                    // Only allow click if:
-                    // 1. Field belongs to current user
-                    // 2. Field is not already signed
-                    // 3. Field is not read-only
-                    if (
-                      isOwner &&
-                      !widget.getAssociatedSignatureAnnotation() &&
-                      !widget.ReadOnly
-                    ) {
-                      console.log("✅ Allowing signature on owner field");
-                      originalMouseLeftUpRef.current.call(this, e);
-                    } else {
-                      console.log("❌ Blocking signature on non-owner field");
-                      // Do nothing - field is blocked
-                    }
-                  } else {
-                    // Clicked on empty page area (not a signature widget).
-                    // Do NOT trigger the signature-create flow. The
-                    // SignatureCreateTool stays the active tool after the
-                    // "Create New Signature" modal is closed, so calling the
-                    // original mouseLeftUp here would re-open that modal on any
-                    // click anywhere on the page. The modal must only open when
-                    // the user clicks their own "Sign here" widget (handled in
-                    // the branch above), so empty-area clicks are ignored.
-                    console.log("❌ Ignoring click outside a signature field");
-                  }
-                };
-              }
             } catch (err) {
               console.error("importAnnotations:", err);
             }

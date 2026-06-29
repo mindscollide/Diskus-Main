@@ -60,7 +60,7 @@ const MeetingDocumentViewer = () => {
   const FileRemoveMQTT = useSelector(
     (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
+  const { attachmentBlob, xfdfData, } = useSelector(
     (state) => state.webViewer,
   );
 

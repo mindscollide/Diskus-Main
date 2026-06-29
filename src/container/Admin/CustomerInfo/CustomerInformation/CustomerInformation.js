@@ -487,13 +487,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     countryNamesReducer.CountryNamesData,
   ]);
 
-  useEffect(() => {
-    if (adminReducer.UpdateCustomerInformationResponseMessage !== "") {
-      notify(adminReducer.UpdateCustomerInformationResponseMessage, "success");
-      dispatch(cleareMessage());
-    }
-  }, [adminReducer.UpdateCustomerInformationResponseMessage]);
-
   return (
     <>
       <Container>

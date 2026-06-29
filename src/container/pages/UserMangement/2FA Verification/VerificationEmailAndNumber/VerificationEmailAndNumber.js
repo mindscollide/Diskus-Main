@@ -125,15 +125,6 @@ const VerificationEmailAndNumber = () => {
   }, [AuthreducerAuthenticateAFAResponse]);
 
   useEffect(() => {
-    if (AuthreducerSendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")) {
-      show(AuthreducerSendTwoFacOTPResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerSendTwoFacOTPResponseMessage]);
-
-  useEffect(() => {
     let value = localStorage.getItem("value");
     let email = localStorage.getItem("email");
     let phoneNumber = localStorage.getItem("phoneNumber");

@@ -1143,7 +1143,7 @@ const ViewMeetingModal = ({
           t,
           leaveMeetingData,
           false,
-          false,
+          () => {},
           setEditorRole,
           setAdvanceMeetingModalID,
           setViewAdvanceMeetingModal,

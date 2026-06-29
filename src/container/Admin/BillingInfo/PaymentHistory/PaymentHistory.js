@@ -377,23 +377,8 @@ const EditUser = ({ ModalTitle }) => {
     }
   };
 
-  useEffect(() => {
-    if (
-      adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      show(adminReducer.ResponseMessage, "success");
-    }
-  }, [adminReducer.ResponseMessage]);
 
-  useEffect(() => {
-    if (
-      OrganizationBillingReducer.ResponseMessage !== "" &&
-      OrganizationBillingReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      show(OrganizationBillingReducer.ResponseMessage, "success");
-    }
-  }, [OrganizationBillingReducer.ResponseMessage]);
+
 
   return (
     <>

@@ -622,15 +622,6 @@ const ViewSignatureDocument = () => {
     disableSignatureActions(Instance);
   }, [Instance]);
 
-  // === this is for Response Message===//
-  useEffect(() => {
-    if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      show(ResponseMessage, "success");
-      dispatch(ClearMessageAnnotations());
-    }
-  }, [ResponseMessage]);
-  // === End ===//
-
   const handleClickDeclineBtn = () => {
     if (declineReasonMessage !== "") {
       let userID = localStorage.getItem("userID");

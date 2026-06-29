@@ -1006,20 +1006,6 @@ const Polling = () => {
     dispatch(searchPollsApi(navigate, t, data));
   };
 
-  useEffect(() => {
-    if (
-      PollsReducerResponseMessage !== "" &&
-      PollsReducerResponseMessage !== "" &&
-      PollsReducerResponseMessage !== t("No-records-found") &&
-      PollsReducerResponseMessage !== t("No-data-available")
-    ) {
-      show(PollsReducerResponseMessage, "Success");
-      dispatch(clearMessagesGroup());
-    } else {
-      dispatch(clearMessagesGroup());
-    }
-  }, [PollsReducerResponseMessage]);
-
   const handleVotePolls = (record) => {
     if (Object.keys(record).length > 0) {
       let data = {

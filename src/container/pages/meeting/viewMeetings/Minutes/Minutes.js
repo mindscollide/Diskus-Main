@@ -689,41 +689,6 @@ const Minutes = () => {
     }
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available") &&
-      ResponseMessage !== t("Something-went-wrong") &&
-      ResponseMessage !== t("Record-available")
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-    if (
-      ResponseMessageMinute !== t("No-record-found") &&
-      ResponseMessageMinute !== t("No-records-found") &&
-      ResponseMessageMinute !== "" &&
-      ResponseMessageMinute !== t("Record-found") &&
-      ResponseMessageMinute !== t("List-updated-successfully") &&
-      ResponseMessageMinute !== t("No-data-available") &&
-      ResponseMessageMinute !== t("Minute-review-flow-stats-not-available") &&
-      ResponseMessageMinute !== t("Minute-review-flow-not-found") &&
-      ResponseMessageMinute !== t("Something-went-wrong") &&
-      ResponseMessageMinute !== t("Record-available")
-    ) {
-      show(ResponseMessageMinute, "success");
-      dispatch(CleareMessegeMinutes());
-    } else {
-      dispatch(CleareMessegeMinutes());
-    }
-  }, [ResponseMessage, ResponseMessageMinute]);
-
   // OWAIS WORK cxx|:::::::>
 
   const [openMenuId, setOpenMenuId] = useState(null);

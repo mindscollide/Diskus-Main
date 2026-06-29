@@ -661,34 +661,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   useEffect(() => {
     try {
-      if (
-        toDoListReducerResponseMessage !== "" &&
-        toDoListReducerResponseMessage !== undefined &&
-        toDoListReducerResponseMessage !== "" &&
-        toDoListReducerResponseMessage !== t("No-records-found")
-      ) {
-        notify(toDoListReducerResponseMessage, "success");
-
-        dispatch(clearResponce());
-      } else if (
-        assigneesResponseMessage !== "" &&
-        assigneesResponseMessage !== "" &&
-        assigneesResponseMessage !== t("No-records-found")
-      ) {
-        notify(assigneesResponseMessage, "success");
-
-        dispatch(clearResponseMessage());
-      } else {
-        dispatch(clearResponce());
-        dispatch(clearResponseMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [toDoListReducerResponseMessage, assigneesResponseMessage]);
-
-  useEffect(() => {
-    try {
       if (removeTodo !== 0) {
         if (
           assigneesUpdateTodoStatusMessage ===
@@ -706,47 +678,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       console.log(error, "error");
     }
   }, [assigneesUpdateTodoStatusMessage, removeTodo]);
-
-  useEffect(() => {
-    try {
-      if (
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== undefined &&
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== t("No-records-found")
-      ) {
-        notify(assigneesgetTodosStatus.ResponseMessage, "success");
-
-        dispatch(cleareMessage());
-      } else if (
-        assigneesUpdateTodoStatusMessage !== "" &&
-        assigneesUpdateTodoStatusMessage !== undefined &&
-        assigneesUpdateTodoStatusMessage !== "" &&
-        assigneesUpdateTodoStatusMessage !== t("No-records-found")
-      ) {
-        notify(assigneesUpdateTodoStatusMessage, "success");
-
-        dispatch(cleareMessage());
-      } else if (
-        getTodoStatusUpdateTodoStatus !== "" &&
-        getTodoStatusUpdateTodoStatus !== undefined &&
-        getTodoStatusUpdateTodoStatus !== "" &&
-        getTodoStatusUpdateTodoStatus !== t("No-records-found")
-      ) {
-        notify(getTodoStatusUpdateTodoStatus, "success");
-
-        dispatch(cleareMessage());
-      } else {
-        dispatch(cleareMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [
-    getTodosStatusResponseMessage,
-    assigneesUpdateTodoStatusMessage,
-    getTodoStatusUpdateTodoStatus,
-  ]);
 
   const scroll = {
     y: "64vh",

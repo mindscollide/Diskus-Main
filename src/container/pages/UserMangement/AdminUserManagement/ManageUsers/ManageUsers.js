@@ -618,16 +618,6 @@ const ManageUsers = () => {
 
   //Response Messege
 
-  useEffect(() => {
-    if (
-      UserMangementReducerResponseMessage !== "" &&
-      UserMangementReducerResponseMessage !== t("No-data-found")
-    ) {
-      show(UserMangementReducerResponseMessage, "success");
-      dispatch(clearMessegesUserManagement());
-    }
-  }, [UserMangementReducerResponseMessage]);
-
   return (
     <Container>
       <Row className={"mt-3 row"}>

@@ -40,19 +40,6 @@ const PackageUpgradeDetail = () => {
     }
   }, [state]);
 
-  useEffect(() => {
-    if (
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
-        t("Organization-subscription-update")
-    ) {
-      show(GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage, "success");
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
-
   return (
     <>
       <Container className="py-4">

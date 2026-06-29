@@ -141,14 +141,6 @@ const CancelSubs = () => {
       dispatch(adminClearMessege());
     }
   }, [adminReducer.revokeResponseMessege]);
-  useEffect(() => {
-    if (GetSubscriptionPackage.getCancelSubscriptionResponseMessage !== "") {
-      show(GetSubscriptionPackage.getCancelSubscriptionResponseMessage, "success");
-      dispatch(cleareMessageSubsPac());
-    } else {
-      dispatch(cleareMessageSubsPac());
-    }
-  }, [GetSubscriptionPackage.getCancelSubscriptionResponseMessage]);
   return (
     <>
       <Container className="py-3 position-relative">

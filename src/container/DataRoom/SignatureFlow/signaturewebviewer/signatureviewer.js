@@ -547,12 +547,6 @@ const SignatureViewer = () => {
     }
   }, [saveWorkFlowResponse]);
 
-  // ─── Notification from ResponseMessage ──────────────────────────────────
-  useEffect(() => {
-    if (ResponseMessage)
-      show(ResponseMessage, "success");
-  }, [ResponseMessage]);
-
   // ─── Assignees → Select options ──────────────────────────────────────────
   useEffect(() => {
     if (!assignees.user?.length) return;
@@ -1309,7 +1303,6 @@ const SignatureViewer = () => {
           </Row>
         }
       />
-
 
       {sendModal && (
         <SendDocumentModal

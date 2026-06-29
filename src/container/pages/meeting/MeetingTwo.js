@@ -4791,60 +4791,6 @@ const NewMeeting = () => {
 
   useEffect(() => {
     try {
-      if (
-        ResponseMessages !== "" &&
-        ResponseMessages !== undefined &&
-        ResponseMessages !== "" &&
-        ResponseMessages !== t("No-records-found") &&
-        ResponseMessages !== t("No-record-found")
-      ) {
-        show(ResponseMessages, "success");
-        dispatch(clearResponseMessage(""));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessages]);
-
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("No-record-found") &&
-        ResponseMessage !== t("No-records-found") &&
-        ResponseMessage !== "" &&
-        ResponseMessage !== t("List-updated-successfully") &&
-        ResponseMessage !== t("No-data-available") &&
-        ResponseMessage !== t("Successful") &&
-        ResponseMessage !== t("Record-updated") &&
-        ResponseMessage !== t("Something-went-wrong") &&
-        ResponseMessage !== undefined
-      ) {
-        show(ResponseMessages, "success");
-        dispatch(clearResponseNewMeetingReducerMessage(""));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessage]);
-
-  useEffect(() => {
-    try {
-      if (
-        ResponseMessageUserMangementReducer !== "" &&
-        ResponseMessageUserMangementReducer !== undefined
-      ) {
-        show(ResponseMessageUserMangementReducer, "error");
-        dispatch(clearMessegesUserManagement());
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [ResponseMessageUserMangementReducer]);
-
-  useEffect(() => {
-    try {
       if (dashboardEventData !== null && dashboardEventData !== undefined) {
         console.log(dashboardEventData, "dashboardEventDatadashboardEventData");
         let startMeetingRequest = {

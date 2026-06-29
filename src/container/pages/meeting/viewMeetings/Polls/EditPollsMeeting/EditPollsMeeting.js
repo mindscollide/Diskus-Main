@@ -526,20 +526,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     } catch {}
   }, [Allpolls]);
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-data-available") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found")
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(clearPollsMesseges());
-    } else {
-      dispatch(clearPollsMesseges());
-    }
-  }, [ResponseMessage]);
-
   return (
     <section>
       <Row>

@@ -316,10 +316,6 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
   );
 
-  const VideoMainReducerResponseMessage = useSelector(
-    (state) => state.VideoMainReducer.ResponseMessage,
-  );
-
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
@@ -3085,6 +3081,27 @@ const Dashboard = () => {
         } else if (
           data.payload.message.toLowerCase() ===
           "PUBLISHED_POLL_DELETED".toLowerCase()
+        ) {
+          dispatch(deletePollsMQTT(data.payload.polls));
+          try {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("PUBLISHED_POLL_DELETED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle,
+                ),
+              });
+              setNotificationID(id);
+            }
+          } catch (error) {
+            console.log(error, "errorerror PUBLISHED_POLL_DELETED");
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "UNPUBLISHED_POLL_DELETED".toLowerCase()
         ) {
           dispatch(deletePollsMQTT(data.payload.polls));
           try {
@@ -8057,27 +8074,7 @@ const Dashboard = () => {
     MaximizeVideoFlag,
   ]);
 
-  useEffect(() => {
-    try {
-      if (
-        VideoMainReducerResponseMessage !== "" &&
-        VideoMainReducerResponseMessage !== t("No-record-found") &&
-        VideoMainReducerResponseMessage !== t("No-records-found") &&
-        VideoMainReducerResponseMessage !== "" &&
-        VideoMainReducerResponseMessage !== t("List-updated-successfully") &&
-        VideoMainReducerResponseMessage !== t("No-data-available") &&
-        VideoMainReducerResponseMessage !== t("Successful") &&
-        VideoMainReducerResponseMessage !== t("Record-updated") &&
-        VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
-        VideoMainReducerResponseMessage !== undefined
-      ) {
-        show(VideoMainReducerResponseMessage, "success");
-        dispatch(cleareResponceMessage(""));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [VideoMainReducerResponseMessage]);
+
 
   useEffect(() => {
     if (Blur !== null) {

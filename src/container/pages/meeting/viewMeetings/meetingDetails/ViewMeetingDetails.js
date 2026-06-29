@@ -768,23 +768,6 @@ const ViewMeetingDetails = ({}) => {
     }
   }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-data-available") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== undefined
-    ) {
-      show(ResponseMessage, "success");
-      dispatch(CleareMessegeNewMeeting());
-      dispatch(ClearResponseMessageGuest());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-      dispatch(ClearResponseMessageGuest());
-    }
-  }, [ResponseMessage]);
-
   const handleClickEndMeeting = useCallback(async () => {
     let endMeetingRequest = {
       MeetingID: Number(advanceMeetingModalID),

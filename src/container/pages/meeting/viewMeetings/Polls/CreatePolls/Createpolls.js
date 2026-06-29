@@ -46,9 +46,6 @@ const Createpolls = ({ setCreatepoll }) => {
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const { advanceMeetingModalID } = useMeetingContext();
-  const ResponseMessagePoll = useSelector(
-    (state) => state.PollsReducer.ResponseMessage
-  );
   const getMeetingusers = useSelector(
     (state) => state.NewMeetingreducer.getMeetingusers
   );
@@ -479,19 +476,7 @@ const Createpolls = ({ setCreatepoll }) => {
     }
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessagePoll !== "" &&
-      ResponseMessagePoll !== t("No-data-available") &&
-      ResponseMessagePoll !== "" &&
-      ResponseMessagePoll !== t("No-record-found")
-    ) {
-      show(ResponseMessagePoll, "success");
-      dispatch(clearPollsMesseges());
-    } else {
-      dispatch(clearPollsMesseges());
-    }
-  }, [ResponseMessagePoll]);
+
 
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {

@@ -225,17 +225,6 @@ const SignInUserManagement = () => {
   }, [code, getpayemntString, currentUrl, emailRef]);
   
 
-  useEffect(() => {
-    if (adminReducerDeleteOrganizationResponseMessageData !== "") {
-      console.log(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "DeleteOrganizationResponseMessage"
-      );
-      show(adminReducerDeleteOrganizationResponseMessageData, "error");
-      dispatch(cleareMessage());
-    }
-  }, [adminReducerDeleteOrganizationResponseMessageData, show]);
-
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
