@@ -4,6 +4,9 @@ import styles from "./TapOptions.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
@@ -41,12 +44,13 @@ const TapOptions = () => {
                   <img
                     draggable='false'
                     src={
-                      localStorage.getItem("i18nextLng") === "ar"
-                        ? DiskusLogoArabic
-                        : img1
+                      PSO_LOGO
+                        ? PSOLogo
+                        : localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : img1
                     }
-                    width='220px'
-                    height='69px'
+                    width={PSO_LOGO ? 120 : 200}
                     alt=''
                   />
                 </Col>
@@ -153,6 +157,14 @@ const TapOptions = () => {
                 alt='auth_icon'
                 className={styles["Verification_Code_Three_Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=''
+                  draggable='false'
+                  className={styles.PoweredIcon_Diskus_Icon}
+                />
+              )}
             </Col>
           </Row>
         </Col>

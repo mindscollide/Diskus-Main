@@ -4,6 +4,9 @@ import { Button, Notification } from "./../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "./../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "./../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "./../../../commen/featureFlags";
+import PSOPowerdBy from "./../../../assets/images/Logos/PowerdByDiskus.png";
 
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import styles from "./UpdatePasswordSuccessfully.module.css";
@@ -58,7 +61,7 @@ const UpdatePasswordSuccessfully = () => {
                     <img
                       draggable="false"
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : DiskusLogo
                       }
@@ -137,6 +140,14 @@ const UpdatePasswordSuccessfully = () => {
                 width="600px"
                 className={styles["Update_password_successfully_Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=""
+                  draggable="false"
+                  style={{ position: "absolute", bottom: 10, right: 10, width: 110, zIndex: 2 }}
+                />
+              )}
             </Col>
           </Col>
         </Row>

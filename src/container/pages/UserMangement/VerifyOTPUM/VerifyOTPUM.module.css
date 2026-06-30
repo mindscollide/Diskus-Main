@@ -307,3 +307,8 @@ body[dir="rtl"] .languageSelector {
   color: #5a5a5a !important;
   font-weight: 400 !important;
 }
+.PoweredIcon_Diskus_Icon{
+  position: absolute;
+  bottom: 125px;
+  right: 140px;
+}

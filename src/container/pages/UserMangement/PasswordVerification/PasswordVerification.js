@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./PasswordVerification.module.css";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
 
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -34,31 +37,31 @@ const PasswordVerification = () => {
   const passwordRef = useRef();
 
   const AuthreducerVerifyOTPEmailResponseMessageData = useSelector(
-    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
+    (state) => state.Authreducer.VerifyOTPEmailResponseMessage,
   );
 
   const AuthreducerOrganizationCreateResponseMessageData = useSelector(
-    (state) => state.Authreducer.OrganizationCreateResponseMessage
+    (state) => state.Authreducer.OrganizationCreateResponseMessage,
   );
 
   const AuthreducerCreatePasswordResponseMessageData = useSelector(
-    (state) => state.Authreducer.CreatePasswordResponseMessage
+    (state) => state.Authreducer.CreatePasswordResponseMessage,
   );
 
   const AuthreducerGetSelectedPackageResponseMessageData = useSelector(
-    (state) => state.Authreducer.GetSelectedPackageResponseMessage
+    (state) => state.Authreducer.GetSelectedPackageResponseMessage,
   );
 
   const AuthreducerEmailValidationResponseMessageData = useSelector(
-    (state) => state.Authreducer.EmailValidationResponseMessage
+    (state) => state.Authreducer.EmailValidationResponseMessage,
   );
 
   const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
+    (state) => state.Authreducer.Loading,
   );
 
   const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
+    (state) => state.LanguageReducer.Loading,
   );
 
   //States for Password Verification Screen
@@ -144,9 +147,16 @@ const PasswordVerification = () => {
       show(t("Enter-password"), "error");
     } else {
       setErrorBar(false);
-      passwordRef.current = null
+      passwordRef.current = null;
 
-      dispatch(enterPasswordvalidation(password, navigate, t, setPasswordFieldDisabled));
+      dispatch(
+        enterPasswordvalidation(
+          password,
+          navigate,
+          t,
+          setPasswordFieldDisabled,
+        ),
+      );
     }
   };
 
@@ -162,11 +172,11 @@ const PasswordVerification = () => {
   //Password Remeber
   useEffect(() => {
     let RememberPasswordLocal = JSON.parse(
-      localStorage.getItem("remeberPassword")
+      localStorage.getItem("remeberPassword"),
     );
     if (RememberPasswordLocal === true) {
       let RememberPasswordLocalValue = localStorage.getItem(
-        "rememberPasswordValue"
+        "rememberPasswordValue",
       );
       SetRememberPassword(RememberPasswordLocal);
       let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
@@ -208,11 +218,13 @@ const PasswordVerification = () => {
                     className='d-flex justify-content-center'>
                     <img
                       draggable='false'
-                      width={200}
+                      width={PSO_LOGO ? 120 : 200}
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : DiskusLogo
+                        PSO_LOGO
+                          ? PSOLogo
+                          : localStorage.getItem("i18nextLng") === "ar"
+                            ? DiskusLogoArabic
+                            : DiskusLogo
                       }
                       alt='diskus_logo'
                     />
@@ -349,12 +361,20 @@ const PasswordVerification = () => {
                 width='600px'
                 className={styles["Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=''
+                  draggable='false'
+               className={styles["PoweredIcon_Diskus_Icon"]}
+                />
+              )}
             </Col>
           </Col>
         </Row>
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

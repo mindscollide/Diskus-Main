@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 import img9 from "../../../../../assets/images/9.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import logo from "../../../../../assets/images/signinlogo.svg";
@@ -17,7 +20,10 @@ const VerifyDeniedUM = () => {
   const dispatch = useDispatch();
 
   const handleBacktoSignIn = () => {
+<<<<<<< HEAD
     console.log("clicked");
+=======
+>>>>>>> 7246d540d (Roll out PSO logo & powered-by badge)
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
   };
@@ -25,7 +31,7 @@ const VerifyDeniedUM = () => {
   return (
     <>
       <Container fluid className={styles["SigninDenied"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -35,43 +41,40 @@ const VerifyDeniedUM = () => {
             lg={5}
             md={5}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <span className={styles["loginbox_auth_paper_for_SignInDenied"]}>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles["EmailVerifyBox_for_SignInDenied"]}
-              >
+                className={styles["EmailVerifyBox_for_SignInDenied"]}>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center "
-                  >
+                    className='d-flex justify-content-center '>
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : img1
+                        PSO_LOGO
+                          ? PSOLogo
+                          : localStorage.getItem("i18nextLng") === "ar"
+                            ? DiskusLogoArabic
+                            : img1
                       }
-                      width="220px"
-                      height="69px"
-                      alt="diskus_logo"
+                      width={PSO_LOGO ? 120 : 200}
+                      alt='diskus_logo'
                     />
                   </Col>
                 </Row>
 
-                <Row className="mt-4">
+                <Row className='mt-4'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center text-center "
-                  >
+                    className='d-flex justify-content-center text-center '>
                     <span className={styles["MainHeading_For_SigninDenied"]}>
                       {t("Your-sign-in-was-denied")}
                     </span>
@@ -83,26 +86,24 @@ const VerifyDeniedUM = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center align-item-center mt-2"
-                  >
+                    className='d-flex justify-content-center align-item-center mt-2'>
                     <img
-                      draggable="false"
-                      width="116px"
-                      height="120.92px"
+                      draggable='false'
+                      width='116px'
+                      height='120.92px'
                       src={logo}
                       className={styles["Image_logo_singin_denied"]}
-                      alt=""
+                      alt=''
                     />
                   </Col>
                 </Row>
 
-                <Row className="mt-0 mb-2 d-flex justify-content-center">
+                <Row className='mt-0 mb-2 d-flex justify-content-center'>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center mt-4"
-                  >
+                    className='d-flex justify-content-center mt-4'>
                     <Button
                       text={t("Back-to-sign-in").toUpperCase()}
                       className={
@@ -116,25 +117,33 @@ const VerifyDeniedUM = () => {
             </span>
           </Col>
 
-          <Col md={7} lg={7} sm={12} className="">
+          <Col md={7} lg={7} sm={12} className=''>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img9}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["phone-image"]}
-                  width="320px"
-                  height="417px"
+                  width='320px'
+                  height='417px'
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={DiskusAuthPageLogo}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["denied_signIn_Auth_Icon"]}
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=''
+                    draggable='false'
+                    className={styles.PoweredIcon_Diskus_Icon}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

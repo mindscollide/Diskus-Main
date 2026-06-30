@@ -4,6 +4,9 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationIphone.css";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 import img2 from "../../../../../assets/images/2.png";
 import img10 from "../../../../../assets/images/10.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -25,12 +28,13 @@ const VerificationIphone = () => {
   const [devices, setDevices] = useState([]);
   const [selectDevice, setSelectDevice] = useState(null);
   const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
   );
   const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
   );
 
+<<<<<<< HEAD
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -46,6 +50,8 @@ const VerificationIphone = () => {
   }, [currentLangObj, t]);
   console.log("currentLocale", currentLocale);
 
+=======
+>>>>>>> 7246d540d (Roll out PSO logo & powered-by badge)
   // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
     setSelectDevice(JSON.parse(e.target.value));
@@ -84,8 +90,8 @@ const VerificationIphone = () => {
           Data,
           selectDevice,
           setSeconds,
-          setMinutes
-        )
+          setMinutes,
+        ),
       );
     }
   };
@@ -95,12 +101,18 @@ const VerificationIphone = () => {
   useEffect(() => {
     try {
       let parsedDevices = JSON.parse(devicesi);
+<<<<<<< HEAD
       console.log(parsedDevices, "Parsed Devices");
       setDevices(parsedDevices);
       console.log(devices, "Devices State after set");
     } catch (e) {
       console.error("Failed to parse devices from localStorage", e);
     }
+=======
+
+      setDevices(parsedDevices);
+    } catch (e) {}
+>>>>>>> 7246d540d (Roll out PSO logo & powered-by badge)
   }, []);
 
   let newClient = Helper.socket;
@@ -116,7 +128,10 @@ const VerificationIphone = () => {
 
   //handle Go back Functionality
   const handleGoback = () => {
+<<<<<<< HEAD
     console.log("goback");
+=======
+>>>>>>> 7246d540d (Roll out PSO logo & powered-by badge)
     if (localStorage.getItem("isMultiDevice")) {
       localStorage.setItem("LoginFlowPageRoute", 13);
       dispatch(LoginFlowRoutes(13));
@@ -155,11 +170,13 @@ const VerificationIphone = () => {
                     <img
                       draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : img1
+                        PSO_LOGO
+                          ? PSOLogo
+                          : localStorage.getItem("i18nextLng") === "ar"
+                            ? DiskusLogoArabic
+                            : img1
                       }
-                      width={220}
+                      width={PSO_LOGO ? 120 : 220}
                       alt='diskus_logo'
                     />
                   </Col>
@@ -184,7 +201,10 @@ const VerificationIphone = () => {
                   <Row className='Scroll_bar_For_devices mt-3'>
                     {devices && devices.length > 0
                       ? devices.map((data, index) => {
+<<<<<<< HEAD
                           console.log(data, "lengthlengthlength");
+=======
+>>>>>>> 7246d540d (Roll out PSO logo & powered-by badge)
                           return (
                             <Col sm={12} lg={12} md={12} className='mx-2'>
                               <Row key={index} className='my-2'>
@@ -272,6 +292,14 @@ const VerificationIphone = () => {
                   width='600px'
                   className='Auth_Icon'
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=''
+                    draggable='false'
+                    className={"PoweredIcon_Diskus_Icon_VerifyPhone"}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

@@ -14,6 +14,8 @@
 .VerificationCodeThree {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .languageSelectors {
@@ -36,23 +38,22 @@ body[dir="rtl"] .languageSelectors {
   justify-content: flex-end;
 }
 
-.phone-image {
+.phone-image_verificationCodeThree {
   position: absolute;
   top: 130px;
-  right: -200px;
-  z-index: 1;
-  user-select: none;
-  width: 22.125rem;
-}
-
-body[dir="rtl"] .phone-image {
-  position: absolute;
-  top: 19%;
   right: 255px;
   z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body[dir="rtl"] .phone-image_verificationCodeThree {
+  position: absolute;
+  top: 130px !important;
+  right: auto !important;
+  left: 255px !important;
+  z-index: 1;
+  user-select: none;
 }
 
 .SubHeadingVerificationCodeThree {
@@ -169,12 +170,13 @@ body[dir="rtl"] .Next_button_EmailVerify_For_openyourrealmextra {
   padding: 25px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
-  height: 469px !important;
+  height: auto !important;
   width: 330px !important;
   border-radius: 8px !important;
   border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  --Paper-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   box-shadow: var(--Paper-shadow);
   display: inline-block !important;
   background: #fff !important;
@@ -386,15 +388,23 @@ body[dir="rtl"] .deviceName {
 }
 
 .Verification_Code_Three_Auth_Icon {
-  position: absolute;
-  right: -250px;
-  bottom: -205px;
+  position: fixed;
+  right: -180px;
+  bottom: -200px;
   transform: rotate(280deg);
+  width: 600px;
 }
 
 body[dir="rtl"] .Verification_Code_Three_Auth_Icon {
+  position: fixed;
+  left: -180px;
+  bottom: -200px;
+  transform: rotate(280deg);
+  width: 600px;
+  right: auto !important;
+}
+.PoweredIcon_Diskus_Icon_verificationCodeThree {
   position: absolute;
-  right: 100px;
-  bottom: -205px;
-  transform: rotate(135deg);
+  bottom: 65px;
+  right: 20px;
 }
