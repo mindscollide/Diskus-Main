@@ -8,8 +8,7 @@ import {
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
-import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
-import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
+
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
@@ -30,7 +29,6 @@ import { localStorageManage } from "../../../../commen/functions/locallStorageMa
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import SwitchToChromeBox from "../../../../components/elements/SwitchToChromeBox/SwitchToChromeBox";
-import { HIDE_FREETRAIL_BAR, PSO_LOGO } from "../../../../commen/featureFlags";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -41,9 +39,12 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
+  const adminReducerDeleteOrganizationResponseMessageData = useSelector(
+    (state) => state.adminReducer.DeleteOrganizationResponseMessage
+  );
 
   const UserManagementModalsmobileAppPopUpData = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp,
+    (state) => state.UserManagementModals.mobileAppPopUp
   );
 
   const currentUrl = window.location.href;
@@ -71,7 +72,7 @@ const SignInUserManagement = () => {
     } else {
       setErrorBar(false);
       let RememberEmailLocal = JSON.parse(
-        localStorage.getItem("rememberEmail"),
+        localStorage.getItem("rememberEmail")
       );
       if (RememberEmailLocal === true) {
         setEmail(nValue);
@@ -137,13 +138,13 @@ const SignInUserManagement = () => {
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
     const vendor = navigator.vendor?.toLowerCase() || "";
-
+  
     const detectBrowser = async () => {
       // ✅ Step 1: Try identifying Brave by its built-in API
       if (navigator.brave && (await navigator.brave.isBrave?.())) {
         return "Brave";
       }
-
+  
       // ✅ Step 2: Fallbacks using userAgent and vendor (for other browsers)
       if (
         vendor.includes("google") &&
@@ -173,7 +174,7 @@ const SignInUserManagement = () => {
       if (userAgent.includes("puffin")) return "Puffin";
       return "Unknown";
     };
-
+  
     // 🕵️ Detect Chrome Incognito mode
     const checkIncognito = () => {
       return new Promise((resolve) => {
@@ -183,25 +184,26 @@ const SignInUserManagement = () => {
           window.TEMPORARY,
           100,
           () => resolve(false), // normal mode
-          () => resolve(true), // incognito mode
+          () => resolve(true) // incognito mode
         );
       });
     };
-
+  
     // 🚀 Main logic wrapped in async IIFE
     (async () => {
       const browser = await detectBrowser();
       console.log("Detected Browser:", browser);
-
-      const isIncognito = browser === "Chrome" ? await checkIncognito() : false;
-
+  
+      const isIncognito =
+        browser === "Chrome" ? await checkIncognito() : false;
+  
       if (browser !== "Chrome") {
         setBestExperienceBox(true);
       }
-
+  
       console.log("Incognito Mode:", isIncognito);
       console.log("onChangeAllowMicrosoftCalenderSync", code);
-
+  
       if (code) {
         localStorage.setItem("Ms", code);
         window.close();
@@ -216,11 +218,12 @@ const SignInUserManagement = () => {
           setErrorMessage,
           setErrorBar,
           setRemeberEmail,
-          setEmail,
+          setEmail
         );
       }
     })();
   }, [code, getpayemntString, currentUrl, emailRef]);
+  
 
   return (
     <>
@@ -234,23 +237,21 @@ const SignInUserManagement = () => {
           <></>
         ) : (
           <>
-            {!HIDE_FREETRAIL_BAR && (
-              <Row>
-                <Col sm={12} md={12} lg={12}>
-                  {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
-                  <section className={styles["freetrail_banner"]}>
-                    <span className={styles["freetrail_heading"]}>
-                      {t("Start-your-Free-Trial-now")}
-                    </span>
-                    <span
-                      className={styles["Free-Trial_btn"]}
-                      onClick={handleClickFreeTrail}>
-                      {t("Free-Trial")}
-                    </span>
-                  </section>
-                </Col>
-              </Row>
-            )}
+            <Row>
+              <Col sm={12} md={12} lg={12}>
+                {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
+                <section className={styles["freetrail_banner"]}>
+                  <span className={styles["freetrail_heading"]}>
+                    {t("Start-your-Free-Trial-now")}
+                  </span>
+                  <span
+                    className={styles["Free-Trial_btn"]}
+                    onClick={handleClickFreeTrail}>
+                    {t("Free-Trial")}
+                  </span>
+                </section>
+              </Col>
+            </Row>
             <Row className='position-relative'>
               <Col className={styles["languageSelector"]}>
                 <LanguageSelector />
@@ -269,14 +270,12 @@ const SignInUserManagement = () => {
                         <img
                           draggable='false'
                           src={
-                            PSO_LOGO
-                              ? PSOLogo
-                              : localStorage.getItem("i18nextLng") === "ar"
-                                ? DiskusLogoArabic
-                                : DiskusLogo
+                            localStorage.getItem("i18nextLng") === "ar"
+                              ? DiskusLogoArabic
+                              : DiskusLogo
                           }
                           alt='diskus_logo'
-                          width={PSO_LOGO ? 120 : 200}
+                          width={200}
                         />
                       </Col>
                     </Row>
@@ -342,11 +341,11 @@ const SignInUserManagement = () => {
                           lg={12}
                           className='d-flex justify-content-center mt-2 '>
                           <span className={styles["TermsfDiskus"]}>
-                            {t("By-signing-in-you-agree-to-our")}
+                            By signing in you agree to our{" "}
                             <Link
                               to={"https://diskusboard.com/terms/"}
                               target='_blank'>
-                              {t("Terms-of-use")}
+                              Terms of Use
                             </Link>
                           </span>
                         </Col>
@@ -386,7 +385,7 @@ const SignInUserManagement = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className='position-relative d-flex'>
+                className='position-relative d-flex overflow-hidden'>
                 <Col
                   md={8}
                   lg={8}
@@ -406,22 +405,16 @@ const SignInUserManagement = () => {
                     width='600px'
                     className={styles["Auth_Icon"]}
                   />
-                  {PSO_LOGO && (
-                    <img
-                      className={styles["PoweredIcon_Diskus_Icon"]}
-                      src={PSOPowerdBy}
-                      alt=''
-                    />
-                  )}
                 </Col>
               </Col>
             </Row>
+            
           </>
         )}
       </Container>
       {getpayemntString && getpayemntString !== "" && <Loader />}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
-      {SnackBar}
+    {SnackBar}
     </>
   );
 };

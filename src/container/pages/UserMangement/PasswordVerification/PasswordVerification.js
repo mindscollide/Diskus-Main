@@ -144,7 +144,7 @@ const PasswordVerification = () => {
       show(t("Enter-password"), "error");
     } else {
       setErrorBar(false);
-      passwordRef.current = null
+      setPasswordFieldDisabled(true);
 
       dispatch(enterPasswordvalidation(password, navigate, t, setPasswordFieldDisabled));
     }
