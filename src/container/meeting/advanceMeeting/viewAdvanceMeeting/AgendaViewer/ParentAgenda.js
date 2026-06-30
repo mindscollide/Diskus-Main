@@ -29,6 +29,8 @@ import useSnackbar from "../../../../../components/elements/snack_bar/useSnackba
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import ViewVoteModal from "../Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
 import CastVoteAgendaModal from "../Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
+import moment from "moment";
 
 const ParentAgenda = ({
   data,
@@ -284,17 +286,20 @@ const ParentAgenda = ({
                               ? "p-0 text-start"
                               : "p-0 text-center"
                           }>
-                          {/* <p
-                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
-                          >
-                            {moment(timeFormatFunction(data.startDate)).format(
-                              "hh:mm a"
-                            )}
-                            <span className={styles["dashMinute"]}>-----</span>
-                            {moment(timeFormatFunction(data.endDate)).format(
-                              "hh:mm a"
-                            )}
-                          </p> */}
+                          {ALLOW_AGENDA_START_TIME_AND_END_TIME && (
+                            <p
+                              className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}>
+                              {moment(
+                                timeFormatFunction(data.startDate),
+                              ).format("hh:mm a")}
+                              <span className={styles["dashMinute"]}>
+                                -----
+                              </span>
+                              {moment(timeFormatFunction(data.endDate)).format(
+                                "hh:mm a",
+                              )}
+                            </p>
+                          )}
                           {printFlag === true || exportFlag === true
                             ? null
                             : Number(editorRole.status) === 10 && (
