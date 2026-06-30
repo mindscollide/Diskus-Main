@@ -57,6 +57,7 @@ import useSnackbar from "../../../../../components/elements/snack_bar/useSnackba
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
 import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
+import { HIDE_VIDEO } from "../../../../../commen/featureFlags";
 
 const MeetingDetails = () => {
   const { t } = useTranslation();
@@ -161,7 +162,7 @@ const MeetingDetails = () => {
       value: 0,
       label: "",
     },
-    IsVideoCall: true,
+    IsVideoCall: HIDE_VIDEO ? false : true,
     IsPublished: false,
   });
 
@@ -265,7 +266,7 @@ const MeetingDetails = () => {
       // If date is today, time must be in the future
       if (selectedDate.toDateString() === now.toDateString()) {
         if (newDate <= now) {
-          show("Start time must be in the future", "error");
+          show(t("Start-time-must-be-in-the-future"), "error");
           updatedRows[index].startTime = getStartTime?.newFormatTime;
           return;
         }
@@ -279,7 +280,7 @@ const MeetingDetails = () => {
       ) {
         const prevEndTime = new Date(updatedRows[index - 1].endTime);
         if (newDate <= prevEndTime) {
-          show("Start time must be after previous end time", "error");
+          show(t("Start-time-must-be-after-previous-end-time"), "error");
           return;
         }
       }
@@ -289,7 +290,7 @@ const MeetingDetails = () => {
         updatedRows[index].endTime &&
         newDate >= new Date(updatedRows[index].endTime)
       ) {
-        show("Start time must be before end time", "error");
+        show(t("Start-time-must-be-before-end-time"), "error");
         updatedRows[index].startTime = getStartTime?.newFormatTime;
         return;
       }
@@ -307,7 +308,7 @@ const MeetingDetails = () => {
       const startTime = new Date(updatedRows[index].startTime);
 
       if (newDate <= startTime) {
-        show("End time must be after start time", "error");
+        show(t("End-time-must-be-after-start-time"), "error");
         updatedRows[index].endTime = getEndTime?.newFormatTime;
         return;
       }
@@ -324,7 +325,7 @@ const MeetingDetails = () => {
       today.setHours(0, 0, 0, 0); // set to start of today
 
       if (newDate < today) {
-        show("Date should not be in the past", "error");
+        show(t("Date-should-not-be-in-the-past"), "error");
         return;
       }
 
@@ -1669,31 +1670,32 @@ const MeetingDetails = () => {
                     </Col>
                   </Row>
                 </Col>
-                <Col lg={6} md={6} sm={12}>
-                  <Row className='mt-2'>
-                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
-                      <Switch
-                        onChange={handleVideoCameraButton}
-                        checkedValue={meetingDetails.IsVideoCall}
-                        disabled={
-                          (Number(editorRole.status) === 9 ||
-                            Number(editorRole.status) === 8 ||
-                            Number(editorRole.status) === 10) &&
-                          editorRole.role === "Organizer" &&
-                          isAdvanceMeetingRoute === 2
-                            ? true
-                            : editorRole.role === "Agenda Contributor" &&
-                                isAdvanceMeetingRoute === 2
+                {!HIDE_VIDEO && (
+                  <Col lg={6} md={6} sm={12}>
+                    <Row className='mt-2'>
+                      <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                        <Switch
+                          onChange={handleVideoCameraButton}
+                          checkedValue={meetingDetails.IsVideoCall}
+                          disabled={
+                            (Number(editorRole.status) === 9 ||
+                              Number(editorRole.status) === 8 ||
+                              Number(editorRole.status) === 10) &&
+                            editorRole.role === "Organizer" &&
+                            isAdvanceMeetingRoute === 2
                               ? true
-                              : false
-                        }
-                      />
-                      <span className={styles["Create_group_chat_heading"]}>
-                        {t("Video-session-enabled")}
-                      </span>
-                    </Col>
-                  </Row>
-                  {/* <Row>
+                              : editorRole.role === "Agenda Contributor" &&
+                                  isAdvanceMeetingRoute === 2
+                                ? true
+                                : false
+                          }
+                        />
+                        <span className={styles["Create_group_chat_heading"]}>
+                          {t("Video-session-enabled")}
+                        </span>
+                      </Col>
+                    </Row>
+                    {/* <Row>
                     <Col lg={1} md={1} sm={12} className="d-flex gap-3 m-0 p-0">
                       <Button
                         icon={
@@ -1760,7 +1762,8 @@ const MeetingDetails = () => {
                       />
                     </Col>
                   </Row> */}
-                </Col>
+                  </Col>
+                )}
               </Row>
               <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
@@ -1856,7 +1859,7 @@ const MeetingDetails = () => {
       </Row>
 
       <CancelButtonModal setRows={setRows} />
-
+      {SnackBar}
     </section>
   );
 };

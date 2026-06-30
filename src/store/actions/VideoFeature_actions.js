@@ -344,10 +344,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
                 )
             ) {
               await dispatch(
-                muteUnmuteSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                muteUnmuteSuccess(response.data.responseResult, ""),
               );
               // setNewParticipants((prevState) =>
               //   prevState.map((stateData) => {
@@ -510,7 +507,7 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
         dispatch(hideUnHideParticipantGuestFail(t("Something-went-wrong")));
       });
   };
-}
+};
 // FOR PARTICIPANT MAX PANEL
 const maxParticipantVideoCallPanel = (response) => {
   return {
@@ -1413,10 +1410,7 @@ const openPresenterViewMainApi = (
               }
 
               await dispatch(
-                openPresenterSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                openPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1510,10 +1504,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
 
               dispatch(presenterStartedMainFlag(true));
               await dispatch(
-                startPresenterSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                startPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1737,10 +1728,7 @@ const stopPresenterViewMainApi = (
                 // sessionStorage.removeItem("alreadyInMeetingVideo");
               }
               await dispatch(
-                stopPresenterSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                stopPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1912,9 +1900,7 @@ const stopPresenterViewMainApiTest = (
               sessionStorage.removeItem("alreadyInMeetingVideo");
             }
 
-            await dispatch(
-              stopPresenterSuccess(res.responseResult, ""),
-            );
+            await dispatch(stopPresenterSuccess(res.responseResult, ""));
             return resolve(); // 🎯 Everything done, resolve the promise
           } else if (msg.includes("stoppresenterview_02")) {
             await dispatch(stopPresenterFail(t("UnSuccessful")));
@@ -1964,6 +1950,7 @@ const joinPresenterFail = (message) => {
 const joinPresenterViewMainApi = (navigate, t, data) => {
   return (dispatch) => {
     dispatch(joinPresenterInit());
+
     let form = new FormData();
     form.append("RequestMethod", joinPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -1986,36 +1973,25 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID"),
               );
+
               let isMeetingVideo = JSON.parse(
                 localStorage.getItem("isMeetingVideo"),
               );
+
               let isMeetingVideoHostCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck"),
               );
-              // The ORIGINAL PRESENTER must be restored as host of the
-              // presentation when they rejoin (e.g. after closing/refreshing
-              // the browser) — not silently downgraded to a viewer.
-              // `isMeetingVideoHostCheck` reflects the underlying MEETING
-              // host, a different role from "who started this presentation"
-              // — they are not always the same person. The response already
-              // tells us the real presenter via `presenterID`; compare it to
-              // this client's own userID to decide host vs. join correctly.
+
               let currentUserID = Number(localStorage.getItem("userID"));
+
               let isOriginalPresenterRejoining =
                 Number(response.data.responseResult.presenterID) ===
                 currentUserID;
-              // Mark this moment so the next "Share" click in the iframe
-              // knows the presentation is already active on the backend
-              // (this client is just reconnecting to it) and must NOT call
-              // StartPresenterView again. Consumed once, then cleared — see
-              // the ScreenSharedMsgFromIframe handler in videoCallNormalPanel.js.
+
               localStorage.setItem(
                 "isRejoiningOwnPresentation",
-                isOriginalPresenterRejoining,
+                JSON.stringify(isOriginalPresenterRejoining),
               );
-              console.log("Check 12");
-              if (isMeetingVideo) {
-                console.log("Check 12");
 
               if (isMeetingVideo) {
                 sessionStorage.setItem("alreadyInMeetingVideo", true);
@@ -2025,13 +2001,15 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                   isHostId: 0,
                   isDashboardVideo: true,
                 };
+
                 dispatch(makeHostNow(meetingHost));
+
                 localStorage.setItem(
                   "meetinHostInfo",
                   JSON.stringify(meetingHost),
                 );
+
                 if (isOriginalPresenterRejoining) {
-                  console.log("Check 12");
                   localStorage.setItem(
                     "isGuid",
                     response.data.responseResult.guid,
@@ -2042,19 +2020,18 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                     response.data.responseResult.guid,
                   );
                 }
+
                 localStorage.setItem(
                   "acceptedRoomID",
                   response.data.responseResult.roomID,
                 );
-                localStorage.setItem(
-                  "acceptedRoomID",
-                  response.data.responseResult.roomID,
-                );
+
                 localStorage.setItem(
                   "presenterViewvideoURL",
                   response.data.responseResult.videoURL,
                 );
               }
+
               localStorage.removeItem("activeCall");
 
               await dispatch(
@@ -2065,29 +2042,15 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                   !isOriginalPresenterRejoining,
                 ),
               );
-              // ROOT CAUSE of "LeavePresenterView fires instead of
-              // StopPresenterView" for a rejoining presenter:
-              // presenterStartedFlag (videoFeatureReducer) is ONLY ever set
-              // true by the original "start presenting" flow
-              // (startPresenterViewMainApi). Every stop-vs-leave decision
-              // across the app (handlePresenterViewFunc in
-              // videoCallNormalHeader.js, plus the same pattern in
-              // videoCallMinimizeHeader.js / LeaveVideoIntimationModal.js /
-              // NewEndMeetingModal.js / AgendaViewer.js) checks
-              // presenterStartedFlag — not presenterViewHostFlag — to decide
-              // whether to call Stop vs Leave. Without this, a rejoining
-              // presenter has presenterViewHostFlag=true but
-              // presenterStartedFlag stuck at its default false, so clicking
-              // stop/leave always took the wrong (Leave) branch.
+
               dispatch(presenterStartedMainFlag(isOriginalPresenterRejoining));
+
               dispatch(maximizeVideoPanelFlag(true));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
+
               await dispatch(
-                joinPresenterSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                joinPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2135,7 +2098,7 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
           await dispatch(joinPresenterFail(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
+      .catch(() => {
         dispatch(joinPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -2324,10 +2287,7 @@ const leavePresenterViewMainApi = (
                   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 }
                 await dispatch(
-                  leavePresenterSuccess(
-                    response.data.responseResult,
-                    "",
-                  ),
+                  leavePresenterSuccess(response.data.responseResult, ""),
                 );
                 await setLeavePresenterViewToJoinOneToOne(false);
                 dispatch(maximizeVideoPanelFlag(false));
@@ -2487,9 +2447,7 @@ const leavePresenterViewMainApiTest = (
               }
             } else if (flag === 3) {
               if (!alreadyInMeetingVideo) cleanUpLocalStorage();
-              await dispatch(
-                leavePresenterSuccess(resData.responseResult, ""),
-              );
+              await dispatch(leavePresenterSuccess(resData.responseResult, ""));
               await setLeavePresenterViewToJoinOneToOne(false);
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
@@ -2779,10 +2737,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
                 localStorage.removeItem("isScreenShareEnabled");
               }
               await dispatch(
-                isSharedScreenSuccess(
-                  response.data.responseResult,
-                  "",
-                ),
+                isSharedScreenSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
