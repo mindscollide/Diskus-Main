@@ -110,7 +110,7 @@
   padding: 40px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
-  height: 469px !important;
+  height: auto !important;
   width: 330px !important;
   border-radius: 8px !important;
   border: 1px solid #e1e1e1 !important;
@@ -307,4 +307,9 @@ body[dir="rtl"] .languageSelector {
   margin-right: 0 !important;
   display: flex;
   justify-content: flex-end;
+}
+.PoweredIcon_Diskus_Icon{
+    position: absolute;
+    bottom: 45px;
+    right: 40px;
 }

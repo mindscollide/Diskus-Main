@@ -6,6 +6,9 @@ import "./VerificationCodeThree.css";
 import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
@@ -24,19 +27,7 @@ const VerificationCodeThree = () => {
   const navigate = useNavigate();
 
   // translate Languages start
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
 
-  const currentLocale = Cookies.get("i18next") || "en";
-
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
   
 
   const [minutes, setMinutes] = useState(
@@ -220,13 +211,12 @@ const VerificationCodeThree = () => {
                     <img
                       draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : img1
                       }
                       alt=''
-                      width='220px'
-                      height='69px'
+                      width={PSO_LOGO ? 120 :200}
                     />
                   </Col>
                 </Row>
@@ -313,7 +303,28 @@ const VerificationCodeThree = () => {
           </Col>
 
           <Col md={7} lg={7} sm={12} className=''>
-            <Row>
+             <img
+                  draggable='false'
+                  src={img9}
+                  alt='auth_icon'
+                  className='phone-image_verificationCodeThree'
+                  height='500px'
+                />
+                   <img
+                  draggable='false'
+                  src={DiskusAuthPageLogo}
+                  alt='auth_icon'
+                  className='Verification_Code_Three_Auth_Icon'
+                />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=""
+                    draggable="false"
+                     className={"PoweredIcon_Diskus_Icon_verificationCodeThree"}
+                  />
+                )}
+            {/* <Row>
               <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
                   draggable='false'
@@ -331,8 +342,16 @@ const VerificationCodeThree = () => {
                   width='600px'
                   className='Verification_Code_Three_Auth_Icon'
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=""
+                    draggable="false"
+                     className={"PoweredIcon_Diskus_Icon_verificationCodeThree"}
+                  />
+                )}
               </Col>
-            </Row>
+            </Row> */}
           </Col>
         </Row>
       </Container>

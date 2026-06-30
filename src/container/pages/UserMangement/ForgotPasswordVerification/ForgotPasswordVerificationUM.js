@@ -13,6 +13,9 @@ import {
 } from "../../../../components/elements";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "./../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "./../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "./../../../../commen/featureFlags";
+import PSOPowerdBy from "./../../../../assets/images/Logos/PowerdByDiskus.png";
 import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import {
@@ -189,11 +192,11 @@ const ForgotPasswordVerificationUM = () => {
                     <img
                       draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : DiskusLogo
                       }
-                      width={220}
+                      width={PSO_LOGO ? 120 :200}
                       alt='diskus_logo'
                     />
                   </Col>
@@ -311,6 +314,14 @@ const ForgotPasswordVerificationUM = () => {
                 width='600px'
                 className={styles["Forgot_Password_Verification_Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=""
+                  draggable="false"
+                     className={styles["PoweredIcon_Diskus_Icon"]}
+                />
+              )}
             </Col>
           </Col>
         </Row>

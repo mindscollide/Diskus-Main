@@ -3,6 +3,9 @@ import styles from "./ForgotPasswordUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "./../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "./../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "./../../../../commen/featureFlags";
+import PSOPowerdBy from "./../../../../assets/images/Logos/PowerdByDiskus.png";
 import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import LanguageSelector from "./../../../../components/elements/languageSelector/Language-selector";
 import { Button, Notification } from "./../../../../components/elements";
@@ -22,14 +25,9 @@ import { message } from "antd";
 
 const ForgotPasswordUM = () => {
   const navigate = useNavigate();
-  const isFirstRender = useRef(true);
   const { t } = useTranslation();
 
-  const ResponseMessageAuthResetPassword = useSelector(
-    (state) => state.auth.ResponseMessage,
-  );
 
-  const ResponseMessageID = useSelector((state) => state.auth.messageId);
 
   //States for Forgot Password Screen
   const [email, setEmail] = useState("");
@@ -37,28 +35,9 @@ const ForgotPasswordUM = () => {
   const dispatch = useDispatch();
   const [show, SnackBar] = useSnackbar();
 
-  //  CLEAR OLD MESSAGE ON LOAD (FIXES OLD TOAST ISSUE)
-  useEffect(() => {
-    dispatch(cleareMessage());
-  }, [dispatch]);
 
-  // 2. SHOW TOAST WHEN NEW MESSAGE COMES
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
 
-    if (ResponseMessageAuthResetPassword) {
-      show(ResponseMessageAuthResetPassword, "error");
 
-      const timer = setTimeout(() => {
-        dispatch(cleareMessage());
-      }, 4000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [ResponseMessageID, ResponseMessageAuthResetPassword, dispatch]);
 
   //Form submit
   const submitForm = async (e) => {
@@ -130,11 +109,11 @@ const ForgotPasswordUM = () => {
                     <img
                       draggable="false"
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : DiskusLogo
                       }
-                      width={220}
+                      width={PSO_LOGO ? 120: 200}
                       alt="diskus_logo"
                     />
                   </Col>
@@ -236,12 +215,19 @@ const ForgotPasswordUM = () => {
                 width="600px"
                 className={styles["Forgot_Password_Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=""
+                  draggable="false"
+                  className={styles["PoweredIcon_Diskus_Icon"]}
+                />
+              )}
             </Col>
           </Col>
         </Row>
       </Container>
-      
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
