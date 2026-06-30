@@ -408,6 +408,13 @@ body[dir="rtl"] .ResetOkBtn {
   top: 5px;
   margin-right: 8px;
 }
+body[dir="rtl"] .polling_searchinput {
+  position: absolute !important;
+  right:auto !important;
+  left: 10px !important;
+  top: 5px !important;
+  cursor: pointer !important;
+}
 .Search-Box_meeting {
   max-width: 100%;
   width: 100%;

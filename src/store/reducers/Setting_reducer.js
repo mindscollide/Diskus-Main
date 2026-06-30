@@ -4,8 +4,6 @@ const initialState = {
   UserProfileData: null,
   ResponseMessage: "",
   errorSeverity: null,
-  severity: null,
-  errorSeverity: null,
   ResponseCode: "",
   Loading: false,
   Spinner: false,
@@ -316,7 +314,7 @@ const settingReducer = (state = initialState, action) => {
         Loading: true,
         UpdateUserSettingResponse: "",
         UpdateUserSettingResponseMessage: "",
-        severity: null,
+        errorSeverity: null,
       };
     }
     case actions.UDPATEUSERSETTING_SUCCESS: {
@@ -325,7 +323,6 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateUserSettingResponse: action.response,
         UpdateUserSettingResponseMessage: action.message,
-        severity: "success",
         errorSeverity: "success",
       };
     }
@@ -335,7 +332,6 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateUserSettingResponse: null,
         UpdateUserSettingResponseMessage: action.message,
-        severity: "error",
         errorSeverity: "error",
       };
     }
@@ -396,7 +392,6 @@ const settingReducer = (state = initialState, action) => {
       return {
         ...state,
         UpdateUserSettingResponseMessage: "",
-        severity: null,
         errorSeverity: null,
         ResponseMessage: "",
         UpdateOrganizationLevelSettingResponseMessage: "",
