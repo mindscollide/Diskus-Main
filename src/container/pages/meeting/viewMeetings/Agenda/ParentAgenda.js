@@ -37,6 +37,7 @@ import { timeFormatFunction } from "../../../../../commen/functions/date_formate
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
 
 const ParentAgenda = ({
   data,
@@ -378,7 +379,7 @@ const ParentAgenda = ({
                                       alt=''
                                       draggable={false}
                                     />
-                                    {/* <p className={styles["agendaCreater"]}>
+                                  { ALLOW_AGENDA_START_TIME_AND_END_TIME &&  <p className={styles["agendaCreater"]}>
                                       {data?.presenterName +
                                         " - (" +
                                         moment(
@@ -389,7 +390,7 @@ const ParentAgenda = ({
                                           timeFormatFunction(data.endDate)
                                         ).format("hh:mm a") +
                                         ")"}
-                                    </p> */}
+                                    </p>}
                                   </div>
                                 </Col>
                               </Row>

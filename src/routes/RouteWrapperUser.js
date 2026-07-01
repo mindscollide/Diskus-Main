@@ -3,7 +3,7 @@ const RouteWrapperUser = ({ name, children }) => {
     localStorage.getItem("LocalUserRoutes") || "[]"
   );
   console.log("LocalUserRoutesLocalUserRoutes", storedRoutes);
-  const isAllowed = storedRoutes.some((route) => route.name === name);
+  const isAllowed = storedRoutes.some((route) => route.name.toLowerCase() === name.toLowerCase());
   if (!isAllowed) {
     // This could be as simple as null, a plain message, or a dedicated component.
     return null; // or <div>Access Denied</div> or <YourCustomAccessDeniedComponent />

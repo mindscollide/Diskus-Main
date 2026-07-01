@@ -34,6 +34,7 @@ import { timeFormatFunction } from "../../../../../commen/functions/date_formate
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
 
 const ParentAgenda = ({
   data,
@@ -71,9 +72,9 @@ const ParentAgenda = ({
   // const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
-
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index, divFlag) => {
+
     if (divFlag) {
       setExpandIndex((prevIndex) => (prevIndex === index ? index : index));
     } else {
@@ -82,11 +83,11 @@ const ParentAgenda = ({
   };
 
   const printFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag,
   );
 
   const exportFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag,
   );
 
   const openAdvancePermissionModal = () => {
@@ -117,7 +118,7 @@ const ParentAgenda = ({
   //Konsa user vote kar sakta hai
   const checkUserAuthentication = (record) => {
     let flag = record.agendaVoters.find(
-      (data, index) => data.userID === Number(currentUserID)
+      (data, index) => data.userID === Number(currentUserID),
     );
     if (flag) {
       return true;
@@ -134,7 +135,7 @@ const ParentAgenda = ({
       DoVotingStart: true,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
     );
   };
 
@@ -146,7 +147,7 @@ const ParentAgenda = ({
       DoVotingStart: false,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
     );
   };
 
@@ -181,8 +182,8 @@ const ParentAgenda = ({
         navigate,
         data,
         t,
-        record.displayAttachmentName
-      )
+        record.displayAttachmentName,
+      ),
     );
   };
 
@@ -198,16 +199,16 @@ const ParentAgenda = ({
     if (Number(editorRole.status) === 10) {
       window.open(
         `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
-          pdfDataJson
+          pdfDataJson,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -291,17 +292,20 @@ const ParentAgenda = ({
                               ? "p-0 text-start"
                               : "p-0 text-center"
                           }>
-                          {/* <p
-                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
-                          >
-                            {moment(timeFormatFunction(data.startDate)).format(
-                              "hh:mm a"
-                            )}
-                            <span className={styles["dashMinute"]}>-----</span>
-                            {moment(timeFormatFunction(data.endDate)).format(
-                              "hh:mm a"
-                            )}
-                          </p> */}
+                          {ALLOW_AGENDA_START_TIME_AND_END_TIME && (
+                            <p
+                              className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}>
+                              {moment(
+                                timeFormatFunction(data.startDate),
+                              ).format("hh:mm a")}
+                              <span className={styles["dashMinute"]}>
+                                -----
+                              </span>
+                              {moment(timeFormatFunction(data.endDate)).format(
+                                "hh:mm a",
+                              )}
+                            </p>
+                          )}
                           {printFlag === true || exportFlag === true
                             ? null
                             : Number(editorRole.status) === 10 && (
@@ -403,8 +407,8 @@ const ParentAgenda = ({
                                     pdfData(
                                       filesData,
                                       getFileExtension(
-                                        filesData?.displayAttachmentName
-                                      )
+                                        filesData?.displayAttachmentName,
+                                      ),
                                     )
                                   }
                                 />
@@ -469,8 +473,8 @@ const ParentAgenda = ({
         {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
         {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
       </div>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

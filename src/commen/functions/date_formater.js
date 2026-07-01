@@ -943,18 +943,17 @@ export const convertUtcToGmt = (utcTime) => {
 
 export const convertDateFieldsToUTC = (rows) => {
   const convertedRows = rows.map((row) => {
-    // Convert main agenda dates to UTC
-    row.startDate = convertDateToUTC(row.startDate);
-    row.endDate = convertDateToUTC(row.endDate);
-
-    // Convert sub agenda dates to UTC
-    row.subAgenda = row.subAgenda.map((subAgenda) => {
-      subAgenda.startDate = convertDateToUTC(subAgenda.startDate);
-      subAgenda.endDate = convertDateToUTC(subAgenda.endDate);
-      return subAgenda;
-    });
-
-    return row;
+    const convertedSubAgenda = row.subAgenda.map((subAgenda) => ({
+      ...subAgenda,
+      startDate: convertDateToUTC(subAgenda.startDate),
+      endDate: convertDateToUTC(subAgenda.endDate),
+    }));
+    return {
+      ...row,
+      startDate: convertDateToUTC(row.startDate),
+      endDate: convertDateToUTC(row.endDate),
+      subAgenda: convertedSubAgenda,
+    };
   });
 
   return convertedRows;

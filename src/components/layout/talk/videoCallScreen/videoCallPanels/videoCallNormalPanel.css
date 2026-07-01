@@ -31,8 +31,14 @@
   animation: slideUp 0.5s ease-in-out;
   z-index: 9999;
 }
-.more-zindexwithChatOpen {
+.videoCallScreen.more-zindexwithChatOpen,
+.max-video-panel.more-zindexwithChatOpen,
+.Presenter-Max-VideoPanel.more-zindexwithChatOpen {
   z-index: 99 !important;
+}
+
+.more-zindexwithChatOpen iframe {
+  transform: translateZ(0);
 }
 .videoCallScreen {
   position: fixed;

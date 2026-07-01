@@ -35,6 +35,7 @@ const CustomMiscellaneous = () => {
     <>
       <section className='faqs_container'>
         {fAQsStateData.map((data, index) => {
+          const videoId = data.videoLinkURL.split("v=")[1]?.split("&")[0];
           return (
             <>
               <Row className='mb-3' key={data.key}>
@@ -49,9 +50,9 @@ const CustomMiscellaneous = () => {
                         {currentLanguage === "en" && data.question !== ""
                           ? data.question
                           : currentLanguage === "ar" &&
-                            data.questionArabic !== ""
-                          ? data.questionArabic
-                          : data.question}
+                              data.questionArabic !== ""
+                            ? data.questionArabic
+                            : data.question}
                       </Card.Title>
                     }
                     AccordioonBody={
@@ -60,27 +61,27 @@ const CustomMiscellaneous = () => {
                           {currentLanguage === "en" && data.answer !== ""
                             ? data.answer
                             : currentLanguage === "ar" &&
-                              data.answerArabic !== ""
-                            ? data.answerArabic
-                            : data.answer}
+                                data.answerArabic !== ""
+                              ? data.answerArabic
+                              : data.answer}
                         </Card.Text>
 
                         <Row>
                           <Col lg={12} md={12} sm={12} className='p-5'>
-                            {data.videoLinkURL !== "" && (
+                            {data.videoLinkURL !== "" ? (
                               <div>
                                 <div className='ratio ratio-16x9'>
                                   <iframe
                                     width='560'
                                     height='315'
-                                    src='https://www.youtube.com/embed/dQw4w9WgXcQ'
+                                    src={`https://www.youtube.com/embed/${data.videoLinkURL}`}
                                     title='YouTube video player'
                                     frameborder='0'
                                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                                     allowfullscreen></iframe>
                                 </div>
                               </div>
-                            )}
+                            ) : null}
                           </Col>
                         </Row>
                       </>

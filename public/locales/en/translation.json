@@ -978,8 +978,6 @@
   "Viewer": "Viewer",
   "Last-7-days": "Last 7 days",
   "Last-30-days": "Last 30 days",
-  "This-year-(2023)": "This Year (2023)",
-  "Last-year-(2022)": "Last Year (2022)",
   "Location-anywhere": "Location Anywhere",
   "Date-modified": "Date Modified",
   "Enter-a-team-the-matches-part-of-the-file-name": "Enter a term that matches part of the file name",
@@ -2782,12 +2780,13 @@
   "Proceed": "Proceed",
   "Annotations-saved-successfully": "Annotations Saved Successfully",
   "Are-you-sure-you-want-to-end-the-meeting": "Are you sure you want to end the meeting?",
-  "Poll-deleted": "Poll Deleted",
-  "This-year-(2026)": "This Year (2026)",
-  "Last-year-(2025)": "Last Year (2025)",
+
+  "This-year": "This Year ({{year}})",
+  "Last-year": "Last Year ({{year}})",
+
   "Task-created": "Task created",
   "Enable-video-recording-for-one-to-one-call": "Enable video recording for One to One call",
   "Enable-video-recording-for-group-call": "Enable video recording for group call",
-  "By-signing-in-you-agree-to-our":"By signing in you agree to our",
-  "Terms-of-use":"Terms of Use"
+  "By-signing-in-you-agree-to-our": "By signing in you agree to our",
+  "Terms-of-use": "Terms of Use"
 }
