@@ -2216,3 +2216,8 @@ export const GetAllComplianceAuthority = {
 export const ChangeChecklistAllowedTransactionStatusRM = {
   RequestMethod: "ServiceManager.ChangeChecklistAllowedTransactionStatus"
 }
+
+//API To get presentation participant
+export const getPresentationParticipants = {
+  RequestMethod: "ServiceManager.GetPresentationParticipants",
+};

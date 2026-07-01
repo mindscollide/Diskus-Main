@@ -62,6 +62,8 @@ import {
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
   presenterLeaveParticipant,
+  presentationParticipantJoinedMqtt,
+  presentationParticipantLeftMqtt,
   clearPresenterParticipants,
   nonMeetingVideoGlobalModal,
   acceptHostTransferAccessGlobalFunc,
@@ -2083,6 +2085,12 @@ const Dashboard = () => {
               dispatch(
                 presenterNewParticipantJoin(data.payload.newParticipant),
               );
+              // Keep the dedicated presentation-viewer roster
+              // (presentationParticipantsList) in sync too — surgical patch,
+              // no API re-fetch.
+              dispatch(
+                presentationParticipantJoinedMqtt(data.payload.newParticipant),
+              );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
             } else if (
               data.payload.message.toLowerCase() ===
@@ -2143,6 +2151,10 @@ const Dashboard = () => {
               "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
             ) {
               dispatch(presenterLeaveParticipant(data.payload));
+              // Keep the dedicated presentation-viewer roster
+              // (presentationParticipantsList) in sync too — surgical patch,
+              // no API re-fetch.
+              dispatch(presentationParticipantLeftMqtt(data.payload.uid));
               console.log("Participant Left:", data.payload.uid);
             } else if (
               data.payload.message.toLowerCase() ===
