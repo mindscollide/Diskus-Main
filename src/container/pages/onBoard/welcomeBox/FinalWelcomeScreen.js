@@ -15,13 +15,11 @@ const FinalWelcomeScreen = () => {
   let userName = localStorage.getItem("name");
 
   const handleClickNavigate = () => {
-    document.body.style.overflow = "";
-    let hasAdminRights = localStorage.getItem("hasAdminRights");
+    let hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
     if (hasAdminRights) {
       navigate("/Admin/ManageUsers");
       return;
     }
-    // handleNavigation(navigate, false, dispatch);
     navigate(getHomeRoute())
   };
   return (
@@ -53,7 +51,7 @@ const FinalWelcomeScreen = () => {
                   </Col>
                   <Col sm={3}>
                     <ArrowRight
-                      fontSize={38}
+                      fontSize={26}
                       color="white"
                       cursor="pointer"
                       onClick={handleClickNavigate}
