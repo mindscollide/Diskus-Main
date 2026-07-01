@@ -104,12 +104,10 @@ const ParentAgenda = ({
   const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
-  const [allPresenters, setAllPresenters] = useState([]);
-  const [presenters, setPresenters] = useState([]);
+
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  console.log(setExpand, "expandexpandexpnad");
 
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {

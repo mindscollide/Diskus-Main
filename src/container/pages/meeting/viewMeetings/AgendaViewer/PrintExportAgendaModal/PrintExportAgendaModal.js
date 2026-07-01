@@ -83,16 +83,6 @@ const PrintExportAgendaModal = ({
     setInitialRows(initialData);
   }, []);
 
-  useEffect(() => {
-    const modifiedRows = viewMeetingAgendaViewerRowData.map((row) => {
-      if (agendaValueFlag === 1) {
-        return { ...row, subAgenda: [] };
-      } else {
-        return row;
-      }
-    });
-    setViewMeetingAgendaViewerRowData(modifiedRows);
-  }, [agendaValueFlag]); // Added rows dependency
 
   // Function to reset rows state to initial state
   const resetRows = () => {

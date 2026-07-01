@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import styles from "./FinalWelcomeScreen.module.css";
 import { useTranslation } from "react-i18next";
-import { handleNavigation } from "../../../../commen/functions/utils";
+import { getHomeRoute, handleNavigation } from "../../../../commen/functions/utils";
 import { useDispatch } from "react-redux";
 
 const FinalWelcomeScreen = () => {
@@ -21,8 +21,8 @@ const FinalWelcomeScreen = () => {
       navigate("/Admin/ManageUsers");
       return;
     }
-    handleNavigation(navigate, false, dispatch);
-    // navigate("/Diskus")
+    // handleNavigation(navigate, false, dispatch);
+    navigate(getHomeRoute())
   };
   return (
     <Container data-tut="finalwelcome-screen">

@@ -122,6 +122,8 @@ const Agenda = ({
     meetingEndTime: "",
   });
 
+  console.log(meetingTime, "meetingTimemeetingTime")
+
   useEffect(() => {
     let getAllData = {
       MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
@@ -208,6 +210,8 @@ const Agenda = ({
   }, [NewMeetingreducer?.getMeetingusers]);
 
   const [rows, setRows] = useState([]);
+
+  console.log(rows, "rowsrowsrowsrows")
 
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
