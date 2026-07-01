@@ -64,6 +64,7 @@ import { useMeetingContext } from "../../../context/MeetingContext.js";
 import { convertToArabicNumerals } from "../../../commen/functions/regex.js";
 import { convertToArabicNumber } from "../../../commen/functions/customPagination/utils.js";
 import { PSO_LOGO } from "../../../commen/featureFlags.js";
+import { useNewMeetingContext } from "../../../context/NewMeetingContext.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -71,6 +72,8 @@ const Header2 = ({ isVideo }) => {
   const location = useLocation();
   const { t } = useTranslation();
   const WebNotificationBell = useRef();
+  const { isQuickMeetingCreate, setIsQuickMeetingCreate } =
+    useNewMeetingContext();
   const remainingDays = localStorage.getItem("remainingDays");
   let defaultDashboard = getHomeRoute();
   const scheduleMeetingPageFlagReducer = useSelector(
@@ -475,7 +478,7 @@ const Header2 = ({ isVideo }) => {
       // User is in advance meeting modal and meeting is ongoing
       dispatch(showEndMeetingModal(true));
     } else {
-      setCreateMeetingModal(true);
+      setIsQuickMeetingCreate(true);
     }
   };
 
@@ -1808,10 +1811,8 @@ const Header2 = ({ isVideo }) => {
           setEditFlag={setEditFlag}
         />
       ) : null}
-      {createMeetingModal && (
+      {isQuickMeetingCreate && (
         <CreateQuickMeeting
-          show={createMeetingModal}
-          setShow={setCreateMeetingModal}
           // this is check from where its called 1 is from header
           checkFlag={1}
         />
