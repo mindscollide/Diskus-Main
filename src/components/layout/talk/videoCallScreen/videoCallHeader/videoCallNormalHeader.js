@@ -354,7 +354,12 @@ const VideoCallNormalHeader = ({
       : isMeetingVideoHostCheck
         ? newRoomID
         : participantRoomId;
-  let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+  let UID =
+    presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
+      ? participantUID
+      : isMeetingVideoHostCheck
+        ? isGuid
+        : participantUID;
 
   const {
     leaveOneToOne,
@@ -792,6 +797,7 @@ const VideoCallNormalHeader = ({
           UserGUID: String(UID),
           Name: String(newName),
         };
+        console.log("leavePresenterViewMainApi");
         await dispatch(
           leavePresenterViewMainApi(
             navigate,
@@ -806,18 +812,30 @@ const VideoCallNormalHeader = ({
       }
     } else {
       if (presenterViewJoinFlag) {
-        console.log("busyCall");
+        console.log("participantUIDparticipantUID", typeof participantUID);
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
         } else {
           dispatch(participantVideoButtonState(false));
         }
+        // presenterViewJoinFlag is true here, which guarantees this user is
+        // a PRESENTATION VIEWER (not its host) — even when they're also the
+        // overall meeting organizer (isMeetingVideoHostCheck === true). The
+        // outer `UID` (line ~357) is `isMeetingVideoHostCheck ? isGuid :
+        // participantUID`, so for an organizer it always resolves to
+        // isGuid — which JoinPresenterView's success handler never sets for
+        // a non-rejoining join (it only writes participantUID in that case,
+        // see joinPresenterViewMainApi). That sent a null/stale GUID to
+        // LeavePresenterView. Use participantUID directly — it's always the
+        // correct identifier for a presentation viewer, regardless of
+        // overall meeting-host status.
         let data = {
           RoomID: String(RoomID),
-          UserGUID: String(UID),
+          UserGUID: String(participantUID),
           Name: String(newName),
         };
+        console.log("leavePresenterViewMainApi");
         await dispatch(
           leavePresenterViewMainApi(
             navigate,
@@ -993,6 +1011,12 @@ const VideoCallNormalHeader = ({
       if (VideoChatMessagesFlag === false) {
         if (isMeetingVideo || presenterViewFlag) {
           // MEETING / PRESENTER → meeting group chat (all participants, one channel)
+
+          console.log(
+            videoTalk?.talkGroupID,
+            videoTalk,
+            "videoTalkvideoTalkvideoTalk",
+          );
           openMeetingGroupChat(videoTalk?.talkGroupID);
         } else {
           // 1:1 video call → existing one-to-one chat (unchanged)
@@ -2092,7 +2116,7 @@ const VideoCallNormalHeader = ({
           </div>
 
           {(currentCallType === 1 || isMeetingVideo || presenterViewFlag) &&
-            checkFeatureIDAvailability(3) && (
+            checkFeatureIDAvailability(3) && videoTalk?.isChat === true && (
               <div
                 className={
                   LeaveCallModalFlag || (isZoomEnabled && disableBeforeJoinZoom)
@@ -2281,6 +2305,7 @@ const VideoCallNormalHeader = ({
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
+          (presenterViewFlag && presenterViewJoinFlag) ||
           (isMeetingVideo && !presenterViewFlag && !presenterViewHostFlag) ||
           (currentCallType === 2 &&
             !presenterViewJoinFlag &&
@@ -2301,6 +2326,7 @@ const VideoCallNormalHeader = ({
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
                           !presenterViewHostFlag &&
+                          !presenterViewJoinFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           dispatch(participantPopup(false));
@@ -2308,7 +2334,17 @@ const VideoCallNormalHeader = ({
                         }
 
                         // ✅ Existing logic for caller/host
-                        const role = getMeetingHostInfo.isHost ? 1 : 2;
+                        // During an active presentation, role is decided ONLY
+                        // by whether THIS user is presenting it
+                        // (presenterViewHostFlag) — not by overall meeting
+                        // organizer status — so an organizer who is just
+                        // viewing someone else's presentation correctly opens
+                        // the viewer list, not the (now-empty) host panel.
+                        const isEffectiveHostForParticipantPanel =
+                          presenterViewFlag
+                            ? presenterViewHostFlag
+                            : getMeetingHostInfo.isHost;
+                        const role = isEffectiveHostForParticipantPanel ? 1 : 2;
                         closeParticipantHandler(role, true);
                       }}
                       alt="Active participants"
@@ -2463,6 +2499,7 @@ const VideoCallNormalHeader = ({
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
                           !presenterViewHostFlag &&
+                          !presenterViewJoinFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           // JUST TOGGLE PARTICIPANT POPUP
@@ -2470,18 +2507,20 @@ const VideoCallNormalHeader = ({
                           return; // ⛔ STOP HERE — DO NOT CALL closeParticipantHandler
                         }
 
-                        // EXISTING LOGIC (UNCHANGED)
-                        const role = getMeetingHostInfo.isHost
-                          ? 1
-                          : presenterViewHostFlag
-                            ? 1
-                            : 2;
+                        // During an active presentation, role is decided ONLY
+                        // by whether THIS user is presenting it
+                        // (presenterViewHostFlag) — not by overall meeting
+                        // organizer status. Otherwise, fall back to the
+                        // regular meeting-host check exactly as before.
+                        const isEffectiveHostForParticipantPanel =
+                          presenterViewFlag
+                            ? presenterViewHostFlag
+                            : getMeetingHostInfo.isHost;
 
-                        const flag = getMeetingHostInfo.isHost
+                        const role = isEffectiveHostForParticipantPanel ? 1 : 2;
+                        const flag = isEffectiveHostForParticipantPanel
                           ? false
-                          : presenterViewHostFlag
-                            ? false
-                            : true;
+                          : true;
 
                         closeParticipantHandler(role, flag);
                       }}
@@ -2501,85 +2540,90 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <div className="main-icon-div">
-                    {isMeetingVideo && isMeetingVideoHostCheck && (
-                      <>
-                        {handRaiseCounter > 0 && (
-                          <span className="HandRaise-Counter-for-participant">
-                            {convertNumbersInString(handRaiseCounter, lan)}
-                          </span>
+                  {!presenterViewJoinFlag && (
+                    <div className="main-icon-div">
+                      {isMeetingVideo && isMeetingVideoHostCheck && (
+                        <>
+                          {handRaiseCounter > 0 && (
+                            <span className="HandRaise-Counter-for-participant">
+                              {convertNumbersInString(handRaiseCounter, lan)}
+                            </span>
+                          )}
+                        </>
+                      )}
+                      <span className="participants-counter-For-Host">
+                        {console.log(
+                          "isDashboardVideoCounter",
+                          participantCounterList,
+                          getMeetingHostInfo,
                         )}
-                      </>
-                    )}
-                    <span className="participants-counter-For-Host">
-                      {console.log(
-                        "isDashboardVideoCounter",
-                        participantCounterList,
-                        getMeetingHostInfo,
-                      )}
-                      {getMeetingHostInfo?.isDashboardVideo ? (
-                        <>
-                          {console.log(
-                            "isFor Host or Participant",
-                            participantCounterList,
-                          )}
+                        {getMeetingHostInfo?.isDashboardVideo ? (
+                          <>
+                            {console.log(
+                              "isFor Host or Participant",
+                              participantCounterList,
+                            )}
 
-                          {convertNumbersInString(participantCounterList, lan)}
-                        </>
-                      ) : (
-                        <>
-                          {console.log(
-                            "isFor Host or Participant",
-                            groupCallParticipantList,
-                          )}
+                            {convertNumbersInString(
+                              participantCounterList,
+                              lan,
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {console.log(
+                              "isFor Host or Participant",
+                              groupCallParticipantList,
+                            )}
 
-                          {convertNumbersInString(
-                            !isCaller &&
-                              !isMeetingVideo &&
-                              !getMeetingHostInfo.isHost &&
-                              !getMeetingHostInfo.isDashboard
-                              ? /* ===== NON-CALLER: Merge both lists count ===== */
-                                (() => {
-                                  const inCallList = Array.isArray(
-                                    inCallParticipantsList,
-                                  )
-                                    ? inCallParticipantsList
-                                    : [];
-                                  const pendingList = (
-                                    Array.isArray(pendingCallParticipantList)
-                                      ? pendingCallParticipantList
-                                      : []
-                                  ).filter(isActiveInvitee);
+                            {convertNumbersInString(
+                              !isCaller &&
+                                !isMeetingVideo &&
+                                !getMeetingHostInfo.isHost &&
+                                !getMeetingHostInfo.isDashboard
+                                ? /* ===== NON-CALLER: Merge both lists count ===== */
+                                  (() => {
+                                    const inCallList = Array.isArray(
+                                      inCallParticipantsList,
+                                    )
+                                      ? inCallParticipantsList
+                                      : [];
+                                    const pendingList = (
+                                      Array.isArray(pendingCallParticipantList)
+                                        ? pendingCallParticipantList
+                                        : []
+                                    ).filter(isActiveInvitee);
 
-                                  // Merge and deduplicate by userID
-                                  const mergedSet = new Set();
+                                    // Merge and deduplicate by userID
+                                    const mergedSet = new Set();
 
-                                  inCallList.forEach((p) =>
-                                    mergedSet.add(p.userID),
-                                  );
-                                  pendingList.forEach((p) =>
-                                    mergedSet.add(p.userID),
-                                  );
+                                    inCallList.forEach((p) =>
+                                      mergedSet.add(p.userID),
+                                    );
+                                    pendingList.forEach((p) =>
+                                      mergedSet.add(p.userID),
+                                    );
 
-                                  return mergedSet.size;
-                                })()
-                              : /* ===== CALLER: Show group participants count ===== */
-                                Array.isArray(groupCallParticipantList) &&
-                                  groupCallParticipantList?.length,
-                            lan,
-                          )}
-                        </>
-                      )}
-                    </span>
-                    {participantWaitingListCounter > 0 && (
-                      <span className="participants-counter-For-Host-waiting-counter">
-                        {convertNumbersInString(
-                          participantWaitingListCounter,
-                          lan,
+                                    return mergedSet.size;
+                                  })()
+                                : /* ===== CALLER: Show group participants count ===== */
+                                  Array.isArray(groupCallParticipantList) &&
+                                    groupCallParticipantList?.length,
+                              lan,
+                            )}
+                          </>
                         )}
                       </span>
-                    )}
-                  </div>
+                      {participantWaitingListCounter > 0 && (
+                        <span className="participants-counter-For-Host-waiting-counter">
+                          {convertNumbersInString(
+                            participantWaitingListCounter,
+                            lan,
+                          )}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </>
               )}
             </div>

@@ -183,6 +183,33 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterStartedFlag,
   );
 
+  // Which meeting the currently-active presentation (if any) belongs to.
+  // presenterViewFlag/HostFlag/JoinFlag are GLOBAL Redux state — they don't
+  // know which meeting they're "for". Without comparing presenterMeetingId
+  // to the meeting THIS AgendaViewer instance is showing, an active
+  // presentation in one meeting incorrectly makes every OTHER meeting's
+  // "Start Presentation" button/video icon think a presentation is active
+  // there too.
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId,
+  );
+
+  // The meeting THIS AgendaViewer instance is displaying — same resolution
+  // logic already used to fetch this page's own agenda data (see the
+  // GetAdvanceMeetingAgendabyMeetingIDForView effect below), since the bare
+  // currentMeetingID localStorage value isn't reliably refreshed just by
+  // navigating to a different meeting's page.
+  const thisPageMeetingID = Number(
+    advanceMeetingModalID === "0" ||
+      advanceMeetingModalID === 0 ||
+      advanceMeetingModalID === null ||
+      advanceMeetingModalID === undefined
+      ? currentMeeting
+      : advanceMeetingModalID,
+  );
+  const isPresentationForThisMeeting =
+    presenterViewFlag && Number(presenterMeetingId) === thisPageMeetingID;
+
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
 
   let newRoomID = localStorage.getItem("newRoomId");
@@ -908,9 +935,10 @@ const AgendaViewer = () => {
         if (presenterStartedFlag) {
           let data = {
             MeetingID: currentMeetingID,
-            RoomID: RoomID,
+            RoomID: String(RoomID),
+            VideoCallUrl: currentMeetingVideoURL,
           };
-          sessionStorage.setItem("StopPresenterViewAwait", true);
+          // sessionStorage.setItem("StopPresenterViewAwait", true);
           console.log(data, "presenterViewJoinFlag");
           dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
         } else {
@@ -919,6 +947,7 @@ const AgendaViewer = () => {
             UserGUID: String(UID),
             Name: String(currentUserName),
           };
+          console.log("leavePresenterViewMainApi");
           dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
         }
       } else if (value === 2) {
@@ -954,6 +983,7 @@ const AgendaViewer = () => {
           UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
           Name: String(currentUserName),
         };
+        console.log("leavePresenterViewMainApi");
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
         // }
       }
@@ -1030,7 +1060,7 @@ const AgendaViewer = () => {
                         editorRole.status === 10) &&
                         videoTalk?.isVideoCall && (
                           <>
-                            {presenterViewFlag ? (
+                            {isPresentationForThisMeeting ? (
                               <Tooltip>
                                 <div
                                   className={
@@ -1083,12 +1113,12 @@ const AgendaViewer = () => {
                               className={
                                 enableDisableVideoState ||
                                 participantEnableVideoState ||
-                                presenterViewFlag
+                                isPresentationForThisMeeting
                                   ? styles["disabled-box-agenda-camera"]
                                   : styles["box-agendas-camera"]
                               }
                               onClick={
-                                presenterViewFlag === false
+                                isPresentationForThisMeeting === false
                                   ? onClickVideoIconOpenVideo
                                   : undefined
                               }
@@ -1297,7 +1327,6 @@ const AgendaViewer = () => {
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
-      
 
       {/* {fullScreenView ? (
         <FullScreenAgendaModal
@@ -1426,7 +1455,7 @@ const AgendaViewer = () => {
         <MaxParticipantVideoRemovedComponent />
       )}
       {nonMeetingVideo && <NonMeetingVideoModal />}
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
