@@ -34,11 +34,7 @@ const DocumentViewer = () => {
   const [instance, setInstance] = useState(null);
 
   // State Variables
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+
   const [pdfResponseData, setPdfResponseData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -48,9 +44,7 @@ const DocumentViewer = () => {
   const FileRemoveMQTT = useSelector(
     (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData, } = useSelector(
-    (state) => state.webViewer,
-  );
+  const { attachmentBlob, xfdfData } = useSelector((state) => state.webViewer);
 
   // Memoized PDF Data
   const pdfData = useMemo(() => {
@@ -84,11 +78,17 @@ const DocumentViewer = () => {
   // Fetch Annotations
   useEffect(() => {
     try {
-      const data = {
-        FileID: attachmentID,
-      };
+      if (
+        attachmentID !== null &&
+        attachmentID !== undefined &&
+        Number(attachmentID) !== 0
+      ) {
+        const data = {
+          FileID: attachmentID,
+        };
 
-      dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
+        dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
+      }
 
       return clearLocalStorage;
     } catch (error) {
