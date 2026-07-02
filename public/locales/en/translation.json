@@ -2799,6 +2799,9 @@
   "Task-created": "Task created",
   "Enable-video-recording-for-one-to-one-call": "Enable video recording for One to One call",
   "Enable-video-recording-for-group-call": "Enable video recording for group call",
-  "By-signing-in-you-agree-to-our":"By signing in you agree to our",
-  "Terms-of-use":"Terms of Use"
+  "By-signing-in-you-agree-to-our": "By signing in you agree to our",
+  "Terms-of-use": "Terms of Use",
+  "Start-time-must-be-before-end-time": "Start time must be before end time",
+  "Start-time-must-be-after-previous-end-time": "Start time must be after previous end time",
+  "Start-time-must-be-in-the-future": "Start time must be in the future"
 }

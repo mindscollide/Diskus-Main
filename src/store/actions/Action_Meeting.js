@@ -266,8 +266,9 @@ const mapTaskAgendaMainApi = (
             ) {
               dispatch(
                 mapTaskAgendaSuccess(
-                  response.data.responseResult.responseMessage,
-                  t("Data-inserted-successfully"),
+                  response.data.responseResult,
+                  "",
+                  // t("Data-inserted-successfully"),
                 ),
               );
               let Data = {

@@ -36,7 +36,8 @@ const postAssgineeComment = (navigate, data, t) => {
     let form = new FormData();
     form.append("RequestMethod", postComment.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axiosInstance.post(toDoListApi,form)
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -47,20 +48,21 @@ const postAssgineeComment = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_CreateComment_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_CreateComment_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 postCommentsSuccess(
                   response.data.responseResult,
-                  t("Comment-added-successfully")
-                )
+                  "",
+                  // t("Comment-added-successfully")
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_CreateComment_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_CreateComment_02".toLowerCase(),
                 )
             ) {
               dispatch(postCommentFail("Comment-not-added-successfully"));
@@ -68,7 +70,7 @@ const postAssgineeComment = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_CreateComment_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_CreateComment_03".toLowerCase(),
                 )
             ) {
               dispatch(postCommentFail(t("Something-went-wrong")));
@@ -100,7 +102,6 @@ const emptyCommentState = () => {
   };
 };
 const deleteCommentsMQTT = (response) => {
-
   return {
     type: actions.DELETE_COMMENTS,
     response: response,

@@ -1091,7 +1091,8 @@ const updatePollsApi = (
               dispatch(
                 updatePollsSuccess(
                   response.data.responseResult,
-                  t("Poll-details-updated"),
+                  "",
+                  // t("Poll-details-updated"),
                 ),
               );
               if (typeof setEditPolls === "function") {

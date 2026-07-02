@@ -2588,7 +2588,7 @@
   "Agenda-poll-updated": "Agenda Poll Updated",
   "Save-your-agenda-before-publish-the-meeting-avoid-losing-it": "Save your agenda before publish the meeting, avoid losing it.",
   "Save-agenda": "Save Agenda",
-  "This-participant-is-added-as-agenda-presenter-in-below-agendas":"This participant is added as agenda presenter in the below agendas",
+  "This-participant-is-added-as-agenda-presenter-in-below-agendas": "This participant is added as agenda presenter in the below agendas",
   "Create-meeting-chat": "Create Meeting Chat",
   "Create-committee-chat": "Create Committee Chat",
   "Meeting-chat": "Meeting Chat",
@@ -2602,5 +2602,8 @@
   "Enable-video-recording-for-one-to-one-call": "Enable video recording for One to One call",
   "Enable-video-recording-for-group-call": "Enable video recording for group call",
   "By-signing-in-you-agree-to-our": "By signing in you agree to our",
-  "Terms-of-use": "Terms of Use"
+  "Terms-of-use": "Terms of Use",
+  "Start-time-must-be-before-end-time": "Start time must be before end time",
+  "Start-time-must-be-after-previous-end-time": "Start time must be after previous end time",
+  "Start-time-must-be-in-the-future": "Start time must be in the future"
 }
