@@ -42,19 +42,19 @@ const NonMeetingVideoModal = () => {
     setIsVisible,
   } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
-    (state) => state.videoFeatureReducer.nonMeetingVideo
+    (state) => state.videoFeatureReducer.nonMeetingVideo,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   let currentMeeting = localStorage.getItem("currentMeetingID");
@@ -64,7 +64,7 @@ const NonMeetingVideoModal = () => {
   let CallType = Number(localStorage.getItem("CallType"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMeetingVideoHostChecker = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostChecker")
+    localStorage.getItem("isMeetingVideoHostChecker"),
   );
 
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -74,8 +74,6 @@ const NonMeetingVideoModal = () => {
 
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
-
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -87,7 +85,6 @@ const NonMeetingVideoModal = () => {
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
           }
 
           // Slight delay to allow iframe to process the message
@@ -121,7 +118,7 @@ const NonMeetingVideoModal = () => {
   //handle NO button
   const onClickOnNoMeetingModal = () => {
     let JoinpresenterForonetoone = JSON.parse(
-      localStorage.getItem("JoinpresenterForonetoone")
+      localStorage.getItem("JoinpresenterForonetoone"),
     );
 
     dispatch(nonMeetingVideoGlobalModal(false));
@@ -139,7 +136,7 @@ const NonMeetingVideoModal = () => {
   const onClickOnYesMeetingModal = async () => {
     console.log("busyCall");
     let JoinpresenterForonetoone = JSON.parse(
-      localStorage.getItem("JoinpresenterForonetoone")
+      localStorage.getItem("JoinpresenterForonetoone"),
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     if (JoinpresenterForonetoone) {
@@ -215,7 +212,7 @@ const NonMeetingVideoModal = () => {
 
       // Get The NoneMeetingVideoCall check if true then it'll make a hit for getParticipantMeetingJoinApi
       let getVideoCallMeeting = JSON.parse(
-        sessionStorage.getItem("NonMeetingVideoCall")
+        sessionStorage.getItem("NonMeetingVideoCall"),
       );
       if (getVideoCallMeeting) {
         let currentMeetingVideoURL = localStorage.getItem("videoCallURL");

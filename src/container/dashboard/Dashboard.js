@@ -1006,13 +1006,11 @@ const Dashboard = () => {
         resolve(); // Zoom not enabled, no need to send message
         return;
       }
-      console.log("RecordingStopMsgFromIframe from MQTT");
       const iframe = iframeRef.current;
 
       if (CallType === 1 || CallType === 2) {
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-          console.log("RecordingStopMsgFromIframe from MQTT");
         }
 
         // Short delay to ensure iframe handles message
@@ -3554,7 +3552,6 @@ const Dashboard = () => {
               console.log("Does Check Recording Stop");
               const iframe = iframeRef.current;
               if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
                   "*",

@@ -381,8 +381,6 @@ const ViewMeetingModal = ({
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
-
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -394,7 +392,6 @@ const ViewMeetingModal = ({
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
           }
 
           // Slight delay to allow iframe to process the message
@@ -1519,8 +1516,8 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

@@ -77,7 +77,6 @@ const NewEndMeetingModal = () => {
 
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {
-    console.log("RecordingStopMsgFromIframe");
     setStartRecordingState(true);
     setPauseRecordingState(false);
     setResumeRecordingState(false);
@@ -97,11 +96,9 @@ const NewEndMeetingModal = () => {
         (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
         (presenterViewFlag && presenterViewHostFlag)
       ) {
-        console.log("RecordingStopMsgFromIframe");
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-          console.log("RecordingStopMsgFromIframe");
         }
       } else {
         if (isCaller) {
@@ -112,7 +109,6 @@ const NewEndMeetingModal = () => {
                 "RecordingStopMsgFromIframe",
                 "*",
               );
-              console.log("RecordingStopMsgFromIframe");
             }
           }
         }

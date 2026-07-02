@@ -90,7 +90,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [show, SnackBar] =useSnackbar()
+  const [show, SnackBar] = useSnackbar();
   const participantPopupDisable = useRef(null);
 
   const {
@@ -489,8 +489,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
-
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -515,7 +513,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               "RecordingStopMsgFromIframe",
               "*",
             );
-            console.log("RecordingStopMsgFromIframe");
           }
 
           // Slight delay to allow iframe to process the message
@@ -2061,7 +2058,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                 </Tooltip>
               </div>
             </div>
-            
           </Col>
         </Row>
       </div>
