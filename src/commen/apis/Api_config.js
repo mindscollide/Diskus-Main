@@ -2219,4 +2219,9 @@ export const ChangeChecklistAllowedTransactionStatusRM = {
 
 export const validateEmailActionTokenRM = {
   RequestMethod: "ServiceManager.ValidateEmailActionToken",
+}
+
+//API To get presentation participant
+export const getPresentationParticipants = {
+  RequestMethod: "ServiceManager.GetPresentationParticipants",
 };

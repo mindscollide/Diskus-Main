@@ -488,7 +488,11 @@ const Talk = () => {
     if (
       videoPanelRef.current &&
       !videoPanelRef.current.contains(event.target) &&
-      activeVideoIcon
+      activeVideoIcon &&
+      !presenterViewHostFlag &&
+      !presenterViewJoinFlag &&
+      !isMeetingVideo &&
+      !isWaiting
     ) {
       setActiveVideoIcon(false);
       dispatch(videoChatPanel(false));
@@ -501,7 +505,7 @@ const Talk = () => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [activeVideoIcon]);
+  }, [activeVideoIcon, presenterViewHostFlag, presenterViewJoinFlag, isMeetingVideo, isWaiting]);
 
   useEffect(() => {
     if (activeCall === true) {

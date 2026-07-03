@@ -364,21 +364,18 @@ const ParentAgenda = ({
                                       alt=''
                                       draggable={false}
                                     />
-
-                                    {ALLOW_AGENDA_START_TIME_AND_END_TIME && (
-                                      <p className={styles["agendaCreater"]}>
-                                        {data?.presenterName +
-                                          " - (" +
-                                          moment(
-                                            timeFormatFunction(data.startDate),
-                                          ).format("hh:mm a") +
-                                          " - " +
-                                          moment(
-                                            timeFormatFunction(data.endDate),
-                                          ).format("hh:mm a") +
-                                          ")"}
-                                      </p>
-                                    )}
+                                  { ALLOW_AGENDA_START_TIME_AND_END_TIME &&  <p className={styles["agendaCreater"]}>
+                                      {data?.presenterName +
+                                        " - (" +
+                                        moment(
+                                          timeFormatFunction(data.startDate)
+                                        ).format("hh:mm a") +
+                                        " - " +
+                                        moment(
+                                          timeFormatFunction(data.endDate)
+                                        ).format("hh:mm a") +
+                                        ")"}
+                                    </p>}
                                   </div>
                                 </Col>
                               </Row>

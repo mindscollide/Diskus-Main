@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import styles from "./FinalWelcomeScreen.module.css";
 import { useTranslation } from "react-i18next";
-import { handleNavigation } from "../../../../commen/functions/utils";
+import { getHomeRoute, handleNavigation } from "../../../../commen/functions/utils";
 import { useDispatch } from "react-redux";
 
 const FinalWelcomeScreen = () => {
@@ -15,14 +15,12 @@ const FinalWelcomeScreen = () => {
   let userName = localStorage.getItem("name");
 
   const handleClickNavigate = () => {
-    document.body.style.overflow = "";
-    let hasAdminRights = localStorage.getItem("hasAdminRights");
+    let hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
     if (hasAdminRights) {
       navigate("/Admin/ManageUsers");
       return;
     }
-    handleNavigation(navigate, false, dispatch);
-    // navigate("/Diskus")
+    navigate(getHomeRoute())
   };
   return (
     <Container data-tut="finalwelcome-screen">
@@ -53,7 +51,7 @@ const FinalWelcomeScreen = () => {
                   </Col>
                   <Col sm={3}>
                     <ArrowRight
-                      fontSize={38}
+                      fontSize={26}
                       color="white"
                       cursor="pointer"
                       onClick={handleClickNavigate}

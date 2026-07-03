@@ -18,9 +18,7 @@ const dedupeParticipants = (list) => {
     const existing = map.get(key);
     map.set(
       key,
-      existing
-        ? { ...existing, ...p, isHost: existing.isHost || p.isHost }
-        : p,
+      existing ? { ...existing, ...p, isHost: existing.isHost || p.isHost } : p,
     );
   });
   return Array.from(map.values());
@@ -132,6 +130,7 @@ const initialState = {
   globallyScreenShare: false,
   errorSeverity: null, // Added errorSeverity to initialState
   notifyParticipantHostIsTransfer: false,
+  presentationParticipantsList: [],
   // startOrStopPresenter: false,
 };
 
@@ -594,9 +593,25 @@ const videoFeatureReducer = (state = initialState, action) => {
               : participant,
         );
 
+        const existingMuteList = Array.isArray(
+          state.presentationParticipantsList?.participantList,
+        )
+          ? state.presentationParticipantsList.participantList
+          : [];
+        const updatedMuteList = existingMuteList.map((p) =>
+          p.guid === payload.uid ? { ...p, mute: payload.isMuted } : p,
+        );
+
         return {
           ...state,
           getAllParticipantMain: getMainMuteUnmuteParticipant,
+          presentationParticipantsList: {
+            ...(typeof state.presentationParticipantsList === "object" &&
+            !Array.isArray(state.presentationParticipantsList)
+              ? state.presentationParticipantsList
+              : {}),
+            participantList: updatedMuteList,
+          },
         };
       }
     }
@@ -617,9 +632,27 @@ const videoFeatureReducer = (state = initialState, action) => {
         },
       );
 
+      const existingRaiseList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const updatedRaiseList = existingRaiseList.map((p) =>
+        p.guid === payload.participantGuid
+          ? { ...p, raiseHand: payload.isHandRaised }
+          : p,
+      );
+
       return {
         ...state,
         getAllParticipantMain: updatedRaisedParticipant,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedRaiseList,
+        },
       };
     }
 
@@ -645,9 +678,25 @@ const videoFeatureReducer = (state = initialState, action) => {
       );
       
 
+      const existingHideList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const updatedHideList = existingHideList.map((p) =>
+        p.guid === payload.uid ? { ...p, hideCamera: payload.isVideoHidden } : p,
+      );
+
       return {
         ...state,
         getAllParticipantMain: updateParticipantHideUnHide,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedHideList,
+        },
       };
     }
 
@@ -662,7 +711,9 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllParticipantMain: dedupeParticipants(action.response.participantList),
+        getAllParticipantMain: dedupeParticipants(
+          action.response.participantList,
+        ),
         ResponseMessage: action.message,
         errorSeverity: "success", // Added
       };
@@ -799,7 +850,9 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllParticipantMain: dedupeParticipants(action.response.participantList),
+        getAllParticipantMain: dedupeParticipants(
+          action.response.participantList,
+        ),
         waitingParticipantsList: action.response.waitingParticipants,
         errorSeverity: "success", // Added
       };
@@ -1316,6 +1369,102 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         notifyParticipantHostIsTransfer: action.response,
+      };
+    }
+
+    case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_SUCCESS: {
+      const rawList = Array.isArray(action.response?.participantList)
+        ? action.response.participantList
+        : [];
+      const seenKeys = new Set();
+      const dedupedList = rawList.filter((p) => {
+        const key = p.guid || String(p.userID);
+        if (!key || seenKeys.has(key)) return false;
+        seenKeys.add(key);
+        return true;
+      });
+      return {
+        ...state,
+        Loading: false,
+        presentationParticipantsList: {
+          ...action.response,
+          participantList: dedupedList,
+        },
+        ResponseMessage: action.message,
+        errorSeverity: "success",
+      };
+    }
+
+    case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presentationParticipantsList: [],
+        ResponseMessage: action.message,
+        errorSeverity: "error", // Added
+      };
+    }
+
+    // Real-time MQTT updates — patch the existing list in place instead of
+    // re-fetching from the API, so join/leave never triggers an extra
+    // network call. Idempotent: a repeated/duplicate JOINED delivery for the
+    // same guid is ignored rather than adding a duplicate row.
+    case actions.PRESENTATION_PARTICIPANT_JOINED_MQTT: {
+      const newParticipant = action.response;
+      const existingList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const alreadyExists = existingList.some(
+        (p) =>
+          (p.guid && newParticipant?.guid && p.guid === newParticipant.guid) ||
+          (p.userID &&
+            newParticipant?.userID &&
+            Number(p.userID) === Number(newParticipant.userID)),
+      );
+      const updatedList =
+        alreadyExists || !newParticipant
+          ? existingList
+          : [...existingList, newParticipant];
+      return {
+        ...state,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedList,
+        },
+      };
+    }
+
+    case actions.PRESENTATION_PARTICIPANT_LEFT_MQTT: {
+      const leavingUid = action.response;
+      const existingList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const updatedList = existingList.filter(
+        (p) => p.guid !== leavingUid,
+      );
+      return {
+        ...state,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedList,
+        },
       };
     }
 

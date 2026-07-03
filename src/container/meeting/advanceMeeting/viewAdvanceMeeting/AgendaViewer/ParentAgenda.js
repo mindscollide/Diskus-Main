@@ -68,7 +68,6 @@ const ParentAgenda = ({
   // const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
-
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index, divFlag) => {
     if (divFlag) {

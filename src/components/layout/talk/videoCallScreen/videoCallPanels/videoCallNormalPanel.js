@@ -24,6 +24,7 @@ import {
   acceptHostTransferAccessGlobalFunc,
   disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
+  getVideoPresentationParticipantsMainApi,
   incomingVideoCallFlag,
   isSharedScreenTriggeredApi,
   leaveCallModal,
@@ -214,6 +215,15 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.getAllParticipantMain,
   );
 
+  // Presentation-specific participant roster (non-host viewers of a
+  // presentation). Backed by GetPresentationParticipants; kept in sync via
+  // the effect below, which re-fetches whenever the canonical meeting
+  // participant list changes (mute/video/raise-hand/join/leave already flow
+  // into getAllParticipantMain via the existing MQTT pipeline).
+  const presentationParticipantsList = useSelector(
+    (state) => state.videoFeatureReducer.presentationParticipantsList,
+  );
+
   console.log("setHandRaiseCounter", getAllParticipantMain);
   console.log("stopApiCalled", stopApiCalledRef);
 
@@ -276,6 +286,32 @@ const VideoPanelNormal = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
+
+  // Fetch the presentation roster ONCE, the moment a non-host viewer joins
+  // a presentation. From then on, PRESENTATION_PARTICIPANT_JOINED /
+  // PRESENTATION_PARTICIPANT_LEFT MQTT events keep the list in sync via
+  // direct, surgical Redux patches (see presentationParticipantJoinedMqtt /
+  // presentationParticipantLeftMqtt in Dashboard.js) — no further API calls.
+  // Deliberately NOT depending on getAllParticipantMain here: that list
+  // changes for reasons unrelated to this presentation (any meeting
+  // participant's mute/video/join/leave), which previously caused this
+  // effect to re-fire the API repeatedly.
+  const joiningPresentationView =
+    presenterViewFlag && !presenterViewHostFlag && presenterViewJoinFlag;
+  useEffect(() => {
+    if (joiningPresentationView) {
+      let presentationRoomID = localStorage.getItem("acceptedRoomID");
+      if (presentationRoomID) {
+        dispatch(
+          getVideoPresentationParticipantsMainApi(
+            { RoomID: String(presentationRoomID) },
+            navigate,
+            t,
+          ),
+        );
+      }
+    }
+  }, [joiningPresentationView]);
 
   const presenterMeetingId = useSelector(
     (state) => state.videoFeatureReducer.presenterMeetingId,
@@ -2096,6 +2132,7 @@ const VideoPanelNormal = () => {
                       <Col
                         lg={
                           (isMeetingHost &&
+                            !presenterViewFlag &&
                             meetingHost.isDashboardVideo &&
                             participantWaitinglistBox) ||
                           (presenterViewHostFlag &&
@@ -2106,6 +2143,7 @@ const VideoPanelNormal = () => {
                         }
                         md={
                           (isMeetingHost &&
+                            !presenterViewFlag &&
                             meetingHost.isDashboardVideo &&
                             participantWaitinglistBox) ||
                           (presenterViewHostFlag &&
@@ -2116,11 +2154,9 @@ const VideoPanelNormal = () => {
                         }
                         sm={
                           (isMeetingHost &&
-                            meetingHost.isDashboardVideo &&
-                            participantWaitinglistBox) ||
-                          (presenterViewHostFlag &&
-                            presenterViewFlag &&
-                            participantWaitinglistBox)
+                            !presenterViewFlag &&
+                            meetingHost.isDashboardVideo) ||
+                          presenterViewHostFlag
                             ? 9
                             : 12
                         }
@@ -2162,7 +2198,17 @@ const VideoPanelNormal = () => {
                         </div>
                       </Col>
 
-                      {(isMeetingHost || presenterViewHostFlag) &&
+                      {/* During an active presentation, host-panel access is
+                          decided ONLY by whether THIS user is presenting it
+                          (presenterViewHostFlag) — NOT by overall meeting
+                          organizer status (isMeetingHost). Otherwise the
+                          organizer keeps the host panel even while merely
+                          viewing someone else's presentation. Outside an
+                          active presentation, isMeetingHost is used as
+                          before. */}
+                      {(presenterViewFlag
+                        ? presenterViewHostFlag
+                        : isMeetingHost) &&
                       meetingHost.isDashboardVideo &&
                       participantWaitinglistBox ? (
                         <>
@@ -2180,7 +2226,9 @@ const VideoPanelNormal = () => {
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
-                              {(isMeetingHost || presenterViewHostFlag) &&
+                              {(presenterViewFlag
+                                ? presenterViewHostFlag
+                                : isMeetingHost) &&
                                 participantWaitinglistBox && (
                                   <VideoNewParticipantList />
                                 )}
@@ -2290,6 +2338,113 @@ const VideoPanelNormal = () => {
                             </div>
                           )}
                         </>
+                      ) : presenterViewFlag &&
+                        !presenterViewHostFlag &&
+                        presenterViewJoinFlag ? (
+                        // Presentation-view participant list (non-host viewer
+                        // of a presentation). Same design/CSS classes as the
+                        // regular meeting participant list above — only the
+                        // data source differs (presentationParticipantsList
+                        // instead of allParticipant), per
+                        // GetPresentationParticipants' response shape.
+                        <>
+                          {participantsVisible && (
+                            <div className="Participants-Lists">
+                              <>
+                                <Row>
+                                  <Col lg={10} md={10} sm={10}>
+                                    <p className="Participant-name-title">
+                                      {t("Participants")}
+                                    </p>
+                                  </Col>
+                                  <Col lg={2} md={2} sm={2}>
+                                    <img
+                                      draggable={false}
+                                      src={BlackCrossIcon}
+                                      alt=""
+                                      className={"cursor-pointer"}
+                                      width="8px"
+                                      height="8px"
+                                      onClick={closeParticipantsList}
+                                    />
+                                  </Col>
+                                </Row>
+                                {(() => {
+                                  // GetPresentationParticipants_SUCCESS stores
+                                  // the whole responseResult ({participantList,
+                                  // ...}) into this state, but INIT/FAIL/default
+                                  // reset it back to a plain []. Guard both
+                                  // shapes so this never crashes.
+                                  const presentationRoster = Array.isArray(
+                                    presentationParticipantsList?.participantList,
+                                  )
+                                    ? presentationParticipantsList.participantList
+                                    : [];
+                                  return (
+                                    presentationRoster.length > 0 &&
+                                    presentationRoster.map((participant) => (
+                                      <Row
+                                        key={participant.guid}
+                                        className="mb-1"
+                                      >
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={12}
+                                          className="d-flex justify-content-start"
+                                        >
+                                          <p className="participantModal_name">
+                                            {participant.name}
+                                          </p>{" "}
+                                        </Col>
+                                        <Col
+                                          lg={5}
+                                          md={5}
+                                          sm={12}
+                                          className="d-flex justify-content-end gap-2"
+                                        >
+                                          <img
+                                            src={VideoOff}
+                                            width="20px"
+                                            height="20px"
+                                            alt="Video Off"
+                                            style={{
+                                              visibility: participant.hideCamera
+                                                ? "visible"
+                                                : "hidden",
+                                            }}
+                                          />
+                                          <img
+                                            src={MicOff}
+                                            width="20px"
+                                            height="20px"
+                                            alt="Mic Mute"
+                                            style={{
+                                              visibility: participant.mute
+                                                ? "visible"
+                                                : "hidden",
+                                            }}
+                                          />
+                                          <img
+                                            src={Raisehandselected}
+                                            width="20px"
+                                            height="20px"
+                                            alt="raise hand"
+                                            style={{
+                                              visibility: participant.raiseHand
+                                                ? "visible"
+                                                : "hidden",
+                                            }}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    ))
+                                  );
+                                })()}
+                              </>
+                            </div>
+                          )}
+                        </>
                       ) : null}
                     </>
                   </Row>
@@ -2316,8 +2471,7 @@ const VideoPanelNormal = () => {
         </Row>
       )}
 
-      
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
