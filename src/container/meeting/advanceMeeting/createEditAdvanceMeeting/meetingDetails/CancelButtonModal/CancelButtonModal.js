@@ -133,7 +133,7 @@ const CancelButtonModal = ({ setRows }) => {
                 className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t(
-                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
+                    "Do-you-want-to-continue-without-saving",
                   )}
                 </span>
               </Col>

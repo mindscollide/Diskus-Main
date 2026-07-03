@@ -153,7 +153,10 @@ const GroupPublishedMeetingList = () => {
     groupPublishedMeetingData,
   } = useGroupsContext();
 
-  console.log(groupPublishedMeetingData, "groupPublishedMeetingDatagroupPublishedMeetingData")
+  console.log(
+    groupPublishedMeetingData,
+    "groupPublishedMeetingDatagroupPublishedMeetingData",
+  );
 
   // ─── Local state ──────────────────────────────────────────────────────────
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
@@ -165,6 +168,7 @@ const GroupPublishedMeetingList = () => {
   const [meetingTitle, setMeetingTitle] = useState("");
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
+  const [meetingTypeSort, setMeetingTypeSort] = useState(null);
 
   const [radioValue, setRadioValue] = useState(1);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
@@ -350,7 +354,7 @@ const GroupPublishedMeetingList = () => {
   // ─── Join Meeting ─────────────────────────────────────────────────────────
 
   const handleJoinMeeting = async (record) => {
-   const role = record.isAgendaContributor
+    const role = record.isAgendaContributor
       ? "Agenda Contributor"
       : record.isParticipant
         ? "Participant"
@@ -824,6 +828,40 @@ const GroupPublishedMeetingList = () => {
             ).format("Do MMM, YYYY")}
           </span>
         ),
+      },
+
+   // ── Meeting Type ──
+      {
+        title: (
+          <div className='d-flex align-items-center justify-content-center gap-2'>
+            <span>{t("Type")}</span>
+            <img
+              src={
+                meetingTypeSort === null
+                  ? DoubleArrowIcon
+                  : meetingTypeSort === "ascend"
+                    ? ArrowDownIcon
+                    : ArrowUpIcon
+              }
+              alt='Meeting type Sort Icon'
+            />
+          </div>
+        ),
+        dataIndex: "type",
+        key: "type",
+        width: 125,
+        align: "center",
+        ellipsis: true,
+        render: (text, record) => {
+          if (record.isQuickMeeting) {
+            return (
+              <span className={styles.columnValue}>{t("Quick-meeting")}</span>
+            );
+          }
+          return (
+            <span className={styles.columnValue}>{t("Advance-meeting")}</span>
+          );
+        },
       },
 
       // ── Action Column ──

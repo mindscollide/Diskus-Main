@@ -70,6 +70,14 @@ export const CommitteeProvider = ({ children }) => {
     committeePublishedMeetingDataRecord,
     setCommitteePublishedMeetingDataRecord,
   ] = useState(0);
+  const [
+    currentPagePublishCommitteeMeeting,
+    setCurrentPagePublishCommitteeMeeting,
+  ] = useState(1);
+  const [
+    currentLengthPublishCommitteeMeeting,
+    setCurrentLengthPublishCommitteeMeeting,
+  ] = useState(30);
 
   // Proposed
   const [committeeProposedMeetingData, setCommitteeProposedMeetingData] =
@@ -78,6 +86,15 @@ export const CommitteeProvider = ({ children }) => {
     committeeProposedMeetingDataRecord,
     setCommitteeProposedMeetingDataRecord,
   ] = useState(0);
+  const [
+    currentPageProposedCommitteeMeeting,
+    setCurrentPageProposedCommitteeMeeting,
+  ] = useState(1);
+    const [
+    currentLengthProposedCommitteeMeeting,
+    setCurrentLengthProposedCommitteeMeeting,
+  ] = useState(30);
+
 
   // Draft
   const [committeeDraftMeetingData, setCommitteeDraftMeetingData] = useState(
@@ -85,6 +102,14 @@ export const CommitteeProvider = ({ children }) => {
   );
   const [committeeDraftMeetingDataRecord, setCommitteeDraftMeetingDataRecord] =
     useState(0);
+  const [
+    currentPageDraftCommitteeMeeting,
+    setCurrentPageDraftCommitteeMeeting,
+  ] = useState(1);
+  const [
+    currentLengthDraftCommitteeMeeting,
+    setCurrentLengthDraftCommitteeMeeting,
+  ] = useState(1);
 
   // Quick Meeting
 

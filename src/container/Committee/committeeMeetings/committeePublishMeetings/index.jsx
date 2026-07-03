@@ -87,6 +87,7 @@ import {
 } from "@/store/actions/NewMeeting2.actions";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
+import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -169,9 +170,11 @@ const CommitteePublishedMeetingList = () => {
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTypeSort, setMeetingTypeSort] = useState(null);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
+
 
   const [radioValue, setRadioValue] = useState(1);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
@@ -842,6 +845,40 @@ const CommitteePublishedMeetingList = () => {
         ),
       },
 
+      // ── Meeting Type ──
+      {
+        title: (
+          <div className='d-flex align-items-center justify-content-center gap-2'>
+            <span>{t("Type")}</span>
+            <img
+              src={
+                meetingTypeSort === null
+                  ? DoubleArrowIcon
+                  : meetingTypeSort === "ascend"
+                    ? ArrowDownIcon
+                    : ArrowUpIcon
+              }
+              alt='Meeting type Sort Icon'
+            />
+          </div>
+        ),
+        dataIndex: "type",
+        key: "type",
+        width: 125,
+        align: "center",
+        ellipsis: true,
+        render: (text, record) => {
+          if (record.isQuickMeeting) {
+            return (
+              <span className={styles.columnValue}>{t("Quick-meeting")}</span>
+            );
+          }
+          return (
+            <span className={styles.columnValue}>{t("Advance-meeting")}</span>
+          );
+        },
+      },
+
       // ── Action Column ──
       {
         title: "",
@@ -1054,6 +1091,14 @@ const CommitteePublishedMeetingList = () => {
     }
   };
 
+  const handleChangePaginationPublishedMeeting = (currentPage, pageSize) => {
+    console.log(
+      currentPage,
+      pageSize,
+      "handleChangePaginationPublishedMeeting",
+    );
+  };
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -1079,7 +1124,24 @@ const CommitteePublishedMeetingList = () => {
             }}
           />
         </Col>
-        <Col></Col>
+        <Col
+          sm={12}
+          md={12}
+          lg={12}
+          className={
+            "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
+          }>
+          <span className='PaginationStyle-TodoList'>
+            <CustomPagination
+              current={0}
+              showSizer={true}
+              onChange={handleChangePaginationPublishedMeeting}
+              pageSizeOptionsValues={["30", "50", "100"]}
+              total={committeePublishedMeetingDataRecord}
+              pageSize={10}
+            />
+          </span>
+        </Col>
       </Row>
 
       {boardDeckModalData && (

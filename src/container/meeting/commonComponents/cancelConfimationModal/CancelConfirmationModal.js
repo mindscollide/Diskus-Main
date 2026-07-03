@@ -137,7 +137,7 @@ const CancelConfirmationModal = () => {
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
-                  "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
+                  "Do-you-want-to-continue-without-saving",
                 )}
               </span>
             </Col>

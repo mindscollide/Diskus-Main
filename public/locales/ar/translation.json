@@ -2605,5 +2605,7 @@
   "Terms-of-use": "Terms of Use",
   "Start-time-must-be-before-end-time": "Start time must be before end time",
   "Start-time-must-be-after-previous-end-time": "Start time must be after previous end time",
-  "Start-time-must-be-in-the-future": "Start time must be in the future"
+  "Start-time-must-be-in-the-future": "Start time must be in the future",
+  "Do-you-want-to-continue-without-saving": "Do you want to continue without saving?"
+
 }
