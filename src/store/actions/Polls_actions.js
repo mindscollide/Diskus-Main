@@ -344,7 +344,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                 .includes("Polls_PollsServiceManager_SavePoll_01".toLowerCase())
             ) {
               await dispatch(
-                savePolls_success(response.data.responseResult, ""),
+                savePolls_success(response.data.responseResult, t("Poll-published-successfully")),
               );
               if (value === 1) {
                 let userID = localStorage.getItem("userID");

@@ -35,7 +35,6 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
-  UpdateMeetingUserApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";

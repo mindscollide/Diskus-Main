@@ -159,6 +159,9 @@ const AgendaViewer = () => {
   let meetingTitle = localStorage.getItem("meetingTitle");
   let currentUserName = localStorage.getItem("name");
 
+  const { meetingID, mapFolderId } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag,
   );
@@ -196,7 +199,7 @@ const AgendaViewer = () => {
       advanceMeetingModalID === 0 ||
       advanceMeetingModalID === null ||
       advanceMeetingModalID === undefined
-      ? currentMeeting
+      ? meetingID
       : advanceMeetingModalID,
   );
   const isPresentationForThisMeeting =
@@ -225,10 +228,6 @@ const AgendaViewer = () => {
       ? newRoomID
       : participantRoomId;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
-
-  const { meetingID, mapFolderId } = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo,
-  );
 
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
     (state) =>
