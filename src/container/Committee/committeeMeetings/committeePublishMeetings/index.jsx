@@ -88,6 +88,7 @@ import {
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
+import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -153,6 +154,11 @@ const CommitteePublishedMeetingList = () => {
     startMeetingButton,
     committeePublishedMeetingData,
     committeePublishedMeetingDataRecord,
+
+    currentPagePublishCommitteeMeeting,
+    setCurrentPagePublishCommitteeMeeting,
+    currentLengthPublishCommitteeMeeting,
+    setCurrentLengthPublishCommitteeMeeting,
   } = useCommitteeContext();
 
   console.log(
@@ -174,7 +180,6 @@ const CommitteePublishedMeetingList = () => {
   const [meetingTitle, setMeetingTitle] = useState("");
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
-
 
   const [radioValue, setRadioValue] = useState(1);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
@@ -850,7 +855,7 @@ const CommitteePublishedMeetingList = () => {
         title: (
           <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Type")}</span>
-            <img
+            {/* <img
               src={
                 meetingTypeSort === null
                   ? DoubleArrowIcon
@@ -859,7 +864,7 @@ const CommitteePublishedMeetingList = () => {
                     : ArrowUpIcon
               }
               alt='Meeting type Sort Icon'
-            />
+            /> */}
           </div>
         ),
         dataIndex: "type",
@@ -1092,10 +1097,20 @@ const CommitteePublishedMeetingList = () => {
   };
 
   const handleChangePaginationPublishedMeeting = (currentPage, pageSize) => {
-    console.log(
-      currentPage,
-      pageSize,
-      "handleChangePaginationPublishedMeeting",
+    setCurrentPagePublishCommitteeMeeting(currentPage);
+    setCurrentLengthPublishCommitteeMeeting(pageSize);
+    dispatch(
+      getMeetingByCommitteeIdApi(navigate, t, {
+        CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: Number(currentPage),
+        Length: Number(pageSize),
+        PublishedMeetings: true,
+        ProposedMeetings: false,
+      }),
     );
   };
 
@@ -1103,81 +1118,88 @@ const CommitteePublishedMeetingList = () => {
 
   return (
     <>
-      <Row className='mt-2'>
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className={styles["MainMeetingTablePublished"]}>
-          <Table
-            getPopupContainer={(node) => node.closest(".ant-table")}
-            onChange={handleTableChange}
-            className='MeetingTable'
-            column={columns}
-            size='small'
-            rows={committeePublishedMeetingData}
-            sticky={true}
-            pagination={false}
-            locale={{ emptyText: <EmptyTableComponent /> }}
-            scroll={{
-              y: 400,
-            }}
-          />
-        </Col>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className={
-            "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-          }>
-          <span className='PaginationStyle-TodoList'>
-            <CustomPagination
-              current={0}
-              showSizer={true}
-              onChange={handleChangePaginationPublishedMeeting}
-              pageSizeOptionsValues={["30", "50", "100"]}
-              total={committeePublishedMeetingDataRecord}
-              pageSize={10}
+      <div className='position-relative'>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className={styles["MainMeetingTablePublished"]}>
+            <Table
+              onChange={handleTableChange}
+              className='MeetingTable'
+              column={columns}
+              size='small'
+              rows={committeePublishedMeetingData}
+              sticky={true}
+              pagination={false}
+              locale={{ emptyText: <EmptyTableComponent /> }}
+              scroll={{
+                y: 400,
+              }}
             />
-          </span>
-        </Col>
-      </Row>
+          </Col>
+          {committeePublishedMeetingData.length > 0 && (
+            <Col className={styles["Meeting_Publish_Pagination"]}>
+              <div className='d-flex justify-content-center mt-2 '>
+                <Row className={styles["PaginationStyle-Meeting"]}>
+                  <Col
+                    className={"pagination-groups-table"}
+                    sm={12}
+                    md={12}
+                    lg={12}>
+                    <CustomPagination
+                      current={currentPagePublishCommitteeMeeting}
+                      showSizer={true}
+                      onChange={handleChangePaginationPublishedMeeting}
+                      pageSizeOptionsValues={["30", "50", "100"]}
+                      total={committeePublishedMeetingDataRecord}
+                      pageSize={currentLengthPublishCommitteeMeeting}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          )}
+        </Row>
 
-      {boardDeckModalData && (
-        <BoardDeckModal
-          boardDeckMeetingID={boardDeckMeetingID}
-          boarddeckOptions={boarddeckOptions}
-          setBoarddeckOptions={setBoarddeckOptions}
-          editorRole={editorRole}
+        {boardDeckModalData && (
+          <BoardDeckModal
+            boardDeckMeetingID={boardDeckMeetingID}
+            boarddeckOptions={boarddeckOptions}
+            setBoarddeckOptions={setBoarddeckOptions}
+            editorRole={editorRole}
+          />
+        )}
+        {boarddeckShareModal && (
+          <ShareModalBoarddeck
+            radioValue={radioValue}
+            setRadioValue={setRadioValue}
+            boarddeckOptions={boarddeckOptions}
+          />
+        )}
+        {boardDeckEmailModal && (
+          <BoardDeckSendEmail
+            boardDeckMeetingTitle={boardDeckMeetingTitle}
+            boardDeckMeetingID={boardDeckMeetingID}
+            boarddeckOptions={boarddeckOptions}
+            radioValue={radioValue}
+            setBoarddeckOptions={setBoarddeckOptions}
+          />
+        )}
+        <DownloadOptionsModal
+          isDownloadAvailable={isDownloadAvailable}
+          downloadMeetingRecord={downloadMeetingRecord}
         />
-      )}
-      {boarddeckShareModal && (
-        <ShareModalBoarddeck
-          radioValue={radioValue}
-          setRadioValue={setRadioValue}
-          boarddeckOptions={boarddeckOptions}
-        />
-      )}
-      {boardDeckEmailModal && (
-        <BoardDeckSendEmail
-          boardDeckMeetingTitle={boardDeckMeetingTitle}
-          boardDeckMeetingID={boardDeckMeetingID}
-          boarddeckOptions={boarddeckOptions}
-          radioValue={radioValue}
-          setBoarddeckOptions={setBoarddeckOptions}
-        />
-      )}
-      <DownloadOptionsModal
-        isDownloadAvailable={isDownloadAvailable}
-        downloadMeetingRecord={downloadMeetingRecord}
-      />
-      {shareViaDataRoomPathConfirmModal && (
-        <ShareViaDataRoomPathModal
-          boardDeckMeetingTitle={boardDeckMeetingTitle}
-        />
-      )}
-      {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
+        {shareViaDataRoomPathConfirmModal && (
+          <ShareViaDataRoomPathModal
+            boardDeckMeetingTitle={boardDeckMeetingTitle}
+          />
+        )}
+        {downloadVideoRecordingModal && (
+          <MeetingRecording title={meetingTitle} />
+        )}
+      </div>
     </>
   );
 };

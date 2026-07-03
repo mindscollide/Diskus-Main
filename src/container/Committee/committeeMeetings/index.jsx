@@ -39,6 +39,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const {
     currentCommitteeMeetingTabActive,
     setCurrentCommitteeMeetingTabActive,
+    setCurrentPagePublishCommitteeMeeting,
+    setCurrentLengthPublishCommitteeMeeting,
+    setCurrentPageDraftCommitteeMeeting,
+    setCurrentLengthDraftCommitteeMeeting,
+    setCurrentPageProposedCommitteeMeeting,
+    setCurrentLengthProposedCommitteeMeeting,
   } = useCommitteeContext();
   const {
     isQuickMeetingCreate,
@@ -74,6 +80,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
 
   const handleClickTabNavigate = (value) => {
     setCurrentCommitteeMeetingTabActive(value);
+    setCurrentPagePublishCommitteeMeeting(1);
+    setCurrentLengthPublishCommitteeMeeting(30);
+    setCurrentPageDraftCommitteeMeeting(1);
+    setCurrentLengthDraftCommitteeMeeting(30);
+    setCurrentPageProposedCommitteeMeeting(1);
+    setCurrentLengthProposedCommitteeMeeting(30);
 
     let searchData = {
       CommitteeID: Number(ViewCommitteeID),

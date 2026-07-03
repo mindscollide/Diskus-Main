@@ -84,17 +84,34 @@ export const GroupsProvider = ({ children }) => {
   const [groupPublishedMeetingData, setGroupPublishedMeetingData] = useState(
     [],
   );
-
   const [groupPublishedMeetingDataRecord, setGroupPublishedMeetingDataRecord] =
     useState(0);
+
+  const [currentPagePublishGroupMeeting, setCurrentPagePublishGroupMeeting] =
+    useState(1);
+  const [
+    currentLengthPublishGroupMeeting,
+    setCurrentLengthPublishGroupMeeting,
+  ] = useState(30);
 
   const [groupProposedMeetingData, setGroupProposedMeetingData] = useState([]);
   const [groupProposedMeetingDataRecord, setGroupProposedMeetingDataRecord] =
     useState(0);
+  const [currentPageProposedGroupMeeting, setCurrentPageProposedGroupMeeting] =
+    useState(1);
+  const [
+    currentLengthProposedGroupMeeting,
+    setCurrentLengthProposedGroupMeeting,
+  ] = useState(30);
 
   const [groupDraftMeetingData, setGroupDraftMeetingData] = useState([]);
   const [groupDraftMeetingDataRecord, setGroupDraftMeetingDataRecord] =
     useState(0);
+
+  const [currentPageDraftGroupMeeting, setCurrentPageDraftGroupMeeting] =
+    useState(1);
+  const [currentLengthDraftGroupMeeting, setCurrentLengthDraftGroupMeeting] =
+    useState(30);
 
   const [startMeetingButton, setStartMeetingButton] = useState([]);
   const ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -592,6 +609,21 @@ export const GroupsProvider = ({ children }) => {
         setCurrentGroupMeetingLength,
         currentViewGroupTabs,
         setCurrentViewGroupTabs,
+
+        currentPagePublishGroupMeeting,
+        setCurrentPagePublishGroupMeeting,
+        currentLengthPublishGroupMeeting,
+        setCurrentLengthPublishGroupMeeting,
+        //
+        currentPageProposedGroupMeeting,
+        setCurrentPageProposedGroupMeeting,
+        currentLengthProposedGroupMeeting,
+        setCurrentLengthProposedGroupMeeting,
+        //
+        currentPageDraftGroupMeeting,
+        setCurrentPageDraftGroupMeeting,
+        currentLengthDraftGroupMeeting,
+        setCurrentLengthDraftGroupMeeting,
       }}>
       {children}
     </GroupContext.Provider>

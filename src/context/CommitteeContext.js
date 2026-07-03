@@ -90,11 +90,10 @@ export const CommitteeProvider = ({ children }) => {
     currentPageProposedCommitteeMeeting,
     setCurrentPageProposedCommitteeMeeting,
   ] = useState(1);
-    const [
+  const [
     currentLengthProposedCommitteeMeeting,
     setCurrentLengthProposedCommitteeMeeting,
   ] = useState(30);
-
 
   // Draft
   const [committeeDraftMeetingData, setCommitteeDraftMeetingData] = useState(
@@ -109,7 +108,7 @@ export const CommitteeProvider = ({ children }) => {
   const [
     currentLengthDraftCommitteeMeeting,
     setCurrentLengthDraftCommitteeMeeting,
-  ] = useState(1);
+  ] = useState(30);
 
   // Quick Meeting
 
@@ -585,6 +584,21 @@ export const CommitteeProvider = ({ children }) => {
         setShowModal,
         currentViewCommitteeTabs,
         setCurrentViewCommitteeTabs,
+
+        currentPagePublishCommitteeMeeting,
+        setCurrentPagePublishCommitteeMeeting,
+        currentLengthPublishCommitteeMeeting,
+        setCurrentLengthPublishCommitteeMeeting,
+
+        currentPageProposedCommitteeMeeting,
+        setCurrentPageProposedCommitteeMeeting,
+        currentLengthProposedCommitteeMeeting,
+        setCurrentLengthProposedCommitteeMeeting,
+        
+        currentPageDraftCommitteeMeeting,
+        setCurrentPageDraftCommitteeMeeting,
+        currentLengthDraftCommitteeMeeting,
+        setCurrentLengthDraftCommitteeMeeting,
       }}>
       {children}
     </CommitteeContext.Provider>

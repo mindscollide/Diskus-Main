@@ -37,7 +37,6 @@ import useSnackbar from "../../../../../../components/elements/snack_bar/useSnac
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const AgendaWise = ({
-  currentMeeting,
   agendaOptionvalue,
   setAgendaOptionValue,
   addAgendaWiseFields,

@@ -62,10 +62,10 @@ const GroupDraftMeetings = () => {
     setGroupDraftMeetingData,
     groupDraftMeetingDataRecord,
     setGroupDraftMeetingDataRecord,
-    currentGroupMeetingPage,
-    setCurrentGroupMeetingPage,
-    currentGroupMeetingLength,
-    setCurrentGroupMeetingLength,
+    currentPageDraftGroupMeeting,
+    setCurrentPageDraftGroupMeeting,
+    currentLengthDraftGroupMeeting,
+    setCurrentLengthDraftGroupMeeting,
   } = useGroupsContext();
 
   // ─── Context ───
@@ -196,19 +196,21 @@ const GroupDraftMeetings = () => {
   };
 
   const handelChangePagination = async (current, PageSize) => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(localStorage.getItem("userID")),
-      PageNumber: Number(current),
-      Length: Number(PageSize),
-      PublishedMeetings: false,
-      ProposedMeetings: false,
-    };
-    setCurrentGroupMeetingPage(current);
-    setCurrentGroupMeetingLength(PageSize);
-    await dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+    setCurrentPageDraftGroupMeeting(current);
+    setCurrentLengthDraftGroupMeeting(PageSize);
+    await dispatch(
+      getMeetingbyGroupIdApi(navigate, t, {
+        GroupID: Number(localStorage.getItem("ViewGroupID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(localStorage.getItem("userID")),
+        PageNumber: Number(current),
+        Length: Number(PageSize),
+        PublishedMeetings: false,
+        ProposedMeetings: false,
+      }),
+    );
   };
 
   const handleClickTitle = (record) => {
@@ -428,8 +430,8 @@ const GroupDraftMeetings = () => {
                     lg={12}
                   >
                     <CustomPagination
-                      current={currentGroupMeetingPage}
-                      pageSize={currentGroupMeetingLength}
+                      current={currentPageDraftGroupMeeting}
+                      pageSize={currentLengthDraftGroupMeeting}
                       onChange={handelChangePagination}
                       total={groupDraftMeetingDataRecord}
                       showSizer={true}

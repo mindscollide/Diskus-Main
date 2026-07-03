@@ -49,21 +49,18 @@ import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions
 import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 import { meetingIdReducer } from "../../../../../store/reducers";
 import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
-const Minutes = ({
-  setMinutes,
-  currentMeeting,
-  setSceduleMeeting,
-  setMeetingMaterial,
-  setactionsPage,
-  setDataroomMapFolderId,
-}) => {
-  const { editorRole } = useContext(MeetingContext);
+const Minutes = () => {
+  const { editorRole, setEditorRole, setGoBackCancelModal } =
+    useMeetingContext();
   // Newly Implemented
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -159,9 +156,7 @@ const Minutes = ({
   };
 
   useEffect(() => {
-    let Data = {
-      MeetingID: Number(meetingID),
-    };
+ 
     dispatch(
       GetAllGeneralMinutesApiFunc(
         navigate,
@@ -480,7 +475,7 @@ const Minutes = ({
 
   const handleRemovingTheMinutes = (MinuteData) => {
     let Data = {
-      MDID: currentMeeting,
+      MDID: meetingID,
       MeetingGeneralMinutesID: MinuteData.minuteID,
     };
     dispatch(
@@ -488,7 +483,7 @@ const Minutes = ({
         navigate,
         Data,
         t,
-        currentMeeting,
+        meetingID,
         MinuteData,
       ),
     );
@@ -567,7 +562,7 @@ const Minutes = ({
       );
       let docsData = {
         FK_MeetingGeneralMinutesID: updateData.minuteID,
-        FK_MDID: currentMeeting,
+        FK_MDID: meetingID,
         UpdateFileList: newfile.map((data, index) => {
           return { PK_FileID: Number(data.pK_FileID) };
         }),
@@ -576,7 +571,7 @@ const Minutes = ({
     } else if (newfile.length > 0) {
       let docsData = {
         FK_MeetingGeneralMinutesID: updateData.minuteID,
-        FK_MDID: currentMeeting,
+        FK_MDID: meetingID,
         UpdateFileList: newfile.map((data, index) => {
           return { PK_FileID: Number(data.pK_FileID) };
         }),
@@ -637,7 +632,6 @@ const Minutes = ({
         setUseCase(3);
       } else {
         setFileAttachments([]);
-        // setMinutes(false);
         // setSceduleMeeting(false);
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
@@ -665,24 +659,23 @@ const Minutes = ({
         setUseCase(3);
       } else {
         setFileAttachments([]);
-        setMinutes(false);
-        setSceduleMeeting(false);
-        dispatch(showUnsaveMinutesFileUpload(false));
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-          ProposedMeetings:
-            currentView && Number(currentView) === 2 ? true : false,
-        };
+        setGoBackCancelModal(true);
+        // dispatch(showUnsaveMinutesFileUpload(false));
+        // let searchData = {
+        //   Date: "",
+        //   Title: "",
+        //   HostName: "",
+        //   UserID: Number(userID),
+        //   PageNumber:
+        //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        //   PublishedMeetings:
+        //     currentView && Number(currentView) === 1 ? true : false,
+        //   ProposedMeetings:
+        //     currentView && Number(currentView) === 2 ? true : false,
+        // };
 
-        dispatch(listOfMeetingsApi(navigate, t, searchData));
+        // dispatch(listOfMeetingsApi(navigate, t, searchData));
       }
     }
   };
@@ -698,20 +691,6 @@ const Minutes = ({
         setUseCase(2);
       } else {
         dispatch(setCreateEditTab("actions"));
-        // setactionsPage(true);
-        // setMinutes(false);
-        // dispatch(meetingDetailsGlobalFlag(false));
-        // dispatch(organizersGlobalFlag(false));
-        // dispatch(agendaContributorsGlobalFlag(false));
-        // dispatch(participantsGlobalFlag(false));
-        // dispatch(agendaGlobalFlag(false));
-        // dispatch(meetingMaterialGlobalFlag(false));
-        // dispatch(minutesGlobalFlag(false));
-        // dispatch(proposedMeetingDatesGlobalFlag(false));
-        // dispatch(actionsGlobalFlag(true));
-        // dispatch(pollsGlobalFlag(false));
-        // dispatch(attendanceGlobalFlag(false));
-        // dispatch(uploadGlobalFlag(false));
       }
     } else if (general) {
       if (
@@ -764,7 +743,6 @@ const Minutes = ({
 
       {agenda ? (
         <AgendaWise
-          currentMeeting={currentMeeting}
           editorRole={editorRole}
           agendaOptionvalue={agendaOptionvalue}
           setAgendaOptionValue={setAgendaOptionValue}
@@ -1213,22 +1191,12 @@ const Minutes = ({
 
       {unsaveFileUploadMinutes && (
         <UnsavedMinutes
-          setMinutes={setMinutes}
-          setSceduleMeeting={setSceduleMeeting}
           setFileAttachments={setFileAttachments}
           useCase={useCase}
-          // setactionsPage={setactionsPage}
-          // setMeetingMaterial={setMeetingMaterial}
         />
       )}
 
-      {ShowPreviousModal && (
-        <PreviousModal
-          setMinutes={setMinutes}
-          // setMeetingMaterial={setMeetingMaterial}
-          prevFlag={prevFlag}
-        />
-      )}
+      {ShowPreviousModal && <PreviousModal prevFlag={prevFlag} />}
 
       {SnackBar}
     </section>

@@ -44,7 +44,7 @@ import {
   toggleIsOrganizerProposedMeetingDates,
   toggleIsParticipantProposedMeetingDates,
 } from "@/store/actions/ModalStates_actions";
-import { useCommitteeContext } from "@/context/CommitteeContext";
+import { getMeetingbyGroupIdApi } from "@/store/actions/Groups_actions";
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
@@ -55,12 +55,14 @@ const GroupProposedMeetings = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setResponseByDate } = useNewMeetingContext();
-  const { groupProposedMeetingData, groupProposedMeetingDataRecord } =
-    useGroupsContext();
-  //Current User ID
-  //Current Organization
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  const {
+    groupProposedMeetingData,
+    groupProposedMeetingDataRecord,
+    currentPageProposedGroupMeeting,
+    setCurrentPageProposedGroupMeeting,
+    currentLengthProposedGroupMeeting,
+    setCurrentLengthProposedGroupMeeting,
+  } = useGroupsContext();
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -113,12 +115,26 @@ const GroupProposedMeetings = () => {
     }
   };
 
+  const handelChangePagination = async (current, PageSize) => {
+    setCurrentPageProposedGroupMeeting(current);
+    setCurrentLengthProposedGroupMeeting(PageSize);
+    await dispatch(
+      getMeetingbyGroupIdApi(navigate, t, {
+        GroupID: Number(localStorage.getItem("ViewGroupID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(localStorage.getItem("userID")),
+        PageNumber: Number(current),
+        Length: Number(PageSize),
+        PublishedMeetings: false,
+        ProposedMeetings: true,
+      }),
+    );
+  };
+
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
-
-  // Meeting Type Filter Options
-
-  // Meeting Type Filter Menu
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -508,15 +524,9 @@ const GroupProposedMeetings = () => {
                   md={12}
                   lg={12}>
                   <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    // onChange={handelChangePagination}
+                    current={currentPageProposedGroupMeeting}
+                    pageSize={currentLengthProposedGroupMeeting}
+                    onChange={handelChangePagination}
                     total={groupProposedMeetingDataRecord}
                     showSizer={true}
                     pageSizeOptionsValues={["30", "50", "100", "200"]}

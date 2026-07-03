@@ -61,6 +61,7 @@
   white-space: nowrap;
 }
 .MainMeetingTablePublished {
-  min-height: 63vh !important;
+  min-height: 50vh !important;
+  max-height: 63vh !important;
   margin-bottom: 70px;
 }

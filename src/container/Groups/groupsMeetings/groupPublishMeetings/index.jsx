@@ -86,6 +86,8 @@ import {
   UpdateMeetingStatusApi,
 } from "@/store/actions/NewMeeting2.actions";
 import { useGroupsContext } from "../../../../context/GroupsContext";
+import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
+import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -151,6 +153,11 @@ const GroupPublishedMeetingList = () => {
     minutesAgo,
     startMeetingButton,
     groupPublishedMeetingData,
+    groupPublishedMeetingDataRecord,
+    currentPagePublishGroupMeeting,
+    setCurrentPagePublishGroupMeeting,
+    currentLengthPublishGroupMeeting,
+    setCurrentLengthPublishGroupMeeting,
   } = useGroupsContext();
 
   console.log(
@@ -830,21 +837,12 @@ const GroupPublishedMeetingList = () => {
         ),
       },
 
-   // ── Meeting Type ──
+      // ── Meeting Type ──
       {
         title: (
           <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Type")}</span>
-            <img
-              src={
-                meetingTypeSort === null
-                  ? DoubleArrowIcon
-                  : meetingTypeSort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowUpIcon
-              }
-              alt='Meeting type Sort Icon'
-            />
+          
           </div>
         ),
         dataIndex: "type",
@@ -1048,6 +1046,26 @@ const GroupPublishedMeetingList = () => {
     t,
   ]);
 
+  // ─── Pagination Handler ───────────────────────────────────────────────────
+
+  const handleChangePaginationPublishedMeeting = (currentPage, pageSize) => {
+    setCurrentPagePublishGroupMeeting(currentPage);
+    setCurrentLengthPublishGroupMeeting(pageSize);
+    dispatch(
+      getMeetingbyGroupIdApi(navigate, t, {
+        GroupID: Number(localStorage.getItem("ViewGroupID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: Number(currentPage),
+        Length: Number(pageSize),
+        PublishedMeetings: true,
+        ProposedMeetings: false,
+      }),
+    );
+  };
+
   // ─── Table Sort Handler ───────────────────────────────────────────────────
 
   const handleTableChange = (pagination, filters, sorter) => {
@@ -1077,13 +1095,6 @@ const GroupPublishedMeetingList = () => {
   };
 
   // ─── Render ───────────────────────────────────────────────────────────────
-  const scroll = {
-    y: "39vh",
-    scrollbar: {
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-    },
-  };
   return (
     <>
       <Row className='mt-2'>
@@ -1093,7 +1104,6 @@ const GroupPublishedMeetingList = () => {
           sm={12}
           className={styles["MainMeetingTablePublished"]}>
           <Table
-            getPopupContainer={(node) => node.closest(".ant-table")}
             onChange={handleTableChange}
             className='MeetingTable'
             column={columns}
@@ -1102,10 +1112,31 @@ const GroupPublishedMeetingList = () => {
             sticky={true}
             pagination={false}
             locale={{ emptyText: <EmptyTableComponent /> }}
-            scroll={scroll}
+            scroll={{
+              y: 400,
+            }}
           />
         </Col>
-        <Col></Col>
+        {groupPublishedMeetingData.length > 0 && (
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className={
+              "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
+            }>
+            <span className='PaginationStyle-TodoList'>
+              <CustomPagination
+                current={currentPagePublishGroupMeeting}
+                showSizer={true}
+                onChange={handleChangePaginationPublishedMeeting}
+                pageSizeOptionsValues={["30", "50", "100"]}
+                total={groupPublishedMeetingDataRecord}
+                pageSize={currentLengthPublishGroupMeeting}
+              />
+            </span>
+          </Col>
+        )}
       </Row>
 
       {boardDeckModalData && (

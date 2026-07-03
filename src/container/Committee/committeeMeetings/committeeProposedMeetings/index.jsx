@@ -40,6 +40,7 @@ import {
   getMeetingDetailsByMeetingIdApi,
   getUserWiseProposedDatesForOrganizerApi,
 } from "@/store/actions/NewMeeting2.actions";
+import { getMeetingByCommitteeIdApi } from "@/store/actions/Committee_actions";
 import {
   toggleIsOrganizerProposedMeetingDates,
   toggleIsParticipantProposedMeetingDates,
@@ -60,12 +61,14 @@ const CommitteeProposedMeetings = () => {
     setProposedMeetingDataRecord,
     setResponseByDate,
   } = useNewMeetingContext();
-  const { committeeProposedMeetingData, committeeProposedMeetingDataRecord } =
-    useCommitteeContext();
-  //Current User ID
-  //Current Organization
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  const {
+    committeeProposedMeetingData,
+    committeeProposedMeetingDataRecord,
+    currentPageProposedCommitteeMeeting,
+    setCurrentPageProposedCommitteeMeeting,
+    currentLengthProposedCommitteeMeeting,
+    setCurrentLengthProposedCommitteeMeeting,
+  } = useCommitteeContext();
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -118,6 +121,24 @@ const CommitteeProposedMeetings = () => {
 
       return;
     }
+  };
+
+  const handelChangePagination = async (current, PageSize) => {
+    setCurrentPageProposedCommitteeMeeting(current);
+    setCurrentLengthProposedCommitteeMeeting(PageSize);
+    await dispatch(
+      getMeetingByCommitteeIdApi(navigate, t, {
+        CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(localStorage.getItem("userID")),
+        PageNumber: Number(current),
+        Length: Number(PageSize),
+        PublishedMeetings: false,
+        ProposedMeetings: true,
+      }),
+    );
   };
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -301,7 +322,7 @@ const CommitteeProposedMeetings = () => {
         },
       },
 
-        {
+      {
         title: (
           <>
             <div className='d-flex align-items-center justify-content-center gap-2'>
@@ -336,7 +357,7 @@ const CommitteeProposedMeetings = () => {
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.responseDeadLine + "185958"
+            record.responseDeadLine + "185958",
           );
           return (
             <span className={styles.columnValue}>{`${moment(meetingDate).format(
@@ -500,114 +521,58 @@ const CommitteeProposedMeetings = () => {
 
   //
 
-  useEffect(() => {
-    if (MeetingProp !== null) {
-      const callApi = async () => {
-        try {
-          let getApiResponse = await validateStringParticipantProposedApi(
-            MeetingProp,
-            navigate,
-            t,
-          )(dispatch); // Ensure you're passing dispatch here
-          if (getApiResponse) {
-            localStorage.setItem(
-              "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID,
-            );
-            localStorage.removeItem("meetingprop");
-            setResponseByDate(getApiResponse.deadline);
-            dispatch(toggleIsParticipantProposedMeetingDates(true));
-          }
-        } catch (error) {
-          localStorage.removeItem("meetingprop");
-        }
-      };
-
-      callApi();
-    }
-  }, [MeetingProp]); // Add `dispatch` to the dependency array
-
-  useEffect(() => {
-    if (UserMeetPropoDatPoll !== null) {
-      try {
-        const callApi1 = async () => {
-          try {
-            let getApiResponse =
-              await validateStringUserMeetingProposedDatesPollsApi(
-                UserMeetPropoDatPoll,
-                navigate,
-                t,
-              )(dispatch); // Ensure you're passing dispatch here
-
-            if (getApiResponse) {
-              localStorage.setItem(
-                "viewProposeDatePollMeetingID",
-                getApiResponse.meetingID,
-              );
-              localStorage.removeItem("UserMeetPropoDatPoll");
-              dispatch(toggleIsOrganizerProposedMeetingDates(true));
-            }
-          } catch (error) {
-            localStorage.removeItem("UserMeetPropoDatPoll");
-          }
-        };
-
-        callApi1();
-      } catch (error) {}
-    }
-  }, [UserMeetPropoDatPoll]);
   return (
     <>
-      <Row>
-        <Col lg={12} md={12} sm={12} className='w-100'>
-          <Table
-            onChange={handleChangeMeetingTable}
-            className='MeetingTable'
-            column={columns}
-            size={"small"}
-            rows={committeeProposedMeetingData}
-            sticky={true}
-            pagination={false}
-            scroll={{
-              y: 400,
-            }}
-            locale={{
-              emptyText: <EmptyTableComponent />, // Set your custom empty text here
-            }}
-          />
-        </Col>{" "}
-        {committeeProposedMeetingData.length > 0 && (
-          <Col className={styles["ProposedMeeting_Pagination"]}>
-            <div className='d-flex justify-content-center mt-2 '>
-              <Row className={styles["PaginationStyle-Committee"]}>
-                <Col
-                  className={"pagination-groups-table"}
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    // onChange={handelChangePagination}
-                    total={committeeProposedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        )}
-      </Row>
-      {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
-      {deleteMeetingModal && <DeleteMeetingModal />}
-      {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      <div className='position-relative'>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className={styles["MainMeetingTablePublished"]}>
+            <Table
+              onChange={handleChangeMeetingTable}
+              className='MeetingTable'
+              column={columns}
+              size={"small"}
+              rows={committeeProposedMeetingData}
+              sticky={true}
+              pagination={false}
+              scroll={{
+                y: 400,
+              }}
+              locale={{
+                emptyText: <EmptyTableComponent />, // Set your custom empty text here
+              }}
+            />
+          </Col>{" "}
+          {committeeProposedMeetingData.length > 0 && (
+            <Col className={styles["Meeting_Pagination"]}>
+              <div className='d-flex justify-content-center mt-2 '>
+                <Row className={styles["PaginationStyle-Meeting"]}>
+                  <Col
+                    className={"pagination-groups-table"}
+                    sm={12}
+                    md={12}
+                    lg={12}>
+                    <CustomPagination
+                      current={currentPageProposedCommitteeMeeting}
+                      pageSize={currentLengthProposedCommitteeMeeting}
+                      onChange={handelChangePagination}
+                      total={committeeProposedMeetingDataRecord}
+                      showSizer={true}
+                      pageSizeOptionsValues={["30", "50", "100"]}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          )}
+        </Row>
+        {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
+        {deleteMeetingModal && <DeleteMeetingModal />}
+        {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      </div>
     </>
   );
 };

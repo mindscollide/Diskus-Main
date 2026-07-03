@@ -39,8 +39,16 @@ const GroupMeetingTab = ({ groupStatus }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive } =
-    useGroupsContext();
+  const {
+    currentGroupMeetingTabActive,
+    setCurrentGroupMeetingTabActive,
+    setCurrentPagePublishGroupMeeting,
+    setCurrentLengthPublishGroupMeeting,
+    setCurrentPageDraftGroupMeeting,
+    setCurrentLengthDraftGroupMeeting,
+    setCurrentPageProposedGroupMeeting,
+    setCurrentLengthProposedGroupMeeting,
+  } = useGroupsContext();
   // Context for meeting state management
   const {
     isQuickMeetingCreate,
@@ -71,6 +79,12 @@ const GroupMeetingTab = ({ groupStatus }) => {
 
   const handleClickTabNavigate = (value) => {
     setCurrentGroupMeetingTabActive(value);
+    setCurrentPagePublishGroupMeeting(1);
+    setCurrentLengthPublishGroupMeeting(30);
+    setCurrentPageDraftGroupMeeting(1);
+    setCurrentLengthDraftGroupMeeting(30);
+    setCurrentPageProposedGroupMeeting(1);
+    setCurrentLengthProposedGroupMeeting(30);
 
     let searchData = {
       GroupID: Number(ViewGroupID),
