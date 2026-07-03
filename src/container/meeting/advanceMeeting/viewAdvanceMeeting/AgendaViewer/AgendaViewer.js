@@ -735,13 +735,184 @@ const AgendaViewer = () => {
     }
   }, [joinMeetingVideoParticipant]);
 
-  const onClickVideoIconOpenVideo = () => {
+  // const onClickVideoIconOpenVideo = () => {
+  //   setStartRecordingState(true);
+  //   setPauseRecordingState(false);
+  //   setResumeRecordingState(false);
+  //   setStopRecordingState(false);
+  //   dispatch(disableZoomBeforeJoinSession(true));
+
+  //   let isMeetingVideoHostCheck = JSON.parse(
+  //     localStorage.getItem("isMeetingVideoHostCheck"),
+  //   );
+  //   let nonMeetingCheck = JSON.parse(
+  //     sessionStorage.getItem("NonMeetingVideoCall"),
+  //   );
+
+  //   if (nonMeetingCheck) {
+  //     dispatch(nonMeetingVideoGlobalModal(true));
+  //   } else {
+  //     if (!isMeetingVideoHostCheck) {
+  //       dispatch(participantVideoButtonState(true));
+  //       // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
+  //       if (!participantEnableVideoState) {
+  //         dispatch(maxParticipantVideoCallPanel(true));
+  //       }
+  //     } else {
+  //       localStorage.setItem("isMeetingVideoHostCheck", true);
+  //       dispatch(videoIconOrButtonState(true));
+  //       if (!enableDisableVideoState) {
+  //         let data = {
+  //           MeetingId: Number(advanceMeetingModalID),
+  //           VideoCallURL: String(currentMeetingVideoURL),
+  //           IsMuted: false,
+  //           HideVideo: false,
+  //           isHost: isMeetingVideoHostCheck ? true : false,
+  //         };
+  //         dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+  //       } else {
+  //       }
+  //     }
+  //   }
+  // };
+
+  // const onClickStartPresenter = async () => {
+  //   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  //   let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
+  //   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+  //   let currentCallType = JSON.parse(localStorage.getItem("CallType"));
+  //   dispatch(participantWaitingListBox(false));
+  //   dispatch(toggleParticipantsVisibility(false));
+  //   if (activeCallState && !isMeetingVideo) {
+  //     setStartPresenterViewOrLeaveOneToOne(true);
+  //     await dispatch(nonMeetingVideoGlobalModal(true));
+  //   } else if (isMeetingVideo) {
+  //     if (raisedUnRaisedParticipant) {
+  //       if (!isZoomEnabled || !disableBeforeJoinZoom) {
+  //         let data = {
+  //           RoomID: String(RoomID),
+  //           UID: String(UID),
+  //           IsHandRaised: false,
+  //         };
+  //         await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+  //       }
+  //     }
+
+  //     if (isWaiting) {
+  //       dispatch(closeWaitingParticipantVideoStream(true));
+  //     } else {
+  //       localStorage.setItem("acceptedRoomID", RoomID);
+  //       await sessionStorage.setItem("alreadyInMeetingVideo", true);
+  //       await sessionStorage.setItem(
+  //         "alreadyInMeetingVideoStartPresenterCheck",
+  //         true,
+  //       );
+  //       dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
+  //     }
+  //   } else {
+  //     if (isWaiting) {
+  //       dispatch(closeWaitingParticipantVideoStream(true));
+  //     } else if (maximizeParticipantVideoFlag) {
+  //       dispatch(videoIconOrButtonState(false));
+  //       dispatch(participantVideoButtonState(false));
+  //       dispatch(maxParticipantVideoCallPanel(false));
+  //       let data = {
+  //         VideoCallURL: String(currentMeetingVideoURL || ""),
+  //         Guid: "",
+  //         WasInVideo: Boolean(isMeetingVideo),
+  //       };
+
+  //       dispatch(
+  //         openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
+  //       );
+  //     } else {
+  //       dispatch(maxParticipantVideoCallPanel(false));
+  //       let data = {
+  //         VideoCallURL: String(currentMeetingVideoURL || ""),
+  //         Guid: "",
+  //         WasInVideo: Boolean(isMeetingVideo),
+  //       };
+
+  //       dispatch(
+  //         openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
+  //       );
+  //     }
+  //   }
+  // };
+
+  // const onClickStopPresenter = async (value) => {
+  //   try {
+  //     setStartRecordingState(false);
+  //     setPauseRecordingState(false);
+  //     setResumeRecordingState(false);
+  //     dispatch(participantWaitingListBox(false));
+  //     dispatch(toggleParticipantsVisibility(false));
+
+  //     if (value === 1) {
+  //       if (presenterStartedFlag) {
+  //         let data = {
+  //           MeetingID: advanceMeetingModalID,
+  //           RoomID: String(RoomID),
+  //           VideoCallUrl: currentMeetingVideoURL,
+  //         };
+  //         // sessionStorage.setItem("StopPresenterViewAwait", true);
+  //         console.log(data, "presenterViewJoinFlag");
+  //         dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
+  //       } else {
+  //         let data = {
+  //           RoomID: String(RoomID),
+  //           UserGUID: String(UID),
+  //           Name: String(currentUserName),
+  //         };
+  //         console.log("leavePresenterViewMainApi");
+  //         dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+  //       }
+  //     } else if (value === 2) {
+  //       let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+  //       let currentCallType = JSON.parse(localStorage.getItem("CallType"));
+  //       if (
+  //         activeCallState &&
+  //         (currentCallType === 1 || currentCallType === 2)
+  //       ) {
+  //         setPresenterForOneToOneOrGroup(true);
+  //         dispatch(nonMeetingVideoGlobalModal(true));
+  //       } else {
+  //         let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+  //         let data = {
+  //           VideoCallURL: String(currentMeetingVideoURL),
+  //           WasInVideo: isMeetingVideo ? true : false,
+  //         };
+
+  //         dispatch(joinPresenterViewMainApi(navigate, t, data));
+  //       }
+  //     } else if (value === 3) {
+  //       // if (alreadyInMeetingVideo) {
+  //       sessionStorage.removeItem("alreadyInMeetingVideo");
+  //       //   await dispatch(presenterViewGlobalState(0, false, false, false));
+  //       //   dispatch(maximizeVideoPanelFlag(false));
+  //       //   dispatch(normalizeVideoPanelFlag(true));
+  //       //   dispatch(minimizeVideoPanelFlag(false));
+  //       // } else {
+  //       let data = {
+  //         RoomID: String(callAcceptedRoomID),
+  //         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+  //         Name: String(currentUserName),
+  //       };
+  //       console.log("leavePresenterViewMainApi");
+  //       dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+  //       // }
+  //     }
+  //     // }
+  //   } catch (error) {}
+  // };
+const onClickVideoIconOpenVideo = () => {
     setStartRecordingState(true);
     setPauseRecordingState(false);
     setResumeRecordingState(false);
     setStopRecordingState(false);
     dispatch(disableZoomBeforeJoinSession(true));
 
+    console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck"),
     );
@@ -750,18 +921,23 @@ const AgendaViewer = () => {
     );
 
     if (nonMeetingCheck) {
+      console.log("onClickVideoIconOpenVideo");
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
       if (!isMeetingVideoHostCheck) {
+        console.log("onClickVideoIconOpenVideo");
         dispatch(participantVideoButtonState(true));
         // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
         if (!participantEnableVideoState) {
+          console.log("onClickVideoIconOpenVideo");
           dispatch(maxParticipantVideoCallPanel(true));
         }
       } else {
+        console.log("onClickVideoIconOpenVideo");
         localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
+          console.log("onClickVideoIconOpenVideo");
           let data = {
             MeetingId: Number(advanceMeetingModalID),
             VideoCallURL: String(currentMeetingVideoURL),
@@ -771,6 +947,8 @@ const AgendaViewer = () => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
+          console.log("onClickVideoIconOpenVideo");
+          console.log("No Need To Hit");
         }
       }
     }
@@ -784,11 +962,15 @@ const AgendaViewer = () => {
     dispatch(participantWaitingListBox(false));
     dispatch(toggleParticipantsVisibility(false));
     if (activeCallState && !isMeetingVideo) {
+      console.log("maximizeParticipantVideoFlag");
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {
+      console.log("maximizeParticipantVideoFlag");
       if (raisedUnRaisedParticipant) {
+        console.log("maximizeParticipantVideoFlag");
         if (!isZoomEnabled || !disableBeforeJoinZoom) {
+          console.log("maximizeParticipantVideoFlag");
           let data = {
             RoomID: String(RoomID),
             UID: String(UID),
@@ -799,8 +981,10 @@ const AgendaViewer = () => {
       }
 
       if (isWaiting) {
+        console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));
       } else {
+        console.log("maximizeParticipantVideoFlag");
         localStorage.setItem("acceptedRoomID", RoomID);
         await sessionStorage.setItem("alreadyInMeetingVideo", true);
         await sessionStorage.setItem(
@@ -810,9 +994,13 @@ const AgendaViewer = () => {
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
     } else {
+      console.log("maximizeParticipantVideoFlag", isWaiting);
+      console.log("maximizeParticipantVideoFlag", maximizeParticipantVideoFlag);
       if (isWaiting) {
+        console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));
       } else if (maximizeParticipantVideoFlag) {
+        console.log("maximizeParticipantVideoFlag");
         dispatch(videoIconOrButtonState(false));
         dispatch(participantVideoButtonState(false));
         dispatch(maxParticipantVideoCallPanel(false));
@@ -826,6 +1014,7 @@ const AgendaViewer = () => {
           openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
         );
       } else {
+        console.log("maximizeParticipantVideoFlag");
         dispatch(maxParticipantVideoCallPanel(false));
         let data = {
           VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -841,13 +1030,15 @@ const AgendaViewer = () => {
   };
 
   const onClickStopPresenter = async (value) => {
+    console.log("onClickStopPresenter", value);
     try {
       setStartRecordingState(false);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
-
+      // if (presenterMeetingId === currentMeeting) {
+      console.log("Check Stop");
       if (value === 1) {
         if (presenterStartedFlag) {
           let data = {
@@ -874,15 +1065,17 @@ const AgendaViewer = () => {
           activeCallState &&
           (currentCallType === 1 || currentCallType === 2)
         ) {
+          console.log("Check Stop");
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
+          console.log("onClickStopPresenter", value);
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
           let data = {
             VideoCallURL: String(currentMeetingVideoURL),
             WasInVideo: isMeetingVideo ? true : false,
           };
-
+          console.log("onClickStopPresenter", data);
           dispatch(joinPresenterViewMainApi(navigate, t, data));
         }
       } else if (value === 3) {
@@ -905,7 +1098,6 @@ const AgendaViewer = () => {
       // }
     } catch (error) {}
   };
-
   return (
     <>
       {emptyStateRows === true &&
