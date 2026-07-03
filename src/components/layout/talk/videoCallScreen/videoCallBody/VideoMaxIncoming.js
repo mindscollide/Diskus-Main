@@ -57,19 +57,19 @@ const VideoMaxIncoming = () => {
     setIsVisible,
   } = useMeetingContext();
   const { VideoMainReducer, videoFeatureReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   let currentUserId = Number(localStorage.getItem("userID"));
@@ -80,7 +80,7 @@ const VideoMaxIncoming = () => {
   let CallType = Number(localStorage.getItem("CallType"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
+    localStorage.getItem("isMeetingVideoHostCheck"),
   );
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let newRoomID = localStorage.getItem("newRoomId");
@@ -94,12 +94,12 @@ const VideoMaxIncoming = () => {
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
       : isMeetingVideo
-      ? isMeetingVideoHostCheck
-        ? newRoomID
-        : participantRoomId
-      : initiateCallRoomID
-      ? initiateCallRoomID
-      : activeRoomID;
+        ? isMeetingVideoHostCheck
+          ? newRoomID
+          : participantRoomId
+        : initiateCallRoomID
+          ? initiateCallRoomID
+          : activeRoomID;
   console.log(isVisible, "Check new Visible");
 
   const [incomingCallerData, setIncomingCallerData] = useState([]);
@@ -225,7 +225,6 @@ const VideoMaxIncoming = () => {
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
           }
 
           // Slight delay to allow iframe to process the message
@@ -289,10 +288,10 @@ const VideoMaxIncoming = () => {
           } else {
             console.log("busyCall");
             let meetinHostInfo = JSON.parse(
-              localStorage.getItem("meetinHostInfo")
+              localStorage.getItem("meetinHostInfo"),
             );
             let currentMeetingID = JSON.parse(
-              localStorage.getItem("currentMeetingID")
+              localStorage.getItem("currentMeetingID"),
             );
 
             let newUserGUID = meetinHostInfo?.isHost
@@ -315,14 +314,14 @@ const VideoMaxIncoming = () => {
                 3,
                 null,
                 setJoiningOneToOneAfterLeavingPresenterView,
-                setLeaveMeetingVideoForOneToOneOrGroup
-              )
+                setLeaveMeetingVideoForOneToOneOrGroup,
+              ),
             );
 
             const emptyArray = [];
             localStorage.setItem(
               "callerStatusObject",
-              JSON.stringify(emptyArray)
+              JSON.stringify(emptyArray),
             );
             await dispatch(setAudioControlHost(false));
             console.log("videoHideUnHideForHost");
@@ -333,7 +332,7 @@ const VideoMaxIncoming = () => {
             dispatch(leaveCallModal(false));
             dispatch(participantPopup(false));
             localStorage.setItem("activeCall", false);
-    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+            sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
             localStorage.setItem("acceptedRoomID", 0);
             localStorage.setItem("activeRoomID", 0);
@@ -368,10 +367,10 @@ const VideoMaxIncoming = () => {
           } else {
             console.log("busyCall");
             let meetinHostInfo = JSON.parse(
-              localStorage.getItem("meetinHostInfo")
+              localStorage.getItem("meetinHostInfo"),
             );
             let currentMeetingID = JSON.parse(
-              localStorage.getItem("currentMeetingID")
+              localStorage.getItem("currentMeetingID"),
             );
 
             let newUserGUID = meetinHostInfo?.isHost
@@ -394,14 +393,14 @@ const VideoMaxIncoming = () => {
                 3,
                 null,
                 setJoiningOneToOneAfterLeavingPresenterView,
-                setLeaveMeetingVideoForOneToOneOrGroup
-              )
+                setLeaveMeetingVideoForOneToOneOrGroup,
+              ),
             );
 
             const emptyArray = [];
             localStorage.setItem(
               "callerStatusObject",
-              JSON.stringify(emptyArray)
+              JSON.stringify(emptyArray),
             );
             await dispatch(setAudioControlHost(false));
             console.log("videoHideUnHideForHost");
@@ -463,7 +462,7 @@ const VideoMaxIncoming = () => {
           let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
           let incommingCallType = localStorage.getItem("incommingCallType");
           let incommingNewCallerID = localStorage.getItem(
-            "incommingNewCallerID"
+            "incommingNewCallerID",
           );
 
           localStorage.setItem("callTypeID", incommingCallTypeID);
@@ -599,7 +598,7 @@ const VideoMaxIncoming = () => {
   //For Ringer Incoming If page is Refereshed
   useEffect(() => {
     let RingerCallCheckFlag = JSON.parse(
-      localStorage.getItem("RingerCallCheckFlag")
+      localStorage.getItem("RingerCallCheckFlag"),
     );
 
     const handleBeforeUnload = async (event) => {

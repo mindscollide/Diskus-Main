@@ -1166,17 +1166,11 @@ const VideoPanelNormal = () => {
     let initiateVideoCall = JSON.parse(
       localStorage.getItem("initiateVideoCall"),
     );
-    console.log("Does Check Recording Start", isZoomEnabled);
     if (isZoomEnabled) {
-      console.log("Does Check Recording Start", initiateVideoCall);
-      console.log("Does Check Recording Start", isMeetingVideo);
       if (!isMeetingVideo && initiateVideoCall) {
-        console.log("Does Check Recording Start");
         const iframe = iframeRef.current;
         if (iframe && iframe?.contentWindow) {
-          console.log("Does Check Recording Start");
           setTimeout(() => {
-            console.log("Does Check Recording Start");
             iframe?.contentWindow?.postMessage(
               "RecordingStopMsgFromIframe",
               "*",
@@ -1538,7 +1532,7 @@ const VideoPanelNormal = () => {
 
           case "StreamConnected":
             console.log("disableZoomBeforeJoinSession", event.data);
-            RecordingStopScenarioForOneToOne();
+            // RecordingStopScenarioForOneToOne();
 
             // Show recording notification when stream is connected
             if (isMeetingVideo && !recordingToastShownRef.current) {
@@ -1589,7 +1583,6 @@ const VideoPanelNormal = () => {
             break;
 
           case "RecordingStopMsgFromIframe":
-            console.log("recording Stop");
             recordingToastShownRef.current = false;
             // Recording has actually stopped — reflect that in the UI state.
             // Previously this case never updated these flags, so the badge
@@ -1993,7 +1986,6 @@ const VideoPanelNormal = () => {
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
           }
 
           // Slight delay to allow iframe to process the message

@@ -105,9 +105,6 @@ const NonMeetingVideoModal = () => {
    */
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      
-
-      // Reset recording states
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -246,6 +243,21 @@ const NonMeetingVideoModal = () => {
 
       dispatch(LeaveCall(Data, navigate, t));
       await dispatch(nonMeetingVideoGlobalModal(false));
+
+      // Get The NoneMeetingVideoCall check if true then it'll make a hit for getParticipantMeetingJoinApi
+      let getVideoCallMeeting = JSON.parse(
+        sessionStorage.getItem("NonMeetingVideoCall"),
+      );
+      if (getVideoCallMeeting) {
+        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+        let data = {
+          MeetingId: Number(advanceMeetingModalID),
+          VideoCallURL: String(currentMeetingVideoURL),
+          IsMuted: false,
+          HideVideo: false,
+        };
+        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      }
     }
   };
 
