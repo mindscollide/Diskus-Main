@@ -1,7 +1,4 @@
 .title-heading {
-  /* display: flex;
-    align-items: baseline;
-    justify-content: start; */
   font-size: 22px !important;
   margin: 0 !important;
   color: #6172d6 !important;
@@ -10,7 +7,8 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 95%;
+  max-width: 87%;
+  display: inline-block;
 }
 
 .title-for-presenter {
