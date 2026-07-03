@@ -8,6 +8,8 @@ import "./index.css";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 
+import disableConsole from "./commen/disableConsole";
+disableConsole();
 // Render the app with all providers
 // Root for Spinner or secondary element
 const spinnerContainer = document.getElementById("mainSpinner");
@@ -16,7 +18,7 @@ if (spinnerContainer) {
   spinnerRoot.render(
     <Provider store={store}>
       <SpinComponent />
-    </Provider>
+    </Provider>,
   );
 }
 

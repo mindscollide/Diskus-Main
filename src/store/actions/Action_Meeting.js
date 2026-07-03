@@ -508,7 +508,7 @@ const saveMeetingActionsDocuments = (
               )
           ) {
             const successMessage =
-              value === 7 ? t("Task-created") : t("Update-successful");
+              value === 7 ? "" : t("Update-successful");
 
             dispatch(
               saveTaskDocuments_success(
