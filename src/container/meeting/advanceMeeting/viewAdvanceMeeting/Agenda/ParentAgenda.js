@@ -295,7 +295,7 @@ const ParentAgenda = ({
                                 <>
                                   <Button
                                     text={t("End-voting")}
-                                    className={styles["startVotingButton"]}
+                                    className={styles["EndVotingButton"]}
                                     onClick={() => endVoting(data)}
                                   />
                                   <Button

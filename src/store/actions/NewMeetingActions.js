@@ -1605,7 +1605,7 @@ const saveParcipantsProposeMeetingAPI = (
               dispatch(
                 saveParcipantsProposeMeetingSuccess(
                   response.data.responseResult,
-                  ""
+                  "",
                   // t("Successfully-updated-participants-list"),
                 ),
               );
@@ -9333,7 +9333,8 @@ const moveFilesAndFoldersApi = (
               dispatch(
                 moveFilesAndFolder_success(
                   response.data.responseResult,
-                  t("Files-moved-successfully"),
+                  "",
+                  // t("Files-moved-successfully"),
                 ),
               );
               await dispatch(

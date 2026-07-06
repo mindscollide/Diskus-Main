@@ -334,7 +334,7 @@ const SubAgendaMappingDragging = ({
                                                     text={t("End-voting")}
                                                     className={
                                                       styles[
-                                                        "startVotingButton"
+                                                        "EndVotingButton"
                                                       ]
                                                     }
                                                     onClick={() =>

@@ -64,7 +64,12 @@ const CreateEditAdvanceMeeting = () => {
   const groupInfo = useSelector(
     (state) => state.GroupsReducer.viewGroupDetails,
   );
-
+  console.log("CreateEditAdvanceMeeting", {
+    committeeInfo,
+    groupInfo,
+    isAdvanceMeetingRoute,
+    isCreateEditMeetingModal,
+  });
   // Fix: read all tab states from Redux MeetingModalsReducer instead of
   // individual NewMeetingreducer global flags
   const {

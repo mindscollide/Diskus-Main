@@ -48,8 +48,8 @@ const CancelButtonModal = ({ setRows }) => {
       dispatch(toggleCreateEditMeetingModal(false));
       dispatch(resetCreateEditTabs());
       dispatch(resetCurrentMeetingInfo());
-      dispatch(resetViewGroupDetails());
-      dispatch(resetViewCommitteeDetails());
+      // dispatch(resetViewGroupDetails());
+      // dispatch(resetViewCommitteeDetails());
       setGoBackCancelModal(false);
 
       setEditorRole({
@@ -107,7 +107,7 @@ const CancelButtonModal = ({ setRows }) => {
 
       isFunction(setRows) && setRows([]);
     } else if (navigateRoutes[location]) {
-      commonReset();
+      // commonReset();
       navigate(navigateRoutes[location]);
     }
 

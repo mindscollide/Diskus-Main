@@ -36,7 +36,6 @@ import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
-import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import NextAgenda from "./NextAgenda/NextAgenda";
 import PreviousAgenda from "./PreviousAgenda/PreviousAgenda";
@@ -848,7 +847,6 @@ const Agenda = () => {
   // these are active).
   if (savedViewAgenda) return <SaveAgendaView />;
   if (agendaViewPage) return <AgendaView />;
-  if (enableVotingPage) return <VotingPage />;
 
   return (
     <>

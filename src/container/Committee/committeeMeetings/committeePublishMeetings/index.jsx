@@ -1135,7 +1135,7 @@ const CommitteePublishedMeetingList = () => {
               pagination={false}
               locale={{ emptyText: <EmptyTableComponent /> }}
               scroll={{
-                y: 400,
+                y: 350,
               }}
             />
           </Col>
