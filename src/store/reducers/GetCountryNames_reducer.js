@@ -4,6 +4,7 @@ const initialState = {
   Loading: false,
   CountryNamesData: [],
   ResponseMessage: "",
+  errorSeverity: null,
 };
 
 const countryNamesReducer = (state = initialState, action) => {
@@ -19,6 +20,7 @@ const countryNamesReducer = (state = initialState, action) => {
         Loading: false,
         CountryNamesData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.COUNTRYNAMES_FAIL:
       return {
@@ -26,6 +28,7 @@ const countryNamesReducer = (state = initialState, action) => {
         Loading: false,
         CountryNamesData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     default:
       return { ...state };

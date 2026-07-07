@@ -20,7 +20,7 @@ import {
   deleteCommentApi,
   taskFromDashboardAction,
 } from "./../../store/actions/ToDoList_action";
-import { getRandomUniqueNumber } from "../pages/meeting/scedulemeeting/Agenda/drageFunction";
+import { getRandomUniqueNumber } from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/drageFunction";
 import { useDispatch, useSelector } from "react-redux";
 import {
   postAssgineeComment,
@@ -33,13 +33,12 @@ import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../context/MeetingContext";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   const { editorRole, viewAdvanceMeetingModal, advanceMeetingModalID } = useMeetingContext();
-  console.log(editorRole, viewAdvanceMeetingModal, advanceMeetingModalID, "editorRoleeditorRole")
+  
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -103,7 +102,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const todoComments = useRef();
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
+  
   const [todoCreator, setTodoCreator] = useState(null);
   const [taskAssignedToDesignation, setTaskAssignedToDesignation] =
     useState("");
@@ -156,7 +155,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.forEach((data, index) => {
-          console.log(data, "taskAssignedTotaskAssignedTo");
+          
           setTaskAssignedToDesignation(data.designation);
         });
       }
@@ -426,15 +425,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   };
 
-  useEffect(() => {
-    if (
-      postAssigneeCommentsResponseMessege !== "" &&
-      postAssigneeCommentsResponseMessege !== "Comment added successfully"
-    ) {
-      showMessage(postAssigneeCommentsResponseMessege, "error", setOpen);
-    }
-    dispatch(HideNotificationTodoComment());
-  }, [postAssigneeCommentsResponseMessege]);
+
 
   const handleClose = () => {
     dispatch(emptyCommentState());
@@ -464,7 +455,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
                     {TaskAssignedTo.map((assgineeData, index) => {
-                      console.log(assgineeData, "assgineeDataassgineeData");
+                      
                       if (
                         Number(TodoListReducerData.taskCreator.pK_UID) ===
                         Number(createrID)
@@ -722,7 +713,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

@@ -31,20 +31,18 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../commen/functions/utils";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 
-const ModalToDoList = ({ ModalTitle, setShow, show }) => {
+const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
   //For Localization
   const { t } = useTranslation();
   const [fileSize, setFileSize] = useState(0);
+  const [show, SnackBar] =useSnackbar()
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const { currentTime, current_Date, dateObject, current_value } =
     get_CurrentDateTime();
-  console.log(
-    { currentTime, current_Date, dateObject, current_value },
-    "get_CurrentDateTime"
-  );
+  
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
 
@@ -105,14 +103,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     IsMainTask: true,
     creationDate: "",
   });
-  console.log(task, "tasktasktask");
+  
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
 
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
+  
 
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
@@ -152,11 +150,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setTasksAttachments({ TasksAttachments: [] });
       };
     } catch (error) {
-      console.log(error, "toDoListReducerAllAssigneesData");
+      
     }
   }, []);
 
-  console.log(task, "tasktask");
+  
 
   //To Set task Creater ID
   useEffect(() => {
@@ -228,7 +226,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setAllPresenters(PresenterData);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [toDoListReducerAllAssigneesData]);
 
@@ -255,7 +253,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     var valueCheck = value.replace(/^\s/g, "");
     if (name === "Title") {
       if (valueCheck.length > 199) {
-        showMessage(t("Title-limit-is-200"), "error", setOpen);
+        show(t("Title-limit-is-200"), "error");
       } else {
         setTask({
           ...task,
@@ -269,7 +267,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
     } else if (name === "Description") {
       if (valueCheck.length > 2000) {
-        showMessage(t("Description-limit-is-2000"), "error", setOpen);
+        show(t("Description-limit-is-2000"), "error");
       } else {
         setTask({
           ...task,
@@ -289,7 +287,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -304,15 +302,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       );
 
       if (!size) {
-        showMessage(
+        show(
           t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
-          setOpen
         );
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        show(t("File-size-should-not-be-zero"), "error");
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        show(t("File-already-exists"), "error");
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -333,7 +330,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   useEffect(() => {
     if (taskAssignedName.length > 1) {
-      showMessage(t("Only-one-assignee-allow"), "error", setOpen);
+      show(t("Only-one-assignee-allow"), "error");
     }
   }, [taskAssignedName.length]);
 
@@ -368,7 +365,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
     // Step 2: Validate and process task creation date and time
     if (!task.creationDate) {
-      showMessage(t("Creation date is required"), "error", setOpen); // Validate task creation date
+      show(t("Creation date is required"), "error"); // Validate task creation date
       return;
     }
 
@@ -383,11 +380,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
     // Step 3: Validate task properties
     if (!task.Title || task.Title.trim() === "") {
-      showMessage(t("Please select a title for the task"), "error", setOpen); // Validate task title
+      show(t("Please select a title for the task"), "error"); // Validate task title
       return;
     }
     if (!newDate) {
-      showMessage(t("Deadline date is required"), "error", setOpen); // Validate deadline date
+      show(t("Deadline date is required"), "error"); // Validate deadline date
       return;
     }
     // Step 4: Construct the task object
@@ -438,9 +435,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
       }
-      console.log(newFolder, "newFoldernewFoldernewFolder");
+      
       let newAttachmentData = newFolder.map((data, index) => {
-        console.log(data, "newFoldernewFoldernewFolder");
+        
         return {
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.pK_FileID.toString(),
@@ -512,7 +509,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             setCloseConfirmationBox(true);
             setIsCreateTodo(false);
           }}
-          show={show}
+          show={showModal}
           setShow={setShow}
           size={"md"}
           // className='modaldialogTodoCreate'
@@ -731,7 +728,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

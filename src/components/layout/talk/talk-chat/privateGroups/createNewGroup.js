@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Row, Col, Container, Form } from 'react-bootstrap'
-import { TextField, Button } from '../../../../elements'
-import { Checkbox } from 'antd'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Row, Col, Container, Form } from "react-bootstrap";
+import { TextField, Button } from "../../../../elements";
+import { Checkbox } from "antd";
 import {
   GetAllUsers,
   CreatePrivateGroup,
-} from '../../../../../store/actions/Talk_action'
+  GetAllUserChats,
+} from "../../../../../store/actions/Talk_action";
 import {
   headerShowHideStatus,
   footerActionStatus,
   footerShowHideStatus,
   privateGroupChatFlag,
   createGroupScreen,
-} from '../../../../../store/actions/Talk_Feature_actions'
-import CloseChatIcon from '../../../../../assets/images/Cross-Chat-Icon.png'
+} from "../../../../../store/actions/Talk_Feature_actions";
+import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
 
 /**
  * @component CreateNewGroup
@@ -28,73 +29,73 @@ import CloseChatIcon from '../../../../../assets/images/Cross-Chat-Icon.png'
  * validation warning when no participants are selected.
  */
 const CreateNewGroup = () => {
-  const { talkStateData } = useSelector((state) => state)
+  const { talkStateData } = useSelector((state) => state);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   //Current User ID
-  let currentUserId = localStorage.getItem('userID')
+  let currentUserId = localStorage.getItem("userID");
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   //Create Group Participant Check
-  const [noParticipant, setNoParticipant] = useState(false)
+  const [noParticipant, setNoParticipant] = useState(false);
 
   //all users states
-  const [allUsers, setAllUsers] = useState([])
+  const [allUsers, setAllUsers] = useState([]);
 
   //Group Name State for Creation/Modification
-  const [groupNameValue, setGroupNameValue] = useState('')
+  const [groupNameValue, setGroupNameValue] = useState("");
 
   //search group user states
-  const [searchGroupUserValue, setSearchGroupUserValue] = useState('')
+  const [searchGroupUserValue, setSearchGroupUserValue] = useState("");
 
   //group users checked
-  const [groupUsersChecked, setGroupUsersChecked] = useState([])
+  const [groupUsersChecked, setGroupUsersChecked] = useState([]);
 
   //Search Group Chat
   const searchGroupUser = (e) => {
-    if (e !== '') {
-      setSearchGroupUserValue(e)
+    if (e !== "") {
+      setSearchGroupUserValue(e);
       let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
         (value) => {
           return value.fullName
             .toLowerCase()
-            .includes(searchGroupUserValue.toLowerCase())
+            .includes(searchGroupUserValue.toLowerCase());
         },
-      )
+      );
       if (filteredData.length === 0) {
-        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
       } else {
-        setAllUsers(filteredData)
+        setAllUsers(filteredData);
       }
-    } else if (e === '' || e === null) {
-      let data = talkStateData.AllUsers.AllUsersData.allUsers
-      setSearchGroupUserValue('')
-      setAllUsers(data)
+    } else if (e === "" || e === null) {
+      let data = talkStateData.AllUsers.AllUsersData.allUsers;
+      setSearchGroupUserValue("");
+      setAllUsers(data);
     }
-  }
+  };
 
   //on change groups users
   const groupUsersCheckedHandler = (data, id, index) => {
     if (groupUsersChecked.includes(id)) {
       let groupUserIndex = groupUsersChecked.findIndex(
         (data2, index) => data2 === id,
-      )
+      );
       if (groupUserIndex !== -1) {
-        groupUsersChecked.splice(groupUserIndex, 1)
-        setGroupUsersChecked([...groupUsersChecked])
+        groupUsersChecked.splice(groupUserIndex, 1);
+        setGroupUsersChecked([...groupUsersChecked]);
       }
     } else {
-      groupUsersChecked.push(id)
-      setGroupUsersChecked([...groupUsersChecked])
+      groupUsersChecked.push(id);
+      setGroupUsersChecked([...groupUsersChecked]);
     }
-  }
+  };
 
   useEffect(() => {
     dispatch(
@@ -104,8 +105,8 @@ const CreateNewGroup = () => {
         parseInt(currentOrganizationId),
         t,
       ),
-    )
-  }, [])
+    );
+  }, []);
 
   //Setting state data of all users
   useEffect(() => {
@@ -114,15 +115,15 @@ const CreateNewGroup = () => {
       talkStateData.AllUsers.AllUsersData !== null &&
       talkStateData.AllUsers.AllUsersData.length !== 0
     ) {
-      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
-  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers])
+  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
-  const createPrivateGroup = () => {
+  const createPrivateGroup = async () => {
     if (groupUsersChecked.length === 0) {
-      setNoParticipant(true)
+      setNoParticipant(true);
     } else {
-      setNoParticipant(false)
+      setNoParticipant(false);
       let Data = {
         TalkRequest: {
           UserID: parseInt(currentUserId),
@@ -133,23 +134,32 @@ const CreateNewGroup = () => {
             IsPublic: false,
           },
         },
-      }
-      dispatch(CreatePrivateGroup(navigate, Data, t))
-      dispatch(createGroupScreen(false))
-      dispatch(footerActionStatus(false))
-      dispatch(headerShowHideStatus(true))
-      dispatch(footerShowHideStatus(true))
-      dispatch(privateGroupChatFlag(true))
+      };
+      await dispatch(CreatePrivateGroup(navigate, Data, t));
+
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      );
+      dispatch(createGroupScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      dispatch(privateGroupChatFlag(true));
     }
-  }
+  };
 
   const closeAddGroupScreen = async () => {
-    await dispatch(createGroupScreen(false))
-    await dispatch(footerActionStatus(false))
-    await dispatch(headerShowHideStatus(true))
-    await dispatch(footerShowHideStatus(true))
-    await dispatch(privateGroupChatFlag(true))
-  }
+    await dispatch(createGroupScreen(false));
+    await dispatch(footerActionStatus(false));
+    await dispatch(headerShowHideStatus(true));
+    await dispatch(footerShowHideStatus(true));
+    await dispatch(privateGroupChatFlag(true));
+  };
 
   return (
     <>
@@ -157,7 +167,7 @@ const CreateNewGroup = () => {
         <Row className="margin-top-10">
           <Col lg={11} md={11} sm={12}>
             <div className="new-chat">
-              <p className="fw-bold m-0">{t('Create-A-Group')}</p>
+              <p className="fw-bold m-0">{t("Create-A-Group")}</p>
             </div>
           </Col>
 
@@ -173,12 +183,12 @@ const CreateNewGroup = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={t('Group-Name')}
+              placeholder={t("Group-Name")}
               change={(e) => {
-                setGroupNameValue(e.target.value)
+                setGroupNameValue(e.target.value);
               }}
               value={groupNameValue}
-              labelclass={'d-none'}
+              labelclass={"d-none"}
             />
           </Col>
         </Row>
@@ -188,12 +198,12 @@ const CreateNewGroup = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={t('Search-User')}
+              placeholder={t("Search-User")}
               change={(e) => {
-                searchGroupUser(e.target.value)
+                searchGroupUser(e.target.value);
               }}
               value={searchGroupUserValue}
-              labelclass={'d-none'}
+              labelclass={"d-none"}
             />
           </Col>
         </Row>
@@ -230,7 +240,7 @@ const CreateNewGroup = () => {
                       </div>
                     </Col>
                     <Col lg={8} md={8} sm={8}>
-                      <div className={'group-add-user'}>
+                      <div className={"group-add-user"}>
                         <p className="chat-username-group m-0">
                           {dataItem.fullName}
                         </p>
@@ -249,7 +259,7 @@ const CreateNewGroup = () => {
                       />
                     </Col>
                   </Row>
-                )
+                );
               })
             : null}
         </div>
@@ -259,19 +269,19 @@ const CreateNewGroup = () => {
           <Col className="text-center">
             {noParticipant === true ? (
               <p className="participant-warning m-0">
-                {t('At-least-add-one-participant')}
+                {t("At-least-add-one-participant")}
               </p>
             ) : null}
             <Button
               className=" Ok-btn forward-user"
-              text={t('Create-Group')}
+              text={t("Create-Group")}
               onClick={createPrivateGroup}
             />
           </Col>
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default CreateNewGroup
+export default CreateNewGroup;

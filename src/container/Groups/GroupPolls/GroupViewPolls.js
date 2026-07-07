@@ -150,7 +150,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         dispatch(createPollGroupsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollGroups]);
 
@@ -178,7 +178,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [pollingSocket]);
 
@@ -196,7 +196,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollDelete]);
 
@@ -228,7 +228,7 @@ const GroupViewPolls = ({ groupStatus }) => {
   };
 
   const handleClickonTitle = (record) => {
-    console.log(record, "handleClickonTitle");
+    
     // // getPollsByGroupMainApi;
     // let data = {
     //   PollID: record.pollID,
@@ -407,7 +407,7 @@ const GroupViewPolls = ({ groupStatus }) => {
         <Menu.Item
           key={filter.value}
           onClick={() => {
-            console.log(filter, "filterfilterfilter");
+            
             handleMenuClick(filter.value);
           }}
           className="d-flex align-items-center justify-content-between"
@@ -649,11 +649,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        console.log(
-          currentDate,
-          convertIntoGmt,
-          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
-        );
+        
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (currentDate < convertIntoGmt && groupStatus === 3) {

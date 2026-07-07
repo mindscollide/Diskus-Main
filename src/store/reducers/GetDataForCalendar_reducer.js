@@ -107,7 +107,7 @@ const calendarReducer = (state = initialState, action) => {
         errorSeverity: null, // Also clear errorSeverity
       };
     case actions.CALENDAR_LOADER: {
-      console.log(action.payload, "payloadpayloadpayload");
+      
       return {
         ...state,
         Loading: action.payload,
@@ -150,7 +150,7 @@ const calendarReducer = (state = initialState, action) => {
       };
     }
     case actions.REMOVE_CALENDARMEETINGDATA: {
-      console.log(action, "REMOVE_CALENDARMEETINGDATAREMOVE_CALENDARMEETINGDATA")
+      
       return {
         ...state,
         eventsDetails: action.payload,

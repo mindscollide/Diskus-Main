@@ -32,7 +32,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { validateInput } from "../../../commen/functions/regex";
 import DatePicker from "react-multi-date-picker";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UpdatePolls = () => {
   const dispatch = useDispatch();
@@ -59,11 +59,7 @@ const UpdatePolls = () => {
   const [dropdowndata, setDropdowndata] = useState([]);
   const [pollmembers, setPollmembers] = useState([]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -344,10 +340,10 @@ const UpdatePolls = () => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        show(t("Please-fill-options"), "error");
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      show(t("Please-fill-options"), "error");
     }
   };
 
@@ -478,17 +474,17 @@ const UpdatePolls = () => {
       setError(true);
 
       if (UpdatePolls.TypingTitle === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        show(t("Title-is-required"), "error");
       } else if (UpdatePolls.datepoll === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        show(t("Select-date"), "error");
       } else if (Object.keys(pollmembers).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        show(t("Atleat-one-member-required"), "error");
       } else if (Object.keys(options).length <= 2) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        show(t("Required-atleast-two-options"), "error");
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        show(t("Please-fill-all-open-option-fields"), "error");
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        show(t("Please-fill-all-reqired-fields"), "error");
       }
     }
   };
@@ -1127,7 +1123,8 @@ const UpdatePolls = () => {
           size={defineUnsaveModal ? null : "xl"}
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

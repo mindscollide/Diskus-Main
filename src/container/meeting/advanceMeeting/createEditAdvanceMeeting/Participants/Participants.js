@@ -1,0 +1,927 @@
+import React, { useContext, useState } from "react";
+import styles from "./Participants.module.css";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
+import addmore from "../../../../../assets/images/addmore.png";
+import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
+import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import thumbsup from "../../../../../assets/images/thumbsup.svg";
+import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
+import { Col, Row } from "react-bootstrap";
+import {
+  Button,
+  Notification,
+  Table,
+  TextField,
+} from "../../../../../components/elements";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
+import {
+  GetAllParticipantsRoleNew,
+  GetAllSavedparticipantsAPI,
+  showAddParticipantsModal,
+  showCancelModalPartipants,
+  ParticipantsData,
+} from "../../../../../store/actions/NewMeetingActions";
+import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
+import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
+import { useEffect } from "react";
+import NextModal from "../meetingDetails/NextModal/NextModal";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { Tooltip } from "antd";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import store from "../../../../../store/store";
+import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
+import {
+  UpdateMeetingStatusApi,
+  UpdateMeetingUserApi,
+} from "../../../../../store/actions/NewMeeting2.actions";
+
+const Participants = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+  let meetingData = store.getState().NewMeetingreducer.currentMeetingInfo;
+  
+  const isAdvanceMeetingRoute = useSelector(
+    (state) => state.ModalStatesReducer.isAdvanceMeetingRoute,
+  );
+  const { setIsMeetingCreateOrEdit, setIsCreateEditMeeting } =
+    useNewMeetingContext();
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
+  const [particpantsRole, setParticpantsRole] = useState([]);
+  const [editableSave, setEditableSave] = useState(0);
+  const [isPublishedState, setIsPublishedState] = useState(false);
+  const { editorRole, setEditorRole, setGoBackCancelModal } =
+    useContext(MeetingContext);
+  const [flag, setFlag] = useState(4);
+  const [prevFlag, setprevFlag] = useState(4);
+  const [show, SnackBar] = useSnackbar();
+  const [rspvRows, setrspvRows] = useState([]);
+
+  const callApiOnComponentMount = async () => {
+    await dispatch(GetAllParticipantsRoleNew(navigate, t));
+    let Data = {
+      MeetingID: Number(meetingID),
+    };
+    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
+  };
+
+  //For participants Role
+  useEffect(() => {
+    callApiOnComponentMount();
+    return () => {
+      dispatch(ParticipantsData());
+    };
+  }, []);
+
+  //Opens Add more modal
+  const openAddPartcipantModal = () => {
+    setEditableSave(2);
+    dispatch(showAddParticipantsModal(true));
+  };
+
+  // handling save and next button
+  const handleNextButton = () => {
+    let Data = { MeetingID: meetingID, StatusID: 1 };
+    
+    dispatch(
+      UpdateMeetingStatusApi(
+        navigate,
+        t,
+        Data,
+        "publishMeetingFromParticipant",
+        {
+          setEditorRole, // shorthand if variable name matches key
+        },
+      ),
+    );
+  };
+
+  //For menu Portal of the React select
+  const customStyles = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+  };
+
+  //Roles Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== null &&
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles
+          .filter(
+            (data, index) =>
+              data.participantRole.toLowerCase() !== "None".toLowerCase(),
+          )
+          .forEach((data, index) => {
+            Newdata.push({
+              value: data.participantRoleID,
+              label: data.participantRole,
+            });
+          },
+        );
+        setParticpantsRole(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.getAllPartiicpantsRoles]);
+
+  useEffect(() => {
+    let getAllData = [];
+    if (
+      NewMeetingreducer.getAllSavedparticipants !== null &&
+      NewMeetingreducer.getAllSavedparticipants !== undefined &&
+      NewMeetingreducer.getAllSavedparticipants.length > 0
+    ) {
+      if (NewMeetingreducer.getAllSavedparticipants.length > 0) {
+        NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
+          getAllData.push({
+            IsOrganizerNotified: false,
+            IsPrimaryOrganizer: false,
+            Title: data.participantTitle,
+            displayPicture: "",
+            email: data.emailAddress,
+            isRSVP: data.rsvp,
+            participantRole: data.participantRole,
+            userID: data.userID,
+            userName: data.userName,
+            isComingApi: true,
+            attendeeAvailability: data.attendeeAvailability,
+          });
+        });
+      } else {
+        // IsParticipantsAddFlow;
+      }
+      setIsPublishedState(NewMeetingreducer.getAllSavedparticipantsIsPublished);
+      setrspvRows(getAllData);
+    } else {
+      setrspvRows([]);
+    }
+  }, [NewMeetingreducer.getAllSavedparticipants]);
+
+  const handleSelectChange = (userID, selectedOption) => {
+    setrspvRows((prevRowsData) => {
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            participantRole: {
+              participantRole: selectedOption.label,
+              participantRoleID: selectedOption.value,
+            },
+          };
+        }
+        return row;
+      });
+    });
+  };
+  const handleCancelingRow = (record) => {
+    if (isAdvanceMeetingRoute === 2) {
+      if (rspvRows.length === 1) {
+        show(t("Please-at-least-one-partcipant-required"), "error");
+      } else {
+        let removingfromrow = rspvRows.filter(
+          (data, index) => data.userID !== record.userID,
+        );
+        setrspvRows(removingfromrow);
+      }
+    } else {
+      let removingfromrow = rspvRows.filter(
+        (data, index) => data.userID !== record.userID,
+      );
+      setrspvRows(removingfromrow);
+    }
+
+    if (rspvRows.length === 1) {
+      setIsEditClicked(true);
+    }
+  };
+
+  let allowRSVPValue = NewMeetingreducer?.getAllSavedparticipantsAllowrsvp;
+  let ParticipantsColoumn = [];
+  if (allowRSVPValue === true) {
+    ParticipantsColoumn = [
+      {
+        title: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span>{t("Name")}</span>
+              </Col>
+            </Row>
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        ellipsis: true,
+      },
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        ellipsis: true,
+      },
+      {
+        title: t("Participant-title"),
+        dataIndex: "participantTitle",
+        key: "participantTitle",
+        ellipsis: true,
+
+        align: "center",
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2)
+          ) {
+            return <p>{record.Title}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <TextField
+                      disable={record.isComingApi === true ? true : false}
+                      placeholder={t("Participant-title")}
+                      labelclass={"d-none"}
+                      applyClass={"Organizer_table"}
+                      maxLength={140}
+                      value={
+                        record.isComingApi === true
+                          ? record.Title
+                          : record.Title || ""
+                      }
+                      change={(e) =>
+                        handleInputChange(record.userID, e.target.value)
+                      } // Update the inputValues when the user types
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        title: t("Role"),
+        dataIndex: "participantRole",
+        key: "participantRole",
+        align: "center",
+        ellipsis: true,
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2)
+          ) {
+            return <p>{record?.participantRole?.participantRole}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <Select
+                      isDisabled={record.isComingApi === true ? true : false}
+                      options={particpantsRole}
+                      menuPortalTarget={document.body}
+                      styles={customStyles}
+                      classNamePrefix={"ParticipantRole"}
+                      value={
+                        record.isComingApi === true
+                          ? {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                          : {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                      }
+                      onChange={(selectedOption) =>
+                        handleSelectChange(record.userID, selectedOption)
+                      }
+                      isSearchable={false}
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        title: t("RSVP"),
+        dataIndex: "attendeeAvailability",
+        key: "attendeeAvailability",
+        align: "center",
+        ellipsis: true,
+        render: (text, record) => {
+          if (record.attendeeAvailability === 1) {
+            return (
+              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
+                <img
+                  draggable={false}
+                  src={AwaitingResponse}
+                  height='30px'
+                  width='30px'
+                  alt=''
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 2) {
+            return (
+              <Tooltip placement='bottomLeft' title={t("Accepted")}>
+                <img
+                  draggable={false}
+                  src={thumbsup}
+                  height='30px'
+                  width='30px'
+                  alt=''
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 3) {
+            return (
+              <Tooltip placement='bottomLeft' title={t("Rejected")}>
+                <img
+                  draggable={false}
+                  src={thumbsdown}
+                  height='30px'
+                  width='30px'
+                  alt=''
+                />
+              </Tooltip>
+            );
+          } else if (record.attendeeAvailability === 4) {
+            return (
+              <img
+                draggable={false}
+                src={TentativelyAccepted}
+                height='30px'
+                width='30px'
+                alt=''
+              />
+            );
+          }
+        },
+      },
+      {
+        dataIndex: "Close",
+        key: "Close",
+        ellipsis: true,
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2)
+          ) {
+          } else {
+            return (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex justify-content-center'>
+                    {record.isComingApi === true ? (
+                      ""
+                    ) : (
+                      <>
+                        <img
+                          src={redcrossIcon}
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
+                          onClick={() => handleCancelingRow(record)}
+                          alt=''
+                        />
+                      </>
+                    )}
+                  </Col>
+                </Row>
+              </>
+            );
+          }
+        },
+      },
+    ];
+  } else {
+    ParticipantsColoumn = [
+      {
+        title: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span>{t("Name")}</span>
+              </Col>
+            </Row>
+          </>
+        ),
+        dataIndex: "userName",
+        key: "userName",
+        align: "left",
+        ellipsis: true,
+      },
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+        align: "left",
+        ellipsis: true,
+      },
+      {
+        title: t("Participant-title"),
+        dataIndex: "participantTitle",
+        key: "participantTitle",
+        ellipsis: true,
+
+        align: "left",
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2)
+          ) {
+            return <p>{record.Title}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <TextField
+                      disable={record.isComingApi === true ? true : false}
+                      placeholder={t("Participant-title")}
+                      labelclass={"d-none"}
+                      applyClass={"Organizer_table"}
+                      maxLength={140}
+                      value={
+                        record.isComingApi === true
+                          ? record.Title
+                          : record.Title || ""
+                      }
+                      change={(e) =>
+                        handleInputChange(record.userID, e.target.value)
+                      } // Update the inputValues when the user types
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+
+      {
+        title: t("Role"),
+        dataIndex: "participantRole",
+        key: "participantRole",
+        align: "left",
+        ellipsis: true,
+
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2)
+          ) {
+            return <p>{record?.participantRole?.participantRole}</p>;
+          } else {
+            return (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <>
+                    <Select
+                      isDisabled={record.isComingApi === true ? true : false}
+                      options={particpantsRole}
+                      menuPortalTarget={document.body}
+                      styles={customStyles}
+                      classNamePrefix={"ParticipantRole"}
+                      value={
+                        record.isComingApi === true
+                          ? {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                          : {
+                              value: record?.participantRole?.participantRoleID,
+                              label: record?.participantRole?.participantRole,
+                            }
+                      }
+                      onChange={(selectedOption) =>
+                        handleSelectChange(record.userID, selectedOption)
+                      }
+                      isSearchable={false}
+                    />
+                  </>
+                </Col>
+              </Row>
+            );
+          }
+        },
+      },
+      {
+        dataIndex: "Close",
+        key: "Close",
+        ellipsis: true,
+
+        render: (text, record) => {
+          if (
+            ((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2)
+          ) {
+          } else {
+            return (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex justify-content-center'>
+                    {record.isComingApi === true ? (
+                      ""
+                    ) : (
+                      <>
+                        <img
+                          src={redcrossIcon}
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
+                          onClick={() => handleCancelingRow(record)}
+                          alt=''
+                        />
+                      </>
+                    )}
+                  </Col>
+                </Row>
+              </>
+            );
+          }
+        },
+      },
+    ];
+  }
+
+  const nextTabAgenda = () => {
+    dispatch(setCreateEditTab("agenda"));
+  };
+
+  //canceling the participants page
+  const handleCancelParticipants = () => {
+    setGoBackCancelModal(true);
+  };
+
+  //Clearing the non saved  participant
+  const handleCancelButtonForClearingParticipants = () => {
+    let Data = {
+      MeetingID: Number(meetingID),
+    };
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
+    setIsEditClicked(false);
+  };
+
+  //state management For textfield
+  const handleInputChange = (userID, newValue) => {
+    setrspvRows((prevRowsData) => {
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            Title: newValue,
+          };
+        }
+        return row;
+      });
+    });
+  };
+
+  const handleEditFunction = () => {
+    setEditableSave(1);
+    setrspvRows((prevRows) => {
+      return prevRows.map((data) => ({
+        ...data,
+        isComingApi: false,
+      }));
+    });
+  };
+
+  //Intiating Add Flow Particiapnt from Empty State
+  const handleParticipantEmptyStateIntiate = () => {
+    setEditableSave(2);
+    dispatch(showAddParticipantsModal(true));
+  };
+
+  const handleSaveparticpants = () => {
+    let findshouldnotempty = rspvRows.every(
+      (newData, index) => Object.keys(newData.participantRole).length > 0,
+    );
+    let newarry = [];
+    let copyData = [...rspvRows];
+    copyData.forEach((data, index) => {
+      newarry.push(data.userID);
+    });
+    //Upadte Meeting Organizer
+
+    if (findshouldnotempty) {
+      dispatch(
+        UpdateMeetingUserApi(
+          navigate,
+          t,
+          {
+            MeetingID: meetingID,
+            MeetingAttendeRoleID: 2,
+            UpdatedUsers: newarry,
+          },
+          "saveMeetingParticipants",
+          {
+            rspvRows,
+            editableSave,
+          },
+        ),
+      );
+    } else {
+      show(t("Role-is-required"), "error");
+    }
+    setIsEditClicked(false);
+  };
+
+  useEffect(() => {
+    if (rspvRows.length > 0) {
+      let removedublicates = rspvRows.some(
+        (data, index) => data.isComingApi === false,
+      );
+      setIsEditable(removedublicates);
+    } else {
+      setIsEditable(false);
+    }
+  }, [rspvRows]);
+
+  return (
+    <>
+      <>
+        <Row className='mt-3'>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex justify-content-end gap-2'>
+            {((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
+              isAdvanceMeetingRoute === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isAdvanceMeetingRoute === 2) ? null : isEditable ||
+              isEditClicked ? (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_Organization"]}
+                      onClick={handleCancelButtonForClearingParticipants}
+                    />
+
+                    <Button
+                      text={t("Save")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleSaveparticpants}
+                    />
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <>
+                {rspvRows.length !== 0 && (
+                  <>
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_Button_Organizers"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width='11.75px'
+                          height='11.75px'
+                          alt=''
+                        />
+                      }
+                      onClick={handleEditFunction}
+                    />
+                  </>
+                )}
+
+                <Button
+                  text={t("Add-more")}
+                  icon={<img draggable={false} src={addmore} alt='' />}
+                  className={styles["AddMoreBtn"]}
+                  onClick={openAddPartcipantModal}
+                />
+              </>
+            )}
+          </Col>
+        </Row>
+        <section className={styles["height2"]}>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={ParticipantsColoumn}
+                scroll={{ y: rspvRows.length === 0 ? "55vh" : "42vh" }}
+                pagination={false}
+                locale={{
+                  emptyText: (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className='d-flex justify-content-center'>
+                          <img
+                            draggable={false}
+                            src={emptyContributorState}
+                            width={200}
+                            className='cursor-pointer'
+                            alt=''
+                            height='230.96px'
+                            onClick={handleParticipantEmptyStateIntiate}
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className='d-flex justify-content-center'>
+                          <span className={styles["Empty_state_heading"]}>
+                            {t("No-participant")}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className='d-flex justify-content-center'>
+                          <span className={styles["Empty_state_Subheading"]}>
+                            {t("There-are-no-Participants")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  ),
+                }}
+                className='Polling_table'
+                rows={rspvRows}
+              />
+            </Col>
+          </Row>
+          <Row className='mt-3'>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex justify-content-end gap-2'>
+              {isEditable ? (
+                <>
+                  <div className={styles["definedHeight"]}></div>
+                </>
+              ) : (
+                <>
+                  {((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                    editorRole.role === "Organizer" &&
+                    isAdvanceMeetingRoute === 2) ||
+                  (editorRole.role === "Agenda Contributor" &&
+                    isAdvanceMeetingRoute === 2) ? (
+                    <>
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabAgenda}
+                      />
+                    </>
+                  ) : Number(editorRole.status) === 1 ? (
+                    <>
+                      {" "}
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabAgenda}
+                      />{" "}
+                    </>
+                  ) : isEditClicked ? null : (
+                    <>
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabAgenda}
+                      />
+                    </>
+                  )}
+
+                  {Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ? (
+                    <Button
+                      disableBtn={
+                        Number(meetingID) === 0 || isPublishedState === false
+                          ? true
+                          : false
+                      }
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  ) : null}
+                </>
+              )}
+            </Col>
+          </Row>
+        </section>
+
+        {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
+        {NewMeetingreducer.participantModal && (
+          <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
+        )}
+        {NewMeetingreducer.cancelPartipants && (
+          <CancelParticipants setrspvRows={setrspvRows} />
+        )}
+
+        {NewMeetingreducer.ShowPreviousModal && (
+          <PreviousModal prevFlag={prevFlag} />
+        )}
+        
+      </>
+      {/* )} */}
+    {SnackBar}
+    </>
+  );
+};
+
+export default Participants;

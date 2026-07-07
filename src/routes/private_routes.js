@@ -5,7 +5,6 @@ const PrivateRoutes = () => {
   const currentUrl = window.location.href;
 
   const navigate = useNavigate();
-  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
 
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
@@ -15,14 +14,14 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
+              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
             )
         ) {
           const parts = currentUrl.split("/Meeting/")[1];
           // Extract action parameter from URL
           let getValue = getActionValue(
             currentUrl,
-            "Useravailabilityformeeting?action="
+            "Useravailabilityformeeting?action=",
           );
 
           localStorage.setItem("RSVP", getValue);
@@ -44,7 +43,7 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/Meeting/Meetingminutecollaborate?action=".toLowerCase()
+              "Diskus/Meeting/Meetingminutecollaborate?action=".toLowerCase(),
             )
         ) {
           // Add action-specific logic here if needed
@@ -109,7 +108,7 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/Meeting?Usermeetingproposedatespoll_action=".toLowerCase()
+              "Diskus/Meeting?Usermeetingproposedatespoll_action=".toLowerCase(),
             )
         ) {
           const parts = currentUrl.split("action=")[1];
@@ -122,7 +121,6 @@ const PrivateRoutes = () => {
             .toLowerCase()
             .includes("Diskus/polling?PollExpire_action=".toLowerCase())
         ) {
-          console.log("pollExpirepollExpirepollExpire", currentUrl);
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("pollExpire", parts);
           // Add action-specific logic here if needed
@@ -147,7 +145,6 @@ const PrivateRoutes = () => {
         ) {
           // Add action-specific logic here if needed
           const parts = currentUrl.split("action=")[1];
-          console.log(parts, "pollingpolling");
 
           localStorage.setItem("poUpda", parts);
         }
@@ -157,7 +154,7 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/resolution?Resolutionreminder_action=".toLowerCase()
+              "Diskus/resolution?Resolutionreminder_action=".toLowerCase(),
             )
         ) {
           // Add action-specific logic here if needed
@@ -177,7 +174,7 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/resolution?ResolutionNonVoter_action=".toLowerCase()
+              "Diskus/resolution?ResolutionNonVoter_action=".toLowerCase(),
             )
         ) {
           const parts = currentUrl.split("action=")[1];
@@ -188,7 +185,7 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/Admin/Organizationstatusenable?action=".toLowerCase()
+              "Diskus/Admin/Organizationstatusenable?action=".toLowerCase(),
             )
         ) {
           // Add action-specific logic here if needed
@@ -199,7 +196,7 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/Admin/Organizationsubscriptionenable?action=".toLowerCase()
+              "Diskus/Admin/Organizationsubscriptionenable?action=".toLowerCase(),
             )
         ) {
           // Add action-specific logic here if needed
@@ -221,7 +218,6 @@ const PrivateRoutes = () => {
         ) {
           let getValue = getActionValue(currentUrl, "id_action=");
           // let getValue = getActionValue(currentUrl, "id_action=");
-          console.log(getValue, "getValuegetValuegetValue");
 
           localStorage.setItem("committeeView_Id", getValue);
         }
@@ -232,7 +228,7 @@ const PrivateRoutes = () => {
             .includes("Diskus/committee?action".toLowerCase())
         ) {
           let getValue = getActionValue(currentUrl, "action=");
-          console.log(getValue, "getValuegetValue");
+
           localStorage.setItem("committeeList", getValue);
         }
         // Group View
@@ -275,12 +271,12 @@ const PrivateRoutes = () => {
           currentUrl
             .toLowerCase()
             .includes(
-              "/Diskus/documentViewer?documentViewer_action=".toLowerCase()
+              "/Diskus/documentViewer?documentViewer_action=".toLowerCase(),
             )
         ) {
           let getValue = await getActionValue(
             currentUrl,
-            "documentViewer_action="
+            "documentViewer_action=",
           );
           localStorage.setItem("documentViewer", getValue);
           navigate("/Diskus/dataroom");
@@ -327,7 +323,7 @@ const PrivateRoutes = () => {
         ) {
           let getValue = getActionValue(
             currentUrl,
-            "viewMeetingMinutes_action="
+            "viewMeetingMinutes_action=",
           );
           localStorage.setItem("viewPublishMinutesLink", getValue);
         }
@@ -348,9 +344,7 @@ const PrivateRoutes = () => {
           let getValue = getActionValue(currentUrl, "signed_action=");
           localStorage.setItem("docSignedAction", getValue);
         }
-      } catch (error) {
-        console.log(error, "errorerrorerrorerror");
-      }
+      } catch (error) {}
       if (
         currentUrl
           .toLowerCase()
@@ -358,6 +352,23 @@ const PrivateRoutes = () => {
       ) {
         let getValue = getActionValue(currentUrl, "signed_cr_action=");
         localStorage.setItem("docSignedCrAction", getValue);
+      }
+
+      // Unified email action handler — save token for post-login redirect
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/email_action".toLowerCase())
+      ) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailToken =
+          urlParams.get("token") ||
+          (window.location.search.length > 1
+            ? window.location.search.slice(1)
+            : null);
+        if (emailToken) {
+          localStorage.setItem("emailActionToken", emailToken);
+        }
       }
     };
     callRoutingFunction();
@@ -375,10 +386,6 @@ const PrivateRoutes = () => {
     (RoleID === 3 || RoleID === 4) && (Blur === undefined || Blur === null)
       ? true
       : null;
-  console.log(
-    { currentUser, token },
-    "PrivateRoutesPrivateRoutesPrivateRoutes"
-  );
 
   return currentUser && token ? (
     <Outlet />
@@ -389,7 +396,7 @@ const PrivateRoutes = () => {
           (currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
+              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
             ) ||
             currentUrl
               .toLowerCase()
@@ -397,7 +404,7 @@ const PrivateRoutes = () => {
             currentUrl
               .toLowerCase()
               .includes(
-                "Diskus/documentViewer?documentViewer_action".toLowerCase()
+                "Diskus/documentViewer?documentViewer_action".toLowerCase(),
               ) ||
             currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
             currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
@@ -407,12 +414,15 @@ const PrivateRoutes = () => {
               .includes("Diskus/committee".toLowerCase()) ||
             currentUrl
               .toLowerCase()
-              .includes("Diskus/resolution".toLowerCase()))) ||
+              .includes("Diskus/resolution".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/email_action".toLowerCase()))) ||
         currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase())
           ? "/"
           : currentUser === null && token === ""
-          ? "/"
-          : "*"
+            ? "/"
+            : "*"
       }
     />
   );

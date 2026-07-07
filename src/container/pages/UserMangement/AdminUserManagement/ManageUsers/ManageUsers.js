@@ -33,7 +33,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -55,7 +55,7 @@ const ManageUsers = () => {
     (state) => state.UserMangementReducer.allOrganizationUsersData,
   );
 
-  console.log(UserMangementReducerallOrganizationUsersData, "statestate");
+  
 
   const UserMangementReducerResponseMessage = useSelector(
     (state) => state.UserMangementReducer.ResponseMessage,
@@ -110,11 +110,7 @@ const ManageUsers = () => {
 
   const [emailError, setEmailError] = useState("");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //AllOrganizationsUsers Api
   useEffect(() => {
@@ -173,7 +169,7 @@ const ManageUsers = () => {
         Users.organizationUsers &&
         Users.organizationUsers.length > 0
       ) {
-        console.log(Users, "UsersUsersUsersUsersUsersUsers");
+        
         setManageUserGrid(
           UserMangementReducerallOrganizationUsersData.organizationUsers,
         );
@@ -181,7 +177,7 @@ const ManageUsers = () => {
         setManageUserGrid([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [UserMangementReducerallOrganizationUsersData]);
 
@@ -437,7 +433,7 @@ const ManageUsers = () => {
     const filteredData =
       UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
         (user) => {
-          console.log(user, "useruseruseruseruser");
+          
           const nameInput = searchDetails.Name || "";
           const emailInput = searchDetails.Email || "";
           const statusInput =
@@ -621,16 +617,6 @@ const ManageUsers = () => {
   };
 
   //Response Messege
-
-  useEffect(() => {
-    if (
-      UserMangementReducerResponseMessage !== "" &&
-      UserMangementReducerResponseMessage !== t("No-data-found")
-    ) {
-      showMessage(UserMangementReducerResponseMessage, "success", setOpen);
-      dispatch(clearMessegesUserManagement());
-    }
-  }, [UserMangementReducerResponseMessage]);
 
   return (
     <Container>
@@ -918,7 +904,8 @@ const ManageUsers = () => {
       {UserManagementModalssuccessfullyUpdated && (
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </Container>
   );
 };

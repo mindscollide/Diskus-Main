@@ -35,7 +35,6 @@ const getUserInfo = (data, currentUserId, currentSource) => {
               userInfo.isAgendaContributor = true;
               break;
             default:
-              console.log("ERROR");
           }
           if (attendee.isPrimaryOrganizer === true) {
             userInfo.isPrimaryOrganizer = true;
@@ -54,7 +53,6 @@ const getUserInfo = (data, currentUserId, currentSource) => {
           userInfo.isAgendaContributor = true;
           break;
         default:
-          console.log("ERROR");
       }
       if (data.isPrimaryOrganizer === true) {
         userInfo.isPrimaryOrganizer = true;
@@ -78,16 +76,14 @@ const getUserInfo = (data, currentUserId, currentSource) => {
  */
 export const getAllUnpublishedMeetingData = async (
   meetingData,
-  currentSourceID
+  currentSourceID,
 ) => {
   let currentUserId = Number(localStorage.getItem("userID"));
 
   let newMeetingData = [];
   if (Array.isArray(meetingData) && meetingData?.length > 0) {
     meetingData.forEach(async (data, index) => {
-      const primaryOrganizerA = data.meetingAttendees.find(
-        (item) => item.isPrimaryOrganizer === true
-      );
+   
       const meetingAgendas =
         data.meetingAgenda !== null &&
         data.meetingAgenda !== undefined &&
@@ -117,11 +113,12 @@ export const getAllUnpublishedMeetingData = async (
         meetingStartTime: data.meetingStartTime || "",
         pK_MDID: data.pK_MDID || 0,
         meetingPoll: {
-          totalNoOfDirectors: data?.proposedMeetingDetail?.totalNoOfDirectors || 0,
+          totalNoOfDirectors:
+            data?.proposedMeetingDetail?.totalNoOfDirectors || 0,
           totalNoOfDirectorsVoted:
             data.proposedMeetingDetail?.totalNoOfDirectorsVoted || 0,
         },
-        responseDeadLine: data.responseDeadLine || 0,
+        responseDeadLine:  data?.proposedMeetingDetail?.deadLineDate || "",
         status: data.status,
         title: data.title,
         key: index,
@@ -129,6 +126,7 @@ export const getAllUnpublishedMeetingData = async (
         userDetails: usersData?.userData,
         isMinutePublished: data?.isMinutePublished || false,
         isRecordingAvailable: data?.isRecordingAvailable || false,
+        groupAndCommitteeTitle: data.committeeOrGroupTitle ?? "",
       });
     });
   }
@@ -140,7 +138,7 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
   let usersData = await getUserInfo(
     meetingData,
     currentUserId,
-    currentSourceID
+    currentSourceID,
   );
 
   const meetingAgendas =

@@ -19,27 +19,23 @@ import {
 } from "../../../../store/actions/Groups_actions";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { maxFileSize } from "../../../../commen/functions/utils";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
-  console.log(groupStatus, "groupStatus");
+  
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [fileAttachments, setFileAttachments] = useState([]);
 
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+  
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
 
   const [folderID, setFolderID] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [viewGroupDetails, setViewGroupDetails] = useState({
     Title: "",
     Description: "",
@@ -83,7 +79,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [GroupsReducer]);
 
@@ -103,7 +99,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       let sizezero = true;
       let size = true;
       if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-15-files"), "error");
         return;
       }
 
@@ -121,15 +117,11 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -552,7 +544,8 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

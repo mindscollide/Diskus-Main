@@ -24,11 +24,11 @@ import { HideNotificationUserNotificationData } from "../../../../store/actions/
 import { HideNotification } from "../../../../store/actions/Get_List_Of_Assignees";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
-import CreateQuickMeeting from "../../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import CreateQuickMeeting from "../../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();
-  console.log("dCheck", dCheck);
+  
   //For Localization
   const { t } = useTranslation();
   const state = useSelector((state) => state);
@@ -42,7 +42,7 @@ const OnboardDashboard = () => {
 
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
-  console.log("date", getCurrentDate);
+  
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
@@ -60,7 +60,7 @@ const OnboardDashboard = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    console.log("Data", Data);
+    
     let newList = [];
     if (Object.keys(Data).length > 0) {
       Data.forEach((cData) => {
@@ -246,7 +246,7 @@ const OnboardDashboard = () => {
     }
   }, [lang]);
 
-  console.log("lang", lang);
+  
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);
@@ -735,12 +735,12 @@ const OnboardDashboard = () => {
         </Row>
       </Container>
 
-      <CreateQuickMeeting
+      {/* <CreateQuickMeeting
         show={show}
         setShow={setShow}
         // this is check from where its called 5 is from OnboardDashboard
         checkFlag={5}
-      />
+      /> */}
       <Modal
         show={activateBlur}
         setShow={() => {

@@ -55,29 +55,24 @@ const getMeetingAgendasFail = (message) => {
 };
 
 const getMeetingAgendas = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingAgendasInit());
     let form = new FormData();
     form.append("RequestMethod", getAgendasByMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingAgendas(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(
-              "timezone response in conidtion",
-              response.data.responseResult
-            );
             dispatch(
               getMeetingAgendasSuccess(
                 response.data.responseResult,
-                response.data.responseMessage
-              )
+                response.data.responseMessage,
+              ),
             );
           } else {
             dispatch(getMeetingAgendasFail(response.data.responseMessage));
@@ -111,36 +106,31 @@ const getMeetingAttachmentsFail = (message) => {
   };
 };
 const getMeetingAttachments = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingAttachmentsInit());
     let form = new FormData();
     form.append("RequestMethod", getAttachmentByMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingAttachments(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(
-              "attachments files by agenda",
-              response.data.responseResult
-            );
             dispatch(
               getMeetingAttachmentsSuccess(
                 response.data.responseResult,
-                response.data.responseMessage
-              )
+                response.data.responseMessage,
+              ),
             );
           } else {
             dispatch(getMeetingAttachmentsFail(response.data.responseMessage));
           }
         } else {
           await dispatch(
-            getMeetingAttachmentsFail(response.data.responseMessage)
+            getMeetingAttachmentsFail(response.data.responseMessage),
           );
         }
       })
@@ -170,11 +160,6 @@ const updateAgendaAttahmentsFail = (message) => {
 };
 const updateAgendaAttachment = (navigate, data, t) => {
   let AgendaAttachments = { AgendaAttachments: [...data] };
-  console.log(
-    "AgendaAttachmentsAgendaAttachmentsAgendaAttachmentsAgendaAttachmentsAgendaAttachments",
-    JSON.stringify(AgendaAttachments)
-  );
-  let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(updateAgendaAttahmentsInit());
@@ -182,7 +167,7 @@ const updateAgendaAttachment = (navigate, data, t) => {
     form.append("RequestMethod", updateAgendaAttachments.RequestMethod);
     form.append("RequestData", JSON.stringify(AgendaAttachments));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -192,17 +177,17 @@ const updateAgendaAttachment = (navigate, data, t) => {
             await dispatch(
               updateAgendaAttahmentsSuccess(
                 response.data.responseResult,
-                response.data.responseMessage
-              )
+                response.data.responseMessage,
+              ),
             );
           } else {
             await dispatch(
-              updateAgendaAttahmentsFail(response.data.responseMessage)
+              updateAgendaAttahmentsFail(response.data.responseMessage),
             );
           }
         } else {
           await dispatch(
-            updateAgendaAttahmentsFail(response.data.responseMessage)
+            updateAgendaAttahmentsFail(response.data.responseMessage),
           );
         }
       })
@@ -228,39 +213,36 @@ const downloadCallRecording_success = () => {
 // For Video Call Title ->  VideoCall-ddMMyyyy-starttime-Recording.mp4
 
 const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", downloadCallRecording.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
   return (dispatch) => {
     dispatch(downloadCallRecording_init());
-    axiosInstance.post(DataRoomAllFilesDownloads, form, {
-      responseType: "blob",
-    })
+    axiosInstance
+      .post(DataRoomAllFilesDownloads, form, {
+        responseType: "blob",
+      })
       .then(async (response) => {
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DownloadCallRecording(Data, navigate, t, utcDate, utcTime));
           dispatch(downloadCallRecording_success());
         } else if (response.status === 200) {
-          console.log("DownloadCallRecording", response);
           const url = window.URL.createObjectURL(
-            new Blob([response.data], { type: "video/mp4" })
+            new Blob([response.data], { type: "video/mp4" }),
           );
           const link = document.createElement("a");
           link.href = url;
           link.setAttribute(
             "download",
-            "VideoCall-" + utcDate + "-" + utcTime + "-Recording.mp4"
+            "VideoCall-" + utcDate + "-" + utcTime + "-Recording.mp4",
           );
           document.body.appendChild(link);
           link.click();
           dispatch(downloadCallRecording_success());
         }
       })
-      .catch((response) => {
-        console.error("Error downloading the video", response);
-      });
+      .catch((response) => {});
   };
 };
 
@@ -270,17 +252,17 @@ const DownloadMeetingRecording = (
   t,
   meetingTitle,
   utcDate,
-  utcTime
+  utcTime,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", downloadMeetingRecording.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
   return (dispatch) => {
     dispatch(downloadCallRecording_init());
-    axiosInstance.post(DataRoomAllFilesDownloads, form, {
-      responseType: "blob",
-    })
+    axiosInstance
+      .post(DataRoomAllFilesDownloads, form, {
+        responseType: "blob",
+      })
 
       .then(async (response) => {
         if (response.status === 417) {
@@ -292,29 +274,26 @@ const DownloadMeetingRecording = (
               t,
               meetingTitle,
               utcDate,
-              utcTime
-            )
+              utcTime,
+            ),
           );
           dispatch(downloadCallRecording_success());
         } else if (response.status === 200) {
-          console.log("DownloadMeetingRecording", response);
           const url = window.URL.createObjectURL(
-            new Blob([response.data], { type: "video/mp4" })
+            new Blob([response.data], { type: "video/mp4" }),
           );
           const link = document.createElement("a");
           link.href = url;
           link.setAttribute(
             "download",
-            meetingTitle + "-" + utcDate + "-" + utcTime + "-Recording.mp4"
+            meetingTitle + "-" + utcDate + "-" + utcTime + "-Recording.mp4",
           );
           document.body.appendChild(link);
           link.click();
           dispatch(downloadCallRecording_success());
         }
       })
-      .catch((response) => {
-        console.error("Error downloading the video", response);
-      });
+      .catch((response) => {});
   };
 };
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./CreateGroupPolls.module.css";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 import {
   Button,
@@ -76,11 +76,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
       value: "",
     },
   ]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [members, setMembers] = useState([]);
 
@@ -111,10 +107,10 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        show(t("Please-fill-options"), "error");
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      show(t("Please-fill-options"), "error");
     }
   };
 
@@ -318,17 +314,17 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
       setCreatepoll(false);
     } else {
       if (pollsData.Title === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        show(t("Title-is-required"), "error");
       } else if (pollsData.date === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        show(t("Select-date"), "error");
       } else if (Object.keys(members).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        show(t("Atleat-one-member-required"), "error");
       } else if (Object.keys(options).length <= 1) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        show(t("Required-atleast-two-options"), "error");
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        show(t("Please-fill-all-open-option-fields"), "error");
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        show(t("Please-fill-all-reqired-fields"), "error");
       }
     }
   };
@@ -676,7 +672,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                 />
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
+            
 
             {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
@@ -684,6 +680,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
           </section>
         </>
       )}
+    {SnackBar}
     </>
   );
 };

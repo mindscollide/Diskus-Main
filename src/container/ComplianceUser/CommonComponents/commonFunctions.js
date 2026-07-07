@@ -1,3 +1,6 @@
+import html2pdf from "html2pdf.js";
+import dairaStudioLogo from "./../../../assets/images/Daira-Logo.png";
+
 export const parseUTCDateString = (dateStr) => {
   if (!dateStr || dateStr.length !== 14) return "";
 
@@ -40,9 +43,36 @@ export const formatDateToYMD = (value) => {
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
-    month:"short",
+    month: "short",
     year: "numeric",
   });
+};
+
+export const formatDateToYMDLong = (value) => {
+  if (!value) return "";
+
+  let date;
+
+  if (value instanceof Date && !isNaN(value)) {
+    date = value;
+  } else if (typeof value === "string" && value.length >= 8) {
+    const year = value.substring(0, 4);
+    const month = value.substring(4, 6);
+    const day = value.substring(6, 8);
+
+    date = new Date(`${year}-${month}-${day}`);
+  } else {
+    return "";
+  }
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  const monthName = date.toLocaleString("en-GB", {
+    month: "long",
+  });
+
+  return `${day} ${monthName} ${year}`;
 };
 
 export const parseYYYYMMDDToEndOfDay = (dateString) => {
@@ -55,7 +85,7 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
 
     return new Date(year, month, day, 23, 59, 58);
   } catch (error) {
-    console.log(error, dateString);
+    
   }
 };
 
@@ -100,11 +130,13 @@ const allStatuses = [
   { statusId: 6, statusName: "Reopened" },
   { statusId: 7, statusName: "On Hold" },
   { statusId: 9, statusName: "Cancelled" },
+  { statusId: 4, statusName: "Overdue" },
 ];
 const statusTransitions = {
   1: [2, 7], // Not Started → In Progress, On Hold
   2: [5, 7, 9], // In Progress → Submitted, On Hold, Cancelled
   7: [2, 9], // On Hold → In Progress, Cancelled
+  4: [5, 7, 9],
   5: [3, 6, 7], // Submitted → Completed, Reopened, On Hold
   6: [5, 7, 9], // Reopened → Submitted, On Hold, Cancelled
   3: [6], // Completed → Reopened
@@ -180,4 +212,136 @@ export const parseBackendDate = (dateStr) => {
   const seconds = +dateStr.slice(12, 14);
 
   return new Date(year, month, day, hours, minutes, seconds);
+};
+
+export const getDynamicFileName = (name) => {
+  const now = new Date();
+
+  // YYYYMMDD format
+  const date = now.toISOString().slice(0, 10).replace(/-/g, "");
+
+  // HHMMSS format (using padStart to ensure 2 digits for each)
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const time = `${hours}${minutes}${seconds}`;
+
+  return `${name}_${date}_${time}.pdf`;
+};
+
+export const generatePdfHtml = async ({
+  element,
+  fileName = "report.pdf",
+  reportTitle = "",
+}) => {
+  const opt = {
+    margin: [21, 0, 0, 0],
+    filename: fileName,
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: {
+      scale: 2, // Increased for better quality
+      useCORS: true,
+      logging: false,
+      letterRendering: true,
+    },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "landscape",
+    },
+    pagebreak: {
+      mode: ["css", "legacy"],
+    },
+  };
+
+  const worker = html2pdf().set(opt).from(element).toPdf();
+  const pdf = await worker.get("pdf");
+
+  const totalPages = pdf.internal.getNumberOfPages();
+
+  // Register Montserrat font in jsPDF
+  // Note: You'll need to include the font file or use standard fonts
+  // For now, we'll use helvetica as fallback with proper styling
+
+  for (let i = 1; i <= totalPages; i++) {
+    pdf.setPage(i);
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const headerHeight = 19;
+    const footerHeight = 12;
+
+    // =========================
+    //  HEADER BACKGROUND
+    // =========================
+    pdf.setFillColor(246, 249, 252);
+    pdf.rect(0, 0, pageWidth, headerHeight, "F");
+
+    // =========================
+    // LOGO (LEFT SIDE)
+    // =========================
+    pdf.addImage(dairaStudioLogo, "PNG", 5, 4, 35, 10);
+
+    // =========================
+    //  RIGHT SIDE TEXT - WITH MONTSERRAT STYLING
+    // =========================
+    // Use helvetica as it's standard, style it to look like Montserrat
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10); // Slightly smaller for better fit
+    pdf.setTextColor(90, 90, 90);
+
+    const rightX = pageWidth - 5;
+
+    const addressLines = [
+      "123 Elm Street",
+      "Springfield, Anytown 98765",
+      "United States",
+    ];
+
+    let startY = 8; // Adjusted for better alignment
+
+    addressLines.forEach((line, index) => {
+      pdf.text(line, rightX, startY + index * 4, {
+        align: "right",
+      });
+    });
+
+    // Gradient border
+    const start = { r: 97, g: 114, b: 214 };
+    const end = { r: 74, g: 222, b: 222 };
+    const steps = 50;
+
+    for (let i = 0; i < steps; i++) {
+      const ratio = i / steps;
+      const r = Math.round(start.r + (end.r - start.r) * ratio);
+      const g = Math.round(start.g + (end.g - start.g) * ratio);
+      const b = Math.round(start.b + (end.b - start.b) * ratio);
+      pdf.setFillColor(r, g, b);
+      pdf.rect(
+        (pageWidth / steps) * i,
+        headerHeight,
+        pageWidth / steps,
+        1, // Slightly thicker border
+        "F",
+      );
+    }
+
+    // =========================
+    //  FOOTER
+    // =========================
+    pdf.setFillColor(97, 114, 214);
+    pdf.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, "F");
+
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(10);
+    pdf.setFont("helvetica", "bold");
+
+    const formattedPage = String(i).padStart(2, "0");
+    pdf.text(formattedPage, pageWidth - 15, pageHeight - 4);
+    pdf.text(reportTitle, 10, pageHeight - 4);
+  }
+
+  await worker.save();
 };

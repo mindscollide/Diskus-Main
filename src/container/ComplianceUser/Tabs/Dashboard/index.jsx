@@ -95,7 +95,7 @@ const ComplianceDashboard = () => {
         GetComplianceQuarterlyTasksDashboardAPI(navigate, payload, t),
       );
     } catch (err) {
-      console.error("Static dashboard fetch failed:", err);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewTypeDashboard]);
@@ -112,7 +112,7 @@ const ComplianceDashboard = () => {
       };
       await dispatch(GetComplianceByDashboardAPI(navigate, payload, t));
     } catch (err) {
-      console.error("ComplianceBy dashboard fetch failed:", err);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewTypeDashboard, complianceDashboardFilter]);
@@ -129,7 +129,7 @@ const ComplianceDashboard = () => {
       };
       await dispatch(GetComplianceTasksDashboardAPI(navigate, payload, t));
     } catch (err) {
-      console.error("ComplianceTasks dashboard fetch failed:", err);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewTypeDashboard, complianceTaskDashboardFilter]);
@@ -146,7 +146,7 @@ const ComplianceDashboard = () => {
       };
       await dispatch(GetComplianceReopenDashboardAPI(navigate, payload, t));
     } catch (err) {
-      console.error("ReopenedCompliance dashboard fetch failed:", err);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewTypeDashboard, reopendComplianceDashboardFilter]);

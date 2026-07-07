@@ -6,6 +6,9 @@ import "./VerificationCodeThree.css";
 import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
@@ -17,26 +20,15 @@ import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { getHomeRoute } from "../../../../../commen/functions/utils";
 const VerificationCodeThree = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // translate Languages start
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
 
-  const currentLocale = Cookies.get("i18next") || "en";
-
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
+  
 
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
@@ -44,7 +36,7 @@ const VerificationCodeThree = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  console.log(minutes, seconds, "datadatadatadatadata");
+  
   let currentDevice = JSON.parse(localStorage.getItem("selectDevice"));
   const [device, setDevice] = useState({
     DeviceName: currentDevice?.DeviceName,
@@ -79,7 +71,7 @@ const VerificationCodeThree = () => {
     let roleID = parseInt(localStorage.getItem("roleID"));
     let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-    console.log("message arrived", data);
+    
     if (
       data.payload.message
         .toLowerCase()
@@ -90,7 +82,7 @@ const VerificationCodeThree = () => {
       if (roleID === 1 || roleID === 2) {
         navigate("/Admin/");
       } else {
-        console.log("message arrived");
+        
         if (isFirstLogin !== null && isFirstLogin !== undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
@@ -105,7 +97,7 @@ const VerificationCodeThree = () => {
               ) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               }
             }
           }
@@ -116,7 +108,7 @@ const VerificationCodeThree = () => {
       "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
     ) {
       localStorage.setItem("TowApproval", false);
-      console.log("TowApproval");
+      
       dispatch(LoginFlowRoutes(7));
     }
   };
@@ -181,7 +173,7 @@ const VerificationCodeThree = () => {
   }, []);
 
   const handleGoback = () => {
-    console.log("goback");
+    
     if (localStorage.getItem("isMultiDevice") === "false") {
       localStorage.setItem("LoginFlowPageRoute", 8);
       dispatch(LoginFlowRoutes(8));
@@ -219,13 +211,12 @@ const VerificationCodeThree = () => {
                     <img
                       draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : img1
                       }
                       alt=''
-                      width='220px'
-                      height='69px'
+                      width={PSO_LOGO ? 120 :200}
                     />
                   </Col>
                 </Row>
@@ -312,7 +303,28 @@ const VerificationCodeThree = () => {
           </Col>
 
           <Col md={7} lg={7} sm={12} className=''>
-            <Row>
+             <img
+                  draggable='false'
+                  src={img9}
+                  alt='auth_icon'
+                  className='phone-image_verificationCodeThree'
+                  height='500px'
+                />
+                   <img
+                  draggable='false'
+                  src={DiskusAuthPageLogo}
+                  alt='auth_icon'
+                  className='Verification_Code_Three_Auth_Icon'
+                />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=""
+                    draggable="false"
+                     className={"PoweredIcon_Diskus_Icon_verificationCodeThree"}
+                  />
+                )}
+            {/* <Row>
               <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
                   draggable='false'
@@ -330,8 +342,16 @@ const VerificationCodeThree = () => {
                   width='600px'
                   className='Verification_Code_Three_Auth_Icon'
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=""
+                    draggable="false"
+                     className={"PoweredIcon_Diskus_Icon_verificationCodeThree"}
+                  />
+                )}
               </Col>
-            </Row>
+            </Row> */}
           </Col>
         </Row>
       </Container>

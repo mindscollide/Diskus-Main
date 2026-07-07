@@ -24,7 +24,7 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const SignUpOrganizationUM = ({ setStoredStep }) => {
   const { t } = useTranslation();
@@ -114,11 +114,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
     PhoneNumberCountryID: 212,
   });
   const [isFreeTrail, setIsFreeTrail] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
   const [isEmailUnique, setEmailUnique] = useState(false);
   const [countryNames, setCountryNames] = useState([]);
@@ -147,7 +143,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
-    console.log("aaaa", a);
+    
     if (a !== undefined) {
       setSelect(code);
       setSignUpDetails({
@@ -429,7 +425,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   };
 
   const handlerSignup = async () => {
-    console.log("handlerSignup", isFreeTrail);
+    
     if (isFreeTrail === true) {
       if (
         signUpDetails.CompanyName.value !== "" &&
@@ -486,7 +482,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
             setAgainCall(true);
           }
         } else {
-          showMessage(t("Invalid-email-format"), "error", setOpen);
+          show(t("Invalid-email-format"), "error");
         }
       } else {
         setSignUpDetails({
@@ -579,7 +575,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           },
         });
 
-        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+        show(t("Please-fill-all-the-fields"), "error");
       }
     } else {
       //if its not a free trial in User Management
@@ -635,7 +631,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
             setAgainCall(true);
           }
         } else {
-          showMessage(t("Invalid-email-format"), "error", setOpen);
+          show(t("Invalid-email-format"), "error");
         }
       } else {
         setSignUpDetails({
@@ -727,7 +723,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                 : signUpDetails.PhoneNumber.errorStatus,
           },
         });
-        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+        show(t("Please-fill-all-the-fields"), "error");
       }
     }
   };
@@ -1209,6 +1205,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           </Col>
         </Row>
       </Container>
+    {SnackBar}
     </>
   );
 };

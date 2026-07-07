@@ -40,7 +40,7 @@ import {
   parseUTCDateString,
 } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import DeleteChecklistConfirmationModal from "../../../../CommonComponents/DeleteChecklistConfirmationModal";
 const CreateEditViewComplianceChecklist = () => {
@@ -52,11 +52,7 @@ const CreateEditViewComplianceChecklist = () => {
   const cancelBtnRef = useRef(null);
   const accordionContainerRef = useRef(null);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const authorityRespnseMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
@@ -69,6 +65,9 @@ const CreateEditViewComplianceChecklist = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
+
+  
+
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
     checklistTitle: "",
@@ -96,19 +95,21 @@ const CreateEditViewComplianceChecklist = () => {
     setDeleteChecklistId,
     newChecklistIds,
     setNewChecklistIds,
+    setTaskCount,
   } = useComplianceContext();
-  console.log(checkListData, "checkListData");
-  console.log(newChecklistIds, "newChecklistIds");
-  console.log(complianceDetailsState, "complianceDetailsState");
-  console.log(complianceAddEditViewState, "complianceAddEditViewState");
-  console.log(isChecklistTitleExist, "isChecklistTitleExist");
-
+  
+  
+  
+  
+  
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId,
   );
+
+  
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -121,7 +122,7 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
-    console.log("handleValueChange", name, value);
+    
     let error = "";
 
     switch (name) {
@@ -177,7 +178,7 @@ const CreateEditViewComplianceChecklist = () => {
             checkListData.checklistDueDate,
           ),
         };
-        console.log(Data, "handleClickSaveBtn");
+        
         dispatch(
           AddComplianceChecklistAPI(
             navigate,
@@ -193,7 +194,7 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleDeleteChecklist = (checklistID) => {
-    console.log(checklistID, "checklistID");
+    
     if (checklistID) {
       setDeleteChecklistId(checklistID);
       setDeleteChecklistConfirmationModalState(true);
@@ -201,7 +202,7 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleEditChecklist = (checklistData) => {
-    console.log(checklistData, "checklistData");
+    
     if (checklistData)
       try {
         setAddChecklistCloseState(false);
@@ -214,6 +215,25 @@ const CreateEditViewComplianceChecklist = () => {
         });
       } catch (error) {}
   };
+
+  //To set the task count updated on checklist:
+  useEffect(() => {
+    if (
+      getAllComplianceChecklistTask &&
+      getAllComplianceChecklistTask !== null
+    ) {
+      const checklistList = getAllComplianceChecklistTask?.checklistList || [];
+
+      const totalTaskCount = checklistList.reduce(
+        (sum, checklist) => sum + (checklist.taskList?.length || 0),
+        0,
+      );
+
+      setTaskCount(totalTaskCount);
+    } else {
+      setTaskCount(0);
+    }
+  }, [getAllComplianceChecklistTask]);
 
   useEffect(() => {
     if (complianceAddEditViewState !== 3) {
@@ -257,15 +277,14 @@ const CreateEditViewComplianceChecklist = () => {
           };
         },
       );
-
-      console.log(updateTIme, "updateTIme");
       setGetCheckListData(updateTIme);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
+      //  COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
     } else {
       setChecklistCount(0);
-      setGetCheckListData([]); // ✅ IMPORTANT FIX
+      setGetCheckListData([]); //  IMPORTANT FIX
       setExpandedCheckListIds([]); // optional but clean
+      setTaskCount(0);
     }
   }, [GetComplianceChecklistsByComplianceId]);
 
@@ -277,7 +296,7 @@ const CreateEditViewComplianceChecklist = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -421,10 +440,9 @@ const CreateEditViewComplianceChecklist = () => {
   const isLockedStatus =
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
-    complianceDetailsState?.status?.value === 6 ||
     complianceDetailsState?.status?.value === 3;
 
-  console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
+  
 
   const isReopendCompliance = complianceDetailsState?.status?.value === 6;
 
@@ -464,10 +482,12 @@ const CreateEditViewComplianceChecklist = () => {
 
   const editableStatuses = new Set([1, 2, 4, 7]);
 
-  const isComplianceEditable =
-    editableStatuses.has(complianceDetailsState?.status?.value);
+  const statusValue = complianceDetailsState?.status?.value;
 
-  console.log(isComplianceEditable, "isComplianceEditable");
+  const isComplianceEditable =
+    statusValue !== undefined && editableStatuses.has(statusValue);
+
+  
 
   return (
     <>
@@ -787,9 +807,10 @@ const CreateEditViewComplianceChecklist = () => {
           // }
         />
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
       <ComplianceCloseConfirmationModal />
       <DeleteChecklistConfirmationModal />
+    {SnackBar}
     </>
   );
 };

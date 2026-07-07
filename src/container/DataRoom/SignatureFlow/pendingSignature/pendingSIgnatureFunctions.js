@@ -10,7 +10,7 @@ const xmlToJson = (xmlString) => {
     const result = xmljs.xml2json(xmlString, options);
     return JSON.parse(result);
   } catch (error) {
-    console.error("Error converting XML to JSON:", error);
+    
   }
 };
 
@@ -21,7 +21,7 @@ const jsonToXml = (jsonObject) => {
     const xmlString = xmljs.json2xml(JSON.stringify(jsonObject), options);
     return xmlString;
   } catch (error) {
-    console.error("Error converting JSON to XML:", error);
+    
   }
 };
 
@@ -223,7 +223,7 @@ export const readOnlyFreetextElements = (xmlString, userDataRead) => {
   freetextElements.forEach((freetextElement) => {
     const subject = freetextElement.getAttribute("subject");
     const userIdIndex = subject.lastIndexOf("-");
-    console.log(userIdIndex, subject, userDataRead, "userIdIndex");
+    
     if (userIdIndex !== -1) {
       const userId = subject.substring(userIdIndex + 1);
       if (userDataRead.includes(Number(userId))) {
@@ -317,7 +317,7 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
       removedHideFreetextElements,
     };
   } catch (error) {
-    console.error("Error in hideFreetextElements:", error);
+    
     // Ensure to return a consistent structure even in case of error
     return {
       hideFreetextXmlString: xmlString, // or null, depending on how you handle errors
@@ -362,7 +362,7 @@ export const revertHideFreetextElements = (
     );
     return restoredXmlString;
   } catch (error) {
-    console.error("Error in revertHiddenFreetextElements:", error);
+    
     // Handle errors gracefully, return original XML string if revert fails
     return originalXmlString;
   }
@@ -399,10 +399,36 @@ export const sanitizeXFDF = (xfdfString, documentViewer) => {
 
     // drop invalid pages
     if (isNaN(pageIndex) || pageIndex >= pageCount) {
-      console.warn(`Dropping invalid annotation on page ${pageIndex}`);
+      
       annot.parentNode.removeChild(annot);
     }
   });
 
   return new XMLSerializer().serializeToString(xfdfDoc);
 };
+
+
+export const isUserSigned = (xfdfString) => {
+    // Method 1: Check for appearance tag (most reliable)
+    if (xfdfString.includes('<appearance>')) {
+        return true;
+    }
+    
+    // Method 2: Check for ink signature annotations
+    if (xfdfString.includes('<inklist>') && xfdfString.includes('<gesture>')) {
+        return true;
+    }
+    
+    // Method 3: Check if annots section is not empty
+    const annotsMatch = xfdfString.match(/<annots>(.*?)<\/annots>/);
+    if (annotsMatch && annotsMatch[1] && annotsMatch[1].trim() !== '') {
+        return true;
+    }
+    
+    // Method 4: Check for signature field with appearance
+    if (xfdfString.includes('type="Sig"') && xfdfString.includes('<appearance')) {
+        return true;
+    }
+    
+    return false;
+}

@@ -32,7 +32,7 @@ import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../store/actions/Polls_actions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import EnglishCalendar from "react-date-object/calendars/gregorian";
 import ArabicCalendar from "react-date-object/calendars/arabic";
 
@@ -77,11 +77,7 @@ const Createpolls = ({ setCreatepoll }) => {
     },
   ]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [members, setMembers] = useState([]);
   const HandleCancelFunction = (index) => {
@@ -104,7 +100,7 @@ const Createpolls = ({ setCreatepoll }) => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    console.log("iam clicked");
+    
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
@@ -114,10 +110,10 @@ const Createpolls = ({ setCreatepoll }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        show(t("Please-fill-options"), "error");
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      show(t("Please-fill-options"), "error");
     }
   };
 
@@ -316,17 +312,17 @@ const Createpolls = ({ setCreatepoll }) => {
       setCreatepoll(false);
     } else {
       if (pollsData.Title === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        show(t("Title-is-required"), "error");
       } else if (pollsData.date === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        show(t("Select-date"), "error");
       } else if (Object.keys(members).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        show(t("Atleat-one-member-required"), "error");
       } else if (Object.keys(options).length <= 1) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        show(t("Required-atleast-two-options"), "error");
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        show(t("Please-fill-all-open-option-fields"), "error");
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        show(t("Please-fill-all-reqired-fields"), "error");
       }
     }
   };
@@ -583,7 +579,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
-                            console.log(data, "membersmembersmembers");
+                            
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className='mt-3'>
@@ -668,7 +664,7 @@ const Createpolls = ({ setCreatepoll }) => {
                 />
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
+            
 
             {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
@@ -676,6 +672,7 @@ const Createpolls = ({ setCreatepoll }) => {
           </section>
         </>
       )}
+    {SnackBar}
     </>
   );
 };

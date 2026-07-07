@@ -29,7 +29,7 @@ const UserLevelConfigUM = () => {
   const navigate = useNavigate();
 
   const settingReducerUserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData
+    (state) => state.settingReducer.UserProfileData,
   );
 
   const [securitystate, setSecuritystate] = useState(true);
@@ -612,7 +612,7 @@ const UserLevelConfigUM = () => {
   };
 
   const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated = (
-    e
+    e,
   ) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -663,15 +663,12 @@ const UserLevelConfigUM = () => {
             authMicrosoftRefreshToken,
             userOptionsSettings,
             AllowMicrosoftCalenderSyncCall,
-            t
-          )
+            t,
+          ),
         );
       }
     }
-    console.log(
-      "AllowMicrosoftCalenderSyncCall",
-      AllowMicrosoftCalenderSyncCall
-    );
+    
     // global is tru and update local state is false then call revoke token api
     // else if(){
     // const tokenRevoke=await dispatch(
@@ -687,32 +684,36 @@ const UserLevelConfigUM = () => {
             signUpCodeToken,
             userOptionsSettings,
             t,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       } else {
+        console.log("CHeck Is Calling Here");
+
         await dispatch(
           updateUserSettingFunc(
             navigate,
             userOptionsSettings,
             t,
             true,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
       setSignUpCodeToken("");
     } else {
       if (settingReducerUserProfileData.userAllowGoogleCalendarSynch) {
         if (userOptionsSettings.AllowGoogleCalenderSync) {
+          console.log("CHeck Is Calling Here");
+
           await dispatch(
             updateUserSettingFunc(
               navigate,
               userOptionsSettings,
               t,
               true,
-              AllowMicrosoftCalenderSyncCall
-            )
+              AllowMicrosoftCalenderSyncCall,
+            ),
           );
         } else {
           await dispatch(
@@ -720,19 +721,21 @@ const UserLevelConfigUM = () => {
               navigate,
               userOptionsSettings,
               t,
-              AllowMicrosoftCalenderSyncCall
-            )
+              AllowMicrosoftCalenderSyncCall,
+            ),
           );
         }
       } else {
+        console.log("CHeck Is Calling Here");
+
         await dispatch(
           updateUserSettingFunc(
             navigate,
             userOptionsSettings,
             t,
             false,
-            AllowMicrosoftCalenderSyncCall
-          )
+            AllowMicrosoftCalenderSyncCall,
+          ),
         );
       }
     }
@@ -1312,7 +1315,7 @@ const UserLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-on-cancelled-or-deleted-meeting"
+                            "Push-notification-on-cancelled-or-deleted-meeting",
                           )}
                         </span>
                       </Checkbox>
@@ -1437,7 +1440,7 @@ const UserLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-removed-from-committee"
+                                "Push-notification-when-removed-from-committee",
                               )}
                             </span>
                           </Checkbox>
@@ -1455,7 +1458,7 @@ const UserLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Email-when-committee-is-dissolved-or-archived"
+                                "Email-when-committee-is-dissolved-or-archived",
                               )}
                             </span>
                           </Checkbox>
@@ -1473,7 +1476,7 @@ const UserLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-committee-is-dissolved-or-archived"
+                                "Push-notification-when-committee-is-dissolved-or-archived",
                               )}
                             </span>
                           </Checkbox>
@@ -1505,7 +1508,7 @@ const UserLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-committee-is-inActive"
+                                "Push-notification-when-committee-is-inActive",
                               )}
                             </span>
                           </Checkbox>
@@ -1537,7 +1540,7 @@ const UserLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-committee-is-set-active"
+                                "Push-notification-when-committee-is-set-active",
                               )}
                             </span>
                           </Checkbox>
@@ -1640,7 +1643,7 @@ const UserLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-group-is-dissolved-or-archived"
+                                "Push-notification-when-group-is-dissolved-or-archived",
                               )}
                             </span>
                           </Checkbox>
@@ -1736,7 +1739,7 @@ const UserLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-new-resolution-is-circulated"
+                            "Push-notification-when-new-resolution-is-circulated",
                           )}
                         </span>
                       </Checkbox>
@@ -1754,7 +1757,7 @@ const UserLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Email-when-new-resolution-is-cancelled-after-circulation"
+                            "Email-when-new-resolution-is-cancelled-after-circulation",
                           )}
                         </span>
                       </Checkbox>
@@ -1772,7 +1775,7 @@ const UserLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-new-resolution-is-cancelled-after-circulated"
+                            "Push-notification-when-new-resolution-is-cancelled-after-circulated",
                           )}
                         </span>
                       </Checkbox>
@@ -1898,7 +1901,7 @@ const UserLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-published-poll-is-deleted"
+                            "Push-notification-when-published-poll-is-deleted",
                           )}
                         </span>
                       </Checkbox>
@@ -1930,7 +1933,7 @@ const UserLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-published-poll-is--updated"
+                            "Push-notification-when-published-poll-is--updated",
                           )}
                         </span>
                       </Checkbox>

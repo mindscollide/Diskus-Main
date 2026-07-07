@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ChangePassword.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import "./ChangePassword.css"
+import "./ChangePassword.css";
 import {
   Button,
   TextField,
@@ -19,7 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -35,11 +35,7 @@ const ChangePassword = () => {
     ConfirmPassword: "",
   });
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const dispatch = useDispatch();
 
@@ -70,47 +66,13 @@ const ChangePassword = () => {
 
   const handleConformationUpdate = async () => {
     await dispatch(
-      changePasswordFunc(navigate, oldPassword, Password.newPassword, t)
+      changePasswordFunc(navigate, oldPassword, Password.newPassword, t),
     );
   };
 
   const cancelHandler = () => {
     setmMdalFlag(false);
   };
-
-  useEffect(() => {
-    if (
-      Authreducer.ChangeUserPasswordResponseMessage != t("Change-password") &&
-      Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Your-password-has-been-updated") &&
-      Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Your-password-has-been-changed-successfully") &&
-      Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Password-updated-successfully") &&
-      Authreducer.ChangeUserPasswordResponseMessage != ""
-    ) {
-      showMessage(
-        Authreducer.ChangeUserPasswordResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-    if (
-      Authreducer.ChangeUserPasswordResponseMessage.toLowerCase().includes(
-        t("Password-updated-successfully").toLowerCase()
-      )
-    ) {
-      setOldPassword("");
-      setShowOldPasssword(false);
-      setShowNewPasswordIcon(false);
-      setConfirmShowPasswordIcon(false);
-      setmMdalFlag(true);
-      setPassword({ ...Password, newPassword: "", ConfirmPassword: "" });
-    }
-  }, [Authreducer.ChangeUserPasswordResponseMessage]);
 
   const handlerevert = () => {
     setShowOldPasssword(false);
@@ -126,9 +88,9 @@ const ChangePassword = () => {
     <>
       <Container>
         <Row>
-          <Col sm={12} md={6} lg={6} className="py-3">
+          <Col sm={12} md={6} lg={6} className='py-3'>
             <Row>
-              <Col sm={12} md={12} lg={12} className="mb-5 p-0">
+              <Col sm={12} md={12} lg={12} className='mb-5 p-0'>
                 <h4 className={styles["changePasswordTitle"]}>
                   {t("Change-password")}
                 </h4>
@@ -139,128 +101,120 @@ const ChangePassword = () => {
                 sm={12}
                 md={6}
                 lg={6}
-                className="label-changepassword MontserratMedium-500 color-5a5a5a mt-2"
-              >
+                className='label-changepassword MontserratMedium-500 color-5a5a5a mt-2'>
                 {t("Old-password")}
               </Col>
               <Col
                 sm={12}
                 md={6}
                 lg={6}
-                className="password-change-branch p-0 position-relative"
-              >
+                className='password-change-branch p-0 position-relative'>
                 <TextField
-                  applyClass="form-control3"
-                  className="PasswordTextField"
+                  applyClass='form-control3'
+                  className='PasswordTextField'
                   type={showOldPassword ? "text" : "password"}
-                  name="Password"
+                  name='Password'
                   value={oldPassword || ""}
                   change={passwordChangeHandler}
                   maxLength={25}
                   placeholder={t("Old-password")}
                   inputicon={
                     showOldPassword ? (
-                      <img draggable="false" src={PasswordHideEyeIcon} alt="" />
+                      <img draggable='false' src={PasswordHideEyeIcon} alt='' />
                     ) : (
-                      <img draggable="false" src={PasswordEyeIcon} alt="" />
+                      <img draggable='false' src={PasswordEyeIcon} alt='' />
                     )
                   }
-                  iconclassname="eye_icon"
-                  labelclass="d-none"
-                  autoComplete="false"
+                  iconclassname='eye_icon'
+                  labelclass='d-none'
+                  autoComplete='false'
                   clickIcon={handleshowOldPassword}
                 />
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col
                 sm={12}
                 md={6}
                 lg={6}
-                className="label-changepassword MontserratMedium-500 color-5a5a5a mt-2"
-              >
+                className='label-changepassword MontserratMedium-500 color-5a5a5a mt-2'>
                 {t("New-password")}
               </Col>
               <Col
                 sm={12}
                 md={6}
                 lg={6}
-                className="password-change-branch p-0 position-relative"
-              >
+                className='password-change-branch p-0 position-relative'>
                 {" "}
                 <TextField
-                  applyClass="form-control3"
-                  className="PasswordTextField"
+                  applyClass='form-control3'
+                  className='PasswordTextField'
                   type={showNewPasswordIcon ? "text" : "password"}
-                  name="newPassword"
+                  name='newPassword'
                   value={Password.newPassword || ""}
                   change={handleNewPasswordChange}
                   maxLength={25}
                   placeholder={t("New-password")}
                   inputicon={
                     showNewPasswordIcon ? (
-                      <img draggable="false" src={PasswordHideEyeIcon} alt="" />
+                      <img draggable='false' src={PasswordHideEyeIcon} alt='' />
                     ) : (
-                      <img draggable="false" src={PasswordEyeIcon} alt="" />
+                      <img draggable='false' src={PasswordEyeIcon} alt='' />
                     )
                   }
-                  iconclassname="eye_icon"
-                  labelclass="d-none"
-                  autoComplete="false"
+                  iconclassname='eye_icon'
+                  labelclass='d-none'
+                  autoComplete='false'
                   clickIcon={showNewPassowrd}
                 />
-                <span className="color-5a5a5a" style={{ fontSize: "0.5rem" }}>
+                <span className='color-5a5a5a' style={{ fontSize: "0.5rem" }}>
                   ({t("Maximum-password-length-is-25-characters")})
                 </span>
               </Col>
             </Row>
 
-            <Row className="my-3">
+            <Row className='my-3'>
               <Col
                 sm={12}
                 md={6}
                 lg={6}
-                className="label-changepassword MontserratMedium-500 color-5a5a5a mt-2"
-              >
+                className='label-changepassword MontserratMedium-500 color-5a5a5a mt-2'>
                 {t("Confirm-password")}
               </Col>
               <Col
                 sm={12}
                 md={6}
                 lg={6}
-                className="password-change-branch p-0 position-relative"
-              >
+                className='password-change-branch p-0 position-relative'>
                 {" "}
                 <TextField
-                  applyClass="form-control3"
-                  className="PasswordTextField"
+                  applyClass='form-control3'
+                  className='PasswordTextField'
                   type={showConfirmPasswordIcon ? "text" : "password"}
-                  name="ConfirmPassword"
+                  name='ConfirmPassword'
                   value={Password.ConfirmPassword || ""}
                   change={handleNewPasswordChange}
                   maxLength={25}
                   placeholder={t("Confirm-password")}
                   inputicon={
                     showConfirmPasswordIcon ? (
-                      <img draggable="false" src={PasswordHideEyeIcon} alt="" />
+                      <img draggable='false' src={PasswordHideEyeIcon} alt='' />
                     ) : (
-                      <img draggable="false" src={PasswordEyeIcon} alt="" />
+                      <img draggable='false' src={PasswordEyeIcon} alt='' />
                     )
                   }
-                  iconclassname="eye_icon"
-                  labelclass="d-none"
-                  autoComplete="false"
+                  iconclassname='eye_icon'
+                  labelclass='d-none'
+                  autoComplete='false'
                   clickIcon={showConfirmPassowrd}
                 />
               </Col>
             </Row>
 
-            <Row className="my-2">
+            <Row className='my-2'>
               <Col sm={12} md={6} lg={6}></Col>
               <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
-                <span className={"password-must"}>
-                  {t("Please-ensure")}
-                </span>
+                <span className={"password-must"}>{t("Please-ensure")}</span>
                 <PasswordChecklist
                   rules={["minLength", "specialChar", "letter", "match"]}
                   messages={{
@@ -274,11 +228,8 @@ const ChangePassword = () => {
                   className={"borderRadius-4 "}
                   value={Password.newPassword}
                   valueAgain={Password.ConfirmPassword}
-                  onChange={(isValid) => {
-                    console.log(isValid, "isValid", setPasswordStrong(isValid));
-                  }}
-                  invalidColor="#ff0000"
-                  validColor="#6172D6"
+                  invalidColor='#ff0000'
+                  validColor='#6172D6'
                   iconSize={"11px"}
                 />
               </Col>
@@ -296,19 +247,18 @@ const ChangePassword = () => {
                 sm={12}
                 md={6}
                 lg={6}
-                className="d-flex justify-content-end p-0"
-              >
+                className='d-flex justify-content-end p-0'>
                 <Button
                   disableBtn={
                     oldPassword === ""
                       ? true
                       : Password.newPassword === ""
-                      ? true
-                      : Password.ConfirmPassword === ""
-                      ? true
-                      : !isPasswordStrong
-                      ? true
-                      : false
+                        ? true
+                        : Password.ConfirmPassword === ""
+                          ? true
+                          : !isPasswordStrong
+                            ? true
+                            : false
                   }
                   text={t("Update")}
                   onClick={handleConformationUpdate}
@@ -324,7 +274,7 @@ const ChangePassword = () => {
         setShow={setmMdalFlag}
         modalHeaderClassName={styles["modalHeaderUpdatePassword"]}
         modalBodyClassName={styles["modalUpdatemodal"]}
-        modalFooterClassName="modal-footer-update"
+        modalFooterClassName='modal-footer-update'
         centered
         size={"md"}
         ModalBody={
@@ -332,8 +282,8 @@ const ChangePassword = () => {
             {modalFlag ? (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="text-center">
-                    <img draggable="false" src={PasswordUpdatedIcon} alt="" />
+                  <Col lg={12} md={12} sm={12} className='text-center'>
+                    <img draggable='false' src={PasswordUpdatedIcon} alt='' />
                     <p className={styles["modalUpdateText"]}>
                       {t("Your-password-has-been-changed-successfully")}
                     </p>
@@ -348,7 +298,7 @@ const ChangePassword = () => {
             {modalFlag ? (
               <>
                 <Row className={styles["modalUpdateted-2"]}>
-                  <Col lg={12} md={12} sm={12} xs={12} className="text-center ">
+                  <Col lg={12} md={12} sm={12} xs={12} className='text-center '>
                     <Button
                       className={styles["modalProceedBtn"]}
                       text={t("Ok")}
@@ -361,7 +311,8 @@ const ChangePassword = () => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

@@ -48,7 +48,7 @@ const Stats = () => {
       }
       dispatch(getDashbardPendingApprovalDataApi(navigate, t));
     } catch {
-      console.log("Error");
+      
     }
   }, []);
 
@@ -171,15 +171,7 @@ const Stats = () => {
           let nowValue = Number(bar.max) - Number(bar.now);
           let calculateValue = nowValue === 0 ? bar.max : nowValue;
           let checkisbothValueisEqual = bar.max === bar.now;
-          console.log(
-            checkisbothValueisEqual,
-            nowValue,
-            calculateValue,
-            bar,
-            typeof bar.max,
-            typeof bar.now,
-            "progressBarData"
-          );
+          
 
           return (
             <ProgressBar

@@ -16,33 +16,38 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // ------------------- RESPONSE -------------------
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("SUCCESS:", response.data);
+    let data = response.data;
 
-    const code = Number(response?.data?.responseCode);
-    const message = (response?.data?.errorMessage || "").toLowerCase().trim();
-
-    console.log("SUCCESS →", code, message);
+    // Handle ArrayBuffer case (optional)
+    if (data instanceof ArrayBuffer) {
+      try {
+        data = JSON.parse(new TextDecoder().decode(new Uint8Array(data)));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const code = Number(data?.responseCode);
+    const message = (data?.errorMessage || "").toLowerCase().trim();
 
     if (
       code === 400 &&
-      (message.toLowerCase() === "Token is required".toLowerCase() )
+      message.toLowerCase() === "Token is required".toLowerCase()
     ) {
-      console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
       return;
     }
 
     if (
       code === 401 &&
-      (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
+      (message === "tokens does not match" ||
+        message === "Invalid Agent".toLowerCase())
     ) {
-      console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
       return;
     }
@@ -50,34 +55,37 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("ERROR:", error);
+    let data = error.response.data;
 
-    const code = Number(error?.response?.data?.responseCode);
-    const message = (error?.response?.data?.errorMessage || "")
-      .toLowerCase()
-      .trim();
-
-    console.log("ERROR →", code, message);
+    // Handle ArrayBuffer case (optional)
+    if (data instanceof ArrayBuffer) {
+      try {
+        data = JSON.parse(new TextDecoder().decode(new Uint8Array(data)));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const code = Number(data?.responseCode);
+    const message = (data?.errorMessage || "").toLowerCase().trim();
 
     if (
       code === 400 &&
-      (message.toLowerCase() === "Token is required".toLowerCase() )
+      message.toLowerCase() === "Token is required".toLowerCase()
     ) {
-      console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
       return;
     }
 
     if (
       code === 401 &&
-      (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
+      (message === "tokens does not match" ||
+        message === "Invalid Agent".toLowerCase())
     ) {
-      console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

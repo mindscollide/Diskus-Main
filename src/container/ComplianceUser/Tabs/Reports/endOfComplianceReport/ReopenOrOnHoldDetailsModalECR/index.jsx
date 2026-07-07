@@ -18,7 +18,7 @@ const ReopenOrOnHoldDetailsModalECR = () => {
   );
 
   const { isViewDetailsOpen, setIsViewDetailsOpen } = useComplianceContext();
-  console.log(GetEndOfComplianceReport, "GetEndOfComplianceReport");
+  
 
   const handleCloseButton = () => {
     setIsViewDetailsOpen(false);

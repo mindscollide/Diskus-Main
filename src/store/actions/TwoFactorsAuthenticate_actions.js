@@ -105,7 +105,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   t("User-has-saved-devices-along-with-email-and-sms")
                 )
               );
-              console.log(response.data.responseResult.userDevices.length);
+              
               if (response.data.responseResult.userDevices.length === 1) {
                 dispatch(LoginFlowRoutes(8));
                 localStorage.setItem("LoginFlowPageRoute", 8);
@@ -134,7 +134,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               localStorage.setItem("commingfromSignFlow", true);
               dispatch(LoginFlowRoutes(4));
               navigate("/");
-              console.log("Complete");
+              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -694,7 +694,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
       .catch((response) => {
         dispatch(verifyOtpFacFail(t("Something-went-wrong")));
         localStorage.setItem("TowApproval", false);
-        console.log("TowApproval");
+        
       });
   };
 };

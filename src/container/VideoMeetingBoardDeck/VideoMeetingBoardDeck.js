@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Notification } from "../../components/elements";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const VideoMeetingBoardDeck = () => {
   const dispatch = useDispatch();
@@ -43,7 +42,7 @@ const VideoMeetingBoardDeck = () => {
     severity: "error",
   });
 
-  console.log(videoLink, "videoLinkvideoLinkvideoLink");
+  
 
   //Calling ValidateInput String Api
   useEffect(() => {
@@ -52,9 +51,9 @@ const VideoMeetingBoardDeck = () => {
         localStorage.setItem("VideoURl", code);
         window.close();
       } else if (getString !== "") {
-        console.log("Payment_actionPayment_action");
+        
         const videoStringValue = currentUrl.split("action=")[1];
-        console.log(videoStringValue, "videoStringValuevideoStringValue");
+        
         let data = {
           EncryptedString: videoStringValue,
         };
@@ -70,7 +69,7 @@ const VideoMeetingBoardDeck = () => {
         setVideoLink(VideoURLdata.filePath);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [VideoURLdata]);
 
@@ -97,22 +96,10 @@ const VideoMeetingBoardDeck = () => {
         return () => clearInterval(interval);
       } catch (error) {}
     }
-    console.log(typeof videoLink, "current videoLink");
+    
   }, [videoLink]);
 
-  //Response meesege
-  useEffect(() => {
-    if (
-      responseMessage !== "" &&
-      responseMessage !== t("No-data-available") &&
-      responseMessage !== t("Record-available")
-    ) {
-      showMessage(responseMessage, "success", setOpen);
-      dispatch(clearMessegesUserManagement());
-    } else {
-      dispatch(clearMessegesUserManagement());
-    }
-  }, [responseMessage]);
+
 
   return (
     <>
@@ -139,7 +126,7 @@ const VideoMeetingBoardDeck = () => {
           </Col>
         </Row>
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
     </>
   );
 };

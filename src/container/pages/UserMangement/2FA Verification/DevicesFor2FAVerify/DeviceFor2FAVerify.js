@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 import img2 from "../../../../../assets/images/2.png";
 import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
@@ -133,7 +136,7 @@ const DeviceFor2FAVerify = () => {
   };
 
   const handleGoBack = () => {
-    console.log("goback");
+    
 
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
@@ -215,11 +218,11 @@ const DeviceFor2FAVerify = () => {
                         <img
                           draggable='false'
                           src={
-                            localStorage.getItem("i18nextLng") === "ar"
+                            PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                               ? DiskusLogoArabic
                               : img1
                           }
-                          width={220}
+                          width={PSO_LOGO ? 120 :200}
                           alt='diskus_logo'
                         />
                       </Col>
@@ -390,6 +393,14 @@ const DeviceFor2FAVerify = () => {
                   alt='auth_icon'
                   className={styles["Auth_Icon1SendEmailRealme"]}
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=""
+                    draggable="false"
+                   className={styles.PoweredIcon_Diskus_Icon}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

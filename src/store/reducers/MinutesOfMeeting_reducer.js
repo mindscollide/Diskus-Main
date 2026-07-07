@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   AddMeetingofMinutesResponse: "",
   AddMeetingofMinutesMessage: "",
   UpdateMeetingofMinutesResponse: "",
@@ -15,6 +16,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         AddMeetingofMinutesMessage: "",
         UpdateMeetingofMinutesMessage: "",
       };
@@ -32,6 +34,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
         Loading: false,
         AddMeetingofMinutesResponse: action.response,
         AddMeetingofMinutesMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ADD_MINUTESOFMEETING_FAIL: {
@@ -40,6 +43,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
         Loading: false,
         AddMeetingofMinutesResponse: "",
         AddMeetingofMinutesMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_MINUTESOFMEETING_INIT: {
@@ -54,6 +58,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateMeetingofMinutesResponse: action.response,
         UpdateMeetingofMinutesMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_MINUTESOFMEETING_FAIL: {
@@ -62,6 +67,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
         Loading: false,
         UpdateMeetingofMinutesResponse: action.response,
         UpdateMeetingofMinutesMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default:

@@ -1254,7 +1254,7 @@ const AddComplianceChecklistAPI = (
                 response.data.responseResult.data?.checklistId;
 
               if (newChecklistId) {
-                console.log("newChecklistId");
+                
                 setNewChecklistIds((prev) => [...prev, newChecklistId]);
               }
 
@@ -2117,6 +2117,12 @@ const viewComplianceByMeDetails_fail = (response) => {
   return {
     type: actions.VIEW_COMPLIANCE_BY_ME_DETAILS_FAIL,
     response: response,
+  };
+};
+
+const clearComplianceDetailsTab = () => {
+  return {
+    type: actions.CLEAR_COMPLIANCEDETAILS_TAB,
   };
 };
 
@@ -3314,13 +3320,17 @@ const EditComplianceAPI = (
               );
 
               isFunction(setChecklistTabs) && setChecklistTabs(2);
-              console.log(ViewComplianceDetailsByViewTypeAPI, "Check Console");
+              
 
               if (flag === 3) {
-                console.log("Check Console");
+                
                 // The new status is in Data.newStatusId
-                if (Data.newStatusId === 7 || Data.newStatusId === 9) {
-                  console.log(Data, "Check Console");
+                if (
+                  Data.newStatusId === 7 ||
+                  Data.newStatusId === 9 ||
+                  Data.newStatusId === 6
+                ) {
+                  
 
                   await dispatch(
                     ViewComplianceDetailsByViewTypeAPI(
@@ -4364,6 +4374,7 @@ const SaveComplianceDocumentsAndMappingsAPI = (
                   editComplianceData,
                   t,
                   setChecklistTabs,
+                  3,
                 ),
               );
             } else if (
@@ -5115,7 +5126,7 @@ const complianceChecklistDeletedMQTT = (mqttData) => {
 
 // For COMPLIANCE UPDATED MQTT
 const complianceUpdateMQTT = (mqttData) => {
-  console.log(mqttData, "mqttDatamqttData");
+  
   return {
     type: actions.COMPLIANCE_UPDATED_MQTT,
     payload: mqttData,
@@ -5124,7 +5135,7 @@ const complianceUpdateMQTT = (mqttData) => {
 
 // For COMPLIANCE REOPENED MQTT
 const complianceReopenMQTT = (mqttData) => {
-  console.log(mqttData, "REOPENCOMPLIANCE");
+  
 
   return {
     type: actions.COMPLIANCE_REOPEN_MQTT,
@@ -5134,7 +5145,7 @@ const complianceReopenMQTT = (mqttData) => {
 
 // For TASK MAPPED WITH CHECKLIST MQTT
 const taskMappedChecklistMQTT = (mqttData) => {
-  console.log(mqttData, "REOPENCOMPLIANCE");
+  
 
   return {
     type: actions.TASK_MAPPED_WITH_CHECKLIST_MQTT,
@@ -5176,7 +5187,7 @@ const QuarterlyTaskDashboardManagerMqtt = (data) => {
 
 //For Task Dashboard Mqtt for User
 const TasksDashboardForUserMqtt = (data) => {
-  console.log(data, "check Data Occur");
+  
   return {
     type: actions.TASK_DASHBOARD_FOR_USER_MQTT,
     payload: data,
@@ -5184,7 +5195,7 @@ const TasksDashboardForUserMqtt = (data) => {
 };
 
 const TasksDashboardFormManagerMqtt = (data) => {
-  console.log(data, "check Data Occur");
+  
   return {
     type: actions.TASK_DASHBOARD_FOR_MANAGER_MQTT,
     payload: data,
@@ -5557,12 +5568,22 @@ const updateCheckListStatusApi = (navigate, Data, t) => {
 //       // ❌ Default Fallback
 //       return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
 //     } catch (error) {
-//       console.error("updateCheckListStatusApi Error:", error);
+//       
 
 //       return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
 //     }
 //   };
 // };
+
+// For TASK STATUS CHANGED FOR USER
+const taskStatusChangedUserMqtt = (mqttData) => {
+  
+
+  return {
+    type: actions.TASK_STATUS_CHANGED_FOR_USER_MQTT,
+    payload: mqttData,
+  };
+};
 
 export {
   clearAuthorityMessage,
@@ -5639,4 +5660,6 @@ export {
   ReopenedComplianceManagerMqtt,
   GetComplianceByAuthorityAPI,
   updateCheckListStatusApi,
+  clearComplianceDetailsTab,
+  taskStatusChangedUserMqtt,
 };

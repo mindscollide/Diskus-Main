@@ -77,7 +77,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
           setComments(declineCommentNewData);
         }
       } catch (error) {
-        console.error("Error processing signatories data:", error);
+        
       }
     }
   }, [SignatureWorkFlowReducer.getAllSignatoriesStatusWise]);

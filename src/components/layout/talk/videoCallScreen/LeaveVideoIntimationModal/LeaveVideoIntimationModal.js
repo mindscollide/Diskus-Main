@@ -7,50 +7,14 @@ import { useDispatch } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
-  actionsGlobalFlag,
-  agendaContributorsGlobalFlag,
-  agendaGlobalFlag,
-  attendanceGlobalFlag,
   currentMeetingStatus,
   LeaveCurrentMeetingOtherMenus,
   LeaveMeetingVideo,
-  meetingDetailsGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  organizersGlobalFlag,
-  participantsGlobalFlag,
-  pollsGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  proposeNewMeetingPageFlag,
-  scheduleMeetingPageFlag,
-  searchNewUserMeeting,
   showCancelModalmeetingDeitals,
   viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
-  viewMeetingFlag,
-  viewProposeDateMeetingPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import {
-  createGroupPageFlag,
-  updateGroupPageFlag,
-  viewGroupPageFlag,
-} from "../../../../../store/actions/Groups_actions";
-import {
-  createCommitteePageFlag,
-  updateCommitteePageFlag,
-  viewCommitteePageFlag,
-} from "../../../../../store/actions/Committee_actions";
-import {
-  resultResolutionFlag,
-  voteResolutionFlag,
-  viewAttachmentFlag,
-  createResolutionModal,
-  viewResolutionModal,
-} from "../../../../../store/actions/Resolution_actions";
-import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
@@ -67,19 +31,11 @@ import {
 
 const LeaveVideoIntimationModal = () => {
   const dispatch = useDispatch();
-  const {setViewAdvanceMeetingModal} =useMeetingContext()
-
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const navigate = useNavigate();
 
   const location = useLocation();
-
-  //LocalStorage Entiites
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let userID = localStorage.getItem("userID");
   let NavigationLocation = localStorage.getItem("navigateLocation");
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -119,9 +75,6 @@ const LeaveVideoIntimationModal = () => {
   );
   const viewProposeDateMeetingsPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
-  );
-  const viewAdvanceMeetingsPublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
   const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
@@ -248,7 +201,6 @@ const LeaveVideoIntimationModal = () => {
           proposeNewMeetingPageFlagReducer,
           viewMeetingFlagReducer,
           location,
-          setViewAdvanceMeetingModal
         )
       );
       await dispatch(currentMeetingStatus(0));

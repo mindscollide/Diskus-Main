@@ -10,10 +10,13 @@ import PollImage from "../../../../assets/images/sidebar_icons/Polls.png";
 import CalenderImage from "../../../../assets/images/sidebar_icons/NewCalenderSideBar.png";
 import NotesImage from "../../../../assets/images/sidebar_icons/NewNotesSideBar.png";
 import TaskImage from "../../../../assets/images/sidebar_icons/NewTaskSideBar.png";
+import ResolutionImage from "../../../../assets/images/sidebar_icons/Resolution.png";
+
 import styles from "./ExpandMenu.module.css";
 import {
   checkFeatureIDAvailability,
   SideBarGlobalNavigationFunction,
+  SideBarGlobalNavigationFunctionNew,
 } from "../../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
 import {
@@ -23,12 +26,20 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import {
-  searchNewUserMeeting,
   showEndMeetingModal,
 } from "../../../../store/actions/NewMeetingActions";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import { resetCurrentMeetingInfo } from "../../../../store/actions/NewMeeting2.actions";
+import {
+  resetViewTabs,
+  toggleViewMeetingModal,
+} from "../../../../store/actions/ModalStates_actions";
 
-const ExpandedMenu = () => {
+const ExpandedMenu = ({
+  handleSidebarNavigation,
+  handleMeetingSidebarResolutions,
+  handleMeetingSidebarResolutionsNoCall,
+}) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -58,7 +69,9 @@ const ExpandedMenu = () => {
     createEditCompliance,
     setPendingNavigation,
   } = useComplianceContext();
-
+  const { isViewMeetingModal } = useSelector(
+    (state) => state.ModalStatesReducer,
+  );
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
@@ -126,26 +139,34 @@ const ExpandedMenu = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
 
     localStorage.setItem("navigateLocation", "groups");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/groups",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/groups",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/groups",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   //Polls Sidebar Click
@@ -164,25 +185,34 @@ const ExpandedMenu = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
     localStorage.setItem("navigateLocation", "polling");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/polling",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/polling",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/polling",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   //Calendar Sidebar Click
@@ -201,26 +231,34 @@ const ExpandedMenu = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
 
     localStorage.setItem("navigateLocation", "calendar");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/calendar",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/calendar",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/calendar",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   // Todo Sidebar Click
@@ -239,25 +277,33 @@ const ExpandedMenu = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
     localStorage.setItem("navigateLocation", "todolist");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/todolist",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/todolist",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/todolist",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
   const handleMeetingSidebarNotes = () => {
@@ -275,113 +321,35 @@ const ExpandedMenu = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
-    console.log("Checking", editorRole);
+    
     localStorage.setItem("navigateLocation", "Notes");
-
-    SideBarGlobalNavigationFunction(
-      viewAdvanceMeetingModal,
-      editorRole,
-      minutes,
-      actionsPage,
-      polls,
-      navigate,
+    SideBarGlobalNavigationFunctionNew(
       dispatch,
-      setCancelConfirmationModal,
-      setViewAdvanceMeetingModal,
-      "/Diskus/Notes",
+      navigate,
       t,
-      sceduleMeeting,
-      setSceduleMeeting,
+      "/Diskus/Notes",
+      editorRole,
+      setCancelConfirmationModal,
       setGoBackCancelModal,
     );
+    // SideBarGlobalNavigationFunction(
+    //   viewAdvanceMeetingModal,
+    //   editorRole,
+    //   minutes,
+    //   actionsPage,
+    //   polls,
+    //   navigate,
+    //   dispatch,
+    //   setCancelConfirmationModal,
+    //   setViewAdvanceMeetingModal,
+    //   "/Diskus/Notes",
+    //   t,
+    //   sceduleMeeting,
+    //   setSceduleMeeting,
+    //   setGoBackCancelModal,
+    // );
   };
 
-  const handleSidebarClickForExpand = ({
-    targetPath,
-    navigateLocationKey,
-    handleWithCall,
-    handleNoCall,
-  }) => {
-    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-    const isHost = JSON.parse(localStorage.getItem("isHost"));
-    console.log("Check Route scenario's");
-    console.log(createEditCompliance, "Check Route scenario's");
-    console.log(targetPath, "Check Route scenario's");
-    if (createEditCompliance) {
-      console.log("createEditComplaince");
-      setPendingNavigation(targetPath);
-      setCloseConfirmationModal(true);
-      return true;
-    }
-
-    if (isMeeting) {
-      console.log("Check Route scenario's");
-      if (location.pathname !== targetPath && !viewAdvanceMeetingModal) {
-        console.log("Check Route scenario's");
-        navigate(targetPath);
-        return "";
-      }
-
-      console.log("Check Route scenario's");
-
-      if (!isMeetingVideo) {
-        console.log("Check Route scenario's");
-        // show Modal in which when anyone is not in the meeting Video
-        dispatch(showEndMeetingModal(true));
-      } else {
-        console.log("Check Route scenario's");
-        if (
-          (activeCall === false ||
-            activeCall === undefined ||
-            activeCall === null) &&
-          isMeetingVideo
-        ) {
-          //this will open when activeCall is false and this come from Host side
-          console.log("Check Route scenario's");
-          handleNoCall();
-        } else {
-          if (isMeetingVideo) {
-            console.log("Check Route scenario's");
-            //this will open when activeCall is true and this come from participant side
-            handleWithCall();
-          }
-        }
-      }
-
-      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
-        console.log("Check Route scenario's");
-        localStorage.removeItem("navigateLocation");
-      }
-
-      localStorage.setItem("navigateLocation", navigateLocationKey);
-      return true;
-    }
-
-    if (endMeetingModal) {
-      console.log("Check Route scenario's");
-      console.log("End Meeting Modal is open — blocking navigation.");
-      return true;
-    }
-
-    const shouldRedirectToMeeting =
-      (scheduleMeetingPageFlagReducer ||
-        viewProposeDateMeetingPageFlagReducer ||
-        viewAdvanceMeetingPublishPageFlagReducer ||
-        viewAdvanceMeetingUnpublishPageFlagReducer ||
-        viewProposeOrganizerMeetingPageFlagReducer ||
-        proposeNewMeetingPageFlagReducer) &&
-      !viewMeetingFlagReducer;
-
-    if (shouldRedirectToMeeting) {
-      console.log("Check Route scenario's");
-      navigate("/Diskus/Meeting");
-    } else {
-      console.log("Check Route scenario's");
-      navigate(targetPath);
-    }
-
-    return false;
-  };
 
   return (
     <Nav className={styles.iconGrid}>
@@ -400,7 +368,7 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/calendar",
               navigateLocationKey: "calendar",
               handleWithCall: handleMeetingSidebarCalendar,
@@ -436,7 +404,7 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/groups",
               navigateLocationKey: "groups",
               handleWithCall: handleMeetingSidebarGroups,
@@ -473,7 +441,7 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/todolist",
               navigateLocationKey: "todolist",
               handleWithCall: handleMeetingSidebarTodo,
@@ -509,7 +477,7 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/Notes",
               navigateLocationKey: "Notes",
               handleWithCall: handleMeetingSidebarNotes,
@@ -545,7 +513,7 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const handled = handleSidebarClickForExpand({
+            const handled = handleSidebarNavigation({
               targetPath: "/Diskus/polling",
               navigateLocationKey: "polling",
               handleWithCall: handleMeetingSidebarPolls,
@@ -561,6 +529,55 @@ const ExpandedMenu = () => {
           >
             <img src={PollImage} alt="" />
             <p>{t("Polls")}</p>
+          </div>
+        </Nav.Link>
+      ) : null}
+
+      {/* Resolution */}
+      {checkFeatureIDAvailability(18) ? (
+        <Nav.Link
+          as={Link}
+          to={
+            (scheduleMeetingsPageFlag === true ||
+              viewProposeDateMeetingsPageFlag === true ||
+              viewAdvanceMeetingsPublishPageFlag === true ||
+              viewAdvanceMeetingsUnpublishPageFlag === true ||
+              viewProposeOrganizerMeetingsPageFlag === true ||
+              proposeNewMeetingsPageFlag === true) &&
+            viewMeetingsFlag === false
+              ? "/Diskus/Meeting"
+              : "/Diskus/resolution"
+          }
+          disabled={false}
+          draggable="false"
+          className={
+            location.pathname === "/Diskus/resolution" ||
+            location.pathname === "/Diskus/resolution"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
+          }
+          onClick={(e) => {
+            // Prevent default behavior
+            const handled = handleSidebarNavigation({
+              targetPath: "/Diskus/resolution",
+              navigateLocationKey: "resolution",
+              handleWithCall: handleMeetingSidebarResolutions,
+              handleNoCall: handleMeetingSidebarResolutionsNoCall,
+            });
+
+            if (handled) {
+              e.preventDefault();
+              return;
+            }
+          }}
+        >
+          {/* Resolution Icon */}
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={ResolutionImage} alt="ResolutionImage" />
+            <p>{t("Resolutions")}</p>
           </div>
         </Nav.Link>
       ) : null}

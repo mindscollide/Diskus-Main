@@ -189,7 +189,7 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
   width: 502px;
   position: relative !important;
   height: 39px !important;
-  padding-right: 50px !important;
+  /* padding-right: 50px !important; */
 }
 
 @media screen and (max-width: 1224px) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./ApprovalSend.module.css";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -37,6 +37,7 @@ import { useTableScrollBottom } from "../../../../commen/functions/useTableScrol
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
+  const hasFetchedInitially = useRef(false);
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const SignatureWorkFlowReducer = useSelector(
     (state) => state.SignatureWorkFlowReducer,
@@ -49,7 +50,7 @@ const ApprovalSend = () => {
       state.SignatureWorkFlowReducer.workflowSignaturedocumentStatusChange,
   );
 
-  console.log({ workflowsignaturedocumentbyme }, "globalStateglobalState");
+  
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const ApprovalSend = () => {
     title: 0,
     statusID: [],
   });
-  console.log(sortingData, "sortingDatasortingData");
+  
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -75,11 +76,11 @@ const ApprovalSend = () => {
   const [signatoriesSort, setSignatoriesSort] = useState(null);
 
   useEffect(() => {
-    const apiFunc = async () => {
+    const fetchStatusOptions = async () => {
       let newData = { IsCreator: true };
       await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     };
-    apiFunc();
+    fetchStatusOptions();
   }, []);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const ApprovalSend = () => {
   const resetFilter = async () => {
     setSortingData({
       ...sortingData,
-      statusID: [],
+      statusID: defaultreviewAndSignatureStatus,
       sentOn: 0,
       title: 0,
     });
@@ -105,7 +106,7 @@ const ApprovalSend = () => {
       sRow: 0,
       Length: 10,
       SentOnSort: 0,
-      StatusIDs: [],
+      StatusIDs: defaultreviewAndSignatureStatus,
       TitleSort: 0,
     };
     await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
@@ -220,7 +221,7 @@ const ApprovalSend = () => {
         },
       }),
       render: (text, record) => {
-        console.log(record, "texttexttext");
+        
         return (
           <span
             className="d-flex gap-2 align-items-center cursor-pointer"
@@ -373,7 +374,7 @@ const ApprovalSend = () => {
   ];
 
   const handleClickSignatoriesList = (record) => {
-    console.log(record, "handleClickSignatoriesListhandleClickSignatoriesList");
+    
     // setSignatureListVal(value);
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
@@ -453,7 +454,7 @@ const ApprovalSend = () => {
           }
         }
       } catch (error) {
-        console.log("Something Went Wrong", error);
+        
         setApprovalsData([]);
         setTotalRecords(0);
         setPageNo(1);
@@ -476,7 +477,8 @@ const ApprovalSend = () => {
   useEffect(() => {
     if (
       SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== null &&
-      SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== undefined
+      SignatureWorkFlowReducer.getAllPendingApprovalStatuses !== undefined &&
+      !hasFetchedInitially.current
     ) {
       try {
         const { statusList } =
@@ -493,9 +495,25 @@ const ApprovalSend = () => {
           });
           setReviewAndSignatureStatus(statusValues);
           setDefaultReviewAndSignatureStatus(defaultStatus);
+          // ✅ ADD THIS: Set all statuses as selected by default
+          setSortingData((prev) => ({
+            ...prev,
+            statusID: defaultStatus, // All statuses selected by default
+          }));
+          // ✅ Mark as fetched before API call
+          hasFetchedInitially.current = true;
+          // ✅ Fetch documents with all statuses immediately
+          let Data = {
+            sRow: 0,
+            Length: 10,
+            SentOnSort: 0,
+            StatusIDs: defaultStatus, // All statuses
+            TitleSort: 0,
+          };
+          dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [SignatureWorkFlowReducer.getAllPendingApprovalStatuses]);
@@ -559,7 +577,7 @@ const ApprovalSend = () => {
         );
       }
     } catch (error) {
-      console.error("Error updating approvals data:", error);
+      
     }
   }, [workflowSignaturedocumentStatusChange]);
 
@@ -571,18 +589,9 @@ const ApprovalSend = () => {
       spin
     />
   );
-  console.log(
-    rowsDataLength <= totalRecords,
-    totalRecords,
-    rowsDataLength,
-    "handleScrollhandleScroll",
-  );
+  
   useTableScrollBottom(async (hasReachedBottom) => {
-    console.log(
-      hasReachedBottom,
-      approvalsData.length > 0 && rowsDataLength <= totalRecords,
-      "hasReachedBottom",
-    );
+    
 
     if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
       setIsScrolling(true);

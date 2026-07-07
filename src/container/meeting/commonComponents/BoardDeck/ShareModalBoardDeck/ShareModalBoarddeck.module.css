@@ -1,0 +1,77 @@
+.SharemodalHeading {
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+p.FileModalTitle {
+  margin: 0;
+  font-weight: 500 !important;
+  font-weight: 600;
+  font-size: 17px;
+  color: #6172d6;
+}
+
+.allFileUI {
+  border: 1px solid #d4d4d4;
+  border-radius: 3px;
+  margin: 10px 0px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+span.fileNameAttachment {
+  margin-left: 20px;
+  font-weight: 400 !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration-line: underline;
+  color: #5a5a5a;
+  pointer-events: none;
+}
+
+body[dir="rtl"] span.fileNameAttachment {
+  margin-left: 0px;
+  margin-right: 20px;
+  font-weight: 400 !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration-line: underline;
+  color: #5a5a5a;
+  pointer-events: none;
+}
+
+.Cancel_Vote_Modal,
+.Cancel_Vote_Modal:is(:hover, :active, :focus, :focus-visible, :target) {
+  border: 1px solid #6172d6 !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  padding: 8px 16px !important;
+  font-weight: 500;
+}
+
+.FileSectionHeight {
+  height: auto;
+  overflow: auto;
+  max-height: 365px;
+}
+
+img.image-close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  cursor: pointer;
+}
+
+body[dir="rtl"] img.image-close {
+  position: absolute;
+  right: auto;
+  top: 0px;
+  cursor: pointer;
+  left: 10px;
+}

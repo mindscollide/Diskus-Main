@@ -4,6 +4,9 @@ import { Button, Notification } from "./../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "./../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "./../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "./../../../commen/featureFlags";
+import PSOPowerdBy from "./../../../assets/images/Logos/PowerdByDiskus.png";
 
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import styles from "./UpdatePasswordSuccessfully.module.css";
@@ -11,7 +14,7 @@ import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newR
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UpdatePasswordSuccessfully = () => {
   const { Authreducer } = useSelector((state) => state);
@@ -19,31 +22,11 @@ const UpdatePasswordSuccessfully = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const handlechange = (e) => {
     e.preventDefault();
     navigate("/");
   };
-
-  useEffect(() => {
-    if (
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t("Password-updated-successfully")
-    ) {
-      showMessage(
-        Authreducer.passwordUpdateOnForgotPasswordMessege,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.passwordUpdateOnForgotPasswordMessege]);
 
   return (
     <>
@@ -78,7 +61,7 @@ const UpdatePasswordSuccessfully = () => {
                     <img
                       draggable="false"
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : DiskusLogo
                       }
@@ -157,11 +140,20 @@ const UpdatePasswordSuccessfully = () => {
                 width="600px"
                 className={styles["Update_password_successfully_Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=""
+                  draggable="false"
+                  style={{ position: "absolute", bottom: 10, right: 10, width: 110, zIndex: 2 }}
+                />
+              )}
             </Col>
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

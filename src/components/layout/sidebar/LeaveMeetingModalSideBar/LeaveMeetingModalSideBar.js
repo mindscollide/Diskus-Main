@@ -8,7 +8,6 @@ import {
   LeaveMeetingSideBarModalAction,
   proposeNewMeetingPageFlag,
   scheduleMeetingPageFlag,
-  searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   viewMeetingFlag,
@@ -17,6 +16,7 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { listOfMeetingsApi } from "../../../../store/actions/NewMeeting2.actions";
 const LeaveMeetingModalSideBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const LeaveMeetingModalSideBar = () => {
           ? true
           : false,
     };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(listOfMeetingsApi(navigate, t, searchData));
     dispatch(LeaveMeetingSideBarModalAction(false));
     dispatch(scheduleMeetingPageFlag(false));
     dispatch(viewProposeDateMeetingPageFlag(false));
@@ -78,8 +78,7 @@ const LeaveMeetingModalSideBar = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t("Any-unsaved-changes-will-be")}
                 </span>
@@ -90,8 +89,7 @@ const LeaveMeetingModalSideBar = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t("Lost-continue")}
                 </span>
@@ -106,8 +104,7 @@ const LeaveMeetingModalSideBar = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2"
-              >
+                className='d-flex justify-content-center gap-2'>
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

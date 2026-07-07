@@ -39,6 +39,7 @@
   border: 1px solid #e1e1e1;
 }
 
+
 .searchResult_Document__control:has(
     .searchResult_Document__value-container--has-value
   ) {

@@ -5,6 +5,7 @@ const initialState = {
   ShowNotification: false,
   Fail: false,
   ResponseMessage: "",
+  errorSeverity: null,
   downloadDocumentsList: [],
   userLoginHistoryDownload: null,
   auditTrialDownload: null,
@@ -24,13 +25,15 @@ const downloadReducer = (state = initialState, action) => {
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
             : action.response.responseResult.recordeMessage,
+        errorSeverity: "error",
       };
 
     case actions.SET_LOADER_FALSE_DOWNLOAD:
       return { ...state, Loading: false };
 
     case action.ATTENDANCE_DOWNLOAD_LOADER_FAIL:
-      return { ...state, Loading: false };
+      return { ...state, Loading: false,
+      errorSeverity: "error", };
 
     case actions.SHOW:
       return { ...state, ShowNotification: true, Message: action.message };
@@ -43,10 +46,12 @@ const downloadReducer = (state = initialState, action) => {
         uploadDocumentsList: action.response,
         isExecuted: action.isExecuted,
         responseMessage: action.response.responseMessage,
+        errorSeverity: "success",
       };
 
     case actions.DOWNLOAD_DOCUMENT_FILE_FAIL:
-      return { ...state, Loading: false };
+      return { ...state, Loading: false,
+      errorSeverity: "error", };
 
     case actions.DOWNLOAD_ATTENDANCE_REPORT_INIT:
       return { ...state, Loading: true };
@@ -62,6 +67,7 @@ const downloadReducer = (state = initialState, action) => {
         Loading: false,
         userLoginHistoryDownload: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.EXPORT_USERLOGINHISTORY_FAIL: {
@@ -70,6 +76,7 @@ const downloadReducer = (state = initialState, action) => {
         Loading: false,
         userLoginHistoryDownload: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -86,6 +93,7 @@ const downloadReducer = (state = initialState, action) => {
         Loading: false,
         auditTrialDownload: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.EXPORT_AUDITTRIAL_REPORT_FAIL: {
@@ -94,6 +102,7 @@ const downloadReducer = (state = initialState, action) => {
         Loading: false,
         auditTrialDownload: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default:

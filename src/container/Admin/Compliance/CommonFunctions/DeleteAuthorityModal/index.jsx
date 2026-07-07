@@ -26,7 +26,7 @@ const DeleteAuthorityModal = () => {
     (state) => state.ComplainceSettingReducerReducer.ComplianceListData,
   );
 
-  console.log(ComplianceListData, "ComplianceListDataComplianceListData");
+  
 
   const deleteAuthorityModal = useSelector(
     (state) => state.ManageAuthorityReducer.deleteAuthorityModal,

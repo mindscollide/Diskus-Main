@@ -7,6 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 import img2 from "../../../../../assets/images/2.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import img5 from "../../../../../assets/images/5.png";
@@ -22,7 +25,7 @@ import Cookies from "js-cookie";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const TwoFactorMultipleDevices = () => {
   const AuthreducerAuthenticateAFAResponse = useSelector(
     (state) => state.Authreducer.AuthenticateAFAResponse
@@ -34,11 +37,7 @@ const TwoFactorMultipleDevices = () => {
 
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [currentDevice, setCurrentDevice] = useState([
     {
@@ -106,7 +105,7 @@ const TwoFactorMultipleDevices = () => {
         localStorage.setItem("LoginFlowPageRoute", 15);
         dispatch(LoginFlowRoutes(15));
       } else {
-        showMessage(t("0-device-not-found"), "error", setOpen);
+        show(t("0-device-not-found"), "error");
       }
     } else {
       let Data = {
@@ -174,7 +173,7 @@ const TwoFactorMultipleDevices = () => {
   }, [Helper.socket]);
 
   const handleGoback = () => {
-    console.log("goback");
+    
 
     localStorage.setItem("LoginFlowPageRoute", 2);
     dispatch(LoginFlowRoutes(2));
@@ -211,11 +210,11 @@ const TwoFactorMultipleDevices = () => {
                         <img
                           draggable='false'
                           src={
-                            localStorage.getItem("i18nextLng") === "ar"
+                            PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                               ? DiskusLogoArabic
                               : img1
                           }
-                          width={220}
+                          width={PSO_LOGO ? 120 : 200}
                           alt='diskus_logo'
                         />
                       </Col>
@@ -423,12 +422,21 @@ const TwoFactorMultipleDevices = () => {
                   width='600px'
                   className={styles["MultiFac_Auth_Icon"]}
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=""
+                    draggable="false"
+                              className={styles.PoweredIcon_Diskus_Icon}
+                  />
+                )}
               </Col>
             </Row>
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

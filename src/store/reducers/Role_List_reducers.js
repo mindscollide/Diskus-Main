@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Response: "",
   ResponseMessage: "",
+  errorSeverity: null,
   Loading: false,
   OrganaizationName: "",
   UserRolesList: [],
@@ -24,6 +25,7 @@ const RoleListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         OrganaizationRolesList: action.response,
+        errorSeverity: "success",
       };
     }
 
@@ -31,6 +33,7 @@ const RoleListReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "error",
       };
     }
 
@@ -45,12 +48,14 @@ const RoleListReducer = (state = initialState, action) => {
       return {
         ...state,
         UserRolesList: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.ADMIN_USERROLELIST_FAIL: {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "error",
       };
     }
     case actions.ADMIN_GETORGANAIZATIONID_INIT: {
@@ -64,12 +69,14 @@ const RoleListReducer = (state = initialState, action) => {
       return {
         ...state,
         OrganaizationName: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.ADMIN_GETORGANAIZATIONID_INIT_FAIL: {
       return {
         ...state,
         Loading: false,
+        errorSeverity: "error",
       };
     }
     case actions.ADMIN_USERSTATUSLIST_INIT: {
@@ -83,6 +90,7 @@ const RoleListReducer = (state = initialState, action) => {
       return {
         ...state,
         UserStatusList: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.ADMIN_USERSTATUSLIST_FAIL: {
@@ -90,6 +98,7 @@ const RoleListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         UserStatusList: [],
+        errorSeverity: "error",
       };
     }
 

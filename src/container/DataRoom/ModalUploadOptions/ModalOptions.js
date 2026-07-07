@@ -25,7 +25,7 @@ const ModalOptions = ({
   const [fileUploadOptions, setFileUploadOptions] = useState(1);
 
   const handleuploadFile = async () => {
-    console.log("tasksAttachments", tasksAttachments[tasksAttachmentsID]);
+    
 
     dispatch(
       uploadDocumentsApi(

@@ -25,6 +25,9 @@ import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAsce
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import styles from "./complianceByMe.module.css";
+import { getFiscalQuarterDetails } from "../../../../commen/functions/validations";
+import { dateConverterIntoUTCForDataroom } from "../../../../commen/functions/date_formater";
+import moment from "moment";
 
 /**
  * ComplianceByMe
@@ -65,6 +68,11 @@ const ComplianceByMe = () => {
     upcomingDeadlineFilterFlag,
     setUpcomingDeadlineFilterFlag,
     setIsComplianceCreateOrEdit,
+    statusFilter,
+    setStatusFilter,
+    criticalityFilter,
+    setCriticalityFilter,
+    mainComplianceTabs,
   } = useComplianceContext();
 
   // ── Local state ───────────────────────────────────────────────────────────
@@ -75,14 +83,15 @@ const ComplianceByMe = () => {
   /** Active sort column and direction. Null key/order means unsorted. */
   const [sortConfig, setSortConfig] = useState({
     key: "dueDate",
-    order: "descend",
+    order: null,
   });
 
-  /** Controlled filter values for the Criticality column (1=High, 2=Med, 3=Low). */
-  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-
-  /** Controlled filter values for the Status column (array of statusTitle strings). */
-  const [statusFilter, setStatusFilter] = useState([]);
+  const TAB = {
+    DASHBOARD: 1,
+    BY_ME: 2,
+    FOR_ME: 3,
+    REPORTS: 4,
+  };
 
   // ── Mount effect ──────────────────────────────────────────────────────────
 
@@ -94,11 +103,49 @@ const ComplianceByMe = () => {
   useEffect(() => {
     const payload = { ...searchCompliancePayload };
 
+    //  UPCOMING DEADLINE FLOW
+    if (upcomingDeadlineFilterFlag) {
+      let startFiscalMonth = localStorage.getItem("fiscalStartMonth");
+      let startFiscalDay = localStorage.getItem("fiscalYearStartDay");
+
+      const { startDate, endDate } = getFiscalQuarterDetails({
+        fiscalStartMonth: Number(startFiscalMonth),
+        fiscalStartDay: Number(startFiscalDay),
+      });
+
+      const upcomingPayload = {
+        ...payload,
+        statusIds: [1, 2, 4, 6, 7],
+        dueDateFrom: moment(startDate).format("YYYYMMDD"),
+        dueDateTo: moment(endDate).format("YYYYMMDD"),
+        pageNumber: 0,
+      };
+
+      setSearchCompliancePayload(upcomingPayload);
+
+      dispatch(listOfComplianceByCreatorApi(navigate, upcomingPayload, t));
+
+      return;
+    }
+
+    //  REOPEN FLOW
     if (viewAllReopenDashboardButtonFlag) {
-      const reopenPayload = { ...payload, statusIds: [6] };
+      const reopenPayload = {
+        ...payload,
+        statusIds: [6],
+        pageNumber: 0,
+      };
+
+      //  SAVE PAYLOAD
+      setSearchCompliancePayload(reopenPayload);
+
       dispatch(listOfComplianceByCreatorApi(navigate, reopenPayload, t));
+
       setViewAllReopenDashboardButtonFlag(false);
     } else {
+      //  NORMAL FLOW
+      setSearchCompliancePayload(payload);
+
       dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
       dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
     }
@@ -136,6 +183,13 @@ const ComplianceByMe = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCompliancesForCreator]);
 
+  useEffect(() => {
+    if (mainComplianceTabs === TAB.BY_ME) {
+      setCriticalityFilter([1, 2, 3]);
+      setStatusFilter([]);
+    }
+  }, [mainComplianceTabs]);
+
   /**
    * Initialise the status filter dropdown.
    * If upcomingDeadlineFilterFlag is true (user arrived from the Upcoming
@@ -143,15 +197,35 @@ const ComplianceByMe = () => {
    * the flag. Otherwise select all statuses (default behaviour).
    */
   useEffect(() => {
-    if (statusFilter.length === 0) {
-      if (upcomingDeadlineFilterFlag) {
-        setStatusFilter(["Not Started", "In Progress", "On Hold", "Reopened"]);
-        setUpcomingDeadlineFilterFlag(false);
-      } else if (allComplianceStatusForFilter?.length > 0) {
-        setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
-      }
+    if (
+      allComplianceStatusForFilter?.length > 0 &&
+      upcomingDeadlineFilterFlag
+    ) {
+      const statusIds = [1, 2, 4, 6, 7];
+
+      const selectedStatuses = allComplianceStatusForFilter
+        .filter((s) => statusIds.includes(s.statusId))
+        .map((s) => s.statusTitle);
+
+      setStatusFilter(selectedStatuses);
+
+      //  Reset flag AFTER setting
+      setUpcomingDeadlineFilterFlag(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allComplianceStatusForFilter, upcomingDeadlineFilterFlag]);
+
+  useEffect(() => {
+    if (
+      allComplianceStatusForFilter?.length > 0 &&
+      statusFilter.length === 0 &&
+      !upcomingDeadlineFilterFlag
+    ) {
+      const allStatuses = allComplianceStatusForFilter.map(
+        (s) => s.statusTitle,
+      );
+
+      setStatusFilter(allStatuses);
+    }
   }, [allComplianceStatusForFilter]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -255,21 +329,34 @@ const ComplianceByMe = () => {
           return a.complianceTitle
             ?.toLowerCase()
             .localeCompare(b.complianceTitle?.toLowerCase());
+
         case "authorityShortCode":
           return a.authorityShortCode
             ?.toLowerCase()
             .localeCompare(b.authorityShortCode?.toLowerCase());
-        case "dueDate":
-          return (
-            getDueDateTimeNumber(a.dueDate, a.dueTime) -
-            getDueDateTimeNumber(b.dueDate, b.dueTime)
-          );
+
+        case "dueDate": {
+          const dateA = getDueDateTimeNumber(a.dueDate, a.dueTime);
+          const dateB = getDueDateTimeNumber(b.dueDate, b.dueTime);
+
+          // Primary: Due Date
+          if (dateA !== dateB) {
+            return sortConfig.order === "ascend"
+              ? dateA - dateB
+              : dateB - dateA;
+          }
+
+          // Secondary: Criticality (High → Medium → Low)
+          return sortConfig.order === "ascend"
+            ? a.criticality - b.criticality
+            : b.criticality - a.criticality;
+        }
+
         default:
           return 0;
       }
     });
-
-    return sortConfig.order === "ascend" ? sorted : sorted.reverse();
+    return sorted;
   }, [complianceByMeList, sortConfig]);
 
   /**
@@ -281,9 +368,9 @@ const ComplianceByMe = () => {
       const isActive = sortConfig.key === columnKey;
       const order = isActive ? sortConfig.order : null;
       const icon =
-        order === "ascend"
+        order === "descend"
           ? ArrowUpIcon
-          : order === "descend"
+          : order === "ascend"
             ? ArrowDownIcon
             : DefaultSortIcon;
 

@@ -439,6 +439,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CreatedFoldersArray: newData,
+        errorSeverity: "success",
       };
     }
     case actions.CREATE_FOLDER_EMPTY: {

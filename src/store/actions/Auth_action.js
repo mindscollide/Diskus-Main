@@ -21,10 +21,10 @@ const refreshtokenSuccess = (response, message) => {
 };
 
 const RefreshToken = (navigate, t) => {
-  let Token = JSON.parse(localStorage.getItem("token"));
+
   let RefreshToken = JSON.parse(localStorage.getItem("refreshToken"));
   let Data = {
-    Token: Token,
+    Token: localStorage.getItem("token"),
     RefreshToken: RefreshToken,
   };
   return async (dispatch) => {
@@ -38,10 +38,7 @@ const RefreshToken = (navigate, t) => {
         //
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.responseCode === 205) {
-            console.log(
-              response.data,
-              "authenticationApiauthenticationApiauthenticationApi"
-            );
+            
             let message2 = t("Your-session-has-expired-please-login-again");
             await dispatch(refreshtokenFail(message2));
             await signOut(message2, dispatch);

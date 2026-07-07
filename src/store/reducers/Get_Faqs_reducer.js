@@ -5,6 +5,7 @@ const initialState = {
   ShowNotification: false,
   Fail: false,
   ResponseMessage: "",
+  errorSeverity: null,
   AllFAQsData: [],
 };
 
@@ -30,6 +31,7 @@ const fAQsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         AllFAQsData: GetAllFAQsArray,
         ShowNotification: true,
+        errorSeverity: "success",
       };
 
     case actions.GET_FAQS_FAIL:
@@ -39,6 +41,7 @@ const fAQsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         AllFAQsData: [],
         ShowNotification: true,
+        errorSeverity: "error",
       };
 
     default:

@@ -47,9 +47,6 @@ const uploaddocumentloader = (payload) => {
 };
 //File Upload
 const FileUploadToDo = (navigate, data, t, newfile, route) => {
-  console.log(route, typeof route, "routerouteroute");
-  let token = JSON.parse(localStorage.getItem("token"));
-
   let form = new FormData();
   form.append("RequestMethod", uploadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -57,8 +54,8 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
 
   return async (dispatch) => {
     dispatch(UploadLoaderStart());
-    await   axiosInstance
-    .post(settingApi, form)
+    await axiosInstance
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -69,10 +66,9 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase(),
                 )
             ) {
-              console.log(newfile, "PromisePromisePromise");
               if (newfile) {
                 let dataResultdisplayFileName =
                   response.data.responseResult.displayFileName;
@@ -97,15 +93,15 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
                   uploadDocumentSuccess(
                     response.data.responseResult,
                     t("valid-data"),
-                    loaderVal
-                  )
+                    loaderVal,
+                  ),
                 );
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase(),
                 )
             ) {
               await dispatch(uploadDocumentFail(t("Invalid-data")));
@@ -113,7 +109,7 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase(),
                 )
             ) {
               await dispatch(uploadDocumentFail(t("Something-went-wrong")));
@@ -133,8 +129,6 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
 
 //File Upload
 const FileUploadToDo2 = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   let form = new FormData();
   form.append("RequestMethod", uploadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -143,7 +137,7 @@ const FileUploadToDo2 = (navigate, data, t) => {
   return async (dispatch) => {
     dispatch(UploadLoaderStart());
     axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -154,20 +148,20 @@ const FileUploadToDo2 = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
-                  t("valid-data")
-                )
+                  t("valid-data"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase(),
                 )
             ) {
               await dispatch(uploadDocumentFail(t("Invalid-data")));
@@ -175,7 +169,7 @@ const FileUploadToDo2 = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase(),
                 )
             ) {
               await dispatch(uploadDocumentFail(t("Something-went-wrong")));

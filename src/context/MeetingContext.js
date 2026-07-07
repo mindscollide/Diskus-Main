@@ -5,11 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { NewJoinCurrentMeeting } from "../store/actions/NewMeetingActions";
-import { UpdateMeetingStatus } from "../store/actions/MeetingOrganizers_action";
 
 /**
  * @context MeetingContext
@@ -52,7 +48,6 @@ export const MeetingProvider = ({ children }) => {
   const UserProfileData = useSelector(
     (state) => state.settingReducer.UserProfileData,
   );
-  const dispatch = useDispatch();
   // State to manage whether agenda updates are active during a meeting
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
@@ -84,7 +79,12 @@ export const MeetingProvider = ({ children }) => {
 
   // State for managing view flags and modals
   const [viewFlag, setViewFlag] = useState(false);
-  const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const viewAdvanceMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewMeetingModal,
+  );
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -92,6 +92,7 @@ export const MeetingProvider = ({ children }) => {
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
+  const [meetingTitle, setMeetingTitle] = useState("");
 
   // State for managing the schedule advanced meeting modal
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
@@ -163,6 +164,8 @@ export const MeetingProvider = ({ children }) => {
   const [maximizeMeetingVideo, setMaximizeMeetingVideo] = useState(false);
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
+  const [unSaveChangesModalForMeeting, setUnSaveChangesModalForMeeting] =
+    useState(false);
 
   const [viewMeetingAgendaBuilderRowData, setViewMeetingAgendaBuilderRowData] =
     useState([]);
@@ -233,6 +236,9 @@ export const MeetingProvider = ({ children }) => {
   // state for handRaise Counter
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
 
+  // unread message count badge for the presenter / meeting-video chat icon
+  const [videoChatUnreadCount, setVideoChatUnreadCount] = useState(0);
+
   // state for Start Recording
   const [startRecordingState, setStartRecordingState] = useState(false);
 
@@ -284,15 +290,22 @@ export const MeetingProvider = ({ children }) => {
     }
   }, [UserProfileData]);
 
-  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
-    console.log(propValue, "propValuepropValuepropValue");
-    // dispatch(NewJoinCurrentMeeting())
-  };
+  useEffect(() => {
+    if (currentMeetingInfo !== null) {
+      try {
+        const { meetingID, meetingTitle, mapFolderId } = currentMeetingInfo;
+        setAdvanceMeetingModalID(meetingID);
+        setDataroomMapFolderId(mapFolderId);
+        setMeetingTitle(meetingTitle);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [currentMeetingInfo]);
 
-  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
-    console.log(propValue, "propValuepropValuepropValue");
-    // dispatch(UpdateMeetingStatus())
-  };
+  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {};
+
+  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {};
 
   const leaveMeetingFunction = () => {};
 
@@ -329,7 +342,6 @@ export const MeetingProvider = ({ children }) => {
     viewFlag,
     setViewFlag,
     viewAdvanceMeetingModal,
-    setViewAdvanceMeetingModal,
     viewProposeDatePoll,
     setViewProposeDatePoll,
     deleteMeetingConfirmationModal,
@@ -480,6 +492,8 @@ export const MeetingProvider = ({ children }) => {
     setUnansweredCallParticipant,
     handRaiseCounter,
     setHandRaiseCounter,
+    videoChatUnreadCount,
+    setVideoChatUnreadCount,
     startRecordingState,
     setStartRecordingState,
     pauseRecordingState,
@@ -512,6 +526,8 @@ export const MeetingProvider = ({ children }) => {
     setEditFlag,
     downloadVideoRecordingModal,
     setDownloadVideoRecordingModal,
+    unSaveChangesModalForMeeting,
+    setUnSaveChangesModalForMeeting,
   };
 
   // Provide the state data to the context

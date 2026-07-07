@@ -78,7 +78,7 @@ const TextFieldDateTime = ({
       dateInputRef.current.click(); // Simulate a click event to open the date picker
     }
   };
-  console.log("applyClassapplyClass", applyClass);
+  
   return (
     <>
       <FormGroup className={styles[formParentClass]}>

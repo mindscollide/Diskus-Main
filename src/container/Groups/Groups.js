@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import { Button, Modal, Notification } from "../../components/elements";
+import { Button, Modal } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
@@ -24,6 +24,8 @@ import {
   viewGroupPageFlag,
   validateEncryptedStringViewGroupsListLinkApi,
   validateEncryptedStringViewGroupDetailLinkApi,
+  viewGroupDetails,
+  resetViewGroupDetails,
 } from "../../store/actions/Groups_actions";
 import {
   GetAllUsers,
@@ -45,22 +47,38 @@ import {
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { useGroupsContext } from "../../context/GroupsContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
+import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
+import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
+import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
+import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
+import {
+  resetCreateEditTabs,
+  resetViewTabs,
+  toggleCreateEditMeetingModal,
+  toggleViewMeetingModal,
+} from "../../store/actions/ModalStates_actions";
+import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../context/MeetingContext";
 
 const Groups = () => {
   const { t } = useTranslation();
-
+  const { setEditorRole } = useMeetingContext();
   //Context For Groups
-  const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
-    useGroupsContext();
+  const {
+    ViewGroupPage,
+    setViewGroupPage,
+    showModal,
+    setShowModal,
+    setCurrentViewGroupTabs,
+    currentViewGroupTabs,
+  } = useGroupsContext();
+  const [show, SnackBar] = useSnackbar();
   const GroupsReducerrealtimeGroupStatus = useSelector(
     (state) => state.GroupsReducer.realtimeGroupStatus,
-  );
-
-  const GroupsReducerArcheivedGroups = useSelector(
-    (state) => state.GroupsReducer.ArcheivedGroups,
   );
 
   const GroupsReducerrealtimeGroupCreateResponse = useSelector(
@@ -99,22 +117,32 @@ const Groups = () => {
     (state) => state.PollsReducer.AccessDeniedPolls,
   );
 
+  const createEditMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditMeetingModal,
+  );
+  const isViewMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewMeetingModal,
+  );
+
+  const createEditProposedMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isCreateEditProposedMeetingModal,
+  );
+  const isViewProposedMeetingModal = useSelector(
+    (state) => state.ModalStatesReducer.isViewProposedMeetingModal,
+  );
+  const isParticiapntRespondProposedMeeting = useSelector(
+    (state) => state.ModalStatesReducer.isParticiapntRespondProposedMeeting,
+  );
+
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [viewGroupTab, setViewGroupTab] = useState(0);
-  const [ViewGroupID, setViewGroupID] = useState(0);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
@@ -177,7 +205,7 @@ const Groups = () => {
 
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           localStorage.setItem("ViewGroupID", getResponse.response.groupID);
-          setViewGroupTab(1);
+          setCurrentViewGroupTabs(1);
           setViewGroupPage(true);
           dispatch(viewGroupPageFlag(true));
         }
@@ -187,6 +215,8 @@ const Groups = () => {
     }
     return () => {
       setShowModal(false);
+      setViewGroupPage(false);
+      dispatch(viewGroupPageFlag(false));
       localStorage.removeItem("NotificationClickArchivedGroup", false);
       setUpdateComponentpage(false);
       setViewGroupPage(false);
@@ -195,6 +225,13 @@ const Groups = () => {
       dispatch(viewGroupPageFlag(false));
       localStorage.removeItem("groupsArCurrent");
       localStorage.removeItem("ViewGroupID");
+      dispatch(resetViewGroupDetails());
+      setEditorRole({ status: null, role: null });
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
+      dispatch(resetCurrentMeetingInfo());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetViewTabs());
     };
   }, []);
 
@@ -261,30 +298,43 @@ const Groups = () => {
 
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
-      } catch (error) {
-        console.log(
-          error,
-          "error in useEffect GroupsReducerrealtimeGroupStatus",
-        );
-      }
+      } catch (error) {}
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
   const handleClickMeetingTab = (data) => {
-    setViewGroupTab(4);
+    dispatch(
+      viewGroupDetails({
+        groupID: data.groupID,
+        groupTitle: data.groupTitle,
+      }),
+    );
+    setCurrentViewGroupTabs(4);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
   };
 
   const handlePollsClickTab = (data) => {
-    setViewGroupTab(3);
+    dispatch(
+      viewGroupDetails({
+        groupID: data.groupID,
+        groupTitle: data.groupTitle,
+      }),
+    );
+    setCurrentViewGroupTabs(3);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
   };
   const handleTasksClickTab = (data) => {
-    setViewGroupTab(2);
+    dispatch(
+      viewGroupDetails({
+        groupID: data.groupID,
+        groupTitle: data.groupTitle,
+      }),
+    );
+    setCurrentViewGroupTabs(2);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
@@ -336,9 +386,7 @@ const Groups = () => {
           });
         });
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [GroupsReducerremoveGroupMember]);
 
   const handlechange = (value) => {
@@ -356,15 +404,28 @@ const Groups = () => {
   };
 
   const viewTitleModal = (data) => {
+    dispatch(
+      viewGroupDetails({
+        groupID: data.groupID,
+        groupTitle: data.groupTitle,
+      }),
+    );
     localStorage.setItem("ViewGroupID", data.groupID);
-    setViewGroupTab(1);
+    setCurrentViewGroupTabs(1);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
   };
-  const viewmodal = (groupID, statusID) => {
+
+  const viewmodal = (groupID, statusID, data) => {
+    dispatch(
+      viewGroupDetails({
+        groupID: data.groupID,
+        groupTitle: data.groupTitle,
+      }),
+    );
     if (statusID === 1) {
       localStorage.setItem("ViewGroupID", groupID);
-      setViewGroupTab(1);
+      setCurrentViewGroupTabs(1);
       dispatch(viewGroupPageFlag(true));
       setViewGroupPage(true);
     } else if (statusID === 2) {
@@ -427,16 +488,16 @@ const Groups = () => {
           ),
         );
       } else {
-        showMessage(t("Talk-group-doesnt-exist"), "error", setOpen);
+        show(t("Talk-group-doesnt-exist"), "error");
       }
     } else {
-      showMessage(t("No-talk-group-created"), "error", setOpen);
+      show(t("No-talk-group-created"), "error");
     }
   };
 
   const handleDocumentsClickTab = (data) => {
     localStorage.setItem("ViewGroupID", data.groupID);
-    setViewGroupTab(1);
+    setCurrentViewGroupTabs(1);
     setViewGroupPage(true);
     dispatch(viewGroupPageFlag(true));
   };
@@ -461,18 +522,6 @@ const Groups = () => {
     await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
   };
 
-  useEffect(() => {
-    if (
-      GroupsReducerResponseMessage !== "" &&
-      GroupsReducerResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(GroupsReducerResponseMessage, "success", setOpen);
-      dispatch(clearMessagesGroup());
-    } else {
-      dispatch(clearMessagesGroup());
-    }
-  }, [GroupsReducerResponseMessage]);
-
   const isCurrentUserCreator = (data) => {
     return (
       data.creatorID === Number(currentUserId) && isCurrentUserMember(data)
@@ -487,9 +536,25 @@ const Groups = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "success", setOpen);
+    show(t("Not-a-member-of-talk-group"), "error");
   };
 
+  if (createEditMeetingModal) {
+    return <CreateEditAdvanceMeeting />;
+  }
+  if (isViewMeetingModal) {
+    return <ViewMeetingModal />;
+  }
+  if (createEditProposedMeetingModal) {
+    return <ProposedNewMeeting />;
+  }
+  if (isViewProposedMeetingModal) {
+    return <ViewProposedMeetingModal />;
+  }
+
+  if (isParticiapntRespondProposedMeeting) {
+    return <ViewParticipantsDates />;
+  }
   return (
     <>
       <div className={styles["Groupscontainer"]}>
@@ -503,11 +568,7 @@ const Groups = () => {
           </>
         ) : ViewGroupPage && GroupsReducerviewGroupPageFlag === true ? (
           <>
-            <ViewGrouppage
-              setViewGroupPage={setViewGroupPage}
-              viewGroupTab={viewGroupTab}
-              ViewGroupID={ViewGroupID}
-            />
+            <ViewGrouppage setViewGroupPage={setViewGroupPage} />
           </>
         ) : (
           <>
@@ -516,8 +577,7 @@ const Groups = () => {
                 md={4}
                 sm={4}
                 lg={4}
-                className="d-flex gap-3 align-items-center "
-              >
+                className='d-flex gap-3 align-items-center '>
                 <span className={styles["Groups-heading-size"]}>
                   {t("Groups")}
                 </span>
@@ -533,18 +593,17 @@ const Groups = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className="d-flex justify-content-end align-items-center gap-1  "
-              >
+                className='d-flex justify-content-end align-items-center gap-1  '>
                 <Button
                   className={styles["Archived-Group-btn"]}
                   text={t("Archived-groups")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={archivedbtn}
                       className={styles["archivedbtnIcon"]}
-                      alt=""
+                      alt=''
                     />
                   }
                 />
@@ -556,14 +615,12 @@ const Groups = () => {
                 <Row
                   className={`${"d-flex text-center  color-5a5a5a m-0 p-0"} ${
                     styles["groups_box"]
-                  }`}
-                >
+                  }`}>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="m-0 p-0 position-relative"
-                  >
+                    className='m-0 p-0 position-relative'>
                     <Row>
                       {groupsData.length > 0 ? (
                         groupsData.map((data, index) => {
@@ -572,9 +629,8 @@ const Groups = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className="mb-3"
-                              key={index}
-                            >
+                              className='mb-3'
+                              key={index}>
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -599,11 +655,11 @@ const Groups = () => {
                                 flag={false}
                                 Icon={
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={GroupIcon}
-                                    height="29.23px"
-                                    width="32.39px"
-                                    alt=""
+                                    height='29.23px'
+                                    width='32.39px'
+                                    alt=''
                                   />
                                 }
                                 handleClickDiscussion={
@@ -626,7 +682,11 @@ const Groups = () => {
                                 titleOnCLick={() => viewTitleModal(data)}
                                 profile={data.groupMembers}
                                 onClickFunction={() =>
-                                  viewmodal(data.groupID, data.groupStatusID)
+                                  viewmodal(
+                                    data.groupID,
+                                    data.groupStatusID,
+                                    data,
+                                  )
                                 }
                                 BtnText={
                                   data.groupStatusID === 1
@@ -650,46 +710,41 @@ const Groups = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["Groups_spinner"]}
-                            ></Col>
+                              className={styles["Groups_spinner"]}></Col>
                           </Row>
                           <Row>
                             <Col
                               sm={12}
                               lg={12}
                               md={12}
-                              className={styles["NoGroupsData"]}
-                            >
+                              className={styles["NoGroupsData"]}>
                               <Row>
                                 <Col>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={NoGroupsData}
-                                    alt=""
+                                    alt=''
                                   />
                                 </Col>
                                 <Col
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["NoGroupsDataFoundText"]}
-                                >
+                                  className={styles["NoGroupsDataFoundText"]}>
                                   {t("You-dont-have-any-group-yet")}
                                 </Col>
                                 <Col
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={styles["NoGroupsDataFoundText"]}
-                                >
+                                  className={styles["NoGroupsDataFoundText"]}>
                                   {t("Click-create-new-group")}
                                 </Col>
                                 <Col
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className="d-flex justify-content-center mt-3"
-                                >
+                                  className='d-flex justify-content-center mt-3'>
                                   <Button
                                     className={styles["create-Group-btn"]}
                                     text={t("Create-new-group")}
@@ -723,8 +778,7 @@ const Groups = () => {
                   sm={12}
                   className={
                     "pagination-groups-table d-flex justify-content-center"
-                  }
-                >
+                  }>
                   <span className={styles["PaginationStyle-Committee"]}>
                     <CustomPagination
                       total={totalLength}
@@ -760,7 +814,7 @@ const Groups = () => {
             setStatusValue("");
           }}
           setShow={setModalStatusChange}
-          modalFooterClassName="d-block"
+          modalFooterClassName='d-block'
           centered
           ModalBody={
             <>
@@ -770,11 +824,9 @@ const Groups = () => {
                     lg={12}
                     sm={12}
                     md={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <span
-                      className={styles["heading-modal-active-contfirmation"]}
-                    >
+                      className={styles["heading-modal-active-contfirmation"]}>
                       {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
@@ -784,11 +836,9 @@ const Groups = () => {
                     lg={12}
                     sm={12}
                     md={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <span
-                      className={styles["heading-modal-active-contfirmation"]}
-                    >
+                      className={styles["heading-modal-active-contfirmation"]}>
                       {statusValue || ""} {t("this-group?")}
                     </span>
                   </Col>
@@ -803,8 +853,7 @@ const Groups = () => {
                   lg={6}
                   sm={6}
                   md={6}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
@@ -815,8 +864,7 @@ const Groups = () => {
                   lg={6}
                   md={6}
                   sm={6}
-                  className="d-flex justify-content-start"
-                >
+                  className='d-flex justify-content-start'>
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel-activegroup-modal"]}
@@ -836,7 +884,8 @@ const Groups = () => {
         />
       ) : null}
       {AccessDeniedGlobalState && <AccessDeniedModal />}
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

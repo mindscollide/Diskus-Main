@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   loading: false,
   responseMessage: "",
+  errorSeverity: null,
   AllAgendas: [],
 };
 
@@ -20,6 +21,7 @@ const AgendaWiseAgendaListReducer = (state = initialState, action) => {
         loading: false,
         AllAgendas: action.response,
         responseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.GET_ALL_AGENDAWISE_AGENDA_FAILED:
@@ -28,6 +30,7 @@ const AgendaWiseAgendaListReducer = (state = initialState, action) => {
         loading: false,
         AllAgendas: [],
         responseMessage: action.message,
+        errorSeverity: "error",
       };
 
     default:

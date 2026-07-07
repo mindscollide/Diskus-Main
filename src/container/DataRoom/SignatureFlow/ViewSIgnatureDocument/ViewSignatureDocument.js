@@ -14,9 +14,68 @@ import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/
 import {
   handleBlobFiles,
   processXmlForReadOnly,
+  processXmlToHideFields,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+
+/**
+ * Async: strip only <apref> elements whose referenced PDF object does NOT exist
+ * in the document's XRef table.
+ *
+ * When <apref> nodes reference PDF objects that have been removed or were never
+ * embedded (e.g. after server-side re-processing), Apryse logs:
+ *   "Error in Promise.all for appearanceReference N on page M"
+ *   {type: 'PDFWorkerError', message: '…Can not find any annotation…'}
+ * followed by a cascade TypeError (reading 'children').
+ *
+ * Valid appearance references are preserved (they resolve successfully against
+ * the XRef table).  In this view-only component all Sig widgets are removed
+ * beforehand by processXmlToHideFields, so no signature visuals are at risk.
+ *
+ * @param {string} xfdfStr - processed XFDF string
+ * @param {object} pdfDoc  - Apryse PDFDoc (requires fullAPI: true)
+ * @returns {Promise<string>}
+ */
+const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc) => {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xfdfStr, "text/xml");
+    const aprefs = Array.from(doc.querySelectorAll("apref"));
+
+    if (!aprefs.length) return xfdfStr;
+
+    if (pdfDoc) {
+      for (const apref of aprefs) {
+        const objnum = parseInt(apref.getAttribute("objnum") ?? "0", 10);
+
+        // PDF object 0 is the null/free object — never a valid appearance stream
+        if (objnum === 0) {
+          apref.remove();
+          continue;
+        }
+
+        try {
+          const obj = await pdfDoc.getXRefTableEntry(objnum);
+          const missing =
+            !obj ||
+            (typeof obj.isNull === "function" && (await obj.isNull()));
+          if (missing) apref.remove();
+        } catch {
+          // Object unreachable — strip defensively
+          apref.remove();
+        }
+      }
+    } else {
+      // No pdfDoc available — strip all apref as safe fallback
+      doc.querySelectorAll("apref").forEach((node) => node.remove());
+    }
+
+    return new XMLSerializer().serializeToString(doc);
+  } catch {
+    return xfdfStr; // parsing failed — return original unchanged
+  }
+};
 
 const ViewSignatureDocument = () => {
   const location = useLocation();
@@ -31,6 +90,13 @@ const ViewSignatureDocument = () => {
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
 
+  console.log(
+    getAllFieldsByWorkflowID,
+    getWorkfFlowByFileId,
+    getSignatureFileAnnotationResponse,
+    "getSignatureFileAnnotationResponse",
+  );
+
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const viewer = useRef(null);
@@ -42,11 +108,7 @@ const ViewSignatureDocument = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -75,7 +137,7 @@ const ViewSignatureDocument = () => {
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
 
-  console.log(signerDataRef, "signerDataRefsignerDataRef");
+  
 
   // ===== this use for current state update get =====//
 
@@ -102,6 +164,35 @@ const ViewSignatureDocument = () => {
   }, [signerData]);
 
   // === End === //
+
+  // ── Suppress Apryse internal appearance-stream crash ──────────────────────
+  // Apryse's appearance-loading runs in an un-caught internal Promise; when an
+  // <apref> object is missing from the PDF it rejects with a TypeError reading
+  // 'children'.  The rejection is unhandled inside webviewer-core.min.js —
+  // our try/catch around importAnnotations never sees it.  This handler
+  // silences only that specific internal rejection; all other unhandled
+  // rejections are left untouched.
+  useEffect(() => {
+    const suppressApryseChildrenError = (event) => {
+      const reason = event?.reason;
+      if (
+        reason instanceof TypeError &&
+        typeof reason.message === "string" &&
+        reason.message.includes("children") &&
+        typeof reason.stack === "string" &&
+        reason.stack.includes("webviewer-core.min.js")
+      ) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", suppressApryseChildrenError);
+    return () => {
+      window.removeEventListener(
+        "unhandledrejection",
+        suppressApryseChildrenError,
+      );
+    };
+  }, []);
 
   // === Api calling === //
   async function apiCall(Data) {
@@ -169,12 +260,7 @@ const ViewSignatureDocument = () => {
                     try {
                       return JSON.parse(str);
                     } catch (error) {
-                      console.error(
-                        "Error parsing JSON:",
-                        error,
-                        "Input:",
-                        str,
-                      );
+                      
                       return null; // or handle the error as needed
                     }
                   })
@@ -303,48 +389,56 @@ const ViewSignatureDocument = () => {
   // === End === //
 
   // === Get  the file details by Id from API and Set it === //
+
+  //  CRITICAL: Get file details and process XFDF - Hide ALL signature fields completely
   useEffect(() => {
     try {
       if (
         getSignatureFileAnnotationResponse !== null &&
         getSignatureFileAnnotationResponse !== undefined
       ) {
-        let currentUserID =
+        const currentUserID =
           localStorage.getItem("userID") !== null
             ? Number(localStorage.getItem("userID"))
             : 0;
 
-        let HideArray = [];
-        let ReadArray = [];
+        console.log("=== Processing XFDF for View Only ===");
+        console.log("Current User ID:", currentUserID);
+        console.log("All Users with fields:", userAnnotationsRef.current);
 
-        // Iterate over each object in the data array
+        // 🔥 CRITICAL: HIDE ALL SIGNATURE FIELDS - No one should see "Sign Here"
+        // Because this is a VIEW ONLY document viewer
+        const allFieldNames = [];
+
         userAnnotationsRef.current.forEach((obj) => {
-          // Check if userID does not match currentID
-          // Iterate over xml array in the current object
           obj.xml.forEach((item) => {
-            // Extract all 'name' attributes from ffield excluding font tag
             let ffield = item.ffield;
             let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
             if (matches) {
               matches.forEach((match) => {
-                // Extract the name value and push into nameArray
                 let name = match.match(/name="([^"]+)"/)[1];
-                if (hiddenUsersRef.current.includes(obj.userID)) {
-                  HideArray.push(name);
-                } else if (readOnlyUsersRef.current.includes(obj.userID)) {
-                  ReadArray.push(name);
-                }
+                allFieldNames.push(name);
+                console.log(
+                  `Field to hide: "${name}" (belongs to user ${obj.userID})`,
+                );
               });
             }
           });
         });
-        let newProcessXmlForReadOnly = processXmlForReadOnly(
+
+        // 🔥 STEP 1: Completely hide ALL signature form fields
+        const { updatedXmlString, removedItems } = processXmlToHideFields(
           getSignatureFileAnnotationResponse.annotationString,
-          ReadArray,
+          allFieldNames, // All fields - sab hide
         );
 
+        console.log(`Hidden ${removedItems?.fields?.length || 0} fields`);
+        console.log(`Hidden ${removedItems?.ffields?.length || 0} ffields`);
+        console.log(`Hidden ${removedItems?.widgets?.length || 0} widgets`);
+
+        // 🔥 STEP 2: Make freetext annotations read-only (but keep them visible)
         const readonlyFreetextXmlString = readOnlyFreetextElements(
-          newProcessXmlForReadOnly,
+          updatedXmlString,
           readOnlyUsersRef.current,
         );
 
@@ -355,7 +449,10 @@ const ViewSignatureDocument = () => {
         }));
       }
     } catch (error) {
-      console.log("error", error);
+      console.log(
+        "Error in getSignatureFileAnnotationResponse handler:",
+        error,
+      );
     }
   }, [getSignatureFileAnnotationResponse]);
   // === End === //
@@ -432,9 +529,16 @@ const ViewSignatureDocument = () => {
 
           if (pdfResponceDataRef.current && annotationManager) {
             try {
-              await annotationManager.importAnnotations(
+              // Validate each <apref> objnum against the PDF XRef table;
+              // strip references to missing objects (they cause the
+              // PDFWorkerError "Can not find any annotation") while keeping
+              // any valid appearance references intact.
+              const pdfDoc = await documentViewer.getDocument().getPDFDoc();
+              const cleanedXFDF = await stripInvalidAppearanceRefs(
                 pdfResponceDataRef.current,
+                pdfDoc,
               );
+              await annotationManager.importAnnotations(cleanedXFDF);
 
               // Lock every annotation object
               annotationManager.getAnnotationsList().forEach((annot) => {
@@ -451,7 +555,7 @@ const ViewSignatureDocument = () => {
                 field.flags.set("ReadOnly", true);
               });
             } catch (error) {
-              console.error("Error importing annotations:", error);
+              
             }
           }
 
@@ -472,11 +576,7 @@ const ViewSignatureDocument = () => {
     // Event Listener for annotation changes
     const handleAnnotationChange = (annotations) => {
       annotations.forEach((annot) => {
-        console.log(
-          annot,
-          annot instanceof Annotations.FreeHandAnnotation,
-          "annotannotannot",
-        );
+        
         if (annot.ToolName === "AnnotationCreateRubberStamp") {
           annot.NoMove = true; // Prevent dragging
           annot.NoResize = true; // Prevent resizing
@@ -512,15 +612,6 @@ const ViewSignatureDocument = () => {
   useEffect(() => {
     disableSignatureActions(Instance);
   }, [Instance]);
-
-  // === this is for Response Message===//
-  useEffect(() => {
-    if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(ClearMessageAnnotations());
-    }
-  }, [ResponseMessage]);
-  // === End ===//
 
   const handleClickDeclineBtn = () => {
     if (declineReasonMessage !== "") {
@@ -574,12 +665,8 @@ const ViewSignatureDocument = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+   
+    {SnackBar}
     </>
   );
 };

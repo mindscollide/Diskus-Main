@@ -5,6 +5,9 @@ import img2 from "../../../../../assets/images/7.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../../assets/images/Logos/PowerdByDiskus.png";
 import Cookies from "js-cookie";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
@@ -25,7 +28,7 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const VerificationEmailAndNumber = () => {
   const { t } = useTranslation();
 
@@ -36,27 +39,23 @@ const VerificationEmailAndNumber = () => {
   const [value, setValue] = useState(null);
 
   const AuthreducerAuthenticateAFAResponse = useSelector(
-    (state) => state.Authreducer.AuthenticateAFAResponse
+    (state) => state.Authreducer.AuthenticateAFAResponse,
   );
 
   const AuthreducerSendTwoFacOTPResponseMessage = useSelector(
-    (state) => state.Authreducer.SendTwoFacOTPResponseMessage
+    (state) => state.Authreducer.SendTwoFacOTPResponseMessage,
   );
 
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [worldCountryIDS, setWorldCountryIDS] = useState("");
   const [otpCode, setOtpCode] = useState("");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
   );
   const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
   );
 
   const handleChange = (e) => {
@@ -115,39 +114,29 @@ const VerificationEmailAndNumber = () => {
     if (AuthreducerAuthenticateAFAResponse !== null) {
       localStorage.setItem(
         "email",
-        AuthreducerAuthenticateAFAResponse.emailAddress
+        AuthreducerAuthenticateAFAResponse.emailAddress,
       );
       localStorage.setItem(
         "phoneNumber",
-        AuthreducerAuthenticateAFAResponse.mobileNumber
+        AuthreducerAuthenticateAFAResponse.mobileNumber,
       );
       localStorage.setItem(
         "worldCountryID",
-        AuthreducerAuthenticateAFAResponse.worldCountryID
+        AuthreducerAuthenticateAFAResponse.worldCountryID,
       );
     }
   }, [AuthreducerAuthenticateAFAResponse]);
-
-  useEffect(() => {
-    if (AuthreducerSendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")) {
-      showMessage(AuthreducerSendTwoFacOTPResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerSendTwoFacOTPResponseMessage]);
 
   useEffect(() => {
     let value = localStorage.getItem("value");
     let email = localStorage.getItem("email");
     let phoneNumber = localStorage.getItem("phoneNumber");
     let worldCountryID = localStorage.getItem("worldCountryID");
-    console.log("first1", worldCountryID);
 
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return parseInt(obj.id) === parseInt(worldCountryID);
     });
-    console.log("first2", a);
+
     setValue(JSON.parse(value));
     setEmail(email);
     setPhoneNumber(phoneNumber);
@@ -186,7 +175,6 @@ const VerificationEmailAndNumber = () => {
     let s = localStorage.getItem("seconds");
     let m = localStorage.getItem("minutes");
     window.addEventListener("beforeunload ", (e) => {
-      console.log("ttt");
       e.preventDefault();
       if (m != undefined && s != undefined) {
         if (s === 1) {
@@ -215,8 +203,6 @@ const VerificationEmailAndNumber = () => {
   }, [Helper.socket]);
 
   const handleGoBackButton = () => {
-    console.log("goback");
-
     localStorage.setItem("LoginFlowPageRoute", 4);
     dispatch(LoginFlowRoutes(4));
   };
@@ -250,12 +236,14 @@ const VerificationEmailAndNumber = () => {
                     <img
                       draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : DiskusLogo
+                        PSO_LOGO
+                          ? PSOLogo
+                          : localStorage.getItem("i18nextLng") === "ar"
+                            ? DiskusLogoArabic
+                            : DiskusLogo
                       }
                       alt='diskus_logo'
-                      width={220}
+                      width={PSO_LOGO ? 120 : 200}
                     />
                   </Col>
                 </Row>
@@ -366,12 +354,21 @@ const VerificationEmailAndNumber = () => {
                   alt='auth_icon'
                   className={styles["Auth_Icon"]}
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=''
+                    draggable='false'
+                   className={styles.PoweredIcon_Diskus_Icon}
+                  />
+                )}
               </Col>
             </Row>
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </div>
   );
 };

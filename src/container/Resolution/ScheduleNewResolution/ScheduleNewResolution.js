@@ -20,7 +20,6 @@ import {
   TextField,
   Button,
   Checkbox,
-  Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -32,7 +31,6 @@ import {
   getAllVotingMethods,
   getAllResolutionStatus,
   createResolution,
-  clearResponseMessage,
   createResolutionModal,
   uploadDocumentsResolutionApi,
   saveFilesResolutionApi,
@@ -55,43 +53,37 @@ import {
   timeforSend,
   timeforViewScheduleResolution,
 } from "../../../commen/functions/time_formatter";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../commen/functions/utils";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const ScheduleNewResolution = () => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [show, SnackBar] = useSnackbar();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const ResolutionReducergetAllCommitteesAndGroups = useSelector(
-    (state) => state.ResolutionReducer.getAllCommitteesAndGroups
+    (state) => state.ResolutionReducer.getAllCommitteesAndGroups,
   );
   const ResolutionReducerupdateResolutionDataroom = useSelector(
-    (state) => state.ResolutionReducer.updateResolutionDataroom
+    (state) => state.ResolutionReducer.updateResolutionDataroom,
   );
-  const ResolutionReducerResponseMessage = useSelector(
-    (state) => state.ResolutionReducer.ResponseMessage
-  );
+
   const ResolutionReducerGetAllVotingMethods = useSelector(
-    (state) => state.ResolutionReducer.GetAllVotingMethods
+    (state) => state.ResolutionReducer.GetAllVotingMethods,
   );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [votingMethods, setVotingMethods] = useState([]);
-  const [decision, setDecision] = useState({
+  const decision = {
     label: t("Decision-pending"),
     value: 1,
-  });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  };
+
   const [sendStatus, setsendStatus] = useState(0);
-  const [folderID, setFolderID] = useState(0);
   const [error, setError] = useState(false);
   const [voters, setVoters] = useState([]);
   const [nonVoter, setNonVoters] = useState([]);
@@ -101,7 +93,7 @@ const ScheduleNewResolution = () => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  const [reminderData, setReminderData] = useState([
+  const reminderData = [
     {
       label: "10 minutes before",
       value: 1,
@@ -126,7 +118,7 @@ const ScheduleNewResolution = () => {
       label: "7 days before",
       value: 6,
     },
-  ]);
+  ];
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: dateforSend(new Date(), 1),
     time: timeforSend(new Date()),
@@ -241,10 +233,10 @@ const ScheduleNewResolution = () => {
 
   const RemoveVoterInfo = () => {
     setVotersForView((prevVoterState) =>
-      prevVoterState.filter((data, index) => data.userID !== VoterID)
+      prevVoterState.filter((data, index) => data.userID !== VoterID),
     );
     setVoters((prevVoter) =>
-      prevVoter.filter((data, index) => data.FK_UID !== VoterID)
+      prevVoter.filter((data, index) => data.FK_UID !== VoterID),
     );
 
     setVoterID(0);
@@ -254,10 +246,10 @@ const ScheduleNewResolution = () => {
 
   const removeNonVoterInfo = () => {
     setNonVotersForView((prevNonVoterState) =>
-      prevNonVoterState.filter((data, index) => data.userID !== VoterID)
+      prevNonVoterState.filter((data, index) => data.userID !== VoterID),
     );
     setNonVoters((prevNonVoter) =>
-      prevNonVoter.filter((data, index) => data.FK_UID !== VoterID)
+      prevNonVoter.filter((data, index) => data.FK_UID !== VoterID),
     );
 
     setNonVoterModalRemove(false);
@@ -275,7 +267,7 @@ const ScheduleNewResolution = () => {
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName
+      (newData, index) => newData.name === data.DisplayAttachmentName,
     );
     fileForSend.splice(fileForSendingIndex, 1);
     setFileForSend(fileForSend);
@@ -295,7 +287,7 @@ const ScheduleNewResolution = () => {
           let { groups } = newOrganizersData;
           // find group data against the group ID which is user selected by the user
           let findGroupData = groups.find(
-            (VoterGroupData) => VoterGroupData.groupID === voterInfo.value
+            (VoterGroupData) => VoterGroupData.groupID === voterInfo.value,
           );
           // if group data finds
           if (findGroupData !== undefined) {
@@ -304,11 +296,11 @@ const ScheduleNewResolution = () => {
               (voterData) => {
                 // Check if the user exists in non voters array
                 let userExists = nonVoter.find(
-                  (findData) => findData.FK_UID === voterData.userID
+                  (findData) => findData.FK_UID === voterData.userID,
                 );
                 // Return only users who do not exist in voters array
                 return !userExists;
-              }
+              },
             );
 
             if (checkIfExistInNonVoters.length > 0) {
@@ -317,11 +309,11 @@ const ScheduleNewResolution = () => {
                 (voterData) => {
                   // Check if the user exists in voters array
                   let userExists = voters.find(
-                    (findData) => findData.FK_UID === voterData.userID
+                    (findData) => findData.FK_UID === voterData.userID,
                   );
                   // Return only users who do not exist in voters array
                   return !userExists;
-                }
+                },
               );
 
               if (checkIfExistInVoters.length > 0) {
@@ -335,14 +327,10 @@ const ScheduleNewResolution = () => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(t("This-voter-already-exist"), "error", setOpen);
+                show(t("This-voter-already-exist"), "error");
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
             }
           }
         } else if (voterInfo.type === 2) {
@@ -351,7 +339,7 @@ const ScheduleNewResolution = () => {
 
           let findCommitteeData = committees.find(
             (VoterCommitteeData) =>
-              VoterCommitteeData.committeeID === voterInfo.value
+              VoterCommitteeData.committeeID === voterInfo.value,
           );
           // if committee finds
           if (findCommitteeData !== undefined) {
@@ -360,7 +348,7 @@ const ScheduleNewResolution = () => {
               findCommitteeData.committeeUsers.filter((voterData) => {
                 // Check if the user exists in voters array
                 let userExists = nonVoter.find(
-                  (findData) => findData.FK_UID === voterData.userID
+                  (findData) => findData.FK_UID === voterData.userID,
                 );
                 // Return only users who do not exist in voters array
                 return !userExists;
@@ -372,11 +360,11 @@ const ScheduleNewResolution = () => {
                 (voterData) => {
                   // Check if the user exists in voters array
                   let userExists = voters.find(
-                    (findData) => findData.FK_UID === voterData.userID
+                    (findData) => findData.FK_UID === voterData.userID,
                   );
                   // Return only users who do not exist in voters array
                   return !userExists;
-                }
+                },
               );
               if (checkIfExistInVoters.length > 0) {
                 checkIfExistInVoters.forEach((userData, index) => {
@@ -389,28 +377,20 @@ const ScheduleNewResolution = () => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("User-already-exist-voter-list"),
-                  "error",
-                  setOpen
-                );
+                show(t("User-already-exist-voter-list"), "error");
               }
             } else {
-              showMessage(
-                t("User-already-exist-non-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("User-already-exist-non-voter-list"), "error");
             }
           }
         } else if (voterInfo.type === 3) {
           let { organizationUsers } = newOrganizersData;
 
           let isAlreadyExistInNonVoters = nonVoter.findIndex(
-            (data) => data.FK_UID === voterInfo.value
+            (data) => data.FK_UID === voterInfo.value,
           );
           let isAlreadyExistInVoters = voters.findIndex(
-            (data) => data.FK_UID === voterInfo.value
+            (data) => data.FK_UID === voterInfo.value,
           );
 
           if (isAlreadyExistInNonVoters === -1) {
@@ -429,22 +409,14 @@ const ScheduleNewResolution = () => {
                 });
               }
             } else {
-              showMessage(
-                t("This-user-already-exist-in-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("This-user-already-exist-in-voter-list"), "error");
             }
           } else {
-            showMessage(
-              t("This-voter-is-already-exist-in-non-voter-list"),
-              "error",
-              setOpen
-            );
+            show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setVoters(voters_Data);
@@ -469,7 +441,7 @@ const ScheduleNewResolution = () => {
           let { groups } = newOrganizersData;
           let findGroupData = groups.find(
             (nonVoterGroupData) =>
-              nonVoterGroupData.groupID === nonVoterInfo.value
+              nonVoterGroupData.groupID === nonVoterInfo.value,
           );
 
           if (findGroupData !== undefined) {
@@ -478,11 +450,11 @@ const ScheduleNewResolution = () => {
               (voterData) => {
                 // Check if the user exists in voters array
                 let userExists = voters.find(
-                  (findData) => findData.FK_UID === voterData.userID
+                  (findData) => findData.FK_UID === voterData.userID,
                 );
                 // Return only users who do not exist in voters array
                 return !userExists;
-              }
+              },
             );
 
             if (checkIfExistInVoters.length > 0) {
@@ -491,11 +463,11 @@ const ScheduleNewResolution = () => {
                 (voterData) => {
                   // Check if the user exists in voters array
                   let userExists = nonVoter.find(
-                    (findData) => findData.FK_UID === voterData.userID
+                    (findData) => findData.FK_UID === voterData.userID,
                   );
                   // Return only users who do not exist in voters array
                   return !userExists;
-                }
+                },
               );
 
               if (checkIfExistInNonVoters.length > 0) {
@@ -509,22 +481,21 @@ const ScheduleNewResolution = () => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
+                show(
                   t("This-voter-is-already-exist-in-non-voter-list"),
                   "error",
-                  setOpen
                 );
-                console.log("user Already Non Voter List");
+                
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              show(t("This-voter-already-exist"), "error");
             }
           }
         } else if (nonVoterInfo.type === 2) {
           let { committees } = newOrganizersData;
           let findCommitteeData = committees.find(
             (nonVoterCommitteesData) =>
-              nonVoterCommitteesData.committeeID === nonVoterInfo.value
+              nonVoterCommitteesData.committeeID === nonVoterInfo.value,
           );
 
           if (findCommitteeData !== undefined) {
@@ -533,11 +504,11 @@ const ScheduleNewResolution = () => {
               (voterData) => {
                 // Check if the user exists in voters array
                 let userExists = voters.find(
-                  (findData) => findData.FK_UID === voterData.userID
+                  (findData) => findData.FK_UID === voterData.userID,
                 );
                 // Return only users who do not exist in voters array
                 return !userExists;
-              }
+              },
             );
 
             if (checkIfExistInVoters.length > 0) {
@@ -546,11 +517,11 @@ const ScheduleNewResolution = () => {
                 (voterData) => {
                   // Check if the user exists in voters array
                   let userExists = nonVoter.find(
-                    (findData) => findData.FK_UID === voterData.userID
+                    (findData) => findData.FK_UID === voterData.userID,
                   );
                   // Return only users who do not exist in voters array
                   return !userExists;
-                }
+                },
               );
               if (checkIfExistInNonVoters.length > 0) {
                 checkIfExistInNonVoters.forEach((userData) => {
@@ -563,24 +534,23 @@ const ScheduleNewResolution = () => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
+                show(
                   t("This-voter-is-already-exist-in-non-voter-list"),
                   "error",
-                  setOpen
                 );
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              show(t("This-voter-already-exist"), "error");
             }
           }
         } else if (nonVoterInfo.type === 3) {
           let { organizationUsers } = newOrganizersData;
 
           let findVoter = nonVoter.findIndex(
-            (data) => data.FK_UID === nonVoterInfo.value
+            (data) => data.FK_UID === nonVoterInfo.value,
           );
           let findisAlreadyExist = voters.findIndex(
-            (data) => data.FK_UID === nonVoterInfo.value
+            (data) => data.FK_UID === nonVoterInfo.value,
           );
           if (findisAlreadyExist === -1) {
             if (findVoter === -1) {
@@ -598,18 +568,14 @@ const ScheduleNewResolution = () => {
                 });
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
             }
           } else {
-            showMessage(t("This-voter-already-exist"), "error", setOpen);
+            show(t("This-voter-already-exist"), "error");
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setNonVoters(nonVotersData);
@@ -630,7 +596,7 @@ const ScheduleNewResolution = () => {
         let { organizationUsers } = newOrganizersData;
         if (organizationUsers?.length > 0) {
           let findUserData = organizationUsers.find(
-            (userData, index) => userData.userID === event.value
+            (userData, index) => userData.userID === event.value,
           );
           setEmailValue(findUserData.emailAddress);
           setVoterInfo({
@@ -660,7 +626,7 @@ const ScheduleNewResolution = () => {
         let { organizationUsers } = newOrganizersData;
         if (organizationUsers?.length > 0) {
           let findUserData = organizationUsers.find(
-            (userData, index) => userData.userID === event.value
+            (userData, index) => userData.userID === event.value,
           );
           setEmailValue(findUserData.emailAddress);
           setNonVoterInfo({
@@ -707,22 +673,22 @@ const ScheduleNewResolution = () => {
             NotesToVoter: createResolutionData.NotesToVoter,
             CirculationDateTime: createConvert(
               removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time)
+                RemoveTimeDashes(circulationDateTime.time),
             ),
             DeadlineDateTime: createConvert(
               removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time)
+                RemoveTimeDashes(votingDateTime.time),
             ),
             FK_ResolutionReminderFrequency_ID:
               createResolutionData.FK_ResolutionReminderFrequency_ID,
             FK_ResolutionDecision_ID: decision.value,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time)
+                RemoveTimeDashes(decisionDateTime.time),
             ),
             IsResolutionPublic: createResolutionData.IsResolutionPublic,
             FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
@@ -738,22 +704,22 @@ const ScheduleNewResolution = () => {
             NotesToVoter: createResolutionData.NotesToVoter,
             CirculationDateTime: createConvert(
               removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time)
+                RemoveTimeDashes(circulationDateTime.time),
             ),
             DeadlineDateTime: createConvert(
               removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time)
+                RemoveTimeDashes(votingDateTime.time),
             ),
             FK_ResolutionReminderFrequency_ID:
               createResolutionData.FK_ResolutionReminderFrequency_ID,
             FK_ResolutionDecision_ID: decision.value,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time)
+                RemoveTimeDashes(decisionDateTime.time),
             ),
             IsResolutionPublic: createResolutionData.IsResolutionPublic,
             FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
@@ -763,7 +729,7 @@ const ScheduleNewResolution = () => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -791,22 +757,22 @@ const ScheduleNewResolution = () => {
             NotesToVoter: createResolutionData.NotesToVoter,
             CirculationDateTime: createConvert(
               removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time)
+                RemoveTimeDashes(circulationDateTime.time),
             ),
             DeadlineDateTime: createConvert(
               removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time)
+                RemoveTimeDashes(votingDateTime.time),
             ),
             FK_ResolutionReminderFrequency_ID:
               createResolutionData.FK_ResolutionReminderFrequency_ID,
             FK_ResolutionDecision_ID: decision.value,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time)
+                RemoveTimeDashes(decisionDateTime.time),
             ),
             IsResolutionPublic: createResolutionData.IsResolutionPublic,
             FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
@@ -828,22 +794,22 @@ const ScheduleNewResolution = () => {
             NotesToVoter: createResolutionData.NotesToVoter,
             CirculationDateTime: createConvert(
               removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time)
+                RemoveTimeDashes(circulationDateTime.time),
             ),
             DeadlineDateTime: createConvert(
               removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time)
+                RemoveTimeDashes(votingDateTime.time),
             ),
             FK_ResolutionReminderFrequency_ID:
               createResolutionData.FK_ResolutionReminderFrequency_ID,
             FK_ResolutionDecision_ID: decision.value,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time)
+                RemoveTimeDashes(decisionDateTime.time),
             ),
             IsResolutionPublic: createResolutionData.IsResolutionPublic,
             FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
@@ -859,7 +825,7 @@ const ScheduleNewResolution = () => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -880,7 +846,7 @@ const ScheduleNewResolution = () => {
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
 
@@ -892,19 +858,15 @@ const ScheduleNewResolution = () => {
         }
 
         let fileExists = tasksAttachments.some(
-          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name,
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -1090,14 +1052,14 @@ const ScheduleNewResolution = () => {
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile),
         );
       });
 
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
       await dispatch(
-        saveFilesResolutionApi(navigate, t, newfile, folderID, newFolder)
+        saveFilesResolutionApi(navigate, t, newfile, folderID, newFolder),
       );
     }
 
@@ -1110,29 +1072,17 @@ const ScheduleNewResolution = () => {
         nonVoter,
         newFolder,
         t,
-        sendStatus
-      )
+        sendStatus,
+      ),
     );
   };
 
   useEffect(() => {
     if (ResolutionReducerupdateResolutionDataroom !== 0) {
-      setFolderID(ResolutionReducerupdateResolutionDataroom);
       let folderIDCreated = ResolutionReducerupdateResolutionDataroom;
       documentsUploadCall(folderIDCreated);
     }
   }, [ResolutionReducerupdateResolutionDataroom]);
-
-  useEffect(() => {
-    if (
-      ResolutionReducerResponseMessage !== "" &&
-      ResolutionReducerResponseMessage !== undefined &&
-      ResolutionReducerResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
-      dispatch(clearResponseMessage());
-    }
-  }, [ResolutionReducerResponseMessage]);
 
   // Get Voting Methods
   useEffect(() => {
@@ -1801,12 +1751,17 @@ const ScheduleNewResolution = () => {
                                   <Select
                                     placeholder={`${t("Add-members")}*`}
                                     className='mt-3'
-                                    isSearchable={false}
+                                    isSearchable={true}
                                     value={
                                       voterInfo.value === 0 ? null : voterInfo
                                     }
                                     options={meetingAttendeesList}
                                     onChange={handleChangeVoter}
+                                    filterOption={(candidate, input) =>
+                                      candidate.data.name
+                                        ?.toLowerCase()
+                                        .includes(input.toLowerCase())
+                                    }
                                   />
 
                                   <Row>
@@ -1883,7 +1838,7 @@ const ScheduleNewResolution = () => {
                                                       onClick={() =>
                                                         removeUserForVoter(
                                                           data.userID,
-                                                          data.userName
+                                                          data.userName,
                                                         )
                                                       }
                                                       draggable='false'
@@ -1906,7 +1861,7 @@ const ScheduleNewResolution = () => {
                                   <Select
                                     placeholder={`${t("Add-members")}*`}
                                     className='mt-3'
-                                    isSearchable={false}
+                                    isSearchable={true}
                                     value={
                                       nonVoterInfo.value === 0
                                         ? null
@@ -1914,6 +1869,11 @@ const ScheduleNewResolution = () => {
                                     }
                                     options={meetingAttendeesList}
                                     onChange={handleChangeNonVoter}
+                                    filterOption={(candidate, input) =>
+                                      candidate.data.name
+                                        ?.toLowerCase()
+                                        .includes(input.toLowerCase())
+                                    }
                                   />
                                 </Col>
 
@@ -1980,7 +1940,7 @@ const ScheduleNewResolution = () => {
                                                       onClick={() =>
                                                         removeUserForNonVoter(
                                                           data.userID,
-                                                          data.userName
+                                                          data.userName,
                                                         )
                                                       }
                                                       draggable='false'
@@ -2037,19 +1997,19 @@ const ScheduleNewResolution = () => {
                                                     handleClickRemove={() =>
                                                       deleteFilefromAttachments(
                                                         data,
-                                                        index
+                                                        index,
                                                       )
                                                     }
                                                     fk_UID={Number(
                                                       localStorage.getItem(
-                                                        "userID"
-                                                      )
+                                                        "userID",
+                                                      ),
                                                     )}
                                                     id={0}
                                                   />
                                                 </Col>
                                               );
-                                            }
+                                            },
                                           )
                                         : null}
                                     </Row>
@@ -2163,7 +2123,7 @@ const ScheduleNewResolution = () => {
           setDiscardresolution={setDsicardresolution}
         />
       ) : null}
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

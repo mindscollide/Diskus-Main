@@ -7,7 +7,6 @@ let newClient;
 export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
   try {
     if (!subscribeID) {
-      console.error("No subscribeID provided for MQTT connection.");
       return;
     }
 
@@ -17,56 +16,45 @@ export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
     const clientId = `${subscribeID}-${id}`;
 
     if (process.env.REACT_APP_ENV === "dev") {
-      newClient = new Paho.Client("192.168.18.241", 8228, clientId);
+      newClient = new Paho.Client("192.168.18.243", 8228, clientId);
     } else {
       const brokerUrl = `wss://${process.env.REACT_APP_MQTT}:${process.env.REACT_APP_MQTT_PORT}/mqtt`;
       newClient = new Paho.Client(brokerUrl, clientId);
     }
 
     newClient.onConnectionLost = (responseObject) => {
-      console.error("Guest Connection lost:", responseObject.errorMessage);
       setTimeout(() => mqttConnectionGuestUser(subscribeID, dispatch), 3000); // Reconnect after 3 seconds
     };
 
     const options = {
       onSuccess: () => {
-        console.log("Guest Connected to MQTT broker");
         try {
           newClient.subscribe(subscribeID.toString(), {
-            onSuccess: () =>
-              console.log(`Guest MQTT Subscribed to ${subscribeID}`),
-            onFailure: (error) =>
-              console.error(
-                `Guest MQTT Subscription failed: ${error.errorMessage}`
-              ),
+            onSuccess: () => {},
+            onFailure: (error) => {
+              console.log(error);
+            },
           });
-        } catch (subError) {
-          console.error("Error during guest subscription:", subError.message);
-        }
+        } catch (subError) {}
       },
       onFailure: (error) => {
-        console.error(
-          "Guest Failed to connect to MQTT broker:",
-          error.errorMessage
-        );
         setTimeout(() => mqttConnectionGuestUser(subscribeID, dispatch), 6000); // Retry connection after 6 seconds
       },
       keepAliveInterval: 30,
       reconnect: true,
       userName: decrypt(
         process.env.REACT_APP_MQTT_User,
-        process.env.REACT_APP_SECERETKEY
+        process.env.REACT_APP_SECERETKEY,
       ),
       password: decrypt(
         process.env.REACT_APP_MQTT_Pass,
-        process.env.REACT_APP_SECERETKEY
+        process.env.REACT_APP_SECERETKEY,
       ),
     };
 
     newClient.connect(options);
     dispatch(setClientGuest(newClient));
   } catch (error) {
-    console.error("Error in Guest MQTT connection:", error.message);
     setTimeout(() => mqttConnectionGuestUser(subscribeID, dispatch), 6000); // Retry connection after 6 seconds
   }
 };

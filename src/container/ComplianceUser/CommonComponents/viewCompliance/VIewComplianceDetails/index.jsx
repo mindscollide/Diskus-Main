@@ -27,6 +27,7 @@ import {
   EditComplianceAPI,
   SaveComplianceDocumentsAndMappingsAPI,
   SaveComplianceFilesAPI,
+  updateCheckListStatusApi,
 } from "../../../../../store/actions/ComplainSettingActions.js";
 import { uploadDocumentsTaskApi } from "../../../../../store/actions/ToDoList_action.js";
 import ComplianceStatusChangeResonReasonModal from "../../StatusChangeModals/ComplianceStatusOnHoldReasonModal/index.jsx";
@@ -66,25 +67,28 @@ const ViewComplianceDetails = () => {
     complianceStatusChangeReasonModal,
     complianceAddEditViewState,
     ViewComplianceDetailsByViewTypeAPI,
+    statusChangeType,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    setShowViewCompliance,
+    setStatusChangeType,
+    setSelectedChecklistId,
+    setSelectedChecklistDueDate,
+    selectedChecklistDueDate,
+    selectedChecklistId,
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
-  console.log(
-    { complianceDetailsViewState, complianceReopenDetailsState },
-    "complianceDetailsViewState",
-  );
+  
 
-  console.log(allowedComplianceStatusOptions, "allowedComplianceStatusOptions");
+  
 
-  console.log(complianceAddEditViewState, "complianceAddEditViewState");
+  
 
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(
-    complianceDetailsState,
-    "complianceReopenDetailsStatecomplianceReopenDetailsState",
-  );
+  
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
@@ -103,11 +107,11 @@ const ViewComplianceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
   );
 
-  console.log(complianceReopenMqttData, "complianceReopenMqttData");
+  
 
-  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails3333");
+  
 
-  console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
+  
 
   // styling for select:
   const getStatusColor = (status) => {
@@ -175,7 +179,7 @@ const ViewComplianceDetails = () => {
     try {
       let saveFiles = [];
       let uploadedFiles;
-      // 1️⃣ Upload individual documents
+      //  Upload individual documents
       if (complianceReopenDetailsState.attachments.length > 0) {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
@@ -184,12 +188,12 @@ const ViewComplianceDetails = () => {
             ),
           ),
         );
-        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        //  Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
           SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
-        // 3️⃣ Build payload AFTER data exists
+        //  Build payload AFTER data exists
         const Data2 = {
           complianceId: editComplianceData.complianceId,
           complianceStatusChangeHistoryID: complianceReopenedDetail,
@@ -200,7 +204,7 @@ const ViewComplianceDetails = () => {
             : [],
         };
 
-        // 4️⃣ Final mapping API
+        //  Final mapping API
         dispatch(
           SaveComplianceDocumentsAndMappingsAPI(
             navigate,
@@ -212,21 +216,22 @@ const ViewComplianceDetails = () => {
           ),
         );
       } else {
-        console.log("complianceByMeLissst");
+        
         dispatch(
           EditComplianceAPI(
             navigate,
             editComplianceData,
             t,
             ViewComplianceDetailsByViewTypeAPI,
+            3,
             // setChecklistTabs
           ),
         );
       }
 
-      console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
+       //  DATA HERE
     } catch (error) {
-      console.error(error);
+      
     }
   };
 
@@ -242,7 +247,7 @@ const ViewComplianceDetails = () => {
     );
     const selectedStatusId =
       tempSelectComplianceStatus?.value || complianceDetailsState.status.value;
-    console.log(tempSelectComplianceStatus, "DataDataDataDataData");
+    
 
     // For On Hold status (7) and Cancel status (9), use the stored options
     const isOnHoldOrCancel =
@@ -273,8 +278,8 @@ const ViewComplianceDetails = () => {
         : 0, // On Hold Compliance Including Checklist and Task
     };
 
-    console.log(Data, "DataDataDataDataData");
-    console.log(complianceOnHoldReasonState, "DataDataDataDataData");
+    
+    
 
     setComplianceDetailsViewState((prev) => ({
       ...prev,
@@ -293,7 +298,7 @@ const ViewComplianceDetails = () => {
         complianceId: complianceInfo.complianceId,
         complianceTitle: complianceDetailsState.complianceTitle,
       };
-      console.log("DataReOpenCompliance", complianceReopenDetailsState);
+      
       setEditComplianceData(Data);
       dispatch(
         AddReopenComplianceAPI(
@@ -305,13 +310,15 @@ const ViewComplianceDetails = () => {
       );
       return;
     }
-    console.log("complianceByMeList");
-    // console.log(Data, "DataDataData");
+    
+    // 
     dispatch(EditComplianceAPI(navigate, Data, t, null, 3));
   };
 
   const handleChangeComplianceStatus = (event) => {
-    console.log(event, "CompliaceStatusOnHoldModal");
+    
+    //  ALWAYS RESET TYPE WHEN COMING FROM COMPLIANCE
+    setStatusChangeType("compliance");
 
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
@@ -341,10 +348,7 @@ const ViewComplianceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
         if (checkAnyChecklistOnPendingState) {
-          console.log(
-            checkAnyChecklistOnPendingState,
-            "Check Compliance Coming",
-          );
+          
           resetModalStates();
           setTempSelectedComplianceStatus(event);
           setSubmitForApprovalModal(true);
@@ -372,9 +376,9 @@ const ViewComplianceDetails = () => {
 
     // status change to On Hold
     if (event.value === 7) {
-      console.log("CompliaceStatusOnHoldModal");
+      
       if (complianceDetailsState.status.value === 7) {
-        console.log("CompliaceStatusOnHoldModal");
+        
         // setTempSelectedComplianceStatus(event);
         // setComplianceOnHoldModal(true);
       } else if (complianceDetailsState.status.value !== 7) {
@@ -397,7 +401,7 @@ const ViewComplianceDetails = () => {
     }
     // Status chnage to In Progress
     if (event.value === 2) {
-      console.log("herehrer");
+      
       updateCompliance(event);
       resetModalStates();
 
@@ -421,7 +425,7 @@ const ViewComplianceDetails = () => {
   }, [tempSelectComplianceStatus]);
 
   const handleClickOnHoldModal = useCallback(() => {
-    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
+    
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);
 
@@ -436,23 +440,54 @@ const ViewComplianceDetails = () => {
   ]);
 
   const handleClickOnHoldOrCancelReasonModal = useCallback(() => {
-    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
-    // setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(false);
 
-    if (tempSelectComplianceStatus) {
-      updateCompliance(tempSelectComplianceStatus, true);
+    if (statusChangeType === "checklist") {
+      //  CHECKLIST API
+      let Data = {
+        ChecklistID: selectedChecklistId,
+        ComplianceID: complianceInfo?.complianceId,
+        NewStatusID: tempSelectComplianceStatus?.value,
+        StatusChangeReason: complianceOnHoldReasonState,
+        UpdatedDueDate: `${selectedChecklistDueDate}185958`,
+        ApplyToAssociatedItems:
+          complianceOnHoldSelectOption || complianceCancelSelectOption,
+      };
+
+      dispatch(
+        updateCheckListStatusApi(
+          navigate,
+          Data,
+          t,
+          1,
+          setComplianceAddEditViewState,
+          setCreateEditComplaince,
+          setShowViewCompliance,
+        ),
+      );
+    } else {
+      // COMPLIANCE API (existing)
+      if (tempSelectComplianceStatus) {
+        updateCompliance(tempSelectComplianceStatus);
+      }
     }
+
+    // RESET EVERYTHING
+    setTempSelectedComplianceStatus(null);
+    setStatusChangeType("");
+    setSelectedChecklistId(null);
+    setSelectedChecklistDueDate("");
+
     resetModalStates();
   }, [
+    statusChangeType,
     tempSelectComplianceStatus,
     complianceOnHoldReasonState,
     complianceOnHoldSelectOption,
-    complianceCancelSelectOption,
   ]);
 
   const handleClickCancelModal = useCallback(() => {
-    // console.log(handleProceedButtonView, "handleProceedButtonView");
+    // 
     setComplianceCancelModal(false);
     setComplianceStatusChangeReasonModal(true);
     // if (tempSelectComplianceStatus) {
@@ -466,7 +501,7 @@ const ViewComplianceDetails = () => {
   ]);
 
   const handleClickReOpendModal = useCallback(() => {
-    // console.log("DataReOpenCompliance", complianceReopenDetailsState);
+    // 
 
     if (tempSelectComplianceStatus) {
       updateCompliance(tempSelectComplianceStatus);
@@ -493,8 +528,8 @@ const ViewComplianceDetails = () => {
         (t) => t?.taskStatus?.statusId === 5,
       );
 
-    console.log("allChecklistsCompleted", allChecklistsCompleted);
-    console.log("allTasksCompleted", allTasksCompleted);
+    
+    
 
     // Filter out "On Hold" if everything is completed
     if (allChecklistsCompleted && allTasksCompleted) {

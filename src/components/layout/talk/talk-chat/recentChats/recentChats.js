@@ -47,6 +47,16 @@ const RecentChats = () => {
 
   const { talkFeatureStates, talkStateData } = useSelector((state) => state);
 
+  console.log(
+    talkStateData.talkSocketData.socketInsertOTOMessageData,
+    "socketInsertOTOMessageData",
+  );
+
+  console.log(
+    talkStateData.AllUserChats.AllUserChatsData,
+    "AllUserChatsDataAllUserChatsData",
+  );
+
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
 
@@ -55,7 +65,7 @@ const RecentChats = () => {
   let currentDateTime = new Date();
   let changeDateFormatCurrent = moment(currentDateTime).utc();
   let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
-    "YYYYMMDDHHmmss"
+    "YYYYMMDDHHmmss",
   );
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
 
@@ -66,8 +76,11 @@ const RecentChats = () => {
   let yesterdayDateUtc = moment(changeDateFormatYesterday).format("YYYYMMDD");
 
   const [allChatData, setAllChatData] = useState([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [updateAllChatData, setUpdateAllChatData] = useState(false);
   const [searchChatValue, setSearchChatValue] = useState("");
+
+  console.log(allChatData, "allChatDataallChatData");
 
   //Dropdown state of chat head menu (Dropdown icon wali)
   const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false);
@@ -75,16 +88,31 @@ const RecentChats = () => {
   const [newGroupData, setNewGroupData] = useState([]);
 
   useEffect(() => {
+    const data = talkStateData.AllUserChats.AllUserChatsData;
+
     if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+      data?.allMessages &&
+      Array.isArray(data?.allMessages) &&
+      data?.allMessages?.length > 0
     ) {
-      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
-    } else {
+      // Check for additional properties that ONLY exist in the recent chats list
+      const isRecentChatList = data?.allMessages.some(
+        (msg) => msg.fullName && msg.messageType && msg.messageDate,
+      );
+
+      // Also check if other arrays that indicate it's a full chat list are populated
+      const isFullChatList =
+        data?.groupInformation !== undefined ||
+        data?.userInformation !== undefined;
+
+      if (isRecentChatList && isFullChatList) {
+        setAllChatData(data?.allMessages);
+        setIsInitialized(true);
+      }
+    } else if (!isInitialized && (!data || !data?.allMessages)) {
       setAllChatData([]);
     }
-  }, [talkStateData.AllUserChats.AllUserChatsData]);
+  }, [talkStateData.AllUserChats.AllUserChatsData, isInitialized]);
 
   //Search Chats
   const searchChat = (e) => {
@@ -100,12 +128,12 @@ const RecentChats = () => {
             talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
               (value) => {
                 return value.fullName.toLowerCase().includes(e.toLowerCase());
-              }
+              },
             );
 
           if (filteredData.length === 0) {
             setAllChatData(
-              talkStateData.AllUserChats.AllUserChatsData.allMessages
+              talkStateData.AllUserChats.AllUserChatsData.allMessages,
             );
           } else {
             setAllChatData(filteredData);
@@ -131,6 +159,7 @@ const RecentChats = () => {
   const chatClick = (record) => {
     localStorage.setItem("ActiveChatType", record.messageType);
     localStorage.setItem("userNameChat", record.fullName);
+    localStorage.setItem("activeOtoChatID", record.id);
     if (!talkFeatureStates.ChatBoxActiveFlag) {
       dispatch(chatBoxActiveFlag(true));
     }
@@ -157,15 +186,19 @@ const RecentChats = () => {
       NumberOfMessages: 10,
       OffsetMessage: 0,
     };
+    dispatch(activeChat(record));
+
     try {
-      if (record.messageType === "O") {
-        dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-      } else if (record.messageType === "G") {
-        dispatch(GetGroupMessages(navigate, chatGroupData, t));
-      } else if (record.messageType === "B") {
-        dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t));
-      }
-      dispatch(activeChat(record));
+      // API calls ko setTimeout mein daalo taake Redux state pehle update ho jaye
+      setTimeout(() => {
+        if (record.messageType === "O") {
+          dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+        } else if (record.messageType === "G") {
+          dispatch(GetGroupMessages(navigate, chatGroupData, t));
+        } else if (record.messageType === "B") {
+          dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t));
+        }
+      }, 100);
     } catch (error) {
       //
     }
@@ -207,52 +240,56 @@ const RecentChats = () => {
 
   useEffect(() => {
     try {
-      if (allChatData.length !== 0) {
-        const updatedChatData = [...allChatData]; // Create a copy of the array
+      const push = talkStateData.PushChatData;
+      // Nothing to merge
+      if (!push || Object.keys(push).length === 0) {
+        return;
+      }
+
+      setAllChatData((prevChatData) => {
+        // Never collapse the recent list: seed from the local list when present,
+        // otherwise fall back to the authoritative Redux recent-chats list. This
+        // prevents the single-item collapse when a message arrives while the
+        // local list is momentarily empty (remount / async fetch race).
+        const base =
+          prevChatData && prevChatData.length > 0
+            ? [...prevChatData]
+            : [
+                ...(talkStateData.AllUserChats?.AllUserChatsData?.allMessages ||
+                  []),
+              ];
 
         // Find the index of the chat to update or insert
-        const index = updatedChatData.findIndex(
-          (chat) => chat.id === talkStateData.PushChatData.id
-        );
+        const index = base.findIndex((chat) => chat.id === push.id);
 
         if (index !== -1) {
           // Update the existing chat data
-          updatedChatData[index] = {
-            ...updatedChatData[index],
-            ...talkStateData.PushChatData,
+          base[index] = {
+            ...base[index],
+            ...push,
           };
         } else {
           // Insert the new chat data
-          updatedChatData.push(talkStateData.PushChatData);
+          base.push(push);
         }
 
-        // Sort the updatedChatData array by messageDate in descending order
-        updatedChatData.sort((a, b) => {
+        // Sort by messageDate in descending order
+        base.sort((a, b) => {
           const dateA = a.messageDate;
           const dateB = b.messageDate;
 
-          // Convert custom date strings to numerical values for comparison
           const numericDateA = parseInt(
-            `${dateA.slice(0, 8)}${dateA.slice(8)}`
+            `${dateA?.slice(0, 8)}${dateA?.slice(8)}`,
           );
           const numericDateB = parseInt(
-            `${dateB.slice(0, 8)}${dateB.slice(8)}`
+            `${dateB?.slice(0, 8)}${dateB?.slice(8)}`,
           );
 
           return numericDateB - numericDateA;
         });
 
-        // Set the state with the sorted updatedChatData
-        setAllChatData(updatedChatData);
-      } else if (
-        allChatData.length === 0 &&
-        talkStateData.PushChatData.length !== 0
-      ) {
-        setAllChatData((prevChatData) => [
-          ...prevChatData,
-          talkStateData.PushChatData,
-        ]);
-      }
+        return base;
+      });
     } catch (error) {
       console.log("ERROR");
     }
@@ -274,16 +311,16 @@ const RecentChats = () => {
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverID
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderID
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
             fullName:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverName
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderName
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
             imgURL: "O.jpg",
             messageBody: mqttInsertOtoMessageData.messageBody,
             messageDate: mqttInsertOtoMessageData.sentDate,
@@ -311,16 +348,16 @@ const RecentChats = () => {
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverID
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderID
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
             fullName:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverName
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderName
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
             imgURL: "O.jpg",
             messageBody: mqttInsertOtoMessageData.messageBody,
             messageDate: mqttInsertOtoMessageData.sentDate,
@@ -351,16 +388,16 @@ const RecentChats = () => {
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverID
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderID
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
             fullName:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverName
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderName
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
             imgURL: "O.jpg",
             messageBody: mqttInsertOtoMessageData.messageBody,
             messageDate: mqttInsertOtoMessageData.sentDate,
@@ -388,16 +425,16 @@ const RecentChats = () => {
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverID
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderID
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
             fullName:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
                 ? mqttInsertOtoMessageData.receiverName
                 : parseInt(currentUserId) ===
-                  mqttInsertOtoMessageData.receiverID
-                ? mqttInsertOtoMessageData.senderName
-                : null,
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
             imgURL: "O.jpg",
             messageBody: mqttInsertOtoMessageData.messageBody,
             messageDate: mqttInsertOtoMessageData.sentDate,
@@ -665,7 +702,7 @@ const RecentChats = () => {
     ) {
       let leaveGroupData = talkStateData.MqttGroupLeftData.data[0];
       const indexToRemove = allChatData.findIndex(
-        (item) => item.id === leaveGroupData.groupID
+        (item) => item.id === leaveGroupData.groupID,
       );
       // Check if the object was found
       if (indexToRemove !== -1) {
@@ -775,7 +812,7 @@ const RecentChats = () => {
         // Find the index of the object in the stateWithMultipleObjects array that matches chatID
         const indexToRemove = allChatData.findIndex(
           (obj) =>
-            obj.id === talkStateData.LastMessageDeletionObject.data[0].chatID
+            obj.id === talkStateData.LastMessageDeletionObject.data[0].chatID,
         );
         if (indexToRemove !== -1) {
           allChatData.splice(indexToRemove, 1);
@@ -829,8 +866,8 @@ const RecentChats = () => {
           <Col lg={12} md={12} sm={12}>
             <TextField
               maxLength={200}
-              applyClass='form-control2'
-              name='Name'
+              applyClass="form-control2"
+              name="Name"
               change={(e) => {
                 searchChat(e.target.value);
               }}
@@ -857,94 +894,97 @@ const RecentChats = () => {
           return (
             <Row
               key={index}
-              className='single-chat'
-              onClick={() => chatClick(dataItem)}>
-              <Col lg={2} md={2} sm={2} className='bottom-border'>
-                <div className='chat-profile-icon'>
+              className="single-chat"
+              onClick={() => chatClick(dataItem)}
+            >
+              <Col lg={2} md={2} sm={2} className="bottom-border">
+                <div className="chat-profile-icon">
                   {dataItem.messageType === "O" ? (
                     <>
                       <img
-                        draggable='false'
+                        draggable="false"
                         src={SingleIcon}
                         width={25}
-                        alt=''
+                        alt=""
                       />
                     </>
                   ) : dataItem.messageType === "G" ? (
                     <>
                       <img
-                        draggable='false'
+                        draggable="false"
                         src={GroupIcon}
                         width={35}
-                        alt=''
+                        alt=""
                       />
                     </>
                   ) : dataItem.messageType === "B" ? (
                     <>
                       <img
-                        draggable='false'
+                        draggable="false"
                         src={ShoutIcon}
                         width={25}
-                        alt=''
+                        alt=""
                       />
                     </>
                   ) : (
-                    <img draggable='false' src={SingleIcon} width={25} alt='' />
+                    <img draggable="false" src={SingleIcon} width={25} alt="" />
                   )}
                 </div>
               </Col>
-              <Col lg={10} md={10} sm={10} className='bottom-border'>
+              <Col lg={10} md={10} sm={10} className="bottom-border">
                 <div className={"chat-block"}>
                   <p
                     // onClick={() => chatClick(dataItem)}
-                    className='chat-username m-0'>
+                    className="chat-username m-0"
+                  >
                     {" "}
                     {dataItem.fullName}
                   </p>
                   <p
                     // onClick={() => chatClick(dataItem)}
-                    className='chat-message m-0'>
+                    className="chat-message m-0"
+                  >
                     {dataItem.messageType === "O" ? (
-                      <span className='chat-tick-icon'>
+                      <span className="chat-tick-icon">
                         {dataItem.senderID === parseInt(currentUserId) &&
                         dataItem.sentDate === "" &&
                         dataItem.receivedDate === "" &&
                         dataItem.seenDate === "" ? (
                           <img
-                            draggable='false'
+                            draggable="false"
                             src={TimerIcon}
-                            className='img-cover'
-                            alt=''
+                            className="img-cover"
+                            alt=""
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
                           dataItem.receivedDate === "" &&
                           dataItem.seenDate === "" ? (
                           <img
-                            draggable='false'
+                            draggable="false"
                             src={SingleTickIcon}
-                            className='img-cover'
-                            alt=''
+                            className="img-cover"
+                            alt=""
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
                           dataItem.receivedDate !== "" &&
                           dataItem.seenDate === "" ? (
                           <img
-                            draggable='false'
+                            draggable="false"
                             src={DoubleTickDeliveredIcon}
-                            className='img-cover'
-                            alt=''
+                            className="img-cover"
+                            alt=""
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
                           dataItem.receivedDate !== "" &&
                           dataItem.seenDate !== "" ? (
                           <img
-                            draggable='false'
+                            draggable="false"
                             src={DoubleTickIcon}
-                            className='img-cover'
-                            alt=''
+                            className="img-cover"
+                            alt=""
                           />
                         ) : null}
                       </span>
@@ -953,11 +993,11 @@ const RecentChats = () => {
                     {dataItem.messageBody === "" &&
                     dataItem.attachmentLocation !== "" ? (
                       <>
-                        <span className='attachment-recent-chat'>
-                          <img draggable='false' src={ClipIcon} alt='' />
+                        <span className="attachment-recent-chat">
+                          <img draggable="false" src={ClipIcon} alt="" />
                           {dataItem.attachmentLocation
                             .substring(
-                              dataItem.attachmentLocation.lastIndexOf("/") + 1
+                              dataItem.attachmentLocation.lastIndexOf("/") + 1,
                             )
                             .replace(/^\d+_/, "")}
                         </span>
@@ -968,14 +1008,15 @@ const RecentChats = () => {
                   </p>
                   <p
                     // onClick={() => chatClick(dataItem)}
-                    className='chat-date m-0'>
+                    className="chat-date m-0"
+                  >
                     {dataItem.messageDate.slice(0, 8) === currentUtcDate &&
                     dataItem.messageDate !== "" &&
                     dataItem.messageDate !== undefined ? (
                       <>
                         {newTimeFormaterAsPerUTCTalkTime(
                           dataItem.messageDate,
-                          lang
+                          lang,
                         )}
                       </>
                     ) : dataItem.messageDate.slice(0, 8) === yesterdayDateUtc &&
@@ -984,7 +1025,7 @@ const RecentChats = () => {
                       <>
                         {newTimeFormaterAsPerUTCTalkDate(
                           dataItem.messageDate,
-                          lang
+                          lang,
                         ) + " "}
                         | {t("Yesterday")}
                       </>
@@ -994,26 +1035,26 @@ const RecentChats = () => {
                         dataItem.messageDate !== undefined
                           ? newTimeFormaterAsPerUTCTalkDate(
                               dataItem.messageDate,
-                              lang
+                              lang,
                             )
                           : ""}
                       </>
                     )}
                   </p>
                   {dataItem.notiCount > 0 ? (
-                    <span className='new-message-count'>
+                    <span className="new-message-count">
                       {dataItem.notiCount}
                     </span>
                   ) : null}
-                  <div className='chathead-box-icons'>
+                  <div className="chathead-box-icons">
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={DropDownIcon}
-                      alt=''
+                      alt=""
                       onClick={() => activateChatHeadMenu(dataItem.id)}
                     />
                     {chatHeadMenuActive === dataItem.id ? (
-                      <div className='dropdown-menus-chathead'>
+                      <div className="dropdown-menus-chathead">
                         {/* <span onClick={deleteChatHandler}>
                             Delete Chat
                           </span> */}
@@ -1021,27 +1062,31 @@ const RecentChats = () => {
                         dataItem.isBlock === 0 ? (
                           <span
                             onClick={() => unblockblockContactHandler(dataItem)}
-                            style={{ borderBottom: "none" }}>
+                            style={{ borderBottom: "none" }}
+                          >
                             {t("Block")}
                           </span>
                         ) : dataItem.messageType === "O" &&
                           dataItem.isBlock === 1 ? (
                           <span
                             onClick={() => unblockblockContactHandler(dataItem)}
-                            style={{ borderBottom: "none" }}>
+                            style={{ borderBottom: "none" }}
+                          >
                             {t("Unblock")}
                           </span>
                         ) : dataItem.messageType === "G" &&
                           dataItem.isBlock === 0 ? (
                           <span
                             onClick={() => leaveGroupHandler(dataItem)}
-                            style={{ borderBottom: "none" }}>
+                            style={{ borderBottom: "none" }}
+                          >
                             {t("Leave-Group")}
                           </span>
                         ) : dataItem.messageType === "B" ? (
                           <span
                             onClick={() => deleteShoutFunction(dataItem)}
-                            style={{ borderBottom: "none" }}>
+                            style={{ borderBottom: "none" }}
+                          >
                             {t("Delete-Shout")}
                           </span>
                         ) : null}
@@ -1057,9 +1102,9 @@ const RecentChats = () => {
         allChatData.length === 0 ? (
         // <p>{t('No-Chats-Available')}</p>
         <ResultMessage
-          icon={<img src={NoRecentChatsIcon} alt='' width={250} />}
+          icon={<img src={NoRecentChatsIcon} alt="" width={250} />}
           title={"It looks like you haven't made any recent chats"}
-          className='emptyRecentChats'
+          className="emptyRecentChats"
         />
       ) : null}
     </>

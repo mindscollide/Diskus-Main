@@ -8,7 +8,8 @@ import {
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
-
+import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
+import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
@@ -27,8 +28,9 @@ import {
 } from "../../../../store/actions/UserManagementActions";
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import SwitchToChromeBox from "../../../../components/elements/SwitchToChromeBox/SwitchToChromeBox";
+import { HIDE_FREETRAIL_BAR, PSO_LOGO } from "../../../../commen/featureFlags";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -39,12 +41,9 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const adminReducerDeleteOrganizationResponseMessageData = useSelector(
-    (state) => state.adminReducer.DeleteOrganizationResponseMessage
-  );
 
   const UserManagementModalsmobileAppPopUpData = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp
+    (state) => state.UserManagementModals.mobileAppPopUp,
   );
 
   const currentUrl = window.location.href;
@@ -59,11 +58,7 @@ const SignInUserManagement = () => {
   const [errorBar, setErrorBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberEmail, setRemeberEmail] = useState(false);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [bestExperienceBox, setBestExperienceBox] = useState(false);
 
@@ -76,7 +71,7 @@ const SignInUserManagement = () => {
     } else {
       setErrorBar(false);
       let RememberEmailLocal = JSON.parse(
-        localStorage.getItem("rememberEmail")
+        localStorage.getItem("rememberEmail"),
       );
       if (RememberEmailLocal === true) {
         setEmail(nValue);
@@ -91,10 +86,10 @@ const SignInUserManagement = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (email === "") {
-      showMessage(t("Please-enter-email"), "error", setOpen);
+      show(t("Please-enter-email"), "error");
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      showMessage(t("Email-format-is-invalid"), "error", setOpen);
+      show(t("Email-format-is-invalid"), "error");
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));
@@ -142,13 +137,13 @@ const SignInUserManagement = () => {
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
     const vendor = navigator.vendor?.toLowerCase() || "";
-  
+
     const detectBrowser = async () => {
       // ✅ Step 1: Try identifying Brave by its built-in API
       if (navigator.brave && (await navigator.brave.isBrave?.())) {
         return "Brave";
       }
-  
+
       // ✅ Step 2: Fallbacks using userAgent and vendor (for other browsers)
       if (
         vendor.includes("google") &&
@@ -178,7 +173,7 @@ const SignInUserManagement = () => {
       if (userAgent.includes("puffin")) return "Puffin";
       return "Unknown";
     };
-  
+
     // 🕵️ Detect Chrome Incognito mode
     const checkIncognito = () => {
       return new Promise((resolve) => {
@@ -188,26 +183,25 @@ const SignInUserManagement = () => {
           window.TEMPORARY,
           100,
           () => resolve(false), // normal mode
-          () => resolve(true) // incognito mode
+          () => resolve(true), // incognito mode
         );
       });
     };
-  
+
     // 🚀 Main logic wrapped in async IIFE
     (async () => {
       const browser = await detectBrowser();
       console.log("Detected Browser:", browser);
-  
-      const isIncognito =
-        browser === "Chrome" ? await checkIncognito() : false;
-  
+
+      const isIncognito = browser === "Chrome" ? await checkIncognito() : false;
+
       if (browser !== "Chrome") {
         setBestExperienceBox(true);
       }
-  
+
       console.log("Incognito Mode:", isIncognito);
       console.log("onChangeAllowMicrosoftCalenderSync", code);
-  
+
       if (code) {
         localStorage.setItem("Ms", code);
         window.close();
@@ -222,27 +216,11 @@ const SignInUserManagement = () => {
           setErrorMessage,
           setErrorBar,
           setRemeberEmail,
-          setEmail
+          setEmail,
         );
       }
     })();
   }, [code, getpayemntString, currentUrl, emailRef]);
-  
-
-  useEffect(() => {
-    if (adminReducerDeleteOrganizationResponseMessageData !== "") {
-      console.log(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "DeleteOrganizationResponseMessage"
-      );
-      showMessage(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "error",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    }
-  }, [adminReducerDeleteOrganizationResponseMessageData, setOpen]);
 
   return (
     <>
@@ -256,21 +234,23 @@ const SignInUserManagement = () => {
           <></>
         ) : (
           <>
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
-                <section className={styles["freetrail_banner"]}>
-                  <span className={styles["freetrail_heading"]}>
-                    {t("Start-your-Free-Trial-now")}
-                  </span>
-                  <span
-                    className={styles["Free-Trial_btn"]}
-                    onClick={handleClickFreeTrail}>
-                    {t("Free-Trial")}
-                  </span>
-                </section>
-              </Col>
-            </Row>
+            {!HIDE_FREETRAIL_BAR && (
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                  {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
+                  <section className={styles["freetrail_banner"]}>
+                    <span className={styles["freetrail_heading"]}>
+                      {t("Start-your-Free-Trial-now")}
+                    </span>
+                    <span
+                      className={styles["Free-Trial_btn"]}
+                      onClick={handleClickFreeTrail}>
+                      {t("Free-Trial")}
+                    </span>
+                  </section>
+                </Col>
+              </Row>
+            )}
             <Row className='position-relative'>
               <Col className={styles["languageSelector"]}>
                 <LanguageSelector />
@@ -289,12 +269,14 @@ const SignInUserManagement = () => {
                         <img
                           draggable='false'
                           src={
-                            localStorage.getItem("i18nextLng") === "ar"
-                              ? DiskusLogoArabic
-                              : DiskusLogo
+                            PSO_LOGO
+                              ? PSOLogo
+                              : localStorage.getItem("i18nextLng") === "ar"
+                                ? DiskusLogoArabic
+                                : DiskusLogo
                           }
                           alt='diskus_logo'
-                          width={200}
+                          width={PSO_LOGO ? 120 : 200}
                         />
                       </Col>
                     </Row>
@@ -360,11 +342,11 @@ const SignInUserManagement = () => {
                           lg={12}
                           className='d-flex justify-content-center mt-2 '>
                           <span className={styles["TermsfDiskus"]}>
-                            By signing in you agree to our{" "}
+                            {t("By-signing-in-you-agree-to-our")}
                             <Link
                               to={"https://diskusboard.com/terms/"}
                               target='_blank'>
-                              Terms of Use
+                              {t("Terms-of-use")}
                             </Link>
                           </span>
                         </Col>
@@ -404,7 +386,7 @@ const SignInUserManagement = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className='position-relative d-flex overflow-hidden'>
+                className='position-relative d-flex'>
                 <Col
                   md={8}
                   lg={8}
@@ -424,15 +406,22 @@ const SignInUserManagement = () => {
                     width='600px'
                     className={styles["Auth_Icon"]}
                   />
+                  {PSO_LOGO && (
+                    <img
+                      className={styles["PoweredIcon_Diskus_Icon"]}
+                      src={PSOPowerdBy}
+                      alt=''
+                    />
+                  )}
                 </Col>
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
           </>
         )}
       </Container>
       {getpayemntString && getpayemntString !== "" && <Loader />}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
+      {SnackBar}
     </>
   );
 };

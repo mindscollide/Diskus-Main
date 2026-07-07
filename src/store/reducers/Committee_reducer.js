@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   GetAllCommitteesByUserIDResponse: null,
   CreateCommitteeResponse: null,
   getCommitteeByCommitteeID: null,
@@ -25,6 +26,8 @@ const initialState = {
   removeCommitteeMember: null,
   viewCommitteesList: null,
   viewCommitteeDetailLink: null,
+  viewCommitteeDetails: null,
+  committeeProposedMeeting :null
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -41,6 +44,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewCommitteeDetailLink: action.payload,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_DETAILS_LINK_FAIL: {
@@ -49,6 +53,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewCommitteeDetailLink: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_INIT: {
@@ -63,6 +68,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewCommitteesList: action.payload,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_FAIL: {
@@ -71,6 +77,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         viewCommitteesList: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_ALL_COMMITTEES_BY_USERID_INIT: {
@@ -86,6 +93,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         GetAllCommitteesByUserIDResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -95,6 +103,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         GetAllCommitteesByUserIDResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_INIT: {
@@ -110,6 +119,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         getCommitteeByCommitteeID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_FAIL: {
@@ -118,12 +128,14 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         getCommitteeByCommitteeID: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 
@@ -141,6 +153,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         CreateCommitteeResponse: action.response,
         committeeID: action.committeeID,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CREATE_COMMITTEE_FAIL: {
@@ -150,6 +163,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         committeeID: 0,
         CreateCommitteeResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_ALL_COMMITTEE_TYPES_INIT: {
@@ -164,6 +178,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         getCommitteeTypes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALL_COMMITTEE_TYPES_FAIL: {
@@ -172,6 +187,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         getCommitteeTypes: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_COMMITTEE_MEMBERS_ROLES_INIT: {
@@ -186,6 +202,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         getCommitteeMembersRoles: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_COMMITTEE_MEMBERS_ROLES_FAIL: {
@@ -194,6 +211,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         getCommitteeMembersRoles: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_COMMITTEE_STATUS_INIT: {
@@ -208,6 +226,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         updateCommitteeStatus: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_COMMITTEE_STATUS_FAIL: {
@@ -216,6 +235,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         updateCommitteeStatus: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_COMMITTEE_INIT: {
@@ -230,6 +250,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         updateCommitteeResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_COMMITTEE_FAIL: {
@@ -238,6 +259,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         updateCommitteeResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.REALTIME_COMMITTEES_RESPONSE: {
@@ -263,6 +285,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.COMMITTEE_GROUP_MAPPING_FAIL: {
@@ -270,6 +293,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.ARCHEIVED_COMMITTES_INIT: {
@@ -285,6 +309,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         ArcheivedCommittees: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     // case actions.ARCHEIVED_COMMITTES_SUCCESS: {
@@ -302,6 +327,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         ArcheivedCommittees: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CREATEUPDATECOMMITTEEDATAROOM_INIT: {
@@ -316,6 +342,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         createUpdateCommitteeDataroom: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CREATEUPDATECOMMITTEEDATAROOM_FAIL: {
@@ -324,6 +351,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         createUpdateCommitteeDataroom: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVECOMMMITTEEDOCUMENTS_INIT: {
@@ -338,6 +366,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         savecommitteedocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVECOMMMITTEEDOCUMENTS_FAIL: {
@@ -346,6 +375,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         savecommitteedocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -362,6 +392,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         reteriveCommitteeDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -371,6 +402,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         reteriveCommitteeDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.COMMITTEEID_VIEWDETAILS: {
@@ -391,6 +423,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: true,
         uploadCommitteeDocuments: action.respose,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPLOAD_COMMITTEESS_DOCUMENTS_FAIL: {
@@ -399,6 +432,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         uploadCommitteeDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVE_COMMITTEE_FILES_DOCUMENTS_INIT: {
@@ -413,6 +447,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: true,
         saveUploadCommitteeDocuments: action.respose,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_COMMITTEE_FILES_DOCUMENTS_FAIL: {
@@ -421,6 +456,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         saveUploadCommitteeDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -445,12 +481,32 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       };
     }
     case actions.REMOVE_COMMITTEE_MEMBER: {
-      console.log(action, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT");
+      
 
       return {
         ...state,
         removeCommitteeMember: action.response,
       };
+    }
+
+    case actions.VIEW_COMMITTEE_DETAILS: {
+      return {
+        ...state,
+        viewCommitteeDetails: action.payload,
+      };
+    }
+    case actions.RESET_VIEW_COMMITTEE_DETAILS: {
+      return {
+        ...state,
+        viewCommitteeDetails: null,
+      };
+    }
+
+    case actions.COMMITTEE_PROPOSED_MEETING: {
+      return {
+        ...state,
+        committeeProposedMeeting: action.payload
+      }
     }
 
     default:

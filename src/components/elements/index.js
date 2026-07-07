@@ -7,6 +7,8 @@ import TableToDo from "./tableToDo/table-to-do";
 import CustomTableToDoDashboard from "./tableTodoDashboard/table-todo-dashboard";
 import uploadButton from "./upload/uploadButton";
 import Notification from "./snack_bar";
+import useSnackbar from "./snack_bar/useSnackbar";
+import GlobalSnackbar from "./snack_bar/GlobalSnackbar";
 import Modal from "./modal/Modal";
 import ButtonGroup from "./GroupedButtons/Grouped_buttons";
 import Accordian from "./accordian/Accordian";
@@ -68,6 +70,8 @@ export {
   Table,
   uploadButton,
   Notification,
+  useSnackbar,
+  GlobalSnackbar,
   Loader,
   ResultMessage,
   NotificationBar,

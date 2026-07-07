@@ -23,7 +23,7 @@ import { validateInput } from "../../../commen/functions/regex";
 import { Checkbox } from "antd";
 import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
 import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../context/MeetingContext";
 const BoardDeckSendEmail = ({
   boardDeckMeetingID,
@@ -32,7 +32,7 @@ const BoardDeckSendEmail = ({
   setBoarddeckOptions,
   boardDeckMeetingTitle,
 }) => {
-  console.log(boardDeckMeetingID, "radioValueradioValue");
+  
   const { t } = useTranslation();
   const { editorRole } = useMeetingContext();
   const dispatch = useDispatch();
@@ -53,11 +53,7 @@ const BoardDeckSendEmail = ({
   const [dropdowndata, setDropdowndata] = useState([]);
   const [tags, setTags] = useState([]);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [notificationMessage, setNotificationMessage] = useState("");
   const [notifyPeople, setNotifyPeople] = useState({
     notifyPeople: false,
@@ -73,7 +69,7 @@ const BoardDeckSendEmail = ({
 
   // for selection of data
   const handleSelectValue = (value) => {
-    console.log(value, "handleSelectValue");
+    
     setSelectedsearch(value);
   };
 
@@ -148,7 +144,7 @@ const BoardDeckSendEmail = ({
             fetchAgendaWithoutAttachments: boarddeckOptions.Agenda,
           },
         };
-        console.log(data, "datadatadatadatadata");
+        
         dispatch(
           BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions, 1)
         );
@@ -172,13 +168,13 @@ const BoardDeckSendEmail = ({
             fetchAgendaWithoutAttachments: boarddeckOptions.Agenda,
           },
         };
-        console.log(data, "datadatadatadatadata");
+        
         dispatch(
           BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions, 2)
         );
       }
     } else {
-      showMessage(t("Atleast-add-one-user"), "error", setOpen);
+      show(t("Atleast-add-one-user"), "error");
     }
   };
 
@@ -191,7 +187,7 @@ const BoardDeckSendEmail = ({
 
     if (value.endsWith(".com")) {
       if (!emailRegex.test(value)) {
-        showMessage(t("Invalid-email-format"), "error", setOpen);
+        show(t("Invalid-email-format"), "error");
         return;
       }
       setTags([...tags, value]);
@@ -408,7 +404,8 @@ const BoardDeckSendEmail = ({
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </Container>
   );
 };

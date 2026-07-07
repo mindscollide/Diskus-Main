@@ -8,14 +8,18 @@
 # production
 /build
 # misc
-# .env
+.env
+.env.*
 .DS_Store
 # Claude Code internal directories
 .claude/worktrees/
 # .env.local
+.env
+.env.*
 .env.development.local
 .env.test.local
 .env.production.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/.claude

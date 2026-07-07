@@ -768,7 +768,7 @@
   "Organization-role-is-required": "Organization role is required",
   "User-role-is-required": "User role is required",
   "No-archived-record-founds": "No Archived Record Found",
-  "Group-title": "Group Title *",
+  "Group-title": "Group Title",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
   "Active": "Active",
@@ -875,7 +875,7 @@
   "File-already-exists": "File already exists",
   "Show-search-options": "Show Search Options",
   "Photos": " Photos",
-  "Custome-range": "Custome Range",
+  "Custome-range": "Custom Range",
   "File-type": "File Type",
   "No-data-available-against-this-Organization": "No data available against this organization",
   "You-are-not-an-admin-Please-contact-support": "You are not an admin please contact support",
@@ -1653,7 +1653,7 @@
   "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
   "Create-a-to-do-list": "Create a Task",
   "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time",
-  "Agendas-imported-successfully": "Agendas imported successfully",
+  "Agendas-imported-successfully": "Agendas Imported Successfully",
   "No-agendas-exist": "No Agendas Exist",
   "Minutes-text-is-required": "Minutes Text is required",
   "Minutes-details": "Minutes Text",
@@ -1972,7 +1972,7 @@
   "Password-verified-and-subscription-not-active-and-this-is-an-admin-user": "Password Verified and Subscription Not Active and This is an Admin user.",
   "Password-verified-and-subscription-not-active-and-this-is-an-admin": "Password Verified and Subscription Not Active and This is an Admin.",
   "Password-verified-and-subscription-not-active-and-this-is-an-user": "Password Verified and Subscription Not Active and This is an user.",
-  "The-organization-trial-has-expired": "The Organization Trial has expired and This is the Organization Creator.",
+  "The-organization-trial-has-expired": "Organization trial period has expired.",
   "Organization-trial-has-expired-and-this-is-admin-user": "Organization Trial has expired and This is Admin User",
   "Organization-trial-has-expired-and-this-is-admin": "Organization Trial has expired and This is Admin",
   "Organization-trial-has-expired-and-this-is-user": "Organization Trial has expired and This is User",
@@ -2389,5 +2389,6 @@
   "Logged-out": "Logged Out",
   "View-meeting": "View Meeting",
   "Please-enter-Contact": "Please enter contact",
-  "Minutes-revised-by-organizer": "Minutes Revised-by Organizer"
+  "Minutes-revised-by-organizer": "Minutes Revised-by Organizer",
+  "File-deleted": "File Deleted"
 }

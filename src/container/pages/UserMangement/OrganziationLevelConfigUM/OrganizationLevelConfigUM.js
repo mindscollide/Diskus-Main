@@ -10,6 +10,7 @@ import pollsIcon from "../../../../assets/images/pollsIcon.svg";
 import Committee from "../../../../assets/images/CommitteSetting.svg";
 import GroupIcon from "../../../../assets/images/GroupSetting.svg";
 import ResolutionIcon from "../../../../assets/images/new_ResolutionIcon2.svg";
+import VideoIcon from "../../../../assets/images/ColoredVideo.svg";
 import {
   MonthOptions,
   autoResolutionsOptionsValues,
@@ -34,11 +35,16 @@ const OrganizationLevelConfigUM = () => {
   const navigate = useNavigate();
 
   const settingReducerTimeZoneData = useSelector(
-    (state) => state.settingReducer.TimeZone
+    (state) => state.settingReducer.TimeZone,
   );
 
   const settingReducerGetOrganizationLevelSettingResponseData = useSelector(
-    (state) => state.settingReducer.GetOrganizationLevelSettingResponse
+    (state) => state.settingReducer.GetOrganizationLevelSettingResponse,
+  );
+
+  console.log(
+    settingReducerGetOrganizationLevelSettingResponseData,
+    "settingReducerGetOrganizationLevelSettingResponseData",
   );
 
   const [securitystate, setSecuritystate] = useState(true);
@@ -49,6 +55,7 @@ const OrganizationLevelConfigUM = () => {
   const [group, setGroup] = useState(false);
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
+  const [video, setVideo] = useState(false);
   const [timezone, setTimeZone] = useState([]);
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
@@ -56,7 +63,7 @@ const OrganizationLevelConfigUM = () => {
   });
   const [autoCloseResolution, setAutoCloseResolution] = useState(null);
   const [autoClosResolutionOptions, setAutoCloseResolutionOptions] = useState(
-    []
+    [],
   );
 
   const [userOrganizationSetting, setOrganizationSetting] = useState({
@@ -141,6 +148,8 @@ const OrganizationLevelConfigUM = () => {
     complianceAlertThree: 1,
     complianceAlertTwo: 1,
     autoCloseResolutionDays: 0,
+    IsOneToOneCallRecordingEnabled: false,
+    IsGroupCallRecordingEnabled: false,
   });
 
   useEffect(() => {
@@ -148,17 +157,17 @@ const OrganizationLevelConfigUM = () => {
       try {
         // Call the first API function and handle its result
         const organizationSettings = await dispatch(
-          getOrganizationLevelSetting(navigate, t)
+          getOrganizationLevelSetting(navigate, t),
         );
-        console.log("Organization Settings:", organizationSettings);
+        
 
         // Call the second API function and handle its result
         const timeZones = await dispatch(getTimeZone(navigate, t));
-        console.log("Time Zones:", timeZones);
+        
         const autoResolutionsOptionsData = autoResolutionsOptionsValues(30);
         setAutoCloseResolutionOptions(autoResolutionsOptionsData);
       } catch (error) {
-        console.error("Error during API calls:", error);
+        
       }
     };
 
@@ -198,10 +207,7 @@ const OrganizationLevelConfigUM = () => {
       ) {
         let organizationSettings =
           settingReducerGetOrganizationLevelSettingResponseData;
-        console.log(
-          organizationSettings,
-          "organizationSettingsorganizationSettings"
-        );
+        
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
@@ -342,6 +348,10 @@ const OrganizationLevelConfigUM = () => {
           IsFridayWorkingDay: organizationSettings.isFridayWorkingDay,
           IsSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
           IsSundayWorkingDay: organizationSettings.isSundayWorkingDay,
+          IsOneToOneCallRecordingEnabled:
+            organizationSettings.isOneToOneCallRecordingEnabled,
+          IsGroupCallRecordingEnabled:
+            organizationSettings.isGroupCallRecordingEnabled,
         });
 
         setAutoCloseResolution({
@@ -374,6 +384,7 @@ const OrganizationLevelConfigUM = () => {
     setResolution(false);
     setpolls(false);
     setTodo(false);
+    setVideo(false);
   };
   const opentodo = () => {
     setTodo(true);
@@ -384,6 +395,7 @@ const OrganizationLevelConfigUM = () => {
     setGroup(false);
     setResolution(false);
     setpolls(false);
+    setVideo(false);
   };
   const openMeetingTab = () => {
     setmeetingsState(true);
@@ -394,6 +406,7 @@ const OrganizationLevelConfigUM = () => {
     setResolution(false);
     setpolls(false);
     setTodo(false);
+    setVideo(false);
   };
 
   const openCalenderTab = () => {
@@ -405,6 +418,7 @@ const OrganizationLevelConfigUM = () => {
     setResolution(false);
     setpolls(false);
     setTodo(false);
+    setVideo(false);
   };
 
   const openCommitteTab = () => {
@@ -416,6 +430,7 @@ const OrganizationLevelConfigUM = () => {
     setResolution(false);
     setpolls(false);
     setTodo(false);
+    setVideo(false);
   };
 
   const openGroupTab = () => {
@@ -427,6 +442,7 @@ const OrganizationLevelConfigUM = () => {
     setResolution(false);
     setpolls(false);
     setTodo(false);
+    setVideo(false);
   };
 
   const openResolutionTab = () => {
@@ -438,6 +454,7 @@ const OrganizationLevelConfigUM = () => {
     setSecuritystate(false);
     setpolls(false);
     setTodo(false);
+    setVideo(false);
   };
 
   const openPollsTab = () => {
@@ -449,10 +466,39 @@ const OrganizationLevelConfigUM = () => {
     setmeetingsState(false);
     setSecuritystate(false);
     setTodo(false);
+    setVideo(false);
+  };
+
+  const openVideoTab = () => {
+    setVideo(true);
+    setpolls(false);
+    setResolution(false);
+    setGroup(false);
+    setCommittee(false);
+    setCalender(false);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setTodo(false);
+  };
+
+  const onChangeIsOneToOneCallRecordingEnabled = () => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      IsOneToOneCallRecordingEnabled:
+        !userOrganizationSetting.IsOneToOneCallRecordingEnabled,
+    });
+  };
+
+  const onChangeIsGroupCallRecordingEnabled = () => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      IsGroupCallRecordingEnabled:
+        !userOrganizationSetting.IsGroupCallRecordingEnabled,
+    });
   };
 
   const handleChangeAutoCloseResolution = (event) => {
-    console.log(event, "handleChangeAutoCloseResolution");
+    
     setAutoCloseResolution(event);
   };
   const onChangeIsTwoFaceEnabled = (e) => {
@@ -1007,8 +1053,12 @@ const OrganizationLevelConfigUM = () => {
       IsFridayWorkingDay: userOrganizationSetting.isFridayWorkingDay,
       IsSaturdayWorkingDay: userOrganizationSetting.isSaturdayWorkingDay,
       IsSundayWorkingDay: userOrganizationSetting.isSundayWorkingDay,
+      IsOneToOneCallRecordingEnabled:
+        userOrganizationSetting.IsOneToOneCallRecordingEnabled,
+      IsGroupCallRecordingEnabled:
+        userOrganizationSetting.IsGroupCallRecordingEnabled,
     };
-    console.log(Data, "AutoCloseResolutionDaysAutoCloseResolutionDays");
+    
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
 
@@ -1276,36 +1326,69 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               {checkFeatureIDAvailability(43) ? (
-                <div onClick={openPollsTab} className="cursor-pointer">
-                  <Row className="mt-3">
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <img
-                        draggable="false"
-                        alt=""
-                        src={pollsIcon}
-                        width="33.52px"
-                        height="34.59px"
-                      />
-                    </Col>
-                    <Col lg={10} md={10} ms={12}>
-                      <span
-                        className={
-                          polls
-                            ? styles["Options_headings_active"]
-                            : styles["Options_headings"]
-                        }
+                <>
+                  <div onClick={openPollsTab} className="cursor-pointer">
+                    <Row className="mt-3">
+                      <Col
+                        lg={2}
+                        md={2}
+                        sm={12}
+                        className="d-flex align-items-center"
                       >
-                        {t("Polls")}
-                      </span>
-                    </Col>
-                  </Row>
-                </div>
+                        <img
+                          draggable="false"
+                          alt=""
+                          src={pollsIcon}
+                          width="33.52px"
+                          height="34.59px"
+                        />
+                      </Col>
+                      <Col lg={10} md={10} ms={12}>
+                        <span
+                          className={
+                            polls
+                              ? styles["Options_headings_active"]
+                              : styles["Options_headings"]
+                          }
+                        >
+                          {t("Polls")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr />
+                </>
               ) : null}
+
+              <div onClick={openVideoTab} className="cursor-pointer">
+                <Row className="mt-3">
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    className="d-flex align-items-center"
+                  >
+                    <img
+                      draggable="false"
+                      alt=""
+                      src={VideoIcon}
+                      width="30px"
+                      height="30px"
+                    />
+                  </Col>
+                  <Col lg={10} md={10} ms={12}>
+                    <span
+                      className={
+                        video
+                          ? styles["Options_headings_active"]
+                          : styles["Options_headings"]
+                      }
+                    >
+                      {t("Video")}
+                    </span>
+                  </Col>
+                </Row>
+              </div>
             </Col>
             <Col lg={1} md={1} sm={1} className="d-flex justify-content-center">
               <img
@@ -1554,7 +1637,7 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-on-cancelled-or-deleted-meeting"
+                            "Push-notification-on-cancelled-or-deleted-meeting",
                           )}
                         </span>
                       </Checkbox>
@@ -1584,7 +1667,7 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started"
+                            "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started",
                           )}
                         </span>
                       </Checkbox>
@@ -1687,7 +1770,7 @@ const OrganizationLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-removed-from-committee"
+                                "Push-notification-when-removed-from-committee",
                               )}
                             </span>
                           </Checkbox>
@@ -1705,7 +1788,7 @@ const OrganizationLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Email-when-committee-is-dissolved-or-archived"
+                                "Email-when-committee-is-dissolved-or-archived",
                               )}
                             </span>
                           </Checkbox>
@@ -1723,7 +1806,7 @@ const OrganizationLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-committee-is-dissolved-or-archived"
+                                "Push-notification-when-committee-is-dissolved-or-archived",
                               )}
                             </span>
                           </Checkbox>
@@ -1759,7 +1842,7 @@ const OrganizationLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-committee-is-set-inActive"
+                                "Push-notification-when-committee-is-set-inActive",
                               )}
                             </span>
                           </Checkbox>
@@ -1900,7 +1983,7 @@ const OrganizationLevelConfigUM = () => {
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
-                                "Push-notification-when-group-is-dissolved-or-archived"
+                                "Push-notification-when-group-is-dissolved-or-archived",
                               )}
                             </span>
                           </Checkbox>
@@ -2008,7 +2091,7 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-new-resolution-is-circulated"
+                            "Push-notification-when-new-resolution-is-circulated",
                           )}
                         </span>
                       </Checkbox>
@@ -2026,7 +2109,7 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Email-when-new-resolution-is-cancelled-after-circulation"
+                            "Email-when-new-resolution-is-cancelled-after-circulation",
                           )}
                         </span>
                       </Checkbox>
@@ -2044,7 +2127,7 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-new-resolution-is-cancelled-after-circulated"
+                            "Push-notification-when-new-resolution-is-cancelled-after-circulated",
                           )}
                         </span>
                       </Checkbox>
@@ -2170,7 +2253,7 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-published-poll-is-deleted"
+                            "Push-notification-when-published-poll-is-deleted",
                           )}
                         </span>
                       </Checkbox>
@@ -2202,8 +2285,40 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
-                            "Push-notification-when-published-poll-is--updated"
+                            "Push-notification-when-published-poll-is--updated",
                           )}
+                        </span>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+              {video ? (
+                <>
+                  <Row className="mt-4">
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        onChange={onChangeIsOneToOneCallRecordingEnabled}
+                        checked={
+                          userOrganizationSetting.IsOneToOneCallRecordingEnabled
+                        }
+                      >
+                        <span className={styles["Class_CheckBox"]}>
+                          {t("Enable-video-recording-for-one-to-one-call")}
+                        </span>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        onChange={onChangeIsGroupCallRecordingEnabled}
+                        checked={
+                          userOrganizationSetting.IsGroupCallRecordingEnabled
+                        }
+                      >
+                        <span className={styles["Class_CheckBox"]}>
+                          {t("Enable-video-recording-for-group-call")}
                         </span>
                       </Checkbox>
                     </Col>

@@ -1,5 +1,29 @@
 import * as actions from "../action_types";
 
+/**
+ * Collapse duplicate participants so the same person can never appear twice in
+ * the participant list. Identity = userID for real users (the stable per-person
+ * key), falling back to guid for guests (userID 0/null). Entries are merged so
+ * the host flag and latest fields are preserved. This makes the list idempotent
+ * against duplicate MQTT delivery, backend re-publish, and the same user joining
+ * with a different guid (e.g. the host appearing twice).
+ */
+const dedupeParticipants = (list) => {
+  const map = new Map();
+  (Array.isArray(list) ? list : []).forEach((p) => {
+    if (!p) return;
+    const hasUserId =
+      p.userID !== undefined && p.userID !== null && Number(p.userID) !== 0;
+    const key = hasUserId ? `u:${Number(p.userID)}` : `g:${String(p.guid)}`;
+    const existing = map.get(key);
+    map.set(
+      key,
+      existing ? { ...existing, ...p, isHost: existing.isHost || p.isHost } : p,
+    );
+  });
+  return Array.from(map.values());
+};
+
 const initialState = {
   VideoChatPanel: false,
   ContactVideoFlag: false,
@@ -105,25 +129,34 @@ const initialState = {
   isScreenShare: null,
   globallyScreenShare: false,
   errorSeverity: null, // Added errorSeverity to initialState
+  notifyParticipantHostIsTransfer: false,
+  presentationParticipantsList: [],
   // startOrStopPresenter: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.ACCEPT_AND_REMOVE_PARTICIPANTS: {
-      const { payload } = action; // payload is expected to be an array of uids
-      console.log(payload, state.waitingParticipantsList, "payloadpayload");
+      const { payload } = action;
+      console.log("REDUCER - Payload received:", payload);
+      // Check each participant
+      state.waitingParticipantsList.forEach((participant) => {
+        const shouldRemove = payload.some((p) => {
+          const guidMatch = String(p.guid) === String(participant.guid);
+          return guidMatch;
+        });
+      });
 
-      // Filter out participants whose meetingID + userID is included in the payload
       const filteredParticipants = state.waitingParticipantsList.filter(
         (participant) =>
           !payload.some(
             (p) =>
-              Number(p.userID) === Number(participant.userID) &&
-              Number(p.meetingID) === Number(participant.meetingID)
-          )
+              String(p.guid) === String(participant.guid) &&
+              (!p.meetingID ||
+                !participant.meetingID ||
+                Number(p.meetingID) === Number(participant.meetingID)),
+          ),
       );
-      console.log(filteredParticipants, "payloadpayloadfilteredParticipants");
 
       return {
         ...state,
@@ -132,6 +165,22 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_JOINT_REQUESTS: {
+      // Check if the SAME participant already exists in the waiting list.
+      // Dedup on guid (primary identity), falling back to userID + meetingID.
+      // (Previously this used `!==` on guid, so identical entries were never
+      // blocked — causing duplicate waiting-list rows on repeated MQTT delivery.)
+      const exists = state.waitingParticipantsList.some(
+        (p) =>
+          String(p.guid) === String(action.response.guid) ||
+          (Number(p.userID) === Number(action.response.userID) &&
+            Number(p.meetingID) === Number(action.response.meetingID)),
+      );
+
+      // Only add if not already present (idempotent against duplicate delivery)
+      if (exists) {
+        return state;
+      }
+
       return {
         ...state,
         waitingParticipantsList: [
@@ -142,7 +191,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.SET_PARTICIPANT_NAME: {
-      console.log(action, "datdtatdatdtatddatdtatdatdtatd");
+      
       return {
         ...state,
         participantNameDataAccept: [
@@ -153,10 +202,10 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GUEST_PARTICIPANT_LEAVE_VIDEO: {
-      console.log(action, "actionactionactionactionaction");
+      
       let copyState = [...state.getAllParticipantMain];
       let newData = copyState.filter(
-        (videoParticipants, index) => videoParticipants.guid !== action.payload
+        (videoParticipants, index) => videoParticipants.guid !== action.payload,
       );
       return {
         ...state,
@@ -165,13 +214,13 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.VIDEO_PARTICIPANT_NON_GUEST_LEFT: {
-      console.log(action, "responseDataDataData");
+      
       let copyState2 = [...state.waitingParticipantsList];
       let newData2 = copyState2.filter(
-        (videoParticipants, index) => videoParticipants.guid !== action.payload
+        (videoParticipants, index) => videoParticipants.guid !== action.payload,
       );
       let updatedList = state.getAllParticipantMain.filter(
-        (guest) => guest.guid !== action.payload
+        (guest) => guest.guid !== action.payload,
       );
 
       return {
@@ -357,7 +406,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAXIMIZE_VIDEO_PANEL: {
-      console.log(action, "MAXIMIZE_VIDEO_PANEL");
+      
       return {
         ...state,
         MaximizeVideoFlag: action.response,
@@ -409,7 +458,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.PARTICIPANT_LIST_USERS: {
       console.log(
         action,
-        "PARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERS"
+        "PARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERS",
       );
       return {
         ...state,
@@ -479,12 +528,12 @@ const videoFeatureReducer = (state = initialState, action) => {
         presenterViewFlag,
         check,
       } = action;
-      console.log("allUidsallUids Payload:", isforAll);
-      console.log("allUidsallUids Payload:", payload);
-      console.log("allUidsallUids Payload:", presenterViewHostFlag);
+      
+      
+      
 
       const meetingHostformeetingHost = JSON.parse(
-        localStorage.getItem("meetinHostInfo")
+        localStorage.getItem("meetinHostInfo"),
       );
 
       // Ensure proper use of isForAll
@@ -494,14 +543,14 @@ const videoFeatureReducer = (state = initialState, action) => {
         let participantUID = localStorage.getItem("participantUID");
         let isGuid = localStorage.getItem("isGuid");
         if (presenterViewFlag) {
-          console.log("allUidsallUids Payload:", payload);
+          
           if (Object.keys(state.getAllParticipantMain).length > 0) {
             let uid = "";
             if (presenterViewHostFlag) {
-              console.log("allUidsallUids Payload:", payload);
+              
               uid = meetingHostformeetingHost?.isHost ? isGuid : participantUID;
             }
-            console.log("allUidsallUids Payload:", payload);
+            
             updatedParticipantList = state.getAllParticipantMain.map(
               (participant) => {
                 if (participant.guid === uid) {
@@ -509,12 +558,12 @@ const videoFeatureReducer = (state = initialState, action) => {
                     ? { ...participant, mute: true }
                     : participant;
                 }
-                console.log("allUidsallUids Payload:", payload);
+                
 
                 return check === 1
                   ? { ...participant, mute: payload, hideCamera: payload }
                   : { ...participant, mute: payload };
-              }
+              },
             );
           }
         } else {
@@ -523,7 +572,7 @@ const videoFeatureReducer = (state = initialState, action) => {
               (participant) =>
                 participant.isHost
                   ? participant
-                  : { ...participant, mute: payload } // Update only non-host participants
+                  : { ...participant, mute: payload }, // Update only non-host participants
             );
           }
         }
@@ -534,19 +583,35 @@ const videoFeatureReducer = (state = initialState, action) => {
       } else {
         // Individual participant mute/unmute
         if (!payload.uid) {
-          console.error("Missing uid for individual mute/unmute action.");
+          
           return state; // Return unchanged state if uid is not provided
         }
         const getMainMuteUnmuteParticipant = state.getAllParticipantMain.map(
           (participant) =>
             participant.guid === payload.uid
               ? { ...participant, mute: payload.isMuted }
-              : participant
+              : participant,
+        );
+
+        const existingMuteList = Array.isArray(
+          state.presentationParticipantsList?.participantList,
+        )
+          ? state.presentationParticipantsList.participantList
+          : [];
+        const updatedMuteList = existingMuteList.map((p) =>
+          p.guid === payload.uid ? { ...p, mute: payload.isMuted } : p,
         );
 
         return {
           ...state,
           getAllParticipantMain: getMainMuteUnmuteParticipant,
+          presentationParticipantsList: {
+            ...(typeof state.presentationParticipantsList === "object" &&
+            !Array.isArray(state.presentationParticipantsList)
+              ? state.presentationParticipantsList
+              : {}),
+            participantList: updatedMuteList,
+          },
         };
       }
     }
@@ -564,40 +629,74 @@ const videoFeatureReducer = (state = initialState, action) => {
             };
           }
           return participantData;
-        }
+        },
+      );
+
+      const existingRaiseList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const updatedRaiseList = existingRaiseList.map((p) =>
+        p.guid === payload.participantGuid
+          ? { ...p, raiseHand: payload.isHandRaised }
+          : p,
       );
 
       return {
         ...state,
         getAllParticipantMain: updatedRaisedParticipant,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedRaiseList,
+        },
       };
     }
 
     case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
-      console.log("MQTT onMessageArrived");
+      
       let { payload } = action;
-      console.log("MQTT onMessageArrived", payload);
+      
       let updateParticipantHideUnHide = state.getAllParticipantMain.map(
         (hideUnHideParticipant) => {
-          console.log("MQTT onMessageArrived", hideUnHideParticipant);
+          
           let hideUnHideVideoPayload =
             payload.uid === hideUnHideParticipant.guid ? true : false;
-          console.log("MQTT onMessageArrived", hideUnHideVideoPayload);
+          
           if (hideUnHideVideoPayload) {
-            console.log("MQTT onMessageArrived", hideUnHideVideoPayload);
+            
             return {
               ...hideUnHideParticipant,
               hideCamera: payload.isVideoHidden,
             };
           }
           return hideUnHideParticipant;
-        }
+        },
       );
-      console.log("MQTT onMessageArrived", updateParticipantHideUnHide);
+      
+
+      const existingHideList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const updatedHideList = existingHideList.map((p) =>
+        p.guid === payload.uid ? { ...p, hideCamera: payload.isVideoHidden } : p,
+      );
 
       return {
         ...state,
         getAllParticipantMain: updateParticipantHideUnHide,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedHideList,
+        },
       };
     }
 
@@ -612,7 +711,9 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllParticipantMain: action.response.participantList,
+        getAllParticipantMain: dedupeParticipants(
+          action.response.participantList,
+        ),
         ResponseMessage: action.message,
         errorSeverity: "success", // Added
       };
@@ -630,7 +731,12 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.GET_MEETING_NEW_PARTICIPANT_JOIN: {
       console.log(action, "dtadtatatatatattata");
-      let getPrevState = [...state.getAllParticipantMain, ...action.response];
+      // Idempotent: merge new joiners and collapse duplicates by stable identity
+      // so the same user can never appear twice (even with a different guid).
+      let getPrevState = dedupeParticipants([
+        ...state.getAllParticipantMain,
+        ...(action.response || []),
+      ]);
       return {
         ...state,
         getAllParticipantMain: getPrevState,
@@ -666,7 +772,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAX_HOST_VIDEO_CALL_PANEL: {
-      console.log(action, "trurururuurururururuu");
+      
       return {
         ...state,
         MaximizeHostVideoFlag: action.response,
@@ -675,7 +781,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.NORMAL_HOST_VIDEO_CALL_PANEL: {
-      console.log(action, "trurururuurururururuu");
+      
 
       return {
         ...state,
@@ -695,7 +801,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL: {
-      console.log(action, "MAX_PARTICIPANT_VIDEO_CALL_PANEL");
+      
       return {
         ...state,
 
@@ -705,7 +811,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAX_PARTICIPANT_VIDEO_DENIED:
-      console.log(action, "MAX_PARTICIPANT_VIDEO_DENIED");
+      
 
       return {
         ...state,
@@ -739,12 +845,14 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_SUCCESS: {
-      console.log("API Response:", action.response);
+      
 
       return {
         ...state,
         Loading: false,
-        getAllParticipantMain: action.response.participantList,
+        getAllParticipantMain: dedupeParticipants(
+          action.response.participantList,
+        ),
         waitingParticipantsList: action.response.waitingParticipants,
         errorSeverity: "success", // Added
       };
@@ -763,7 +871,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.PARTICIPANT_VIDEO_SCREEN_NAVIGATION: {
       // sessionStorage.setItem("viewState", action.response);
-      console.log("Updating participantVideoNavigationData:", action.response);
+      
       return {
         ...state,
         MaximizeHostVideoFlag: false,
@@ -787,7 +895,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // url for participants
     case actions.GET_VIDEOURL_PARTICIPANT: {
-      console.log("GET_VIDEOURL_PARTICIPANT", action.response);
+      
 
       return {
         ...state,
@@ -796,7 +904,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.SET_MQTT_VIDEO_MEETING_PARTICIPANT: {
-      console.log("SET_MQTT_VIDEO_MEETING_PARTICIPANT", action.response);
+      
       return {
         ...state,
         videoControlForParticipant: action.response,
@@ -804,7 +912,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.SET_MQTT_VOICE_PARTICIPANT: {
-      console.log("SET_MQTT_VOICE_PARTICIPANT", action.response);
+      
       return {
         ...state,
         audioControlForParticipant: action.response,
@@ -944,7 +1052,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // Stop Meeting Video By presenter View when Some one Already Join the meeting Video
     case actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW:
-      console.log("CheckStopMeetingVideo", action.response);
+      
       return {
         ...state,
         meetingStoppedByPresenter: action.response,
@@ -952,7 +1060,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // For Presenter Join Started Main State
     case actions.PRESENTER_STARTED_MAIN_FLAG:
-      console.log("PRESENTER_STARTED_MAIN_FLAG", action.response);
+      
       return {
         ...state,
         presenterStartedFlag: action.response,
@@ -967,21 +1075,21 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // global state for Presenter Participants who joined Presenter Video
     case actions.PRESENTER_JOIN_PARTICIPANT_VIDEO:
-      console.log("hell", action.response);
+      
       return {
         ...state,
         newJoinPresenterParticipant: action.response,
       };
 
     case actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO:
-      console.log("hell", action);
+      
       return {
         ...state,
         leavePresenterParticipant: action.response,
       };
 
     case actions.CLEAR_PRESENTER_PARTICIPANTS:
-      console.log("MEETING_PRESENTATION_STOPPED - Clearing Participants");
+      
       return {
         ...state,
         newJoinPresenterParticipant: [], // Empty the list
@@ -990,7 +1098,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     // state for leave Presenter View and Join one to one and other group calls
 
     case actions.LEAVE_PRESENTER_JOIN_ONE_TO_OR_GROUP_CALL:
-      console.log("leave Presenter Or Join Other Calls");
+      
       return {
         ...state,
         leavePresenterOrJoinOtherCalls: action.response,
@@ -1000,7 +1108,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM:
       console.log(
         "CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM",
-        action.response
+        action.response,
       );
       return {
         ...state,
@@ -1013,7 +1121,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         "presenterMeetingIdpresenterMeetingId",
         action.response,
         action.presenterMeetingId,
-        action.presenterViewFlag
+        action.presenterViewFlag,
       );
 
       return {
@@ -1156,7 +1264,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // accept host transfer access reducer
     case actions.ACCEPT_HOST_TRANSFER_ACCESS: {
-      console.log("Check Host Transfer");
+      
       return {
         ...state,
         accpetAccessOfHostTransfer: action.response,
@@ -1165,7 +1273,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // unanswered one To one call to close participant modal
     case actions.UNANSWERED_ONE_TO_ONE_CALL_FLAG: {
-      console.log(action, "UNANSWERED_ONE_TO_ONE_CALL_FLAG");
+      
       return {
         ...state,
         unansweredFlagForOneToOneCall: action.response,
@@ -1174,16 +1282,16 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     //updated participants List For PRESENTER
     case actions.UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER: {
-      console.log(action, "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER");
+      
       return {
         ...state,
-        getAllParticipantMain: action.response,
+        getAllParticipantMain: dedupeParticipants(action.response),
       };
     }
 
     //updated participants List For PRESENTER
     case actions.STOP_SCREENSHARE_ONPRESENTER_VIEWSTART: {
-      console.log(action, "STOP_SCREENSHARE_ONPRESENTER_VIEWSTART");
+      
       return {
         ...state,
         stopScreenShareOnPresenter: action.response,
@@ -1198,7 +1306,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GET_PARTICIPANTS_OF_GROUP_CALL_SUCCESS: {
-      console.log("API Response:", action.response);
+      
 
       return {
         ...state,
@@ -1250,10 +1358,113 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     //is Screen Share Triggered Globally Function
     case actions.GLOBAL_SCREEN_SHARE_TRIGGERED: {
-      console.log(action, "GLOBAL_SCREEN_SHARE_TRIGGERED");
+      
       return {
         ...state,
         globallyScreenShare: action.response,
+      };
+    }
+
+    case actions.NOTIFY_PARTICIPANTS_WHEN_HOST_IS_TRANSFERRED: {
+      return {
+        ...state,
+        notifyParticipantHostIsTransfer: action.response,
+      };
+    }
+
+    case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_SUCCESS: {
+      const rawList = Array.isArray(action.response?.participantList)
+        ? action.response.participantList
+        : [];
+      const seenKeys = new Set();
+      const dedupedList = rawList.filter((p) => {
+        const key = p.guid || String(p.userID);
+        if (!key || seenKeys.has(key)) return false;
+        seenKeys.add(key);
+        return true;
+      });
+      return {
+        ...state,
+        Loading: false,
+        presentationParticipantsList: {
+          ...action.response,
+          participantList: dedupedList,
+        },
+        ResponseMessage: action.message,
+        errorSeverity: "success",
+      };
+    }
+
+    case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presentationParticipantsList: [],
+        ResponseMessage: action.message,
+        errorSeverity: "error", // Added
+      };
+    }
+
+    // Real-time MQTT updates — patch the existing list in place instead of
+    // re-fetching from the API, so join/leave never triggers an extra
+    // network call. Idempotent: a repeated/duplicate JOINED delivery for the
+    // same guid is ignored rather than adding a duplicate row.
+    case actions.PRESENTATION_PARTICIPANT_JOINED_MQTT: {
+      const newParticipant = action.response;
+      const existingList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const alreadyExists = existingList.some(
+        (p) =>
+          (p.guid && newParticipant?.guid && p.guid === newParticipant.guid) ||
+          (p.userID &&
+            newParticipant?.userID &&
+            Number(p.userID) === Number(newParticipant.userID)),
+      );
+      const updatedList =
+        alreadyExists || !newParticipant
+          ? existingList
+          : [...existingList, newParticipant];
+      return {
+        ...state,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedList,
+        },
+      };
+    }
+
+    case actions.PRESENTATION_PARTICIPANT_LEFT_MQTT: {
+      const leavingUid = action.response;
+      const existingList = Array.isArray(
+        state.presentationParticipantsList?.participantList,
+      )
+        ? state.presentationParticipantsList.participantList
+        : [];
+      const updatedList = existingList.filter(
+        (p) => p.guid !== leavingUid,
+      );
+      return {
+        ...state,
+        presentationParticipantsList: {
+          ...(typeof state.presentationParticipantsList === "object" &&
+          !Array.isArray(state.presentationParticipantsList)
+            ? state.presentationParticipantsList
+            : {}),
+          participantList: updatedList,
+        },
       };
     }
 

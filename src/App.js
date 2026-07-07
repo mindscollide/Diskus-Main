@@ -41,83 +41,166 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Notification } from "./components/elements";
+import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
+import { getHomeRoute } from "./commen/functions/utils";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
-import { showMessage } from "./components/elements/snack_bar/utill";
+import useSnackbar from "./components/elements/snack_bar/useSnackbar";
 import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
-import { useTranslation } from "react-i18next";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
-  const { t } = useTranslation();
+
   useEffect(() => {
-    const syncSessionAndRedirect = async () => {
-      const localToken = localStorage.getItem("token");
-      const localUser = localStorage.getItem("userID");
-      const sessionToken = sessionStorage.getItem("token");
-      const sessionUser = sessionStorage.getItem("userID");
-      const isAlreadyInDashboard =
-        window.location.pathname
-          .toLowerCase()
-          .includes("Diskus".toLowerCase()) ||
-        window.location.pathname.toLowerCase().includes("Admin".toLowerCase());
+    // 🔥 Check if this is a redirect-induced reload
+    const isRedirectReload = sessionStorage.getItem("redirecting") === "true";
 
-      // Step 1: Sync sessionStorage if different from localStorage
-      if (localToken && localUser && localUser !== "") {
-        if (
-          (sessionToken !== localToken || sessionUser !== localUser) &&
-          isAlreadyInDashboard
-        ) {
-          sessionStorage.setItem("token", localToken);
-          sessionStorage.setItem("userID", localUser);
-          window.location.reload(); // reload to reflect new user session
-          return;
+    // 🔥 If this is a redirect reload, clear the flag and stop
+    if (isRedirectReload) {
+      console.log("Clearing redirect flag after reload");
+      sessionStorage.removeItem("redirecting");
+      return; // Don't run any more logic
+    }
+
+    // 🔥 Check if we've already handled redirect in this session
+    if (sessionStorage.getItem("redirectHandled") === "true") {
+      console.log("Redirect already handled in this session - skipping");
+      return;
+    }
+
+    const PUBLIC_PATHS = ["/", "/login", "/signup", "/forgot-password"];
+
+    const isPublicPath = (pathname) => {
+      return PUBLIC_PATHS.some(
+        (path) =>
+          pathname.toLowerCase() === path ||
+          pathname.toLowerCase().startsWith(path),
+      );
+    };
+
+    const isDashboardPath = (pathname) => {
+      return (
+        pathname.toLowerCase().includes("diskus") ||
+        pathname.toLowerCase().includes("admin")
+      );
+    };
+
+    const shouldRedirect = () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userID");
+        const is2FaEnabled = localStorage.getItem("is2FAEnabled");
+        const currentPath = window.location.pathname;
+
+        const isAuthenticated = token && userId && userId !== "";
+
+        // If on dashboard, no redirect needed
+        if (isDashboardPath(currentPath)) {
+          sessionStorage.setItem("redirectHandled", "true");
+          return false;
         }
-      }
 
-      // Step 2: Redirect to dashboard if token exists but not on dashboard
-      if (!isAlreadyInDashboard && localToken && localUser) {
-        window.location.replace("/Diskus/");
+        // Only redirect if authenticated AND on public page
+        return isAuthenticated && isPublicPath(currentPath);
+      } catch (error) {
+        console.error("Error checking redirect:", error);
+        return false;
       }
     };
 
-    // Run on initial load
-    // syncSessionAndRedirect();
+    // 🔥 Perform redirect with loop protection
+    const performRedirect = () => {
+      if (shouldRedirect()) {
+        console.log("Redirecting to dashboard");
 
-    // Listen for tab visibility changes
+        // 🔥 Set flags to prevent loop
+        sessionStorage.setItem("redirectHandled", "true");
+        sessionStorage.setItem("redirecting", "true"); // Flag for the reload
+
+        window.location.replace(getHomeRoute());
+        return true;
+      }
+      return false;
+    };
+
+    // 🔥 Run initial redirect check
+    const redirected = performRedirect();
+
+    // 🔥 If redirect happened, no need for listeners
+    if (redirected) {
+      return;
+    }
+
+    // 🔥 Mark as handled if no redirect needed
+    sessionStorage.setItem("redirectHandled", "true");
+
+    // 🔥 Silent sync function (NO reload)
+    const syncSessionStorage = () => {
+      try {
+        const localToken = localStorage.getItem("token");
+        const localUser = localStorage.getItem("userID");
+
+        if (localToken && localUser) {
+          if (sessionStorage.getItem("token") !== localToken) {
+            sessionStorage.setItem("token", localToken);
+          }
+          if (sessionStorage.getItem("userID") !== localUser) {
+            sessionStorage.setItem("userID", localUser);
+          }
+        }
+      } catch (error) {
+        console.error("Error syncing session:", error);
+      }
+    };
+
+    // 🔥 Listen for tab visibility - ONLY sync, NO redirect
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        syncSessionAndRedirect();
+        syncSessionStorage();
+      }
+    };
+
+    // 🔥 Listen for cross-tab login
+    const handleStorageChange = (event) => {
+      if (
+        event.key === "token" ||
+        event.key === "userID" ||
+        event.key === "is2FAEnabled"
+      ) {
+        // Check if we should redirect (user logged in on another tab)
+        if (shouldRedirect()) {
+          console.log("User logged in on another tab - redirecting");
+          sessionStorage.setItem("redirectHandled", "true");
+          sessionStorage.setItem("redirecting", "true");
+          window.location.replace(getHomeRoute());
+        }
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("storage", handleStorageChange);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
   const { paymentProcessModal } = useSelector(
-    (state) => state.UserManagementModals
+    (state) => state.UserManagementModals,
   );
 
   // Detect mobile device function
@@ -209,18 +292,6 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, [currentVersion]);
 
-  useEffect(() => {
-    if (
-      SessionExpireResponseMessage !== null &&
-      SessionExpireResponseMessage !== undefined &&
-      SessionExpireResponseMessage !== ""
-    ) {
-      try {
-        showMessage(SessionExpireResponseMessage, "error", setOpen);
-      } catch (error) {}
-    }
-  }, [SessionExpireResponseMessage]);
-
   return (
     <>
       {/* Define your routes here */}
@@ -236,7 +307,8 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <GlobalSnackbar />
+      {SnackBar}
     </>
   );
 };

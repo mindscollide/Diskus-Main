@@ -33,7 +33,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../commen/functions/utils";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
@@ -64,11 +64,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const navigate = useNavigate();
 
   //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
   const [toDoDate, setToDoDate] = useState(current_value);
 
   //For Custom language datepicker
@@ -94,7 +90,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
 
@@ -126,7 +122,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     name: "",
   });
 
-  console.log(presenterValue, "presenterValuepresenterValue");
+  
 
   //To Set task Creater ID
   useEffect(() => {
@@ -195,7 +191,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     var valueCheck = value.replace(/^\s/g, "");
     if (name === "Title") {
       if (valueCheck.length > 199) {
-        showMessage(t("Title-limit-is-200"), "error", setOpen);
+        notify(t("Title-limit-is-200"), "error");
       } else {
         setTask({
           ...task,
@@ -209,7 +205,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
     } else if (name === "Description") {
       if (valueCheck.length > 2000) {
-        showMessage(t("Description-limit-is-2000"), "error", setOpen);
+        notify(t("Description-limit-is-2000"), "error");
       } else {
         setTask({
           ...task,
@@ -229,7 +225,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      notify(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -244,15 +240,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-than-1-5GB"),
-          "error",
-          setOpen
-        );
+        notify(t("File-size-should-not-be-greater-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        notify(t("File-size-should-not-be-zero"), "error");
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        notify(t("File-already-exists"), "error");
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -366,7 +358,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setAllPresenters(sortedAssigners);
       }
     } catch (error) {
-      console.error("Error in group useEffect:", error);
+      
     }
   }, [GroupsReducergetGroupByGroupIdResponse]);
 
@@ -395,7 +387,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
     // Step 2: Validate and process task creation date and time
     if (!task.creationDate) {
-      showMessage(t("Creation date is required"), "error", setOpen); // Validate task creation date
+      notify(t("Creation date is required"), "error"); // Validate task creation date
       return;
     }
 
@@ -410,11 +402,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
     // Step 3: Validate task properties
     if (!task.Title || task.Title.trim() === "") {
-      showMessage(t("Please-select-a-title-for-the-task"), "error", setOpen); // Validate task title
+      notify(t("Please-select-a-title-for-the-task"), "error"); // Validate task title
       return;
     }
     if (!newDate) {
-      showMessage(t("Deadline-date-is-required"), "error", setOpen); // Validate deadline date
+      notify(t("Deadline-date-is-required"), "error"); // Validate deadline date
       return;
     }
     // Step 4: Construct the task object
@@ -456,9 +448,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         );
       }
 
-      console.log(newFolder, "newFoldernewFoldernewFolder");
+      
       let newAttachmentData = newFolder.map((data, index) => {
-        console.log(data, "newFoldernewFoldernewFolder");
+        
         return {
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.pK_FileID.toString(),
@@ -479,7 +471,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 3, setShow)
       );
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 
@@ -536,7 +528,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Selecter Assignee onChange
   const onChangeSearch = (item) => {
-    console.log(item, "itemitemitem");
+    
     setPresenterValue(item);
     setTaskAssignedTo([item.value]);
   };
@@ -810,7 +802,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   GetAllVotingMethods: null,
   GetAllResolutionStatus: null,
   GetResolutions: null,
@@ -49,6 +50,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: true,
         UploadDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPLOAD_RESOLUTION_DOCUMENTS_FAIL: {
@@ -57,6 +59,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         UploadDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVE_RESOLUTION_DOCUMENTS_INIT: {
@@ -73,6 +76,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         SaveDocumentsIDs: [...state.SaveDocumentsIDs, action.response],
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_RESOLUTION_DOCUMENTS_FAIL: {
@@ -81,6 +85,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         SaveDocumentsIDs: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATERESOLUTIONDATAROOMMAP_INIT: {
@@ -95,6 +100,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         updateResolutionDataroom: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATERESOLUTIONDATAROOMMAP_FAIL: {
@@ -103,6 +109,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         updateResolutionDataroom: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SAVERESOLUTIONDOCUMENTS_INIT: {
@@ -117,6 +124,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         saveResolutionDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVERESOLUTIONDOCUMENTS_FAIL: {
@@ -125,6 +133,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         saveResolutionDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CANCELLED_RESOLUTION_MQTT: {
@@ -169,6 +178,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: action.loader,
         ResponseMessage: action.message,
         GetAllVotingMethods: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALL_VOTING_METHOD_FAIL: {
@@ -177,6 +187,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         GetAllVotingMethods: null,
+        errorSeverity: "error",
       };
     }
     case actions.GET_ALL_RESOLUTION_STATUS_INIT: {
@@ -191,6 +202,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: action.loader,
         GetAllResolutionStatus: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALL_RESOLUTION_STATUS_FAIL: {
@@ -199,6 +211,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         GetAllResolutionStatus: null,
+        errorSeverity: "error",
       };
     }
     case actions.GET_RESOLUTIONS_INIT: {
@@ -213,6 +226,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         GetResolutions: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_RESOLUTIONS_FAIL: {
@@ -221,6 +235,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         GetResolutions: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SCHEDULE_RESOLUTION_INIT: {
@@ -235,6 +250,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         ScheduleResolution: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.SCHEDULE_RESOLUTION_FAIL: {
@@ -243,6 +259,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         ScheduleResolution: null,
+        errorSeverity: "error",
       };
     }
     case actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT: {
@@ -257,6 +274,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         UpdateResolution: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.ADD_UPDATE_DETAILS_RESOLUTION_FAIL: {
@@ -265,6 +283,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         UpdateResolution: null,
+        errorSeverity: "error",
       };
     }
     case actions.GET_VOTESDETAILSBYID_INIT: {
@@ -279,6 +298,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getVoteDetailsByID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_VOTESDETAILSBYID_FAIL: {
@@ -287,6 +307,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getVoteDetailsByID: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GET_RESOLUTION_RESULTS_DETAILS_INIT: {
@@ -301,6 +322,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getResolutionResult: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_RESOLUTION_RESULTS_DETAILS_FAIL: {
@@ -309,6 +331,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getResolutionResult: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -324,6 +347,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getResolutionbyID: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_RESOLUTION_BY_RESOLUTION_ID_FAIL: {
@@ -332,6 +356,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getResolutionbyID: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CANCEL_RESOLUTION_INIT: {
@@ -346,6 +371,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         cancelResolutionResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CANCEL_RESOLUTION_FAIL: {
@@ -354,6 +380,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         cancelResolutionResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLOSE_RESOLUTION_INIT: {
@@ -368,6 +395,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         closeResolutionResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CLOSE_RESOLUTION_FAIL: {
@@ -376,6 +404,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         closeResolutionResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.UPDATE_VOTE_INIT: {
@@ -390,6 +419,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         updateVoteResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATE_VOTE_FAIL: {
@@ -398,12 +428,14 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         updateVoteResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CLEAR_RESPONSEMESSAGE_RESOLUTION: {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
     case actions.SEARCH_VOTERRESOLUTION_INIT: {
@@ -418,6 +450,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         searchVoterResolution: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SEARCH_VOTERRESOLUTION_FAIL: {
@@ -426,6 +459,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         searchVoterResolution: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.CREATE_RESOLUTION_MODAL: {
@@ -477,6 +511,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: true,
         emailEncryptedStringValidate: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_FAIL: {
@@ -485,6 +520,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: true,
         emailEncryptedStringValidate: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.RESOLUTION_EMAIL_ROUTE: {
@@ -505,6 +541,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getAllCommitteesAndGroups: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL: {
@@ -513,6 +550,7 @@ const ResolutionReducer = (state = initialState, action) => {
         Loading: false,
         getAllCommitteesAndGroups: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.RESOULUTION_VOTE_COUNTER: {

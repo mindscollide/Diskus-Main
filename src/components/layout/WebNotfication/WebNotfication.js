@@ -95,7 +95,7 @@ const WebNotfication = ({
   const location = useLocation();
   const currentURL = window.location.href;
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
-  console.log(polls, "PayLoadDataPayLoadData");
+
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -106,19 +106,19 @@ const WebNotfication = ({
 
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
-    (state) => state.settingReducer.NotificationSpinner
+    (state) => state.settingReducer.NotificationSpinner,
   );
 
   //Global Data State
   const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
-    (state) => state.settingReducer.realTimeNotificationCountGlobalData
+    (state) => state.settingReducer.realTimeNotificationCountGlobalData,
   );
 
   //Extracting Current Meeting Status
   const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
+    (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
-  console.log(CurrentMeetingStatus, "CurrentMeetingStatus");
+
   //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
@@ -142,8 +142,8 @@ const WebNotfication = ({
             t,
             data,
             setUnReadCountNotification,
-            setwebNotificationData
-          )
+            setwebNotificationData,
+          ),
         );
       }
     };
@@ -158,7 +158,7 @@ const WebNotfication = ({
       ) {
         // Iterate over each notification object in the array
         const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
-          (notification) => notification.notificationData
+          (notification) => notification.notificationData,
         );
 
         // Prepending the new notifications to the state while ensuring uniqueness
@@ -168,15 +168,13 @@ const WebNotfication = ({
               !prevData.some(
                 (existingNotification) =>
                   existingNotification.notificationID ===
-                  newNotification.notificationID
-              )
+                  newNotification.notificationID,
+              ),
           );
           return [...newData, ...prevData]; // Add new unique notifications to the front of the list
         });
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
@@ -185,8 +183,8 @@ const WebNotfication = ({
       if (Object.keys(webNotificationData).length > 0) {
         const uniqueNotifications = Array.from(
           new Map(
-            webNotificationData.map((item) => [item.notificationID, item])
-          ).values()
+            webNotificationData.map((item) => [item.notificationID, item]),
+          ).values(),
         );
 
         const groupNotificationsData = uniqueNotifications.reduce(
@@ -199,20 +197,18 @@ const WebNotfication = ({
             }
             return acc;
           },
-          { today: [], previous: [] }
+          { today: [], previous: [] },
         );
         setGroupedNotifications(groupNotificationsData);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }, [webNotificationData, todayDate]);
 
   //Handle Click Notification
   const HandleClickNotfication = async (NotificationData) => {
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
-    console.log({ PayLoadData, NotificationData }, "PayLoadDataPayLoadData");
+
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
     try {
@@ -223,360 +219,365 @@ const WebNotfication = ({
         return;
       }
       if (isMeeting) {
-        //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
-        if (
-          polls &&
-          PayLoadData.MeetingID ===
-            Number(localStorage.getItem("currentMeetingID"))
-        ) {
-          let data = {
-            PollID: Number(PayLoadData.PollID),
-            UserID: Number(localStorage.getItem("userID")),
-          };
-          dispatch(
-            getPollByPollIdforMeeting(
-              navigate,
-              data,
-              2,
-              t,
-              setEditPolls,
-              setvotePolls,
-              setUnPublished,
-              setViewPublishedPoll
-            )
-          );
-        } else if (!polls) {
-          setMeetingMaterial(false);
-          setAgendaContributors(false);
-          setorganizers(false);
-          setmeetingDetails(false);
-          setMinutes(false);
-          setAttendance(false);
-          setAgenda(false);
-          setParticipants(false);
-          setAttendees(false);
-          setRecording(false);
-          setactionsPage(false);
-          setPolls(true);
-          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
-          localStorage.setItem("AdvanceMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationAdvanceMeetingID",
-            PayLoadData.MeetingID
-          );
-          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-          //set Local storage flag for identification for polls
-          localStorage.setItem("viewadvanceMeetingPolls", true);
-        } else {
-          await dispatch(
-            webNotificationDataLeaveVideoIntiminationModal(NotificationData)
-          );
-          localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
-          await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-        }
+        // COMMENTED: All meeting-related logic
+        // if (
+        //   polls &&
+        //   PayLoadData.MeetingID ===
+        //     Number(localStorage.getItem("currentMeetingID"))
+        // ) {
+        //   let data = {
+        //     PollID: Number(PayLoadData.PollID),
+        //     UserID: Number(localStorage.getItem("userID")),
+        //   };
+        //   dispatch(
+        //     getPollByPollIdforMeeting(
+        //       navigate,
+        //       data,
+        //       2,
+        //       t,
+        //       setEditPolls,
+        //       setvotePolls,
+        //       setUnPublished,
+        //       setViewPublishedPoll,
+        //     ),
+        //   );
+        // } else if (!polls) {
+        //   setMeetingMaterial(false);
+        //   setAgendaContributors(false);
+        //   setorganizers(false);
+        //   setmeetingDetails(false);
+        //   setMinutes(false);
+        //   setAttendance(false);
+        //   setAgenda(false);
+        //   setParticipants(false);
+        //   setAttendees(false);
+        //   setRecording(false);
+        //   setactionsPage(false);
+        //   setPolls(true);
+        //   localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+        //   localStorage.setItem("AdvanceMeetingOperations", true);
+        //   localStorage.setItem(
+        //     "NotificationAdvanceMeetingID",
+        //     PayLoadData.MeetingID,
+        //   );
+        //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+        //   //set Local storage flag for identification for polls
+        //   localStorage.setItem("viewadvanceMeetingPolls", true);
+        // } else {
+        //   await dispatch(
+        //     webNotificationDataLeaveVideoIntiminationModal(NotificationData),
+        //   );
+        //   localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
+        //   await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+        // }
+        return;
       } else {
         if (NotificationData.notificationActionID === 1) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            //If you already on the Meeting Page
-            if (PayLoadData.IsQuickMeeting === true) {
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          } else {
-            //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            } else {
-              //Advance Meeting
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   //If you already on the Meeting Page
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   } else {
+          //     //Advance Meeting
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 2) {
-          // Check if the current URL contains the target path
-          if (currentURL.includes("/Diskus/Meeting")) {
-            //If you already on the Meeting Page
-            if (PayLoadData.IsQuickMeeting === true) {
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  4,
-                  setVideoTalk,
-                  setViewFlag
-                )
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal
-                )
-              );
-            }
-          } else {
-            //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole)
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   //If you already on the Meeting Page
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         4,
+          //         setVideoTalk,
+          //         setViewFlag,
+          //       ),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 3) {
-          //If you already on the Meeting Page
-          // Check if the current URL contains the target path
-          if (currentURL.includes("/Diskus/Meeting")) {
-            if (PayLoadData.IsQuickMeeting === true) {
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  false,
-                  false,
-                  false,
-                  4,
-                  false,
-                  setViewFlag
-                )
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1,
-                  setVideoTalk
-                )
-              );
-            }
-          } else {
-            //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  false,
-                  false,
-                  false,
-                  4,
-                  false,
-                  setViewFlag
-                )
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem(
-                "QuickMeetingCheckNotification",
-                PayLoadData.IsQuickMeeting
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  false,
-                  false,
-                  1,
-                  setVideoTalk
-                )
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         false,
+          //         false,
+          //         false,
+          //         4,
+          //         false,
+          //         setViewFlag,
+          //       ),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //         setVideoTalk,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         false,
+          //         false,
+          //         false,
+          //         4,
+          //         false,
+          //         setViewFlag,
+          //       ),
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem(
+          //       "QuickMeetingCheckNotification",
+          //       PayLoadData.IsQuickMeeting,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         false,
+          //         false,
+          //         1,
+          //         setVideoTalk,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 4) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            if (PayLoadData.IsQuickMeeting === true) {
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal
-                )
-              );
-            }
-          } else {
-            if (PayLoadData.IsQuickMeeting === true) {
-              //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole)
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 5) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            return; // Perform no action if the URL matches
-          } else {
-            //Notification if the Meeting is cancelled and is only applicable for Quick meet not advanced
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   return; // Perform no action if the URL matches
+          // } else {
+          //   //Notification if the Meeting is cancelled and is only applicable for Quick meet not advanced
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 6) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            return; // Perform no action if the URL matches
-          } else {
-            //Notification For being removed from  Meeting
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-            } else {
-              navigate("/Diskus/Meeting");
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   return; // Perform no action if the URL matches
+          // } else {
+          //   //Notification For being removed from  Meeting
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 7) {
           if (currentURL.includes("/Diskus/Minutes")) {
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           } else {
             //Notification for being added as a minute reviewer
@@ -585,11 +586,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 8) {
@@ -600,355 +609,361 @@ const WebNotfication = ({
             navigate("/Diskus/Minutes");
           }
         } else if (NotificationData.notificationActionID === 9) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            if (PayLoadData.IsQuickMeeting === true) {
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          } else {
-            //Notification For Added as An Participant
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   //Notification For Added as An Participant
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 10) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            if (PayLoadData.IsQuickMeeting === true) {
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          } else {
-            //Notification For Added as An Organizer
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   //Notification For Added as An Organizer
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 11) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            if (PayLoadData.IsQuickMeeting === true) {
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
-              );
-            } else {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              setAdvanceMeetingModalID(PayLoadData.MeetingID);
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          } else {
-            //Notification For Added as An Agenda Contributor
-            if (PayLoadData.IsQuickMeeting === true) {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem("QuicMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationQuickMeetingID",
-                PayLoadData.MeetingID
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              setAdvanceMeetingModalID(PayLoadData.MeetingID);
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1
-                )
-              );
-            }
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6),
+          //     );
+          //   } else {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // } else {
+          //   //Notification For Added as An Agenda Contributor
+          //   if (PayLoadData.IsQuickMeeting === true) {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("QuicMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationQuickMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 12) {
-          //Notification for POlls Created from the Meeting
-          if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("AdvanceMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-            localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
-            //set Local storage flag for identification for polls
-            localStorage.setItem("viewadvanceMeetingPolls", true);
-            setAdvanceMeetingModalID(PayLoadData.MeetingID);
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                true,
-                setViewAdvanceMeetingModal,
-                1,
-                setVideoTalk
-              )
-            );
-          } else {
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
-            localStorage.setItem("AdvanceMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-            //set Local storage flag for identification for polls
-            localStorage.setItem("viewadvanceMeetingPolls", true);
-            setAdvanceMeetingModalID(PayLoadData.MeetingID);
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                false,
-                false,
-                1,
-                setVideoTalk
-              )
-            );
-          }
+          // //Notification for POlls Created from the Meeting
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   localStorage.setItem("AdvanceMeetingOperations", true);
+          //   localStorage.setItem(
+          //     "NotificationAdvanceMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //   localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+          //   //set Local storage flag for identification for polls
+          //   localStorage.setItem("viewadvanceMeetingPolls", true);
+          //   setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       true,
+          //       setViewAdvanceMeetingModal,
+          //       1,
+          //       setVideoTalk,
+          //     ),
+          //   );
+          // } else {
+          //   navigate("/Diskus/Meeting");
+          //   localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+          //   localStorage.setItem("AdvanceMeetingOperations", true);
+          //   localStorage.setItem(
+          //     "NotificationAdvanceMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //   //set Local storage flag for identification for polls
+          //   localStorage.setItem("viewadvanceMeetingPolls", true);
+          //   setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       false,
+          //       false,
+          //       1,
+          //       setVideoTalk,
+          //     ),
+          //   );
+          // }
         } else if (NotificationData.notificationActionID === 13) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
-            localStorage.setItem("ProposedMeetingOperations", true);
-            //Before Date Selection Check
-            localStorage.setItem("BeforeProposedDateSelectedCheck", true);
-            localStorage.setItem(
-              "NotificationClickMeetingID",
-              PayLoadData.MeetingID
-            );
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-            setViewProposeDatePoll(true);
-            dispatch(proposedMeetingDatesGlobalFlag(true));
-            dispatch(viewProposeDateMeetingPageFlag(true));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          } else {
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
-            //Notification For Proposed Meeting Request
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("ProposedMeetingOperations", true);
-            //Before Date Selection Check
-            localStorage.setItem("BeforeProposedDateSelectedCheck", true);
-            localStorage.setItem(
-              "NotificationClickMeetingID",
-              PayLoadData.MeetingID
-            );
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+          //   localStorage.setItem("ProposedMeetingOperations", true);
+          //   //Before Date Selection Check
+          //   localStorage.setItem("BeforeProposedDateSelectedCheck", true);
+          //   localStorage.setItem(
+          //     "NotificationClickMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   // dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          //   setViewProposeDatePoll(true);
+          //   dispatch(proposedMeetingDatesGlobalFlag(true));
+          //   dispatch(viewProposeDateMeetingPageFlag(true));
+          //   // dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          // } else {
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+          //   //Notification For Proposed Meeting Request
+          //   navigate("/Diskus/Meeting");
+          //   localStorage.setItem("ProposedMeetingOperations", true);
+          //   //Before Date Selection Check
+          //   localStorage.setItem("BeforeProposedDateSelectedCheck", true);
+          //   localStorage.setItem(
+          //     "NotificationClickMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          // }
         } else if (NotificationData.notificationActionID === 14) {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("ProposedMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationClickMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem(
-              "NotificationClickSendResponseByDate",
-              PayLoadData.DeadlineDate
-            );
-            //Here i will apply that if polls are not expired i will redirect it to the voting page
-            // Get the current date in "YYYYMMDD" format
-            const currentDate = new Date();
-            const formattedCurrentDate = `${currentDate.getFullYear()}${String(
-              currentDate.getMonth() + 1
-            ).padStart(2, "0")}${String(currentDate.getDate()).padStart(
-              2,
-              "0"
-            )}`;
-
-            // Compare stored date with the current date
-            if (PayLoadData.DeadlineDate <= formattedCurrentDate) {
-              dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-              setViewProposeDatePoll(true);
-              dispatch(proposedMeetingDatesGlobalFlag(true));
-              dispatch(viewProposeDateMeetingPageFlag(true));
-              dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            } else {
-              //Other wise Move to Proposed meeting listing page
-              dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-              setViewProposeDatePoll(false);
-              dispatch(proposedMeetingDatesGlobalFlag(false));
-              dispatch(viewProposeDateMeetingPageFlag(false));
-              //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
-              localStorage.removeItem(
-                "ProposedMeetOperationsDateSelectedSendResponseByDate"
-              );
-            }
-          } else {
-            //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("ProposedMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationClickMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem(
-              "NotificationClickSendResponseByDate",
-              PayLoadData.DeadlineDate
-            );
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   localStorage.setItem("ProposedMeetingOperations", true);
+          //   localStorage.setItem(
+          //     "NotificationClickMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   localStorage.setItem(
+          //     "NotificationClickSendResponseByDate",
+          //     PayLoadData.DeadlineDate,
+          //   );
+          //   //Here i will apply that if polls are not expired i will redirect it to the voting page
+          //   // Get the current date in "YYYYMMDD" format
+          //   const currentDate = new Date();
+          //   const formattedCurrentDate = `${currentDate.getFullYear()}${String(
+          //     currentDate.getMonth() + 1,
+          //   ).padStart(2, "0")}${String(currentDate.getDate()).padStart(
+          //     2,
+          //     "0",
+          //   )}`;
+          //
+          //   // Compare stored date with the current date
+          //   if (PayLoadData.DeadlineDate <= formattedCurrentDate) {
+          //     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          //     setViewProposeDatePoll(true);
+          //     dispatch(proposedMeetingDatesGlobalFlag(true));
+          //     dispatch(viewProposeDateMeetingPageFlag(true));
+          //     dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          //   } else {
+          //     //Other wise Move to Proposed meeting listing page
+          //     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          //     setViewProposeDatePoll(false);
+          //     dispatch(proposedMeetingDatesGlobalFlag(false));
+          //     dispatch(viewProposeDateMeetingPageFlag(false));
+          //     //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
+          //     localStorage.removeItem(
+          //       "ProposedMeetOperationsDateSelectedSendResponseByDate",
+          //     );
+          //   }
+          // } else {
+          //   //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
+          //   navigate("/Diskus/Meeting");
+          //   localStorage.setItem("ProposedMeetingOperations", true);
+          //   localStorage.setItem(
+          //     "NotificationClickMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   localStorage.setItem(
+          //     "NotificationClickSendResponseByDate",
+          //     PayLoadData.DeadlineDate,
+          //   );
+          // }
         } else if (NotificationData.notificationActionID === 15) {
-          //Notification that Proposed Meeting Date Organizer work
-          if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("ProposedMeetingOrganizer", true);
-            localStorage.setItem(
-              "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
-            );
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                false,
-                false,
-                2,
-                setVideoTalk
-              )
-            );
-          } else {
-            //Call Status API to see what is the status of the meeting eighter proposed or published
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("ProposedMeetingOrganizer", true);
-            localStorage.setItem(
-              "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
-            );
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
-          }
+          // //Notification that Proposed Meeting Date Organizer work
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       true,
+          //       setViewAdvanceMeetingModal,
+          //       2,
+          //       setVideoTalk,
+          //       setAdvanceMeetingModalID,
+          //     ),
+          //   );
+          //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          // } else {
+          //   //Call Status API to see what is the status of the meeting eighter proposed or published
+          //   navigate("/Diskus/Meeting");
+          //   // localStorage.setItem("ProposedMeetingOrganizer", true);
+          //   // localStorage.setItem(
+          //   //   "ProposedMeetingOrganizerMeetingID",
+          //   //   PayLoadData.MeetingID,
+          //   // );
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       true,
+          //       setViewAdvanceMeetingModal,
+          //       2,
+          //       setVideoTalk,
+          //       setAdvanceMeetingModalID,
+          //     ),
+          //   );
+          // }
         } else if (NotificationData.notificationActionID === 16) {
           if (currentURL.includes("/Diskus/groups")) {
             localStorage.setItem("AccessDeniedGroups", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             //Here we will be calling the api to cover the scenario that the user dose not belong to this group
             dispatch(
@@ -959,8 +974,8 @@ const WebNotfication = ({
                 false,
                 false,
                 4,
-                false
-              )
+                false,
+              ),
             );
           } else {
             //Notificaiton For Added in Group
@@ -968,7 +983,7 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedGroups", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             dispatch(
               getbyGroupID(
@@ -978,8 +993,8 @@ const WebNotfication = ({
                 false,
                 false,
                 4,
-                false
-              )
+                false,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 17) {
@@ -1004,7 +1019,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             // For Notification Added in the Group
             setViewGroupPage(true);
@@ -1016,7 +1031,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
           }
         } else if (NotificationData.notificationActionID === 20) {
@@ -1024,7 +1039,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             // For Notification Added in the Group
             setViewGroupPage(true);
@@ -1036,7 +1051,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
           }
         } else if (NotificationData.notificationActionID === 21) {
@@ -1044,11 +1059,11 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedCommittee", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
             let OrganizationID = JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             );
             let Data = {
               CommitteeID: JSON.parse(PayLoadData.CommitteeID),
@@ -1063,8 +1078,8 @@ const WebNotfication = ({
                 false,
                 false,
                 false,
-                1
-              )
+                1,
+              ),
             );
           } else {
             //Notification for being Added in the Committee
@@ -1072,11 +1087,11 @@ const WebNotfication = ({
             localStorage.setItem("AccessDeniedCommittee", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
             let OrganizationID = JSON.parse(
-              localStorage.getItem("organizationID")
+              localStorage.getItem("organizationID"),
             );
             let Data = {
               CommitteeID: JSON.parse(PayLoadData.CommitteeID),
@@ -1091,8 +1106,8 @@ const WebNotfication = ({
                 false,
                 false,
                 false,
-                1
-              )
+                1,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 22) {
@@ -1116,7 +1131,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             setViewGroupPage(true);
             dispatch(viewCommitteePageFlag(true));
@@ -1126,7 +1141,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
           }
         } else if (NotificationData.notificationActionID === 25) {
@@ -1134,7 +1149,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             setViewGroupPage(true);
             dispatch(viewCommitteePageFlag(true));
@@ -1144,7 +1159,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
           }
         } else if (NotificationData.notificationActionID === 26) {
@@ -1155,8 +1170,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           } else {
             //Notification for Added as Voter in the resolution
@@ -1167,8 +1182,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 27) {
@@ -1179,8 +1194,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           } else {
             //Notification for Added as Non-Voter in the resolution
@@ -1191,8 +1206,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.ResolutionID),
                 t,
-                2
-              )
+                2,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 28) {
@@ -1248,8 +1263,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           } else {
             //Notification For Being File shared to you as viewer
@@ -1264,8 +1279,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 34) {
@@ -1284,8 +1299,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           } else {
             //Notification For Being File shared to you as Editor
@@ -1299,8 +1314,8 @@ const WebNotfication = ({
                 t,
                 Data,
                 Number(PayLoadData.FileID),
-                PayLoadData.FileName
-              )
+                PayLoadData.FileName,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 35) {
@@ -1310,18 +1325,18 @@ const WebNotfication = ({
               .includes("/Diskus/dataroom".toLowerCase())
           ) {
             dispatch(
-              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t),
             );
           } else {
             //Notification for sharing folder as a viewer
             navigate("/Diskus/dataroom");
             localStorage.setItem(
               "DataRoomOperationsForFolderViewerRights",
-              true
+              true,
             );
             localStorage.setItem(
               "NotificationClickFolderID",
-              PayLoadData.FolderID
+              PayLoadData.FolderID,
             );
           }
         } else if (NotificationData.notificationActionID === 36) {
@@ -1331,18 +1346,18 @@ const WebNotfication = ({
               .includes("/Diskus/dataroom".toLowerCase())
           ) {
             dispatch(
-              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+              getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t),
             );
           } else {
             //Notification for sharing folder as a Editor
             navigate("/Diskus/dataroom");
             localStorage.setItem(
               "DataRoomOperationsForFolderViewerRights",
-              true
+              true,
             );
             localStorage.setItem(
               "NotificationClickFolderID",
-              PayLoadData.FolderID
+              PayLoadData.FolderID,
             );
           }
         } else if (NotificationData.notificationActionID === 37) {
@@ -1378,11 +1393,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           } else {
             //Notification for being added as a minute reviewer
@@ -1391,11 +1414,19 @@ const WebNotfication = ({
             localStorage.setItem("MinutesOperations", true);
             localStorage.setItem(
               "NotificationClickMinutesMeetingID",
-              PayLoadData.MeetingID
+              PayLoadData.MeetingID,
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                3,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 42) {
@@ -1404,7 +1435,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
             // For Notification Added in the Group
             setViewGroupPage(true);
@@ -1416,7 +1447,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickAddedIntoGroup", true);
             localStorage.setItem(
               "NotifcationClickViewGroupID",
-              PayLoadData.GroupID
+              PayLoadData.GroupID,
             );
           }
         } else if (NotificationData.notificationActionID === 43) {
@@ -1425,7 +1456,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
             setViewGroupPage(true);
             dispatch(viewCommitteePageFlag(true));
@@ -1435,7 +1466,7 @@ const WebNotfication = ({
             localStorage.setItem("NotificationClickCommitteeOperations", true);
             localStorage.setItem(
               "NotifcationClickViewCommitteeID",
-              PayLoadData.CommitteeID
+              PayLoadData.CommitteeID,
             );
           }
         } else if (NotificationData.notificationActionID === 44) {
@@ -1443,66 +1474,66 @@ const WebNotfication = ({
           navigate("/Diskus/resolution");
         } else if (NotificationData.notificationActionID === 45) {
           // if the poll has been deleted in the meeting
-          if (isMeeting && polls) {
-            return;
-          } else {
-            if (currentURL.includes("/Diskus/Meeting")) {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              localStorage.setItem(
-                "NotificationClickPollID",
-                PayLoadData.PollID
-              );
-              //set Local storage flag for identification for polls
-              localStorage.setItem("viewadvanceMeetingPolls", true);
-              setAdvanceMeetingModalID(PayLoadData.MeetingID);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1,
-                  setVideoTalk
-                )
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem(
-                "NotificationClickPollID",
-                PayLoadData.PollID
-              );
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              //set Local storage flag for identification for polls
-              localStorage.setItem("viewadvanceMeetingPolls", true);
-              setAdvanceMeetingModalID(PayLoadData.MeetingID);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  false,
-                  false,
-                  1,
-                  setVideoTalk
-                )
-              );
-            }
-          }
+          // if (isMeeting && polls) {
+          //   return;
+          // } else {
+          //   if (currentURL.includes("/Diskus/Meeting")) {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     localStorage.setItem(
+          //       "NotificationClickPollID",
+          //       PayLoadData.PollID,
+          //     );
+          //     //set Local storage flag for identification for polls
+          //     localStorage.setItem("viewadvanceMeetingPolls", true);
+          //     setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //         setVideoTalk,
+          //       ),
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem(
+          //       "NotificationClickPollID",
+          //       PayLoadData.PollID,
+          //     );
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     //set Local storage flag for identification for polls
+          //     localStorage.setItem("viewadvanceMeetingPolls", true);
+          //     setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         false,
+          //         false,
+          //         1,
+          //         setVideoTalk,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 46) {
           //For Voter Voted on His POll from main poll
           if (currentURL.includes("/Diskus/polling")) {
@@ -1524,150 +1555,149 @@ const WebNotfication = ({
           }
         } else if (NotificationData.notificationActionID === 47) {
           //For participant has Give Vote on a Poll inside advance meeting
-          if (isMeeting && polls) {
-            return;
-          } else {
-            if (currentURL.includes("/Diskus/Meeting")) {
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              localStorage.setItem(
-                "NotificationClickPollID",
-                PayLoadData.PollID
-              );
-              //set Local storage flag for identification for polls
-              localStorage.setItem("viewadvanceMeetingPolls", true);
-              setAdvanceMeetingModalID(PayLoadData.MeetingID);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  true,
-                  setViewAdvanceMeetingModal,
-                  1,
-                  setVideoTalk
-                )
-              );
-            } else {
-              navigate("/Diskus/Meeting");
-              localStorage.setItem(
-                "NotificationClickPollID",
-                PayLoadData.PollID
-              );
-              localStorage.setItem("AdvanceMeetingOperations", true);
-              localStorage.setItem(
-                "NotificationAdvanceMeetingID",
-                PayLoadData.MeetingID
-              );
-              localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-              //set Local storage flag for identification for polls
-              localStorage.setItem("viewadvanceMeetingPolls", true);
-              setAdvanceMeetingModalID(PayLoadData.MeetingID);
-              let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-              dispatch(
-                GetMeetingStatusDataAPI(
-                  navigate,
-                  t,
-                  Data,
-                  setEditorRole,
-                  false,
-                  false,
-                  1,
-                  setVideoTalk
-                )
-              );
-            }
-          }
+          // if (isMeeting && polls) {
+          //   return;
+          // } else {
+          //   if (currentURL.includes("/Diskus/Meeting")) {
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     localStorage.setItem(
+          //       "NotificationClickPollID",
+          //       PayLoadData.PollID,
+          //     );
+          //     //set Local storage flag for identification for polls
+          //     localStorage.setItem("viewadvanceMeetingPolls", true);
+          //     setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         true,
+          //         setViewAdvanceMeetingModal,
+          //         1,
+          //         setVideoTalk,
+          //       ),
+          //     );
+          //   } else {
+          //     navigate("/Diskus/Meeting");
+          //     localStorage.setItem(
+          //       "NotificationClickPollID",
+          //       PayLoadData.PollID,
+          //     );
+          //     localStorage.setItem("AdvanceMeetingOperations", true);
+          //     localStorage.setItem(
+          //       "NotificationAdvanceMeetingID",
+          //       PayLoadData.MeetingID,
+          //     );
+          //     localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //     //set Local storage flag for identification for polls
+          //     localStorage.setItem("viewadvanceMeetingPolls", true);
+          //     setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //     let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //     dispatch(
+          //       GetMeetingStatusDataAPI(
+          //         navigate,
+          //         t,
+          //         Data,
+          //         setEditorRole,
+          //         false,
+          //         false,
+          //         1,
+          //         setVideoTalk,
+          //       ),
+          //     );
+          //   }
+          // }
         } else if (NotificationData.notificationActionID === 48) {
           //Send Response Date Has been Passed
-
           //Notification that Proposed Meeting Date Organizer work
-          if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("ProposedMeetingOrganizer", true);
-            localStorage.setItem(
-              "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
-            );
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                false,
-                false,
-                2,
-                setVideoTalk
-              )
-            );
-          } else {
-            //Call Status API to see what is the status of the meeting eighter proposed or published
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("ProposedMeetingOrganizer", true);
-            localStorage.setItem(
-              "ProposedMeetingOrganizerMeetingID",
-              PayLoadData.MeetingID
-            );
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   localStorage.setItem("ProposedMeetingOrganizer", true);
+          //   localStorage.setItem(
+          //     "ProposedMeetingOrganizerMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       false,
+          //       false,
+          //       2,
+          //       setVideoTalk,
+          //     ),
+          //   );
+          // } else {
+          //   //Call Status API to see what is the status of the meeting eighter proposed or published
+          //   navigate("/Diskus/Meeting");
+          //   localStorage.setItem("ProposedMeetingOrganizer", true);
+          //   localStorage.setItem(
+          //     "ProposedMeetingOrganizerMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+          // }
         } else if (NotificationData.notificationActionID === 49) {
           //Assigned You a Task in the Meeting
-          if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("AdvanceMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem("viewadvanceMeetingTask", true);
-            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-            localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
-            setAdvanceMeetingModalID(PayLoadData.MeetingID);
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                true,
-                setViewAdvanceMeetingModal,
-                1,
-                setVideoTalk
-              )
-            );
-          } else {
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("AdvanceMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem("viewadvanceMeetingTask", true);
-            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-            localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
-            setAdvanceMeetingModalID(PayLoadData.MeetingID);
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                false,
-                false,
-                1,
-                setVideoTalk
-              )
-            );
-          }
+          // if (currentURL.includes("/Diskus/Meeting")) {
+          //   localStorage.setItem("AdvanceMeetingOperations", true);
+          //   localStorage.setItem(
+          //     "NotificationAdvanceMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   localStorage.setItem("viewadvanceMeetingTask", true);
+          //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //   localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
+          //   setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       true,
+          //       setViewAdvanceMeetingModal,
+          //       1,
+          //       setVideoTalk,
+          //     ),
+          //   );
+          // } else {
+          //   navigate("/Diskus/Meeting");
+          //   localStorage.setItem("AdvanceMeetingOperations", true);
+          //   localStorage.setItem(
+          //     "NotificationAdvanceMeetingID",
+          //     PayLoadData.MeetingID,
+          //   );
+          //   localStorage.setItem("viewadvanceMeetingTask", true);
+          //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //   localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
+          //   setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          //   dispatch(
+          //     GetMeetingStatusDataAPI(
+          //       navigate,
+          //       t,
+          //       Data,
+          //       setEditorRole,
+          //       false,
+          //       false,
+          //       1,
+          //       setVideoTalk,
+          //     ),
+          //   );
+          // }
         } else if (NotificationData.notificationActionID === 50) {
           // Voter Changes His Vote
           if (currentURL.includes("/Diskus/resolution")) {
@@ -1676,8 +1706,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.Resolution_ID),
                 t,
-                setResultresolution
-              )
+                setResultresolution,
+              ),
             );
           } else {
             //Notification for Added as Voter in the resolution
@@ -1687,8 +1717,8 @@ const WebNotfication = ({
                 navigate,
                 Number(PayLoadData.Resolution_ID),
                 t,
-                setResultresolution
-              )
+                setResultresolution,
+              ),
             );
           }
         } else if (NotificationData.notificationActionID === 51) {
@@ -1698,13 +1728,13 @@ const WebNotfication = ({
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   };
 
   return (
     <section className={styles["WebNotificationOuterBox"]}>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         {groupedNotifications.today.length > 0 && (
           <Col lg={12} md={12} sm={12}>
             <span className={styles["NotificationCategories"]}>
@@ -1726,16 +1756,14 @@ const WebNotfication = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center my-3"
-                  >
+                    className='d-flex justify-content-center my-3'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
             }
-            height="68vh"
-            style={{ overflowX: "hidden" }}
-          >
+            height='50vh'
+            style={{ overflowX: "hidden" }}>
             {/* Render "Today" Notifications */}
             {groupedNotifications.today.length > 0 &&
               groupedNotifications.today
@@ -1754,8 +1782,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}
-                  >
+                    onClick={() => HandleClickNotfication(data)}>
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1788,8 +1815,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}
-                  >
+                    onClick={() => HandleClickNotfication(data)}>
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1808,12 +1834,12 @@ const WebNotfication = ({
             {webNotificationData.length === 0 && (
               <Row>
                 <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
-                  <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                  <div className='d-flex flex-column flex-wrap justify-content-center align-items-center'>
                     <img
                       src={BellIconNotificationEmptyState}
-                      width="155.35px"
-                      height="111px"
-                      alt=""
+                      width='155.35px'
+                      height='111px'
+                      alt=''
                     />
                     <span className={styles["NotificationEmptyState"]}>
                       {t("You-have-no-notifications")}

@@ -25,7 +25,7 @@ export const replaceSlashWithBackslash = (inputString) => {
 // Validae URL regex
 export const urlPatternValidation = (URL) => {
   const regex = new RegExp(
-    "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
+    "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?",
   );
   return regex.test(URL);
 };
@@ -62,7 +62,6 @@ export const formatValue = (value, locale) => {
 };
 
 export const convertToArabicNumerals = (input) => {
-  console.log(input, "convertToArabicNumerals");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   // Check for null or undefined input
@@ -84,7 +83,7 @@ export const convertToArabicNumerals = (input) => {
     return paddedNumber
       .toString()
       .replace(/\d/g, (digit) =>
-        String.fromCharCode(0x0660 + parseInt(digit, 10))
+        String.fromCharCode(0x0660 + parseInt(digit, 10)),
       );
   }
 
@@ -96,9 +95,7 @@ export const convertToArabicNumerals = (input) => {
 export const convertNumbersInString = (inputString, locale) => {
   const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
   const englishDigits = "0123456789";
-  {
-    console.log("cancelSubscriptionDetails", inputString);
-  }
+ 
 
   // Ensure the input is a string
   const safeString = String(inputString);
@@ -110,19 +107,10 @@ export const convertNumbersInString = (inputString, locale) => {
     } else if (toLocale === "en") {
       return englishDigits[digit];
     }
-    {
-      console.log("cancelSubscriptionDetails", digit);
-    }
 
     return digit; // Return as is if locale not supported
   };
 
-  {
-    console.log(
-      "cancelSubscriptionDetails",
-      safeString.replace(/\d/g, (match) => convertDigit(match, locale))
-    );
-  }
   // Convert the entire string
   return safeString.replace(/\d/g, (match) => convertDigit(match, locale));
 };
@@ -151,7 +139,7 @@ export function filterHostData(data, guid) {
 export const removeParticipantByGuid = (data, guidToRemove) => {
   // Filter the data to exclude the object with the matching guid
   const updatedData = data.filter(
-    (participant) => participant.guid !== guidToRemove
+    (participant) => participant.guid !== guidToRemove,
   );
   return updatedData;
 };

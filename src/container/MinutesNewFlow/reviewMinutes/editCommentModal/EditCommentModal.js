@@ -29,7 +29,7 @@ const EditCommentModal = ({
   const updateRejectMinutesAgenda = (
     minutesData,
     updateData,
-    parentMinuteID
+    parentMinuteID,
   ) => {
     return minutesData.map((agenda) => {
       // Update main minuteData
@@ -80,7 +80,7 @@ const EditCommentModal = ({
                 };
               }
               return review;
-            }
+            },
           );
 
           return {
@@ -142,7 +142,7 @@ const EditCommentModal = ({
                   };
                 }
                 return review;
-              }
+              },
             );
 
             return {
@@ -168,7 +168,7 @@ const EditCommentModal = ({
   const updateCommentMinutesGeneral = (
     minutesData,
     updateData,
-    parentMinuteID
+    parentMinuteID,
   ) => {
     return minutesData.map((minute) => {
       if (minute.minuteID === parentMinuteID.minuteID) {
@@ -240,7 +240,7 @@ const EditCommentModal = ({
       const updatedMinutesData = updateCommentMinutesGeneral(
         minutesGeneral,
         editCommentLocal,
-        parentMinuteID
+        parentMinuteID,
       );
       setMinutesGeneral(updatedMinutesData);
       dispatch(editCommentModal(false));
@@ -248,7 +248,7 @@ const EditCommentModal = ({
       const updatedMinutesData = updateRejectMinutesAgenda(
         minutesAgenda,
         editCommentLocal,
-        parentMinuteID
+        parentMinuteID,
       );
       setMinutesAgenda(updatedMinutesData);
       dispatch(editCommentModal(false));
@@ -263,7 +263,7 @@ const EditCommentModal = ({
         setShow={dispatch(editCommentModal)} // Set show modal action
         modalFooterClassName={"d-block"} // CSS class for modal footer
         modalHeaderClassName={"d-block"} // CSS class for modal header
-        className="SelectAgendaModal" // Additional CSS class for modal
+        className='SelectAgendaModal' // Additional CSS class for modal
         onHide={() => {
           dispatch(editCommentModal(false)); // Hide modal action
         }}
@@ -272,7 +272,7 @@ const EditCommentModal = ({
           // Modal title section
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
+              <Col lg={12} md={12} sm={12} className='position-relative'>
                 {/* Title */}
                 <p className={styles["EditCommentTitle"]}>
                   {t("Edit-comment")} {/* Translation for title */}
@@ -282,7 +282,7 @@ const EditCommentModal = ({
                   onClick={() => dispatch(editCommentModal(false))} // Click handler for closing modal
                   className={styles["image-close"]} // CSS class for close icon
                   src={CrossIcon} // Image source
-                  alt="" // Image alt text
+                  alt='' // Image alt text
                 />
               </Col>
             </Row>
@@ -293,26 +293,27 @@ const EditCommentModal = ({
           <>
             {/* Text area for entering comment */}
             <TextArea
-              name="textField-RejectComment"
+              name='textField-RejectComment'
               className={styles["textField-RejectComment"]} // CSS class for text area
-              type="text"
+              type='text'
               value={editCommentLocal.reason}
               placeholder={t("Write-a-comment")} // Placeholder text for text area
               labelClassName={"d-none"} // CSS class for label
               timeClass={"d-none"} // CSS class for time
               onChange={handleCommentChange}
+              maxLength={7800}
             />
           </>
         }
         ModalFooter={
           // Modal footer section
           <>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2" // CSS class for flex layout
+                className='d-flex justify-content-end gap-2' // CSS class for flex layout
               >
                 {/* Button for saving changes */}
                 <Button

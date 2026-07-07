@@ -43,6 +43,10 @@ const ViewComplianceChecklistAccordian = () => {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
     setShowViewCompliance,
+    setTempSelectedComplianceStatus,
+    setSelectedChecklistId,
+    setSelectedChecklistDueDate,
+    setStatusChangeType,
   } = useComplianceContext();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -55,7 +59,7 @@ const ViewComplianceChecklistAccordian = () => {
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
 
-  console.log(getCheckListData, "Local state AFTER update");
+  
 
   //To show Checklist label on Different Modal
   const [isChecklistTrue, setIsChecklistTrue] = useState(false);
@@ -63,23 +67,18 @@ const ViewComplianceChecklistAccordian = () => {
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
-  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
-  console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
+  
+  
 
-  console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
+  
 
   const allExpanded =
     getCheckListData.length > 0 &&
     expandedCheckListIds.length === getCheckListData.length;
 
-  console.log(allExpanded, "selectedChecklistStatus");
+  
 
-  console.log(
-    {
-      allCheckListByComplianceId,
-    },
-    "CheckListByComplianceCheckListByCompliance",
-  );
+  
 
   useEffect(() => {
     if (allCheckListByComplianceId && allCheckListByComplianceId.length !== 0) {
@@ -120,7 +119,7 @@ const ViewComplianceChecklistAccordian = () => {
   const canChecklistBeCompleted = (checklistId) => {
     //  STEP 1: If data not loaded → BLOCK
     if (!viewComplianceByMeDetails?.checklistTasks?.length) {
-      console.log(" Data not loaded yet");
+      
       return false; // treat as NOT allowed
     }
 
@@ -128,13 +127,13 @@ const ViewComplianceChecklistAccordian = () => {
       (task) => task.checklistId === checklistId,
     );
 
-    console.log("Checklist Tasks:", checklistTasks);
+    
 
     const hasBlockedTask = checklistTasks.some((task) =>
       BLOCKED_TASK_STATUSES.includes(task.taskStatus?.statusName),
     );
 
-    console.log("Has Blocked Task:", hasBlockedTask);
+    
 
     return !hasBlockedTask;
   };
@@ -182,13 +181,13 @@ const ViewComplianceChecklistAccordian = () => {
     selectedStatus,
     dueDate,
   ) => {
-    console.log("Checklist ID:", checklistId);
-    console.log("Selected Status:", selectedStatus);
+    
+    
 
     //  PREVENT COMPLETED IF TASKS ARE BLOCKED
     if (selectedStatus.label === "Completed") {
       const allowed = canChecklistBeCompleted(checklistId);
-      console.log(allowed, "allowedallowed");
+      
       if (!allowed) {
         setComlianceCompleteExceptionModal(true);
         setComplianceCompleteModalType("checklist");
@@ -199,8 +198,23 @@ const ViewComplianceChecklistAccordian = () => {
     //  NEW: Handle On Hold selection
     if (selectedStatus.label === "On Hold") {
       setComplianceOnHoldModal(true); // Open On Hold modal
-      setComplianceCompleteModalType("checklist"); // Set type
+      setStatusChangeType("checklist"); // Set type
+      setTempSelectedComplianceStatus(selectedStatus);
+      setSelectedChecklistId(checklistId);
+      setSelectedChecklistDueDate(dueDate);
       return; // Stop here to prevent API call
+    }
+
+    // 🔥 CANCEL
+    if (selectedStatus.label === "Cancelled") {
+      setStatusChangeType("checklist");
+
+      setTempSelectedComplianceStatus(selectedStatus);
+      setSelectedChecklistId(checklistId);
+      setSelectedChecklistDueDate(dueDate);
+
+      setComplianceCancelModal(true);
+      return;
     }
 
     let Data = {
@@ -311,7 +325,7 @@ const ViewComplianceChecklistAccordian = () => {
   };
 
   const handleClickOnHoldModal = useCallback(() => {
-    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
+    
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);
 
@@ -326,7 +340,7 @@ const ViewComplianceChecklistAccordian = () => {
   ]);
 
   const handleClickCancelModal = useCallback(() => {
-    // console.log(handleProceedButtonView, "handleProceedButtonView");
+    // 
     setComplianceCancelModal(false);
     setComplianceStatusChangeReasonModal(true);
     // if (tempSelectComplianceStatus) {
@@ -380,13 +394,13 @@ const ViewComplianceChecklistAccordian = () => {
               (data2, index) => data2 === data.checklistId,
             );
 
-            console.log(data, "selectedChecklistStatus5555");
+            
             const checklistStatusOptions =
               data.complianceCheckListAllowed?.map((status) => ({
                 value: status.statusId,
                 label: status.statusName,
               })) || [];
-            console.log(data.complianceCheckListAllowed, "Allowed BEFORE");
+            
 
             const selectedChecklistStatus = data.status
               ? {
@@ -395,10 +409,7 @@ const ViewComplianceChecklistAccordian = () => {
                 }
               : null;
 
-            console.log(
-              selectedChecklistStatus,
-              "selectedChecklistStatusChecklistvee",
-            );
+            
 
             return (
               <div key={index}>

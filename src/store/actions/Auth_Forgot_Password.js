@@ -47,7 +47,7 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_01".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_01".toLowerCase(),
               )
           ) {
             dispatch(forgotPasswordFail(t("Device-does-not-exists")));
@@ -55,7 +55,7 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_02".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_02".toLowerCase(),
               )
           ) {
             dispatch(forgotPasswordFail(t("Device-id-does-not-exists")));
@@ -63,19 +63,19 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_03".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_03".toLowerCase(),
               )
           ) {
             localStorage.setItem(
               "userEmail",
-              response.data.responseResult.email
+              response.data.responseResult.email,
             );
             localStorage.setItem("userID", response.data.responseResult.userID);
             dispatch(
               forgotPasswordSuccess(
                 response.data.responseResult,
-                t("OTP-has-been-sent-to-your-email")
-              )
+                t("OTP-has-been-sent-to-your-email"),
+              ),
             );
             localStorage.setItem("LoginFlowPageRoute", 12);
             dispatch(LoginFlowRoutes(12));
@@ -84,7 +84,7 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_04".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_04".toLowerCase(),
               )
           ) {
             dispatch(forgotPasswordFail(t("Failed-to-generate-OTP")));
@@ -92,7 +92,7 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_05".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_05".toLowerCase(),
               )
           ) {
             dispatch(forgotPasswordFail(t("Failed-to-identify-user")));
@@ -100,7 +100,7 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_06".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_06".toLowerCase(),
               )
           ) {
             dispatch(forgotPasswordFail(t("Something-went-wrong")));
@@ -108,15 +108,15 @@ const changePasswordRequest = (email, t, navigate) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_AuthManager_ForgotPassword_07".toLowerCase()
+                "ERM_AuthService_AuthManager_ForgotPassword_07".toLowerCase(),
               )
           ) {
             let nextAttemptDate = response.data.responseResult.nextAttemptDate;
             let nextAttemptTime = response.data.responseResult.nextAttemptTime;
             let dateTimeValue = newDateTimeFormatterForOTPResend(
-              `${nextAttemptDate}${nextAttemptTime}`
+              `${nextAttemptDate}${nextAttemptTime}`,
             );
-            let newMessage = `${t("Please-try-again-after")} ${dateTimeValue}`;
+            let newMessage = `${t("Maximum-attempts-reached-Please-try-again-after")} ${dateTimeValue}`;
             dispatch(forgotPasswordFail(newMessage));
           } else {
             dispatch(forgotPasswordFail(t("Something-went-wrong")));

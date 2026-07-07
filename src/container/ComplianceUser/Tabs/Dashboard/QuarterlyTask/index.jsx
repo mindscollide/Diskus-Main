@@ -12,10 +12,7 @@ const QuarterlyTask = () => {
         .GetComlianceQuarterlyTasksDashboardData,
   );
 
-  console.log(
-    GetComlianceQuarterlyTasksDashboardData,
-    "GetComlianceQuarterlyTasksDashboardData",
-  );
+  
 
   // Check if data is null or undefined
   const hasData =

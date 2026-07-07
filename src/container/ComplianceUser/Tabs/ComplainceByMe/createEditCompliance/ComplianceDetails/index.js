@@ -19,6 +19,7 @@ import {
   AddReopenComplianceAPI,
   CheckComplianceTitleExistsAPI,
   clearAuthorityMessage,
+  clearComplianceDetailsTab,
   EditComplianceAPI,
   GetAllAuthoritiesWithoutPaginationAPI,
   GetAllTagsByOrganizationIDAPI,
@@ -42,7 +43,7 @@ import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunc
 import { Check2 } from "react-bootstrap-icons";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceStatusCancelModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCancel";
 import StatusSubmitForApprovalModal from "../../../../CommonComponents/StatusChangeModals/SubmitForApproval";
 import ComplianceStatusCompleteExceptionModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCompleteModal";
@@ -86,10 +87,11 @@ const ComplainceDetails = () => {
     complianceReopenDetailsState,
     criticalityOptions,
     comlianceStatusReopenedModal,
-    setIsEditComplianceTrue,
+    isReopenConfirmed,
+    setIsReopenConfirmed,
   } = useComplianceContext();
 
-  console.log(complianceDetailsState, "complianceDetailsState121212");
+  
   const complianceDataroomFolderId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
@@ -98,13 +100,10 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails,
   );
 
-  console.log(
-    complianceDataroomFolderId,
-    complianceReopenedDetail,
-    "complianceReopenedDetail",
-  );
+  
 
-  console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
+  
+  
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -147,13 +146,11 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
-  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+  
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  
+
+  const [show, SnackBar] = useSnackbar();
   const [editComplianceData, setEditComplianceData] = useState(null);
 
   //   tags Selection
@@ -325,6 +322,7 @@ const ComplainceDetails = () => {
         } else {
           setCheckAnyTaskInProgress(false);
         }
+        dispatch(clearComplianceDetailsTab());
       } catch (error) {}
     }
   }, [viewComplianceByMeDetails]);
@@ -356,6 +354,11 @@ const ComplainceDetails = () => {
         );
         setTaskCount(totalTaskCount);
       } catch (error) {}
+    } else {
+      
+      //  CLEAR UI when API returns null
+      setTaskCount(0);
+      return;
     }
   }, [getAllComplianceChecklistTask]);
 
@@ -374,7 +377,7 @@ const ComplainceDetails = () => {
         });
         setAuthorityOptions(allAuthority);
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [getAllAuthorities]);
@@ -388,7 +391,7 @@ const ComplainceDetails = () => {
         setTagsOptions(GetAllTagsByOrganizationIDData.tags);
       } catch (error) {
         setTagsOptions([]);
-        console.log(error);
+        
       }
     } else {
       setTagsOptions([]);
@@ -403,7 +406,7 @@ const ComplainceDetails = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -452,7 +455,7 @@ const ComplainceDetails = () => {
           ),
         );
       } else {
-        console.log("complianceByMeList");
+        
         dispatch(
           EditComplianceAPI(
             navigate,
@@ -464,9 +467,9 @@ const ComplainceDetails = () => {
         );
       }
 
-      console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
+       // ✅ DATA HERE
     } catch (error) {
-      console.error(error);
+      
     }
   };
 
@@ -477,7 +480,7 @@ const ComplainceDetails = () => {
   }, [complianceDataroomFolderId, complianceReopenedDetail]);
 
   useEffect(() => {
-    console.log("dueDate changed:", complianceDetailsState.dueDate);
+    
   }, [complianceDetailsState.dueDate]);
 
   const handleValueChange = (event) => {
@@ -560,9 +563,9 @@ const ComplainceDetails = () => {
               ? complianceCancelSelectOption
               : 0, // On Hold Compliance Including Checklist and Task
       };
-      if (complianceDetailsState.status.value === 6) {
+      if (complianceDetailsState.status.value === 6 && isReopenConfirmed) {
         // There should we use update with repopend compliancere
-
+        
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
           updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
@@ -572,12 +575,7 @@ const ComplainceDetails = () => {
           complianceId: complianceInfo.complianceId,
           complianceTitle: complianceDetailsState.complianceTitle,
         };
-        console.log(
-          "DataReOpenCompliance",
-          reopenDataroomMap,
-          complianceReopenDetailsState,
-          DataReOpenCompliance,
-        );
+        
         setEditComplianceData(Data);
         dispatch(
           AddReopenComplianceAPI(
@@ -587,9 +585,10 @@ const ComplainceDetails = () => {
             reopenDataroomMap,
           ),
         );
+        setIsReopenConfirmed(false);
         return;
       }
-      console.log("complianceByMeList");
+      
       dispatch(
         EditComplianceAPI(
           navigate,
@@ -599,8 +598,8 @@ const ComplainceDetails = () => {
           ViewComplianceDetailsByViewTypeAPI,
         ),
       );
-      console.log("complianceReopenDetailsState", complianceReopenDetailsState);
-      console.log(Data, "complianceReopenDetailsState");
+      
+      
       // dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
     } else {
       const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
@@ -633,7 +632,7 @@ const ComplainceDetails = () => {
     meetingDateValueFormat2.setMinutes(59);
     meetingDateValueFormat2.setSeconds(58);
 
-    console.log(meetingDateValueFormat2, "meetingDateValueFormat2");
+    
 
     setComplianceDetailsState((prev) => ({
       ...prev,
@@ -648,7 +647,7 @@ const ComplainceDetails = () => {
     const authorityId = complianceDetailsState.authority.value;
     if (!authorityId) return;
     const title = complianceDetailsState.complianceTitle;
-    // 🆕 CREATE MODE → always check
+    // CREATE MODE → always check
     if (complianceAddEditViewState === 1) {
       const Data = {
         ComplianceTitle: title,
@@ -667,7 +666,7 @@ const ComplainceDetails = () => {
       return;
     }
 
-    // ✏️ EDIT MODE
+    //  EDIT MODE
     if (complianceAddEditViewState === 2 && viewComplianceByMeDetails) {
       const originalAuthorityId =
         viewComplianceByMeDetails.authority.authorityId;
@@ -786,7 +785,7 @@ const ComplainceDetails = () => {
 
   // Status
   const handleChangeComplianceStatus = (event) => {
-    console.log(event, "CompliaceStatusOnHoldModal");
+    
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
       if (complianceDetailsState.status.value === 3) {
@@ -815,11 +814,7 @@ const ComplainceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
         if (checkAnyChecklistOnPendingState || hasIncompleteChecklistOrTask) {
-          console.log(
-            checkAnyChecklistOnPendingState,
-            checkAnyTaskInProgress,
-            "CompliaceStatusOnHoldModal",
-          );
+          
 
           resetModalStates();
           setTempSelectedComplianceStatus(event);
@@ -869,11 +864,11 @@ const ComplainceDetails = () => {
     // Status chnage to In Progress
     else if (event.value === 2) {
       resetModalStates();
-      setComplianceDetailsState((prev) => ({
-        ...prev,
-        status: event,
-      }));
     }
+    setComplianceDetailsState((prev) => ({
+      ...prev,
+      status: event,
+    }));
   };
 
   const isFormDisabled = isChecklistTitleExist === true;
@@ -964,7 +959,7 @@ const ComplainceDetails = () => {
             }
             onBlur={handleBlur}
           />
-          {console.log(errors, "COmplainceError")}
+          {}
           <p
             className={
               errors.complianceTitle
@@ -1240,13 +1235,14 @@ const ComplainceDetails = () => {
           }
         />
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      
       <ComplianceCloseConfirmationModal />
       {complianceOnHoldModal && <CompliaceStatusOnHoldModal />}
       <ComplianceStatusCancelModal />
       <StatusSubmitForApprovalModal />
       <ComplianceStatusCompleteExceptionModal />
       {comlianceStatusReopenedModal && <ComplianceStatusReopenedModal />}
+    {SnackBar}
     </>
   );
 };

@@ -19,13 +19,13 @@ import {
 import { Col, Row } from "react-bootstrap";
 import featherupload from "../../../../assets/images/featherupload.svg";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import {
   fileFormatforSignatureFlow,
   maxFileSize,
 } from "../../../../commen/functions/utils";
-const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
-  console.log(committeeStatus, "committeeStatus");
+const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
+  
   const { Dragger } = Upload;
   const previousFileListRef = useRef([]);
 
@@ -46,16 +46,9 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const [fileForSend, setFileForSend] = useState([]);
   let currentUserID = localStorage.getItem("userID");
 
-  console.log(
-    { fileAttachments, fileForSend, filesSending },
-    "fileAttachmentsfileAttachments"
-  );
+  
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [committeeData, setCommitteeData] = useState({
     committeeTitle: "",
     committeeDescription: "",
@@ -67,7 +60,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   });
 
   const closebtn = async () => {
-    setViewGroupPage(false);
+    setViewCommitteePage(false);
     localStorage.removeItem("ViewCommitteeID");
     dispatch(viewCommitteePageFlag(false));
   };
@@ -196,11 +189,11 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
             committeeMembers: committeedetails.committeMembers,
           });
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
     return () => {};
   }, [getCommitteeByCommitteeID]);
@@ -232,16 +225,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
         // ❌ File size validations
         if (fileObj.size === 0) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
           continue;
         }
 
         if (fileObj.size > maxFileSize) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
           continue;
         }
 
@@ -252,13 +241,13 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
           ) || newFiles.some((f) => f.DisplayAttachmentName === fileObj.name);
 
         if (isDuplicate) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
           continue;
         }
 
         // ❌ Max file limit
         if (totalFiles + newFiles.length >= 15) {
-          showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+          show(t("Not-allowed-more-than-15-files"), "error");
           break;
         }
 
@@ -836,7 +825,8 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
           </Col>
         </Row>
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

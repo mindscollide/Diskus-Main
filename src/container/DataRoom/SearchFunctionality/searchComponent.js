@@ -89,10 +89,7 @@ const SearchComponent = ({
   setFileDataforAnalyticsCount,
   showShareFolderModal,
 }) => {
-  console.log(
-    { searchDataFields, searchResultsFields },
-    "searchDataFieldssearchDataFields"
-  );
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -106,7 +103,7 @@ const SearchComponent = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   // all assignees
   const [assignessList, setAssignessList] = useState([]);
-  console.log(assignessList, "assignessListassignessList");
+  
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -125,7 +122,7 @@ const SearchComponent = ({
   let lang = localStorage.getItem("i18nextLng");
   let organizationID = localStorage.getItem("organizationID");
 
-  console.log({ searchAllData, totalRecords, sRowsData }, "searchDataFields");
+  
   useEffect(() => {
     if (assignees?.user && assignees?.user?.length === 0) {
       dispatch(allAssignessList(navigate, t, false));
@@ -155,11 +152,11 @@ const SearchComponent = ({
             isSites: searchDataFields.isSites,
             LastModifiedStartDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedStartDate,
-              1
+              1,
             ),
             LastModifiedEndDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedEndDate,
-              2
+              2,
             ),
             UserIDToSearch: 0,
             isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -189,11 +186,11 @@ const SearchComponent = ({
             isSites: searchDataFields.isSites,
             LastModifiedStartDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedStartDate,
-              1
+              1,
             ),
             LastModifiedEndDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedEndDate,
-              2
+              2,
             ),
             UserIDToSearch: 0,
             isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -228,11 +225,11 @@ const SearchComponent = ({
             isSites: searchDataFields.isSites,
             LastModifiedStartDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedStartDate,
-              1
+              1,
             ),
             LastModifiedEndDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedEndDate,
-              2
+              2,
             ),
             UserIDToSearch: 0,
             isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -262,11 +259,11 @@ const SearchComponent = ({
             isSites: searchDataFields.isSites,
             LastModifiedStartDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedStartDate,
-              1
+              1,
             ),
             LastModifiedEndDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedEndDate,
-              2
+              2,
             ),
             UserIDToSearch: 0,
             isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -301,11 +298,11 @@ const SearchComponent = ({
             isSites: searchDataFields.isSites,
             LastModifiedStartDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedStartDate,
-              1
+              1,
             ),
             LastModifiedEndDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedEndDate,
-              2
+              2,
             ),
             UserIDToSearch: 0,
             isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -335,11 +332,11 @@ const SearchComponent = ({
             isSites: searchDataFields.isSites,
             LastModifiedStartDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedStartDate,
-              1
+              1,
             ),
             LastModifiedEndDate: dateConverterIntoUTCForDataroom(
               searchDataFields.LastModifiedEndDate,
-              2
+              2,
             ),
             UserIDToSearch: 0,
             isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -357,7 +354,7 @@ const SearchComponent = ({
   };
 
   const handleLinkClick = (e, record) => {
-    console.log(record, "preventDefault");
+    
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
       const pdfData = {
@@ -369,18 +366,13 @@ const SearchComponent = ({
       };
       const pdfDataJson = JSON.stringify(pdfData);
       let ext = record.name.split(".").pop();
-      console.log(ext, "preventDefault");
+      
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
-    console.log(
-      data,
-      record,
-      pdfDataJson,
-      "fileOptionsSelectfileOptionsSelectfileOptionsSelect"
-    );
+    
     if (data.value === 1) {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
@@ -452,8 +444,8 @@ const SearchComponent = ({
             t,
             Data,
             record,
-            setFileDataforAnalyticsCount
-          )
+            setFileDataforAnalyticsCount,
+          ),
         );
       } else {
         // Get Anayltics  for the document
@@ -466,8 +458,8 @@ const SearchComponent = ({
             t,
             Data,
             record,
-            setFileDataforAnalyticsCount
-          )
+            setFileDataforAnalyticsCount,
+          ),
         );
       }
     } else if (data.value === 8) {
@@ -496,12 +488,12 @@ const SearchComponent = ({
     {
       title: (
         <>
-          <span className='d-flex gap-2'>
+          <span className="d-flex gap-2">
             {t("Name")}{" "}
             {allDocumentsTitleSorter === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -521,13 +513,15 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
-                <img draggable='false' src={folderColor} alt='' />
+                <img draggable="false" src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
-                    className={`${stylesss["dataroom_table_heading"]
-                      } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}>
-                    {text} <img draggable='false' src={sharedIcon} alt='' />
+                    className={`${
+                      stylesss["dataroom_table_heading"]
+                    } ${"cursor-pointer"}`}
+                    onClick={() => getFolderDocuments(data.id)}
+                  >
+                    {text} <img draggable="false" src={sharedIcon} alt="" />
                   </span>
                 </abbr>
               </div>
@@ -535,19 +529,20 @@ const SearchComponent = ({
           } else {
             return (
               <>
-                <section className='d-flex gap-2'>
+                <section className="d-flex gap-2">
                   <img
-                    draggable='false'
+                    draggable="false"
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=''
+                    alt=""
                     width={"25px"}
                     height={"25px"}
                   />
                   <abbr title={text}>
                     <span
                       className={stylesss["dataroom_table_heading"]}
-                      onClick={(e) => handleLinkClick(e, data)}>
-                      {text} <img draggable='false' src={sharedIcon} alt='' />
+                      onClick={(e) => handleLinkClick(e, data)}
+                    >
+                      {text} <img draggable="false" src={sharedIcon} alt="" />
                     </span>
                   </abbr>
                 </section>
@@ -558,12 +553,14 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
-                <img draggable='false' src={folderColor} alt='' />
+                <img draggable="false" src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
-                    className={`${stylesss["dataroom_table_heading"]
-                      } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}>
+                    className={`${
+                      stylesss["dataroom_table_heading"]
+                    } ${"cursor-pointer"}`}
+                    onClick={() => getFolderDocuments(data.id)}
+                  >
                     {text}{" "}
                   </span>
                 </abbr>
@@ -572,11 +569,11 @@ const SearchComponent = ({
           } else {
             return (
               <>
-                <section className='d-flex gap-2'>
+                <section className="d-flex gap-2">
                   <img
-                    draggable='false'
+                    draggable="false"
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=''
+                    alt=""
                     width={"25px"}
                     height={"25px"}
                   />
@@ -596,12 +593,12 @@ const SearchComponent = ({
     {
       title: (
         <>
-          <span className='d-flex justify-content-center gap-2'>
+          <span className="d-flex justify-content-center gap-2">
             {t("Owner")}
             {allOwnerSorter === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -622,12 +619,12 @@ const SearchComponent = ({
     },
     {
       title: (
-        <span className='d-flex justify-content-center align-items-center gap-2'>
+        <span className="d-flex justify-content-center align-items-center gap-2">
           {t("Last-modified")}
           {allLastModifiedSorter === "descend" ? (
-            <img src={ArrowUpIcon} alt='' />
+            <img src={ArrowUpIcon} alt="" />
           ) : (
-            <img src={ArrowDownIcon} alt='' />
+            <img src={ArrowDownIcon} alt="" />
           )}
         </span>
       ),
@@ -709,22 +706,25 @@ const SearchComponent = ({
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+              className="d-flex justify-content-end gap-2 position-relative otherstuff"
+            >
               <span className={styles["threeDot__Icon"]}>
                 {/* Check if Shared */}
                 {record.isShared ? (
                   <>
                     {record.isFolder
                       ? // Folder Logic
-                      record.permissionID === 2
+                        record.permissionID === 2
                         ? getMenuPopover(optionsforFolderEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFolderViewer)
                           : record.permissionID === 3
-                            ? getMenuPopover(optionsforFolderEditableNonShareable)
+                            ? getMenuPopover(
+                                optionsforFolderEditableNonShareable,
+                              )
                             : null
                       : // File Logic
-                      record.permissionID === 2
+                        record.permissionID === 2
                         ? getMenuPopover(optionsforFileEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFileViewer)
@@ -779,7 +779,7 @@ const SearchComponent = ({
           setTotalRecords(DataRoomReducer.SearchFileListCount);
           setSRowsData(
             (prev) =>
-              prev + DataRoomReducer.SearchFilesAndFoldersResponse.length
+              prev + DataRoomReducer.SearchFilesAndFoldersResponse.length,
           );
         } else {
           if (DataRoomReducer.SearchFilesAndFoldersResponse.length > 0) {
@@ -798,7 +798,7 @@ const SearchComponent = ({
         setTotalRecords(0);
         setSRowsData(0);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [
     DataRoomReducer.SearchFilesAndFoldersResponse,
     DataRoomReducer.SearchFileListCount,
@@ -809,14 +809,14 @@ const SearchComponent = ({
     value: user.pK_UID,
     label: (
       <>
-        <span className='d-flex align-items-center gap-2' key={user.pK_UID}>
+        <span className="d-flex align-items-center gap-2" key={user.pK_UID}>
           <img
-            draggable='false'
+            draggable="false"
             width={"25px"}
-            height='25px'
-            className='rounded-circle  '
+            height="25px"
+            className="rounded-circle  "
             src={`data:image/jpeg;base64,${user.displayProfilePictureName}`}
-            alt=''
+            alt=""
           />
           {user.name}
         </span>
@@ -829,11 +829,11 @@ const SearchComponent = ({
     try {
       if (assignees.user) {
         const filteredApiResponse = assignees.user.filter(
-          (user) => !userID.includes(user.pK_UID)
+          (user) => !userID.includes(user.pK_UID),
         );
         setAssignessList(filteredApiResponse);
       }
-    } catch { }
+    } catch {}
   }, [assignees.user]);
 
   // api call onscroll
@@ -852,16 +852,16 @@ const SearchComponent = ({
         isPDF: searchDataFields.isPDF,
         isFolders: searchDataFields.isFolders,
         isVideos: searchDataFields.isVideos,
-        isImages: searchDataFields.isImages,
-        isAudios: searchDataFields.isAudios,
-        isSites: searchDataFields.isSites,
+        isImages: searchDataFields?.isImages,
+        isAudios: searchDataFields?.isAudios,
+        isSites: searchDataFields?.isSites,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: 0,
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -871,10 +871,13 @@ const SearchComponent = ({
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
+
+      console.log(
+        { data, searchDataFields },
+        "searchDocumentsAndFoldersApisearchDocumentsAndFoldersApi",
+      );
       await dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
     }
-    await dispatch(dataBehaviour(false));
-
   };
 
   // this is onchange envent of search modal Documnet
@@ -914,11 +917,11 @@ const SearchComponent = ({
         isSites: true,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -960,11 +963,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1006,11 +1009,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1052,11 +1055,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1098,11 +1101,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1144,11 +1147,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1190,11 +1193,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1236,11 +1239,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1282,11 +1285,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1328,11 +1331,11 @@ const SearchComponent = ({
         isSites: true,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1374,11 +1377,11 @@ const SearchComponent = ({
         isSites: false,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1392,7 +1395,6 @@ const SearchComponent = ({
     } else {
     }
     await dispatch(dataBehaviour(false));
-
   };
 
   // this is for Location
@@ -1422,11 +1424,11 @@ const SearchComponent = ({
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedStartDate,
-        1
+        1,
       ),
       LastModifiedEndDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedEndDate,
-        2
+        2,
       ),
       UserIDToSearch: 0,
       isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1438,7 +1440,6 @@ const SearchComponent = ({
     };
     dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     await dispatch(dataBehaviour(false));
-
   };
 
   // this is for  people
@@ -1471,11 +1472,11 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         UserIDToSearch: 0,
         isOwnedByMe: 1,
@@ -1510,11 +1511,11 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         isOwnedByMe: 2,
         isSpecificUser: false,
@@ -1550,11 +1551,11 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         isOwnedByMe: 3,
         isNotOwnedByMe: true,
@@ -1590,11 +1591,11 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedStartDate,
-          1
+          1,
         ),
         LastModifiedEndDate: dateConverterIntoUTCForDataroom(
           searchDataFields.LastModifiedEndDate,
-          2
+          2,
         ),
         isOwnedByMe: 3,
         isSpecificUser: true,
@@ -1607,7 +1608,6 @@ const SearchComponent = ({
       dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     }
     await dispatch(dataBehaviour(false));
-
   };
 
   // Search Box Last modified Date handle Change Function
@@ -1666,7 +1666,7 @@ const SearchComponent = ({
           LastModifiedEndDate: dateConverterIntoUTCForDataroom(currentDate, 2),
           LastModifiedStartDate: dateConverterIntoUTCForDataroom(
             currentDate,
-            1
+            1,
           ),
         });
         data = {
@@ -1853,7 +1853,6 @@ const SearchComponent = ({
     await dispatch(dataBehaviour(false));
 
     return { startDate, endDate };
-
   };
 
   // this is for cleare state
@@ -1929,28 +1928,25 @@ const SearchComponent = ({
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     await dispatch(dataBehaviour(false));
-
   };
 
   // this is select for start date
   const handleStartDatePickerChange = (dates) => {
-    let startDate = dateConverterIntoUTCForDataroom(new Date(dates), 1);
-
-    setSelectedStartDate(new Date(dates));
+    const dateObj = new Date(dates);
+    setSelectedStartDate(dateObj);
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedStartDate: startDate,
+      LastModifiedStartDate: dateObj,
     });
   };
 
   // this is select for end date
   const handleEndDatePickerChange = (dates) => {
-    let endDate = dateConverterIntoUTCForDataroom(new Date(dates), 2);
-
-    setSelectedEndDate(new Date());
+    const dateObj = new Date(dates);
+    setSelectedEndDate(dateObj);
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedEndDate: endDate,
+      LastModifiedEndDate: dateObj,
     });
   };
 
@@ -1973,11 +1969,11 @@ const SearchComponent = ({
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedStartDate,
-        1
+        1,
       ),
       LastModifiedEndDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedEndDate,
-        2
+        2,
       ),
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -2015,11 +2011,11 @@ const SearchComponent = ({
       isSites: false,
       LastModifiedStartDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedStartDate,
-        1
+        1,
       ),
       LastModifiedEndDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedEndDate,
-        2
+        2,
       ),
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -2071,11 +2067,11 @@ const SearchComponent = ({
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedStartDate,
-        1
+        1,
       ),
       LastModifiedEndDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedEndDate,
-        2
+        2,
       ),
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -2116,11 +2112,11 @@ const SearchComponent = ({
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedStartDate,
-        1
+        1,
       ),
       LastModifiedEndDate: dateConverterIntoUTCForDataroom(
         searchDataFields.LastModifiedEndDate,
-        2
+        2,
       ),
       isOwnedByMe: 2,
       isSpecificUser: false,
@@ -2184,19 +2180,20 @@ const SearchComponent = ({
 
   return (
     <>
-      <Row className='mt-3'>
+      <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Search_result_Heading"]}>
             {t("Search-results")}
           </span>
         </Col>
       </Row>
-      <Row className='mt-3'>
+      <Row className="mt-3">
         <Col
           lg={2}
           md={2}
           sm={12}
-          className={styles["select-dropdowns-height-DataRoom"]}>
+          className={styles["select-dropdowns-height-DataRoom"]}
+        >
           {/* {searchDataFields.isDocument ||
           searchDataFields.isDocument ||
           searchDataFields.isSpreadSheet ||
@@ -2268,7 +2265,11 @@ const SearchComponent = ({
             placeholder={t("Document-type")}
             isSearchable={false}
             onChange={handleChangeDocumentsOptions}
-            value={searchResultsFields?.Type !== null ? searchResultsFields?.Type : null}
+            value={
+              searchResultsFields?.Type !== null
+                ? searchResultsFields?.Type
+                : null
+            }
             menuPortalTarget={document.body}
           />
         </Col>
@@ -2276,7 +2277,8 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={3}
-          className={styles["select-dropdowns-height-DataRoom"]}>
+          className={styles["select-dropdowns-height-DataRoom"]}
+        >
           {/* {searchDataFields.StatusID !== 0 ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
@@ -2311,7 +2313,11 @@ const SearchComponent = ({
             isSearchable={false}
             onChange={handleChangeLocationValue}
             menuPortalTarget={document.body}
-            value={searchResultsFields?.Location !== null ? searchResultsFields?.Location : null}
+            value={
+              searchResultsFields?.Location !== null
+                ? searchResultsFields?.Location
+                : null
+            }
           />
           {/* )} */}
         </Col>
@@ -2319,7 +2325,8 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={3}
-          className={styles["select-dropdowns-height-DataRoom"]}>
+          className={styles["select-dropdowns-height-DataRoom"]}
+        >
           {/* {searchDataFields.isOwnedByMe !== 2 ||
           searchDataFields.isSpecificUser ? (
             <div className={styles["dropdown__Document_Value"]}>
@@ -2355,7 +2362,11 @@ const SearchComponent = ({
             onChange={handleChangeStatus}
             isSearchable={false}
             menuPortalTarget={document.body}
-            value={searchResultsFields?.People !== null ? searchResultsFields?.People : null}
+            value={
+              searchResultsFields?.People !== null
+                ? searchResultsFields?.People
+                : null
+            }
           />
           {/* )} */}
         </Col>
@@ -2363,7 +2374,8 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={2}
-          className={styles["select-dropdowns-height-DataRoom"]}>
+          className={styles["select-dropdowns-height-DataRoom"]}
+        >
           {/* {dateConverterIntoUTCForDataroom(searchDataFields.LastModifiedStartDate, 1) !== "" &&
           dateConverterIntoUTCForDataroom(searchDataFields.LastModifiedEndDate, 2) !== "" ? (
             <div className={styles["dropdown__Document_Value"]}>
@@ -2395,7 +2407,11 @@ const SearchComponent = ({
             onChange={handleChangeLastModifedDate}
             isSearchable={false}
             menuPortalTarget={document.body}
-            value={searchResultsFields?.Date !== null ? searchResultsFields?.Date : null}
+            value={
+              searchResultsFields?.Date !== null
+                ? searchResultsFields?.Date
+                : null
+            }
           />
           {/* )} */}
         </Col>
@@ -2403,18 +2419,20 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={2}
-          className={styles["select-dropdowns-height-DataRoom"]}>
+          className={styles["select-dropdowns-height-DataRoom"]}
+        >
           <span
             className={styles["Clear_All_btn"]}
-            onClick={handleClearAllSearchOptions}>
+            onClick={handleClearAllSearchOptions}
+          >
             {t("Clear-all")}
           </span>
         </Col>
       </Row>
       {searchAllData &&
-        searchAllData !== undefined &&
-        searchAllData !== null &&
-        gridbtnactive ? (
+      searchAllData !== undefined &&
+      searchAllData !== null &&
+      gridbtnactive ? (
         <>
           <InfiniteScroll
             dataLength={searchAllData.length}
@@ -2425,7 +2443,7 @@ const SearchComponent = ({
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
             height={"54vh"}
-            endMessage=''
+            endMessage=""
             loader={
               searchAllData.length <= totalRecords && (
                 <Row>
@@ -2433,17 +2451,20 @@ const SearchComponent = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center mt-2'>
+                    className="d-flex justify-content-center mt-2"
+                  >
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
-            }>
+            }
+          >
             <GridViewDataRoom
               data={searchAllData}
               optionsforFolder={optionsforFolder(t)}
               optionsforFile={optionsforFile(t)}
               setSearchTabOpen={setSearchTabOpen}
+              setDetailView={setDetailView}
             />
           </InfiniteScroll>
         </>
@@ -2460,7 +2481,7 @@ const SearchComponent = ({
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
             height={"57vh"}
-            endMessage=''
+            endMessage=""
             loader={
               searchAllData.length <= totalRecords && (
                 <Row>
@@ -2468,12 +2489,14 @@ const SearchComponent = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center mt-2'>
+                    className="d-flex justify-content-center mt-2"
+                  >
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
-            }>
+            }
+          >
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={searchColumns}
@@ -2488,12 +2511,13 @@ const SearchComponent = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex flex-column flex-wrap gap-1 justify-content-center align-items-center'>
+                      className="d-flex flex-column flex-wrap gap-1 justify-content-center align-items-center"
+                    >
                       <img
                         src={EmptyPNGScreenSearch}
-                        alt=''
-                        height='227.48px'
-                        width='199.04px'
+                        alt=""
+                        height="227.48px"
+                        width="199.04px"
                       />
                       <span className={styles["NoMatchFoundHeading"]}>
                         {t("No-match-found")}
@@ -2513,12 +2537,13 @@ const SearchComponent = ({
         </>
       ) : (
         <div className={styles["empty-search-state"]}>
-          <Row className='mt-2'>
+          <Row className="mt-2">
             <Col
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-center'>
+              className="d-flex justify-content-center"
+            >
               <span className={styles["Message_nofiles"]}>
                 {t("There-are-no-items-here")}
               </span>
@@ -2546,12 +2571,13 @@ const SearchComponent = ({
         }
         ModalBody={
           <>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col
                 lg={6}
                 md={6}
                 sm={12}
-                className={styles["datePickerTodoCreate2"]}>
+                className={styles["datePickerTodoCreate2"]}
+              >
                 <DatePicker
                   format={"DD MMM, YYYY"}
                   render={
@@ -2563,9 +2589,9 @@ const SearchComponent = ({
                   containerClassName={stylesss["datePicker_Container"]}
                   onOpenPickNewDate={true}
                   editable={false}
-                  className='datePickerTodoCreate2'
+                  className="datePickerTodoCreate2"
                   onChange={handleStartDatePickerChange}
-                  inputMode=''
+                  inputMode=""
                   calendar={calendarValue}
                   locale={localValue}
                   ref={calendRef}
@@ -2576,7 +2602,8 @@ const SearchComponent = ({
                 lg={6}
                 md={6}
                 sm={6}
-                className={styles["datePickerTodoCreate2"]}>
+                className={styles["datePickerTodoCreate2"]}
+              >
                 {" "}
                 <DatePicker
                   format={"DD MMM, YYYY"}
@@ -2587,10 +2614,10 @@ const SearchComponent = ({
                     />
                   }
                   containerClassName={stylesss["datePicker_Container"]}
-                  className='datePickerTodoCreate2'
+                  className="datePickerTodoCreate2"
                   onOpenPickNewDate={true}
                   editable={false}
-                  inputMode=''
+                  inputMode=""
                   onChange={handleEndDatePickerChange}
                   calendar={calendarValue}
                   locale={localValue}

@@ -6,7 +6,7 @@ import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 import {
   ViewToDoList,
@@ -96,11 +96,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
   const [statusOptions, setStatusOptions] = useState([]);
   const [taskTitleSort, setTaskTitleSort] = useState(null);
   const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
@@ -123,7 +119,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         dispatch(getTasksByGroupIDApi(navigate, t, newData));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -187,7 +183,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         setOriginalData([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [PollsReducertodoGetGroupTask]);
 
@@ -201,7 +197,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         dispatch(createTaskGroupMQTT(null));
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [toDoListReducercreateTaskGroup]);
 
@@ -236,7 +232,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
       setStatusOptions(optionsArr);
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [todoStatus]);
 
@@ -651,7 +647,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [toDoListReducerToDoDetails]);
 
@@ -662,34 +658,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     }
     dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false, 2));
   };
-
-  useEffect(() => {
-    try {
-      if (
-        toDoListReducerResponseMessage !== "" &&
-        toDoListReducerResponseMessage !== undefined &&
-        toDoListReducerResponseMessage !== "" &&
-        toDoListReducerResponseMessage !== t("No-records-found")
-      ) {
-        showMessage(toDoListReducerResponseMessage, "success", setOpen);
-
-        dispatch(clearResponce());
-      } else if (
-        assigneesResponseMessage !== "" &&
-        assigneesResponseMessage !== "" &&
-        assigneesResponseMessage !== t("No-records-found")
-      ) {
-        showMessage(assigneesResponseMessage, "success", setOpen);
-
-        dispatch(clearResponseMessage());
-      } else {
-        dispatch(clearResponce());
-        dispatch(clearResponseMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [toDoListReducerResponseMessage, assigneesResponseMessage]);
 
   useEffect(() => {
     try {
@@ -707,54 +675,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [assigneesUpdateTodoStatusMessage, removeTodo]);
-
-  useEffect(() => {
-    try {
-      if (
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== undefined &&
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== t("No-records-found")
-      ) {
-        showMessage(
-          assigneesgetTodosStatus.ResponseMessage,
-          "success",
-          setOpen
-        );
-
-        dispatch(cleareMessage());
-      } else if (
-        assigneesUpdateTodoStatusMessage !== "" &&
-        assigneesUpdateTodoStatusMessage !== undefined &&
-        assigneesUpdateTodoStatusMessage !== "" &&
-        assigneesUpdateTodoStatusMessage !== t("No-records-found")
-      ) {
-        showMessage(assigneesUpdateTodoStatusMessage, "success", setOpen);
-
-        dispatch(cleareMessage());
-      } else if (
-        getTodoStatusUpdateTodoStatus !== "" &&
-        getTodoStatusUpdateTodoStatus !== undefined &&
-        getTodoStatusUpdateTodoStatus !== "" &&
-        getTodoStatusUpdateTodoStatus !== t("No-records-found")
-      ) {
-        showMessage(getTodoStatusUpdateTodoStatus, "success", setOpen);
-
-        dispatch(cleareMessage());
-      } else {
-        dispatch(cleareMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [
-    getTodosStatusResponseMessage,
-    assigneesUpdateTodoStatusMessage,
-    getTodoStatusUpdateTodoStatus,
-  ]);
 
   const scroll = {
     y: "64vh",
@@ -823,7 +746,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       </div>
       {show ? (
         <ModalToDoList
-          show={show}
+          showModal={show}
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
@@ -835,6 +758,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
+    {SnackBar}
     </>
   );
 };

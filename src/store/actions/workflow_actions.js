@@ -35,10 +35,7 @@ const createWorkflow_init = () => {
 };
 
 const createWorkflow_success = (response, message) => {
-  console.log(
-    { response, message },
-    "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS",
-  );
+  
   return {
     type: actions.CREATESIGNATUREFLOW_SUCCESS,
     response: response,
@@ -54,7 +51,7 @@ const createWorkflow_fail = (message) => {
 };
 // Create WorkFlow APi
 const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(createWorkflow_init());
     let form = new FormData();
@@ -76,10 +73,7 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
                   "WorkFlow_WorkFlowServiceManager_CreateSignatureFlow_01".toLowerCase(),
                 )
             ) {
-              console.log(
-                response.data.responseResult,
-                "createWorkflow_successcreateWorkflow_successcreateWorkflow_success",
-              );
+              
               let reponseData = JSON.stringify(
                 response.data.responseResult.signatureDocument.documentID,
               );
@@ -215,15 +209,8 @@ const saveWorkflowApi = (
   status,
   sendDocumentData,
 ) => {
-  console.log(
-    Data,
-    value,
-    updateFieldValueData,
-    addAnnoatationofFilesAttachment,
-    saveSignatureDocument,
-    "saveWorkflowApisaveWorkflowApi",
-  );
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+
   return (dispatch) => {
     dispatch(saveWorkflow_init());
     let form = new FormData();
@@ -379,7 +366,7 @@ const getWorkFlowByFlodID_fail = (message) => {
 };
 
 const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t, route) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getWorkFlowByFlodID_init());
     let form = new FormData();
@@ -426,7 +413,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t, route) => {
                   ),
                 );
               } catch (error) {
-                console.log(error, "errorerrorerror");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -492,7 +479,7 @@ const addUpdateFieldValueApi = (
   sendDocumentData,
   UpdateActorBundle,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(addUpdateFieldValue_init());
     let form = new FormData();
@@ -629,7 +616,7 @@ const saveSignatureDocumentApi = (
   status,
   sendDocumentData,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(saveSignatureDocument_init());
     let form = new FormData();
@@ -654,7 +641,7 @@ const saveSignatureDocumentApi = (
                 )
             ) {
               if (Number(status) === 2) {
-                console.log({ status }, "statusstatusValue");
+                
 
                 dispatch(sendDocumentIdApi(sendDocumentData, navigate, t));
               } else {
@@ -665,7 +652,7 @@ const saveSignatureDocumentApi = (
                   ),
                 );
               }
-              console.log({ status }, "statusstatusValue");
+              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -753,7 +740,7 @@ const getAnnotationDataRoom_fail = (message) => {
   };
 };
 const getAnnoationSignatrueFlow = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(getAnnotationDataRoom_init());
     let form = new FormData();
@@ -845,8 +832,8 @@ const addAnnoationSignatrueFlow = (
   sendDocumentData,
   UpdateActorBundle,
 ) => {
-  console.log(status, "statusstatusstatus");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+
   return async (dispatch) => {
     dispatch(addAnnotationDataRoom_init());
     let form = new FormData();
@@ -915,7 +902,7 @@ const addAnnoationSignatrueFlow = (
                   UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle),
                 );
               } else {
-                console.log(status, "statusstatusstatusstatusstatusstatus");
+                
                 dispatch(
                   saveSignatureDocumentApi(
                     saveSignatureDocument,
@@ -1003,7 +990,7 @@ const getAllFieldsByWorkflowIdApi = (
   creatorID,
   route,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
 
   return (dispatch) => {
     dispatch(getAllFieldsByWorkflowId_init());
@@ -1126,7 +1113,7 @@ const sendDocument_fail = (message) => {
 };
 
 const sendDocumentIdApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(sendDocument_init());
     let form = new FormData();
@@ -1206,7 +1193,7 @@ const getAllSignaturesDocumentsforCreator_fail = (message) => {
   };
 };
 const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllSignaturesDocumentsforCreator_init());
     let form = new FormData();
@@ -1307,7 +1294,7 @@ const getAllPendingApprovalsStats_fail = (message) => {
 };
 
 const getAllPendingApprovalsStatsApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllPendingApprovalsStats_init());
     let form = new FormData();
@@ -1394,7 +1381,7 @@ const getAllPendingApprovalsSignatures_fail = (message) => {
 };
 
 const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllPendingApprovalsSignatures_init());
     let form = new FormData();
@@ -1494,7 +1481,7 @@ const getAllPendingApprovalStatus_fail = (message) => {
 };
 
 const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllPendingApprovalStatus_init());
     let form = new FormData();
@@ -1528,10 +1515,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   loaderFlag,
                 ),
               );
-              console.log(
-                Data.IsCreator,
-                "isCreatorisCreatorisCreatorisCreator",
-              );
+              
               if (Data.IsCreator) {
                 let Data = {
                   sRow: 0,
@@ -1545,7 +1529,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                 );
               } else {
                 let Data2 = { sRow: 0, Length: 10 };
-                console.log(Data, "handleScrollhandleScrollhandleScroll");
+                
                 await dispatch(
                   getAllPendingApprovalsSignaturesApi(navigate, t, Data2),
                 );
@@ -1613,7 +1597,7 @@ const declineReasonApi = (
   setReasonModal,
   setDeclineConfirmationModal,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(declineReason_init());
     let form = new FormData();
@@ -1697,7 +1681,7 @@ const deleteSignatureFlowDocument_fail = (message) => {
   };
 };
 const deleteSignatureFlowDocumentApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(deleteSignatureFlowDocument_init());
     let form = new FormData();
@@ -1824,7 +1808,7 @@ const getAllSignatoriesStatusWise_Api = (
   Data,
   setSignatoriesList,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(getAllSignatoriesStatusWise_init());
     let form = new FormData();
@@ -1919,7 +1903,7 @@ const UpdateActorBundleStatus_fail = (message) => {
 };
 
 const UpdateActorBundleStatusApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(UpdateActorBundleStatus_init());
     let form = new FormData();
@@ -2014,7 +1998,7 @@ const getDashbardPendingApprovalData_fail = (message = "") => {
   };
 };
 const getDashbardPendingApprovalDataApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     await dispatch(getDashbardPendingApprovalData_init());
     let form = new FormData();
@@ -2113,7 +2097,7 @@ const getSignatureFileAnnotation_fail = (message) => {
 };
 
 const getSignatureFileAnnotationApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(getSignatureFileAnnotation_init());
     let form = new FormData();
@@ -2208,7 +2192,7 @@ const addUpdateSignatureFileAnnotationApi = (
   Data,
   UpdateActorBundle,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return async (dispatch) => {
     dispatch(addUpdateSignatureFileAnnotation_init());
     let form = new FormData();
@@ -2349,7 +2333,7 @@ const validateEncryptedMinutesReviewer_clear = () => {
 };
 
 const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(validateEncryptedMinutesReviewer_init());
     let form = new FormData();
@@ -2481,7 +2465,7 @@ const validateEncryptedStringSignatureData_clear = () => {
 };
 
 const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+
   return (dispatch) => {
     dispatch(validateEncryptedStringSignatureData_init());
     let form = new FormData();
@@ -2605,6 +2589,14 @@ const MinuteReviwerCount = (response) => {
   };
 };
 
+//For Creater Signature Count SIgnee
+const signeeCreatorCount = (response) => {
+  return {
+    type: actions.SIGNATURE_SIGNEE_CREATOR_COUNT_UPDATE,
+    response: response,
+  };
+};
+
 //Clear as Minute Reviwer
 const clearMinuteReviewerMqtt = (response) => {
   return {
@@ -2645,4 +2637,5 @@ export {
   validateEncryptedStringSignatureDataApi,
   MinuteReviwerCount,
   clearMinuteReviewerMqtt,
+  signeeCreatorCount,
 };

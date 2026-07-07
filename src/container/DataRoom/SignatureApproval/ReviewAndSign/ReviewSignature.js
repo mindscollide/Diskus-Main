@@ -33,7 +33,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
@@ -50,19 +50,23 @@ const ReviewSignature = () => {
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   const workflowResponseMessage = useSelector((state) => state.webViewer);
   const globalState = useSelector((state) => state);
-  console.log(globalState, "globalStateglobalState");
+  
   const workflowsignaturedocument = useSelector(
-    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument
+    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,
   );
 
   const workflowsignaturedocumentActionByMe = useSelector(
     (state) =>
-      state.SignatureWorkFlowReducer.workflowsignaturedocumentActionByMe
+      state.SignatureWorkFlowReducer.workflowsignaturedocumentActionByMe,
   );
 
   const signatureDocumentStatusChangeForSignees = useSelector(
     (state) =>
-      state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees
+      state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees,
+  );
+
+  const signeeCounterData = useSelector(
+    (state) => state.SignatureWorkFlowReducer.signeeCounterData,
   );
 
   const navigate = useNavigate();
@@ -74,7 +78,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-  console.log(approvalStats, "approvalStatsapprovalStats");
+  
   const [reviewSignature, setReviewSignature] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [signatoriesList, setSignatoriesList] = useState(false);
@@ -84,11 +88,7 @@ const ReviewSignature = () => {
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -112,6 +112,13 @@ const ReviewSignature = () => {
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
+
+  useEffect(() => {
+    if (signeeCounterData) {
+      // MQTT data has arrived – update the approvalStats state with the live counts
+      setApprovalStats(signeeCounterData);
+    }
+  }, [signeeCounterData]);
 
   useEffect(() => {
     const callFunc = async () => {
@@ -146,16 +153,16 @@ const ReviewSignature = () => {
       window.open(
         `/Diskus/signeddocument?documentID=${encodeURIComponent(reponseData)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
         `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
-          reponseData
+          reponseData,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -166,15 +173,15 @@ const ReviewSignature = () => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
-  console.log(originalData, "originalDataoriginalDataoriginalData");
+  
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.toString())
+      selectedValues.includes(item.status.toString()),
     );
     setReviewSignature(filteredData);
     setVisible(false);
@@ -220,12 +227,12 @@ const ReviewSignature = () => {
   );
 
   const handleClickSignatoriesList = (record) => {
-    console.log(record, "handleClickSignatoriesListhandleClickSignatoriesList");
+    
     // setSignatureListVal(value);
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
     dispatch(
-      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList)
+      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList),
     );
   };
 
@@ -409,21 +416,21 @@ const ReviewSignature = () => {
               status?.toLowerCase() === "Pending Signature".toLowerCase()
                 ? styles["pendingStatus"]
                 : status?.toLowerCase() === "Signed".toLowerCase()
-                ? styles["signedStatus"]
-                : status?.toLowerCase() === "Declined".toLowerCase()
-                ? styles["declineStatus"]
-                : styles["draftStatus"]
+                  ? styles["signedStatus"]
+                  : status?.toLowerCase() === "Declined".toLowerCase()
+                    ? styles["declineStatus"]
+                    : styles["draftStatus"]
             }
           >
             {status?.toLowerCase() === "Pending Signature".toLowerCase()
               ? t("Signature-pending")
               : status?.toLowerCase() === "Signed".toLowerCase()
-              ? t("Signed")
-              : status?.toLowerCase() === "Declined".toLowerCase()
-              ? t("Declined")
-              : status?.toLowerCase() === "draftStatus".toLowerCase()
-              ? t("draftStatus")
-              : null}
+                ? t("Signed")
+                : status?.toLowerCase() === "Declined".toLowerCase()
+                  ? t("Declined")
+                  : status?.toLowerCase() === "draftStatus".toLowerCase()
+                    ? t("draftStatus")
+                    : null}
           </p>
         );
       },
@@ -431,16 +438,11 @@ const ReviewSignature = () => {
   ];
 
   // const handleScroll = async () => {
-  //   console.log(
-  //     totalDataLnegth <= totalRecords,
-  //     totalDataLnegth,
-  //     totalRecords,
-  //     "handleScrollhandleScroll"
-  //   );
+  //   
   //   if (totalDataLnegth <= totalRecords) {
   //     setIsScrolling(true);
   //     let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-  //     console.log(Data, "handleScrollhandleScrollhandleScroll");
+  //     
   //     await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
   //   }
   // };
@@ -450,7 +452,7 @@ const ReviewSignature = () => {
       if (totalDataLnegth <= totalRecords) {
         setIsScrolling(true);
         let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-        console.log(Data, "handleScroll: fetching pending approvals");
+        
         await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
         return; // stop further execution if this condition is met
       } else {
@@ -481,7 +483,7 @@ const ReviewSignature = () => {
           setDefaultReviewAndSignatureStatus(defaultStatus);
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [getAllPendingApprovalStatuses]);
@@ -526,9 +528,9 @@ const ReviewSignature = () => {
         const { data } = workflowsignaturedocument;
         let findIfExist = reviewSignature.find(
           (reviewSignatureData, index) =>
-            reviewSignatureData.workFlowID === data.workFlowID
+            reviewSignatureData.workFlowID === data.workFlowID,
         );
-        console.log(findIfExist, "findIfExistfindIfExist");
+        
         if (findIfExist === undefined) {
           setReviewSignature([data, ...reviewSignature]);
           setOriginalData([data, originalData]);
@@ -544,7 +546,7 @@ const ReviewSignature = () => {
       if (workflowsignaturedocumentActionByMe !== null) {
         const { data } = workflowsignaturedocumentActionByMe;
 
-        console.log(data, "datadatadata");
+        
         setReviewSignature((reviewSignatureCopy) =>
           reviewSignatureCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
@@ -553,12 +555,12 @@ const ReviewSignature = () => {
                   status: data.status,
                   actorStatusID: data.actorStatusID,
                 }
-              : data2
-          )
+              : data2,
+          ),
         );
       }
     } catch (error) {
-      console.error("Error updating review signature data:", error);
+      
     }
   }, [workflowsignaturedocumentActionByMe]);
   useEffect(() => {
@@ -573,25 +575,15 @@ const ReviewSignature = () => {
                   status: data.status,
                   workFlowStatusID: data.workFlowStatusID,
                 }
-              : data2
-          )
+              : data2,
+          ),
         );
       }
     } catch (error) {
-      console.error("Error updating review signature data:", error);
+      
     }
   }, [signatureDocumentStatusChangeForSignees]);
 
-  useEffect(() => {
-    if (
-      ResponseMessage !== "" &&
-      ResponseMessage !== null &&
-      ResponseMessage !== undefined
-    ) {
-      showMessage(ResponseMessage, "error", setOpen);
-      dispatch(clearWorkFlowResponseMessage());
-    }
-  }, [ResponseMessage]);
   return (
     <>
       <Row>
@@ -611,7 +603,7 @@ const ReviewSignature = () => {
                     }}
                     label={`${convertToArabicNumerals(
                       approvalStats.signedPercentage,
-                      currentLanguage
+                      currentLanguage,
                     )}%`}
                     now={approvalStats.signedPercentage}
                     key={1}
@@ -622,7 +614,7 @@ const ReviewSignature = () => {
                     }}
                     label={`${convertToArabicNumerals(
                       approvalStats.pendingPercentage,
-                      currentLanguage
+                      currentLanguage,
                     )}%`}
                     now={approvalStats.pendingPercentage}
                     key={2}
@@ -633,7 +625,7 @@ const ReviewSignature = () => {
                     }}
                     label={`${convertToArabicNumerals(
                       approvalStats.declinedPercentage,
-                      currentLanguage
+                      currentLanguage,
                     )}%`}
                     now={approvalStats.declinedPercentage}
                     key={3}
@@ -646,7 +638,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {convertToArabicNumerals(
                       approvalStats.signed,
-                      currentLanguage
+                      currentLanguage,
                     )}
                   </span>
                   <span className={styles["value"]}>{t("Signed")}</span>
@@ -656,7 +648,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {convertToArabicNumerals(
                       approvalStats.pending,
-                      currentLanguage
+                      currentLanguage,
                     )}
                   </span>
                   <span className={styles["value"]}>{t("Pending")}</span>
@@ -666,7 +658,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {convertToArabicNumerals(
                       approvalStats.declined,
-                      currentLanguage
+                      currentLanguage,
                     )}
                   </span>
                   <span className={styles["value"]}>{t("Declined")}</span>
@@ -721,18 +713,14 @@ const ReviewSignature = () => {
           {/* )} */}
         </Col>
       </Row>{" "}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+   
       {signatoriesList && (
         <SignatoriesListModal
           signatories_List={signatoriesList}
           setSignatoriesList={setSignatoriesList}
         />
       )}
+    {SnackBar}
     </>
   );
 };

@@ -23,10 +23,11 @@ import { useTranslation } from "react-i18next";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
+import { getHomeRoute } from "../../../commen/functions/utils";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -58,11 +59,7 @@ const UserManagementProcess = () => {
   );
 
   //state to show snackbar
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
@@ -76,13 +73,13 @@ const UserManagementProcess = () => {
     if (currentUrl === undefined) {
       // Retrieve current step from local storage
       if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-        console.log("LoginFlowPageRoute");
+        
         if (storedStep) {
-          console.log("LoginFlowPageRoute");
+          
           dispatch(LoginFlowRoutes(storedStep));
         }
       } else {
-        console.log("LoginFlowPageRoute");
+        
         let commingfromSignFlow = localStorage.getItem("commingfromSignFlow");
         if (commingfromSignFlow === null) {
           localStorage.setItem("LoginFlowPageRoute", 1);
@@ -104,39 +101,10 @@ const UserManagementProcess = () => {
 
   useEffect(() => {
     if (userManagementRoute === null) {
-      console.log("LoginFlowPageRoute", userManagementRoute);
+      
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
   }, [userManagementRoute]);
-
-  useEffect(() => {
-    if (
-      AuthreducerEmailValidationResponseMessage !== "" &&
-      AuthreducerEmailValidationResponseMessage !==
-        t("Users-password-is-created")
-    ) {
-      showMessage(
-        AuthreducerEmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (
-      AuthreducerEnterPasswordResponseMessage !== "" &&
-      AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled") &&
-      AuthreducerEnterPasswordResponseMessage !== undefined &&
-      AuthreducerEnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    AuthreducerEmailValidationResponseMessage,
-    AuthreducerEnterPasswordResponseMessage,
-  ]);
 
   //MQTT
   const onMessageArrived = (msg) => {
@@ -144,7 +112,7 @@ const UserManagementProcess = () => {
     let roleID = parseInt(localStorage.getItem("roleID"));
     let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-    console.log("message arrived", data);
+    
     if (
       data.payload.message
         .toLowerCase()
@@ -155,7 +123,7 @@ const UserManagementProcess = () => {
       if (roleID === 1 || roleID === 2) {
         navigate("/Admin/");
       } else {
-        console.log("message arrived");
+        
         if (isFirstLogin != undefined) {
           if (isFirstLogin === true) {
             navigate("/onboard");
@@ -170,7 +138,7 @@ const UserManagementProcess = () => {
               ) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else {
-                navigate("/Diskus/");
+                navigate(getHomeRoute());
               }
             }
           }
@@ -181,7 +149,7 @@ const UserManagementProcess = () => {
       "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
     ) {
       localStorage.setItem("TowApproval", false);
-      console.log("TowApproval");
+      
       dispatch(LoginFlowRoutes(7));
     }
   };
@@ -200,41 +168,9 @@ const UserManagementProcess = () => {
   }, [Helper.socket]);
 
   //User Password Verification After forget password
-  useEffect(() => {
-    if (
-      AuthreducerVerifyOTPEmailResponseMessage !== "" &&
-      AuthreducerVerifyOTPEmailResponseMessage !== undefined
-    ) {
-      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerVerifyOTPEmailResponseMessage]);
-
-  useEffect(() => {
-    if (
-      AuthreducerAuthenticateAFAResponseMessage !== "" &&
-      AuthreducerAuthenticateAFAResponseMessage !== undefined
-    ) {
-      showMessage(
-        AuthreducerAuthenticateAFAResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [AuthreducerAuthenticateAFAResponseMessage]);
 
   let componentToRender;
-  console.log(
-    UserMangementReducerdefaultRoutingValue,
-    { storedStep, userManagementRoute },
-    "storedStepstoredStep"
-  );
+  
 
   if (UserMangementReducerdefaultRoutingValue === 1) {
     // Sign In Component
@@ -271,13 +207,14 @@ const UserManagementProcess = () => {
     componentToRender = <VerificationIphone />;
   } else {
     componentToRender = null;
-    console.log("Errorr in route");
+    
   }
 
   return (
     <>
       {componentToRender}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

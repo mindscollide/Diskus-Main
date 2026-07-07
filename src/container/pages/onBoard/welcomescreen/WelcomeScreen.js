@@ -1,13 +1,15 @@
 import React from "react";
 import DiskusLogo from "../../../../../src/assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../../src/assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../../src/assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../../src/commen/featureFlags";
 
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./WelcomeScreen.module.css";
 import { useTranslation } from "react-i18next";
 
 const Welcome = (props) => {
-  console.log(props);
+  
   const { t } = useTranslation();
 
   return (
@@ -20,7 +22,7 @@ const Welcome = (props) => {
             draggable='false'
             width={200}
             src={
-              localStorage.getItem("i18nextLng") === "ar"
+              PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                 ? DiskusLogoArabic
                 : DiskusLogo
             }

@@ -23,7 +23,7 @@ import {
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 const Summary = () => {
   const navigate = useNavigate();
@@ -33,28 +33,28 @@ const Summary = () => {
   let organizationID = localStorage.getItem("organizationID");
 
   const getBillInformation = useSelector(
-    (state) => state.OrganizationBillingReducer.getBillInformation
+    (state) => state.OrganizationBillingReducer.getBillInformation,
   );
   const VerifyOTPEmailResponseMessage = useSelector(
-    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
+    (state) => state.Authreducer.VerifyOTPEmailResponseMessage,
   );
   const EnterPasswordResponseMessage = useSelector(
-    (state) => state.Authreducer.EnterPasswordResponseMessage
+    (state) => state.Authreducer.EnterPasswordResponseMessage,
   );
   const OrganizationCreateResponseMessage = useSelector(
-    (state) => state.Authreducer.OrganizationCreateResponseMessage
+    (state) => state.Authreducer.OrganizationCreateResponseMessage,
   );
   const CreatePasswordResponseMessage = useSelector(
-    (state) => state.Authreducer.CreatePasswordResponseMessage
+    (state) => state.Authreducer.CreatePasswordResponseMessage,
   );
   const EmailValidationResponseMessage = useSelector(
-    (state) => state.Authreducer.EmailValidationResponseMessage
+    (state) => state.Authreducer.EmailValidationResponseMessage,
   );
   const GetSelectedPackageResponseMessage = useSelector(
-    (state) => state.Authreducer.GetSelectedPackageResponseMessage
+    (state) => state.Authreducer.GetSelectedPackageResponseMessage,
   );
   const searchPaymentHistory = useSelector(
-    (state) => state.adminReducer.searchPaymentHistory
+    (state) => state.adminReducer.searchPaymentHistory,
   );
   const [activateBlur, setActivateBlur] = useState(false);
 
@@ -66,24 +66,14 @@ const Summary = () => {
     NextPaymentDueDate: "",
     AmountAfterDiscount: 0,
   });
-  console.log(
-    "lastPaymentlastPayment",
-    _justShowDateformatBilling(summary.NextPaymentDueDate)
-  );
+
   const [lastPayment, setLastPayment] = useState({
     Invoice: 0,
     PaymentReceivedDate: "",
     PaidAmount: 0,
   });
-  console.log(
-    "lastPaymentlastPayment",
-    _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
-  );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+
+  const [show, SnackBar] = useSnackbar();
 
   //Open Invoice Table State
   const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
@@ -109,9 +99,7 @@ const Summary = () => {
         IsLateSurcharge: false,
       };
       dispatch(searchPaymentHistoryApi(navigate, Data, t, false, false));
-    } catch (error) {
-      console.log(error, "error");
-    }
+    } catch (error) {}
   }, []);
 
   //Extracting the data of payment and Invoice Details
@@ -120,69 +108,9 @@ const Summary = () => {
       if (searchPaymentHistory !== null && searchPaymentHistory !== undefined) {
         setOpenInvoiceRecords(searchPaymentHistory.paymentInfo.paymentHistory);
       }
-    } catch (error) {
-      console.log(error, "errorerror");
-    }
+    } catch (error) {}
   }, [searchPaymentHistory]);
 
-  useEffect(() => {
-    if (
-      VerifyOTPEmailResponseMessage !== "" &&
-      VerifyOTPEmailResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(VerifyOTPEmailResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else if (
-      EnterPasswordResponseMessage !== "" &&
-      EnterPasswordResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(EnterPasswordResponseMessage, "success", setOpen);
-      dispatch(cleareMessage());
-    } else if (
-      OrganizationCreateResponseMessage !== "" &&
-      OrganizationCreateResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(OrganizationCreateResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else if (
-      CreatePasswordResponseMessage !== "" &&
-      CreatePasswordResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(CreatePasswordResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else if (
-      GetSelectedPackageResponseMessage !== "" &&
-      GetSelectedPackageResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(GetSelectedPackageResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else if (
-      EmailValidationResponseMessage !== "" &&
-      EmailValidationResponseMessage !== undefined &&
-      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
-    ) {
-      showMessage(EmailValidationResponseMessage, "success", setOpen);
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [
-    EnterPasswordResponseMessage,
-    VerifyOTPEmailResponseMessage,
-    OrganizationCreateResponseMessage,
-    CreatePasswordResponseMessage,
-    EmailValidationResponseMessage,
-    GetSelectedPackageResponseMessage,
-  ]);
   const closeModal = () => {
     setActivateBlur(false);
     dispatch(setLoader());
@@ -212,7 +140,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {_justShowDateformat(text)}
           </span>
         );
@@ -226,7 +154,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {convertToArabicNumerals(text)}
           </span>
         );
@@ -240,7 +168,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {convertToArabicNumerals(text)}
           </span>
         );
@@ -254,7 +182,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {convertToArabicNumerals(text)}
           </span>
         );
@@ -271,8 +199,6 @@ const Summary = () => {
 
   useEffect(() => {
     try {
-      console.log("lastpaymentDetail", getBillInformation);
-
       if (getBillInformation !== null) {
         let Summary = getBillInformation.accountDetails;
         let lastpaymentDetail = getBillInformation.lastPayment;
@@ -310,11 +236,8 @@ const Summary = () => {
               : "",
         });
       }
-    } catch {
-      console.log("error");
-    }
+    } catch {}
   }, [getBillInformation]);
-  console.log("SummarySummarySummary", rows);
 
   useEffect(() => {
     dispatch(getBillingInformationapi(navigate, t));
@@ -322,7 +245,7 @@ const Summary = () => {
   return (
     <>
       <Fragment>
-        <Container className="mt-3">
+        <Container className='mt-3'>
           <PaymentActivity
             PaymentActivityBoxTitle={t("Summary")}
             PaymentActivityTitle={t("Section-of-account-summary")}
@@ -376,22 +299,19 @@ const Summary = () => {
               sm={12}
               md={12}
               lg={12}
-              className="border-radius-4 border py-3 px-5 mt-3 my-2 bg-white"
-            >
+              className='border-radius-4 border py-3 px-5 mt-3 my-2 bg-white'>
               <Col
                 sm={12}
                 md={12}
                 lg={12}
-                className={styles["PaymentActivitySubtitle"]}
-              >
+                className={styles["PaymentActivitySubtitle"]}>
                 {t("Open-invoice")}
               </Col>
               <Col
                 sm={12}
                 md={12}
                 lg={12}
-                className="Summary-Table-Invoice my-1"
-              >
+                className='Summary-Table-Invoice my-1'>
                 <Table rows={openInvoiceRecords} column={columns} />
               </Col>
             </Col>
@@ -405,17 +325,17 @@ const Summary = () => {
           ButtonTitle={"Block"}
           centered
           size={"md"}
-          modalHeaderClassName="d-none"
+          modalHeaderClassName='d-none'
           ModalBody={
             <>
               <>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
-                      <Col className="d-flex justify-content-center">
+                      <Col className='d-flex justify-content-center'>
                         <img
-                          draggable="false"
-                          alt=""
+                          draggable='false'
+                          alt=''
                           src={VerificationFailedIcon}
                           className={styles["allowModalIcon"]}
                           width={60}
@@ -426,7 +346,7 @@ const Summary = () => {
                       <Col>
                         <label className={styles["deleteModal-message"]}>
                           {t(
-                            "The-organization-subscription-is-not-active-please-contact-your-admin"
+                            "The-organization-subscription-is-not-active-please-contact-your-admin",
                           )}
                         </label>
                       </Col>
@@ -439,13 +359,12 @@ const Summary = () => {
           ModalFooter={
             <>
               <Col sm={12} md={12} lg={12}>
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={styles["Ok-Successfull-btn"]}
                       text={t("Ok")}
@@ -457,8 +376,8 @@ const Summary = () => {
             </>
           }
         />
-        <Notification open={open} setOpen={setOpen} />
       </Fragment>
+      {SnackBar}
     </>
   );
 };

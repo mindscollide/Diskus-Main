@@ -30,18 +30,18 @@ const ComplianceForMe = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
+  // const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
   const { criticalityOptions } = useComplianceContext();
 
   const SearchComplianceForMe = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe
+    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe,
   );
   // const [totalRecords, setTotalRecords] = useState(0);
 
   // Sort State
   const [sortConfig, setSortConfig] = useState({
     key: "dueDate",
-    order: "descend", // default order (optional)
+    order: null, // default order (optional)
   });
 
   // Sort State
@@ -49,7 +49,7 @@ const ComplianceForMe = () => {
   const [dueDateSort, setDueDateSort] = useState("ascend");
   const [authoritySort, setAuthority] = useState(null);
   const [isScroll, setIsScroll] = useState(false);
-  const [statusFilter, setStatusFilter] = useState([]);
+  // const [statusFilter, setStatusFilter] = useState([]);
   const {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
@@ -61,11 +61,20 @@ const ComplianceForMe = () => {
     searchCompliancePayload,
     setSearchCompliancePayload,
     allComplianceStatusForFilter,
+    criticalityFilterForMe,
+    setCriticalityFilterForMe,
+    mainComplianceTabs,
+    statusFilter,
+    setStatusFilter,
   } = useComplianceContext();
-  console.log(
-    { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "setComplianceForMeList"
-  );
+  
+
+  const TAB = {
+    DASHBOARD: 1,
+    BY_ME: 2,
+    FOR_ME: 3,
+    REPORTS: 4,
+  };
 
   useEffect(() => {
     let Data = {
@@ -108,14 +117,25 @@ const ComplianceForMe = () => {
     setIsScroll(false);
   }, [SearchComplianceForMe]);
 
-  // useEffect(() => {
-  //   if (allComplianceStatusForFilter?.length > 0) {
-  //     setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
-  //   }
-  // }, [allComplianceStatusForFilter]);
+  useEffect(() => {
+    if (mainComplianceTabs === TAB.FOR_ME) {
+      setCriticalityFilterForMe([1, 2, 3]);
+      setStatusFilter([]);
+    }
+  }, [mainComplianceTabs]);
+
+  useEffect(() => {
+    if (allComplianceStatusForFilter?.length > 0 && statusFilter.length === 0) {
+      const allStatuses = allComplianceStatusForFilter.map(
+        (s) => s.statusTitle,
+      );
+
+      setStatusFilter(allStatuses);
+    }
+  }, [allComplianceStatusForFilter, statusFilter.length]);
 
   const handleViewCompliance = (record) => {
-    console.log("reached here");
+    
     const Data = {
       complianceId: record.complianceId,
       viewType: 2,
@@ -128,8 +148,8 @@ const ComplianceForMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance
-      )
+        setShowViewCompliance,
+      ),
     );
   };
 
@@ -153,19 +173,19 @@ const ComplianceForMe = () => {
     if (sorter.columnKey === "authorityShortCode") {
       setAuthority(sorter.order);
     }
-    // ✅ Criticality filter
+    //  Criticality filter
     if (filters?.criticality) {
-      setCriticalityFilter(filters.criticality || [1, 2, 3]);
+      setCriticalityFilterForMe(filters.criticality || [1, 2, 3]);
     }
 
-    // ✅ Status filter
+    //  Status filter
     if (filters?.complianceStatusTitle) {
       setStatusFilter(filters.complianceStatusTitle);
     }
   };
 
   const getCriticalityColumnProps = () => ({
-    filteredValue: criticalityFilter, // controlled filter
+    filteredValue: criticalityFilterForMe, // controlled filter
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
       return (
         <div style={{ padding: 8 }}>
@@ -188,7 +208,7 @@ const ComplianceForMe = () => {
               onClick={() => {
                 const all = criticalityOptions.map((c) => c.value);
                 setSelectedKeys(all);
-                setCriticalityFilter(all);
+                setCriticalityFilterForMe(all);
                 confirm();
               }}
             />
@@ -198,7 +218,7 @@ const ComplianceForMe = () => {
               text={t("Ok")}
               className={styles["ResetButtonFilter"]}
               onClick={() => {
-                setCriticalityFilter(selectedKeys);
+                setCriticalityFilterForMe(selectedKeys);
                 confirm();
               }}
             />
@@ -211,7 +231,7 @@ const ComplianceForMe = () => {
   });
 
   const getStatusColumnProps = () => ({
-    filteredValue: statusFilter,
+    filteredValue: statusFilter?.length ? statusFilter : null,
 
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
       return (
@@ -233,7 +253,7 @@ const ComplianceForMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle
+                  (s) => s.statusTitle,
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -276,11 +296,19 @@ const ComplianceForMe = () => {
             ?.toLowerCase()
             .localeCompare(b.authorityShortCode?.toLowerCase());
 
-        case "dueDate":
-          return (
-            getDueDateTimeNumber(a.dueDate, a.dueTime) -
-            getDueDateTimeNumber(b.dueDate, b.dueTime)
-          );
+        case "dueDate": {
+          // ✅ PRIMARY SORT → Due Date
+          const dateA = getDueDateTimeNumber(a.dueDate, a.dueTime);
+          const dateB = getDueDateTimeNumber(b.dueDate, b.dueTime);
+
+          if (dateA !== dateB) {
+            return dateA - dateB;
+          }
+
+          // ✅ SECONDARY SORT → Criticality
+          // High (1) → Medium (2) → Low (3)
+          return a.criticality - b.criticality;
+        }
 
         default:
           return 0;
@@ -295,11 +323,11 @@ const ComplianceForMe = () => {
     const order = isActive ? sortConfig.order : null;
 
     const icon =
-      order === "ascend"
+      order === "descend"
         ? ArrowUpIcon
-        : order === "descend"
-        ? ArrowDownIcon
-        : ArrowDownIcon;
+        : order === "ascend"
+          ? ArrowDownIcon
+          : DefaultSortIcon;
 
     return (
       <img
@@ -310,10 +338,6 @@ const ComplianceForMe = () => {
           e.stopPropagation();
 
           setSortConfig((prev) => {
-            if (prev.key !== columnKey) {
-              return { key: columnKey, order: "ascend" };
-            }
-
             if (prev.order === "ascend") {
               return { key: columnKey, order: "descend" };
             }
@@ -388,8 +412,8 @@ const ComplianceForMe = () => {
             {renderSortIcon("dueDate")}
           </span>
         ),
-        dataIndex: "DueDate",
-        key: "DueDate",
+        dataIndex: "dueDate",
+        key: "dueDate",
         width: "10%",
         ellipsis: true,
         align: "center",
@@ -447,7 +471,7 @@ const ComplianceForMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ]
+    ],
   );
 
   useAntTableScrollBottomVirtual(() => {
@@ -472,15 +496,15 @@ const ComplianceForMe = () => {
           rows={sortedComplianceList}
           column={columns}
           className={"Compliance_Table mt-3"}
-          scroll={{ x: "scroll", y: 550 }}
+          scroll={{ x: "scroll", y: 520 }}
           pagination={false}
           onChange={(pagination, filters) => {
             if (filters?.criticality) {
-              setCriticalityFilter(filters.criticality || [1, 2, 3]);
+              setCriticalityFilterForMe(filters.criticality || [1, 2, 3]);
             }
 
-            if (filters?.complianceStatusTitle) {
-              setStatusFilter(filters.complianceStatusTitle);
+            if (filters?.status) {
+              setStatusFilter(filters.status);
             }
           }}
         />

@@ -29,7 +29,7 @@ import { LoginHistoryReport } from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
 import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Reports = () => {
@@ -50,11 +50,7 @@ const Reports = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchText, setSearchText] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [isIpAddressValid, setIsIpAddressValid] = useState(false);
   const [userLoginHistorySearch, setUserLoginHistorySearch] = useState({
     userName: "",
@@ -209,7 +205,7 @@ const Reports = () => {
       key: "dateLogOut",
       align: "center",
       render: (text, record) => {
-        console.log(text, "dateLogOutdateLogOutdateLogOut");
+        
 
         return (
           <>
@@ -262,8 +258,8 @@ const Reports = () => {
       align: "center",
       key: "loggedInFromIP",
       render: (text, record) => {
-        console.log(typeof text, "texttexttext");
-        console.log(text, "texttexttext");
+        
+        
 
         return (
           <>
@@ -302,7 +298,7 @@ const Reports = () => {
   const handleChangeSearchBoxValues = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log({ name, value }, "handleChangeSearchBoxValues");
+    
 
     // For userName or Title, ensure only letters and whitespace are allowed
     if (name === "userName" || name === "Title") {
@@ -449,7 +445,7 @@ const Reports = () => {
         Title: "",
       });
     } catch (error) {
-      console.log(error, "userLoginHistorySearchuserLoginHistorySearch");
+      
     }
   };
 
@@ -487,13 +483,13 @@ const Reports = () => {
     if (
       !validateEmailEnglishAndArabicFormat(userLoginHistorySearch.userEmail)
     ) {
-      showMessage(t("Email-is-not-valid"), "error", setOpen);
+      show(t("Email-is-not-valid"), "error");
     } else {
     }
   };
 
   const handleSearches = (data, fieldName) => {
-    console.log(data, fieldName, "datadatadatahandleSearches");
+    
     setUserLoginHistorySearch({
       ...userLoginHistorySearch,
       [fieldName]: "",
@@ -513,7 +509,7 @@ const Reports = () => {
       sRow: 0,
       Length: 10,
     };
-    console.log(Data, "consoleconsole");
+    
     dispatch(userLoginHistory_Api(navigate, t, Data, true));
   };
 
@@ -878,7 +874,8 @@ const Reports = () => {
           </span>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </Fragment>
   );
 };

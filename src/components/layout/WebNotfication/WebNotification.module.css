@@ -23,7 +23,8 @@ body[dir="rtl"] .WebNotificationOuterBox {
 }
 
 .WebNotificationOuterBox {
-  height: 75vh !important;
+  height: auto;
+  max-height: 500px !important;
   overflow-x: hidden !important;
 }
 

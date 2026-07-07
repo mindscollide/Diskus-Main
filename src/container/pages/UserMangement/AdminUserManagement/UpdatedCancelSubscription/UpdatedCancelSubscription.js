@@ -43,7 +43,7 @@ const UpdatedCancelSubscription = () => {
     try {
       dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, []);
 
@@ -56,7 +56,7 @@ const UpdatedCancelSubscription = () => {
         setCancelSubscription(data.organizationSubscriptions);
       }
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
@@ -73,7 +73,7 @@ const UpdatedCancelSubscription = () => {
       }
       return total;
     } catch (error) {
-      console.error(error);
+      
     }
   }, 0);
 
@@ -91,7 +91,7 @@ const UpdatedCancelSubscription = () => {
         }
         return total;
       } catch (error) {
-        console.error(error);
+        
       }
     },
     0
@@ -110,7 +110,7 @@ const UpdatedCancelSubscription = () => {
       }
       return total;
     } catch (error) {
-      console.error(error);
+      
     }
   }, 0);
 
@@ -147,7 +147,7 @@ const UpdatedCancelSubscription = () => {
         }
         return total;
       } catch (error) {
-        console.error(error);
+        
       }
     }, 0);
 
@@ -196,7 +196,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -232,7 +232,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -264,7 +264,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -293,7 +293,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -335,7 +335,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -380,7 +380,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -422,7 +422,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -489,7 +489,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },
@@ -523,7 +523,7 @@ const UpdatedCancelSubscription = () => {
             );
           }
         } catch (error) {
-          console.error(error);
+          
         }
       },
     },

@@ -3,8 +3,12 @@ import styles from "./TwoFactorVerifyUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../commen/featureFlags";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { Button, CustomRadio2 } from "../../../../components/elements";
+import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
+
+import { Button } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import img5 from "../../../../assets/images/5.png";
 import img10 from "../../../../assets/images/10.png";
@@ -12,7 +16,6 @@ import img2 from "../../../../assets/images/2.png";
 import img3 from "../../../../assets/images/3.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { sendTwoFacAction } from "../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Helper from "../../../../commen/functions/history_logout";
@@ -27,19 +30,18 @@ const TwoFactorVerifyUM = () => {
   const { t } = useTranslation();
   const [twoFactorMethod, setTwoFactorMethod] = useState(null);
   // values: "sms" | "email"
-
-  const [sendCodeEmailPhone, setSendCodeEmailPhone] = useState(false);
-  const [sendCodeEmail, setSendCodeEmail] = useState(false);
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
+  );
 
   const onChangeHandlerTwoFactor = (value) => {
     setTwoFactorMethod(value);
   };
 
   //onChange For Email
-  const onChangeHandlerSendEmail = (e) => {
-    setSendCodeEmail(true);
-    setSendCodeEmailPhone(false);
-  };
 
   // translate Languages start
   const languages = [
@@ -47,13 +49,6 @@ const TwoFactorVerifyUM = () => {
     { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
-
-  const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
-  );
-  const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
-  );
 
   const currentLocale = Cookies.get("i18next") || "en";
 
@@ -80,7 +75,7 @@ const TwoFactorVerifyUM = () => {
     };
 
     localStorage.setItem("GobackSelection", 1);
-    dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
+    dispatch(sendTwoFacAction(t, navigate, Data,));
   };
 
   let newClient = Helper.socket;
@@ -98,8 +93,6 @@ const TwoFactorVerifyUM = () => {
   //handle Go Back Button
 
   const handleGoBackButton = () => {
-    console.log("goback");
-
     localStorage.setItem("LoginFlowPageRoute", 2);
     dispatch(LoginFlowRoutes(2));
   };
@@ -107,7 +100,7 @@ const TwoFactorVerifyUM = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -117,37 +110,36 @@ const TwoFactorVerifyUM = () => {
             lg={5}
             md={5}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <span className={styles["Two_fac_auth_paper"]}>
               <Row>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className="d-flex justify-content-center "
-                >
+                  className='d-flex justify-content-center '>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={
-                      localStorage.getItem("i18nextLng") === "ar"
-                        ? DiskusLogoArabic
-                        : DiskusLogo
+                      PSO_LOGO
+                        ? PSOLogo
+                        : localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
                     }
-                    alt="diskus_logo"
-                    width={220}
+                    alt='diskus_logo'
+                    width={PSO_LOGO ? 120 : 220}
                   />
                 </Col>
               </Row>
 
               <Form>
-                <Row className="my-0">
+                <Row className='my-0'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center flex-column "
-                  >
+                    className='d-flex justify-content-center flex-column '>
                     <h3 className={styles["VerifyHeadingtwofac"]}>
                       {t("2fa-verification")}
                     </h3>
@@ -157,35 +149,34 @@ const TwoFactorVerifyUM = () => {
                   </Col>
                 </Row>
 
-                <Row className="mt-3">
-                  <Col sm={12} md={12} lg={12} className="w-100">
+                <Row className='mt-3'>
+                  <Col sm={12} md={12} lg={12} className='w-100'>
                     <CustomRadioGroup
                       value={twoFactorMethod}
-                      className="cursor-pointer"
+                      className='cursor-pointer'
                       onChange={(e) => onChangeHandlerTwoFactor(e.target.value)}
                       is2FA={true}
                       options={[
                         {
                           label: (
-                            <div className="d-flex justify-content-start mb-2 align-items-center gap-2">
+                            <div className='d-flex justify-content-start mb-2 align-items-center gap-2'>
                               <img
-                                draggable="false"
-                                width="15px"
+                                draggable='false'
+                                width='15px'
                                 className={
                                   twoFactorMethod !== "sms"
                                     ? styles["two_fac_image"]
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img10}
-                                alt=""
+                                alt=''
                               />
                               <span
                                 className={
                                   twoFactorMethod === "sms"
                                     ? styles["EmailLabeltwofacboth"]
                                     : styles["EmailLabeltwofacboth_active"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-sms")}
                               </span>
                             </div>
@@ -194,25 +185,24 @@ const TwoFactorVerifyUM = () => {
                         },
                         {
                           label: (
-                            <div className="d-flex justify-content-start align-items-center gap-2">
+                            <div className='d-flex justify-content-start align-items-center gap-2'>
                               <img
-                                draggable="false"
-                                width="17px"
+                                draggable='false'
+                                width='17px'
                                 src={img5}
                                 className={
                                   twoFactorMethod !== "email"
                                     ? styles["two_fac_image"]
                                     : styles["two_fac_image_active"]
                                 }
-                                alt=""
+                                alt=''
                               />
                               <span
                                 className={
                                   twoFactorMethod === "email"
                                     ? styles["sendCodeEmail"]
                                     : styles["sendCodeEmail_active"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-email")}
                               </span>
                             </div>
@@ -286,56 +276,62 @@ const TwoFactorVerifyUM = () => {
                     /> */}
                   </Col>
                 </Row>
-                <Row className="mt-5 d-flex justify-content-center">
+                <Row className='mt-5 d-flex justify-content-center'>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       text={t("Verify").toUpperCase()}
                       onClick={onClickHnadler}
                       disableBtn={!twoFactorMethod}
-                      iconClass="d-none"
-                      pdfIconClass="d-none"
+                      iconClass='d-none'
+                      pdfIconClass='d-none'
                       className={styles["Next_button_EmailVerifyForTwoFac"]}
-                      align="center"
+                      align='center'
                     />
                   </Col>
                 </Row>
               </Form>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className={styles["forogt_email_link"]}
-                >
-                  <span className="cursor-pointer" onClick={handleGoBackButton}>
+                  className={styles["forogt_email_link"]}>
+                  <span className='cursor-pointer' onClick={handleGoBackButton}>
                     {t("Go-back")}
                   </span>
                 </Col>
               </Row>
             </span>
           </Col>
-          <Col md={7} lg={7} sm={12} className="p-0">
+          <Col md={7} lg={7} sm={12} className='p-0'>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img2}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["phone-image"]}
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img3}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["Auth_Icon"]}
                 />
+                {PSO_LOGO && (
+                  <img
+                    src={PSOPowerdBy}
+                    alt=''
+                    draggable='false'
+                    className={styles["PoweredIcon_Diskus_Icon"]}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

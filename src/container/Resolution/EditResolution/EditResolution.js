@@ -58,7 +58,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../commen/functions/utils";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
@@ -99,17 +99,13 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
   const [attachments, setAttachments] = useState([]);
 
   const [isVoter, setVoter] = useState(true);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const [votingMethods, setVotingMethods] = useState([]);
   const [decision, setDecision] = useState({
     label: t("Decision-pending"),
@@ -169,10 +165,7 @@ const EditResolution = ({ setCancelresolution }) => {
     date: "",
     time: "",
   });
-  console.log(
-    { circulationDateTime, votingDateTime, decisionDateTime },
-    "circulationDateTimecirculationDateTimecirculationDateTime"
-  );
+  
   const [ReminderFrequncyValue, setReminderFrequencyValue] = useState({
     label: "",
     value: 0,
@@ -220,10 +213,7 @@ const EditResolution = ({ setCancelresolution }) => {
     ResolutionStatus: "",
   });
 
-  console.log(
-    editResolutionData.FK_ResolutionStatusID,
-    "FK_ResolutionStatusID"
-  );
+  
 
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t, true));
@@ -386,14 +376,10 @@ const EditResolution = ({ setCancelresolution }) => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(t("This-voter-already-exist"), "error", setOpen);
+                show(t("This-voter-already-exist"), "error");
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
             }
           }
         } else if (voterInfo.type === 2) {
@@ -440,18 +426,10 @@ const EditResolution = ({ setCancelresolution }) => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("User-already-exist-voter-list"),
-                  "error",
-                  setOpen
-                );
+                show(t("User-already-exist-voter-list"), "error");
               }
             } else {
-              showMessage(
-                t("User-already-exist-non-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("User-already-exist-non-voter-list"), "error");
             }
           }
         } else if (voterInfo.type === 3) {
@@ -480,22 +458,14 @@ const EditResolution = ({ setCancelresolution }) => {
                 });
               }
             } else {
-              showMessage(
-                t("This-user-already-exist-in-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("This-user-already-exist-in-voter-list"), "error");
             }
           } else {
-            showMessage(
-              t("This-voter-is-already-exist-in-non-voter-list"),
-              "error",
-              setOpen
-            );
+            show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setVoters(voters_Data);
@@ -560,15 +530,11 @@ const EditResolution = ({ setCancelresolution }) => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("This-voter-is-already-exist-in-non-voter-list"),
-                  "error",
-                  setOpen
-                );
+                show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
                 console.log("user Already Non Voter List");
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              show(t("This-voter-already-exist"), "error");
             }
           }
         } else if (nonVoterInfo.type === 2) {
@@ -614,14 +580,10 @@ const EditResolution = ({ setCancelresolution }) => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("This-voter-is-already-exist-in-non-voter-list"),
-                  "error",
-                  setOpen
-                );
+                show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              show(t("This-voter-already-exist"), "error");
             }
           }
         } else if (nonVoterInfo.type === 3) {
@@ -649,18 +611,14 @@ const EditResolution = ({ setCancelresolution }) => {
                 });
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen
-              );
+              show(t("This-voter-is-already-exist-in-non-voter-list"), "error");
             }
           } else {
-            showMessage(t("This-voter-already-exist"), "error", setOpen);
+            show(t("This-voter-already-exist"), "error");
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setNonVoters(nonVotersData);
@@ -751,7 +709,7 @@ const EditResolution = ({ setCancelresolution }) => {
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-10-files"), "error");
         return;
       }
 
@@ -767,15 +725,11 @@ const EditResolution = ({ setCancelresolution }) => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             displayAttachmentName: fileData.name,
@@ -833,7 +787,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataDataData");
+      
       dispatch(createResolution(navigate, Data, voters, t));
     } else {
       setsendStatus(2);
@@ -868,7 +822,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataDataData");
+      
 
       dispatch(createResolution(navigate, Data, voters, t));
     }
@@ -908,7 +862,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataData");
+      
       dispatch(createResolution(navigate, Data, voters, t));
     } else {
       setsendStatus(1);
@@ -943,7 +897,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataData");
+      
 
       dispatch(createResolution(navigate, Data, voters, t));
     }
@@ -976,7 +930,7 @@ const EditResolution = ({ setCancelresolution }) => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      show(t("Please-fill-all-the-fields"), "error");
     }
   };
 
@@ -1018,7 +972,7 @@ const EditResolution = ({ setCancelresolution }) => {
         documentsUploadCall(folderIDCreated);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducerupdateResolutionDataroom]);
 
@@ -1206,7 +1160,7 @@ const EditResolution = ({ setCancelresolution }) => {
     try {
       let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
       if (newOrganizersData !== null && newOrganizersData !== undefined) {
-        console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+        
         let temp = [];
         let usersData = [];
         if (Object.keys(newOrganizersData).length > 0) {
@@ -1317,7 +1271,7 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducergetAllCommitteesAndGroups]);
   // Get Voting Methods
@@ -1334,16 +1288,9 @@ const EditResolution = ({ setCancelresolution }) => {
         setVotingMethods(newArr);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducerGetAllVotingMethods]);
-
-  useEffect(() => {
-    if (ResolutionReducerResponseMessage !== "") {
-      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
-      dispatch(clearResponseMessage());
-    }
-  }, [ResolutionReducerResponseMessage]);
 
   useEffect(() => {
     try {
@@ -1539,7 +1486,7 @@ const EditResolution = ({ setCancelresolution }) => {
     } else {
     }
   };
-  console.log({ decisionDateTime }, "votingDateTime");
+  
 
   //Custom Input For Time selectors
   function CustomInput({ onFocus, value, onChange }) {
@@ -2568,7 +2515,8 @@ const EditResolution = ({ setCancelresolution }) => {
           setResolutionupdated={setResolutionUpdateSuccessfully}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

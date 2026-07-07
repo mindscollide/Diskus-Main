@@ -50,55 +50,55 @@ const userLogOutApiFunc = (navigate, t) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_AuthManager_LogOut_01".toLowerCase()
+                    "ERM_AuthService_AuthManager_LogOut_01".toLowerCase(),
                   )
               ) {
-                await dispatch(userlogOutSuccess(null, t("Successful")));
+                await dispatch(userlogOutSuccess(null, ""));
                 dispatch(showUpgradeNowModal(false));
-                await signOut(t("Successful"), dispatch);
+                await signOut("", dispatch);
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_AuthManager_LogOut_02".toLowerCase()
+                    "ERM_AuthService_AuthManager_LogOut_02".toLowerCase(),
                   )
               ) {
-                await signOut(t("Successful"), dispatch);
+                await signOut("", dispatch);
                 dispatch(userlogOutFailed(t("Invalid Token")));
                 dispatch(showUpgradeNowModal(true));
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_AuthManager_LogOut_03".toLowerCase()
+                    "ERM_AuthService_AuthManager_LogOut_03".toLowerCase(),
                   )
               ) {
-                await signOut(t("Successful"), dispatch);
+                await signOut("", dispatch);
                 dispatch(userlogOutFailed(t("Something-went-wrong")));
                 dispatch(showUpgradeNowModal(true));
               } else {
-                await signOut(t("Successful"), dispatch);
+                await signOut("", dispatch);
                 dispatch(userlogOutFailed(t("Something-went-wrong")));
                 dispatch(showUpgradeNowModal(true));
               }
             } else {
-              await signOut(t("Successful"), dispatch);
+              await signOut("", dispatch);
               dispatch(userlogOutFailed(t("Something-went-wrong")));
               dispatch(showUpgradeNowModal(true));
             }
           } else {
-            console.log("CHecing");
+            
             dispatch(userlogOutFailed(t("Something-went-wrong")));
-            await signOut(t("Successful"), dispatch);
+            await signOut("", dispatch);
             dispatch(showUpgradeNowModal(false));
           }
         })
         .catch(async (response) => {
           dispatch(userlogOutFailed(t("Something-went-wrong")));
-          await signOut(t("Successful"), dispatch);
+          await signOut("", dispatch);
         });
     } catch (error) {
-      console.log(error);
+      
     }
   };
 };
@@ -109,14 +109,14 @@ export const signOut = async (message, dispatch) => {
   window.location.href = "/";
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
-    localStorage.getItem("remeberPassword")
+    localStorage.getItem("remeberPassword"),
   );
   let reLang = localStorage.getItem("i18nextLng");
   if (RememberEmailLocal === true && RememberPasswordLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
     let RememberPasswordLocalValue = localStorage.getItem(
-      "rememberPasswordValue"
+      "rememberPasswordValue",
     );
 
     localStorage.clear();
@@ -139,7 +139,7 @@ export const signOut = async (message, dispatch) => {
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
   } else if (RememberPasswordLocal === true) {
     let RememberPasswordLocalValue = localStorage.getItem(
-      "rememberPasswordValue"
+      "rememberPasswordValue",
     );
 
     localStorage.clear();

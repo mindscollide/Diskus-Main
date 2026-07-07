@@ -64,7 +64,7 @@ import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import Stats from "../../NewDashboardLayout/Stats/Stats";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -87,11 +87,7 @@ const Home = () => {
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
   const [upComingEvents, setUpComingEvents] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [notify, SnackBar] = useSnackbar();
 
   //For Calendar
   const dispatch = useDispatch();
@@ -346,7 +342,7 @@ const Home = () => {
       ) {
         let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
         updateCalendarData(true, meetingID);
-        console.log("upComingEvents");
+        
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -389,7 +385,7 @@ const Home = () => {
             return eventData;
           })
         );
-        console.log("upComingEvents", events);
+        
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             if (
@@ -615,7 +611,7 @@ const Home = () => {
         }
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
   //  Set Upcoming Events
@@ -642,7 +638,7 @@ const Home = () => {
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
-        console.log("upComingEvents", upComingEvents);
+        
         setUpComingEvents([]);
       }
     } catch (error) {
@@ -786,82 +782,6 @@ const Home = () => {
     Authreducer.ResponseMessage,
   ]);
 
-  useEffect(() => {
-    if (
-      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        Authreducer.CreatePasswordResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        Authreducer.EmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    }
-  }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
-  ]);
-
   const calendarClickFunction = async (value) => {
     //
     if (!dates.includes(value)) {
@@ -909,11 +829,11 @@ const Home = () => {
           // dispatch(getMeetingStatusfromSocket(null));
           dispatch(mqttCurrentMeetingEnded(null));
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
@@ -994,7 +914,7 @@ const Home = () => {
           }
         });
       } else {
-        showMessage(t("No-events-available-on-this-date"), "error", setOpen);
+        notify(t("No-events-available-on-this-date"), "error");
       }
     }
   };
@@ -1093,12 +1013,7 @@ const Home = () => {
           <Col lg={4} md={4} sm={12} className="m-0 "></Col>
         </Row>
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+    
       {show ? (
         <ModalMeeting
           show={show}
@@ -1190,8 +1105,9 @@ const Home = () => {
           setViewFlagToDo={setTodoViewModal}
         />
       ) : showTodo ? (
-        <ModalToDoList show={showTodo} setShow={setShowTodo} />
+        <ModalToDoList showModal={showTodo} setShow={setShowTodo} />
       ) : null}
+    {SnackBar}
     </>
   );
 };

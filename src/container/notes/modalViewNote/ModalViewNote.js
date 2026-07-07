@@ -57,7 +57,7 @@ const ModalViewNote = ({
   useEffect(() => {
     try {
       if (GetNotesByNotesId && GetNotesByNotesId !== null) {
-        console.log(GetNotesByNotesId, "GetNotesByNotesId");
+        
         setNotesData({
           ...notesData,
           date: GetNotesByNotesId.date,
@@ -78,7 +78,7 @@ const ModalViewNote = ({
         });
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [GetNotesByNotesId]);
 
@@ -86,7 +86,7 @@ const ModalViewNote = ({
   useEffect(() => {
     try {
       if (RetrieveDocsNotes && RetrieveDocsNotes !== null) {
-        console.log(RetrieveDocsNotes, "notesAttachments");
+        
         setAttachments(RetrieveDocsNotes.data);
       }
     } catch (error) {}
@@ -196,7 +196,7 @@ const ModalViewNote = ({
                 <Row>
                   {attachments.length > 0
                     ? attachments.map((data, index) => {
-                        console.log(data, "datav");
+                        
                         return (
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer

@@ -11,7 +11,10 @@ import {
   newTimeFormaterAsPerUTCFullDate,
 } from "../../../commen/functions/date_formater";
 import noTask from "../../../assets/images/DashBoardTask.svg";
-import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
+import {
+  dashboardCalendarEvent,
+  meetingAgendaContributorRemoved,
+} from "../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -27,24 +30,26 @@ const Events = () => {
 
   const [showMoreEventModal, setShowMoreEventModal] = useState(false);
   const UpcomingEventsDataReducerData = useSelector(
-    (state) => state.meetingIdReducer.UpcomingEventsData
+    (state) => state.meetingIdReducer.UpcomingEventsData,
   );
-
+  const mqttMeetingAcRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+  );
   const userProfileData = useSelector(
-    (state) => state.settingReducer?.UserProfileData
+    (state) => state.settingReducer?.UserProfileData,
   );
   const MQTTUpcomingEvents = useSelector(
-    (state) => state.meetingIdReducer.MQTTUpcomingEvents
+    (state) => state.meetingIdReducer.MQTTUpcomingEvents,
   );
 
   const MeetingStatusSocket = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusSocket
+    (state) => state.meetingIdReducer.MeetingStatusSocket,
   );
   const MeetingStatusEnded = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusEnded
+    (state) => state.meetingIdReducer.MeetingStatusEnded,
   );
   const removeUpcomingEvents = useSelector(
-    (state) => state.NewMeetingreducer.removeUpcomingEventMeeting
+    (state) => state.NewMeetingreducer.removeUpcomingEventMeeting,
   );
   const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
 
@@ -69,10 +74,7 @@ const Events = () => {
     try {
       if (UpcomingEventsDataReducerData?.upcomingEvents.length > 0) {
         setIsShowMore(UpcomingEventsDataReducerData?.isMoreAvailable);
-        console.log(
-          UpcomingEventsDataReducerData,
-          "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
-        );
+
         // Create a new array with updated objects without mutating the original state
         const updatedUpcomingEvents =
           UpcomingEventsDataReducerData.upcomingEvents.map((event) => {
@@ -88,15 +90,9 @@ const Events = () => {
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
-        console.log("upComingEvents", upComingEvents);
         setUpComingEvents([]);
       }
     } catch (error) {
-      console.log(
-        error,
-        "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
-      );
-
       // Log any errors for debugging
     }
   }, [UpcomingEventsDataReducerData]);
@@ -118,14 +114,11 @@ const Events = () => {
   useEffect(() => {
     try {
       if (MQTTUpcomingEvents) {
-        console.log("upComingEventsmqtt", upComingEvents);
-        console.log("upComingEventsmqtt", MQTTUpcomingEvents);
-
         // Ensure no duplicates by filtering out any existing record with the same pK_MDID
         let filteredEvents = upComingEvents.filter(
           (event) =>
             event.meetingDetails.pK_MDID !==
-            MQTTUpcomingEvents.meetingDetails.pK_MDID
+            MQTTUpcomingEvents.meetingDetails.pK_MDID,
         );
 
         // Add new or replaced MQTT event
@@ -136,7 +129,7 @@ const Events = () => {
           .sort(
             (a, b) =>
               parseInt(a.meetingEvent.startTime) -
-              parseInt(b.meetingEvent.startTime)
+              parseInt(b.meetingEvent.startTime),
           )
           .slice(0, 3); // Keep only the 3 earliest meetings Sort by startTime
 
@@ -150,7 +143,7 @@ const Events = () => {
             !filteredEvents.some(
               (event) =>
                 event.meetingDetails.pK_MDID ===
-                newMQTTData.meetingDetails.pK_MDID
+                newMQTTData.meetingDetails.pK_MDID,
             )
           ) {
             filteredEvents.push(newMQTTData);
@@ -159,11 +152,8 @@ const Events = () => {
 
         // Update state with the final, filtered, sorted events
         setUpComingEvents(filteredEvents);
-        console.log("Final updated events:", filteredEvents);
       }
-    } catch (error) {
-      console.error("Error processing MQTT data:", error);
-    }
+    } catch (error) {}
   }, [MQTTUpcomingEvents]);
 
   useEffect(() => {
@@ -177,8 +167,9 @@ const Events = () => {
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
-              Number(meetingData?.meetingDetails?.pK_MDID) !== Number(meetingID)
-          )
+              Number(meetingData?.meetingDetails?.pK_MDID) !==
+              Number(meetingID),
+          ),
         );
       } else if (
         MeetingStatusSocket.message
@@ -196,7 +187,7 @@ const Events = () => {
               meetingData.meetingDetails.statusID = 10;
             }
             return meetingData; // Return the meeting data whether modified or not
-          })
+          }),
         );
       }
 
@@ -215,12 +206,9 @@ const Events = () => {
         let findReminingMinutesAgo = settingConfigurations.find(
           (remainsData, index) =>
             remainsData?.configKey?.toLowerCase() ===
-            "Join_Meeting_Before_Minutes".toLowerCase()
+            "Join_Meeting_Before_Minutes".toLowerCase(),
         );
-        console.log(
-          findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo"
-        );
+
         if (findReminingMinutesAgo !== undefined) {
           setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
         }
@@ -228,9 +216,26 @@ const Events = () => {
     }
   }, [userProfileData]);
 
+  useEffect(() => {
+    if (mqttMeetingAcRemoved !== null) {
+      try {
+        const { pK_MDID } = mqttMeetingAcRemoved;
+
+        setUpComingEvents((prev) => {
+          return prev.filter(
+            (data) => Number(data.pK_MDID) !== Number(pK_MDID),
+          );
+        });
+        dispatch(meetingAgendaContributorRemoved(null));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [mqttMeetingAcRemoved]);
+
   const meetingDashboardCalendarEvent = (data, val) => {
     // Create a shallow copy of the data object to prevent mutation
-    console.log("startMeetingRequest", data);
+
     const dashboardData = {
       isPrimaryOrganizer: data.isPrimaryOrganizer,
       isMinutePublished: data.meetingDetails.isMinutePublished,
@@ -248,8 +253,11 @@ const Events = () => {
       calenderEventSource: "Diskus",
       calenderEventType: "Meeting",
       timeZone: "Asia/Karachi",
-      statusID: data.meetingDetails.statusID,
+      status: data.meetingDetails.statusID,
       participantRoleID: data.participantRoleID,
+      isAgendaContributor: data.participantRoleID === 4 ? true : false,
+      isOrganizer: data.participantRoleID === 1 ? true : false,
+      isParticipant: data.participantRoleID === 2 ? true : false,
       isQuickMeeting: data.meetingDetails.isQuickMeeting,
       isChat: data.meetingDetails.isChat,
       isVideoCall: data.meetingDetails.isVideoCall,
@@ -257,24 +265,12 @@ const Events = () => {
       talkGroupID: data.talkGroupID,
       IsViewOpenOnly: val === 1 ? true : false,
     };
-    console.log("startMeetingRequest", dashboardData);
-    setEditorRole({
-      status: String(data.meetingDetails.statusID),
-      role:
-        data.participantRoleID === 2
-          ? "Participant"
-          : data.participantRoleID === 4
-          ? "Agenda Contributor"
-          : "Organizer",
-      isPrimaryOrganizer: false,
-    });
+
     // Dispatch and navigate with no mutation
     dispatch(dashboardCalendarEvent({ ...dashboardData }));
     navigate("/Diskus/Meeting");
   };
   const upcomingEventsHandler = (upComingEvents) => {
-    console.log("upComingEvents", upComingEvents);
-
     // Separate today's meetings and upcoming meetings
     const todaysMeetings = [];
     const upcomingMeetings = [];
@@ -282,12 +278,11 @@ const Events = () => {
     try {
       upComingEvents.forEach((upcomingEventsData) => {
         if (!upcomingEventsData?.meetingEvent) {
-          console.warn("DataIsMissing", upcomingEventsData);
           return;
         }
 
         const { isSame } = isSameAsToday(
-          `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
+          `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`,
         );
 
         if (isSame) {
@@ -296,9 +291,7 @@ const Events = () => {
           upcomingMeetings.push(upcomingEventsData);
         }
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
 
     // Render all meetings (today's first, then upcoming)
     return (
@@ -315,7 +308,7 @@ const Events = () => {
             currentUTCDateTime.substring(6, 8), // Day
             currentUTCDateTime.substring(8, 10), // Hours
             currentUTCDateTime.substring(10, 12), // Minutes
-            currentUTCDateTime.substring(12, 14) // Seconds
+            currentUTCDateTime.substring(12, 14), // Seconds
           );
 
           const meetingDateObj = new Date(
@@ -324,7 +317,7 @@ const Events = () => {
             meetingDateTime.substring(6, 8), // Day
             meetingDateTime.substring(8, 10), // Hours
             meetingDateTime.substring(10, 12), // Minutes
-            meetingDateTime.substring(12, 14) // Seconds
+            meetingDateTime.substring(12, 14), // Seconds
           );
 
           const timeDifference = meetingDateObj - currentDateObj;
@@ -349,7 +342,7 @@ const Events = () => {
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
                       upcomingEventsData.meetingEvent.startTime,
-                    currentLanguage
+                    currentLanguage,
                   )}
                 </p>
               </div>
@@ -365,7 +358,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -378,7 +371,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -389,7 +382,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData, 1);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                     className={styles["TodayViewMeetingButtonStyles"]}
@@ -404,7 +397,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -416,7 +409,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -428,7 +421,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -440,7 +433,7 @@ const Events = () => {
                     meetingDashboardCalendarEvent(upcomingEventsData, 1);
                     localStorage.setItem(
                       "meetingTitle",
-                      upcomingEventsData.meetingDetails.title
+                      upcomingEventsData.meetingDetails.title,
                     );
                   }}
                   className={styles["TodayViewMeetingButtonStyles"]}
@@ -467,7 +460,7 @@ const Events = () => {
             currentUTCDateTime.substring(6, 8), // Day
             currentUTCDateTime.substring(8, 10), // Hours
             currentUTCDateTime.substring(10, 12), // Minutes
-            currentUTCDateTime.substring(12, 14) // Seconds
+            currentUTCDateTime.substring(12, 14), // Seconds
           );
 
           const meetingDateObj = new Date(
@@ -476,7 +469,7 @@ const Events = () => {
             meetingDateTime.substring(6, 8), // Day
             meetingDateTime.substring(8, 10), // Hours
             meetingDateTime.substring(10, 12), // Minutes
-            meetingDateTime.substring(12, 14) // Seconds
+            meetingDateTime.substring(12, 14), // Seconds
           );
 
           const timeDifference = meetingDateObj - currentDateObj;
@@ -507,7 +500,7 @@ const Events = () => {
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
                       upcomingEventsData.meetingEvent.startTime,
-                    currentLanguage
+                    currentLanguage,
                   )}
                 </p>
               </div>
@@ -523,7 +516,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -536,7 +529,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -547,7 +540,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData, 1);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                     className={styles["ViewMeetingButtonStyles"]}
@@ -562,7 +555,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -574,7 +567,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -586,7 +579,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                   />
@@ -597,7 +590,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData, 1);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.title,
                       );
                     }}
                     className={styles["ViewMeetingButtonStyles"]}
@@ -610,7 +603,7 @@ const Events = () => {
                     meetingDashboardCalendarEvent(upcomingEventsData, 1);
                     localStorage.setItem(
                       "meetingTitle",
-                      upcomingEventsData.meetingDetails.title
+                      upcomingEventsData.meetingDetails.title,
                     );
                   }}
                   className={styles["ViewMeetingButtonStyles"]}
@@ -628,7 +621,7 @@ const Events = () => {
     );
   };
   // const upcomingEventsHandler = (upComingEvents) => {
-  //   console.log("upComingEvents", upComingEvents);
+  //
   //   // First find if there are any meetings happening today
   //   let todayMeeting;
   //   try {
@@ -640,9 +633,9 @@ const Events = () => {
   //       return isSame;
   //     });
   //   } catch (error) {
-  //     console.log(error);
+  //
   //   }
-  //   console.log(todayMeeting, "todayMeetingtodayMeeting")
+  //
   //   let flag = false;
   //   let indexforUndeline = null;
   //   try {
@@ -656,14 +649,14 @@ const Events = () => {
   //       }
   //     });
   //   } catch (error) {
-  //     console.log(error);
+  //
   //   }
 
   //   return upComingEvents.map((upcomingEventsData, index) => {
-  //     console.log(upcomingEventsData, "upcomingEventsData");
+  //
 
   //     if (!upcomingEventsData?.meetingEvent) {
-  //       console.warn("DataIsMissing", upcomingEventsData);
+  //
   //       return null;
   //     }
   //     let meetingDateTime =
@@ -700,7 +693,7 @@ const Events = () => {
   //     let { isSame } = isSameAsToday(
   //       `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
   //     );
-  //     console.log(isSame, "isSameisSame");
+  //
   //     return (
   //       <>
   //         {isSame ? (
@@ -981,13 +974,9 @@ const Events = () => {
           });
 
           dispatch(mqttCurrentMeetingEnded(null));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [MeetingStatusEnded]);
 
   useEffect(() => {
@@ -1011,7 +1000,7 @@ const Events = () => {
       IsShowMore: true,
     };
     dispatch(
-      GetUpcomingEvents(navigate, Data2, t, true, setShowMoreEventModal)
+      GetUpcomingEvents(navigate, Data2, t, true, setShowMoreEventModal),
     );
   };
   return (

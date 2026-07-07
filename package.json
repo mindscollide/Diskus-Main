@@ -18,6 +18,7 @@
     "@pdftron/webviewer": "^11.10.0",
     "@popperjs/core": "^2.11.6",
     "@react-oauth/google": "^0.11.0",
+    "@react-pdf/renderer": "^4.5.1",
     "@reactour/mask": "^1.0.4",
     "@reactour/popover": "^1.0.5",
     "@reactour/tour": "^3.1.4",
@@ -37,6 +38,7 @@
     "emoji-mart": "^5.4.0",
     "flowbite": "^1.7.0",
     "flowbite-react": "^0.4.11",
+    "html2pdf.js": "^0.14.0",
     "i18next": "^22.0.6",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.0.2",
@@ -47,6 +49,7 @@
     "moment": "^2.29.4",
     "numeral": "^2.0.6",
     "paho-mqtt": "^1.1.0",
+    "path": "^0.12.7",
     "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
     "react-avatar-edit": "^1.2.0",
@@ -99,8 +102,13 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "env-cmd -f .env.local craco start",
+    "build:local": "env-cmd -f .env.local craco build",
+    "build:pso": "env-cmd -f .env.pso craco build",
+    "build:uat": "env-cmd -f .env.uat craco build",
+    "build:staging": "env-cmd -f .env.staging craco build",
+    "build:optimize": "env-cmd -f .env.optimized craco build",
+    "build:production": "env-cmd -f .env.production craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -124,6 +132,7 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
+    "env-cmd": "^11.0.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "process": "^0.11.10",

@@ -164,7 +164,7 @@ const CancelSubscriptionAdmin = () => {
 
   if (organizationPackages) {
     organizationPackages.map((subscription) => {
-      console.log(subscription, "subscriptionsubscriptionsubscription");
+      
       Data = subscription.organizationSelectedPackages.map((packages) => ({
         Pakagedetails: (
           <span className={styles["Tableheading"]}>{t(packages.name)}</span>

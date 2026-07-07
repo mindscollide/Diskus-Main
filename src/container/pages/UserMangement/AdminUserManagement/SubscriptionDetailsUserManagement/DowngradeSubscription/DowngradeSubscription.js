@@ -62,7 +62,7 @@ const DowngradeSubscription = () => {
     try {
       dispatch(getOrganizationWalletApi(navigate, t));
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, []);
 
@@ -94,10 +94,7 @@ const DowngradeSubscription = () => {
     }
   }, [subscriptionDetails]);
 
-  console.log(
-    downgradeSubsData,
-    "downgradeSubsDatadowngradeSubsDatadowngradeSubsData"
-  );
+  
 
   //Extracting Wallet Data
   useEffect(() => {
@@ -113,7 +110,7 @@ const DowngradeSubscription = () => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -314,7 +311,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        
         if (record && record.IsDefaultRow) {
           // Get the total not utilized only once, assuming you have access to the original data
           const totalNotUtilized =

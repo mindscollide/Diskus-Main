@@ -31,7 +31,7 @@ import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { Spin } from "antd";
 import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";
 
@@ -189,16 +189,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
   };
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const addNotesFieldHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("values", name, value);
+    
     if (name === "Title" && value !== "") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
@@ -267,10 +263,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         NotesReducer.GetNotesByNotesId !== null &&
         NotesReducer.GetNotesByNotesId !== undefined
       ) {
-        console.log(
-          NotesReducer.GetNotesByNotesId,
-          "NotesReducerNotesReducerNotesReducer"
-        );
+        
         const {
           title,
           date,
@@ -288,26 +281,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           time,
           username,
         } = NotesReducer.GetNotesByNotesId;
-        console.log(
-          {
-            title,
-            date,
-            description,
-            fK_NotesStatus,
-            fK_OrganizationID,
-            isAttachment,
-            isStarred,
-            modifiedDate,
-            modifiedTime,
-            notesAttachments,
-            notesStatus,
-            organizationName,
-            pK_NotesID,
-            time,
-            username,
-          },
-          "titletitle"
-        );
+        
         setDescription(description);
         setAddNoteFields({
           ...addNoteFields,
@@ -367,7 +341,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         }
       }
     } catch (error) {
-      console.log(error, "GetNotesByNotesIdGetNotesByNotesId");
+      
     }
   }, [NotesReducer.GetNotesByNotesId]);
 
@@ -384,7 +358,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [isdescription]);
 
@@ -397,7 +371,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -414,15 +388,11 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-than-1-5GB"),
-          "error",
-          setOpen
-        );
+        show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        show(t("File-size-should-not-be-zero"), "error");
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        show(t("File-already-exists"), "error");
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -466,10 +436,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         );
       } else {
         setErrorBar(true);
-        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+        show(t("Please-fill-all-the-fields"), "error");
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   };
 
@@ -478,7 +448,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     let newFolder = [...previousIDs];
     let newfile = [];
     if (fileForSend.length > 0) {
-      console.log(fileForSend, "fileForSendfileForSend");
+      
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           uploadDocumentsNotesApi(
@@ -517,7 +487,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       )
     );
   };
-  console.log(NotesReducerFolderID, "NotesReducerFolderID");
+  
   useEffect(() => {
     if (NotesReducerFolderID) {
       let folderIDCreated = NotesReducerFolderID;
@@ -948,7 +918,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

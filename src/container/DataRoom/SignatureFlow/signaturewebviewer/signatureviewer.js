@@ -33,7 +33,7 @@ import {
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 // ─── Pure helpers (no component state) ──────────────────────────────────────
 
@@ -281,11 +281,7 @@ const SignatureViewer = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [orderCheckBox, setOrderCheckbox] = useState(false);
   const [openAddParticipentModal, setOpenAddParticipentModal] = useState(false);
-  const [notification, setNotification] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [sendModal, setSendModal] = useState(false);
   const [sendMessage, setSendMessage] = useState("");
@@ -423,7 +419,7 @@ const SignatureViewer = () => {
         setUserAnnotations(revertXmlField(listOfFields));
       }
     } catch (err) {
-      console.error("getAllFieldsByWorkflowID handler:", err);
+      
     }
   }, [getAllFieldsByWorkflowID, getWorkfFlowByFileId]);
 
@@ -488,7 +484,7 @@ const SignatureViewer = () => {
         isCreator: workFlow.isCreator,
       }));
     } catch (err) {
-      console.error("getWorkfFlowByFileId handler:", err);
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getWorkfFlowByFileId]);
@@ -547,15 +543,9 @@ const SignatureViewer = () => {
       setSelectedUser(listOfUsers[0]?.pk_UID ?? null);
       setUserAnnotations(selectedList);
     } catch (err) {
-      console.error("saveWorkFlowResponse handler:", err);
+      
     }
   }, [saveWorkFlowResponse]);
-
-  // ─── Notification from ResponseMessage ──────────────────────────────────
-  useEffect(() => {
-    if (ResponseMessage)
-      showMessage(ResponseMessage, "success", setNotification);
-  }, [ResponseMessage]);
 
   // ─── Assignees → Select options ──────────────────────────────────────────
   useEffect(() => {
@@ -638,7 +628,7 @@ const SignatureViewer = () => {
         await annotationManager.importAnnotations(modified);
         annotationManager.redrawAnnotation();
       } catch (err) {
-        console.error("removeDeletedAnnotations:", err);
+        
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -699,9 +689,9 @@ const SignatureViewer = () => {
   // ─── Action handlers ─────────────────────────────────────────────────────
 
   const handleSave = useCallback(async () => {
-    console.log("handleSave");
+    
     const payload = await collectPayload();
-    console.log("handleSave", payload);
+    
 
     if (!payload) return;
     dispatch(
@@ -721,11 +711,7 @@ const SignatureViewer = () => {
 
   const handleSendClick = useCallback(() => {
     if (!validateBeforeSend()) {
-      showMessage(
-        t("All-participants-must-have-at-least-one-field-assigned"),
-        "error",
-        setNotification,
-      );
+      show(t("All-participants-must-have-at-least-one-field-assigned"), "error");
       return;
     }
     setSendModal(true);
@@ -988,7 +974,7 @@ const SignatureViewer = () => {
           try {
             await annotationManager.importAnnotations(pdfXfdfRef.current);
           } catch (err) {
-            console.error("importAnnotations:", err);
+            
           }
         }
       });
@@ -1024,7 +1010,7 @@ const SignatureViewer = () => {
               }
             });
           } catch (err) {
-            console.error("annotation colour update:", err);
+            
           }
 
           const xfdfString = await annotationManager.exportAnnotations();
@@ -1073,7 +1059,7 @@ const SignatureViewer = () => {
       (d) => d.EmailAddress.toLowerCase() === EmailAddress.toLowerCase(),
     );
     if (alreadyExists) {
-      showMessage(t("User-already-is-in-list"), "error", setNotification);
+      show(t("User-already-is-in-list"), "error");
     } else {
       setSignerData((prev) => [
         ...prev,
@@ -1109,11 +1095,7 @@ const SignatureViewer = () => {
 
   const handleSaveSigners = useCallback(async () => {
     if (!signerData.length) {
-      showMessage(
-        t("Atleast-one-signatory-is-required"),
-        "error",
-        setNotification,
-      );
+      show(t("Atleast-one-signatory-is-required"), "error");
       return;
     }
     const payload = {
@@ -1322,8 +1304,6 @@ const SignatureViewer = () => {
         }
       />
 
-      <Notification open={notification} setOpen={setNotification} />
-
       {sendModal && (
         <SendDocumentModal
           sendDocumentModal={sendModal}
@@ -1338,6 +1318,7 @@ const SignatureViewer = () => {
           setPdfResponceData={setPdfData}
         />
       )}
+    {SnackBar}
     </>
   );
 };

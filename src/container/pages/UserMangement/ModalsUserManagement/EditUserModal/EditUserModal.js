@@ -29,7 +29,7 @@ const EditUserModal = ({ editModalData }) => {
 
   let isTrialCheck = localStorage.getItem("isTrial") === "true" ? true : false;
 
-  console.log(typeof isTrialCheck, "isTrialCheck");
+  
 
   const UserManagementModalseditUserModalData = useSelector(
     (state) => state.UserManagementModals.editUserModal
@@ -57,7 +57,7 @@ const EditUserModal = ({ editModalData }) => {
   );
   const [selected, setSelected] = useState(initialCountryCode);
   const [editPakageID, setEditPakageID] = useState(0);
-  console.log(editPakageID, "editPakageIDeditPakageIDeditPakageID");
+  
   const [editUserModalValues, setEditUserModalValues] = useState({
     Name: {
       value: editModalData.userName,

@@ -234,3 +234,8 @@ body[dir="rtl"] .phone-image {
   justify-content: center;
   align-items: center;
 }
+.PoweredIcon_Diskus_Icon {
+  position: absolute;
+  bottom: 90px;
+  right: 90px;
+}

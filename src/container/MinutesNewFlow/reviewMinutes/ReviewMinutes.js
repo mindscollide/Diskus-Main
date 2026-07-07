@@ -40,49 +40,43 @@ const ReviewMinutes = () => {
   const navigate = useNavigate(); // Navigation hook
   const [minuteStatus, setMinuteStatus] = useState(0); // Local state for minute status
   let MinutesPublishedNotificationStatus = JSON.parse(
-    localStorage.getItem("MinutesPublishedStatus")
+    localStorage.getItem("MinutesPublishedStatus"),
   );
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
-  console.log(minuteStatus, "minuteStatusminuteStatus");
-  console.log(MinutesPublishedNotificationStatus, "minuteStatusminuteStatus");
 
   const currentMeetingMinutesToReviewData = useSelector(
-    (state) => state.MinutesReducer.currentMeetingMinutesToReviewData
+    (state) => state.MinutesReducer.currentMeetingMinutesToReviewData,
   );
 
   const GetMinutesForReviewerByMeetingIdData = useSelector(
-    (state) => state.MinutesReducer.GetMinutesForReviewerByMeetingIdData
+    (state) => state.MinutesReducer.GetMinutesForReviewerByMeetingIdData,
   );
   const CurrentUserPicture = useSelector(
-    (state) => state.MinutesReducer.CurrentUserPicture
+    (state) => state.MinutesReducer.CurrentUserPicture,
   );
 
   const RejectCommentModalReducer = useSelector(
-    (state) => state.MinutesReducer.rejectCommentModal
+    (state) => state.MinutesReducer.rejectCommentModal,
   );
   const EditCommentModalReducer = useSelector(
-    (state) => state.MinutesReducer.editCommentModal
+    (state) => state.MinutesReducer.editCommentModal,
   );
   const DeleteCommentModalReducer = useSelector(
-    (state) => state.MinutesReducer.deleteCommentModal
+    (state) => state.MinutesReducer.deleteCommentModal,
   );
   const AcceptCommentModalReducer = useSelector(
-    (state) => state.MinutesReducer.acceptCommentModal
+    (state) => state.MinutesReducer.acceptCommentModal,
   );
   const getallDocumentsForAgendaWiseMinutes = useSelector(
-    (state) => state.NewMeetingreducer.getallDocumentsForAgendaWiseMinutes
+    (state) => state.NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   );
 
   //Web Notification Click Actor Status ID
   const WebNotificationClickActorStatusIDMinutes = useSelector(
-    (state) => state.MinutesReducer.WorkFlowActorStatusData?.data ?? null
+    (state) => state.MinutesReducer.WorkFlowActorStatusData?.data ?? null,
   );
 
-  console.log(
-    WebNotificationClickActorStatusIDMinutes,
-    "currentMeetingMinutesToReviewData"
-  );
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -101,10 +95,7 @@ const ReviewMinutes = () => {
   const [isAgenda, setIsAgenda] = useState(false);
   const [minuteViewFlag, setMinuteViewFlag] = useState(null);
   const [disableSubmit, setDisableSubmit] = useState(false);
-  console.log(
-    { minutesAgenda, minutesGeneral },
-    "minutesGeneralminutesGeneral"
-  );
+
   const divRef = useRef(null);
 
   const countActorBundleStatusID2 = (data) => {
@@ -168,23 +159,21 @@ const ReviewMinutes = () => {
 
     // Check if all actorBundleStatusID are 2
     const allStatusAreTwo = combinedMinuteData.every(
-      (minute) => minute.actorBundleStatusID === 2
+      (minute) => minute.actorBundleStatusID === 2,
     );
 
     return allStatusAreTwo;
   };
+
   useEffect(() => {
     if (
       currentMeetingMinutesToReviewData !== null &&
       currentMeetingMinutesToReviewData !== undefined
     ) {
       let getDeadlineformated = forRecentActivity(
-        currentMeetingMinutesToReviewData.deadline
+        currentMeetingMinutesToReviewData.deadline,
       );
-      console.log(
-        currentMeetingMinutesToReviewData,
-        "currentMeetingMinutesToReviewDatacurrentMeetingMinutesToReviewData"
-      );
+
       let currentDate = new Date();
       let getDeadlineIsPassed = currentDate > getDeadlineformated;
       setMinuteStatus(currentMeetingMinutesToReviewData.statusID);
@@ -192,13 +181,9 @@ const ReviewMinutes = () => {
         setDisableSubmit(getDeadlineIsPassed);
       } else {
         let result = checkActorBundleStatus(minutesAgenda, minutesGeneral);
-        console.log(result, "resultresult");
+
         setDisableSubmit(result);
       }
-      console.log(
-        getDeadlineIsPassed,
-        "currentMeetingMinutesToReviewDatacurrentMeetingMinutesToReviewData"
-      );
     }
   }, [currentMeetingMinutesToReviewData, minutesAgenda, minutesGeneral]);
   // useEffect(() => {
@@ -333,18 +318,10 @@ const ReviewMinutes = () => {
   };
 
   const updateAcceptMinutes = (minutesData, rejectData) => {
-    console.log(minutesData, "minutesDataminutesData updateAcceptMinutes");
     return minutesData.map((agenda) => {
       // Update main minuteData
       const updatedMinuteData = agenda.minuteData.map((minute) => {
         if (minute.minuteID === rejectData.minuteID) {
-          console.log(
-            minute.minuteID,
-            rejectData.minuteID,
-            minute,
-            "minutesDataminutesData updateAcceptMinutes"
-          );
-
           return {
             ...minute,
             reason: "",
@@ -352,7 +329,7 @@ const ReviewMinutes = () => {
             declinedReviews:
               minute.declinedReviews.length > 0
                 ? minute.declinedReviews.filter(
-                    (userReview, index) => currentUserID !== userReview.fK_UID
+                    (userReview, index) => currentUserID !== userReview.fK_UID,
                   )
                 : [],
           };
@@ -364,13 +341,6 @@ const ReviewMinutes = () => {
       const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
         const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
           if (subMinute.minuteID === rejectData.minuteID) {
-            console.log(
-              subMinute.minuteID,
-              rejectData.minuteID,
-              subMinute,
-              "minutesDataminutesData updateAcceptMinutes"
-            );
-
             return {
               ...subMinute,
               reason: "",
@@ -378,7 +348,8 @@ const ReviewMinutes = () => {
               declinedReviews:
                 subMinute.declinedReviews.length > 0
                   ? subMinute.declinedReviews.filter(
-                      (userReview, index) => currentUserID !== userReview.fK_UID
+                      (userReview, index) =>
+                        currentUserID !== userReview.fK_UID,
                     )
                   : [],
             };
@@ -397,18 +368,15 @@ const ReviewMinutes = () => {
   };
 
   const acceptMinute = (data) => {
+    // Check if the minute was already reviewed/accepted
+    const wasAlreadyReviewed = data.actorBundleStatusID !== 2;
+
     // Update MinutesAgenda
     const updatedMinutesAgenda = updateAcceptMinutes(minutesAgenda, data);
 
     // Update MinutesGeneral
     const updatedMinutesGeneral = minutesGeneral.map((minute) => {
       if (minute.minuteID === data.minuteID) {
-        console.log(
-          minute.minuteID,
-          data.minuteID,
-          minute,
-          "acceptMinuteacceptMinute minuteminute"
-        );
         return {
           ...minute,
           reason: "",
@@ -416,24 +384,20 @@ const ReviewMinutes = () => {
           declinedReviews:
             minute.declinedReviews.length > 0
               ? minute.declinedReviews.filter(
-                  (userReview, index) => currentUserID !== userReview.fK_UID
+                  (userReview, index) => currentUserID !== userReview.fK_UID,
                 )
               : [],
         };
       }
-      console.log(minute, "acceptMinuteacceptMinute minuteminute");
-
       return minute;
     });
-    console.log(
-      { updatedMinutesGeneral },
-      "acceptMinuteacceptMinute minuteminute"
-    );
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
-    if (minutesToReview !== 0) {
-      setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
+
+    // Only decrease counter if it was pending review (status 2)
+    if (!wasAlreadyReviewed) {
+      setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
     }
   };
 
@@ -442,7 +406,7 @@ const ReviewMinutes = () => {
     if (isVisible) {
       // Remove from visible list
       setVisibleParentMinuteIDs(
-        visibleParentMinuteIDs.filter((id) => id !== parentMinuteID)
+        visibleParentMinuteIDs.filter((id) => id !== parentMinuteID),
       );
     } else {
       // Add to visible list
@@ -466,12 +430,11 @@ const ReviewMinutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
     let Data = {
       taskId: 2,
       commingFrom: 4,
@@ -483,11 +446,11 @@ const ReviewMinutes = () => {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
-  console.log("minutesToReview", minutesToReview);
+
   useEffect(() => {
     const div = divRef.current;
 
@@ -512,7 +475,7 @@ const ReviewMinutes = () => {
       //If the User Been Redirected By Clicking on the Notification that has been Added as a reviewer in the Particular meeting minutes
       if (JSON.parse(localStorage.getItem("MinutesOperations")) === true) {
         let NotificationClickMeetingMinutesID = localStorage.getItem(
-          "NotificationClickMinutesMeetingID"
+          "NotificationClickMinutesMeetingID",
         );
         let allAgendaWiseDocs = {
           MDID: Number(NotificationClickMeetingMinutesID),
@@ -523,16 +486,20 @@ const ReviewMinutes = () => {
         dispatch(
           AllDocumentsForAgendaWiseMinutesApiFunc(
             navigate,
+            t,
             allAgendaWiseDocs,
-            t
-          )
+          ),
         );
 
         dispatch(
-          DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+          DocumentsOfMeetingGenralMinutesApiFunc(
+            navigate,
+            allAgendaWiseDocs,
+            t,
+          ),
         );
 
-        dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+        dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
       } else {
         let allAgendaWiseDocs = {
           MDID: currentMeetingMinutesToReviewData?.meetingID,
@@ -543,18 +510,24 @@ const ReviewMinutes = () => {
         dispatch(
           AllDocumentsForAgendaWiseMinutesApiFunc(
             navigate,
+            t,
             allAgendaWiseDocs,
-            t
-          )
+          ),
         );
 
         dispatch(
-          DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+          DocumentsOfMeetingGenralMinutesApiFunc(
+            navigate,
+            allAgendaWiseDocs,
+            t,
+          ),
         );
 
-        dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+        dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
       }
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
     return () => {
       localStorage.removeItem("MinutesOperations");
       localStorage.removeItem("NotificationClickMinutesMeetingID");
@@ -566,7 +539,7 @@ const ReviewMinutes = () => {
   useEffect(() => {
     try {
       const reducerData = GetMinutesForReviewerByMeetingIdData;
-      console.log(reducerData, "reducerDatareducerData");
+
       if (reducerData !== null) {
         const { agendaHierarchyList, agendaMinutes, generalMinutes } =
           reducerData;
@@ -576,16 +549,7 @@ const ReviewMinutes = () => {
               ...generalMinteData,
               declinedReviews: [...generalMinteData.declinedReviews],
             };
-          }
-        );
-        console.log(
-          {
-            newGeneralMeetingData,
-            agendaHierarchyList,
-            agendaMinutes,
-            generalMinutes,
           },
-          "reducerDatareducerData"
         );
 
         setMinutesGeneral(newGeneralMeetingData);
@@ -594,7 +558,7 @@ const ReviewMinutes = () => {
         try {
           let transformedData = agendaHierarchyList?.map((parentAgenda) => {
             let parentAgendaMinutes = agendaMinutes?.filter(
-              (minute) => minute.agendaID === parentAgenda.pK_MAID
+              (minute) => minute.agendaID === parentAgenda.pK_MAID,
             );
 
             let subMinutes = parentAgenda.childAgendas.flatMap(
@@ -605,7 +569,7 @@ const ReviewMinutes = () => {
                     const foundEntry =
                       getallDocumentsForAgendaWiseMinutes?.data?.find(
                         (entry) =>
-                          entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                          entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                       );
 
                     return {
@@ -613,7 +577,7 @@ const ReviewMinutes = () => {
                       attachments: foundEntry?.files || [],
                     };
                   });
-              }
+              },
             );
 
             let agendaTitle =
@@ -621,8 +585,8 @@ const ReviewMinutes = () => {
                 ? parentAgendaMinutes[0].agendaTitle
                 : parentAgenda.childAgendas.find((childAgenda) =>
                     subMinutes.some(
-                      (minute) => minute.agendaID === childAgenda.pK_MAID
-                    )
+                      (minute) => minute.agendaID === childAgenda.pK_MAID,
+                    ),
                   )?.parentTitle || "";
 
             let parentAgendaObj = {
@@ -633,12 +597,12 @@ const ReviewMinutes = () => {
                 attachments:
                   getallDocumentsForAgendaWiseMinutes.data.find(
                     (entry) =>
-                      entry.pK_MeetingAgendaMinutesID === minute.minuteID
+                      entry.pK_MeetingAgendaMinutesID === minute.minuteID,
                   )?.files || [],
               })),
               subMinutes: parentAgenda.childAgendas.map((childAgenda) => {
                 let childMinutes = subMinutes.filter(
-                  (minute) => minute.agendaID === childAgenda.pK_MAID
+                  (minute) => minute.agendaID === childAgenda.pK_MAID,
                 );
                 return {
                   agendaID: childAgenda.pK_MAID,
@@ -651,14 +615,10 @@ const ReviewMinutes = () => {
             return parentAgendaObj;
           });
           setMinutesAgenda(transformedData);
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       } else {
       }
-    } catch (error) {
-      console.error("Error transforming data", error);
-    }
+    } catch (error) {}
   }, [
     GetMinutesForReviewerByMeetingIdData,
     getallDocumentsForAgendaWiseMinutes,
@@ -671,7 +631,7 @@ const ReviewMinutes = () => {
       item.minuteData.forEach((minute) => {
         // Filter declinedReviews where reason is not empty
         minute.declinedReviews = minute.declinedReviews.filter(
-          (review) => review.reason !== ""
+          (review) => review.reason !== "",
         );
       });
 
@@ -680,7 +640,7 @@ const ReviewMinutes = () => {
         subItem.minuteData.forEach((minute) => {
           // Filter declinedReviews where reason is not empty
           minute.declinedReviews = minute.declinedReviews.filter(
-            (review) => review.reason !== ""
+            (review) => review.reason !== "",
           );
         });
       });
@@ -694,7 +654,7 @@ const ReviewMinutes = () => {
     state.forEach((item) => {
       // Filter declinedReviews where reason is not empty
       item.declinedReviews = item.declinedReviews.filter(
-        (review) => review.reason !== ""
+        (review) => review.reason !== "",
       );
     });
 
@@ -731,6 +691,9 @@ const ReviewMinutes = () => {
 
   const handleClickRejectMinuteBtn = useCallback(
     (commentText) => {
+      // Determine if the minute was already in a reviewed state (not pending)
+      const wasAlreadyReviewed = minuteDataToReject?.actorBundleStatusID !== 2;
+
       if (minuteViewFlag === 0) {
         const updatedMinuteData = {
           ...minuteDataToReject,
@@ -743,17 +706,18 @@ const ReviewMinutes = () => {
               CurrentUserPicture?.displayProfilePictureName,
           },
         };
-        // there should be a for general minute
+
         let updatedMinutesData = updateRejectMinutesGeneral(
           minutesGeneral,
-          updatedMinuteData
+          updatedMinuteData,
         );
-        console.log(
-          { updatedMinutesData },
-          "updatedMinutesAgendaupdatedMinutesAgenda"
-        );
+
         setMinutesGeneral(updatedMinutesData);
-        setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
+
+        // Only decrease counter if it was pending review (status 2)
+        if (!wasAlreadyReviewed) {
+          setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+        }
       } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
         const updatedMinuteData = {
           ...minuteDataToReject,
@@ -766,34 +730,42 @@ const ReviewMinutes = () => {
               CurrentUserPicture?.displayProfilePictureName,
           },
         };
-        // there should be for subAgenda Minute
+
         let updatedMinutesAgenda = updateRejectMinutes(
           minutesAgenda,
-          updatedMinuteData
+          updatedMinuteData,
         );
-        console.log(
-          { updatedMinutesAgenda },
-          "updatedMinutesAgendaupdatedMinutesAgenda"
-        );
+
         setMinutesAgenda(updatedMinutesAgenda);
-        setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
+
+        // Only decrease counter if it was pending review (status 2)
+        if (!wasAlreadyReviewed) {
+          setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
+        }
       }
       dispatch(rejectCommentModal(false));
     },
-    [minuteDataToReject, minuteViewFlag]
+    [
+      minuteDataToReject,
+      minuteViewFlag,
+      minutesGeneral,
+      minutesAgenda,
+      currentUserID,
+      CurrentUserPicture,
+    ],
   );
 
   //Disable Function for Accept All
   const calculateIsDisabled = () => {
     const minutesOperations = JSON.parse(
-      localStorage.getItem("MinutesOperations")
+      localStorage.getItem("MinutesOperations"),
     );
 
     if (minutesOperations === true) {
       return minutesToReview === 0
         ? true
         : Number(
-            WebNotificationClickActorStatusIDMinutes?.workFlowStatusID ?? 0
+            WebNotificationClickActorStatusIDMinutes?.workFlowStatusID ?? 0,
           ) === 2;
     } else {
       return minutesToReview === 0
@@ -866,7 +838,6 @@ const ReviewMinutes = () => {
                       </Row>
                       <>
                         {data?.minuteData?.map((parentMinutedata, index) => {
-                          console.log(parentMinutedata, "parentMinutedata");
                           return (
                             <>
                               <Row>
@@ -895,9 +866,9 @@ const ReviewMinutes = () => {
                                       parentMinutedata.actorBundleStatusID === 3
                                         ? styles["uploaded-details-accepted"]
                                         : parentMinutedata.actorBundleStatusID ===
-                                          4
-                                        ? styles["uploaded-details-rejected"]
-                                        : styles["uploaded-details"]
+                                            4
+                                          ? styles["uploaded-details-rejected"]
+                                          : styles["uploaded-details"]
                                     }>
                                     <Row className={styles["inherit-height"]}>
                                       <Col lg={8} md={8} sm={12}>
@@ -919,7 +890,7 @@ const ReviewMinutes = () => {
                                                     <AttachmentViewer
                                                       handleClickDownload={() =>
                                                         downloadDocument(
-                                                          filesData
+                                                          filesData,
                                                         )
                                                       }
                                                       fk_UID={0}
@@ -932,14 +903,14 @@ const ReviewMinutes = () => {
                                                         pdfData(
                                                           filesData,
                                                           getFileExtension(
-                                                            filesData?.displayFileName
-                                                          )
+                                                            filesData?.displayFileName,
+                                                          ),
                                                         )
                                                       }
                                                     />
                                                   </Col>
                                                 );
-                                              }
+                                              },
                                             )}
                                         </Row>
                                       </Col>
@@ -1003,7 +974,7 @@ const ReviewMinutes = () => {
                                                   }
                                                   onClick={() =>
                                                     acceptMinute(
-                                                      parentMinutedata
+                                                      parentMinutedata,
                                                     )
                                                   }
                                                 />
@@ -1016,7 +987,7 @@ const ReviewMinutes = () => {
                                                   }
                                                   onClick={() =>
                                                     acceptMinute(
-                                                      parentMinutedata
+                                                      parentMinutedata,
                                                     )
                                                   }
                                                 />
@@ -1034,7 +1005,7 @@ const ReviewMinutes = () => {
                                                     rejectGeneralComment(
                                                       parentMinutedata,
                                                       1,
-                                                      true
+                                                      true,
                                                     )
                                                   }
                                                 />
@@ -1049,7 +1020,7 @@ const ReviewMinutes = () => {
                                                     rejectGeneralComment(
                                                       parentMinutedata,
                                                       1,
-                                                      true
+                                                      true,
                                                     )
                                                   }
                                                 />
@@ -1076,7 +1047,7 @@ const ReviewMinutes = () => {
                                               }>
                                               {convertToGMTMinuteTime(
                                                 parentMinutedata.lastUpdatedDate +
-                                                  parentMinutedata.lastUpdatedTime
+                                                  parentMinutedata.lastUpdatedTime,
                                               )}
                                               ,
                                             </p>
@@ -1086,7 +1057,7 @@ const ReviewMinutes = () => {
                                               }>
                                               {convertDateToGMTMinute(
                                                 parentMinutedata.lastUpdatedDate +
-                                                  parentMinutedata.lastUpdatedTime
+                                                  parentMinutedata.lastUpdatedTime,
                                               )}
                                             </p>
                                           </Col>
@@ -1102,7 +1073,7 @@ const ReviewMinutes = () => {
                                     <div className={styles["wrapper-userlist"]}>
                                       <p>
                                         {`${t(
-                                          "The-minute-has-been-sent-for-review-by"
+                                          "The-minute-has-been-sent-for-review-by",
                                         )} : `}
                                         {parentMinutedata.declinedReviews
                                           .slice(0, 5)
@@ -1136,11 +1107,11 @@ const ReviewMinutes = () => {
                                         className='text-decoration-underline cursor-pointer'
                                         onClick={() =>
                                           toggleShowHide(
-                                            parentMinutedata.minuteID
+                                            parentMinutedata.minuteID,
                                           )
                                         }>
                                         {visibleParentMinuteIDs.includes(
-                                          parentMinutedata.minuteID
+                                          parentMinutedata.minuteID,
                                         )
                                           ? t("Hide-comments")
                                           : t("Show-comments")}
@@ -1151,7 +1122,7 @@ const ReviewMinutes = () => {
                               ) : null}
 
                               {visibleParentMinuteIDs.includes(
-                                parentMinutedata.minuteID
+                                parentMinutedata.minuteID,
                               ) &&
                                 parentMinutedata.declinedReviews.map(
                                   (declinedData, index) => {
@@ -1261,7 +1232,7 @@ const ReviewMinutes = () => {
                                                         {declinedData.fK_WorkFlowActor_ID !==
                                                           0 &&
                                                         Number(
-                                                          declinedData.fK_UID
+                                                          declinedData.fK_UID,
                                                         ) === currentUserID ? (
                                                           <Col
                                                             lg={6}
@@ -1272,17 +1243,17 @@ const ReviewMinutes = () => {
                                                               onClick={() => {
                                                                 dispatch(
                                                                   editCommentModal(
-                                                                    true
-                                                                  )
+                                                                    true,
+                                                                  ),
                                                                 );
                                                                 setEditCommentLocal(
-                                                                  declinedData
+                                                                  declinedData,
                                                                 );
                                                                 setParentMinuteID(
-                                                                  parentMinutedata
+                                                                  parentMinutedata,
                                                                 );
                                                                 setIsAgenda(
-                                                                  true
+                                                                  true,
                                                                 );
                                                               }}
                                                               text={t("Edit")}
@@ -1296,17 +1267,17 @@ const ReviewMinutes = () => {
                                                               onClick={() => {
                                                                 dispatch(
                                                                   deleteCommentModal(
-                                                                    true
-                                                                  )
+                                                                    true,
+                                                                  ),
                                                                 );
                                                                 setDeleteCommentLocal(
-                                                                  declinedData
+                                                                  declinedData,
                                                                 );
                                                                 setParentMinuteID(
-                                                                  parentMinutedata
+                                                                  parentMinutedata,
                                                                 );
                                                                 setIsAgenda(
-                                                                  true
+                                                                  true,
                                                                 );
                                                               }}
                                                               text={t("Delete")}
@@ -1329,17 +1300,17 @@ const ReviewMinutes = () => {
                                                               onClick={() => {
                                                                 dispatch(
                                                                   editCommentModal(
-                                                                    true
-                                                                  )
+                                                                    true,
+                                                                  ),
                                                                 );
                                                                 setEditCommentLocal(
-                                                                  declinedData
+                                                                  declinedData,
                                                                 );
                                                                 setParentMinuteID(
-                                                                  parentMinutedata
+                                                                  parentMinutedata,
                                                                 );
                                                                 setIsAgenda(
-                                                                  true
+                                                                  true,
                                                                 );
                                                               }}
                                                               text={t("Edit")}
@@ -1353,17 +1324,17 @@ const ReviewMinutes = () => {
                                                               onClick={() => {
                                                                 dispatch(
                                                                   deleteCommentModal(
-                                                                    true
-                                                                  )
+                                                                    true,
+                                                                  ),
                                                                 );
                                                                 setDeleteCommentLocal(
-                                                                  declinedData
+                                                                  declinedData,
                                                                 );
                                                                 setParentMinuteID(
-                                                                  parentMinutedata
+                                                                  parentMinutedata,
                                                                 );
                                                                 setIsAgenda(
-                                                                  true
+                                                                  true,
                                                                 );
                                                               }}
                                                               text={t("Delete")}
@@ -1385,7 +1356,7 @@ const ReviewMinutes = () => {
                                         </Row>
                                       </>
                                     );
-                                  }
+                                  },
                                 )}
                               {parentMinutedata.agendaMinutesVersionHistory
                                 .slice()
@@ -1396,10 +1367,7 @@ const ReviewMinutes = () => {
                                     parentMinutedata.agendaMinutesVersionHistory
                                       .length -
                                       1;
-                                  console.log(
-                                    historyData,
-                                    "parentMinutedataparentMinutedata"
-                                  );
+
                                   return (
                                     <>
                                       <Row>
@@ -1432,13 +1400,13 @@ const ReviewMinutes = () => {
                                                     "uploaded-details-accepted"
                                                   ]
                                                 : historyData.actorBundleStatusID ===
-                                                    4 &&
-                                                  historyData.declinedReviews
-                                                    .length === 0
-                                                ? styles[
-                                                    "uploaded-details-rejected"
-                                                  ]
-                                                : styles["uploaded-details"]
+                                                      4 &&
+                                                    historyData.declinedReviews
+                                                      .length === 0
+                                                  ? styles[
+                                                      "uploaded-details-rejected"
+                                                    ]
+                                                  : styles["uploaded-details"]
                                             }>
                                             <Row
                                               className={
@@ -1515,7 +1483,7 @@ const ReviewMinutes = () => {
                                                       }>
                                                       {convertToGMTMinuteTime(
                                                         historyData.lastUpdatedDate +
-                                                          historyData.lastUpdatedTime
+                                                          historyData.lastUpdatedTime,
                                                       )}
                                                       ,
                                                     </p>
@@ -1525,7 +1493,7 @@ const ReviewMinutes = () => {
                                                       }>
                                                       {convertDateToGMTMinute(
                                                         historyData.lastUpdatedDate +
-                                                          historyData.lastUpdatedTime
+                                                          historyData.lastUpdatedTime,
                                                       )}
                                                     </p>
                                                   </Col>
@@ -1546,7 +1514,7 @@ const ReviewMinutes = () => {
                                               }>
                                               <p>
                                                 {`${t(
-                                                  "The-minute-has-been-sent-for-review-by"
+                                                  "The-minute-has-been-sent-for-review-by",
                                                 )} : `}
                                                 {historyData.declinedReviews
                                                   .slice(0, 5)
@@ -1581,11 +1549,11 @@ const ReviewMinutes = () => {
                                                 className='text-decoration-underline cursor-pointer'
                                                 onClick={() =>
                                                   toggleShowHide(
-                                                    historyData.minuteID
+                                                    historyData.minuteID,
                                                   )
                                                 }>
                                                 {visibleParentMinuteIDs.includes(
-                                                  historyData.minuteID
+                                                  historyData.minuteID,
                                                 )
                                                   ? t("Hide-comments")
                                                   : t("Show-comments")}
@@ -1595,7 +1563,7 @@ const ReviewMinutes = () => {
                                         </Row>
                                       ) : null}
                                       {visibleParentMinuteIDs.includes(
-                                        historyData.minuteID
+                                        historyData.minuteID,
                                       ) &&
                                         historyData?.declinedReviews?.map(
                                           (declinedDataHistory, index) => {
@@ -1687,7 +1655,7 @@ const ReviewMinutes = () => {
                                                                   ]
                                                                 }>
                                                                 {t(
-                                                                  "Reviewed-by"
+                                                                  "Reviewed-by",
                                                                 )}
                                                               </p>
                                                               <div
@@ -1726,7 +1694,7 @@ const ReviewMinutes = () => {
                                                                 {declinedDataHistory.fK_WorkFlowActor_ID !==
                                                                   0 &&
                                                                 Number(
-                                                                  declinedDataHistory.fK_UID
+                                                                  declinedDataHistory.fK_UID,
                                                                 ) ===
                                                                   currentUserID ? (
                                                                   <Col
@@ -1738,21 +1706,21 @@ const ReviewMinutes = () => {
                                                                       onClick={() => {
                                                                         dispatch(
                                                                           editCommentModal(
-                                                                            true
-                                                                          )
+                                                                            true,
+                                                                          ),
                                                                         );
                                                                         setEditCommentLocal(
-                                                                          declinedDataHistory
+                                                                          declinedDataHistory,
                                                                         );
                                                                         setParentMinuteID(
-                                                                          parentMinutedata
+                                                                          parentMinutedata,
                                                                         );
                                                                         setIsAgenda(
-                                                                          true
+                                                                          true,
                                                                         );
                                                                       }}
                                                                       text={t(
-                                                                        "Edit"
+                                                                        "Edit",
                                                                       )}
                                                                       className={
                                                                         styles[
@@ -1764,21 +1732,21 @@ const ReviewMinutes = () => {
                                                                       onClick={() => {
                                                                         dispatch(
                                                                           deleteCommentModal(
-                                                                            true
-                                                                          )
+                                                                            true,
+                                                                          ),
                                                                         );
                                                                         setDeleteCommentLocal(
-                                                                          declinedDataHistory
+                                                                          declinedDataHistory,
                                                                         );
                                                                         setParentMinuteID(
-                                                                          parentMinutedata
+                                                                          parentMinutedata,
                                                                         );
                                                                         setIsAgenda(
-                                                                          true
+                                                                          true,
                                                                         );
                                                                       }}
                                                                       text={t(
-                                                                        "Delete"
+                                                                        "Delete",
                                                                       )}
                                                                       className={
                                                                         styles[
@@ -1799,11 +1767,11 @@ const ReviewMinutes = () => {
                                                                       onClick={() => {
                                                                         dispatch(
                                                                           editCommentModal(
-                                                                            true
-                                                                          )
+                                                                            true,
+                                                                          ),
                                                                         );
                                                                         setEditCommentLocal(
-                                                                          declinedDataHistory
+                                                                          declinedDataHistory,
                                                                         );
                                                                       }}
                                                                       className={
@@ -1816,21 +1784,21 @@ const ReviewMinutes = () => {
                                                                       onClick={() => {
                                                                         dispatch(
                                                                           deleteCommentModal(
-                                                                            true
-                                                                          )
+                                                                            true,
+                                                                          ),
                                                                         );
                                                                         setDeleteCommentLocal(
-                                                                          declinedDataHistory
+                                                                          declinedDataHistory,
                                                                         );
                                                                         setParentMinuteID(
-                                                                          historyData
+                                                                          historyData,
                                                                         );
                                                                         setIsAgenda(
-                                                                          true
+                                                                          true,
                                                                         );
                                                                       }}
                                                                       text={t(
-                                                                        "Delete"
+                                                                        "Delete",
                                                                       )}
                                                                       className={
                                                                         styles[
@@ -1850,7 +1818,7 @@ const ReviewMinutes = () => {
                                                 </Row>
                                               </>
                                             );
-                                          }
+                                          },
                                         )}
                                     </>
                                   );
@@ -1920,11 +1888,11 @@ const ReviewMinutes = () => {
                                                     "uploaded-details-accepted"
                                                   ]
                                                 : minuteDataSubminute.actorBundleStatusID ===
-                                                  4
-                                                ? styles[
-                                                    "uploaded-details-rejected"
-                                                  ]
-                                                : styles["uploaded-details"]
+                                                    4
+                                                  ? styles[
+                                                      "uploaded-details-rejected"
+                                                    ]
+                                                  : styles["uploaded-details"]
                                             }>
                                             <Row
                                               className={
@@ -1953,7 +1921,7 @@ const ReviewMinutes = () => {
                                                             <AttachmentViewer
                                                               handleClickDownload={() =>
                                                                 downloadDocument(
-                                                                  filesData
+                                                                  filesData,
                                                                 )
                                                               }
                                                               fk_UID={0}
@@ -1970,14 +1938,14 @@ const ReviewMinutes = () => {
                                                                 pdfData(
                                                                   filesData,
                                                                   getFileExtension(
-                                                                    filesData?.displayFileName
-                                                                  )
+                                                                    filesData?.displayFileName,
+                                                                  ),
                                                                 )
                                                               }
                                                             />
                                                           </Col>
                                                         );
-                                                      }
+                                                      },
                                                     )}
                                                 </Row>
                                               </Col>
@@ -2053,7 +2021,7 @@ const ReviewMinutes = () => {
                                                         }
                                                         onClick={() =>
                                                           acceptMinute(
-                                                            minuteDataSubminute
+                                                            minuteDataSubminute,
                                                           )
                                                         }
                                                       />
@@ -2068,7 +2036,7 @@ const ReviewMinutes = () => {
                                                         }
                                                         onClick={() =>
                                                           acceptMinute(
-                                                            minuteDataSubminute
+                                                            minuteDataSubminute,
                                                           )
                                                         }
                                                       />
@@ -2087,7 +2055,7 @@ const ReviewMinutes = () => {
                                                           rejectGeneralComment(
                                                             minuteDataSubminute,
                                                             2,
-                                                            true
+                                                            true,
                                                           )
                                                         }
                                                       />
@@ -2104,7 +2072,7 @@ const ReviewMinutes = () => {
                                                           rejectGeneralComment(
                                                             minuteDataSubminute,
                                                             2,
-                                                            true
+                                                            true,
                                                           )
                                                         }
                                                       />
@@ -2134,7 +2102,7 @@ const ReviewMinutes = () => {
                                                       }>
                                                       {convertToGMTMinuteTime(
                                                         minuteDataSubminute.lastUpdatedDate +
-                                                          minuteDataSubminute.lastUpdatedTime
+                                                          minuteDataSubminute.lastUpdatedTime,
                                                       )}
                                                       ,
                                                     </p>
@@ -2144,7 +2112,7 @@ const ReviewMinutes = () => {
                                                       }>
                                                       {convertDateToGMTMinute(
                                                         minuteDataSubminute.lastUpdatedDate +
-                                                          minuteDataSubminute.lastUpdatedDate
+                                                          minuteDataSubminute.lastUpdatedDate,
                                                       )}
                                                     </p>
                                                   </Col>
@@ -2171,7 +2139,7 @@ const ReviewMinutes = () => {
                                               }>
                                               <p>
                                                 {`${t(
-                                                  "The-minute-has-been-sent-for-review-by"
+                                                  "The-minute-has-been-sent-for-review-by",
                                                 )} : `}
                                                 {minuteDataSubminute.declinedReviews
                                                   .slice(0, 5)
@@ -2208,11 +2176,11 @@ const ReviewMinutes = () => {
                                                 className='text-decoration-underline cursor-pointer'
                                                 onClick={() =>
                                                   toggleShowHide(
-                                                    minuteDataSubminute.minuteID
+                                                    minuteDataSubminute.minuteID,
                                                   )
                                                 }>
                                                 {visibleParentMinuteIDs.includes(
-                                                  minuteDataSubminute.minuteID
+                                                  minuteDataSubminute.minuteID,
                                                 )
                                                   ? t("Hide-comments")
                                                   : t("Show-comments")}
@@ -2223,7 +2191,7 @@ const ReviewMinutes = () => {
                                       ) : null}
 
                                       {visibleParentMinuteIDs.includes(
-                                        minuteDataSubminute.minuteID
+                                        minuteDataSubminute.minuteID,
                                       ) &&
                                         minuteDataSubminute.declinedReviews.map(
                                           (declinedData, index) => {
@@ -2323,7 +2291,7 @@ const ReviewMinutes = () => {
                                                                   ]
                                                                 }>
                                                                 {t(
-                                                                  "Reviewed-by"
+                                                                  "Reviewed-by",
                                                                 )}
                                                               </p>
                                                               <div
@@ -2359,7 +2327,7 @@ const ReviewMinutes = () => {
                                                             {declinedData.fK_WorkFlowActor_ID !==
                                                               0 &&
                                                             Number(
-                                                              declinedData.fK_UID
+                                                              declinedData.fK_UID,
                                                             ) ===
                                                               currentUserID ? (
                                                               <>
@@ -2372,21 +2340,21 @@ const ReviewMinutes = () => {
                                                                     onClick={() => {
                                                                       dispatch(
                                                                         editCommentModal(
-                                                                          true
-                                                                        )
+                                                                          true,
+                                                                        ),
                                                                       );
                                                                       setEditCommentLocal(
-                                                                        declinedData
+                                                                        declinedData,
                                                                       );
                                                                       setParentMinuteID(
-                                                                        minuteDataSubminute
+                                                                        minuteDataSubminute,
                                                                       );
                                                                       setIsAgenda(
-                                                                        true
+                                                                        true,
                                                                       );
                                                                     }}
                                                                     text={t(
-                                                                      "Edit"
+                                                                      "Edit",
                                                                     )}
                                                                     className={
                                                                       styles[
@@ -2398,12 +2366,12 @@ const ReviewMinutes = () => {
                                                                     onClick={() =>
                                                                       dispatch(
                                                                         deleteCommentModal(
-                                                                          true
-                                                                        )
+                                                                          true,
+                                                                        ),
                                                                       )
                                                                     }
                                                                     text={t(
-                                                                      "Delete"
+                                                                      "Delete",
                                                                     )}
                                                                     className={
                                                                       styles[
@@ -2425,21 +2393,21 @@ const ReviewMinutes = () => {
                                                                   onClick={() => {
                                                                     dispatch(
                                                                       editCommentModal(
-                                                                        true
-                                                                      )
+                                                                        true,
+                                                                      ),
                                                                     );
                                                                     setEditCommentLocal(
-                                                                      declinedData
+                                                                      declinedData,
                                                                     );
                                                                     setParentMinuteID(
-                                                                      minuteDataSubminute
+                                                                      minuteDataSubminute,
                                                                     );
                                                                     setIsAgenda(
-                                                                      true
+                                                                      true,
                                                                     );
                                                                   }}
                                                                   text={t(
-                                                                    "Edit"
+                                                                    "Edit",
                                                                   )}
                                                                   className={
                                                                     styles[
@@ -2451,21 +2419,21 @@ const ReviewMinutes = () => {
                                                                   onClick={() => {
                                                                     dispatch(
                                                                       deleteCommentModal(
-                                                                        true
-                                                                      )
+                                                                        true,
+                                                                      ),
                                                                     );
                                                                     setDeleteCommentLocal(
-                                                                      declinedData
+                                                                      declinedData,
                                                                     );
                                                                     setParentMinuteID(
-                                                                      minuteDataSubminute
+                                                                      minuteDataSubminute,
                                                                     );
                                                                     setIsAgenda(
-                                                                      true
+                                                                      true,
                                                                     );
                                                                   }}
                                                                   text={t(
-                                                                    "Delete"
+                                                                    "Delete",
                                                                   )}
                                                                   className={
                                                                     styles[
@@ -2483,7 +2451,7 @@ const ReviewMinutes = () => {
                                                 </Row>
                                               </>
                                             );
-                                          }
+                                          },
                                         )}
                                       {minuteDataSubminute.agendaMinutesVersionHistory
                                         .slice()
@@ -2539,16 +2507,16 @@ const ReviewMinutes = () => {
                                                             "uploaded-details-accepted"
                                                           ]
                                                         : historyData.actorBundleStatusID ===
-                                                            4 &&
-                                                          historyData
-                                                            .declinedReviews
-                                                            .length === 0
-                                                        ? styles[
-                                                            "uploaded-details-rejected"
-                                                          ]
-                                                        : styles[
-                                                            "uploaded-details"
-                                                          ]
+                                                              4 &&
+                                                            historyData
+                                                              .declinedReviews
+                                                              .length === 0
+                                                          ? styles[
+                                                              "uploaded-details-rejected"
+                                                            ]
+                                                          : styles[
+                                                              "uploaded-details"
+                                                            ]
                                                     }>
                                                     <Row
                                                       className={
@@ -2596,10 +2564,10 @@ const ReviewMinutes = () => {
                                                                 .declinedReviews
                                                                 .length === 0
                                                                 ? t(
-                                                                    "Uploaded-by"
+                                                                    "Uploaded-by",
                                                                   )
                                                                 : t(
-                                                                    "Reviewed-by"
+                                                                    "Reviewed-by",
                                                                   )}
                                                             </p>
                                                             <div
@@ -2647,7 +2615,7 @@ const ReviewMinutes = () => {
                                                               }>
                                                               {convertToGMTMinuteTime(
                                                                 historyData.lastUpdatedDate +
-                                                                  historyData.lastUpdatedTime
+                                                                  historyData.lastUpdatedTime,
                                                               )}
                                                               ,
                                                             </p>
@@ -2659,7 +2627,7 @@ const ReviewMinutes = () => {
                                                               }>
                                                               {convertDateToGMTMinute(
                                                                 historyData.lastUpdatedDate +
-                                                                  historyData.lastUpdatedTime
+                                                                  historyData.lastUpdatedTime,
                                                               )}
                                                             </p>
                                                           </Col>
@@ -2681,14 +2649,14 @@ const ReviewMinutes = () => {
                                                       }>
                                                       <p>
                                                         {`${t(
-                                                          "The-minute-has-been-sent-for-review-by"
+                                                          "The-minute-has-been-sent-for-review-by",
                                                         )} : `}
                                                         {historyData.declinedReviews
                                                           .slice(0, 5)
                                                           .map(
                                                             (
                                                               usersList,
-                                                              index
+                                                              index,
                                                             ) => (
                                                               <React.Fragment
                                                                 key={index}>
@@ -2703,7 +2671,7 @@ const ReviewMinutes = () => {
                                                                       1 &&
                                                                   ", "}
                                                               </React.Fragment>
-                                                            )
+                                                            ),
                                                           )}
                                                         {historyData
                                                           .declinedReviews
@@ -2727,11 +2695,11 @@ const ReviewMinutes = () => {
                                                         className='text-decoration-underline cursor-pointer'
                                                         onClick={() =>
                                                           toggleShowHide(
-                                                            historyData.minuteID
+                                                            historyData.minuteID,
                                                           )
                                                         }>
                                                         {visibleParentMinuteIDs.includes(
-                                                          historyData.minuteID
+                                                          historyData.minuteID,
                                                         )
                                                           ? t("Hide-comments")
                                                           : t("Show-comments")}
@@ -2741,12 +2709,12 @@ const ReviewMinutes = () => {
                                                 </Row>
                                               ) : null}
                                               {visibleParentMinuteIDs.includes(
-                                                historyData.minuteID
+                                                historyData.minuteID,
                                               ) &&
                                                 historyData.declinedReviews.map(
                                                   (
                                                     declinedDataHistory,
-                                                    index
+                                                    index,
                                                   ) => {
                                                     const isLastIndexx =
                                                       index ===
@@ -2843,7 +2811,7 @@ const ReviewMinutes = () => {
                                                                           ]
                                                                         }>
                                                                         {t(
-                                                                          "Reviewed-by"
+                                                                          "Reviewed-by",
                                                                         )}
                                                                       </p>
                                                                       <div
@@ -2888,21 +2856,21 @@ const ReviewMinutes = () => {
                                                                           onClick={() => {
                                                                             dispatch(
                                                                               editCommentModal(
-                                                                                true
-                                                                              )
+                                                                                true,
+                                                                              ),
                                                                             );
                                                                             setEditCommentLocal(
-                                                                              declinedDataHistory
+                                                                              declinedDataHistory,
                                                                             );
                                                                             setParentMinuteID(
-                                                                              minuteDataSubminute
+                                                                              minuteDataSubminute,
                                                                             );
                                                                             setIsAgenda(
-                                                                              true
+                                                                              true,
                                                                             );
                                                                           }}
                                                                           text={t(
-                                                                            "Edit"
+                                                                            "Edit",
                                                                           )}
                                                                           className={
                                                                             styles[
@@ -2914,12 +2882,12 @@ const ReviewMinutes = () => {
                                                                           onClick={() =>
                                                                             dispatch(
                                                                               deleteCommentModal(
-                                                                                true
-                                                                              )
+                                                                                true,
+                                                                              ),
                                                                             )
                                                                           }
                                                                           text={t(
-                                                                            "Delete"
+                                                                            "Delete",
                                                                           )}
                                                                           className={
                                                                             styles[
@@ -2937,14 +2905,14 @@ const ReviewMinutes = () => {
                                                         </Row>
                                                       </>
                                                     );
-                                                  }
+                                                  },
                                                 )}
                                             </>
                                           );
                                         })}
                                     </>
                                   );
-                                }
+                                },
                               )}
                             </>
                           );
@@ -2956,7 +2924,6 @@ const ReviewMinutes = () => {
               : null}
 
             {minutesGeneral?.map((data, index) => {
-              console.log(data, "datadatadatadata");
               return (
                 <>
                   <Row className='mx-50'>
@@ -2989,8 +2956,8 @@ const ReviewMinutes = () => {
                             data.actorBundleStatusID === 3
                               ? styles["uploaded-details-accepted"]
                               : data.actorBundleStatusID === 4
-                              ? styles["uploaded-details-rejected"]
-                              : styles["uploaded-details"]
+                                ? styles["uploaded-details-rejected"]
+                                : styles["uploaded-details"]
                           }>
                           <Row className={styles["inherit-height"]}>
                             <Col lg={8} md={8} sm={12}>
@@ -3017,14 +2984,14 @@ const ReviewMinutes = () => {
                                               pdfData(
                                                 filesData,
                                                 getFileExtension(
-                                                  filesData?.displayFileName
-                                                )
+                                                  filesData?.displayFileName,
+                                                ),
                                               )
                                             }
                                           />
                                         </Col>
                                       );
-                                    }
+                                    },
                                   )}
                               </Row>
                             </Col>
@@ -3116,14 +3083,14 @@ const ReviewMinutes = () => {
                                   <p className={styles["time-uploader"]}>
                                     {convertToGMTMinuteTime(
                                       data.lastUpdatedDate +
-                                        data.lastUpdatedTime
+                                        data.lastUpdatedTime,
                                     )}
                                     ,
                                   </p>
                                   <p className={styles["date-uploader"]}>
                                     {convertDateToGMTMinute(
                                       data.lastUpdatedDate +
-                                        data.lastUpdatedTime
+                                        data.lastUpdatedTime,
                                     )}
                                   </p>
                                 </Col>
@@ -3139,7 +3106,7 @@ const ReviewMinutes = () => {
                           <div className={styles["wrapper-userlist"]}>
                             <p>
                               {`${t(
-                                "The-minute-has-been-sent-for-review-by"
+                                "The-minute-has-been-sent-for-review-by",
                               )} : `}
                               {data.declinedReviews
                                 .slice(0, 5)
@@ -3263,10 +3230,10 @@ const ReviewMinutes = () => {
                                                 <Button
                                                   onClick={() => {
                                                     dispatch(
-                                                      editCommentModal(true)
+                                                      editCommentModal(true),
                                                     );
                                                     setEditCommentLocal(
-                                                      declinedData
+                                                      declinedData,
                                                     );
                                                     setParentMinuteID(data);
                                                     setIsAgenda(false);
@@ -3279,10 +3246,10 @@ const ReviewMinutes = () => {
                                                 <Button
                                                   onClick={() => {
                                                     dispatch(
-                                                      deleteCommentModal(true)
+                                                      deleteCommentModal(true),
                                                     );
                                                     setDeleteCommentLocal(
-                                                      declinedData
+                                                      declinedData,
                                                     );
                                                     setParentMinuteID(data);
                                                     setIsAgenda(false);
@@ -3304,10 +3271,10 @@ const ReviewMinutes = () => {
                                                 <Button
                                                   onClick={() => {
                                                     dispatch(
-                                                      editCommentModal(true)
+                                                      editCommentModal(true),
                                                     );
                                                     setEditCommentLocal(
-                                                      declinedData
+                                                      declinedData,
                                                     );
                                                     setParentMinuteID(data);
                                                     setIsAgenda(false);
@@ -3320,10 +3287,10 @@ const ReviewMinutes = () => {
                                                 <Button
                                                   onClick={() => {
                                                     dispatch(
-                                                      deleteCommentModal(true)
+                                                      deleteCommentModal(true),
                                                     );
                                                     setDeleteCommentLocal(
-                                                      declinedData
+                                                      declinedData,
                                                     );
                                                     setParentMinuteID(data);
                                                     setIsAgenda(false);
@@ -3381,9 +3348,10 @@ const ReviewMinutes = () => {
                                     historyData.actorBundleStatusID === 3
                                       ? styles["uploaded-details-accepted"]
                                       : historyData.actorBundleStatusID === 4 &&
-                                        historyData.declinedReviews.length === 0
-                                      ? styles["uploaded-details-rejected"]
-                                      : styles["uploaded-details"]
+                                          historyData.declinedReviews.length ===
+                                            0
+                                        ? styles["uploaded-details-rejected"]
+                                        : styles["uploaded-details"]
                                   }>
                                   <Row className={styles["inherit-height"]}>
                                     <Col lg={8} md={8} sm={12}>
@@ -3443,7 +3411,7 @@ const ReviewMinutes = () => {
                                             className={styles["time-uploader"]}>
                                             {convertToGMTMinuteTime(
                                               historyData.lastUpdatedDate +
-                                                historyData.lastUpdatedTime
+                                                historyData.lastUpdatedTime,
                                             )}
                                             ,
                                           </p>
@@ -3451,7 +3419,7 @@ const ReviewMinutes = () => {
                                             className={styles["date-uploader"]}>
                                             {convertDateToGMTMinute(
                                               historyData.lastUpdatedDate +
-                                                historyData.lastUpdatedTime
+                                                historyData.lastUpdatedTime,
                                             )}
                                           </p>
                                         </Col>
@@ -3468,7 +3436,7 @@ const ReviewMinutes = () => {
                                   <div className={styles["wrapper-userlist"]}>
                                     <p>
                                       {`${t(
-                                        "The-minute-has-been-sent-for-review-by"
+                                        "The-minute-has-been-sent-for-review-by",
                                       )} : `}
                                       {historyData.declinedReviews
                                         .slice(0, 5)
@@ -3503,7 +3471,7 @@ const ReviewMinutes = () => {
                                         toggleShowHide(historyData.minuteID)
                                       }>
                                       {visibleParentMinuteIDs.includes(
-                                        historyData.minuteID
+                                        historyData.minuteID,
                                       )
                                         ? t("Hide-comments")
                                         : t("Show-comments")}
@@ -3513,7 +3481,7 @@ const ReviewMinutes = () => {
                               </Row>
                             ) : null}
                             {visibleParentMinuteIDs.includes(
-                              historyData.minuteID
+                              historyData.minuteID,
                             ) &&
                               historyData.declinedReviews.map(
                                 (declinedDataHistory, index) => {
@@ -3623,14 +3591,14 @@ const ReviewMinutes = () => {
                                                         onClick={() => {
                                                           dispatch(
                                                             editCommentModal(
-                                                              true
-                                                            )
+                                                              true,
+                                                            ),
                                                           );
                                                           setEditCommentLocal(
-                                                            declinedDataHistory
+                                                            declinedDataHistory,
                                                           );
                                                           setParentMinuteID(
-                                                            data
+                                                            data,
                                                           );
                                                           setIsAgenda(false);
                                                         }}
@@ -3645,14 +3613,14 @@ const ReviewMinutes = () => {
                                                         onClick={() => {
                                                           dispatch(
                                                             deleteCommentModal(
-                                                              true
-                                                            )
+                                                              true,
+                                                            ),
                                                           );
                                                           setDeleteCommentLocal(
-                                                            declinedDataHistory
+                                                            declinedDataHistory,
                                                           );
                                                           setParentMinuteID(
-                                                            historyData
+                                                            historyData,
                                                           );
                                                           setIsAgenda(false);
                                                         }}
@@ -3673,7 +3641,7 @@ const ReviewMinutes = () => {
                                       </Row>
                                     </>
                                   );
-                                }
+                                },
                               )}
                           </>
                         );

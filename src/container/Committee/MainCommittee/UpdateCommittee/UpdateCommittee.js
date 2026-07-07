@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   Checkbox,
-  Notification,
   AttachmentViewer,
 } from "../../../../components/elements";
 import styles from "./UpdateCommittee.module.css";
@@ -25,7 +24,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 
@@ -103,11 +102,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     CreatorID: 0,
   });
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const closebtn = async () => {
     setUpdateComponentpage(false);
   };
@@ -181,10 +176,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       (roleOpt) => roleOpt.label === "Regular"
     );
     if (taskAssignedTo !== 0 && attendees.length > 0) {
-      showMessage(
+      show(
         t("You-can-add-data-only-from-one-form-option-at-a-time"),
-        "error",
-        setOpen
+        "error"
       );
       setAttendees([]);
       setTaskAssignedTo(0);
@@ -227,7 +221,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          showMessage(t("User-already-exist"), "error", setOpen);
+          show(t("User-already-exist"), "error");
           setTaskAssignedTo(0);
           setCommitteeMembersRolesVal(findRegularRole);
           setPresenterValue({
@@ -237,11 +231,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           });
         }
       } else {
-        showMessage(
-          t("Please-select-committee-member-type-also"),
-          "error",
-          setOpen
-        );
+        show(t("Please-select-committee-member-type-also"), "error");
       }
     } else if (attendees.length > 0) {
       let check = false;
@@ -254,7 +244,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         });
       });
       if (check === true) {
-        showMessage(t("User-already-exist"), "error", setOpen);
+        show(t("User-already-exist"), "error");
         setAttendees([]);
         setCommitteeMembersRolesVal(findRegularRole);
       } else {
@@ -285,15 +275,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             name: "",
           });
         } else {
-          showMessage(
-            t("lease-select-committee-member-type-also"),
-            "error",
-            setOpen
-          );
+          show(t("lease-select-committee-member-type-also"), "error");
         }
       }
     } else {
-      showMessage(t("Please-select-atleast-one-members"), "error", setOpen);
+      show(t("Please-select-atleast-one-members"), "error");
       setPresenterValue({
         value: 0,
         label: "",
@@ -321,7 +307,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducergetCommitteeMembersRoles]);
 
@@ -339,12 +325,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducergetCommitteeTypes]);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log(GroupMembers, "GroupMembersGroupMembers");
+    
     if (Array.isArray(GroupMembers) && GroupMembers.length > 0) {
       const validIds = [1, 2, 3, 4, 5];
       let hasValidMember = GroupMembers.some((data) =>
@@ -363,11 +349,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       committeeData.CreatorID !== 0
     ) {
       if (!checkGroupMembers(membersData)) {
-        showMessage(
-          t("Please-add-atleast-one-executive-member"),
-          "error",
-          setOpen
-        );
+        show(t("Please-add-atleast-one-executive-member"), "error");
       } else {
         setErrorBar(false);
         let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -388,7 +370,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       }
     } else {
       setErrorBar(true);
-      showMessage(t("Please fill all the fields"), "error", setOpen);
+      show(t("Please fill all the fields"), "error");
     }
   };
 
@@ -489,9 +471,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         });
       }
     } catch {
-      console.log(
-        "error in getting data in update committee getCommitteeByCommitteeID"
-      );
+      
     }
   }, [CommitteeReducergetCommitteeByCommitteeID, meetingAttendeesList]);
 
@@ -540,7 +520,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       let size = true;
 
       if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+        show(t("Not-allowed-more-than-15-files"), "error");
         return;
       }
 
@@ -558,15 +538,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-than-1-5GB"),
-            "error",
-            setOpen
-          );
+          show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          show(t("File-size-should-not-be-zero"), "error");
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          show(t("File-already-exists"), "error");
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -781,7 +757,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     ? true
                                     : false
                                 }
-                                label2={t("Create-talk-group")}
+                                label2={t("Create-committee-chat")}
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 checked={committeeData.isTalkGroup}
                                 onChange={CheckBoxHandler}
@@ -923,12 +899,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1059,12 +1030,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1194,12 +1160,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1329,12 +1290,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1567,10 +1523,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             >
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map((data, index) => {
-                                    console.log(
-                                      "meetingAttendeesListmeetingAttendeesList",
-                                      data
-                                    );
+                                    
                                     return (
                                       <>
                                         <Col
@@ -1788,7 +1741,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         cancelBtnClick={() => setCloseConfirmationBox(false)}
         onHide={() => setCloseConfirmationBox(false)}
       />
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

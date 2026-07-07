@@ -15,11 +15,7 @@ export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
 
         const isBottom = scrollTop + clientHeight >= scrollHeight - threshold;
-        console.log(
-          isBottom,
-          hasReachedBottom,
-          "hasReachedBottomhasReachedBottom"
-        );
+        
         if (isBottom && !hasReachedBottom) {
           setHasReachedBottom(true);
           onBottomReach?.();

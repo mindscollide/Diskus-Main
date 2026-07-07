@@ -453,7 +453,7 @@ export const resolutionResultTable = (dateTime) => {
 
   return convertTime;
   } catch (error) {
-    console.error("Error converting date:", error);
+    
     return "Invalid date";
     
   }
@@ -461,7 +461,7 @@ export const resolutionResultTable = (dateTime) => {
 };
 
 export const createConvert = (dateTime) => {
-  console.log(dateTime, "DatesDatesDatesDatesDates");
+  
   let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   let utcDate = new Date(convertintoISO).toUTCString();
 
@@ -840,7 +840,7 @@ export function formatTimeToHHMMSS(date) {
 export function formatDateToUTC(inputDate, value) {
   // Validate inputDate
   if (!inputDate || isNaN(new Date(inputDate).getTime())) {
-    console.error("Invalid input date:", inputDate);
+    
     throw new RangeError("Invalid date value provided.");
   }
 
@@ -943,18 +943,17 @@ export const convertUtcToGmt = (utcTime) => {
 
 export const convertDateFieldsToUTC = (rows) => {
   const convertedRows = rows.map((row) => {
-    // Convert main agenda dates to UTC
-    row.startDate = convertDateToUTC(row.startDate);
-    row.endDate = convertDateToUTC(row.endDate);
-
-    // Convert sub agenda dates to UTC
-    row.subAgenda = row.subAgenda.map((subAgenda) => {
-      subAgenda.startDate = convertDateToUTC(subAgenda.startDate);
-      subAgenda.endDate = convertDateToUTC(subAgenda.endDate);
-      return subAgenda;
-    });
-
-    return row;
+    const convertedSubAgenda = row.subAgenda.map((subAgenda) => ({
+      ...subAgenda,
+      startDate: convertDateToUTC(subAgenda.startDate),
+      endDate: convertDateToUTC(subAgenda.endDate),
+    }));
+    return {
+      ...row,
+      startDate: convertDateToUTC(row.startDate),
+      endDate: convertDateToUTC(row.endDate),
+      subAgenda: convertedSubAgenda,
+    };
   });
 
   return convertedRows;
@@ -1811,7 +1810,7 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
 
     return `${startTime} - ${endTime} | ${proposedDate}`;
   } catch (error) {
-    console.error("Error formatting date:", error);
+    
     return "";
   }
 }

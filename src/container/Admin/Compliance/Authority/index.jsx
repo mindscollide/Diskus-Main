@@ -53,7 +53,7 @@ import {
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useTableScrollBottom } from "../CommonFunctions/reusableFunctions";
 import { Checkbox } from "antd";
@@ -62,11 +62,7 @@ import CustomButton from "../../../../components/elements/button/Button";
 const ManageAuthority = () => {
   // Translation hook for multi-language support
   const { t } = useTranslation();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   // Authority context values and setters
   const {
     setAuthorityViewState, // controls add/edit/view mode
@@ -106,12 +102,6 @@ const ManageAuthority = () => {
 
   const GetAllAuthority = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetAllAuthorities,
-  );
-  const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
-  );
-  const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
   const authorityInactiveMessage = useSelector(
@@ -376,27 +366,10 @@ const ManageAuthority = () => {
     dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
   }, []);
 
-  useEffect(() => {
-    if (
-      authorityRespnseMessage !== null &&
-      authorityRespnseMessage !== undefined &&
-      authorityRespnseMessage !== "" &&
-      authorityseverityMessage !== null
-    ) {
-      try {
-        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
-        setTimeout(() => {
-          dispatch(clearAuthorityMessage());
-        }, 4000);
-      } catch (error) {}
-    }
-  }, [authorityRespnseMessage, authorityseverityMessage]);
-
   const statusOptions = [
     { label: "Active", value: "Active" },
     { label: "In Active", value: "Inactive" },
   ];
-  const [allFieldEmpty, setAllFieldEmpty] = useState(false);
   const getStatusColumnProps = () => ({
     filteredValue: statusFilter, // controlled filter
     filterDropdown: ({
@@ -424,7 +397,7 @@ const ManageAuthority = () => {
           <div style={{ display: "flex", gap: 8, marginTop: "10px" }}>
             {/* Reset Button */}
             <CustomButton
-              text="Reset"
+              text='Reset'
               onClick={() => {
                 const allValues = statusOptions.map((s) => s.value);
                 setSelectedKeys(allValues); // select all checkboxes
@@ -436,7 +409,7 @@ const ManageAuthority = () => {
 
             {/* Ok Button */}
             <CustomButton
-              text="Ok"
+              text='Ok'
               onClick={() => {
                 setStatusFilter(selectedKeys.length > 0 ? selectedKeys : []); // update controlled state
                 confirm(); // refresh table
@@ -448,7 +421,7 @@ const ManageAuthority = () => {
       );
     },
     onFilter: (value, record) => value.includes(record.status),
-    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+    filterIcon: () => <ChevronDown className='filter-chevron-icon-todolist' />,
   });
 
   // ========================
@@ -458,14 +431,14 @@ const ManageAuthority = () => {
     () => [
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className='d-flex gap-2 align-items-center justify-content-start'>
             {t("Short-code")}
             {shortCodeSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
             ) : shortCodeSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt='' className='cursor-pointer' />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={DefaultSortIcon} alt='' className='cursor-pointer' />
             )}
           </span>
         ),
@@ -490,14 +463,14 @@ const ManageAuthority = () => {
       },
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className='d-flex gap-2 align-items-center justify-content-start'>
             {t("Authority-name")}
             {authorityNameSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
             ) : authorityNameSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt='' className='cursor-pointer' />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={DefaultSortIcon} alt='' className='cursor-pointer' />
             )}
           </span>
         ),
@@ -521,14 +494,14 @@ const ManageAuthority = () => {
       },
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className='d-flex gap-2 align-items-center justify-content-start'>
             {t("Country")}
             {countrySort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
             ) : countrySort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt='' className='cursor-pointer' />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={DefaultSortIcon} alt='' className='cursor-pointer' />
             )}
           </span>
         ),
@@ -553,14 +526,14 @@ const ManageAuthority = () => {
       },
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className='d-flex gap-2 align-items-center justify-content-start'>
             {t("Sector")}
             {sectorSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
             ) : sectorSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt='' className='cursor-pointer' />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={DefaultSortIcon} alt='' className='cursor-pointer' />
             )}
           </span>
         ),
@@ -601,22 +574,21 @@ const ManageAuthority = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end align-items-center gap-4"
-              >
+                className='d-flex justify-content-end align-items-center gap-4'>
                 {/* Delete Authority */}
                 <img
-                  className="cursor-pointer"
-                  draggable="false"
-                  alt=""
+                  className='cursor-pointer'
+                  draggable='false'
+                  alt=''
                   src={deleteIcon}
                   onClick={() => hanldeDeleteAuthorityModal(record.authorityId)}
                 />
 
                 {/* Edit Authority */}
                 <img
-                  className="cursor-pointer"
-                  draggable="false"
-                  alt=""
+                  className='cursor-pointer'
+                  draggable='false'
+                  alt=''
                   src={editIcon}
                   onClick={() => handleEditAuthority(record.authorityId)}
                 />
@@ -762,12 +734,7 @@ const ManageAuthority = () => {
   };
 
   const handleChangeAuthorityFilerSorter = (pagination, filters, sorter) => {
-    console.log(
-      pagination,
-      filters,
-      sorter,
-      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter",
-    );
+    
     // 🔁 Reset all icons first
     resetAllSorts();
 
@@ -779,7 +746,7 @@ const ManageAuthority = () => {
       setAuthorityNameSort(sorter.order);
     }
     if (sorter.columnKey === "countryName") {
-      console.log(sorter, "shortCodeSortshortCodeSort");
+      
       setCountrySort(sorter.order);
     }
     if (sorter.columnKey === "sector") {
@@ -804,7 +771,7 @@ const ManageAuthority = () => {
     return data;
   }, [data]);
 
-  console.log(rowsData, "rowsDatarowsData");
+  
   // ========================
   // JSX Rendering
   // ========================
@@ -812,9 +779,9 @@ const ManageAuthority = () => {
   return (
     <>
       <Container>
-        <Row className="my-3">
+        <Row className='my-3'>
           <Col lg={6} md={6} sm={12} xs={12}>
-            <div className="d-flex gap-3 align-items-center w-100 justify-content-start">
+            <div className='d-flex gap-3 align-items-center w-100 justify-content-start'>
               <label className={styles["Auhtority-Main-Heading"]}>
                 {t("Authorities")}
               </label>
@@ -832,9 +799,8 @@ const ManageAuthority = () => {
             md={5}
             sm={12}
             xs={12}
-            className="justify-content-end  align-items-center "
-          >
-            <span ref={searchBoxRef} className="position-relative">
+            className='justify-content-end  align-items-center '>
+            <span ref={searchBoxRef} className='position-relative'>
               <TextField
                 placeholder={t("Authority-name")}
                 name={"authorityTitle"}
@@ -843,7 +809,7 @@ const ManageAuthority = () => {
                 onKeyDown={handleKeyDownSearchAuthority}
                 applyClass={"PollingSearchInput"}
                 maxLength={100}
-                labelclass="d-none"
+                labelclass='d-none'
                 change={handleSearchAuthority}
                 inputicon={
                   <>
@@ -852,24 +818,23 @@ const ManageAuthority = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
+                        className='d-flex gap-2 align-items-center'>
                         {searchPayload.authorityTitle && enterpressed ? (
                           <>
                             <img
                               src={BlackCrossIcon}
-                              className="cursor-pointer"
-                              draggable="false"
-                              alt=""
+                              className='cursor-pointer'
+                              draggable='false'
+                              alt=''
                               onClick={handleResetAuthorityButton}
                             />
                           </>
                         ) : null}
                         <img
                           src={searchicon}
-                          alt=""
+                          alt=''
                           className={styles["Search_Bar_icon_class"]}
-                          draggable="false"
+                          draggable='false'
                           onClick={handleSearchBoxOpen}
                         />
                       </Col>
@@ -887,25 +852,23 @@ const ManageAuthority = () => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["SearchBoxAuthority"]}
-                    >
-                      <Row className="mt-2">
+                      className={styles["SearchBoxAuthority"]}>
+                      <Row className='mt-2'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           xs={12}
-                          className="d-flex justify-content-end align-items-center"
-                        >
+                          className='d-flex justify-content-end align-items-center'>
                           <img
                             src={BlackCrossIcon}
-                            alt="Cross Icon"
-                            className="cursor-pointer"
+                            alt='Cross Icon'
+                            className='cursor-pointer'
                             onClick={handleCrossSearchBox}
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col lg={6} md={6} sm={6} xs={6}>
                           <TextField
                             labelclass={"d-none"}
@@ -913,7 +876,7 @@ const ManageAuthority = () => {
                             maxLength={100}
                             name={"authorityName"}
                             value={searchPayload.authorityName}
-                            type="text"
+                            type='text'
                             applyClass={"usermanagementTextField"}
                             change={handleSearchAuthority}
                           />
@@ -925,14 +888,14 @@ const ManageAuthority = () => {
                             maxLength={10}
                             name={"shortCode"}
                             value={searchPayload.shortCode}
-                            type="text"
+                            type='text'
                             applyClass={"usermanagementTextField"}
                             change={handleSearchAuthority}
                           />
                         </Col>
                       </Row>
 
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col lg={6} md={6} sm={12} xs={12}>
                           <Select
                             value={
@@ -940,7 +903,7 @@ const ManageAuthority = () => {
                             }
                             options={countryNames}
                             onChange={handleChangeCountry}
-                            placeholder="Country"
+                            placeholder='Country'
                           />
                         </Col>
                         <Col lg={6} md={6} sm={12} xs={12}>
@@ -950,20 +913,19 @@ const ManageAuthority = () => {
                             name={"sector"}
                             maxLength={50}
                             applyClass={"usermanagementTextField"}
-                            type="text"
+                            type='text'
                             value={searchPayload.sector}
                             change={handleSearchAuthority}
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           xs={12}
-                          className="d-flex justify-content-end gap-2 align-items-center"
-                        >
+                          className='d-flex justify-content-end gap-2 align-items-center'>
                           <Button
                             text={t("Reset")}
                             className={styles["ResetButtonSearchBox"]}
@@ -993,7 +955,7 @@ const ManageAuthority = () => {
         {rowsData.length > 0 ? (
           <CustomTable
             column={columnsAuthority}
-            className="Authority_Table mt-3"
+            className='Authority_Table mt-3'
             rows={rowsData}
             scroll={{ x: "scroll", y: 500 }}
             pagination={false}
@@ -1005,25 +967,22 @@ const ManageAuthority = () => {
               style={{
                 minHeight: "500px",
               }}
-              className="w-100  d-flex justify-content-center align-items-center flex-column"
-            >
-              <Row className="mt-3 ">
+              className='w-100  d-flex justify-content-center align-items-center flex-column'>
+              <Row className='mt-3 '>
                 <Col
                   lg={12}
                   ms={12}
                   sm={12}
-                  className="d-flex justify-content-center align-items-center"
-                >
-                  <img draggable={false} src={noAuthorityImg} alt="" />
+                  className='d-flex justify-content-center align-items-center'>
+                  <img draggable={false} src={noAuthorityImg} alt='' />
                 </Col>
               </Row>
-              <Row className="mt-5">
+              <Row className='mt-5'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["EmptyAuthorityState_heading"]}>
                     {searchPayload.shortCode !== "" ||
                     searchPayload.authorityName !== "" ||
@@ -1035,13 +994,12 @@ const ManageAuthority = () => {
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["EmptyAuthorityState_subHeading"]}>
                     {searchPayload.shortCode !== "" ||
                     searchPayload.authorityName !== "" ||
@@ -1057,9 +1015,10 @@ const ManageAuthority = () => {
           </>
         )}
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+
       <DeleteAuthorityModal />
       {addEditViewAuthoriyModal ? <AddEditViewAuthorityModal /> : null}
+      {SnackBar}
     </>
   );
 };

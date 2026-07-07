@@ -1,6 +1,5 @@
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
-import { UpdateOrganizersMeeting } from "./MeetingOrganizers_action";
 import {
   getAgendaVotingDetails,
   getAllVotingResultDisplay,
@@ -45,17 +44,21 @@ import {
   showCastVoteAgendaModal,
   AgendaPollVotingStartedAction,
   moveFilesAndFoldersApi,
-  getMeetingByCommitteeIDApi,
-  getMeetingbyGroupApi,
   searchNewUserMeeting,
-  setMeetingByGroupIDApi,
-  setMeetingbyCommitteeIDApi,
 } from "./NewMeetingActions";
 import {
   SetLoaderFalse,
   meetingLoaderDashboard,
 } from "./Get_List_Of_Assignees";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import {
+  getMeetingByCommitteeIdApi,
+  setMeetingbyCommitteeIdApi,
+} from "./Committee_actions";
+import {
+  getMeetingbyGroupIdApi,
+  setMeetingByGroupIdApi,
+} from "./Groups_actions";
 
 const clearAgendaReducerState = () => {
   return {
@@ -88,7 +91,6 @@ const getAgendaVotingDetails_fail = (message) => {
   };
 };
 const GetAgendaVotingDetails = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAgendaVotingDetails_init());
     let form = new FormData();
@@ -166,7 +168,6 @@ const getAllVotingResultDisplay_fail = (message) => {
   };
 };
 const GetAllVotingResultDisplay = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllVotingResultDisplay_init());
     let form = new FormData();
@@ -247,7 +248,6 @@ const saveAgendaVoting_fail = (message) => {
   };
 };
 const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let getAgendaData = {
     MeetingID: currentMeeting,
   };
@@ -274,7 +274,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 saveAgendaVoting_success(
                   response.data.responseResult,
-                  t("Voting-saved"),
+                  t("Agenda-poll-created"),
                 ),
               );
               dispatch(
@@ -298,7 +298,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 saveAgendaVoting_success(
                   response.data.responseResult,
-                  t("Voting-updated"),
+                  t("Agenda-poll-updated"),
                 ),
               );
               dispatch(
@@ -355,7 +355,6 @@ const getAgendaAndVotingInfo_fail = (message) => {
   };
 };
 const GetAgendaAndVotingInfo = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAgendaAndVotingInfo_init());
     let form = new FormData();
@@ -377,13 +376,17 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
                 )
             ) {
               // dispatch(showVoteAgendaModal(true));
-
-              dispatch(
-                getAgendaAndVotingInfo_success(
-                  response.data.responseResult,
-                  "",
+              const updatedResponse = {
+                ...response.data.responseResult,
+                votingAnswers: response.data.responseResult.votingAnswers.map(
+                  (listData) => ({
+                    ...listData,
+                    agendaID: Data.AgendaID,
+                  }),
                 ),
-              );
+              };
+
+              dispatch(getAgendaAndVotingInfo_success(updatedResponse, ""));
 
               dispatch(AgendaPollVotingStartedAction(false));
               dispatch(showCastVoteAgendaModal(true));
@@ -438,7 +441,6 @@ const casteVoteForAgenda_fail = (message) => {
   };
 };
 const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(casteVoteForAgenda_init());
     let form = new FormData();
@@ -462,16 +464,13 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
               dispatch(
                 casteVoteForAgenda_success(
                   response.data.responseResult,
-                  t("Vote-casted-successfully"),
+                  t("Thank-you-for-participanting-in-voting"),
                 ),
               );
               try {
-                console.log(typeof setRows, "typeoftypeof");
-
                 if (isMainAgenda) {
                   setRows((rowData) => {
                     return rowData.map((newData) => {
-                      console.log(newData, "setDatasetDatasetData");
                       if (String(newData.id) === String(Data.AgendaID)) {
                         return {
                           ...newData,
@@ -484,7 +483,6 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   });
                 } else {
                   setRows((rowData) => {
-                    console.log(rowData, "setDatasetDatasetData");
                     return rowData.map((dataItem) => {
                       if (dataItem.subAgenda && dataItem.subAgenda.length > 0) {
                         return {
@@ -508,9 +506,7 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                     });
                   });
                 }
-              } catch (error) {
-                console.log(error);
-              }
+              } catch (error) {}
 
               dispatch(showCastVoteAgendaModal(false));
             } else if (
@@ -566,7 +562,6 @@ const viewAgendaVotingResults_fail = (message) => {
   };
 };
 const ViewAgendaVotingResults = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(viewAgendaVotingResults_init());
     let form = new FormData();
@@ -651,7 +646,6 @@ const GetAdvanceMeetingAgendabyMeetingID = (
   flag,
   currentMeeting,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingID_init());
     let form = new FormData();
@@ -787,8 +781,6 @@ const CreateUpdateMeetingDataRoomMap = (
   checkFlag,
   setShow,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(createUpdateMeetingDataRoomMap_init());
     let form = new FormData();
@@ -825,7 +817,6 @@ const CreateUpdateMeetingDataRoomMap = (
               ),
             );
             if (checkFlag !== null && checkFlag !== undefined) {
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
@@ -845,7 +836,7 @@ const CreateUpdateMeetingDataRoomMap = (
               } else {
                 let createrID = localStorage.getItem("userID");
                 setShow(false);
-                if (checkFlag === 4) {
+                if (checkFlag === 5) {
                   dispatch(meetingLoaderDashboard(false));
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent =
@@ -858,7 +849,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow)
                       ? Number(meetingpageRow)
-                      : 50,
+                      : 30,
                     PublishedMeetings:
                       localStorage.getItem("MeetingCurrentView") !== null &&
                       Number(localStorage.getItem("MeetingCurrentView")) === 1
@@ -870,16 +861,16 @@ const CreateUpdateMeetingDataRoomMap = (
                         ? true
                         : false,
                   };
-                  console.log("chek search meeting");
+
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                } else if (checkFlag === 5) {
+                } else if (checkFlag === 6) {
                   //  Create Committee Meeting 5
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                   let Data = {
                     MeetingID: Number(data.MeetingID),
                     CommitteeID: Number(ViewCommitteeID),
                   };
-                  dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+                  dispatch(setMeetingbyCommitteeIdApi(navigate, t, Data));
                 } else if (checkFlag === 6) {
                   // Update Committee Meeting 6
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -891,10 +882,11 @@ const CreateUpdateMeetingDataRoomMap = (
                     HostName: "",
                     UserID: Number(createrID),
                     PageNumber: 1,
-                    Length: 50,
+                    Length: 30,
                     PublishedMeetings: true,
+                    ProposedMeetings: false,
                   };
-                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                  dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
                 } else if (checkFlag === 7) {
                   // Create Group Meeting 7
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -902,7 +894,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     MeetingID: Number(data.MeetingID),
                     GroupID: Number(ViewGroupID),
                   };
-                  dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+                  dispatch(setMeetingByGroupIdApi(navigate, t, Data));
                 } else if (checkFlag === 8) {
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
                   let Data = {
@@ -912,17 +904,13 @@ const CreateUpdateMeetingDataRoomMap = (
                     HostName: "",
                     UserID: Number(createrID),
                     PageNumber: 1,
-                    Length: 50,
+                    Length: 30,
                     PublishedMeetings: true,
+                    ProposedMeetings: false,
                   };
-                  dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                  dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
                 }
               }
-
-              console.log(
-                moveFilesandFolders,
-                "moveFilesandFoldersmoveFilesandFolders",
-              );
             }
 
             localStorage.setItem("MeetingID", data.MeetingID);
@@ -946,8 +934,6 @@ const CreateUpdateMeetingDataRoomMap = (
               ),
             );
             if (checkFlag !== null && checkFlag !== undefined) {
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
-
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
@@ -1066,7 +1052,7 @@ const uploadDocument_fail = (message) => {
 //   newFolder,
 //   newfile
 // ) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+//
 //   let creatorID = localStorage.getItem("userID");
 //   let organizationID = localStorage.getItem("organizationID");
 //   return async (dispatch) => {
@@ -1129,7 +1115,7 @@ const uploadDocument_fail = (message) => {
 //               //   fileSizeOnDisk: Number(response.data.responseResult.fileSize),
 //               // };
 //               // await newfile.push(dummyData);
-//               // console.log("newfilenewfile", newfile);
+//               //
 //               // dispatch(
 //               //   uploadDocument_success(response.data.responseResult, "")
 //               // );
@@ -1185,7 +1171,6 @@ const UploadDocumentsAgendaApi = (
     dispatch(uploadDocument_init()); // Dispatch action to indicate upload initialization
 
     try {
-      let token = JSON.parse(localStorage.getItem("token"));
       let creatorID = localStorage.getItem("userID");
       let organizationID = localStorage.getItem("organizationID");
 
@@ -1299,7 +1284,6 @@ const saveFiles_fail = (message) => {
 
 // Save Files API
 const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -1329,9 +1313,8 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               let fileIds = response.data.responseResult.fileID;
-              console.log(fileIds, "newFileID");
+
               fileIds.forEach((newFileID, index) => {
-                console.log(newFileID, "newFileID");
                 return newFolder.push({
                   pK_FileID: newFileID.pK_FileID,
                   displayAttachmentName: newFileID.displayFileName,
@@ -1374,410 +1357,6 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
   };
 };
 
-// Upload Documents Init
-const saveMeetingDocuments_init = () => {
-  return {
-    type: actions.SAVE_DOCUMENTS_AGENDA_INIT,
-  };
-};
-
-// Upload Documents Success
-const saveMeetingDocuments_success = (response, message) => {
-  return {
-    type: actions.SAVE_DOCUMENTS_AGENDA_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-// Upload Documents Fail
-const saveMeetingDocuments_fail = (message) => {
-  return {
-    type: actions.SAVE_DOCUMENTS_AGENDA_FAIL,
-    message: message,
-  };
-};
-
-// Upload Documents API
-const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return async (dispatch) => {
-    dispatch(saveMeetingDocuments_init());
-    let form = new FormData();
-    form.append("RequestMethod", saveMeetingDocuments.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
-    // form.append("File", data);
-    await axiosInstance
-      .post(dataRoomApi, form)
-
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMeetingDocuments(data, navigate, t, checkFlag, setShow));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_SaveMeetingDocuments_01".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                saveMeetingDocuments_success(response.data.responseResult, ""),
-              );
-              if (checkFlag !== null && checkFlag !== undefined) {
-                await dispatch(SetLoaderFalse());
-                let createrID = localStorage.getItem("userID");
-                setShow(false);
-                if (checkFlag === 4) {
-                  dispatch(meetingLoaderDashboard(false));
-                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                  let meetingPageCurrent =
-                    localStorage.getItem("MeetingPageCurrent") || 1;
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(createrID),
-                    PageNumber: Number(meetingPageCurrent),
-                    Length: Number(meetingpageRow)
-                      ? Number(meetingpageRow)
-                      : 50,
-                    PublishedMeetings:
-                      localStorage.getItem("MeetingCurrentView") !== null &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 1
-                        ? true
-                        : false,
-                    ProposedMeetings:
-                      localStorage.getItem("MeetingCurrentView") !== null &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 2
-                        ? true
-                        : false,
-                  };
-                  console.log("chek search meeting");
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                } else if (checkFlag === 5) {
-                  //  Create Committee Meeting 5
-                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-                  let Data = {
-                    MeetingID: Number(data.MeetingID),
-                    CommitteeID: Number(ViewCommitteeID),
-                  };
-                  dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
-                } else if (checkFlag === 6) {
-                  // Update Committee Meeting 6
-                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-
-                  let Data = {
-                    CommitteeID: Number(ViewCommitteeID),
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(createrID),
-                    PageNumber: 1,
-                    Length: 50,
-                    PublishedMeetings: true,
-                  };
-                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
-                } else if (checkFlag === 7) {
-                  // Create Group Meeting 7
-                  let ViewGroupID = localStorage.getItem("ViewGroupID");
-                  let Data = {
-                    MeetingID: Number(data.MeetingID),
-                    GroupID: Number(ViewGroupID),
-                  };
-                  dispatch(setMeetingByGroupIDApi(navigate, t, Data));
-                } else if (checkFlag === 8) {
-                  let ViewGroupID = localStorage.getItem("ViewGroupID");
-                  let Data = {
-                    GroupID: Number(ViewGroupID),
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(createrID),
-                    PageNumber: 1,
-                    Length: 50,
-                    PublishedMeetings: true,
-                  };
-                  dispatch(getMeetingbyGroupApi(navigate, t, Data));
-                }
-                // await dispatch(meetingLoaderDashboard(false));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_SaveMeetingDocuments_02".toLowerCase(),
-                )
-            ) {
-              dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
-        }
-        // }
-      })
-      .catch((error) => {
-        dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
-      });
-  };
-};
-
-const addUpdateAdvanceMeetingAgenda_init = () => {
-  return {
-    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_INIT,
-  };
-};
-const addUpdateAdvanceMeetingAgenda_success = (response, message) => {
-  return {
-    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-const addUpdateAdvanceMeetingAgenda_fail = (message) => {
-  return {
-    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_FAIL,
-    message: message,
-  };
-};
-const AddUpdateAdvanceMeetingAgenda = (
-  Data,
-  navigate,
-  t,
-  currentMeeting,
-  flag,
-  publishMeetingData,
-  setEditorRole,
-  setAdvanceMeetingModalID,
-  setDataroomMapFolderId,
-  setSceduleMeeting,
-  setPublishState,
-  setCalendarViewModal,
-  setMeetingMaterial,
-  setAgenda,
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let getMeetingData = {
-    MeetingID: currentMeeting,
-  };
-  return (dispatch) => {
-    dispatch(addUpdateAdvanceMeetingAgenda_init());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", addUpdateAdvanceMeetingAgenda.RequestMethod);
-    axiosInstance
-      .post(meetingApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            AddUpdateAdvanceMeetingAgenda(
-              Data,
-              navigate,
-              t,
-              currentMeeting,
-              flag,
-              publishMeetingData,
-              setEditorRole,
-              setAdvanceMeetingModalID,
-              setDataroomMapFolderId,
-              setSceduleMeeting,
-              setPublishState,
-              setCalendarViewModal,
-              setMeetingMaterial,
-              setAgenda,
-            ),
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_01".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_success(
-                  response.data.responseResult,
-                  t("Record-saved"),
-                ),
-              );
-              const saveDocumentsData = Data;
-              const agendaList = response.data.responseResult.agendaIds;
-
-              // Function to replace IDs in the saveDocumentsData
-              function replaceIDs(documents) {
-                documents.forEach((doc) => {
-                  const mainMatch = agendaList.find(
-                    (item) => item.frontendid === doc.ID,
-                  );
-                  if (mainMatch) {
-                    doc.ID = mainMatch.databaseID;
-                  }
-                  doc.SubAgenda.forEach((subAgenda) => {
-                    const subMatch = agendaList.find(
-                      (item) => item.frontendid === subAgenda.SubAgendaID,
-                    );
-                    if (subMatch) {
-                      subAgenda.SubAgendaID = subMatch.databaseID;
-                    }
-                  });
-                });
-              }
-
-              // Replace IDs in the main AgendaList
-              replaceIDs(saveDocumentsData.AgendaList);
-
-              const newUpdateFileList = {
-                MeetingID: saveDocumentsData.MeetingID,
-                UpdateFileList: [],
-              };
-
-              saveDocumentsData.AgendaList.forEach((agendas) => {
-                const agendaID = agendas.ID;
-                const subAgendaID =
-                  agendas.SubAgenda.length > 0
-                    ? agendas.SubAgenda[0].SubAgendaID
-                    : null;
-
-                const agendaFiles = agendas.Files.map((file) => {
-                  return { PK_FileID: parseInt(file.OriginalAttachmentName) };
-                });
-
-                const subAgendaFiles =
-                  agendas.SubAgenda.length > 0
-                    ? agendas.SubAgenda[0].Subfiles.map((file) => {
-                        return {
-                          PK_FileID: parseInt(file.OriginalAttachmentName),
-                        };
-                      })
-                    : [];
-
-                if (agendaFiles.length > 0) {
-                  newUpdateFileList.UpdateFileList.push({
-                    AgendaID: agendaID,
-                    FileIds: agendaFiles,
-                  });
-                }
-
-                if (subAgendaID && subAgendaFiles.length > 0) {
-                  newUpdateFileList.UpdateFileList.push({
-                    AgendaID: subAgendaID,
-                    FileIds: subAgendaFiles,
-                  });
-                }
-              });
-
-              console.log(
-                "saveDocumentsData newUpdateFileList ",
-                newUpdateFileList,
-              );
-              await dispatch(
-                SaveMeetingDocuments(newUpdateFileList, navigate, t),
-              );
-              if (flag === 1) {
-                await dispatch(
-                  GetAdvanceMeetingAgendabyMeetingID(
-                    getMeetingData,
-                    navigate,
-                    t,
-                  ),
-                );
-                setMeetingMaterial(true);
-                setAgenda(false);
-                dispatch(meetingDetailsGlobalFlag(false));
-                dispatch(organizersGlobalFlag(false));
-                dispatch(agendaContributorsGlobalFlag(false));
-                dispatch(participantsGlobalFlag(false));
-                dispatch(agendaGlobalFlag(false));
-                dispatch(meetingMaterialGlobalFlag(true));
-                dispatch(minutesGlobalFlag(false));
-                dispatch(proposedMeetingDatesGlobalFlag(false));
-                dispatch(actionsGlobalFlag(false));
-                dispatch(pollsGlobalFlag(false));
-                dispatch(attendanceGlobalFlag(false));
-                dispatch(uploadGlobalFlag(false));
-              } else if (flag === 2) {
-                console.log("end meeting chaek");
-                dispatch(
-                  UpdateOrganizersMeeting(
-                    false,
-                    navigate,
-                    t,
-                    5,
-                    publishMeetingData,
-                    setEditorRole,
-                    setAdvanceMeetingModalID,
-                    setDataroomMapFolderId,
-                    setSceduleMeeting,
-                    setPublishState,
-                    setCalendarViewModal,
-                  ),
-                );
-                setSceduleMeeting(false);
-                setMeetingMaterial(false);
-                setAgenda(false);
-                dispatch(meetingDetailsGlobalFlag(false));
-                dispatch(organizersGlobalFlag(false));
-                dispatch(agendaContributorsGlobalFlag(false));
-                dispatch(participantsGlobalFlag(false));
-                dispatch(agendaGlobalFlag(false));
-                dispatch(meetingMaterialGlobalFlag(false));
-                dispatch(minutesGlobalFlag(false));
-                dispatch(proposedMeetingDatesGlobalFlag(false));
-                dispatch(actionsGlobalFlag(false));
-                dispatch(pollsGlobalFlag(false));
-                dispatch(attendanceGlobalFlag(false));
-                dispatch(uploadGlobalFlag(false));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_02".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_fail(t("No-records-found")),
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_03".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")),
-              );
-            } else {
-              dispatch(
-                addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")),
-              );
-            }
-          } else {
-            dispatch(
-              addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")),
-            );
-          }
-        } else {
-          dispatch(
-            addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")),
-          );
-        }
-      })
-      .catch((response) => {
-        dispatch(addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")));
-      });
-  };
-};
-
 const agendaVotingStatusUpdate_init = () => {
   return {
     type: actions.START_END_AGENDAVOTING_INIT,
@@ -1802,7 +1381,6 @@ const AgendaVotingStatusUpdate = (
   advanceMeetingModalID,
   flag,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(agendaVotingStatusUpdate_init());
     let form = new FormData();
@@ -1958,7 +1536,6 @@ const getAllMeetingForAgendaImport_fail = (message) => {
   };
 };
 const GetAllMeetingForAgendaImport = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllMeetingForAgendaImport_init());
     let form = new FormData();
@@ -2046,7 +1623,6 @@ const getAgendaWithMeetingIDForImport_fail = (message) => {
   };
 };
 const GetAgendaWithMeetingIDForImport = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAgendaWithMeetingIDForImport_init());
     let form = new FormData();
@@ -2181,7 +1757,6 @@ const getMeetingParticipantsAgenda_fail = (message) => {
 };
 
 const GetMeetingParticipantsAgenda = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingParticipantsAgenda_init());
     let form = new FormData();
@@ -2272,7 +1847,6 @@ const sendAgendaPDFAsEmail_fail = (message) => {
 };
 
 const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendAgendaPDFAsEmail_init());
     let form = new FormData();
@@ -2332,8 +1906,7 @@ const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
   };
 };
 
-const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+const ExportAgendaPDF = (Data, navigate, t, currentMeeting) => {
   let form = new FormData();
   form.append("RequestMethod", exportAgendaAsPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -2345,24 +1918,40 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
       })
 
       .then(async (response) => {
-        if (response.status === 417) {
+        console.log("response", response);
+        if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
-          dispatch(setLoaderFalse());
-        } else if (response.status === 200) {
-          console.log("ExportAgendaPDFExportAgendaPDF", response);
-          const url = window.URL.createObjectURL(
-            new Blob([response.data], { type: "application/pdf" }),
-          );
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", `Agenda - ${meetingTitle}`);
-          document.body.appendChild(link);
-          link.click();
+          dispatch(ExportAgendaPDF(Data, navigate, t, currentMeeting));
           dispatch(setLoaderFalse());
         }
+        if (response.status === 200 && response.data) {
+          const url = window.URL.createObjectURL(
+            new Blob([response.data], { type: "application/zip" }), // ✅ change type
+          );
+
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `Agenda - ${currentMeeting}.zip`); // ✅ add .zip
+          document.body.appendChild(link);
+
+          link.click();
+
+          // cleanup (recommended)
+          link.remove();
+          window.URL.revokeObjectURL(url);
+
+          dispatch(setLoaderFalse());
+        } else {
+          dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+        }
       })
-      .catch((response) => {});
+      .catch((error) => {
+        console.log("Export PDF Error:", error);
+        dispatch(sendAgendaPDFAsEmail_fail(t("Something-went-wrong")));
+      })
+      .finally(() => {
+        dispatch(setLoaderFalse());
+      });
   };
 };
 
@@ -2388,7 +1977,6 @@ const printMeetingAgenda_fail = (message) => {
 };
 
 const PrintMeetingAgenda = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(printMeetingAgenda_init());
     let form = new FormData();
@@ -2485,7 +2073,6 @@ const getAdvanceMeetingAgendabyMeetingIDForView_fail = (message) => {
 
 //Get Agenda Details For View
 const GetAdvanceMeetingAgendabyMeetingIDForView = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingIDForView_init());
     let form = new FormData();
@@ -2585,14 +2172,12 @@ export {
   CreateUpdateMeetingDataRoomMap,
   SaveFilesAgendaApi,
   UploadDocumentsAgendaApi,
-  AddUpdateAdvanceMeetingAgenda,
   GetCurrentAgendaDetails,
   AgendaVotingStatusUpdate,
   getAgendaAndVotingInfo_success,
   getAgendaVotingDetails_success,
   saveFiles_success, //null emptystring
   saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
   uploadDocument_success,
   getAllVotingResultDisplay_success,
   getAdvanceMeetingAgendabyMeetingID_fail,
@@ -2616,5 +2201,4 @@ export {
   PrintMeetingAgenda,
   GetAdvanceMeetingAgendabyMeetingIDForView,
   getAgendaVotingDetails_fail,
-  SaveMeetingDocuments,
 };

@@ -8,6 +8,9 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "./../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "./../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "./../../../commen/featureFlags";
+import PSOPowerdBy from "./../../../assets/images/Logos/PowerdByDiskus.png";
 
 import styles from "./ForgotPasswordVerificaiton.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -20,19 +23,15 @@ import {
   verificationEmailOTP,
 } from "../../../../src/store/actions/Auth2_actions";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ForgotPasswordVerification = () => {
-  const { auth, Authreducer } = useSelector((state) => state);
+  const { Authreducer } = useSelector((state) => state);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   // Constants for timer
   const timerDurationMinutes = 5;
   const initialSeconds = 0;
@@ -42,12 +41,12 @@ const ForgotPasswordVerification = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds")
       ? parseInt(localStorage.getItem("seconds"))
-      : initialSeconds
+      : initialSeconds,
   );
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes")
       ? parseInt(localStorage.getItem("minutes"))
-      : initialMinutes
+      : initialMinutes,
   );
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -59,7 +58,7 @@ const ForgotPasswordVerification = () => {
     let data = {
       Email: email,
     };
-    console.log("UserEmail", data);
+    
     setErrorMessage("");
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
@@ -110,30 +109,6 @@ const ForgotPasswordVerification = () => {
   }, []);
 
   //for messeges shown in the snack-bar
-  useEffect(() => {
-    if (auth.ResponseMessage !== "") {
-      showMessage(auth.ResponseMessage, "success", setOpen);
-
-      dispatch(cleareChangePasswordMessage());
-    } else {
-      dispatch(cleareChangePasswordMessage());
-    }
-  }, [auth.ResponseMessage]);
-
-  //for showing the responses in the snackbar
-  useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [Authreducer.VerifyOTPEmailResponseMessage]);
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
@@ -142,7 +117,7 @@ const ForgotPasswordVerification = () => {
 
   const SubmitOTP = (e) => {
     e.preventDefault();
-    console.log("changeHandler", verifyOTP);
+    
 
     if (verifyOTP.length !== 6) {
       setErrorBar(true);
@@ -159,8 +134,8 @@ const ForgotPasswordVerification = () => {
           t,
           true,
           setSeconds,
-          setMinutes
-        )
+          setMinutes,
+        ),
       );
     }
   };
@@ -199,7 +174,7 @@ const ForgotPasswordVerification = () => {
                     <img
                       draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
+                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
                           ? DiskusLogoArabic
                           : DiskusLogo
                       }
@@ -321,11 +296,20 @@ const ForgotPasswordVerification = () => {
                 width='600px'
                 className={styles["Forgot_Password_Verification_Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=""
+                  draggable="false"
+                  style={{ position: "absolute", bottom: 10, right: 10, width: 110, zIndex: 2 }}
+                />
+              )}
             </Col>
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

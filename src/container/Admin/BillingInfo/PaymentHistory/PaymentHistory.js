@@ -25,13 +25,13 @@ import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { Spin } from "antd";
 import moment from "moment";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const EditUser = ({ ModalTitle }) => {
   const { OrganizationBillingReducer, adminReducer } = useSelector(
     (state) => state
   );
-  console.log(adminReducer, "adminReduceradminReduceradminReducer");
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -41,11 +41,7 @@ const EditUser = ({ ModalTitle }) => {
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
   const [InvoiceNumber, setInvoiceNumber] = useState("");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const { t } = useTranslation();
 
@@ -381,27 +377,8 @@ const EditUser = ({ ModalTitle }) => {
     }
   };
 
-  useEffect(() => {
-    if (
-      adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(adminReducer.ResponseMessage, "success", setOpen);
-    }
-  }, [adminReducer.ResponseMessage]);
 
-  useEffect(() => {
-    if (
-      OrganizationBillingReducer.ResponseMessage !== "" &&
-      OrganizationBillingReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(
-        OrganizationBillingReducer.ResponseMessage,
-        "success",
-        setOpen
-      );
-    }
-  }, [OrganizationBillingReducer.ResponseMessage]);
+
 
   return (
     <>
@@ -698,7 +675,8 @@ const EditUser = ({ ModalTitle }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

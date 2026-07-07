@@ -8,29 +8,21 @@ import { Button, Loader, Notification } from "../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { cleareMessage } from "../../../../store/actions/Admin_PackageUpgrade";
 import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/Admin_PackageDetail";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
   const { GetSubscriptionPackage } = Data;
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   let tenureId = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"));
   let packageColorPath1 = "";
   let packageColorPath2 = "";
-  console.log(
-    packageColorPath1,
-    packageColorPath2,
-    "packageColorPath2packageColorPath2packageColorPath2"
-  );
+  
   const { state } = location;
-  console.log(state, "statestatestate");
+  
   //for Translation
   const upgradePackage = (id) => {
     dispatch(getSubscriptionUpgradeAmountInfoApi(navigate, id, tenureId, t));
@@ -43,23 +35,6 @@ const PackageUpgradeDetail = () => {
       packageColorPath2 = state.PackageBadgeColor.split("_SEPERATOR_")[1];
     }
   }, [state]);
-
-  useEffect(() => {
-    if (
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
-        t("Organization-subscription-update")
-    ) {
-      showMessage(
-        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else {
-      dispatch(cleareMessage());
-    }
-  }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
 
   return (
     <>
@@ -192,7 +167,8 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      
+    {SnackBar}
     </>
   );
 };

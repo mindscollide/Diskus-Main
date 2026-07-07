@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   OrganisationCheck: false,
   EmailCheck: false,
   AddUserResponse: null,
@@ -54,6 +55,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         PaymentMethods: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_PAYMENT_METHODS_FAIL: {
@@ -62,6 +64,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         PaymentMethods: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.ADMIN_ADDUSER_INIT:
@@ -76,6 +79,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         AddUserResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_ADDUSER_FAIL:
@@ -84,6 +88,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         AddUserResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //action Case For Admin-AllMeeting
@@ -100,6 +105,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         AllOrganizationMeeting: action.response,
         AllOrganizationResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_ALLMEETING_FAIL:
@@ -107,17 +113,8 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         AllOrganizationResponseMessage: action.message,
+        errorSeverity: "error",
       };
-
-    //action Case For Admin-CancelSub
-    case actions.ADMIN_CANCELSUB_INIT:
-      return {};
-
-    case actions.ADMIN_CANCELSUB_SUCCESS:
-      return {};
-
-    case actions.ADMIN_CANCELSUB_FAIL:
-      return {};
 
     //action Case For Admin-CustomerInformation
     case actions.ADMIN_CUSTOMERINFORMATION_INIT:
@@ -132,6 +129,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         CustomerInformationData: action.response,
         CustomerInformationDataResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_CUSTOMERINFORMATION_FAIL:
@@ -140,6 +138,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         CustomerInformationData: null,
         CustomerInformationDataResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     // for admin Customer Info Update
@@ -156,6 +155,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         UpdateCustomerInformationResponse: action.response,
         UpdateCustomerInformationResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_FAIL:
@@ -164,6 +164,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         UpdateCustomerInformationResponse: null,
         UpdateCustomerInformationResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //action Case For Admin-EDITUSER
@@ -179,6 +180,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         EditUserResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_EDITUSER_FAIL:
@@ -187,6 +189,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         EditUserResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     //action Case For Admin-Invoice
@@ -212,6 +215,7 @@ const adminReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         OrganisationCheck: action.response,
         OrganizationCheckSpinner: false,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_ORGANIZATION_FAIL:
@@ -220,6 +224,7 @@ const adminReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         OrganisationCheck: action.response,
         OrganizationCheckSpinner: false,
+        errorSeverity: "error",
       };
     //action Case For Admin-Email
     case actions.ADMIN_EMAILVARIFICATION_INIT:
@@ -234,6 +239,7 @@ const adminReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         EmailCheck: action.response,
         EmailCheckSpinner: false,
+        errorSeverity: "success",
       };
 
     case actions.ADMIN_EMAILVARIFICATION_FAIL:
@@ -242,6 +248,7 @@ const adminReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         EmailCheck: action.response,
         EmailCheckSpinner: false,
+        errorSeverity: "error",
       };
     // actionc ase for admin meeting update
     case actions.UPDATEORGANIZTIONMEETING_INIT: {
@@ -256,6 +263,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         UpdateOrganizationMeetingResponse: action.response,
         UpdateOrganizationMessageResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.UPDATEORGANIZTIONMEETING_FAIL: {
@@ -264,6 +272,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         UpdateOrganizationMeetingResponse: null,
         UpdateOrganizationMessageResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     // action case for adming meeting delete
@@ -279,6 +288,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         DeleteOrganizationMeetingResponse: action.response,
         DeleteOrganizationMessageResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETEORGANIZATIONMEETING_FAIL: {
@@ -287,6 +297,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         DeleteOrganizationMeetingResponse: null,
         DeleteOrganizationMessageResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     //action Case For Admin-Packagedetail
@@ -340,6 +351,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         TotalUserListsData: action.response,
+        errorSeverity: "success",
         // ResponseMessage: action.message,
       };
 
@@ -349,12 +361,14 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         TotalUserListsData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.ADMIN_CLEARE_MESSAGE:
       return {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
         UpdateOrganizationMessageResponseMessage: "",
         UpdateCustomerInformationResponseMessage: "",
         DeleteOrganizationMessageResponseMessage: "",
@@ -373,12 +387,14 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         AllOrganizationUserList: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.ADMIN_ALLUSERLIST_FAIL:
       return {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.ADMIN_EDITORGANIZATIONUSER_INIT:
       return {
@@ -390,12 +406,14 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         // Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.ADMIN_EDITORGANIZATIONUSER_FAIL:
       return {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.ADMIN_DELETEORGANIZATIONUSER_INIT:
       return {
@@ -407,12 +425,14 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         // Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     case actions.ADMIN_DELETEORGANIZATIONUSER_FAIL:
       return {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.ADMIN_MEETINGSTATUS_INIT:
       return {
@@ -425,12 +445,14 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         AllMeetingsStatus: action.response,
+        errorSeverity: "success",
       };
     case actions.ADMIN_MEETINGSTATUS_FAIL:
       return {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     case actions.ADD_USER_LOADER:
       return {
@@ -454,6 +476,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         revokeResponseMessege: action.message,
+        errorSeverity: "success",
       };
 
     case actions.REVOKE_FAIL:
@@ -461,6 +484,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         revokeResponseMessege: action.message,
+        errorSeverity: "error",
       };
     case actions.ALL_MEETINGS_MQTT: {
       return {
@@ -480,6 +504,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         DeleteOrganizationResponse: action.response,
         DeleteOrganizationResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.DELETE_ORGANIZATION_FAIL: {
@@ -488,6 +513,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         DeleteOrganizationResponse: null,
         DeleteOrganizationResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.SEARCH_PAYMENT_HISTORY_INIT: {
@@ -504,6 +530,7 @@ const adminReducer = (state = initialState, action) => {
         Spinner: false,
         searchPaymentHistory: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SEARCH_PAYMENT_HISTORY_FAIL: {
@@ -513,6 +540,7 @@ const adminReducer = (state = initialState, action) => {
         Spinner: false,
         searchPaymentHistory: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -536,6 +564,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         getAuditListingData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -545,6 +574,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         getAuditListingData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -561,6 +591,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         getAuditActionsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -570,6 +601,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         getAuditActionsData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -586,6 +618,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         SaveAuditLog: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -595,6 +628,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         SaveAuditLog: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     default:

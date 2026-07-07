@@ -2,7 +2,7 @@ import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
-import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
+import CancelButtonModal from "@/container/meeting/commonComponents/closeMeetingTab/CancelModal";
 import {
   Button,
   Modal,
@@ -58,9 +58,12 @@ import {
   participantWaitingListBox,
   toggleParticipantsVisibility,
   getVideoCallParticipantsMainApi,
+  getGroupCallParticipantsMainApi,
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
   presenterLeaveParticipant,
+  presentationParticipantJoinedMqtt,
+  presentationParticipantLeftMqtt,
   clearPresenterParticipants,
   nonMeetingVideoGlobalModal,
   acceptHostTransferAccessGlobalFunc,
@@ -69,6 +72,8 @@ import {
   maxParticipantVideoDenied,
   screenShareTriggeredGlobally,
   isSharedScreenTriggeredApi,
+  participantAcceptandReject,
+  notifyParticipantsWhenHostIsTransferred,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -149,8 +154,10 @@ import {
   realtimeGroupStatusResponse,
   realtimeGroupResponse,
   removeGroupMemberMQTT,
+  groupProposedMeetingAction,
 } from "../../store/actions/Groups_actions";
 import {
+  committeeProposedMeetingAction,
   realtimeCommitteeResponse,
   realtimeCommitteeStatusResponse,
   removeCommitteeMemberMQTT,
@@ -208,7 +215,7 @@ import {
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
-import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
+import CancelConfirmationModal from "@/container/meeting/commonComponents/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
   MinuteReviwerCount,
@@ -217,8 +224,9 @@ import {
   SignatureDocumentReceivedMyMe,
   SignatureDocumentStatusChange,
   SignatureDocumentStatusChangeSignees,
+  signeeCreatorCount,
 } from "../../store/actions/workflow_actions";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import {
   meetingVideoRecording,
   videoRecording,
@@ -245,10 +253,12 @@ import {
   taskMappedChecklistMQTT,
   TasksDashboardFormManagerMqtt,
   TasksDashboardForUserMqtt,
+  taskStatusChangedUserMqtt,
   UpcomingDeadlineManagerDashboardMqtt,
   UpcomingDeadlineUserDashboardMqtt,
 } from "../../store/actions/ComplainSettingActions";
 import { useComplianceContext } from "../../context/ComplianceContext";
+import { HIDE_VIDEO } from "../../commen/featureFlags";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -282,6 +292,8 @@ const Dashboard = () => {
     setUnReadCountNotification,
     setPendingApprovalTabCount,
     setInCallParticipantsList,
+    videoTalk,
+    setVideoChatUnreadCount,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -307,10 +319,6 @@ const Dashboard = () => {
   );
   const IncomingVideoCallFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
-  );
-
-  const VideoMainReducerResponseMessage = useSelector(
-    (state) => state.VideoMainReducer.ResponseMessage,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
@@ -414,11 +422,7 @@ const Dashboard = () => {
   });
 
   //State For Meeting Data
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
 
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
@@ -488,7 +492,7 @@ const Dashboard = () => {
           dispatch(leaveMeetingOnlogout(true));
         }
       } else {
-        dispatch(userLogOutApiFunc(navigate, t));
+        // dispatch(userLogOutApiFunc(navigate, t));
       }
     }
   };
@@ -620,7 +624,7 @@ const Dashboard = () => {
             await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
           }
         }
-        showMessage(t("Presenter-view-started"), "success", setOpen);
+        show(t("Presenter-view-started"), "success");
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
           console.log("mqtt mqmqmqmqmqmq");
@@ -960,14 +964,14 @@ const Dashboard = () => {
         localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
-      const { meetingID, userID } = mqttData.payload;
+      const { meetingID, userID, guid } = mqttData.payload;
 
       if (Number(meetingID) !== currentMeetingID) return;
 
       // ✅ Check for duplicates in the Redux array
       const alreadyRequested = waitingParticipantsList?.some(
         (p) =>
-          Number(p.userID) === Number(userID) &&
+          Number(p.guid) === Number(guid) &&
           Number(p.meetingID) === Number(meetingID),
       );
       console.log(alreadyRequested, "Filtered unique participants");
@@ -979,10 +983,15 @@ const Dashboard = () => {
 
       // ✅ Dispatch to Redux ONLY if not duplicate
       if (isMeetingVideo && isMeetingVideoHostCheck) {
+        // ⭐ ENSURE meetingID IS IN THE PAYLOAD
+        const participantData = {
+          ...mqttData.payload,
+        };
+
         if (mqttData.payload.isGuest) {
-          dispatch(admitGuestUserRequest(mqttData.payload));
+          dispatch(admitGuestUserRequest(participantData));
         } else {
-          dispatch(participantWaitingList(mqttData.payload));
+          dispatch(participantWaitingList(participantData));
         }
         dispatch(guestJoinPopup(true));
       }
@@ -1000,13 +1009,11 @@ const Dashboard = () => {
         resolve(); // Zoom not enabled, no need to send message
         return;
       }
-      console.log("RecordingStopMsgFromIframe from MQTT");
       const iframe = iframeRef.current;
 
       if (CallType === 1 || CallType === 2) {
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-          console.log("RecordingStopMsgFromIframe from MQTT");
         }
 
         // Short delay to ensure iframe handles message
@@ -1095,6 +1102,9 @@ const Dashboard = () => {
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
     console.log(data, "MQTT onMessageArrived");
+    if (!data.payload.message) {
+      data.payload.message = data.message;
+    }
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
         if (data.action && data.payload) {
@@ -1227,6 +1237,48 @@ const Dashboard = () => {
               "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
             ) {
               dispatch(meetingStatusProposedMqtt(data.payload.meeting));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+              }
+            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()) {
+              dispatch(committeeProposedMeetingAction(data.payload));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+              }
+            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()) {
+              dispatch(groupProposedMeetingAction(data.payload));
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_PROPOSED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_POLL_RESPONSE".toLowerCase()
+            ) {
+              dispatch(meetingStatusProposedMqtt(data.payload));
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1533,11 +1585,16 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
             ) {
-              // localStorage.setItem(
-              //   "isHost",
-              //   data.payload.newParticipants.isHost
-              // );
-              dispatch(getParticipantsNewJoin(data.payload.newParticipants));
+              // Har new participant mein meetingID add karo
+              const newParticipantsWithMeetingID =
+                data.payload.newParticipants.map((p) => ({
+                  ...p,
+                  meetingID: data.payload.meetingID, // ← Payload level se meetingID le kar add karo
+                }));
+
+              // Ab dispatch karo updated participants ke saath
+              dispatch(getParticipantsNewJoin(newParticipantsWithMeetingID));
+
               console.log(data.payload, "JOINEDJOINEDJOINED");
             } else if (
               data.payload.message.toLowerCase() ===
@@ -1938,6 +1995,26 @@ const Dashboard = () => {
                 dispatch(participantVideoButtonState(false));
                 localStorage.setItem("isMeetingVideoHostCheck", true);
                 localStorage.setItem("isHost", true);
+                // Force-correct this client's recording-status UI now that it
+                // is host. Without this, the locally-set startRecordingState/
+                // pauseRecordingState (set much earlier, e.g. by the initial
+                // join-time auto-start trigger) stays stale and may show
+                // "Recording started" even if the previous host had it
+                // Paused. This explicitly asks the iframe for the CURRENT
+                // real Zoom recording status instead of trusting stale local
+                // state or waiting on a recording-change event that may not
+                // refire on its own.
+                (() => {
+                  const hostSyncIframe = iframeRef.current;
+                  if (hostSyncIframe && hostSyncIframe.contentWindow) {
+                    setTimeout(() => {
+                      hostSyncIframe.contentWindow.postMessage(
+                        "RequestRecordingStatus",
+                        "*",
+                      );
+                    }, 1000);
+                  }
+                })();
                 // change room id for host
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
@@ -1956,17 +2033,16 @@ const Dashboard = () => {
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
-                const wasRecordingPaused =
-                  localStorage.getItem("pauseRecordingState") === "true";
-                console.log(wasRecordingPaused, "Check is paused is true");
-
-                if (wasRecordingPaused) {
-                  console.log("Check is paused is true");
-                  setPauseRecordingState(true);
-                  setStartRecordingState(false);
-                  setResumeRecordingState(false);
-                  setStopRecordingState(false);
-                }
+                // NOTE: recording-state continuity for the new host is no
+                // longer guessed here. Zoom's own `recording-change` event
+                // fires on every client (recording is a session-level, not
+                // per-user, property), and the ZoomSDK project relays that
+                // authoritative status to this client's parent via the
+                // existing RecordingStart/Pause/Resume/StopMsgFromIframe
+                // postMessage channel as soon as it fires for this user. The
+                // previous check here read `localStorage.getItem(
+                // "pauseRecordingState")`, a key that is never written
+                // anywhere in the app, so it was always a no-op.
                 let newRoomId = localStorage.getItem("newRoomId");
                 console.log("mqtt check 22", newRoomId);
                 let Data = {
@@ -1976,6 +2052,11 @@ const Dashboard = () => {
                   participantListWaitingListMainApi(Data, navigate, t),
                 );
               }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "HOST_TRANSFERRED_NOTIFICATION".toLowerCase()
+            ) {
+              dispatch(notifyParticipantsWhenHostIsTransferred(true));
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2050,6 +2131,12 @@ const Dashboard = () => {
               dispatch(
                 presenterNewParticipantJoin(data.payload.newParticipant),
               );
+              // Keep the dedicated presentation-viewer roster
+              // (presentationParticipantsList) in sync too — surgical patch,
+              // no API re-fetch.
+              dispatch(
+                presentationParticipantJoinedMqtt(data.payload.newParticipant),
+              );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
             } else if (
               data.payload.message.toLowerCase() ===
@@ -2110,6 +2197,10 @@ const Dashboard = () => {
               "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
             ) {
               dispatch(presenterLeaveParticipant(data.payload));
+              // Keep the dedicated presentation-viewer roster
+              // (presentationParticipantsList) in sync too — surgical patch,
+              // no API re-fetch.
+              dispatch(presentationParticipantLeftMqtt(data.payload.uid));
               console.log("Participant Left:", data.payload.uid);
             } else if (
               data.payload.message.toLowerCase() ===
@@ -2844,6 +2935,25 @@ const Dashboard = () => {
           }
           dispatch(mqttInsertPrivateGroupMessage(data.payload));
           setNotificationID(id);
+          // Badge the presenter / meeting-video chat icon for new group messages
+          // while the in-video chat panel is closed.
+          try {
+            // For GROUP messages the group id is carried in `receiverID`
+            // (the group is the receiver) — same field chatMain keys on.
+            const incomingGroupID = data?.payload?.data?.[0]?.receiverID;
+            const inMeetingVideo = JSON.parse(
+              localStorage.getItem("isMeetingVideo"),
+            );
+            if (
+              inMeetingVideo &&
+              VideoChatMessagesFlagReducer === false &&
+              Number(incomingGroupID) === Number(videoTalk?.talkGroupID) &&
+              data.payload.data[0].senderID !== parseInt(createrID) &&
+              setVideoChatUnreadCount
+            ) {
+              setVideoChatUnreadCount((prev) => prev + 1);
+            }
+          } catch (e) {}
         } else if (
           data.payload.message.toLowerCase() === "USER_IS_BLOCKED".toLowerCase()
         ) {
@@ -3048,6 +3158,27 @@ const Dashboard = () => {
             console.log(error, "errorerror PUBLISHED_POLL_DELETED");
           }
         } else if (
+          data.payload.message.toLowerCase() ===
+          "UNPUBLISHED_POLL_DELETED".toLowerCase()
+        ) {
+          dispatch(deletePollsMQTT(data.payload.polls));
+          try {
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("PUBLISHED_POLL_DELETED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle,
+                ),
+              });
+              setNotificationID(id);
+            }
+          } catch (error) {
+            console.log(error, "errorerror PUBLISHED_POLL_DELETED");
+          }
+        } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_POLL_PUBLISHED_GROUP".toLowerCase())
@@ -3205,8 +3336,8 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStopRecording();
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              // await onHandleClickForStopRecording();
+              // await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
 
@@ -3286,8 +3417,8 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStopRecording();
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              // await onHandleClickForStopRecording();
+              // await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
 
@@ -3303,8 +3434,17 @@ const Dashboard = () => {
             });
           }
 
-          if (CallType === 2) {
+          if (data.payload.callTypeID === 2) {
             console.log("mqtt");
+            // Authoritative refresh: re-pull the group-call roster from the
+            // backend on EVERY client so the in-call list (accepted users) stays
+            // identical across caller and participants. `inCallParticipants`
+            // already includes accepters and excludes rejected/disconnected.
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, {
+                RoomID: data.payload.roomID,
+              }),
+            );
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
@@ -3315,6 +3455,24 @@ const Dashboard = () => {
               }
               return prevState;
             });
+            // Ensure the accepted participant appears in EVERY client's in-call
+            // roster. Participants render `inCallParticipantsList`, so without
+            // this they never saw peers who accepted. Gated on the payload
+            // callTypeID (not localStorage CallType, which was unreliable on
+            // participant clients) and de-duplicated by userID.
+            if (!isZoomEnabled) {
+              const acceptedParticipant = {
+                userID: data.payload.recepientID,
+                name: data.payload.recepientName,
+                callStatus: "In Call",
+              };
+              setInCallParticipantsList((prev) => {
+                const list = Array.isArray(prev) ? prev : [];
+                return list.some((u) => u.userID === data.payload.recepientID)
+                  ? list
+                  : [...list, acceptedParticipant];
+              });
+            }
           }
           let falgCheck1 = false;
           if (isZoomEnabled) {
@@ -3442,7 +3600,6 @@ const Dashboard = () => {
               console.log("Does Check Recording Stop");
               const iframe = iframeRef.current;
               if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
                   "*",
@@ -3451,10 +3608,36 @@ const Dashboard = () => {
             }
           }
 
-          if (CallType === 2) {
+          if (data.payload.callTypeID === 2) {
+            // Authoritative refresh: re-pull the roster so the rejected user is
+            // dropped consistently on every client. IMPORTANT: a reject from a
+            // still-ringing invitee carries THAT invitee's ringer room, not the
+            // active call room — so we must fetch using OUR OWN active call room
+            // (caller -> initiateCallRoomID, participant -> activeRoomID),
+            // otherwise the active call's roster is never refreshed.
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, {
+                RoomID:
+                  (isCaller ? initiateCallRoomID : activeRoomID) ||
+                  data.payload.roomID,
+              }),
+            );
+            // Remove the rejecter from EVERY roster list so all clients
+            // (caller renders groupCallParticipantList, participants render
+            // inCallParticipantsList) drop them consistently.
             setGroupCallParticipantList((prevState) =>
-              prevState.filter(
+              (Array.isArray(prevState) ? prevState : []).filter(
                 (user) => user.userID !== data.payload.recepientID,
+              ),
+            );
+            setInCallParticipantsList((prevState) =>
+              (Array.isArray(prevState) ? prevState : []).filter(
+                (user) => user.userID !== data.payload.recepientID,
+              ),
+            );
+            setGroupVideoCallAccepted((prevState) =>
+              (Array.isArray(prevState) ? prevState : []).filter(
+                (user) => user.recepientID !== data.payload.recepientID,
               ),
             );
           }
@@ -3512,7 +3695,13 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
               }
-            } else if (data.payload.callTypeID === 2) {
+            } else if (data.payload.callTypeID === 2 && isCaller) {
+              // Caller-only: the counters and auto-leave/close logic below use
+              // caller-only state (RecipentIDsOninitiateVideoCall /
+              // callerStatusObject), which is empty on participants and made
+              // their panel close when ANOTHER participant rejected. Restricting
+              // to the caller keeps still-connected participants in the call;
+              // they only drop the rejecter (handled by the list removal above).
               let newData = {
                 RecipientName: data.payload.recepientName,
                 RecipientID: data.payload.recepientID,
@@ -3661,6 +3850,16 @@ const Dashboard = () => {
           );
           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
+          // Group call: an unanswered invitee carries their own ringer room, not
+          // the active call room, so refresh the roster using OUR active call
+          // room (`RoomID`, computed above) so the unanswered user is dropped
+          // from every client's participant list.
+          if (data.payload.callTypeID === 2 && !isMeetingVideo) {
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, { RoomID: RoomID }),
+            );
+          }
+
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
           console.log("mqtt", typeof data.payload.roomID);
@@ -3784,8 +3983,15 @@ const Dashboard = () => {
                 checkCallStatus(remainingCallerStatus),
               );
 
-              // Step 4: Final condition
+              // Step 4: Final condition — CALLER ONLY. The counters below
+              // (RecipentIDsOninitiateVideoCall / callerStatusObject) are
+              // caller-only state and are empty on participants, so without the
+              // `isCaller` guard a participant's panel closed when ANOTHER
+              // invitee was unanswered. Restricting to the caller keeps
+              // still-connected participants in the call; the unanswered user is
+              // only removed from the roster (handled elsewhere).
               if (
+                isCaller &&
                 remainingRecipients.length === 0 &&
                 remainingCallerStatus.length === 0
               ) {
@@ -3871,8 +4077,8 @@ const Dashboard = () => {
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
             // Function For Stop Video Recording
-            await sendStopRecordingMessageForMQTT();
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            // await sendStopRecordingMessageForMQTT();
+            // await new Promise((resolve) => setTimeout(resolve, 100));
             flagCheck1 = String(activeRoomID) !== "";
           } else {
             flagCheck1 = Number(activeRoomID) !== 0;
@@ -4102,33 +4308,33 @@ const Dashboard = () => {
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
             // // Condition For Video Recording
-            if (isCaller && CallType === 1) {
-              console.log("Does Check Recording Stop");
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*",
-                );
-              }
-            } else if (
-              isCaller &&
-              CallType === 2 &&
-              existingData.length === 1
-            ) {
-              console.log("Does Check Recording Stop Call Type 2");
+            // if (isCaller && CallType === 1) {
+            //   console.log("Does Check Recording Stop");
+            //   const iframe = iframeRef.current;
+            //   if (iframe && iframe.contentWindow) {
+            //     console.log("Does Check Recording Stop");
+            //     iframe.contentWindow.postMessage(
+            //       "RecordingStopMsgFromIframe",
+            //       "*",
+            //     );
+            //   }
+            // } else if (
+            //   isCaller &&
+            //   CallType === 2 &&
+            //   existingData.length === 1
+            // ) {
+            //   console.log("Does Check Recording Stop Call Type 2");
 
-              // Assuming iframeRef is defined
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop Call Type 2");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*",
-                );
-              }
-            }
+            //   // Assuming iframeRef is defined
+            //   const iframe = iframeRef.current;
+            //   if (iframe && iframe.contentWindow) {
+            //     console.log("Does Check Recording Stop Call Type 2");
+            //     iframe.contentWindow.postMessage(
+            //       "RecordingStopMsgFromIframe",
+            //       "*",
+            //     );
+            //   }
+            // }
 
             RoomID =
               presenterViewFlagRef.current &&
@@ -4160,8 +4366,15 @@ const Dashboard = () => {
           console.log("mqtt");
           console.log("mqtt", RoomID);
 
-          if (CallType === 2) {
-            // Also remove the user from groupCallParticipantList
+          if (data.payload.callTypeID === 2) {
+            // Authoritative refresh: re-pull the group-call roster so the
+            // disconnected user is dropped consistently on every client.
+            dispatch(
+              getGroupCallParticipantsMainApi(navigate, t, {
+                RoomID: data.payload.roomID,
+              }),
+            );
+            // Also remove the user from groupCallParticipantList (instant feedback)
             setGroupCallParticipantList((prevList) =>
               prevList.filter(
                 (participant) =>
@@ -4727,7 +4940,7 @@ const Dashboard = () => {
             data.payload?.workFlowStatusID === 4
           )
             return;
-            
+
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,
@@ -4756,17 +4969,9 @@ const Dashboard = () => {
             pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
           }));
           if (data.payload.data.status === "Signed") {
-            showMessage(
-              t("Document-has-been-signed-successfully"),
-              "success",
-              setOpen,
-            );
+            show(t("Document-has-been-signed-successfully"), "success");
           } else if (data.payload.data.status === "Declined") {
-            showMessage(
-              t("Document-has-been-declined-successfully"),
-              "success",
-              setOpen,
-            );
+            show(t("Document-has-been-declined-successfully"), "success");
           }
         }
         if (
@@ -4806,6 +5011,36 @@ const Dashboard = () => {
             }
             return prev;
           });
+        }
+
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE".toLowerCase())
+        ) {
+          // Destructure the nested count data
+          const {
+            payload: {
+              data: { data: counts },
+            },
+          } = data;
+          // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
+          dispatch(signeeCreatorCount(counts));
+        }
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes(
+              "SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE_CREATOR".toLowerCase(),
+            )
+        ) {
+          const {
+            payload: {
+              data: { data: counts },
+            },
+          } = data;
+          // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
+          dispatch(signeeCreatorCount(counts));
         }
       }
       if (data.action?.toLowerCase() === "Settings".toLowerCase()) {
@@ -4914,6 +5149,18 @@ const Dashboard = () => {
         ) {
           console.log(data.payload, "REOPENCOMPLIANCE");
           dispatch(taskMappedChecklistMQTT(data.payload));
+        }
+
+        const viewType = Number(localStorage.getItem("viewType"));
+        const mqttMap = {
+          1: "task_status_changed_for_manager",
+          2: "task_status_changed_for_user",
+        };
+        console.log(mqttMap, "mqttMapmqttMapmqttMapmqttMap");
+        if (data.message?.toLowerCase() === mqttMap[viewType]) {
+          console.log("mqttMapmqttMapmqttMapmqttMap");
+
+          dispatch(taskStatusChangedUserMqtt(data.payload));
         }
       }
 
@@ -7885,28 +8132,6 @@ const Dashboard = () => {
   ]);
 
   useEffect(() => {
-    try {
-      if (
-        VideoMainReducerResponseMessage !== "" &&
-        VideoMainReducerResponseMessage !== t("No-record-found") &&
-        VideoMainReducerResponseMessage !== t("No-records-found") &&
-        VideoMainReducerResponseMessage !== "" &&
-        VideoMainReducerResponseMessage !== t("List-updated-successfully") &&
-        VideoMainReducerResponseMessage !== t("No-data-available") &&
-        VideoMainReducerResponseMessage !== t("Successful") &&
-        VideoMainReducerResponseMessage !== t("Record-updated") &&
-        VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
-        VideoMainReducerResponseMessage !== undefined
-      ) {
-        showMessage(VideoMainReducerResponseMessage, "success", setOpen);
-        dispatch(cleareResponceMessage(""));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [VideoMainReducerResponseMessage]);
-
-  useEffect(() => {
     if (Blur !== null) {
       setActivateBlur(true);
     } else {
@@ -8038,12 +8263,11 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -8051,7 +8275,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -8062,8 +8286,7 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -8089,7 +8312,7 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -8098,7 +8321,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+                <img src={IconMetroAttachment} alt='' draggable='false' />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -8116,14 +8339,15 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-          {NormalizeVideoFlag === true ||
-          MinimizeVideoFlag === true ||
-          MaximizeVideoFlag === true ? (
+          {!HIDE_VIDEO &&
+          (NormalizeVideoFlag === true ||
+            MinimizeVideoFlag === true ||
+            MaximizeVideoFlag === true) ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
@@ -8132,7 +8356,7 @@ const Dashboard = () => {
               open={isInternetDisconnectModalVisible}
             />
           )}
-          <Notification open={open} setOpen={setOpen} />
+
           {cancelModalMeetingDetails && <CancelButtonModal />}
           {roleRoute && (
             <Modal
@@ -8143,24 +8367,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
-                  <Row className="mb-1">
+                  <Row className='mb-1'>
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className="d-flex justify-content-center">
+                        <Col className='d-flex justify-content-center'>
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
+                            alt=''
+                            draggable='false'
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="text-center mt-4">
+                        <Col className='text-center mt-4'>
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -8173,13 +8397,12 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}
@@ -8197,6 +8420,7 @@ const Dashboard = () => {
           )}
         </Layout>
       </ConfigProvider>
+      {SnackBar}
     </>
   );
 };

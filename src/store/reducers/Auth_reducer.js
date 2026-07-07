@@ -5,6 +5,7 @@ const initialState = {
   isLoggedIn: false,
   Loading: false,
   ResponseMessage: "",
+  errorSeverity: null,
   signUpResponseMessage: "",
   LoginResponseMessage: "",
   isSignUp: false,
@@ -35,8 +36,10 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: action.message,
+        errorSeverity: "success",
         Token: action.response.token,
         Refresh: action.response.refreshToken,
+        errorSeverity: "success",
       };
 
     case actions.REFRESH_TOKEN_FAIL:
@@ -47,6 +50,7 @@ const authReducer = (state = initialState, action) => {
         SessionExpireResponseMessage: action.message,
         Token: "",
         Refresh: "",
+        errorSeverity: "error",
       };
 
     case actions.SIGN_UP_INIT:
@@ -59,6 +63,7 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: true,
         Loading: false,
         pendingError: false,
+        errorSeverity: "success",
       };
     case actions.SIGN_UP_FAIL:
       return {
@@ -67,6 +72,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         pendingError: true,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.SIGN_IN_INIT:
@@ -76,7 +82,7 @@ const authReducer = (state = initialState, action) => {
       localStorage.setItem("token", JSON.stringify(action.response.token));
       localStorage.setItem(
         "RefreshToken",
-        JSON.stringify(action.response.refreshToken)
+        JSON.stringify(action.response.refreshToken),
       );
       localStorage.setItem("UserName", action.response.name);
       localStorage.setItem("Email", JSON.stringify(action.response.userName));
@@ -88,6 +94,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         UserDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
 
     case actions.SIGN_IN_FAIL:
@@ -97,6 +104,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         UserDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
 
     case actions.FORGOT_PASSWORD_INIT: {
@@ -112,6 +120,8 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         ForgotPasswordData: action.response,
         ResponseMessage: action.message,
+        messageId: Date.now(),
+        errorSeverity: "success",
       };
     }
     case actions.FORGOT_PASSWORD_FAIL: {
@@ -120,6 +130,8 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: false,
         Loading: false,
         ResponseMessage: action.message,
+        messageId: Date.now(),
+        errorSeverity: "error",
       };
     }
     case actions.VERIFY_OPT_INIT: {
@@ -131,6 +143,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPData: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.VERIFY_OPT_FAIL: {
@@ -139,6 +152,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPData: action.response,
+        errorSeverity: "error",
       };
     }
     case actions.VERIFY_OTPSIGNUP_SUCCESS: {
@@ -147,6 +161,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPSignupData: action.response,
+        errorSeverity: "success",
       };
     }
     case actions.VERIFY_OTPSIGNUP_FAIL: {
@@ -155,6 +170,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response.responseMessage,
         VerifyOTPSignupData: action.response,
+        errorSeverity: "error",
       };
     }
 
@@ -163,6 +179,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -171,6 +188,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         message: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -193,6 +211,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response,
         ConfirmPasswordData: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.CHANGE_PASSWORD_FAIL: {
@@ -201,6 +220,7 @@ const authReducer = (state = initialState, action) => {
         Loading: false,
         message: action.response,
         ConfirmPasswordData: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -209,6 +229,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 
@@ -216,16 +237,17 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         signUpResponseMessage: "",
         LoginResponseMessage: "",
       };
 
     case actions.CLEAR_STATE_BACK:
       let RememberEmailLocal = JSON.parse(
-        localStorage.getItem("rememberEmail")
+        localStorage.getItem("rememberEmail"),
       );
       let RememberPasswordLocal = JSON.parse(
-        localStorage.getItem("remeberPassword")
+        localStorage.getItem("remeberPassword"),
       );
       let reLang = localStorage.getItem("i18nextLng");
       if (RememberEmailLocal === true && RememberPasswordLocal === true) {
@@ -233,9 +255,9 @@ const authReducer = (state = initialState, action) => {
           localStorage.getItem("rememberEmailValue");
 
         let RememberPasswordLocalValue = localStorage.getItem(
-          "rememberPasswordValue"
+          "rememberPasswordValue",
         );
-        
+
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -243,14 +265,14 @@ const authReducer = (state = initialState, action) => {
         localStorage.setItem("remeberPassword", RememberPasswordLocal);
         localStorage.setItem(
           "rememberPasswordValue",
-          RememberPasswordLocalValue
+          RememberPasswordLocalValue,
         );
         localStorage.setItem("rememberEmail", RememberEmailLocal);
         localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       } else if (RememberEmailLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
-        
+
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -259,9 +281,9 @@ const authReducer = (state = initialState, action) => {
         localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       } else if (RememberPasswordLocal === true) {
         let RememberPasswordLocalValue = localStorage.getItem(
-          "rememberPasswordValue"
+          "rememberPasswordValue",
         );
-        
+
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -269,10 +291,9 @@ const authReducer = (state = initialState, action) => {
         localStorage.setItem("remeberPassword", RememberPasswordLocal);
         localStorage.setItem(
           "rememberPasswordValue",
-          RememberPasswordLocalValue
+          RememberPasswordLocalValue,
         );
       } else {
-        
         localStorage.clear();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
@@ -288,6 +309,7 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: false,
         Loading: false,
         ResponseMessage: "",
+        errorSeverity: null,
         signUpResponseMessage: "",
         LoginResponseMessage: "",
         isSignUp: false,
@@ -311,6 +333,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
         SessionExpireResponseMessage: "",
         LoginResponseMessage: "",
         signUpResponseMessage: "",

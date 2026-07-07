@@ -292,3 +292,8 @@ body[dir="rtl"] .Auth_Icon {
   right: 50px;
   transform: rotate(20deg);
 }
+.PoweredIcon_Diskus_Icon{
+    position: absolute;
+    bottom: 45px;
+    right: 40px;
+}

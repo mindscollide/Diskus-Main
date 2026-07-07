@@ -10,7 +10,7 @@ import img5 from "../../../assets/images/DropdownFIVE.svg";
 import editicon from "../../../assets/images/Esvg.svg";
 import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
-import { Tooltip } from "antd";
+import { Popover, Tooltip } from "antd";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 /**
@@ -62,6 +62,7 @@ import { convertToArabicNumerals } from "../../../commen/functions/regex";
  *   titleOnCLick={handleTitleClick}
  * />
  */
+
 const Card = ({
   CardHeading,
   profile,
@@ -87,77 +88,161 @@ const Card = ({
 }) => {
   const { t } = useTranslation();
   let Currentlanguage = localStorage.getItem("i18nextLng");
-  const [editItems, setEditItems] = useState([
+
+  const [openPopoverId, setOpenPopoverId] = useState(null);
+  const [openEditPopoverId, setOpenEditPopoverId] = useState(null);
+  const editItems = [
     { key: "In-active", value: 1 },
     { key: "Archive", value: 2 },
     { key: "Active", value: 3 },
-  ]);
+  ];
 
-  const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
   const creatorID = localStorage.getItem("userID");
 
-  useEffect(() => {
-    try {
-      // Global click listener that closes whichever dropdown is open when the
-      // user clicks outside of it. CSS class names follow the pattern
-      // "<prefix>_dot" or "<prefix>_Edit" — the segment after the underscore
-      // determines which dropdown was targeted.
-      window.addEventListener("click", function (e) {
-        let clsname = e.target.className;
-        if (typeof clsname === "string") {
-          let arr = clsname.split("_");
-          if (arr !== undefined) {
-            if (arr[1] === "dot" && dropdownthreedots === true) {
-              // Second click on the dots icon — collapse the three-dots menu.
-              setdropdownthreedots(false);
-            } else if (arr[1] === "dot" && dropdownthreedots === false) {
-              // First click on the dots icon — close edit dropdown and open three-dots menu.
-              setEditdropdown(false);
-              setdropdownthreedots(true);
-            } else if (arr[1] === "Edit" && editdropdown === true) {
-              // Second click on the edit icon — collapse the edit dropdown.
-              setEditdropdown(false);
-            } else if (arr[1] === "Edit" && editdropdown === false) {
-              // First click on the edit icon — close three-dots menu and open edit dropdown.
-              setdropdownthreedots(false);
-              setEditdropdown(true);
-            } else {
-              // Click landed outside both menus — close everything and deselect the card.
-              setEditdropdown(false);
-              setdropdownthreedots(false);
-              setUniqCardID(0);
-            }
-          } else {
-            setEditdropdown(false);
-            setdropdownthreedots(false);
-          }
-        }
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
-  }, []);
   // Sort member profiles alphabetically by userName (case-insensitive) so the
   // first four displayed avatars are always in a deterministic order.
-  let sortedArraay =
-    profile !== null &&
-    profile !== undefined &&
-    profile.length > 0 &&
-    profile.sort((a, b) => {
-      const userNameA = a.userName.toLowerCase();
-      const userNameB = b.userName.toLowerCase();
+  let sortedArray =
+    profile?.length > 0
+      ? [...profile].sort((a, b) =>
+          a.userName.toLowerCase().localeCompare(b.userName.toLowerCase()),
+        )
+      : [];
 
-      if (userNameA < userNameB) {
-        return -1;
-      }
-      if (userNameA > userNameB) {
-        return 1;
-      }
-      return 0;
-    });
+  const renderThreeDotsContent = (
+    <Container className={styles["Dropdown-container-Committee"]}>
+      <Row className='mt-1'>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className='d-flex justify-content-start gap-2 ms-1'
+          onClick={handleClickDocumentOption}>
+          <div className='d-flex justify-content-start gap-2'>
+            <span>
+              <img src={img1} width={15} draggable='false' alt='' />
+            </span>
+            <span className={styles["dropdown-text"]}>{t("Documents")}</span>
+          </div>
+        </Col>
+      </Row>
 
-  useEffect(() => {}, [editdropdown, dropdownthreedots]);
+      <hr className={styles["HR-line-Committee-group"]} />
+
+      <Row className='mt-2'>
+        <Col lg={12} md={12} sm={12} onClick={handleClickDiscussion}>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex justify-content-start gap-2 ms-1'>
+            <div className={discussionMenuClass}>
+              <span>
+                <img src={img3} width={15} draggable='false' alt='' />
+              </span>
+              <span className={styles["dropdown-text"]}>{t("Discussion")}</span>
+            </div>
+          </Col>
+        </Col>
+      </Row>
+
+      <hr className={styles["HR-line-Committee-group"]} />
+
+      <Row className='mt-2'>
+        <Col lg={12} md={12} sm={12}>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex justify-content-start gap-2 ms-1'
+            onClick={handleMeetingClickOption}>
+            <div className='d-flex justify-content-start gap-2'>
+              <span>
+                <img src={img4} alt='' width={17} draggable='false' />
+              </span>
+              <span className={styles["dropdown-text"]}>{t("Meetings")}</span>
+            </div>
+          </Col>
+        </Col>
+      </Row>
+
+      <hr className={styles["HR-line-Committee-group"]} />
+
+      <Row className='mt-2'>
+        <Col lg={12} md={12} sm={12}>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex justify-content-start gap-2 ms-1'
+            onClick={handlePollsClickOption}>
+            <div className='d-flex justify-content-start gap-2'>
+              <span>
+                <img src={img5} width={17} alt='' draggable='false' />
+              </span>
+              <span className={styles["dropdown-text"]}>{t("Polls")}</span>
+            </div>
+          </Col>
+        </Col>
+      </Row>
+
+      <hr className={styles["HR-line-Committee-group"]} />
+
+      <Row className='mt-2'>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className='d-flex justify-content-start gap-2 ms-1'
+          onClick={handleTasksClickOption}>
+          <div className='d-flex justify-content-start gap-2'>
+            <span>
+              <img src={img6} width={17} draggable='false' alt='' />
+            </span>
+            <span className={styles["dropdown-text"]}>{t("Tasks")}</span>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
+
+  // Render edit popover content
+  const renderEditContent = () => (
+    <Container
+      className={styles["Dropdown-container-editIcon-Committee-Group"]}>
+      {editItems.map((editItem, index) => (
+        <React.Fragment key={index}>
+          <Row className='mt-1'>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex justify-content-center Saved_money_Tagline'>
+              <span
+                className={
+                  Number(editItem.value) === Number(StatusID)
+                    ? styles["dropdown-text-disable"]
+                    : styles["dropdown-text"]
+                }
+                onKeyDown={(e) =>
+                  Number(editItem.value) === Number(StatusID) &&
+                  e.preventDefault()
+                }
+                onClick={() =>
+                  Number(editItem.value) !== Number(StatusID) &&
+                  changeHandleStatus(editItem, CardID, () => {
+                    setOpenEditPopoverId(null);
+                  })
+                }>
+                {t(editItem.key)}
+              </span>
+            </Col>
+          </Row>
+          {index < 2 && <hr className={styles["HR-line-Committee-group"]} />}
+        </React.Fragment>
+      ))}
+    </Container>
+  );
 
   return (
     <Row
@@ -165,10 +250,9 @@ const Card = ({
         StatusID === 1
           ? styles["Committee_InActive"]
           : StatusID === 2
-          ? styles["Committee_Archived"]
-          : styles["Committee"]
-      }
-    >
+            ? styles["Committee_Archived"]
+            : styles["Committee"]
+      }>
       <Col
         lg={12}
         sm={12}
@@ -177,10 +261,9 @@ const Card = ({
           StatusID === 1
             ? styles["In-Active-status-Committee-Group-background"]
             : StatusID === 2
-            ? styles["Archived-status-Committee-Group-background"]
-            : styles["Active-status-Committee-Group-background"]
-        }
-      >
+              ? styles["Archived-status-Committee-Group-background"]
+              : styles["Active-status-Committee-Group-background"]
+        }>
         {StatusID === 1 ? (
           <span className={styles["Status-Committee-Group"]}>
             {t("In-active")}
@@ -196,7 +279,7 @@ const Card = ({
         ) : null}
       </Col>
 
-      <Row className="p-0 m-0">
+      <Row className='p-0 m-0'>
         <Col lg={2} md={2} sm={2}></Col>
         <Col lg={8} md={8} sm={8}>
           <Row>
@@ -204,15 +287,13 @@ const Card = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center mt-3"
-            >
+              className='d-flex justify-content-center mt-3'>
               <span
                 className={
                   StatusID === 1 || StatusID === 2
                     ? styles["group-icon-Committee-Group_InActive"]
                     : styles["group-icon-Committee-Group"]
-                }
-              >
+                }>
                 {Icon}
               </span>
             </Col>
@@ -226,8 +307,7 @@ const Card = ({
             StatusID === 2
               ? styles["Two-Icons-style-Committee-Group_InActive"]
               : styles["Two-Icons-style-Committee-Group"]
-          }
-        >
+          }>
           <Row>
             <Col
               lg={12}
@@ -235,261 +315,75 @@ const Card = ({
               sm={12}
               className={`d-flex gap-2 mt-4 pe-3 ${
                 Currentlanguage === "ar" ? "" : "justify-content-end"
-              }`}
-            >
+              }`}>
               {Number(creatorId) === Number(creatorID) && (
-                <Tooltip placement="bottomLeft" title={t("Edit")}>
+                <Popover
+                  placement='bottomRight'
+                  trigger='click'
+                  overlayClassName="editDropdownPopoverOverLay"
+                  open={openEditPopoverId === CardID}
+                  onOpenChange={(visible) => {
+                    setOpenEditPopoverId(visible ? CardID : null);
+                    if (visible) setOpenPopoverId(null);
+                  }}
+                  showArrow={false}
+                  content={renderEditContent()}>
                   <img
                     src={editicon}
-                    width="21px"
-                    height="21px"
-                    alt=""
-                    className={
-                      Number(creatorId) === Number(creatorID)
-                        ? styles["Edit_icon_styles"]
-                        : styles["Edit_icon_styles_InActive"]
-                    }
-                    onClick={() => setUniqCardID(CardID)}
-                    draggable="false"
+                    width='21px'
+                    height='21px'
+                    alt={t("Edit")}
+                    className={styles["Edit_icon_styles"]}
+                    style={{ cursor: "pointer" }}
                   />
-                </Tooltip>
+                </Popover>
               )}
-              <Tooltip placement="bottomLeft" title={t("More")}>
+
+              {/* Dots Popover */}
+              <Popover
+                placement='bottomRight'
+                trigger='click'
+                open={openPopoverId === CardID}
+                className='threeDottedDropdownPopover'
+                overlayClassName="threeDottedDropdownPopoverOverlay"
+                onOpenChange={(visible) => {
+                  setOpenPopoverId(visible ? CardID : null);
+                  if (visible) setOpenEditPopoverId(null);
+                }}
+                showArrow={false}
+                content={renderThreeDotsContent}>
                 <img
                   src={doticon}
-                  width="21px"
-                  height="21px"
-                  className={
-                    StatusID === 3 || StatusID === 1
-                      ? styles["dot_icon_styles"]
-                      : StatusID === 2
-                      ? styles["dot_icon_styles_InActive"]
-                      : styles["dot_icon_styles_InActive"]
-                  }
-                  onClick={() => setUniqCardID(CardID)}
-                  alt=""
-                  draggable="false"
+                  width='21px'
+                  height='21px'
+                  className={styles["dot_icon_styles"]}
+                  alt={t("More")}
+                  style={{ cursor: "pointer" }}
                 />
-              </Tooltip>
-            </Col>
-            <Col lg={12} md={12} sm={12}>
-              {editdropdown && parseInt(CardID) === parseInt(uniqCardID) ? (
-                <>
-                  <Container
-                    className={
-                      styles["Dropdown-container-editIcon-Committee-Group"]
-                    }
-                  >
-                    {editItems.length > 0
-                      ? editItems.map((editItem, index) => {
-                          return (
-                            <>
-                              <Row className="mt-1" key={index}>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center  Saved_money_Tagline "
-                                >
-                                  <span
-                                    className={
-                                      Number(editItem.value) ===
-                                      Number(StatusID)
-                                        ? styles["dropdown-text-disable"]
-                                        : styles["dropdown-text"]
-                                    }
-                                    onKeyDown={(e) =>
-                                      Number(editItem.value) ===
-                                        Number(StatusID) && e.preventDefault()
-                                    }
-                                    onClick={() =>
-                                      Number(editItem.value) !==
-                                        Number(StatusID) &&
-                                      changeHandleStatus(
-                                        editItem,
-                                        CardID,
-                                        setEditdropdown
-                                      )
-                                    }
-                                  >
-                                    {t(editItem.key)}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <hr
-                                className={
-                                  index === 2
-                                    ? "d-none"
-                                    : styles["HR-line-Committee-group"]
-                                }
-                              />
-                            </>
-                          );
-                        })
-                      : null}
-                  </Container>
-                </>
-              ) : null}
-              {dropdownthreedots &&
-              parseInt(CardID) === parseInt(uniqCardID) ? (
-                <>
-                  <Container className={styles["Dropdown-container-Committee"]}>
-                    <Row className="mt-1">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-start gap-2  ms-1  "
-                        onClick={handleClickDocumentOption}
-                      >
-                        <div className={"d-flex justify-content-start gap-2"}>
-                          <span>
-                            <img
-                              src={img1}
-                              width={15}
-                              draggable="false"
-                              alt=""
-                            />
-                          </span>
-                          <span className={styles["dropdown-text"]}>
-                            {t("Documents")}
-                          </span>
-                        </div>
-                      </Col>
-                    </Row>
-                    <hr className={styles["HR-line-Committee-group"]} />
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        onClick={handleClickDiscussion}
-                      >
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-start gap-2  ms-1 "
-                        >
-                          <div className={discussionMenuClass}>
-                          <span>
-                            <img
-                              src={img3}
-                              width={15}
-                              draggable="false"
-                              alt=""
-                            />
-                          </span>
-                            <span className={styles["dropdown-text"]}>
-                              {t("Discussion")}
-                            </span>
-                          </div>
-                        </Col>
-                      </Col>
-                    </Row>
-                    <hr className={styles["HR-line-Committee-group"]} />
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-start gap-2  ms-1 "
-                          onClick={handleMeetingClickOption}
-                        >
-                          <div className="d-flex justify-content-start gap-2  ">
-                            <span>
-                              <img
-                                src={img4}
-                                alt=""
-                                width={17}
-                                draggable="false"
-                              />
-                            </span>
-                            <span className={styles["dropdown-text"]}>
-                              {t("Meetings")}
-                            </span>
-                          </div>
-                        </Col>
-                      </Col>
-                    </Row>
-                    <hr className={styles["HR-line-Committee-group"]} />
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-start gap-2  ms-1 "
-                          onClick={handlePollsClickOption}
-                        >
-                          <div className="d-flex justify-content-start gap-2  ">
-                            <span>
-                              <img
-                                src={img5}
-                                width={17}
-                                alt=""
-                                draggable="false"
-                              />
-                            </span>
-                            <span className={styles["dropdown-text"]}>
-                              {t("Polls")}
-                            </span>
-                          </div>
-                        </Col>
-                      </Col>
-                    </Row>
-                    <hr className={styles["HR-line-Committee-group"]} />
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-start gap-2  ms-1 "
-                        onClick={handleTasksClickOption}
-                      >
-                        <div className="d-flex justify-content-start gap-2  ">
-                          <span>
-                            <img
-                              src={img6}
-                              width={17}
-                              draggable="false"
-                              alt=""
-                            />
-                          </span>
-                          <span className={styles["dropdown-text"]}>
-                            {t("Tasks")}
-                          </span>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Container>
-                </>
-              ) : null}
+              </Popover>
             </Col>
           </Row>
         </Col>
       </Row>
 
-      <Row className="m-0 p-0 ">
-        <Col lg={12} md={12} sm={12} className="position-relative">
+      <Row className='m-0 p-0 '>
+        <Col lg={12} md={12} sm={12} className='position-relative'>
           <div className={styles["Tagline-Committee-Group"]}>
             <p
               className={
                 StatusID === 1
                   ? styles["card-heading-Committee-Group_InActive"]
                   : StatusID === 2
-                  ? styles["card-heading-Committee-Group_InActive_Archeive"]
-                  : styles["card-heading-Committee-Group"]
+                    ? styles["card-heading-Committee-Group_InActive_Archeive"]
+                    : styles["card-heading-Committee-Group"]
               }
-              onClick={titleOnCLick}
-            >
+              onClick={titleOnCLick}>
               {CardHeading}
             </p>
           </div>
         </Col>
       </Row>
-      <Row className="m-0 p-0">
+      <Row className='m-0 p-0'>
         {groupState === true ? (
           <Col sm={12} md={12} lg={12}>
             {associatedTags !== null &&
@@ -499,8 +393,7 @@ const Card = ({
                 <span className={styles["associated_tagLine_single"]}>
                   {t("Associated-with")}
                   <span
-                    className={styles["associated_tagLine_groupTitle_single"]}
-                  >
+                    className={styles["associated_tagLine_groupTitle_single"]}>
                     {`${associatedTags[0].committeeTitle} ${t("Committee")}`}
                   </span>
                 </span>
@@ -528,9 +421,8 @@ const Card = ({
                 <span className={styles["associated_tagLine_single"]}>
                   {`${t("Associated-with")}`}
                   <span
-                    className={styles["associated_tagLine_groupTitle_single"]}
-                  >
-                    {`${associatedTags[0].groupTitle} ${t("Group")}` + " "}
+                    className={styles["associated_tagLine_groupTitle_single"]}>
+                    {`${associatedTags[0].groupTitle} ${t("Group")}`}
                   </span>
                 </span>
               </>
@@ -551,15 +443,15 @@ const Card = ({
         )}
       </Row>
 
-      <Row className="m-0 p-0 ">
+      <Row className='m-0 p-0 '>
         <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
-          <Row className="justify-content-center">
+          <Row className='justify-content-center'>
             {profile !== undefined &&
             profile !== null &&
-            sortedArraay !== null &&
-            sortedArraay !== undefined &&
-            sortedArraay.length > 0
-              ? sortedArraay.map((data, index) => {
+            sortedArray !== null &&
+            sortedArray !== undefined &&
+            sortedArray.length > 0
+              ? sortedArray.map((data, index) => {
                   if (index <= 3) {
                     return (
                       <Col
@@ -571,15 +463,14 @@ const Card = ({
                           StatusID === 1
                             ? styles["card_profile_box_InActive"]
                             : StatusID === 2
-                            ? styles["card_profile_box_Archived"]
-                            : styles["card_profile_box"]
-                        }
-                      >
+                              ? styles["card_profile_box_Archived"]
+                              : styles["card_profile_box"]
+                        }>
                         <img
                           src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-                          alt=""
-                          className="user-img"
-                          draggable="false"
+                          alt=''
+                          className='user-img'
+                          draggable='false'
                         />
                         <p className={styles["namesCards-Committee-Group"]}>
                           {data.userName}
@@ -596,8 +487,7 @@ const Card = ({
                     StatusID === 1 || StatusID === 2
                       ? styles["namecards_morethan-3_InActive"]
                       : styles["namecards_morethan-3"]
-                  }
-                >
+                  }>
                   + {convertToArabicNumerals(profile.length - 4)}
                 </span>
               </Col>
@@ -605,13 +495,12 @@ const Card = ({
           </Row>
         </Col>
       </Row>
-      <Row className="m-0 p-0 ">
+      <Row className='m-0 p-0 '>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="justify-content-center d-flex   mx-auto"
-        >
+          className='justify-content-center d-flex   mx-auto'>
           <Button
             className={styles["update-Committee-btn"]}
             text={flag ? t("Update-committee") : t("Update-group")}

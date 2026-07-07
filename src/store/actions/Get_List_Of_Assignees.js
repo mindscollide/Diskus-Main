@@ -18,15 +18,13 @@ import {
 } from "../actions/GetDataForCalendar";
 import {
   searchNewUserMeeting,
-  setMeetingByGroupIDApi,
-  setMeetingbyCommitteeIDApi,
-  getMeetingByCommitteeIDApi,
-  getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
 import { CreateUpdateMeetingDataRoomMap } from "./MeetingAgenda_action";
 import { generateRandomPositiveId } from "../../commen/functions/utils";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { getMeetingByCommitteeIdApi } from "./Committee_actions";
+import { getMeetingbyGroupIdApi } from "./Groups_actions";
 
 const meetingLoaderDashboard = (payload) => {
   return {
@@ -74,7 +72,6 @@ const clearResponseMessage = () => {
 };
 
 const allAssignessList = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     // UserID: id,
@@ -158,7 +155,6 @@ const ScheduleMeetingFail = (message) => {
 
 //SaveNONAPIDisputes
 const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
 
   return (dispatch) => {
@@ -278,8 +274,14 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
 };
 
 // update meeting
-const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+const UpdateMeeting = (
+  navigate,
+  t,
+  checkFlag,
+  object,
+  routeValue,
+  setEditFlag,
+) => {
   let createrID = JSON.parse(localStorage.getItem("userID"));
   return async (dispatch) => {
     dispatch(ScheculeMeetingInit());
@@ -291,9 +293,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            ScheduleNewMeeting(navigate, t, checkFlag, object, setEditFlag),
-          );
+          dispatch(UpdateMeeting(navigate, t, checkFlag, object, setEditFlag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -303,6 +303,9 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase(),
                 )
             ) {
+              if (routeValue === 2) {
+                setEditFlag(false);
+              }
               await dispatch(SetLoaderFalse());
               try {
                 let MappedData = {
@@ -327,14 +330,6 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
 
                     // Only include agendas with attachments
                     if (doc.MeetingAgendaAttachments.length > 0) {
-                      let checkIsNewFileExist =
-                        doc.MeetingAgendaAttachments.filter(
-                          (fileData, index) => fileData.isNew === true,
-                        );
-                      console.log(
-                        checkIsNewFileExist.length,
-                        "checkIsNewFileExistcheckIsNewFileExistF",
-                      );
                       const AgendaID = String(
                         mainMatch
                           ? mainMatch.newId
@@ -373,12 +368,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                     setEditFlag,
                   ),
                 );
-              } catch (error) {
-                console.log(
-                  error,
-                  "Meeting_MeetingServiceManager_UpdateMeeting_01",
-                );
-              }
+              } catch (error) {}
 
               // dispatch(
               //   CreateUpdateMeetingDataRoomMap(
@@ -403,7 +393,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
               //     Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
               //     PublishedMeetings: true,
               //   };
-              //   console.log("chek search meeting");
+              //
               //   await dispatch(searchNewUserMeeting(navigate, searchData, t));
               // } else if (checkFlag === 7) {
               //   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -498,7 +488,6 @@ const ViewMeeting = (
   setViewMeetingModal,
   setEditMeetingModal,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ViewMeetingInit());
     let form = new FormData();
@@ -536,7 +525,6 @@ const ViewMeeting = (
               );
               try {
                 if (Number(no) === 1) {
-                  console.log("saif coming");
                   setViewFlag(true);
                   localStorage.setItem("typeOfMeeting", "isQuickMeeting");
                   dispatch(scheduleMeetingPageFlag(false));
@@ -556,9 +544,7 @@ const ViewMeeting = (
                   dispatch(scheduleMeetingPageFlag(false));
                 }
                 dispatch(removeCalenderDataFunc(null));
-              } catch (error) {
-                console.log(error, "errorerror");
-              }
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -620,7 +606,6 @@ const CancelMeetingFail = (message) => {
 
 //Cancel Meeting
 const CancelMeeting = (navigate, object, t, value) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
 
   return (dispatch) => {
@@ -649,7 +634,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   t("The-meeting-has-been-cancelled"),
                 ),
               );
-              console.log("valuevaluevalue", value);
+
               if (value === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                 let Data = {
@@ -659,10 +644,11 @@ const CancelMeeting = (navigate, object, t, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: 1,
-                  Length: 50,
+                  Length: 30,
                   PublishedMeetings: true,
+                  ProposedMeetings: false,
                 };
-                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
               } else if (value === 7) {
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
@@ -672,10 +658,11 @@ const CancelMeeting = (navigate, object, t, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: 1,
-                  Length: 50,
+                  Length: 30,
                   PublishedMeetings: true,
+                  ProposedMeetings: false,
                 };
-                dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
               } else if (value === 4) {
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent =
@@ -693,7 +680,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   ProposedMeetings:
                     currentView && Number(currentView) === 2 ? true : false,
                 };
-                console.log("chek search meeting");
+
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
               }
             } else if (
@@ -756,7 +743,6 @@ const StartMeetingFail = (message) => {
 
 //START Meeting
 const StartMeeting = (navigate, object, t, searchData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(StartMeetingInit());
     let form = new FormData();
@@ -858,7 +844,6 @@ const EndMeetingFail = (message) => {
 
 //START Meeting
 const EndMeeting = (navigate, object, t, searchData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(EndMeetingInit());
     let form = new FormData();
@@ -886,7 +871,6 @@ const EndMeeting = (navigate, object, t, searchData) => {
                 ),
               );
 
-              console.log("chek search meeting");
               await dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
@@ -941,7 +925,6 @@ const getAllRemindersFail = (message) => {
 };
 
 const GetAllReminders = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllRemindersinit());
     let form = new FormData();

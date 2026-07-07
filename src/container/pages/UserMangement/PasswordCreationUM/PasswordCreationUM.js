@@ -5,7 +5,10 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png"
+import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
 
 import { useSelector } from "react-redux";
 import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg";
@@ -22,7 +25,7 @@ import {
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const PasswordCreationUM = () => {
   const { t } = useTranslation();
@@ -34,12 +37,10 @@ const PasswordCreationUM = () => {
   const passwordRef = useRef();
 
   const passwordCreateResponseMessage = useSelector(
-    (state) => state.Authreducer
-      .CreatePasswordResponseMessage
-  )
-  console.log(passwordCreateResponseMessage, "passwordCreateResponseMessagepasswordCreateResponseMessage")
+    (state) => state.Authreducer.CreatePasswordResponseMessage,
+  );
   const UserManagementModalscreateAdditionalModalsData = useSelector(
-    (state) => state.UserManagementModals.createAdditionalModals
+    (state) => state.UserManagementModals.createAdditionalModals,
   );
   const [errorBar, setErrorBar] = useState(false);
   const [remeberPassword, SetRememberPassword] = useState(false);
@@ -51,11 +52,7 @@ const PasswordCreationUM = () => {
     Password: "",
     ConfirmPassword: "",
   });
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: ""
-  });
+  const [show, SnackBar] = useSnackbar();
 
   //Showing Password
   const showNewPassowrd = () => {
@@ -122,8 +119,6 @@ const PasswordCreationUM = () => {
         setErrorBar(false);
       }
     } else if (value === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
-
       setErrorBar(false);
     }
   };
@@ -138,11 +133,7 @@ const PasswordCreationUM = () => {
       passwordDetails.ConfirmPassword.length >= 8
     ) {
       setErrorBar(false);
-      setOpen({
-        ...open,
-        open: true,
-        message: "Please Enter Fields Value",
-      });
+      show("Please Enter Fields Value", "error");
     } else if (passwordDetails.Password !== passwordDetails.ConfirmPassword) {
       setErrorBar(true);
     } else {
@@ -167,20 +158,10 @@ const PasswordCreationUM = () => {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (passwordCreateResponseMessage !== "" && passwordCreateResponseMessage !== null && passwordCreateResponseMessage !== undefined) {
-      showMessage(passwordCreateResponseMessage, "success", setOpen);
-
-      setTimeout(() => {
-        dispatch(cleareMessage())
-      }, 4000)
-    }
-  }, [passwordCreateResponseMessage])
-
   return (
     <>
       <Container fluid>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -190,8 +171,7 @@ const PasswordCreationUM = () => {
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center mx-auto min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center mx-auto min-vh-100'>
             <span className={styles["createpassword_auth_paper"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                 <Row>
@@ -199,73 +179,71 @@ const PasswordCreationUM = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : DiskusLogo
+                        PSO_LOGO
+                          ? PSOLogo
+                          : localStorage.getItem("i18nextLng") === "ar"
+                            ? DiskusLogoArabic
+                            : DiskusLogo
                       }
-                      width={220}
-                      alt="diskus_logo"
+                      width={PSO_LOGO ? 120 : 200}
+                      alt='diskus_logo'
                     />
                   </Col>
                 </Row>
-                <Row className="mt-4 mb-3">
-                  <Col className="">
+                <Row className='mt-4 mb-3'>
+                  <Col className=''>
                     <span className={styles["signIn_heading"]}>
                       {t("Create-password")}
                     </span>
                   </Col>
                 </Row>
                 <Form onSubmit={verifyHandlePassword}>
-                  <Row className="mb-3">
+                  <Row className='mb-3'>
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="create-field-password position-relative d-flex justify-content-center"
-                    >
+                      className='create-field-password position-relative d-flex justify-content-center'>
                       <Form.Control
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
-                        name="Password"
+                        name='Password'
                         ref={passwordRef}
                         value={passwordDetails.Password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("New-password")}
-                        autoComplete="false"
+                        autoComplete='false'
                         iconclassname={styles["IconStyle"]}
                       />
                       <span
                         className={styles["passwordIcon"]}
-                        onClick={showNewPassowrd}
-                      >
+                        onClick={showNewPassowrd}>
                         {showNewPasswordIcon ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={PasswordHideEyeIcon}
-                            alt=""
+                            alt=''
                           />
                         ) : (
-                          <img draggable="false" src={PasswordEyeIcon} alt="" />
+                          <img draggable='false' src={PasswordEyeIcon} alt='' />
                         )}
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mb-2">
+                  <Row className='mb-2'>
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="create-field-password position-relative d-flex  justify-content-center "
-                    >
+                      className='create-field-password position-relative d-flex  justify-content-center '>
                       <Form.Control
                         className={styles["PasswordTextField"]}
                         type={showConfirmPasswordIcon ? "text" : "password"}
-                        name="ConfirmPassword"
+                        name='ConfirmPassword'
                         value={passwordDetails.ConfirmPassword || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Re-enter-password")}
@@ -273,28 +251,26 @@ const PasswordCreationUM = () => {
                       />
                       <span
                         className={styles["passwordIcon"]}
-                        onClick={showConfirmPassowrd}
-                      >
+                        onClick={showConfirmPassowrd}>
                         {showConfirmPasswordIcon ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={PasswordHideEyeIcon}
-                            alt=""
+                            alt=''
                           />
                         ) : (
-                          <img draggable="false" src={PasswordEyeIcon} alt="" />
+                          <img draggable='false' src={PasswordEyeIcon} alt='' />
                         )}
                       </span>
                     </Col>
                   </Row>
 
-                  <Row className="mb-4">
+                  <Row className='mb-4'>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["PasswordCheckListstyle"]}
-                    >
+                      className={styles["PasswordCheckListstyle"]}>
                       <p className={styles["paragraph_password_must_have"]}>
                         {t("Password-must-have")}
                       </p>
@@ -322,16 +298,15 @@ const PasswordCreationUM = () => {
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center"
-                    >
+                      className='d-flex justify-content-center'>
                       <Button
-                        type="submit"
+                        type='submit'
                         onClick={verifyHandlePassword}
                         text={
                           updateCheckPasswordFlag !== undefined &&
-                            updateCheckPasswordFlag !== null &&
-                            (updateCheckPasswordFlag === true ||
-                              updateCheckPasswordFlag === "true")
+                          updateCheckPasswordFlag !== null &&
+                          (updateCheckPasswordFlag === true ||
+                            updateCheckPasswordFlag === "true")
                             ? t("Confirm")
                             : t("Sign-up")
                         }
@@ -348,17 +323,15 @@ const PasswordCreationUM = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["forogt_email_link"]}
-                    >
+                      className={styles["forogt_email_link"]}>
                       <span
                         onClick={goBackButton}
-                        className={styles["ForgotPassword"]}
-                      >
+                        className={styles["ForgotPassword"]}>
                         {t("Go-back")}
                       </span>
                     </Col>
@@ -371,8 +344,7 @@ const PasswordCreationUM = () => {
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex  overflow-hidden"
-          >
+            className='position-relative d-flex  overflow-hidden'>
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>
                 {t("Simplify-management")}
@@ -380,14 +352,22 @@ const PasswordCreationUM = () => {
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
+            <Col md={4} lg={4} sm={12} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
+                alt='auth_icon'
+                width='600px'
                 className={styles["Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=''
+                  draggable='false'
+                     className={styles["PoweredIcon_Diskus_Icon"]}
+                />
+              )}
             </Col>
           </Col>
         </Row>
@@ -396,7 +376,8 @@ const PasswordCreationUM = () => {
       {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}
-      <Notification open={open} setOpen={setOpen} />
+
+      {SnackBar}
     </>
   );
 };

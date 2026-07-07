@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
+import {
+  isSharedScreenCall,
+  stopPresenterView,
+} from "../../../../../commen/apis/Api_config";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
@@ -30,7 +35,24 @@ import StartRecordSmall from "../../../../../assets/images/Recent Activity Icons
 import RecordStart from "../../../../../assets/images/Recent Activity Icons/Video/RecordStart.png";
 import RecordPlay from "../../../../../assets/images/Recent Activity Icons/Video/RecordPlay.png";
 
-import { activeChat } from "../../../../../store/actions/Talk_action";
+import {
+  activeChat,
+  GetAllUserChats,
+  GetAllUsers,
+  GetGroupMessages,
+  GetAllUsersGroupsRoomsList,
+} from "../../../../../store/actions/Talk_action";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -80,8 +102,7 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
-import { RecordCircle } from "react-bootstrap-icons";
-import { showMessage } from "../../../../elements/snack_bar/utill";
+import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -104,6 +125,7 @@ const VideoCallNormalHeader = ({
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+  const [show, SnackBar] = useSnackbar();
 
   const {
     editorRole,
@@ -112,6 +134,7 @@ const VideoCallNormalHeader = ({
     groupCallParticipantList,
     setGroupCallParticipantList,
     unansweredCallParticipant,
+    advanceMeetingModalID,
     setUnansweredCallParticipant,
     handRaiseCounter,
     setHandRaiseCounter,
@@ -126,9 +149,18 @@ const VideoCallNormalHeader = ({
     inCallParticipantsList,
     setInCallParticipantsList,
     stopApiCalledRef,
+    videoTalk,
+    videoChatUnreadCount,
+    setVideoChatUnreadCount,
   } = useContext(MeetingContext);
 
+  // Meeting group chat (presenter / meeting-video) — mirrors AgendaViewer group chat
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+  const [meetingChatGroupID, setMeetingChatGroupID] = useState(0);
+
   const leaveModalPopupRef = useRef(null);
+
+  const screenVideoRef = useRef(null);
 
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag,
@@ -323,7 +355,12 @@ const VideoCallNormalHeader = ({
       : isMeetingVideoHostCheck
         ? newRoomID
         : participantRoomId;
-  let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+  let UID =
+    presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
+      ? participantUID
+      : isMeetingVideoHostCheck
+        ? isGuid
+        : participantUID;
 
   const {
     leaveOneToOne,
@@ -354,6 +391,8 @@ const VideoCallNormalHeader = ({
     useState([]);
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
+
+  const [screenStream, setScreenStream] = useState(null);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -402,26 +441,168 @@ const VideoCallNormalHeader = ({
       setGroupVideoCallAccepted([]); // Clear list when component unmounts
       setGroupCallParticipantList([]);
       setUnansweredCallParticipant([]);
+
+      // If THIS user is the active screen sharer and closes the tab, stop the
+      // screen share on the backend and re-enable the share icon for everyone.
+      const isScreenShareEnabled = JSON.parse(
+        localStorage.getItem("isScreenShareEnabled"),
+      );
+      console.log("stopShareOnTabClose check", isScreenShareEnabled);
+      if (isScreenShareEnabled) {
+        let participantRoomId = String(
+          localStorage.getItem("participantRoomId"),
+        );
+        let roomID = String(localStorage.getItem("acceptedRoomID"));
+        let newRoomID = String(localStorage.getItem("newRoomId"));
+
+        let isMeetingVideoHostCheck = JSON.parse(
+          localStorage.getItem("isMeetingVideoHostCheck"),
+        );
+        let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+        let userID = localStorage.getItem("userID");
+        let isGuid = localStorage.getItem("isGuid");
+        let participantUID = localStorage.getItem("participantUID");
+        let RoomID = !isMeetingVideo
+          ? roomID
+          : isMeetingVideoHostCheck
+            ? newRoomID
+            : participantRoomId;
+        let UID = !isMeetingVideo
+          ? userID
+          : isMeetingVideoHostCheck
+            ? isGuid
+            : participantUID;
+        let data = {
+          RoomID: RoomID,
+          ShareScreen: false,
+          UID: UID,
+        };
+        dispatch(screenShareTriggeredGlobally(false));
+
+        // The page is unloading, so a normal axios call would be cancelled by
+        // the browser. Use fetch with `keepalive: true` so the request is
+        // guaranteed to be sent even as the tab closes. (sendBeacon can't set
+        // the required `_token` header, so we use keepalive fetch instead.)
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const form = new FormData();
+          form.append("RequestMethod", isSharedScreenCall.RequestMethod);
+          form.append("RequestData", JSON.stringify(data));
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: form,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopShareOnTabClose error", error);
+        }
+        localStorage.removeItem("isScreenShareEnabled");
+      }
+
+      // If THIS user is the PRESENTER who started the presentation and
+      // closes the tab/browser, stop the presentation entirely for everyone
+      // (StopPresenterView) rather than leaving it dangling active with no
+      // one to manage it. Same reliability reasoning as above: a normal
+      // axios/Redux-thunk call would be cancelled by the browser before it
+      // completes, so use fetch with `keepalive: true` to guarantee delivery
+      // during unload.
+      if (presenterViewFlag && presenterViewHostFlag) {
+        try {
+          const token = JSON.parse(localStorage.getItem("token"));
+          const currentMeetingIDOnClose = Number(
+            localStorage.getItem("currentMeetingID"),
+          );
+          const roomIDOnClose = localStorage.getItem("acceptedRoomID");
+          const videoCallUrlOnClose = Number(
+            localStorage.getItem("videoCallURL"),
+          );
+          const stopPresenterData = {
+            MeetingID: currentMeetingIDOnClose,
+            RoomID: String(roomIDOnClose),
+            VideoCallUrl: videoCallUrlOnClose,
+          };
+          const stopForm = new FormData();
+          stopForm.append("RequestMethod", stopPresenterView.RequestMethod);
+          stopForm.append("RequestData", JSON.stringify(stopPresenterData));
+          fetch(meetingApi, {
+            method: "POST",
+            headers: { _token: token },
+            body: stopForm,
+            keepalive: true,
+          });
+        } catch (error) {
+          console.log("stopPresenterViewOnTabClose error", error);
+        }
+      }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pagehide", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("pagehide", handleBeforeUnload);
     };
   }, []);
 
   console.log(pendingCallParticipantList, "pendingCallParticipantList");
 
+  // A pending invitee is only kept in the roster while still being called. The
+  // backend retains rejected / unanswered / declined invitees in the pending
+  // list (with a status), but they must be REMOVED from the participant list on
+  // every client (caller and participants), not shown with a "Reject" status.
+  const isActiveInvitee = (p) => {
+    const status = String(p?.callStatus || "").toLowerCase();
+    return (
+      !status.includes("reject") &&
+      !status.includes("unanswer") &&
+      !status.includes("declin")
+    );
+  };
+
   useEffect(() => {
-    if (
-      pendingCallParticipantList !== undefined &&
-      pendingCallParticipantList !== null &&
-      pendingCallParticipantList.length !== 0
-    ) {
-      setGroupCallParticipantList(pendingCallParticipantList);
-    } else {
-      setGroupCallParticipantList([]);
+    // Caller roster = in-call (accepted) + pending (still ringing), deduped by
+    // userID. Previously this was sourced from the pending/ringing list ONLY, so
+    // once every invitee accepted/rejected/unanswered, the ringing list emptied
+    // and the caller's participant list + counter went blank / 0. Merging the
+    // in-call list (the same source participants already use) keeps accepted
+    // users visible to the caller for the whole call.
+    const pending = (
+      Array.isArray(pendingCallParticipantList)
+        ? pendingCallParticipantList
+        : []
+    ).filter(isActiveInvitee);
+    const inCall = Array.isArray(inCallParticipantList)
+      ? inCallParticipantList
+      : [];
+
+    const mergedMap = new Map();
+
+    // The caller never appears in the in-call/pending lists (they didn't
+    // "accept" and aren't "ringing"), so seed the caller's own entry first so
+    // they always see themselves in their roster.
+    if (isCaller) {
+      mergedMap.set(currentUserID, {
+        userID: currentUserID,
+        name: localStorage.getItem("name"),
+        callStatus: "In Call",
+        isHost: true,
+      });
     }
-  }, [pendingCallParticipantList]);
+
+    inCall.forEach((p) => {
+      if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
+    });
+    pending.forEach((p) => {
+      if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
+    });
+
+    setGroupCallParticipantList(Array.from(mergedMap.values()));
+  }, [
+    pendingCallParticipantList,
+    inCallParticipantList,
+    isCaller,
+    currentUserID,
+  ]);
 
   // For InCall Participant List
   useEffect(() => {
@@ -429,12 +610,10 @@ const VideoCallNormalHeader = ({
       Array.isArray(inCallParticipantList) &&
       inCallParticipantList.length > 0
     ) {
-      // Filter out the current user
-      const filteredList = inCallParticipantList.filter(
-        (participant) => participant.userID !== currentUserID,
-      );
-
-      setInCallParticipantsList(filteredList); // set filtered list
+      // Use the backend in-call list as-is. It already contains every user who
+      // accepted (INCLUDING the current user), so the previous "filter out the
+      // current user" step is what hid each user's own name from their list.
+      setInCallParticipantsList(inCallParticipantList);
     } else {
       setInCallParticipantsList([]); // no participants
     }
@@ -619,6 +798,7 @@ const VideoCallNormalHeader = ({
           UserGUID: String(UID),
           Name: String(newName),
         };
+        console.log("leavePresenterViewMainApi");
         await dispatch(
           leavePresenterViewMainApi(
             navigate,
@@ -633,18 +813,30 @@ const VideoCallNormalHeader = ({
       }
     } else {
       if (presenterViewJoinFlag) {
-        console.log("busyCall");
+        console.log("participantUIDparticipantUID", typeof participantUID);
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
         } else {
           dispatch(participantVideoButtonState(false));
         }
+        // presenterViewJoinFlag is true here, which guarantees this user is
+        // a PRESENTATION VIEWER (not its host) — even when they're also the
+        // overall meeting organizer (isMeetingVideoHostCheck === true). The
+        // outer `UID` (line ~357) is `isMeetingVideoHostCheck ? isGuid :
+        // participantUID`, so for an organizer it always resolves to
+        // isGuid — which JoinPresenterView's success handler never sets for
+        // a non-rejoining join (it only writes participantUID in that case,
+        // see joinPresenterViewMainApi). That sent a null/stale GUID to
+        // LeavePresenterView. Use participantUID directly — it's always the
+        // correct identifier for a presentation viewer, regardless of
+        // overall meeting-host status.
         let data = {
           RoomID: String(RoomID),
-          UserGUID: String(UID),
+          UserGUID: String(participantUID),
           Name: String(newName),
         };
+        console.log("leavePresenterViewMainApi");
         await dispatch(
           leavePresenterViewMainApi(
             navigate,
@@ -749,70 +941,149 @@ const VideoCallNormalHeader = ({
     }
   };
 
+  // Open the meeting / presenter GROUP chat keyed by the meeting talkGroupID,
+  // mirroring AgendaViewer's groupChatInitiation so every participant shares one
+  // channel (fixes undelivered messages + stale 1:1 chat in presenter/meeting video).
+  const openMeetingGroupChat = async (talkChatID) => {
+    if (!talkChatID || talkChatID === 0) return;
+    await dispatch(createShoutAllScreen(false));
+    await dispatch(addNewChatScreen(false));
+    await dispatch(footerActionStatus(false));
+    await dispatch(createGroupScreen(false));
+    await dispatch(recentChatFlag(true));
+    await dispatch(activeChatBoxGS(true));
+    await dispatch(headerShowHideStatus(true));
+    await dispatch(footerShowHideStatus(true));
+    setMeetingChatGroupID(talkChatID);
+    let chatGroupData = {
+      UserID: currentUserID,
+      ChannelID: currentOrganization,
+      GroupID: talkChatID,
+      NumberOfMessages: 50,
+      OffsetMessage: 0,
+    };
+    await dispatch(
+      GetAllUserChats(navigate, currentUserID, currentOrganization, t),
+    );
+    await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+    await dispatch(
+      GetAllUsers(navigate, currentUserID, currentOrganization, t),
+    );
+    await dispatch(
+      GetAllUsersGroupsRoomsList(
+        navigate,
+        currentUserID,
+        currentOrganization,
+        t,
+      ),
+    );
+  };
+
+  // After chats load, select the meeting group record, force its display name to
+  // the meeting title, and activate it as a group ("G") chat.
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      meetingChatGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages?.allMessages?.find(
+        (item) => item.id === meetingChatGroupID,
+      );
+      if (foundRecord) {
+        const groupRecord = {
+          ...foundRecord,
+          fullName: meetingTitle?.trim() || foundRecord.fullName,
+          name: meetingTitle?.trim() || foundRecord.name,
+        };
+        dispatch(chatBoxActiveFlag(true));
+        localStorage.setItem("ActiveChatType", "G");
+        localStorage.setItem("activeOtoChatID", meetingChatGroupID);
+        dispatch(activeChat(groupRecord));
+      }
+      setMeetingChatGroupID(0);
+    }
+  }, [AllUserChats?.AllUserChatsData, meetingChatGroupID]);
+
   const onClickCloseChatHandler = () => {
     if (LeaveCallModalFlag === false) {
       if (VideoChatMessagesFlag === false) {
-        if (callerID === currentUserID) {
-          let activeChatData = {
-            id: VideoRecipentData.userID,
-            fullName:
-              VideoRecipentData?.recipients?.[0]?.userName ??
-              VideoRecipentData?.userName ??
-              "",
-            imgURL: "",
-            messageBody: "",
-            messageDate: "",
-            notiCount: 0,
-            messageType: "O",
-            isOnline: false,
-            companyName: organizationName,
-            sentDate: "",
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: "",
-            senderID: currentUserID,
-            admin: 0,
-            isBlock: 0,
+        if (isMeetingVideo || presenterViewFlag) {
+          // MEETING / PRESENTER → meeting group chat (all participants, one channel)
+
+          console.log(
+            videoTalk?.talkGroupID,
+            videoTalk,
+            "videoTalkvideoTalkvideoTalk",
+          );
+          openMeetingGroupChat(videoTalk?.talkGroupID);
+        } else {
+          // 1:1 video call → existing one-to-one chat (unchanged)
+          if (callerID === currentUserID) {
+            let activeChatData = {
+              id: VideoRecipentData.userID,
+              fullName:
+                VideoRecipentData?.recipients?.[0]?.userName ??
+                VideoRecipentData?.userName ??
+                "",
+              imgURL: "",
+              messageBody: "",
+              messageDate: "",
+              notiCount: 0,
+              messageType: "O",
+              isOnline: false,
+              companyName: organizationName,
+              sentDate: "",
+              receivedDate: "",
+              seenDate: "",
+              attachmentLocation: "",
+              senderID: currentUserID,
+              admin: 0,
+              isBlock: 0,
+            };
+            dispatch(activeChat(activeChatData));
+          } else if (callerID !== currentUserID) {
+            let activeChatData = {
+              id: callerID,
+              fullName: callerNameInitiate,
+              imgURL: "",
+              messageBody: "",
+              messageDate: "",
+              notiCount: 0,
+              messageType: "O",
+              isOnline: false,
+              companyName: organizationName,
+              sentDate: "",
+              receivedDate: "",
+              seenDate: "",
+              attachmentLocation: "",
+              senderID: currentUserID,
+              admin: 0,
+              isBlock: 0,
+            };
+            dispatch(activeChat(activeChatData));
+          }
+          localStorage.setItem("ActiveChatType", "O");
+          dispatch(chatEnableNormalFlag(true));
+          let chatOTOData = {
+            UserID: currentUserID,
+            ChannelID: currentOrganization,
+            OpponentUserId:
+              callerID !== currentUserID ? callerID : recipentCalledID,
+            NumberOfMessages: 50,
+            OffsetMessage: 0,
           };
-          dispatch(activeChat(activeChatData));
-        } else if (callerID !== currentUserID) {
-          let activeChatData = {
-            id: callerID,
-            fullName: callerNameInitiate,
-            imgURL: "",
-            messageBody: "",
-            messageDate: "",
-            notiCount: 0,
-            messageType: "O",
-            isOnline: false,
-            companyName: organizationName,
-            sentDate: "",
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: "",
-            senderID: currentUserID,
-            admin: 0,
-            isBlock: 0,
-          };
-          dispatch(activeChat(activeChatData));
-        }
-        localStorage.setItem("ActiveChatType", "O");
-        dispatch(chatEnableNormalFlag(true));
-        let chatOTOData = {
-          UserID: currentUserID,
-          ChannelID: currentOrganization,
-          OpponentUserId:
+          dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+          localStorage.setItem("ActiveChatType", "O");
+          localStorage.setItem(
+            "activeOtoChatID",
             callerID !== currentUserID ? callerID : recipentCalledID,
-          NumberOfMessages: 50,
-          OffsetMessage: 0,
-        };
+          );
+        }
         dispatch(videoChatMessagesFlag(true));
-        dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-        localStorage.setItem("ActiveChatType", "O");
-        localStorage.setItem(
-          "activeOtoChatID",
-          callerID !== currentUserID ? callerID : recipentCalledID,
-        );
+        if (setVideoChatUnreadCount) setVideoChatUnreadCount(0);
       } else {
         dispatch(videoChatMessagesFlag(false));
       }
@@ -1159,7 +1430,6 @@ const VideoCallNormalHeader = ({
         } else if (flag === 3) {
           setLeaveOneToOne(false);
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-          let currentMeeting = localStorage.getItem("currentMeetingID");
           setStartPresenterViewOrLeaveOneToOne(false);
           dispatch(maxParticipantVideoCallPanel(false));
           let data = {
@@ -1169,7 +1439,7 @@ const VideoCallNormalHeader = ({
           };
 
           dispatch(
-            openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
+            openPresenterViewMainApi(t, navigate, data, advanceMeetingModalID, 4),
           );
         }
       } else {
@@ -1420,7 +1690,7 @@ const VideoCallNormalHeader = ({
       MeetingId: Number(currentMeetingID),
     };
     dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
-    showMessage(t("Link-copied"), "success", setOpen);
+    show(t("Link-copied"), "success");
   };
 
   useEffect(() => {
@@ -1520,6 +1790,49 @@ const VideoCallNormalHeader = ({
     return null;
   };
 
+  const handleScreenShareButton = async () => {
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      if (!LeaveCallModalFlag) {
+        const iframe = iframeCurrent;
+        if (iframe && iframe.contentWindow) {
+          try {
+            // Store current video and mic states
+            const currentMicState = audioControl;
+            const currentVideoState = videoControl;
+
+            sessionStorage.setItem("isNonPresenterScreenShare", true);
+
+            sessionStorage.setItem("nonPresenter", true);
+
+            // Browser detection
+            const isFirefox = navigator.userAgent
+              .toLowerCase()
+              .includes("firefox");
+            const isSafari = /^((?!chrome|android).)*safari/i.test(
+              navigator.userAgent,
+            );
+            const isEdge = navigator.userAgent.toLowerCase().includes("edg");
+
+            if (isFirefox || isSafari) {
+              // Firefox and Safari: immediate postMessage
+              iframe.contentWindow.postMessage("ScreenShare", "*");
+            } else if (isEdge) {
+              setTimeout(() => {
+                iframe?.contentWindow?.postMessage("ScreenShare", "*");
+              }, 500);
+            } else {
+              setTimeout(() => {
+                iframe?.contentWindow?.postMessage("ScreenShare", "*");
+              }, 1000);
+            }
+          } catch (error) {
+            console.error("Screen share failed:", error);
+          }
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Row className="mb-4">
@@ -1577,7 +1890,7 @@ const VideoCallNormalHeader = ({
                 !presenterViewHostFlag ? (
                   <>
                     {/* if Recording is start */}
-                    {/* {startRecordingState && (
+                    {startRecordingState && (
                       <div
                         className="start-Recording-div"
                         onClick={onStartRecording}
@@ -1598,10 +1911,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
 
                     {/* if Recording is Pause and Stop */}
-                    {/* {pauseRecordingState && (
+                    {pauseRecordingState && (
                       <div className={"Record-Start-Background-MeetingVideo"}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
@@ -1638,10 +1951,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
 
                     {/* if Recording is Pause and Resume */}
-                    {/* {resumeRecordingState && (
+                    {resumeRecordingState && (
                       <div
                         className={"Record-Start-BackgroundRed-VideoMeeting"}
                       >
@@ -1665,7 +1978,7 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )} */}
+                    )}
                   </>
                 ) : null}
               </>
@@ -1793,7 +2106,7 @@ const VideoCallNormalHeader = ({
                 onClick={
                   (!presenterViewFlag && !globallyScreenShare) ||
                   (isZoomEnabled && disableBeforeJoinZoom)
-                    ? screenShareButton
+                    ? handleScreenShareButton
                     : null
                 }
                 src={NonActiveScreenShare}
@@ -1803,7 +2116,7 @@ const VideoCallNormalHeader = ({
           </div>
 
           {(currentCallType === 1 || isMeetingVideo || presenterViewFlag) &&
-            checkFeatureIDAvailability(3) && (
+            checkFeatureIDAvailability(3) && videoTalk?.isChat === true && (
               <div
                 className={
                   LeaveCallModalFlag || (isZoomEnabled && disableBeforeJoinZoom)
@@ -1812,11 +2125,42 @@ const VideoCallNormalHeader = ({
                 }
               >
                 <Tooltip placement="topRight" title={t("Chat")}>
-                  <img
-                    onClick={onClickCloseChatHandler}
-                    src={ChatIcon}
-                    alt="Chat"
-                  />
+                  <span
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <img
+                      onClick={onClickCloseChatHandler}
+                      src={ChatIcon}
+                      alt="Chat"
+                    />
+                    {(isMeetingVideo || presenterViewFlag) &&
+                      VideoChatMessagesFlag === false &&
+                      videoChatUnreadCount > 0 && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-6px",
+                            right: "-6px",
+                            minWidth: "16px",
+                            height: "16px",
+                            padding: "0 4px",
+                            borderRadius: "8px",
+                            background:
+                              "linear-gradient(to left, #49dbdb 0%, #6172d6 100%)",
+                            color: "#fff",
+                            fontSize: "10px",
+                            lineHeight: "16px",
+                            textAlign: "center",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {convertNumbersInString(
+                            String(videoChatUnreadCount),
+                            localStorage.getItem("i18nextLng") || "en",
+                          )}
+                        </span>
+                      )}
+                  </span>
                 </Tooltip>
               </div>
             )}
@@ -1961,6 +2305,7 @@ const VideoCallNormalHeader = ({
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
+          (presenterViewFlag && presenterViewJoinFlag) ||
           (isMeetingVideo && !presenterViewFlag && !presenterViewHostFlag) ||
           (currentCallType === 2 &&
             !presenterViewJoinFlag &&
@@ -1981,6 +2326,7 @@ const VideoCallNormalHeader = ({
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
                           !presenterViewHostFlag &&
+                          !presenterViewJoinFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           dispatch(participantPopup(false));
@@ -1988,7 +2334,17 @@ const VideoCallNormalHeader = ({
                         }
 
                         // ✅ Existing logic for caller/host
-                        const role = getMeetingHostInfo.isHost ? 1 : 2;
+                        // During an active presentation, role is decided ONLY
+                        // by whether THIS user is presenting it
+                        // (presenterViewHostFlag) — not by overall meeting
+                        // organizer status — so an organizer who is just
+                        // viewing someone else's presentation correctly opens
+                        // the viewer list, not the (now-empty) host panel.
+                        const isEffectiveHostForParticipantPanel =
+                          presenterViewFlag
+                            ? presenterViewHostFlag
+                            : getMeetingHostInfo.isHost;
+                        const role = isEffectiveHostForParticipantPanel ? 1 : 2;
                         closeParticipantHandler(role, true);
                       }}
                       alt="Active participants"
@@ -1999,21 +2355,62 @@ const VideoCallNormalHeader = ({
                     !getMeetingHostInfo.isHost &&
                     !presenterViewHostFlag &&
                     !getMeetingHostInfo.isDashboard
-                      ? /* ===== VIEWER LIST ===== */
-                        inCallParticipantsList &&
-                        inCallParticipantsList.length > 0 &&
-                        inCallParticipantsList.map((participant, index) => (
-                          <Row className="m-0" key={index}>
-                            <Col className="p-0" lg={12} md={12} sm={12}>
-                              <p className="participant-name">
-                                {participant.name}
-                                {participant.isHost && (
-                                  <span className="ms-1">(Caller)</span>
-                                )}
-                              </p>
-                            </Col>
-                          </Row>
-                        ))
+                      ? /* ===== VIEWER LIST (MERGED) ===== */
+                        (() => {
+                          // Merge inCall and pending lists, removing duplicates by userID
+                          const inCallList = Array.isArray(
+                            inCallParticipantsList,
+                          )
+                            ? inCallParticipantsList
+                            : [];
+                          // Drop rejected / unanswered / declined invitees so they
+                          // are removed from the participant list (not shown).
+                          const pendingList = (
+                            Array.isArray(pendingCallParticipantList)
+                              ? pendingCallParticipantList
+                              : []
+                          ).filter(isActiveInvitee);
+
+                          // Create a Map to deduplicate by userID
+                          const mergedMap = new Map();
+
+                          // Add inCall participants first
+                          inCallList.forEach((participant) => {
+                            mergedMap.set(participant.userID, {
+                              ...participant,
+                              callStatus: "In Call", // or whatever status you want
+                            });
+                          });
+
+                          // Add pending participants (won't override existing if same userID)
+                          pendingList.forEach((participant) => {
+                            if (!mergedMap.has(participant.userID)) {
+                              mergedMap.set(participant.userID, {
+                                ...participant,
+                                callStatus: participant.callStatus || "Pending",
+                              });
+                            }
+                          });
+
+                          const mergedParticipants = Array.from(
+                            mergedMap.values(),
+                          );
+
+                          return mergedParticipants.length > 0
+                            ? mergedParticipants.map((participant, index) => (
+                                <Row className="m-0" key={index}>
+                                  <Col className="p-0" lg={12} md={12} sm={12}>
+                                    <p className="participant-name">
+                                      {participant.name}
+                                      {participant.isHost && (
+                                        <span className="ms-1">(Caller)</span>
+                                      )}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              ))
+                            : null;
+                        })()
                       : /* ===== CALLER LIST ===== */
                         isCaller && (
                           <>
@@ -2102,6 +2499,7 @@ const VideoCallNormalHeader = ({
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
                           !presenterViewHostFlag &&
+                          !presenterViewJoinFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           // JUST TOGGLE PARTICIPANT POPUP
@@ -2109,18 +2507,20 @@ const VideoCallNormalHeader = ({
                           return; // ⛔ STOP HERE — DO NOT CALL closeParticipantHandler
                         }
 
-                        // EXISTING LOGIC (UNCHANGED)
-                        const role = getMeetingHostInfo.isHost
-                          ? 1
-                          : presenterViewHostFlag
-                            ? 1
-                            : 2;
+                        // During an active presentation, role is decided ONLY
+                        // by whether THIS user is presenting it
+                        // (presenterViewHostFlag) — not by overall meeting
+                        // organizer status. Otherwise, fall back to the
+                        // regular meeting-host check exactly as before.
+                        const isEffectiveHostForParticipantPanel =
+                          presenterViewFlag
+                            ? presenterViewHostFlag
+                            : getMeetingHostInfo.isHost;
 
-                        const flag = getMeetingHostInfo.isHost
+                        const role = isEffectiveHostForParticipantPanel ? 1 : 2;
+                        const flag = isEffectiveHostForParticipantPanel
                           ? false
-                          : presenterViewHostFlag
-                            ? false
-                            : true;
+                          : true;
 
                         closeParticipantHandler(role, flag);
                       }}
@@ -2140,60 +2540,90 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <div className="main-icon-div">
-                    {isMeetingVideo && isMeetingVideoHostCheck && (
-                      <>
-                        {handRaiseCounter > 0 && (
-                          <span className="HandRaise-Counter-for-participant">
-                            {convertNumbersInString(handRaiseCounter, lan)}
-                          </span>
+                  {!presenterViewJoinFlag && (
+                    <div className="main-icon-div">
+                      {isMeetingVideo && isMeetingVideoHostCheck && (
+                        <>
+                          {handRaiseCounter > 0 && (
+                            <span className="HandRaise-Counter-for-participant">
+                              {convertNumbersInString(handRaiseCounter, lan)}
+                            </span>
+                          )}
+                        </>
+                      )}
+                      <span className="participants-counter-For-Host">
+                        {console.log(
+                          "isDashboardVideoCounter",
+                          participantCounterList,
+                          getMeetingHostInfo,
                         )}
-                      </>
-                    )}
-                    <span className="participants-counter-For-Host">
-                      {console.log(
-                        "isDashboardVideoCounter",
-                        participantCounterList,
-                        getMeetingHostInfo,
-                      )}
-                      {getMeetingHostInfo?.isDashboardVideo ? (
-                        <>
-                          {console.log(
-                            "isFor Host or Participant",
-                            participantCounterList,
-                          )}
+                        {getMeetingHostInfo?.isDashboardVideo ? (
+                          <>
+                            {console.log(
+                              "isFor Host or Participant",
+                              participantCounterList,
+                            )}
 
-                          {convertNumbersInString(participantCounterList, lan)}
-                        </>
-                      ) : (
-                        <>
-                          {console.log(
-                            "isFor Host or Participant",
-                            groupCallParticipantList,
-                          )}
+                            {convertNumbersInString(
+                              participantCounterList,
+                              lan,
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {console.log(
+                              "isFor Host or Participant",
+                              groupCallParticipantList,
+                            )}
 
-                          {convertNumbersInString(
-                            !isCaller &&
-                              !isMeetingVideo &&
-                              !getMeetingHostInfo.isHost &&
-                              !getMeetingHostInfo.isDashboard
-                              ? inCallParticipantsList?.length
-                              : Array.isArray(groupCallParticipantList) &&
-                                  groupCallParticipantList?.length,
-                            lan,
-                          )}
-                        </>
-                      )}
-                    </span>
-                    {participantWaitingListCounter > 0 && (
-                      <span className="participants-counter-For-Host-waiting-counter">
-                        {convertNumbersInString(
-                          participantWaitingListCounter,
-                          lan,
+                            {convertNumbersInString(
+                              !isCaller &&
+                                !isMeetingVideo &&
+                                !getMeetingHostInfo.isHost &&
+                                !getMeetingHostInfo.isDashboard
+                                ? /* ===== NON-CALLER: Merge both lists count ===== */
+                                  (() => {
+                                    const inCallList = Array.isArray(
+                                      inCallParticipantsList,
+                                    )
+                                      ? inCallParticipantsList
+                                      : [];
+                                    const pendingList = (
+                                      Array.isArray(pendingCallParticipantList)
+                                        ? pendingCallParticipantList
+                                        : []
+                                    ).filter(isActiveInvitee);
+
+                                    // Merge and deduplicate by userID
+                                    const mergedSet = new Set();
+
+                                    inCallList.forEach((p) =>
+                                      mergedSet.add(p.userID),
+                                    );
+                                    pendingList.forEach((p) =>
+                                      mergedSet.add(p.userID),
+                                    );
+
+                                    return mergedSet.size;
+                                  })()
+                                : /* ===== CALLER: Show group participants count ===== */
+                                  Array.isArray(groupCallParticipantList) &&
+                                    groupCallParticipantList?.length,
+                              lan,
+                            )}
+                          </>
                         )}
                       </span>
-                    )}
-                  </div>
+                      {participantWaitingListCounter > 0 && (
+                        <span className="participants-counter-For-Host-waiting-counter">
+                          {convertNumbersInString(
+                            participantWaitingListCounter,
+                            lan,
+                          )}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -2376,11 +2806,10 @@ const VideoCallNormalHeader = ({
                 </div>
               </div>
             ) : null}
-
-            <Notification setOpen={setOpen} open={open} />
           </div>
         </>
       </>
+      {SnackBar}
     </>
   );
 };

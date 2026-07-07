@@ -15,12 +15,12 @@ import {
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
-import { showMessage } from "../snack_bar/utill";
 import "./DocumentViwer.css";
 import { checkXFDFContent } from "./utils";
 import CustomModal from "../modal/Modal";
 import { Col, Row } from "react-bootstrap";
 import CustomButton from "../button/Button";
+import useSnackbar from "../snack_bar/useSnackbar";
 
 const DocumentViewer = () => {
   const viewer = useRef(null);
@@ -28,16 +28,13 @@ const DocumentViewer = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
-
+  const hasUnsavedChangesRef = useRef(false);
+  const [show, SnackBar] = useSnackbar();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [instance, setInstance] = useState(null);
 
   // State Variables
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+
   const [pdfResponseData, setPdfResponseData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -47,17 +44,13 @@ const DocumentViewer = () => {
   const FileRemoveMQTT = useSelector(
     (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
-    (state) => state.webViewer,
-  );
+  const { attachmentBlob, xfdfData } = useSelector((state) => state.webViewer);
 
   // Memoized PDF Data
   const pdfData = useMemo(() => {
     const params = new URLSearchParams(location.search).get("pdfData");
     return JSON.parse(params || "{}");
   }, [location.search]);
-
-  console.log(pdfData, "pdfDatapdfData");
 
   const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
 
@@ -83,16 +76,20 @@ const DocumentViewer = () => {
   // Fetch Annotations
   useEffect(() => {
     try {
-      const data = {
-        FileID: attachmentID,
-      };
+      if (
+        attachmentID !== null &&
+        attachmentID !== undefined &&
+        Number(attachmentID) !== 0
+      ) {
+        const data = {
+          FileID: attachmentID,
+        };
 
-      dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
+        dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
+      }
 
       return clearLocalStorage;
-    } catch (error) {
-      console.log({ error }, "pdfDatapdfData");
-    }
+    } catch (error) {}
   }, [attachmentID]);
 
   // Handle File Removal via MQTT
@@ -174,7 +171,6 @@ const DocumentViewer = () => {
 
     const { annotationManager } = instance.Core;
 
-    // Detect changes
     const handleAnnotationChange = (annots, action) => {
       if (action === "add" || action === "modify" || action === "delete") {
         setHasUnsavedChanges(true);
@@ -186,9 +182,22 @@ const DocumentViewer = () => {
       handleAnnotationChange,
     );
 
-    // Warn when closing tab
+    return () => {
+      annotationManager.removeEventListener(
+        "annotationChanged",
+        handleAnnotationChange,
+      );
+    };
+  }, [instance]);
+
+  useEffect(() => {
+    hasUnsavedChangesRef.current = hasUnsavedChanges;
+  }, [hasUnsavedChanges]);
+
+  // Warn on tab close/refresh - mounted once to avoid closure issues
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
-      if (hasUnsavedChanges) {
+      if (hasUnsavedChangesRef.current) {
         event.preventDefault();
         event.returnValue = "";
       }
@@ -197,13 +206,9 @@ const DocumentViewer = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      annotationManager.removeEventListener(
-        "annotationChanged",
-        handleAnnotationChange,
-      );
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [instance, hasUnsavedChanges]);
+  }, []);
 
   // Initialize WebViewer
   useEffect(() => {
@@ -229,17 +234,12 @@ const DocumentViewer = () => {
             Tools,
           } = instance.Core;
           instance.UI.disableTools([Tools.disableTextSelection]);
-          instance.UI.disableElements(["saveAsButton"]);
+          instance.UI.disableElements(["saveAsButton", "toolbarGroup-Forms"]);
           const { CLIENT } = SupportedFileFormats;
           // Example usage:
           const extension = getFileExtension(fileName);
 
           const mimeType = getMimeTypeFromFileName(fileName);
-
-          console.log(
-            { mimeType, extension, CLIENT },
-            "mimeTypemimeTypemimeType",
-          );
 
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
@@ -249,11 +249,7 @@ const DocumentViewer = () => {
               filename: fileName,
             });
           } else {
-            showMessage(
-              t("file_format_not_supported_for_preview"),
-              "error",
-              setOpen,
-            );
+            show(t("file_format_not_supported_for_preview"), "error");
             return;
           }
 
@@ -307,9 +303,7 @@ const DocumentViewer = () => {
           //   });
           // });
         })
-        .catch((error) => {
-          console.error("WebViewer initialization error:", error);
-        });
+        .catch((error) => {});
     }
   }, [pdfResponseData.attachmentBlob]);
 
@@ -328,6 +322,7 @@ const DocumentViewer = () => {
             TaskAttachementID: attachmentID,
             AnnotationString: xfdfString,
           };
+          console.log("Annotations saved successfully!");
           dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
           break;
 
@@ -337,6 +332,7 @@ const DocumentViewer = () => {
             NoteAttachementID: attachmentID,
             AnnotationString: xfdfString,
           };
+          console.log("Annotations saved successfully!");
           dispatch(addAnnotationsOnNotesAttachement(navigate, t, apiData));
           break;
 
@@ -346,6 +342,7 @@ const DocumentViewer = () => {
             ResolutionAttachementID: attachmentID,
             AnnotationString: xfdfString,
           };
+          console.log("Annotations saved successfully!");
           dispatch(addAnnotationsOnResolutionAttachement(navigate, t, apiData));
           break;
 
@@ -354,21 +351,18 @@ const DocumentViewer = () => {
             FileID: attachmentID,
             AnnotationString: xfdfString,
           };
+          console.log("Annotations saved successfully!");
           dispatch(addAnnotationsOnDataroomAttachement(navigate, t, apiData));
           break;
 
         default:
-          console.error("Invalid 'commingFrom' value:", commingFrom);
           break;
       }
-
-      console.log("Annotations saved successfully!");
-    } catch (error) {
-      console.error("Failed to save annotations:", error);
-    }
+      // Reset the unsaved changes flag after successful save
+      setHasUnsavedChanges(false);
+    } catch (error) {}
   };
 
-  // Set Permissions
   const setPermissions = (instance) => {
     const disabledElements = [
       "saveAsButton",
@@ -404,25 +398,14 @@ const DocumentViewer = () => {
       "header",
     ];
     instance.UI.disableElements(disabledElements);
-  };
-
-  // Handle Notifications
-  useEffect(() => {
-    if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
-    }
-  }, [ResponseMessage]);
+  }; // Set Permissions
 
   return (
     <>
-      <div className="document-viewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='document-viewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
-
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

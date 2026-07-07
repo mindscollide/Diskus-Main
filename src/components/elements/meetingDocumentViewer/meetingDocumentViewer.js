@@ -32,9 +32,8 @@ import {
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
-import { showMessage } from "../snack_bar/utill";
 import "./meetingDocumentViewer.css";
-
+import useSnackbar from "../snack_bar/useSnackbar";
 
 const MeetingDocumentViewer = () => {
   const viewer = useRef(null);
@@ -42,7 +41,7 @@ const MeetingDocumentViewer = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
-
+  const [show, SnackBar] = useSnackbar();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [instance, setInstance] = useState(null);
 
@@ -59,10 +58,10 @@ const MeetingDocumentViewer = () => {
 
   // Redux Selectors
   const FileRemoveMQTT = useSelector(
-    (state) => state.DataRoomReducer.FileRemoveMQTT
+    (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
-    (state) => state.webViewer
+  const { attachmentBlob, xfdfData, } = useSelector(
+    (state) => state.webViewer,
   );
 
   // Memoized PDF Data
@@ -88,7 +87,7 @@ const MeetingDocumentViewer = () => {
       [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
       {
         type: mimeType,
-      }
+      },
     );
   };
 
@@ -208,7 +207,7 @@ const MeetingDocumentViewer = () => {
 
     annotationManager.addEventListener(
       "annotationChanged",
-      handleAnnotationChange
+      handleAnnotationChange,
     );
 
     // Warn when closing tab
@@ -224,7 +223,7 @@ const MeetingDocumentViewer = () => {
     return () => {
       annotationManager.removeEventListener(
         "annotationChanged",
-        handleAnnotationChange
+        handleAnnotationChange,
       );
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -236,13 +235,12 @@ const MeetingDocumentViewer = () => {
       WebViewer(
         {
           path: "/webviewer/lib",
-          licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // Replace with your key
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
           fullAPI: true,
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion
         },
-        viewer.current
+        viewer.current,
       )
         .then((instance) => {
           setInstance(instance);
@@ -260,11 +258,6 @@ const MeetingDocumentViewer = () => {
 
           const mimeType = getMimeTypeFromFileName(fileName);
 
-          console.log(
-            { mimeType, extension, CLIENT },
-            "mimeTypemimeTypemimeType"
-          );
-
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
           // Check if the extension exists in the array (case-insensitive)
@@ -273,11 +266,7 @@ const MeetingDocumentViewer = () => {
               filename: fileName,
             });
           } else {
-            showMessage(
-              t("file_format_not_supported_for_preview"),
-              "error",
-              setOpen
-            );
+            show(t("file_format_not_supported_for_preview"), "error");
             return;
           }
 
@@ -315,9 +304,7 @@ const MeetingDocumentViewer = () => {
             });
           });
         })
-        .catch((error) => {
-          console.error("WebViewer initialization error:", error);
-        });
+        .catch((error) => {});
     }
   }, [pdfResponseData.attachmentBlob]);
 
@@ -366,14 +353,9 @@ const MeetingDocumentViewer = () => {
           break;
 
         default:
-          console.error("Invalid 'commingFrom' value:", commingFrom);
           break;
       }
-
-      console.log("Annotations saved successfully!");
-    } catch (error) {
-      console.error("Failed to save annotations:", error);
-    }
+    } catch (error) {}
   };
 
   // Set Permissions
@@ -413,23 +395,13 @@ const MeetingDocumentViewer = () => {
     instance.UI.disableElements(disabledElements);
   };
 
-  // Handle Notifications
-  useEffect(() => {
-    if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
-    }
-  }, [ResponseMessage]);
-
   return (
     <>
       <div className='document-viewer'>
         <div className='webviewer' ref={viewer}></div>
       </div>
 
-      <Notification open={open} setOpen={setOpen} />
+      {SnackBar}
     </>
   );
 };

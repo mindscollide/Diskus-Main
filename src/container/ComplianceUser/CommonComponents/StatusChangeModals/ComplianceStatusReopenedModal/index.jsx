@@ -16,7 +16,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import CustomUpload from "../../../../../components/elements/upload/Upload";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../../commen/functions/utils";
 import {
   formatDateToYMD,
@@ -34,11 +34,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   const calendRef = useRef();
   //Upload File States
   const [openCalendarValue, setOpenCalendarValue] = useState(null);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+  const [show, SnackBar] = useSnackbar();
   let createrID = localStorage.getItem("userID");
   const {
     complianceReopenDetailsState,
@@ -50,17 +46,11 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     comlianceStatusReopenedModal,
     setComlianceStatusReopenedModal,
     complianceAddEditViewState,
+    setIsReopenConfirmed,
   } = useComplianceContext();
-  console.log(
-    complianceReopenDetailsState,
-    complianceDetailsState,
-    "complianceReopenDetailsState",
-  );
+  
 
-  console.log(
-    { tempDueDateChange, complianceReopenDetailsState, openCalendarValue },
-    "openCalendarValueopenCalendarValue",
-  );
+  
 
   useEffect(() => {
     if (comlianceStatusReopenedModal) {
@@ -94,7 +84,8 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   };
 
   const handleProceedButton = () => {
-    console.log(comlianceStatusReopenedModal, "comlianceStatusReopenedModal");
+    setIsReopenConfirmed(true);
+    
     setComlianceStatusReopenedModal(false);
     setComplianceDetailsState((prev) => ({
       ...prev,
@@ -133,7 +124,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     meetingDateValueFormat2.setMinutes(59);
     meetingDateValueFormat2.setSeconds(58);
 
-    console.log(meetingDateValueFormat2, "meetingDateValueFormat2");
+    
 
     setComplianceReopenDetailsState((prev) => ({
       ...prev,
@@ -146,7 +137,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
+    
     let filesArray = Object.values(data.target.files);
     let totalFiles =
       filesArray.length + complianceReopenDetailsState.attachments.length;
@@ -154,7 +145,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      show(t("Not-allowed-more-than-10-files"), "error");
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -169,15 +160,11 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-than-1-5GB"),
-          "error",
-          setOpen,
-        );
+        show(t("File-size-should-not-be-greater-than-1-5GB"), "error");
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        show(t("File-size-should-not-be-zero"), "error");
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        show(t("File-already-exists"), "error");
       } else {
         setComplianceReopenDetailsState((prev) => ({
           ...prev,
@@ -202,7 +189,10 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   // Make it strictly greater than current due date by adding 1 day
   let minSelectableDate;
 
-  if (complianceDetailsState?.dueDate && complianceAddEditViewState === 2) {
+  if (
+    complianceDetailsState?.dueDate &&
+    (complianceAddEditViewState === 2 || complianceAddEditViewState === 1)
+  ) {
     const currentDueDate = new Date(complianceDetailsState.dueDate);
 
     // Validate the date
@@ -212,7 +202,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       minSelectableDate.setHours(0, 0, 0, 0); // start of the day
     }
   } else if (
-    complianceAddEditViewState === 3 &&
+    (complianceAddEditViewState === 3 || complianceAddEditViewState === 1) &&
     complianceDetailsState?.dueDate
   ) {
     const currentDueDateObj = parseYYYYMMDDToEndOfDay(
@@ -231,7 +221,8 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   }
 
   return (
-    <Modal
+    <>
+      <Modal
       show={comlianceStatusReopenedModal}
       setShow={setComlianceStatusReopenedModal}
       modalFooterClassName={"d-block border-0"}
@@ -385,7 +376,9 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
           </Row>
         </>
       }
-    />
+      />
+      {SnackBar}
+    </>
   );
 };
 

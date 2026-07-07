@@ -13,6 +13,9 @@ import {
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
+import { PSO_LOGO } from "../../../../commen/featureFlags";
+import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
 import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
@@ -29,10 +32,10 @@ const VerifyOTPUM = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyOTP, setVerifyOTP] = useState("");
   const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
   );
   const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
   );
 
   const languages = [
@@ -50,10 +53,7 @@ const VerifyOTPUM = () => {
     setVerifyOTP(otpval);
   };
 
-
-
   const verifyOTPClickHandler = (e) => {
-    console.log("hello");
     e.preventDefault();
 
     if (verifyOTP.length !== 6) {
@@ -72,8 +72,8 @@ const VerifyOTPUM = () => {
           t,
           false,
           setSeconds,
-          setMinutes
-        )
+          setMinutes,
+        ),
       );
     }
   };
@@ -159,37 +159,35 @@ const VerifyOTPUM = () => {
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <span className={styles["OTP_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles["EmailVerifyOTPbox"]}
-              >
+                className={styles["EmailVerifyOTPbox"]}>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center "
-                  >
+                    className='d-flex justify-content-center '>
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={
-                        localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : DiskusLogo
+                        PSO_LOGO
+                          ? PSOLogo
+                          : localStorage.getItem("i18nextLng") === "ar"
+                            ? DiskusLogoArabic
+                            : DiskusLogo
                       }
-                      alt="diskus_logo"
-                      width="225px"
-                      height="80px"
+                      alt='diskus_logo'
+                      width={PSOLogo ? 120 : 200}
                     />
                   </Col>
                 </Row>
 
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col>
                     <span className={styles["signIn_heading"]}>
                       {t("Verify-your-email")}
@@ -203,8 +201,8 @@ const VerifyOTPUM = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-4">
-                  <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
+                <Row className='mt-4'>
+                  <Col sm={12} md={12} lg={12} className='Enter-Code-Label'>
                     <VerificationInputField
                       label={t("Enter-code")}
                       fields={6}
@@ -216,7 +214,7 @@ const VerifyOTPUM = () => {
                 </Row>
 
                 <Row>
-                  <Col className="text-left d-flex justify-content-start align-items-center gap-2">
+                  <Col className='text-left d-flex justify-content-start align-items-center gap-2'>
                     <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
@@ -235,19 +233,17 @@ const VerifyOTPUM = () => {
                         errorBar
                           ? ` ${styles["errorMessage-OTP"]} `
                           : `${styles["errorMessage-OTP_hidden"]}`
-                      }
-                    >
+                      }>
                       {errorMessage}
                     </p>
                   </Col>
                 </Row>
-                <Row className="d-flex mt-5 justify-content-center">
+                <Row className='d-flex mt-5 justify-content-center'>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       text={t("Verify")}
                       onClick={verifyOTPClickHandler}
@@ -256,15 +252,14 @@ const VerifyOTPUM = () => {
                   </Col>
                 </Row>
 
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
                     className={
                       styles["Forgot_passwordforogt_verification_email_link"]
-                    }
-                  >
+                    }>
                     <span onClick={handleBacktoSignIn}>{t("Go-back")}</span>
                   </Col>
                 </Row>
@@ -275,8 +270,7 @@ const VerifyOTPUM = () => {
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex  overflow-hidden"
-          >
+            className='position-relative d-flex  overflow-hidden'>
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>
                 {t("Simplify-management")}
@@ -284,14 +278,22 @@ const VerifyOTPUM = () => {
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
+            <Col md={4} lg={4} sm={12} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
+                alt='auth_icon'
+                width='600px'
                 className={styles["Auth_Icon"]}
               />
+              {PSO_LOGO && (
+                <img
+                  src={PSOPowerdBy}
+                  alt=''
+                  draggable='false'
+                     className={styles["PoweredIcon_Diskus_Icon"]}
+                />
+              )}
             </Col>
           </Col>
         </Row>

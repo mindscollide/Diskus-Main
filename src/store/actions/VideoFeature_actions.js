@@ -1,4 +1,5 @@
 import {
+  getPresentationParticipants,
   getVideoCallParticipantsAndWaitingList,
   getVideoCallParticipantsForGuest,
   hideUnHidePaticipantVideo,
@@ -242,7 +243,6 @@ const guestJoinPopup = (response) => {
 };
 
 const participantWaitingListBox = (response) => {
-  console.log(response, "responseresponseresponse");
   return {
     type: actions.PARTICIPANT_LIST_USERS,
     response: response,
@@ -250,7 +250,6 @@ const participantWaitingListBox = (response) => {
 };
 
 const participantWaitingList = (response) => {
-  console.log(response, "responseresponse");
   return {
     type: actions.PARTICIPANT_JOINT_REQUESTS,
     response: response,
@@ -265,7 +264,6 @@ const participantAcceptandReject = (response) => {
 };
 
 const guestLeaveVideoMeeting = (response) => {
-  console.log(response, "responseDataDataData");
   return {
     type: actions.GUEST_PARTICIPANT_LEAVE_VIDEO,
     payload: response,
@@ -279,7 +277,6 @@ const participanMuteUnMuteMeeting = (
   presenterViewFlag,
   check,
 ) => {
-  console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
@@ -298,7 +295,6 @@ const participanRaisedUnRaisedHand = (response) => {
 };
 
 const participantHideUnhideVideo = (response) => {
-  console.log("MQTT onMessageArrived");
   return {
     type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
     payload: response,
@@ -327,8 +323,6 @@ const muteUnmuteFail = (message) => {
 };
 
 const muteUnMuteParticipantMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(muteUnmuteInit());
     let form = new FormData();
@@ -351,19 +345,16 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
                 )
             ) {
               await dispatch(
-                muteUnmuteSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
+                muteUnmuteSuccess(response.data.responseResult, ""),
               );
               // setNewParticipants((prevState) =>
               //   prevState.map((stateData) => {
-              //     console.log(stateData, "stateDatastateData");
+              //
               //     // Check if the current participant's UID exists in the MuteUnMuteList
               //     const findData = data.MuteUnMuteList.find(
               //       (uidData) => String(uidData.UID) === String(stateData.guid)
               //     );
-              //     console.log(findData, flag, "findDatafindData");
+              //
               //     if (findData !== undefined) {
               //       // If found, return a new object with the updated 'isMuted' property
               //       return {
@@ -371,7 +362,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
               //         mute: flag, // flag should be a boolean indicating mute/unmute
               //       };
               //     }
-              //     console.log(stateData, "findDatafindData");
+              //
 
               //     // If not found, return the original stateData
               //     return stateData;
@@ -437,14 +428,8 @@ const hideUnHideParticipantGuestFail = (message) => {
 };
 
 const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  console.log(data, "hdjvdasdvasjvhasjdv");
   return (dispatch) => {
-    dispatch(hideUnHideParticipantGuestInit());
     let form = new FormData();
-    form.append("RequestMethod", hideUnHidePaticipantVideo.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
-
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
@@ -463,13 +448,13 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
               await dispatch(
                 hideUnHideParticipantGuestSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
 
               // setNewParticipants((prevState) =>
               //   prevState.map((stateData) => {
-              //     console.log(stateData, "stateDatastateDatastateData");
+              //
               //     if (stateData.guid === data.UIDList[0]) {
               //       return {
               //         ...stateData,
@@ -524,7 +509,6 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
       });
   };
 };
-
 // FOR PARTICIPANT MAX PANEL
 const maxParticipantVideoCallPanel = (response) => {
   return {
@@ -535,7 +519,6 @@ const maxParticipantVideoCallPanel = (response) => {
 
 // For Denied Max Patrticipant Video Compnent
 const maxParticipantVideoDenied = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_DENIED");
   return {
     type: actions.MAX_PARTICIPANT_VIDEO_DENIED,
     response: response,
@@ -544,8 +527,6 @@ const maxParticipantVideoDenied = (response) => {
 
 // For Removed Max Patrticipant Video Compnent
 const maxParticipantVideoRemoved = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.MAX_PARTICIPANT_VIDEO_REMOVED,
     response: response,
@@ -553,7 +534,6 @@ const maxParticipantVideoRemoved = (response) => {
 };
 
 const getParticipantsNewJoin = (response) => {
-  console.log(response, "responseresponseresponse");
   return {
     type: actions.GET_MEETING_NEW_PARTICIPANT_JOIN,
     response: response,
@@ -589,7 +569,6 @@ const getParticipantMeetingJoinMainApi = (
   setGetReady,
   setJoinButton,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getParticipantMeetingJoinInit());
     let form = new FormData();
@@ -793,7 +772,7 @@ const getParticipantMeetingJoinMainApi = (
 
                 localStorage.setItem("isMeetingVideoHostCheck", false);
                 await dispatch(setAudioControlHost(false));
-                console.log("videoHideUnHideForHost");
+
                 await dispatch(setVideoControlHost(false));
                 setJoinButton(false);
                 dispatch(participantVideoButtonState(false));
@@ -836,7 +815,6 @@ const getParticipantMeetingJoinMainApi = (
 };
 
 const maxHostVideoCallPanel = (response) => {
-  console.log(response, "responseresponse");
   return {
     type: actions.MAX_HOST_VIDEO_CALL_PANEL,
     response: response,
@@ -844,8 +822,6 @@ const maxHostVideoCallPanel = (response) => {
 };
 
 const normalHostVideoCallPanel = (response) => {
-  console.log(response, "True");
-
   return {
     type: actions.NORMAL_HOST_VIDEO_CALL_PANEL,
     response: response,
@@ -889,7 +865,6 @@ const participantListAndWaitingListFail = (message) => {
 };
 
 const participantListWaitingListMainApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(participantListAndWaitingListInit());
     let form = new FormData();
@@ -967,7 +942,6 @@ const participantVideoNavigationScreen = (response) => {
 
 // SET HOST VIDEO CAMERA
 const setVideoControlHost = (response) => {
-  console.log(response, "datadtadttadtadta");
   return {
     type: actions.SET_MQTT_VIDEO_CONTROLE_HOST,
     response: response,
@@ -976,7 +950,6 @@ const setVideoControlHost = (response) => {
 
 // SET HOST AUDIO CONTROL
 const setAudioControlHost = (response) => {
-  console.log(response, "datadtadttadtadta");
   return {
     type: actions.SET_MQTT_VOICE_CONTROLE_HOST,
     response: response,
@@ -985,7 +958,6 @@ const setAudioControlHost = (response) => {
 
 // Get Video Url For Partcipants
 const getVideoUrlForParticipant = (response) => {
-  console.log(response, "urlurlurlurlurl");
   return {
     type: actions.GET_VIDEOURL_PARTICIPANT,
     response: response,
@@ -994,7 +966,6 @@ const getVideoUrlForParticipant = (response) => {
 
 // SET MQTTT FOR VOICE PARTICIPANT
 const setRaisedUnRaisedParticiant = (response) => {
-  console.log(response, "datadtadttadtadta");
   return {
     type: actions.SET_RAISED_UNRAISED_PPARTICIPANT,
     response: response,
@@ -1011,7 +982,6 @@ const normalParticipantVideoCallPanel = (response) => {
 
 // CHECK WHOSE IS THE HOST NOW
 const checkHostNow = (response) => {
-  console.log(response, "responseresponseMakeHost");
   return {
     type: actions.CHECK_HOST_HOST_NOW,
     response: response,
@@ -1019,7 +989,6 @@ const checkHostNow = (response) => {
 };
 
 const makeHostNow = (response) => {
-  console.log(response, "responseresponseMakeHost");
   return {
     type: actions.MAKE_HOST_HOST_NOW,
     response: response,
@@ -1035,7 +1004,6 @@ const setVideoState = (isEnabled) => ({
 });
 
 const participantLeaveVideoMeeting = (response) => {
-  console.log(response, "responseDataDataData");
   return {
     type: actions.VIDEO_PARTICIPANT_NON_GUEST_LEFT,
     payload: response,
@@ -1105,7 +1073,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
               await dispatch(
                 getVideoCallParticipantSuccess(
                   response.data.responseResult,
-                  t("Successful"),
+                  "",
                 ),
               );
             } else if (
@@ -1198,8 +1166,6 @@ const leaveMeetingVideoOnlogout = (response) => {
 
 // FOR CONVERT PARTICIPANT TO HOST
 const makeParticipantHost = (response, flag) => {
-  console.log(response, "MAKE_A_PARTICIPANT_HOST");
-
   return {
     type: actions.MAKE_A_PARTICIPANT_HOST,
     flag: flag,
@@ -1249,7 +1215,6 @@ const leaveMeetingOnEndStatusMqtt = (response) => {
 
 // For videoIcon enable and disable or button
 const videoIconOrButtonState = (response) => {
-  console.log(response, "enableDisableVideoState");
   return {
     type: actions.VIDEO_BUTTON_OR_ICON_STATE,
     response: response,
@@ -1258,7 +1223,6 @@ const videoIconOrButtonState = (response) => {
 
 //For VideoIcon Enable and Disable button From Participant Side
 const participantVideoButtonState = (response) => {
-  console.log(response, "participantVideoButtonState");
   return {
     type: actions.PARTICIPANT_BUTTON_VIDEO_ENABLE_DISABLE,
     response: response,
@@ -1274,7 +1238,6 @@ const clearMessegesVideoFeature = (response) => {
 
 //For VideoIcon Enable and Disable button From Participant Side
 const disableZoomBeforeJoinSession = (response) => {
-  console.log("disableZoomBeforeJoinSession", response);
   return {
     type: actions.DISABLE_BUTTONS_ZOOM_BEFORE_JOIN_SESSION,
     response: response,
@@ -1288,12 +1251,6 @@ const presenterViewGlobalState = (
   presenterViewHostFlag,
   presenterViewJoinFlag,
 ) => {
-  console.log(
-    presenterMeetingId,
-    presenterViewFlag,
-    "responseresponseresponsedatat",
-  );
-
   return {
     type: actions.SET_MQTT_PRESENTER_RESPONSE,
     payload: {
@@ -1334,7 +1291,6 @@ const openPresenterViewMainApi = (
   currentMeeting,
   actiontype,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let videoCallURL = String(localStorage.getItem("videoCallURL"));
   let newData = {
     VideoCallURL: videoCallURL,
@@ -1417,7 +1373,6 @@ const openPresenterViewMainApi = (
                     );
                     sessionStorage.removeItem("alreadyInMeetingVideo");
                   } else {
-                    console.log("maximizeParticipantVideoFlag");
                     sessionStorage.setItem("alreadyInMeetingVideo", true);
                   }
                 } else {
@@ -1451,15 +1406,28 @@ const openPresenterViewMainApi = (
                 await dispatch(
                   presenterViewGlobalState(currentMeeting, true, true, true),
                 );
+                // ROOT CAUSE of "stale presenterViewFlag bleeds into other
+                // meetings": this is the AgendaViewer "Start Presentation"
+                // path (actiontype 4) for ANY presenter, organizer or not.
+                // Unlike startPresenterViewMainApi (the other start-presenter
+                // action), this one never set presenterStartedFlag, so
+                // onClickStopPresenter's `if (presenterStartedFlag)` check
+                // always fell through to leavePresenterViewMainApi instead of
+                // stopPresenterViewMainApi. Leave only fully resets
+                // presenterViewFlag when alreadyInMeetingVideo happens to be
+                // true; Stop always does. Without this, presenterViewFlag can
+                // stay stuck at true after "leaving" your own presentation,
+                // which other components (e.g. AgendaViewer's button/video
+                // icon for a DIFFERENT meeting) read as "a presentation is
+                // still active" since these flags are global, not
+                // per-meeting.
+                dispatch(presenterStartedMainFlag(true));
                 await dispatch(maximizeVideoPanelFlag(true));
                 await dispatch(normalizeVideoPanelFlag(false));
               }
 
               await dispatch(
-                openPresenterSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
+                openPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1514,7 +1482,6 @@ const startPresenterFail = (message) => {
 };
 
 const startPresenterViewMainApi = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(startPresenterInit());
     let form = new FormData();
@@ -1540,9 +1507,11 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
                 localStorage.setItem("isWebCamEnabled", true);
                 if (flag === 1) {
                   localStorage.removeItem("CallType");
-                  let currentMeeting = localStorage.getItem("currentMeetingID");
+                  const meetingId =
+                    store.getState().NewMeetingreducer?.currentMeetingInfo
+                      ?.meetingID;
                   await dispatch(
-                    presenterViewGlobalState(currentMeeting, true, true, true),
+                    presenterViewGlobalState(meetingId, true, true, true),
                   );
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
@@ -1552,10 +1521,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
 
               dispatch(presenterStartedMainFlag(true));
               await dispatch(
-                startPresenterSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
+                startPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1644,7 +1610,6 @@ const stopPresenterViewMainApi = (
   setLeavePresenterViewToJoinOneToOne,
   stopApiCalledRef,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
   let videoCallURL = Number(localStorage.getItem("videoCallURL"));
   let newdata = {
@@ -1675,155 +1640,189 @@ const stopPresenterViewMainApi = (
             ),
           );
         } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
-                )
-            ) {
-              stopApiCalledRef.current = false; // 🔓 UNLOCK
-              let alreadyInMeetingVideo = JSON.parse(
-                sessionStorage.getItem("alreadyInMeetingVideo")
-                  ? sessionStorage.getItem("alreadyInMeetingVideo")
-                  : false,
-              );
+          try {
+            if (response.data.responseResult.isExecuted === true) {
+              console.log("This is Stop presentation hit");
 
-              if (flag === 1) {
-                console.log("busyCall");
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(normalizeVideoPanelFlag(true));
-                dispatch(minimizeVideoPanelFlag(false));
-              } else if (flag === 3) {
-                await setLeavePresenterViewToJoinOneToOne(false);
-                if (alreadyInMeetingVideo) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
+                  )
+              ) {
+                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                let alreadyInMeetingVideo = JSON.parse(
+                  sessionStorage.getItem("alreadyInMeetingVideo")
+                    ? sessionStorage.getItem("alreadyInMeetingVideo")
+                    : false,
+                );
+                console.log("This is Stop presentation hit");
+
+                if (flag === 1) {
+                  console.log("This is Stop presentation hit");
+
                   console.log("busyCall");
-                  await setLeaveMeetingVideoForOneToOneOrGroup(true);
-                } else {
-                  console.log("busyCall");
-                  setJoiningOneToOneAfterLeavingPresenterView(true);
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(normalizeVideoPanelFlag(true));
+                  dispatch(minimizeVideoPanelFlag(false));
+                } else if (flag === 3) {
+                  console.log("This is Stop presentation hit");
+
+                  await setLeavePresenterViewToJoinOneToOne(false);
+                  if (alreadyInMeetingVideo) {
+                    console.log("busyCall");
+                    await setLeaveMeetingVideoForOneToOneOrGroup(true);
+                  } else {
+                    console.log("busyCall");
+                    setJoiningOneToOneAfterLeavingPresenterView(true);
+                  }
                 }
-              }
-              if (!alreadyInMeetingVideo) {
-                console.log("busyCall");
-                localStorage.removeItem("participantUID");
-                localStorage.removeItem("isGuid");
-                localStorage.removeItem("videoIframe");
-                localStorage.removeItem("acceptedRoomID");
-                // localStorage.removeItem("newRoomId");
-                localStorage.removeItem("acceptedRoomID");
-                localStorage.removeItem("presenterViewvideoURL");
-                localStorage.removeItem("isWebCamEnabled");
-                dispatch(setAudioControlHost(false));
-                console.log("videoHideUnHideForHost");
-                dispatch(setVideoControlHost(false));
-                await dispatch(
-                  presenterViewGlobalState(0, false, false, false),
-                );
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(normalizeVideoPanelFlag(false));
-                dispatch(minimizeVideoPanelFlag(false));
-              } else if (alreadyInMeetingVideo) {
-                console.log("busyCall");
-                localStorage.removeItem("presenterViewvideoURL");
-                localStorage.setItem("isMeetingVideo", true);
-                dispatch(setVideoControlHost(true));
-                dispatch(setAudioControlHost(false));
-                dispatch(leaveCallModal(false));
-                dispatch(
-                  presenterFlagForAlreadyInParticipantMeetingVideo(false),
-                );
-                await dispatch(
-                  presenterViewGlobalState(0, false, false, false),
-                );
-                let isMeetingVideoHostCheck = localStorage.getItem(
-                  "isMeetingVideoHostCheck",
-                )
-                  ? JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
-                  : false;
-                console.log("Check Presenter", isMeetingVideoHostCheck);
-                let isGuid = localStorage.getItem("isGuid");
-                let participantUID = localStorage.getItem("participantUID");
+                if (!alreadyInMeetingVideo) {
+                  console.log("This is Stop presentation hit");
 
-                // this what I get the leavePresenterOrJoinOtherCalls from videoReature_reducer
-                let leavePresenterOrJoinOtherCallData =
-                  store.getState().videoFeatureReducer
-                    .leavePresenterOrJoinOtherCalls;
-                console.log(
-                  leavePresenterOrJoinOtherCallData,
-                  "leavePresenterOrJoinOtherCallData",
-                );
+                  console.log("busyCall");
+                  localStorage.removeItem("participantUID");
+                  localStorage.removeItem("isGuid");
+                  localStorage.removeItem("videoIframe");
+                  localStorage.removeItem("acceptedRoomID");
+                  // localStorage.removeItem("newRoomId");
+                  localStorage.removeItem("acceptedRoomID");
+                  localStorage.removeItem("presenterViewvideoURL");
+                  localStorage.removeItem("isWebCamEnabled");
+                  dispatch(setAudioControlHost(false));
+                  console.log("videoHideUnHideForHost");
+                  dispatch(setVideoControlHost(false));
+                  await dispatch(
+                    presenterViewGlobalState(0, false, false, false),
+                  );
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                } else if (alreadyInMeetingVideo) {
+                  console.log("This is Stop presentation hit");
 
-                if (!leavePresenterOrJoinOtherCallData) {
+                  console.log("busyCall");
+                  localStorage.removeItem("presenterViewvideoURL");
+                  localStorage.setItem("isMeetingVideo", true);
+                  // dispatch(setVideoControlHost(true));
+                  dispatch(setAudioControlHost(false));
+                  dispatch(leaveCallModal(false));
+                  dispatch(
+                    presenterFlagForAlreadyInParticipantMeetingVideo(false),
+                  );
+                  await dispatch(
+                    presenterViewGlobalState(0, false, false, false),
+                  );
+                  let isMeetingVideoHostCheck = localStorage.getItem(
+                    "isMeetingVideoHostCheck",
+                  )
+                    ? JSON.parse(
+                        localStorage.getItem("isMeetingVideoHostCheck"),
+                      )
+                    : false;
+                  console.log("Check Presenter", isMeetingVideoHostCheck);
+                  let isGuid = localStorage.getItem("isGuid");
+                  let participantUID = localStorage.getItem("participantUID");
+                  const isNonPresenterScreenShare = JSON.parse(
+                    sessionStorage.getItem("isNonPresenterScreenShare") ||
+                      "false",
+                  );
+
+                  // this what I get the leavePresenterOrJoinOtherCalls from videoReature_reducer
+                  let leavePresenterOrJoinOtherCallData =
+                    store.getState().videoFeatureReducer
+                      .leavePresenterOrJoinOtherCalls;
+
                   console.log(
                     leavePresenterOrJoinOtherCallData,
                     "leavePresenterOrJoinOtherCallData",
                   );
-                  let dataAudio = {
-                    RoomID: String(data.RoomID),
-                    IsMuted: false, // Ensuring it's a boolean
-                    UID: String(
-                      isMeetingVideoHostCheck ? isGuid : participantUID,
-                    ),
-                    MeetingID: data.MeetingID,
-                  };
-                  // Dispatch the API request with the data
-                  dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
-                  let dataVideo = {
-                    RoomID: String(data.RoomID),
-                    HideVideo: true, // Ensuring it's a boolean
-                    UID: String(
-                      isMeetingVideoHostCheck ? isGuid : participantUID,
-                    ),
-                    MeetingID: Number(data.MeetingID),
-                  };
-                  // Dispatch the API request with the data
-                  dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
-                  console.log("videoHideUnHideForHost");
+
+                  if (!leavePresenterOrJoinOtherCallData) {
+                    if (!isNonPresenterScreenShare) {
+                      let dataAudio = {
+                        RoomID: String(data.RoomID),
+                        IsMuted: false, // Ensuring it's a boolean
+                        UID: String(
+                          isMeetingVideoHostCheck ? isGuid : participantUID,
+                        ),
+                        MeetingID: data.MeetingID,
+                      };
+                      // Dispatch the API request with the data
+                      dispatch(
+                        muteUnMuteSelfMainApi(navigate, t, dataAudio, 1),
+                      );
+                      let dataVideo = {
+                        RoomID: String(data.RoomID),
+                        HideVideo: true, // Ensuring it's a boolean
+                        UID: String(
+                          isMeetingVideoHostCheck ? isGuid : participantUID,
+                        ),
+                        MeetingID: Number(data.MeetingID),
+                      };
+                      // Dispatch the API request with the data
+                      dispatch(
+                        hideUnhideSelfMainApi(navigate, t, dataVideo, 1),
+                      );
+                      console.log("videoHideUnHideForHost");
+                    } else {
+                      console.log(
+                        "Non-presenter screen share - skipping mic/video API calls",
+                      );
+                      //  Clean up the flag
+                      sessionStorage.removeItem("nonPresenter");
+                      sessionStorage.removeItem("isNonPresenterScreenShare");
+                    }
+                  }
+                  dispatch(maximizeVideoPanelFlag(true));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                  // sessionStorage.removeItem("alreadyInMeetingVideo");
                 }
-                dispatch(maximizeVideoPanelFlag(true));
-                dispatch(normalizeVideoPanelFlag(false));
-                dispatch(minimizeVideoPanelFlag(false));
-                // sessionStorage.removeItem("alreadyInMeetingVideo");
+                await dispatch(
+                  stopPresenterSuccess(
+                    response.data.responseResult,
+                    t("Successful"),
+                  ),
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase(),
+                  )
+              ) {
+                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                await dispatch(stopPresenterFail(t("UnSuccessful")));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase(),
+                  )
+              ) {
+                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                await dispatch(
+                  stopPresenterFail(t("Error-while-stop-presentation")),
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase(),
+                  )
+              ) {
+                await dispatch(stopPresenterFail(t("Something-went-wrong")));
               }
-              await dispatch(
-                stopPresenterSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase(),
-                )
-            ) {
-              stopApiCalledRef.current = false; // 🔓 UNLOCK
-              await dispatch(stopPresenterFail(t("UnSuccessful")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase(),
-                )
-            ) {
-              stopApiCalledRef.current = false; // 🔓 UNLOCK
-              await dispatch(
-                stopPresenterFail(t("Error-while-stop-presentation")),
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase(),
-                )
-            ) {
+            } else {
               await dispatch(stopPresenterFail(t("Something-went-wrong")));
             }
-          } else {
-            await dispatch(stopPresenterFail(t("Something-went-wrong")));
+          } catch (error) {
+            console.error(
+              "Error processing stopPresenterViewMainApi response:",
+              error,
+            );
           }
         } else {
           await dispatch(stopPresenterFail(t("Something-went-wrong")));
@@ -1834,6 +1833,7 @@ const stopPresenterViewMainApi = (
       });
   };
 };
+
 const stopPresenterViewMainApiTest = (
   navigate,
   t,
@@ -1866,7 +1866,7 @@ const stopPresenterViewMainApiTest = (
 
         if (res.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          console.log("stopPresenterViewMainApi");
+
           await dispatch(
             stopPresenterViewMainApi(
               navigate,
@@ -1883,19 +1883,23 @@ const stopPresenterViewMainApiTest = (
 
         if (res.responseCode === 200 && res.responseResult.isExecuted) {
           const msg = res.responseResult.responseMessage.toLowerCase();
+          console.log("This is Stop presentation hit");
 
           if (
             msg.includes("meeting_meetingservicemanager_stoppresenterview_01")
           ) {
+            console.log("This is Stop presentation hit");
             let alreadyInMeetingVideo = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideo") || false,
             );
 
             if (flag === 1) {
+              console.log("This is Stop presentation hit");
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(minimizeVideoPanelFlag(false));
             } else if (flag === 3) {
+              console.log("This is Stop presentation hit");
               await setLeavePresenterViewToJoinOneToOne(false);
               if (alreadyInMeetingVideo) {
                 await setLeaveMeetingVideoForOneToOneOrGroup(true);
@@ -1905,6 +1909,7 @@ const stopPresenterViewMainApiTest = (
             }
 
             if (!alreadyInMeetingVideo) {
+              console.log("This is Stop presentation hit");
               localStorage.removeItem("participantUID");
               localStorage.removeItem("isGuid");
               localStorage.removeItem("videoIframe");
@@ -1912,13 +1917,14 @@ const stopPresenterViewMainApiTest = (
               localStorage.removeItem("presenterViewvideoURL");
 
               dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
+
               dispatch(setVideoControlHost(false));
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
             } else {
+              console.log("This is Stop presentation hit");
               localStorage.removeItem("presenterViewvideoURL");
               localStorage.setItem("isMeetingVideo", true);
               dispatch(leaveCallModal(false));
@@ -1947,7 +1953,7 @@ const stopPresenterViewMainApiTest = (
 
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
-              console.log("videoHideUnHideForHost");
+
               dispatch(setVideoControlHost(true));
               dispatch(setAudioControlHost(false));
               dispatch(maximizeVideoPanelFlag(true));
@@ -1956,9 +1962,7 @@ const stopPresenterViewMainApiTest = (
               sessionStorage.removeItem("alreadyInMeetingVideo");
             }
 
-            await dispatch(
-              stopPresenterSuccess(res.responseResult, t("Successful")),
-            );
+            await dispatch(stopPresenterSuccess(res.responseResult, ""));
             return resolve(); // 🎯 Everything done, resolve the promise
           } else if (msg.includes("stoppresenterview_02")) {
             await dispatch(stopPresenterFail(t("UnSuccessful")));
@@ -2006,9 +2010,9 @@ const joinPresenterFail = (message) => {
 };
 
 const joinPresenterViewMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(joinPresenterInit());
+
     let form = new FormData();
     form.append("RequestMethod", joinPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -2031,69 +2035,84 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID"),
               );
+
               let isMeetingVideo = JSON.parse(
                 localStorage.getItem("isMeetingVideo"),
               );
+
               let isMeetingVideoHostCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck"),
               );
-              console.log("Check 12");
-              if (isMeetingVideo) {
-                console.log("Check 12");
 
-                console.log("maximizeParticipantVideoFlag");
+              let currentUserID = Number(localStorage.getItem("userID"));
+
+              let isOriginalPresenterRejoining =
+                Number(response.data.responseResult.presenterID) ===
+                currentUserID;
+
+              localStorage.setItem(
+                "isRejoiningOwnPresentation",
+                JSON.stringify(isOriginalPresenterRejoining),
+              );
+
+              if (isMeetingVideo) {
                 sessionStorage.setItem("alreadyInMeetingVideo", true);
               } else {
-                console.log("Check 12");
                 const meetingHost = {
                   isHost: isMeetingVideoHostCheck,
                   isHostId: 0,
                   isDashboardVideo: true,
                 };
+
                 dispatch(makeHostNow(meetingHost));
+
                 localStorage.setItem(
                   "meetinHostInfo",
                   JSON.stringify(meetingHost),
                 );
-                if (isMeetingVideoHostCheck) {
-                  console.log("Check 12");
+
+                if (isOriginalPresenterRejoining) {
                   localStorage.setItem(
                     "isGuid",
                     response.data.responseResult.guid,
                   );
                 } else {
-                  console.log("Check 12");
                   localStorage.setItem(
                     "participantUID",
                     response.data.responseResult.guid,
                   );
                 }
+
                 localStorage.setItem(
                   "acceptedRoomID",
                   response.data.responseResult.roomID,
                 );
-                localStorage.setItem(
-                  "acceptedRoomID",
-                  response.data.responseResult.roomID,
-                );
+
                 localStorage.setItem(
                   "presenterViewvideoURL",
                   response.data.responseResult.videoURL,
                 );
               }
+
               localStorage.removeItem("activeCall");
 
               await dispatch(
-                presenterViewGlobalState(currentMeetingID, true, false, true),
+                presenterViewGlobalState(
+                  currentMeetingID,
+                  true,
+                  isOriginalPresenterRejoining,
+                  !isOriginalPresenterRejoining,
+                ),
               );
+
+              dispatch(presenterStartedMainFlag(isOriginalPresenterRejoining));
+
               dispatch(maximizeVideoPanelFlag(true));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
+
               await dispatch(
-                joinPresenterSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
+                joinPresenterSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2141,7 +2160,7 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
           await dispatch(joinPresenterFail(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
+      .catch(() => {
         dispatch(joinPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -2178,7 +2197,6 @@ const leavePresenterViewMainApi = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeavePresenterViewToJoinOneToOne,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(leavePresenterInit());
     let form = new FormData();
@@ -2214,14 +2232,12 @@ const leavePresenterViewMainApi = (
                 sessionStorage.getItem("alreadyInMeetingVideo"),
               );
               dispatch(setRaisedUnRaisedParticiant(false));
-              console.log(flag, "Check is participant Uid Removed?");
-              console.log("Check is participant Uid Removed?");
+
               await dispatch(presenterStartedMainFlag(false));
 
               let currentMeetingID = localStorage.getItem("currentMeetingID");
 
               if (flag === 1) {
-                console.log("Check is participant Uid Removed?");
                 dispatch(
                   presenterViewGlobalState(
                     currentMeetingID,
@@ -2231,7 +2247,6 @@ const leavePresenterViewMainApi = (
                   ),
                 );
                 if (!alreadyInMeetingVideo) {
-                  console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
@@ -2243,11 +2258,11 @@ const leavePresenterViewMainApi = (
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 dispatch(setAudioControlHost(false));
-                console.log("videoHideUnHideForHost");
+
                 dispatch(setVideoControlHost(false));
               } else if (flag === 2) {
                 dispatch(participantVideoButtonState(false));
-                console.log("Check is participant Uid Removed?");
+
                 dispatch(
                   presenterViewGlobalState(
                     currentMeetingID,
@@ -2259,7 +2274,7 @@ const leavePresenterViewMainApi = (
                 if (alreadyInMeetingVideo) {
                   // dispatch(participantVideoButtonState(true));
                   // dispatch(presenterViewGlobalState(0, false, false, false));
-                  // console.log("Check is participant Uid Removed?");
+                  //
                   // sessionStorage.removeItem("alreadyInMeetingVideo");
                   //  await dispatch(presenterStartedMainFlag(true));
                   // dispatch(maximizeVideoPanelFlag(true));
@@ -2269,7 +2284,7 @@ const leavePresenterViewMainApi = (
 
                   // Ye jb participant video Meeting ma ho aur presenter view ma join hojae tou jab wo presenter View ma ajaye toh leavePresenter
                   // krna par wo meetingVideo ma b Join nahi hoga
-                  console.log("Check is participant Uid Removed?");
+
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("participantRoomId");
                   localStorage.removeItem("isGuid");
@@ -2283,10 +2298,9 @@ const leavePresenterViewMainApi = (
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                   dispatch(setAudioControlHost(false));
-                  console.log("videoHideUnHideForHost");
+
                   dispatch(setVideoControlHost(false));
                 } else {
-                  console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
@@ -2297,13 +2311,11 @@ const leavePresenterViewMainApi = (
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                   dispatch(setAudioControlHost(false));
-                  console.log("videoHideUnHideForHost");
+
                   dispatch(setVideoControlHost(false));
                 }
               } else if (flag === 3) {
-                console.log("Check is participant Uid Removed?");
                 if (!alreadyInMeetingVideo) {
-                  console.log("Check is participant Uid Removed?");
                   // localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
@@ -2311,7 +2323,6 @@ const leavePresenterViewMainApi = (
                   localStorage.removeItem("newRoomId");
                   localStorage.removeItem("presenterViewvideoURL");
                 } else if (alreadyInMeetingVideo) {
-                  console.log("Check is participant Uid Removed?");
                   let newName = localStorage.getItem("name");
                   let participantRoomId =
                     localStorage.getItem("participantRoomId");
@@ -2338,41 +2349,34 @@ const leavePresenterViewMainApi = (
                   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 }
                 await dispatch(
-                  leavePresenterSuccess(
-                    response.data.responseResult,
-                    t("Successful"),
-                  ),
+                  leavePresenterSuccess(response.data.responseResult, ""),
                 );
                 await setLeavePresenterViewToJoinOneToOne(false);
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 dispatch(setAudioControlHost(false));
-                console.log("videoHideUnHideForHost");
+
                 dispatch(setVideoControlHost(false));
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 sessionStorage.removeItem("alreadyInMeetingVideo");
                 // if (alreadyInMeetingVideo) {
-                //   console.log("busyCall");
+                //
                 //   await setLeaveMeetingVideoForOneToOneOrGroup(true);
                 // } else {
-                console.log("busyCall");
+
                 await setJoiningOneToOneAfterLeavingPresenterView(true);
                 // }
               } else if (flag === 4) {
-                console.log("Check is participant Uid Removed?");
                 dispatch(participantVideoButtonState(false));
-                console.log("Check");
+
                 dispatch(presenterViewGlobalState(0, false, false, false));
                 if (alreadyInMeetingVideo) {
-                  console.log("Check is participant Uid Removed?");
-                  console.log("Check");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                 } else {
-                  console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
@@ -2422,8 +2426,6 @@ const leavePresenterViewMainApiTest = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeavePresenterViewToJoinOneToOne,
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return async (dispatch) => {
     return new Promise(async (resolve, reject) => {
       dispatch(leavePresenterInit());
@@ -2481,7 +2483,7 @@ const leavePresenterViewMainApiTest = (
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
               dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
+
               dispatch(setVideoControlHost(false));
             } else if (flag === 2) {
               dispatch(participantVideoButtonState(false));
@@ -2502,20 +2504,18 @@ const leavePresenterViewMainApiTest = (
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 dispatch(setAudioControlHost(false));
-                console.log("videoHideUnHideForHost");
+
                 dispatch(setVideoControlHost(false));
               }
             } else if (flag === 3) {
               if (!alreadyInMeetingVideo) cleanUpLocalStorage();
-              await dispatch(
-                leavePresenterSuccess(resData.responseResult, t("Successful")),
-              );
+              await dispatch(leavePresenterSuccess(resData.responseResult, ""));
               await setLeavePresenterViewToJoinOneToOne(false);
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
               dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
+
               dispatch(setVideoControlHost(false));
               dispatch(presenterViewGlobalState(0, true, false, false));
               sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -2577,7 +2577,6 @@ const presenterStartedMainFlag = (response) => {
 
 //Global State for start presenter view flag for already In participant Meeting Video
 const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
-  console.log("checkMeetingResponse", response);
   return {
     type: actions.START_PRESENTER_VIEW_FLAG_FOR_ALREADYIN_PARTICIPANT_MEETINGVIDEO,
     response: response,
@@ -2586,8 +2585,6 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
 
 // global state for Presenter Participants who joined Presenter Video
 const presenterNewParticipantJoin = (response) => {
-  console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO", response);
-
   return {
     type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,
     response: response,
@@ -2595,7 +2592,6 @@ const presenterNewParticipantJoin = (response) => {
 };
 
 const presenterLeaveParticipant = (response) => {
-  console.log("hell", response);
   return {
     type: actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO,
     response: response, // Pass UID to reducer
@@ -2618,7 +2614,6 @@ const closeWaitingParticipantVideoStream = (response) => {
 
 // state for leave Presenter View and Join one to one and other group calls
 const leavePresenterJoinOneToOneOrOtherCall = (response) => {
-  console.log("checkMeetingResponse", response);
   return {
     type: actions.LEAVE_PRESENTER_JOIN_ONE_TO_OR_GROUP_CALL,
     response: response,
@@ -2627,7 +2622,6 @@ const leavePresenterJoinOneToOneOrOtherCall = (response) => {
 
 // state for ACCEPT HOST TRANSFER ACCESS
 const acceptHostTransferAccessGlobalFunc = (response) => {
-  console.log("checkHostTransfer", response);
   return {
     type: actions.ACCEPT_HOST_TRANSFER_ACCESS,
     response: response,
@@ -2636,7 +2630,6 @@ const acceptHostTransferAccessGlobalFunc = (response) => {
 
 // unanswered one To one call to close participant modal
 const unansweredOneToOneCall = (response) => {
-  console.log("UNANSWERED_ONE_TO_ONE_CALL_FLAG", response);
   return {
     type: actions.UNANSWERED_ONE_TO_ONE_CALL_FLAG,
     response: response,
@@ -2666,8 +2659,6 @@ const getGroupCallParticipantsFail = (message) => {
 };
 
 const getGroupCallParticipantsMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getGroupCallParticipantsInit());
     let form = new FormData();
@@ -2740,7 +2731,6 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
 
 //updated participants List For PRESENTER
 const updatedParticipantListForPresenter = (response) => {
-  console.log(response, "responseCheck List");
   return {
     type: actions.UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER,
     response: response,
@@ -2749,7 +2739,6 @@ const updatedParticipantListForPresenter = (response) => {
 
 // Global state for stop screen share on presenter view start
 const stopScreenShareOnPresenterStarting = (response) => {
-  console.log(response, "stopScreenShareOnPresenterStarting");
   return {
     type: actions.STOP_SCREENSHARE_ONPRESENTER_VIEWSTART,
     response: response,
@@ -2801,17 +2790,16 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
                 )
             ) {
               if (data.ShareScreen === true) {
-                console.log("CheckDataCheckData");
                 localStorage.setItem("isSharedSceenEnable", true);
+                // Mark that THIS user is the active screen sharer. Used by the
+                // tab-close handler to stop the share if the sharer leaves.
+                localStorage.setItem("isScreenShareEnabled", true);
               } else {
-                console.log("CheckDataCheckData");
                 localStorage.removeItem("isSharedSceenEnable");
+                localStorage.removeItem("isScreenShareEnabled");
               }
               await dispatch(
-                isSharedScreenSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
+                isSharedScreenSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2853,10 +2841,132 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
 
 // Global state for Screen Shared triggered
 const screenShareTriggeredGlobally = (response) => {
-  console.log(response, "screenShareTriggeredGlobally");
   return {
     type: actions.GLOBAL_SCREEN_SHARE_TRIGGERED,
     response: response,
+  };
+};
+
+// Notify Participants when Host is Transferred
+const notifyParticipantsWhenHostIsTransferred = (response) => {
+  return {
+    type: actions.NOTIFY_PARTICIPANTS_WHEN_HOST_IS_TRANSFERRED,
+    response: response,
+  };
+};
+
+const getVideoPresentationParticipantInit = () => {
+  return {
+    type: actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_INIT,
+  };
+};
+
+const getVideoPresentationParticipantSuccess = (response, message) => {
+  return {
+    type: actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getVideoPresentationParticipantFail = (message) => {
+  return {
+    type: actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_FAIL,
+    message: message,
+  };
+};
+
+// Real-time MQTT-driven incremental updates (no API call) — see
+// PRESENTATION_PARTICIPANT_JOINED / PRESENTATION_PARTICIPANT_LEFT handling
+// in Dashboard.js.
+const presentationParticipantJoinedMqtt = (newParticipant) => {
+  return {
+    type: actions.PRESENTATION_PARTICIPANT_JOINED_MQTT,
+    response: newParticipant,
+  };
+};
+
+const presentationParticipantLeftMqtt = (uid) => {
+  return {
+    type: actions.PRESENTATION_PARTICIPANT_LEFT_MQTT,
+    response: uid,
+  };
+};
+
+const getVideoPresentationParticipantsMainApi = (Data, navigate, t) => {
+  return (dispatch) => {
+    dispatch(getVideoPresentationParticipantInit());
+    let form = new FormData();
+    form.append("RequestMethod", getPresentationParticipants.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(videoApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getVideoPresentationParticipantsMainApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetPresentationParticipants_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoPresentationParticipantSuccess(
+                  response.data.responseResult,
+                  t("Successful"),
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetPresentationParticipants_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoPresentationParticipantFail(t("No-record-found")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetPresentationParticipants_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoPresentationParticipantFail(t("UnSuccessful")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetPresentationParticipants_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoPresentationParticipantFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              getVideoPresentationParticipantFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            getVideoPresentationParticipantFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getVideoPresentationParticipantFail(t("Something-went-wrong")),
+        );
+      });
   };
 };
 
@@ -2963,4 +3073,8 @@ export {
   stopScreenShareOnPresenterStarting,
   isSharedScreenTriggeredApi,
   screenShareTriggeredGlobally,
+  notifyParticipantsWhenHostIsTransferred,
+  getVideoPresentationParticipantsMainApi,
+  presentationParticipantJoinedMqtt,
+  presentationParticipantLeftMqtt,
 };

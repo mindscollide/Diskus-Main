@@ -39,6 +39,7 @@ const initialState = {
   GetStatsForPublishingMinutesByWorkFlowIdData: null,
   WorkFlowActorStatusData: null,
   ResponseMessage: "",
+  errorSeverity: null,
 };
 
 const MinutesReducer = (state = initialState, action) => {
@@ -57,12 +58,10 @@ const MinutesReducer = (state = initialState, action) => {
           Loading: false,
           GetMinuteReviewFlowByMeetingIdData: action.response,
           ResponseMessage: action.message,
+          errorSeverity: "success",
         };
       } catch (error) {
-        console.log(
-          "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-          error
-        );
+
       }
     }
 
@@ -71,6 +70,7 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         GetMinuteReviewFlowByMeetingIdData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -163,6 +163,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         ListOfDefaultRejectionCommentsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_LISTOFDEFAULTREJECTIONCOMMENTS_FAIL: {
@@ -171,6 +172,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         ListOfDefaultRejectionCommentsData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -186,6 +188,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PendingApprovalCountData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_PENDINGAPPROVALSCOUNT_FAIL: {
@@ -194,6 +197,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PendingApprovalCountData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -216,6 +220,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewStatsForOrganizerByMeetingIdData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_FAIL: {
@@ -224,6 +229,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewStatsForOrganizerByMeetingIdData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -239,6 +245,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetAllOrganizationUsersForReviewData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_ALLORGANIZATIONUSERSFORREVIEW_FAIL: {
@@ -247,6 +254,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetAllOrganizationUsersForReviewData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -262,6 +270,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinutesForReviewerByMeetingIdData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_MINUTESFORREVIEWERBYMEETINGID_FAIL: {
@@ -270,6 +279,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinutesForReviewerByMeetingIdData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -285,6 +295,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewPendingApprovalsStatsByReviewerIdData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_MINUTEREVIEWPENDINGAPPROVALSSTATSBYREVIEWERID_FAIL: {
@@ -293,6 +304,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewPendingApprovalsStatsByReviewerIdData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -308,6 +320,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewPendingApprovalsByReviewerIdData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_FAIL: {
@@ -316,6 +329,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewPendingApprovalsByReviewerIdData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -331,6 +345,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         SaveMinutesReviewFlowData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.SAVE_MINUTESREVIEWFLOW_FAIL: {
@@ -339,6 +354,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         SaveMinutesReviewFlowData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -374,6 +390,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinutesVersionHistorywithCommentsData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETMINUTEVERSIONHISTORYWITHCOMMENTS_FAIL: {
@@ -382,6 +399,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinutesVersionHistorywithCommentsData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -397,6 +415,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewDetailsForOrganizerbyMinuteId: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETMINUTEREVIEWDETAILSFORORGANIZATIONBYMINUTEID_FAIL: {
@@ -405,6 +424,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetMinuteReviewDetailsForOrganizerbyMinuteId: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -421,6 +441,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PublishedMinutes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.PUBLISHEDMEETINGMINUTES_FAIL: {
@@ -429,6 +450,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PublishedMinutes: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETPUBLISHEDMEETINGMINUTES_INIT: {
@@ -443,6 +465,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetPublishedMinutes: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETPUBLISHEDMEETINGMINUTES_FAIL: {
@@ -451,6 +474,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetPublishedMinutes: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -458,6 +482,7 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null,
       };
     }
 
@@ -473,6 +498,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         AcceptRejectMinuteReviewData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.ACCEPT_REJECT_MINUTESREVIEW_FAIL: {
@@ -481,6 +507,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         AcceptRejectMinuteReviewData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -511,6 +538,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PublishMeetingMinutesData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -520,6 +548,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PublishMeetingMinutesData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -536,6 +565,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetDataForResendMinuteReviewData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -545,6 +575,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetDataForResendMinuteReviewData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -560,6 +591,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         ResendUpdatedMinuteForReviewData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.RESEND_UPDATEDMINUTEFORREVIEW_FAIL: {
@@ -568,6 +600,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         ResendUpdatedMinuteForReviewData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     case actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_INIT: {
@@ -582,6 +615,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PendingApprovalStatsThisWeek: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GETMINUTESANDSIGNATUREAPPROVALTHISWEEK_FAIL: {
@@ -590,6 +624,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         PendingApprovalStatsThisWeek: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
@@ -605,6 +640,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetStatsForPublishingMinutesByWorkFlowIdData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
     case actions.GET_STATSFORPUBLISHINGMINUTESBYWORKFLOWID_FAIL: {
@@ -613,6 +649,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         GetStatsForPublishingMinutesByWorkFlowIdData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
     //Work Flow Actor Status
@@ -629,6 +666,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         WorkFlowActorStatusData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success",
       };
     }
 
@@ -638,6 +676,7 @@ const MinutesReducer = (state = initialState, action) => {
         Loading: false,
         WorkFlowActorStatusData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

@@ -42,7 +42,7 @@ const getOrganizationLevelSetting = (navigate, t) => {
 
     return new Promise((resolve, reject) => {
       axiosInstance
-      .post(settingApi, form)
+        .post(settingApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t))
@@ -61,8 +61,8 @@ const getOrganizationLevelSetting = (navigate, t) => {
                 dispatch(
                   getOrganizationLevelSettingSuccess(
                     result.organizationSettings,
-                    ""
-                  )
+                    "",
+                  ),
                 );
                 resolve(result.organizationSettings);
               } else if (
@@ -74,13 +74,13 @@ const getOrganizationLevelSetting = (navigate, t) => {
                 dispatch(
                   getOrganizationLevelSettingSuccess(
                     null,
-                    t("No-records-found")
-                  )
+                    t("No-records-found"),
+                  ),
                 );
                 reject(result.organizationSettings);
               } else {
                 dispatch(
-                  getOrganizationLevelSettingFail(t("No-records-found"))
+                  getOrganizationLevelSettingFail(t("No-records-found")),
                 );
                 reject(new Error(t("No-records-found")));
               }
@@ -102,7 +102,7 @@ const getOrganizationLevelSetting = (navigate, t) => {
 };
 
 // const getOrganizationLevelSetting = (navigate, t) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+//
 //   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
 //   let data = {
 //     OrganizationID: organizationID,
@@ -189,7 +189,6 @@ const updateOrganizationLevelSettingFail = (message) => {
 };
 
 const updateOrganizationLevelSetting = (navigate, updateData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let data = {
     organizationSettings: updateData,
   };
@@ -200,7 +199,7 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
     form.append("RequestMethod", updateOrganizationLevelSettings.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -213,8 +212,8 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
             ) {
               dispatch(
                 updateOrganizationLevelSettingSuccess(
-                  t("Organization-configurations-updated-successfully")
-                )
+                  t("Organization-configurations-updated-successfully"),
+                ),
               );
               dispatch(getOrganizationLevelSetting(navigate, t));
             } else if (
@@ -223,29 +222,29 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
             ) {
               dispatch(
                 updateOrganizationLevelSettingFail(
-                  t("Organization-configurations-updates-not-successfully")
-                )
+                  t("Organization-configurations-updates-not-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_03"
             ) {
               dispatch(
-                updateOrganizationLevelSettingFail(t("Something-went-wrong"))
+                updateOrganizationLevelSettingFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              updateOrganizationLevelSettingFail(t("Something-went-wrong"))
+              updateOrganizationLevelSettingFail(t("Something-went-wrong")),
             );
           }
         } else if (response.data.responseCode === 400) {
           dispatch(
-            updateOrganizationLevelSettingFail(t("Something-went-wrong"))
+            updateOrganizationLevelSettingFail(t("Something-went-wrong")),
           );
         } else {
           dispatch(
-            updateOrganizationLevelSettingFail(t("Something-went-wrong"))
+            updateOrganizationLevelSettingFail(t("Something-went-wrong")),
           );
         }
       })

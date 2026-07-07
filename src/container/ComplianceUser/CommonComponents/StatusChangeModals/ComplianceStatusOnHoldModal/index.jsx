@@ -21,15 +21,16 @@ const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
     resetModalStates,
     complianceDetailsState,
     complianceOnHoldSelectOption,
+    statusChangeType,
   } = useComplianceContext();
 
-  console.log(selectOptions, "selectOptionsselectOptions");
+  
   const handleCloseButton = () => {
     setSelectOption(0);
     resetModalStates();
   };
   const handleProceedButton = () => {
-    console.log(selectOptions, "selectOptionsvalue");
+    
     setSelectOption(0);
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);
@@ -69,11 +70,17 @@ const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
               onChange={(event) => setSelectOption(event.target.value)}
               options={[
                 {
-                  label: t("Mark-compliance-only"),
+                  label:
+                    statusChangeType === "checklist"
+                      ? t("Mark-Checklist-only")
+                      : t("Mark-compliance-only"),
                   value: 0,
                 },
                 {
-                  label: t("Mark-compliance-with-associated-items"),
+                  label:
+                    statusChangeType === "checklist"
+                      ? t("Mark-Checklist-with-associated-items")
+                      : t("Mark-compliance-with-associated-items"),
                   value: 1,
                 },
               ]}

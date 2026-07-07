@@ -30,7 +30,7 @@ const ComplianceStatusChangeResonReasonModal = ({
     }
   };
   const handleProceedButton = () => {
-    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
+    
     if (!complianceOnHoldReasonState?.trim()) return;
 
     //  First update compliance state INCLUDING reason

@@ -310,7 +310,7 @@ const MeetingViewModalCalendar = ({
           }
           setAddedParticipantNameList(List);
         } catch (error) {
-          console.log("error");
+          
         }
 
         try {
@@ -346,7 +346,7 @@ const MeetingViewModalCalendar = ({
             });
           });
         } catch (error) {
-          console.log("error", error);
+          
         }
         try {
           viewData.minutesOfMeeting.map((minutesOfMeetingData) => {
@@ -360,7 +360,7 @@ const MeetingViewModalCalendar = ({
           });
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
+          
         }
         try {
           viewData.externalMeetingAttendees.map(
@@ -374,7 +374,7 @@ const MeetingViewModalCalendar = ({
           );
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
+          
         }
         setattachmentsList(meetingAgenAtclis);
         setCreateMeeting({
@@ -399,10 +399,10 @@ const MeetingViewModalCalendar = ({
           ExternalMeetingAttendees: externalMeetingAttendiesList,
           MinutesOfMeeting: minutesOfMeeting,
         });
-        console.log("data filter from api responce error", List);
+        
       }
     } catch (error) {
-      console.log("data filter from api responce error");
+      
     }
   }, [data]);
 
@@ -459,7 +459,7 @@ const MeetingViewModalCalendar = ({
         setMeetingReminderID([]);
       }
     } catch (error) {
-      console.log("viewFlag error");
+      
     }
   }, [viewFlag]);
 
@@ -470,7 +470,7 @@ const MeetingViewModalCalendar = ({
         setMeetingAttendeesList(assignees.user);
       }
     } catch (error) {
-      console.log("assignees user error");
+      
     }
   }, [assignees.user]);
 
@@ -488,7 +488,7 @@ const MeetingViewModalCalendar = ({
         }
       }
     } catch (error) {
-      console.log("meetingAttendeesList error");
+      
     }
   }, [meetingAttendeesList]);
 
@@ -500,7 +500,7 @@ const MeetingViewModalCalendar = ({
         }
       }
     } catch (error) {
-      console.log("addedParticipantNameList error");
+      
     }
   }, [addedParticipantNameList]);
 

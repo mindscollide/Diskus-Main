@@ -42,9 +42,9 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
   const handleChangeFolderName = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("namevalue", name, value);
+    
     let valueCheck = value.replace("/^[a-zA-Z0-9]+$/g", "");
-    console.log(valueCheck);
+    
     if (name === "FolderName" && valueCheck !== "") {
       setFolderName({
         content: valueCheck.trimStart(),

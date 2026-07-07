@@ -5,7 +5,7 @@ import "./videoCallNormalPanel.css";
 import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
-import { LoaderPanelVideoScreen } from "../../../../elements";
+import { LoaderPanelVideoScreen, Notification } from "../../../../elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
@@ -24,6 +24,7 @@ import {
   acceptHostTransferAccessGlobalFunc,
   disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
+  getVideoPresentationParticipantsMainApi,
   incomingVideoCallFlag,
   isSharedScreenTriggeredApi,
   leaveCallModal,
@@ -34,6 +35,7 @@ import {
   maxParticipantVideoRemoved,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  notifyParticipantsWhenHostIsTransferred,
   participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
@@ -52,12 +54,12 @@ import {
   updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
-import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import MaxHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import NormalParticipantVideoComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
-import MaxParticipantVideoDeniedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
   initiateVideoCallFail,
@@ -66,11 +68,14 @@ import {
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { useTalkContext } from "../../../../../context/TalkContext";
 import { Tooltip } from "antd";
+import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const recordingToastShownRef = useRef(false);
+  const hasTriggeredRecordingRef = useRef(false);
   const ActiveChatBoxGS = useSelector(
     (state) => state.talkFeatureStates.ActiveChatBoxGS,
   );
@@ -210,6 +215,15 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.getAllParticipantMain,
   );
 
+  // Presentation-specific participant roster (non-host viewers of a
+  // presentation). Backed by GetPresentationParticipants; kept in sync via
+  // the effect below, which re-fetches whenever the canonical meeting
+  // participant list changes (mute/video/raise-hand/join/leave already flow
+  // into getAllParticipantMain via the existing MQTT pipeline).
+  const presentationParticipantsList = useSelector(
+    (state) => state.videoFeatureReducer.presentationParticipantsList,
+  );
+
   console.log("setHandRaiseCounter", getAllParticipantMain);
   console.log("stopApiCalled", stopApiCalledRef);
 
@@ -273,6 +287,32 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
+  // Fetch the presentation roster ONCE, the moment a non-host viewer joins
+  // a presentation. From then on, PRESENTATION_PARTICIPANT_JOINED /
+  // PRESENTATION_PARTICIPANT_LEFT MQTT events keep the list in sync via
+  // direct, surgical Redux patches (see presentationParticipantJoinedMqtt /
+  // presentationParticipantLeftMqtt in Dashboard.js) — no further API calls.
+  // Deliberately NOT depending on getAllParticipantMain here: that list
+  // changes for reasons unrelated to this presentation (any meeting
+  // participant's mute/video/join/leave), which previously caused this
+  // effect to re-fire the API repeatedly.
+  const joiningPresentationView =
+    presenterViewFlag && !presenterViewHostFlag && presenterViewJoinFlag;
+  useEffect(() => {
+    if (joiningPresentationView) {
+      let presentationRoomID = localStorage.getItem("acceptedRoomID");
+      if (presentationRoomID) {
+        dispatch(
+          getVideoPresentationParticipantsMainApi(
+            { RoomID: String(presentationRoomID) },
+            navigate,
+            t,
+          ),
+        );
+      }
+    }
+  }, [joiningPresentationView]);
+
   const presenterMeetingId = useSelector(
     (state) => state.videoFeatureReducer.presenterMeetingId,
   );
@@ -302,9 +342,14 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.startPresenterTriggered,
   );
 
-  console.log(startPresenterTriggered, "startPresenterTriggered");
+  const notifyParticipantHostIsTransfer = useSelector(
+    (state) => state.videoFeatureReducer.notifyParticipantHostIsTransfer,
+  );
 
-  console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
+  console.log(
+    notifyParticipantHostIsTransfer,
+    "notifyParticipantHostIsTransfer",
+  );
 
   const [allParticipant, setAllParticipant] = useState([]);
 
@@ -336,6 +381,8 @@ const VideoPanelNormal = () => {
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
+
+  const [show, SnackBar] = useSnackbar();
 
   console.log(
     {
@@ -979,6 +1026,90 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [shareScreenTrue]);
 
+  // Add this useEffect to trigger RecordingStartMsgFromIframe when isMeetingVideo becomes true
+  useEffect(() => {
+    console.log("useEffect triggered - isMeetingVideo:", isMeetingVideo);
+    console.log(
+      "hasTriggeredRecordingRef.current:",
+      hasTriggeredRecordingRef.current,
+    );
+    console.log("iframeRef.current:", iframeRef.current);
+
+    if (isMeetingVideo === true && !hasTriggeredRecordingRef.current) {
+      console.log(
+        "Condition passed - isMeetingVideo is true and not triggered before",
+      );
+      hasTriggeredRecordingRef.current = true;
+
+      // Wait a bit for iframe to be ready, then send postMessage ONLY
+      // DO NOT show notification here
+      setTimeout(() => {
+        const iframe = iframeRef.current;
+        console.log("iframe inside setTimeout:", iframe);
+
+        if (iframe && iframe.contentWindow) {
+          console.log(
+            "Triggering RecordingStartMsgFromIframe because isMeetingVideo is true",
+          );
+          iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+        } else {
+          console.log("iframe or contentWindow not available");
+        }
+      }, 1000); // Give iframe time to load
+    }
+
+    // Reset when isMeetingVideo becomes false
+    if (!isMeetingVideo || isMeetingVideo === false) {
+      console.log("isMeetingVideo is false, resetting trigger ref");
+      hasTriggeredRecordingRef.current = false;
+      recordingToastShownRef.current = false;
+    }
+  }, [isMeetingVideo, iframeRef]);
+
+  // Add this useEffect to watch for the transfer completion
+  useEffect(() => {
+    if (hostTransferFlag) {
+      console.log("Host transfer detected, showing recording notification");
+
+      // Show recording notification
+      if (!recordingToastShownRef.current) {
+        recordingToastShownRef.current = true;
+        show(t("The-recording-is-started"), "info");
+      }
+    }
+  }, [hostTransferFlag]);
+
+  useEffect(() => {
+    if (notifyParticipantHostIsTransfer) {
+      console.log(
+        "Check Notification for Host Transfer",
+        notifyParticipantHostIsTransfer,
+      );
+      show(t("Host-has-been-changed"), "info");
+      // Reload the participant list from the backend so the new host's isHost
+      // flags are applied for every participant. Without this, non-host clients
+      // (e.g. User C / User D) keep showing the previous host after a manual
+      // host transfer, since the notification only flips a boolean flag.
+      //
+      // Resolve the room reliably: `participantRoomId` can be empty at this
+      // moment, which made the first call go out with a null RoomID (response
+      // code 3). Fall back to the joined/active room keys and only fire when a
+      // valid RoomID is present, so the call succeeds on the first hit.
+      const resolvedRoomID =
+        (presenterViewFlag ? callAcceptedRoomID : participantRoomIds) ||
+        localStorage.getItem("acceptedRoomID") ||
+        localStorage.getItem("activeRoomID") ||
+        localStorage.getItem("newRoomId");
+
+      if (resolvedRoomID && String(resolvedRoomID) !== "0") {
+        let Data = { RoomID: String(resolvedRoomID) };
+        dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      }
+      // RESET AFTER SHOWING TOAST
+      dispatch(notifyParticipantsWhenHostIsTransferred(false));
+    }
+  }, [notifyParticipantHostIsTransfer]);
+
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
@@ -1035,17 +1166,11 @@ const VideoPanelNormal = () => {
     let initiateVideoCall = JSON.parse(
       localStorage.getItem("initiateVideoCall"),
     );
-    console.log("Does Check Recording Start", isZoomEnabled);
     if (isZoomEnabled) {
-      console.log("Does Check Recording Start", initiateVideoCall);
-      console.log("Does Check Recording Start", isMeetingVideo);
       if (!isMeetingVideo && initiateVideoCall) {
-        console.log("Does Check Recording Start");
         const iframe = iframeRef.current;
         if (iframe && iframe?.contentWindow) {
-          console.log("Does Check Recording Start");
           setTimeout(() => {
-            console.log("Does Check Recording Start");
             iframe?.contentWindow?.postMessage(
               "RecordingStopMsgFromIframe",
               "*",
@@ -1085,6 +1210,10 @@ const VideoPanelNormal = () => {
 
   const handlerForStaringPresenterView = async () => {
     console.log("maximizeParticipantVideoFlag");
+    const isNonPresenterScreenShare = JSON.parse(
+      sessionStorage.getItem("isNonPresenterScreenShare") || "false",
+    );
+
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck"),
@@ -1120,27 +1249,45 @@ const VideoPanelNormal = () => {
       sessionStorage.removeItem("alreadyInMeetingVideo");
     } else if (presenterViewFlag && presenterViewHostFlag) {
       console.log("Check triggered or not");
-      let currentName = localStorage.getItem("name");
+      // The PRESENTER stopping their own screen-share must call
+      // StopPresenterView (ends the presentation for everyone), never
+      // LeavePresenterView. LeavePresenterView is only for viewers/
+      // non-presenters leaving a presentation that is still running for
+      // others — see the identical host-vs-viewer branching already used
+      // for the logout flow in Header2.js / videoCallNormalHeader.js, and
+      // the other stopPresenterViewMainApi call site in this same file.
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-      let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck"),
-      );
-      let participantUID = localStorage.getItem("participantUID");
-      let isGuid = localStorage.getItem("isGuid");
       localStorage.setItem("VidOff", false);
       let data = {
+        MeetingID: currentMeetingID,
         RoomID: String(callAcceptedRoomID),
-        UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-        Name: String(currentName),
+        VideoCallUrl: Number(localStorage.getItem("videoCallURL")),
       };
-      dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
+      sessionStorage.setItem("StopPresenterViewAwait", true);
+      setLeavePresenterViewToJoinOneToOne(false);
+      if (stopApiCalledRef.current) {
+        console.log("⛔ Blocked — StopPresenterView already called elsewhere");
+        return;
+      }
+      dispatch(
+        stopPresenterViewMainApi(
+          navigate,
+          t,
+          data,
+          leavePresenterViewToJoinOneToOne ? 3 : 0,
+          setLeaveMeetingVideoForOneToOneOrGroup,
+          setJoiningOneToOneAfterLeavingPresenterView,
+          setLeavePresenterViewToJoinOneToOne,
+          stopApiCalledRef,
+        ),
+      );
     }
   };
 
   // Add event listener for messages
   useEffect(() => {
     sessionStorage.removeItem("isWaiting");
-    const messageHandler = (event) => {
+    const messageHandler = async (event) => {
       // Check the origin for security
       console.log("handlePostMessage", event.data);
       console.log("handlePostMessage", process.env.REACT_APP_VIDEO_EVENTS);
@@ -1239,7 +1386,23 @@ const VideoPanelNormal = () => {
               handlerForStaringPresenterView();
             } else if (presenterViewFlag && presenterViewHostFlag) {
               console.log("handlePostMessage", presenterViewHostFlag);
-              handlerForStaringPresenterView();
+              // If this presenter is REJOINING their own already-active
+              // presentation (presenterID === userID on JoinPresenterView —
+              // e.g. after closing/refreshing the browser), the presentation
+              // is already started on the backend. Calling StartPresenterView
+              // again here would incorrectly restart/duplicate the existing
+              // session, so skip it for this one resumed share-click only.
+              const isRejoiningOwnPresentation = JSON.parse(
+                localStorage.getItem("isRejoiningOwnPresentation") || "false",
+              );
+              if (isRejoiningOwnPresentation) {
+                console.log(
+                  "handlePostMessage: skipping StartPresenterView — rejoining own active presentation",
+                );
+                localStorage.setItem("isRejoiningOwnPresentation", false);
+              } else {
+                handlerForStaringPresenterView();
+              }
             }
 
             break;
@@ -1340,19 +1503,27 @@ const VideoPanelNormal = () => {
                     return;
                   }
 
-                  stopApiCalledRef.current = true; // 🔒 LOCK
+                  try {
+                    // ... existing code
 
-                  dispatch(
-                    stopPresenterViewMainApi(
-                      navigate,
-                      t,
-                      data,
-                      leavePresenterViewToJoinOneToOne ? 3 : 0,
-                      setLeaveMeetingVideoForOneToOneOrGroup,
-                      setJoiningOneToOneAfterLeavingPresenterView,
-                      setLeavePresenterViewToJoinOneToOne,
-                    ),
-                  );
+                    const result = await dispatch(
+                      stopPresenterViewMainApi(
+                        navigate,
+                        t,
+                        data,
+                        leavePresenterViewToJoinOneToOne ? 3 : 0,
+                        setLeaveMeetingVideoForOneToOneOrGroup,
+                        setJoiningOneToOneAfterLeavingPresenterView,
+                        setLeavePresenterViewToJoinOneToOne,
+                        stopApiCalledRef,
+                      ),
+                    );
+
+                    console.log("Stop presentation completed:", result);
+                  } catch (error) {
+                    console.error("Stop presentation failed:", error);
+                    stopApiCalledRef.current = false; // Reset on error
+                  }
                 }
               }
             }
@@ -1361,7 +1532,14 @@ const VideoPanelNormal = () => {
 
           case "StreamConnected":
             console.log("disableZoomBeforeJoinSession", event.data);
-            RecordingStopScenarioForOneToOne();
+            // RecordingStopScenarioForOneToOne();
+
+            // Show recording notification when stream is connected
+            if (isMeetingVideo && !recordingToastShownRef.current) {
+              recordingToastShownRef.current = true;
+              show(t("The-recording-is-started"), "info");
+              console.log(" Recording notification shown on StreamConnected");
+            }
 
             if (isZoomEnabled) {
               console.log("is Zoom Connected");
@@ -1390,18 +1568,51 @@ const VideoPanelNormal = () => {
 
           case "RecordingStartMsgFromIframe":
             console.log("recording Start");
+            // Show toast only once per recording session
+            if (!recordingToastShownRef.current) {
+              recordingToastShownRef.current = true;
+              show(t("The-recording-is-started"), "info");
+            }
+
+            // Update recording states
+            setStartRecordingState(false);
+            setPauseRecordingState(true);
+            setResumeRecordingState(false);
+            setStopRecordingState(false);
+
             break;
 
           case "RecordingStopMsgFromIframe":
-            console.log("recording Stop");
+            recordingToastShownRef.current = false;
+            // Recording has actually stopped — reflect that in the UI state.
+            // Previously this case never updated these flags, so the badge
+            // stayed frozen at whatever it last was (e.g. still showing
+            // "Recording..." after a host-transferred user's stale state).
+            setStartRecordingState(true);
+            setPauseRecordingState(false);
+            setResumeRecordingState(false);
+            setStopRecordingState(false);
             break;
 
           case "RecordingPauseMsgFromIframe":
             console.log("recording Pause");
+            // Recording is now paused — show the "Recording Paused" /
+            // Resume state. (Same gap as above: this case never updated the
+            // state flags before.)
+            setStartRecordingState(false);
+            setPauseRecordingState(false);
+            setResumeRecordingState(true);
+            setStopRecordingState(false);
             break;
 
           case "RecordingResumeMsgFromIframe":
             console.log("recording Resume");
+            // Recording is active again after a resume — same end state as
+            // a fresh start (Pause/Stop controls visible).
+            setStartRecordingState(false);
+            setPauseRecordingState(true);
+            setResumeRecordingState(false);
+            setStopRecordingState(false);
             break;
 
           case "HostTransferEvent":
@@ -1425,6 +1636,7 @@ const VideoPanelNormal = () => {
     // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("message", messageHandler);
+      recordingToastShownRef.current = false;
     };
   }, []);
 
@@ -1682,6 +1894,12 @@ const VideoPanelNormal = () => {
 
   const onHandleClickForStartRecording = () => {
     console.log("onHandleClickForStartRecording");
+
+    if (!recordingToastShownRef.current) {
+      recordingToastShownRef.current = true;
+      show(t("The-recording-is-started"), "info");
+    }
+
     setStartRecordingState(false);
     setPauseRecordingState(true);
     setResumeRecordingState(false);
@@ -1755,7 +1973,8 @@ const VideoPanelNormal = () => {
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
       console.log("RecordingStopMsgFromIframe");
-
+      // Reset the recording toast flag so it can show again next time
+      recordingToastShownRef.current = false;
       setStartRecordingState(true);
       setPauseRecordingState(false);
       setResumeRecordingState(false);
@@ -1767,7 +1986,6 @@ const VideoPanelNormal = () => {
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
           }
 
           // Slight delay to allow iframe to process the message
@@ -1906,6 +2124,7 @@ const VideoPanelNormal = () => {
                       <Col
                         lg={
                           (isMeetingHost &&
+                            !presenterViewFlag &&
                             meetingHost.isDashboardVideo &&
                             participantWaitinglistBox) ||
                           (presenterViewHostFlag &&
@@ -1916,6 +2135,7 @@ const VideoPanelNormal = () => {
                         }
                         md={
                           (isMeetingHost &&
+                            !presenterViewFlag &&
                             meetingHost.isDashboardVideo &&
                             participantWaitinglistBox) ||
                           (presenterViewHostFlag &&
@@ -1926,11 +2146,9 @@ const VideoPanelNormal = () => {
                         }
                         sm={
                           (isMeetingHost &&
-                            meetingHost.isDashboardVideo &&
-                            participantWaitinglistBox) ||
-                          (presenterViewHostFlag &&
-                            presenterViewFlag &&
-                            participantWaitinglistBox)
+                            !presenterViewFlag &&
+                            meetingHost.isDashboardVideo) ||
+                          presenterViewHostFlag
                             ? 9
                             : 12
                         }
@@ -1962,14 +2180,27 @@ const VideoPanelNormal = () => {
                                 width="100%"
                                 height="100%"
                                 frameBorder="0"
-                                allow="camera;microphone;display-capture"
+                                allow="camera; microphone; fullscreen; display-capture"
+                                // Add these for better cross-browser support
+                                mozallowfullscreen="true"
+                                webkitallowfullscreen="true"
                               />
                             )}
                           </>
                         </div>
                       </Col>
 
-                      {(isMeetingHost || presenterViewHostFlag) &&
+                      {/* During an active presentation, host-panel access is
+                          decided ONLY by whether THIS user is presenting it
+                          (presenterViewHostFlag) — NOT by overall meeting
+                          organizer status (isMeetingHost). Otherwise the
+                          organizer keeps the host panel even while merely
+                          viewing someone else's presentation. Outside an
+                          active presentation, isMeetingHost is used as
+                          before. */}
+                      {(presenterViewFlag
+                        ? presenterViewHostFlag
+                        : isMeetingHost) &&
                       meetingHost.isDashboardVideo &&
                       participantWaitinglistBox ? (
                         <>
@@ -1987,7 +2218,9 @@ const VideoPanelNormal = () => {
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
-                              {(isMeetingHost || presenterViewHostFlag) &&
+                              {(presenterViewFlag
+                                ? presenterViewHostFlag
+                                : isMeetingHost) &&
                                 participantWaitinglistBox && (
                                   <VideoNewParticipantList />
                                 )}
@@ -2097,6 +2330,113 @@ const VideoPanelNormal = () => {
                             </div>
                           )}
                         </>
+                      ) : presenterViewFlag &&
+                        !presenterViewHostFlag &&
+                        presenterViewJoinFlag ? (
+                        // Presentation-view participant list (non-host viewer
+                        // of a presentation). Same design/CSS classes as the
+                        // regular meeting participant list above — only the
+                        // data source differs (presentationParticipantsList
+                        // instead of allParticipant), per
+                        // GetPresentationParticipants' response shape.
+                        <>
+                          {participantsVisible && (
+                            <div className="Participants-Lists">
+                              <>
+                                <Row>
+                                  <Col lg={10} md={10} sm={10}>
+                                    <p className="Participant-name-title">
+                                      {t("Participants")}
+                                    </p>
+                                  </Col>
+                                  <Col lg={2} md={2} sm={2}>
+                                    <img
+                                      draggable={false}
+                                      src={BlackCrossIcon}
+                                      alt=""
+                                      className={"cursor-pointer"}
+                                      width="8px"
+                                      height="8px"
+                                      onClick={closeParticipantsList}
+                                    />
+                                  </Col>
+                                </Row>
+                                {(() => {
+                                  // GetPresentationParticipants_SUCCESS stores
+                                  // the whole responseResult ({participantList,
+                                  // ...}) into this state, but INIT/FAIL/default
+                                  // reset it back to a plain []. Guard both
+                                  // shapes so this never crashes.
+                                  const presentationRoster = Array.isArray(
+                                    presentationParticipantsList?.participantList,
+                                  )
+                                    ? presentationParticipantsList.participantList
+                                    : [];
+                                  return (
+                                    presentationRoster.length > 0 &&
+                                    presentationRoster.map((participant) => (
+                                      <Row
+                                        key={participant.guid}
+                                        className="mb-1"
+                                      >
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={12}
+                                          className="d-flex justify-content-start"
+                                        >
+                                          <p className="participantModal_name">
+                                            {participant.name}
+                                          </p>{" "}
+                                        </Col>
+                                        <Col
+                                          lg={5}
+                                          md={5}
+                                          sm={12}
+                                          className="d-flex justify-content-end gap-2"
+                                        >
+                                          <img
+                                            src={VideoOff}
+                                            width="20px"
+                                            height="20px"
+                                            alt="Video Off"
+                                            style={{
+                                              visibility: participant.hideCamera
+                                                ? "visible"
+                                                : "hidden",
+                                            }}
+                                          />
+                                          <img
+                                            src={MicOff}
+                                            width="20px"
+                                            height="20px"
+                                            alt="Mic Mute"
+                                            style={{
+                                              visibility: participant.mute
+                                                ? "visible"
+                                                : "hidden",
+                                            }}
+                                          />
+                                          <img
+                                            src={Raisehandselected}
+                                            width="20px"
+                                            height="20px"
+                                            alt="raise hand"
+                                            style={{
+                                              visibility: participant.raiseHand
+                                                ? "visible"
+                                                : "hidden",
+                                            }}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    ))
+                                  );
+                                })()}
+                              </>
+                            </div>
+                          )}
+                        </>
                       ) : null}
                     </>
                   </Row>
@@ -2122,6 +2462,8 @@ const VideoPanelNormal = () => {
           </Col>
         </Row>
       )}
+
+      {SnackBar}
     </>
   );
 };
