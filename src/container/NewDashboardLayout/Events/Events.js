@@ -11,7 +11,10 @@ import {
   newTimeFormaterAsPerUTCFullDate,
 } from "../../../commen/functions/date_formater";
 import noTask from "../../../assets/images/DashBoardTask.svg";
-import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions";
+import {
+  dashboardCalendarEvent,
+  meetingAgendaContributorRemoved,
+} from "../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -29,7 +32,9 @@ const Events = () => {
   const UpcomingEventsDataReducerData = useSelector(
     (state) => state.meetingIdReducer.UpcomingEventsData,
   );
-
+  const mqttMeetingAcRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+  );
   const userProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData,
   );
@@ -211,6 +216,23 @@ const Events = () => {
     }
   }, [userProfileData]);
 
+  useEffect(() => {
+    if (mqttMeetingAcRemoved !== null) {
+      try {
+        const { pK_MDID } = mqttMeetingAcRemoved;
+
+        setUpComingEvents((prev) => {
+          return prev.filter(
+            (data) => Number(data.pK_MDID) !== Number(pK_MDID),
+          );
+        });
+        dispatch(meetingAgendaContributorRemoved(null));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [mqttMeetingAcRemoved]);
+
   const meetingDashboardCalendarEvent = (data, val) => {
     // Create a shallow copy of the data object to prevent mutation
 
@@ -243,7 +265,6 @@ const Events = () => {
       talkGroupID: data.talkGroupID,
       IsViewOpenOnly: val === 1 ? true : false,
     };
-
 
     // Dispatch and navigate with no mutation
     dispatch(dashboardCalendarEvent({ ...dashboardData }));
