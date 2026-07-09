@@ -2608,5 +2608,6 @@
   "Poll-published-successfully": "Poll published successfully",
   "End-time-must-be-after-start-time": "End time must be after start time",
   "Date-should-not-be-in-the-past": "Date should not be in the past",
-  "Leave-call": "اترك المكالمة"
+  "Leave-call": "اترك المكالمة",
+  "Task-deleted-successfully": "Task Deleted Successfully"
 }

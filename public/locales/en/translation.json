@@ -2807,5 +2807,6 @@
   "Task-created-successfully": "Task created successfully",
   "Poll-published-successfully": "Poll published successfully",
   "End-time-must-be-after-start-time": "End time must be after start time",
-  "Date-should-not-be-in-the-past": "Date should not be in the past"
+  "Date-should-not-be-in-the-past": "Date should not be in the past",
+  "Task-deleted-successfully": "Task Deleted Successfully"
 }
