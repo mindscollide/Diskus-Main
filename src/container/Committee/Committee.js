@@ -681,7 +681,7 @@ const Committee = () => {
     dispatch(getAllCommitteesByUserIdActions(navigate, t, value));
   };
 
-  const changeHandleStatus = (e, CardID) => {
+  const changeHandleStatus = (e, CardID, closeEditPopover) => {
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
       CommitteeId: JSON.parse(CardID),
@@ -690,6 +690,9 @@ const Committee = () => {
     };
     setStatusUpdateData(Data);
     setChangeStatusModal(true);
+    if (typeof closeEditPopover === "function") {
+      closeEditPopover();
+    }
   };
 
   const handleClickMeetingTab = (data) => {
