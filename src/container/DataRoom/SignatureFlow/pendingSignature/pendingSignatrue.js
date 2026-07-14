@@ -1080,6 +1080,7 @@ const PendingSignatureViewer = () => {
         documentViewer.addEventListener("documentLoaded", async () => {
           await documentViewer.getAnnotationsLoadedPromise();
           UI.setFitMode(UI.FitMode.FitWidth);
+      
 
           if (pdfXfdfRef.current) {
             try {
@@ -1128,6 +1129,7 @@ const PendingSignatureViewer = () => {
             dataElement: "declineButton",
             label: t("Decline"),
             title: t("Decline"),
+            text:  t("Decline"),
             onClick: () => setReasonModal(true),
             style: {
               background: "#fff",
