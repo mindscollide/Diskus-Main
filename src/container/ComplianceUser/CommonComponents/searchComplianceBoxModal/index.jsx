@@ -94,7 +94,6 @@ const SearchComplianceBoxModal = () => {
         setComplianceByMeList([]);
         dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
       } else if (complianceViewMode === "forMe") {
-        
         setEnterpressed(true);
         setCriticalityFilter([1, 2, 3]);
         setCriticalityFilterForMe([1, 2, 3]);
@@ -187,7 +186,7 @@ const SearchComplianceBoxModal = () => {
         pageNumber: 0,
         length: 10,
       };
-      
+
       dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
     } else if (complianceViewMode === "forMe") {
       setComplianceForMeList([]);
@@ -260,7 +259,6 @@ const SearchComplianceBoxModal = () => {
     setsearchbox(false);
   };
   const handleChange = (value) => {
-    
     setSearchCompliancePayload({
       ...searchCompliancePayload,
       tagsCSV: value,
@@ -281,9 +279,7 @@ const SearchComplianceBoxModal = () => {
         <Col lg={12} md={12} sm={12} xs={12}>
           <span ref={searchBoxRef} className="position-relative">
             <TextField
-              placeholder={t(
-                "Compliance-title.click-the-icon-to-view-more-options",
-              )}
+              placeholder={t("Search")}
               name={"complianceTitleOutside"}
               disable={searchbox}
               value={searchCompliancePayload.complianceTitleOutside}

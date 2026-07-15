@@ -1227,8 +1227,9 @@ const ComplainceDetails = () => {
             isFormDisabled ||
             (complianceDetailsState.authority.value !== 0 &&
               complianceDetailsState.criticality.value !== 0 &&
-              complianceDetailsState.dueDate !== "" &&
+              !!complianceDetailsState.dueDate &&
               complianceDetailsState.complianceTitle !== "" &&
+              complianceDetailsState.description !== "" &&
               errors.complianceTitle === "")
               ? false
               : true

@@ -31,8 +31,6 @@ const ComplianceTasks = () => {
       state.ComplainceSettingReducerReducer.GetComplianceTasksDashboardData,
   );
 
-  
-
   const complianceTaskList =
     GetComplianceTasksDashboardData?.taskList?.slice(0, 4) || [];
 
@@ -125,6 +123,7 @@ const ComplianceTasks = () => {
                 authority={item.authorityShortCode}
                 showHoverIcon={true}
                 onIconClick={() => onClickTaskId(item.taskId)}
+                onTitleClick={() => onClickTaskId(item.taskId)}
               />
             ))}
           </div>
@@ -141,6 +140,7 @@ const ComplianceTasks = () => {
         <TaskDetailsViewModal
           viewFlagToDo={openTaskViewModal}
           setViewFlagToDo={setOpenTaskViewModal}
+          isCompliance={true}
         />
       )}
     </>

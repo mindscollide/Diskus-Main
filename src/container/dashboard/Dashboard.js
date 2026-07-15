@@ -2279,7 +2279,12 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_DELETION".toLowerCase()
         ) {
-          if (data.viewable) {
+          // Same suppression as NEW_COMMENT_CREATION — skip the toast when
+          // the Compliance Task view modal is already open for this comment.
+          const isComplianceTaskModalOpenTodo = JSON.parse(
+            sessionStorage.getItem("complianceTaskViewModalOpen"),
+          );
+          if (data.viewable && !isComplianceTaskModalOpenTodo) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2351,7 +2356,15 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_CREATION".toLowerCase()
         ) {
-          if (data.viewable) {
+          // Suppress this toast only when the Compliance Task view modal
+          // (taskViewDetailsModal) is already open — the user is looking at
+          // the comment as it lands live, so a background toast is noise.
+          // Every other comment-notification scenario (regular To-Do task
+          // view) is unaffected since only that modal sets this flag.
+          const isComplianceTaskModalOpen = JSON.parse(
+            sessionStorage.getItem("complianceTaskViewModalOpen"),
+          );
+          if (data.viewable && !isComplianceTaskModalOpen) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2369,7 +2382,12 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_DELETION".toLowerCase()
         ) {
-          if (data.viewable) {
+          // Same suppression as NEW_COMMENT_CREATION — skip the toast when
+          // the Compliance Task view modal is already open for this comment.
+          const isComplianceTaskModalOpenComment = JSON.parse(
+            sessionStorage.getItem("complianceTaskViewModalOpen"),
+          );
+          if (data.viewable && !isComplianceTaskModalOpenComment) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -3411,6 +3429,30 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
 
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+          // Multi-tab same-user fix: if the same user is logged in on more
+          // than one tab and the call is accepted from one of them, every
+          // OTHER tab of that same user must also close its own ringer.
+          // The bookkeeping below (falgCheck2 + userID !== data.senderID)
+          // can't detect this — data.senderID is the accepting USER's ID,
+          // which is identical to this tab's own userID since it's the same
+          // person, so that comparison is always false here and the ringer
+          // was never closed. Instead, close THIS tab's ringer purely based
+          // on whether it is still showing one for the exact room that was
+          // just accepted, regardless of who/which tab accepted it.
+          let ringingRoomIDForThisTab = localStorage.getItem("NewRoomID");
+          if (
+            IncomingVideoCallFlagReducer &&
+            Number(data.payload.recepientID) === Number(userID) &&
+            ringingRoomIDForThisTab &&
+            String(ringingRoomIDForThisTab) === String(data.payload.roomID)
+          ) {
+            dispatch(incomingVideoCallFlag(false));
+            localStorage.removeItem("NewRoomID");
+            localStorage.removeItem("incommingCallTypeID");
+            localStorage.removeItem("incommingCallType");
+            localStorage.removeItem("incommingNewCallerID");
+          }
 
           if (isZoomEnabled) {
             console.log("Does Check Recording Start");
