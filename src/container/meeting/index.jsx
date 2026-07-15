@@ -16,7 +16,7 @@ import DatePicker from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { clearMeetingState } from "@/store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import CreateEditAdvanceMeeting from "./advanceMeeting/createEditAdvanceMeeting";
@@ -66,6 +66,7 @@ import {
 
 const MainMeeting = () => {
   const { t } = useTranslation();
+  const { state, pathname } = useLocation();
 
   let currentView = Number(localStorage.getItem("MeetingCurrentView"));
   let meetingpageRow = Number(localStorage.getItem("MeetingPageRows"));
@@ -122,7 +123,7 @@ const MainMeeting = () => {
     OrganizerName: "",
     DateView: "",
   });
-
+  console.log(state, "statestatestate");
   // ─── Initial Load ─────────────────────────────────────────────────────────
   useEffect(() => {
     const userID = Number(localStorage.getItem("userID"));
@@ -263,6 +264,61 @@ const MainMeeting = () => {
     handleViewMeetingLink();
   }, [localStorage.getItem("viewMeetingLink")]);
 
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const {
+          key,
+          value: { meetingStatusId, isQuickMeeting, meetingID, attendeeId },
+        } = state;
+
+        if (key === "viewMeeting_action") {
+          // If the meeting is Published State
+          if (meetingStatusId === 1) {
+            // If the is Quick Meeting, then open the Quick Meeting View Modal
+            if (isQuickMeeting) {
+              dispatch(
+                getViewMeetingByMeetingIdApi(
+                  navigate,
+                  t,
+                  { MeetingID: meetingID },
+                  "ViewQuickMeetingFromListing",
+                  { setIsQuickMeetingView },
+                ),
+              );
+            }
+            // if the meeting is not Quick Meeting, then open the Advance Meeting View Modal
+
+            const role =
+              attendeeId === 2
+                ? "Participant"
+                : attendeeId === 3
+                  ? "Agenda Contributor"
+                  : "Organizer";
+
+            setEditorRole(
+              buildEditorRole(
+                {
+                  status: meetingStatusId,
+                  isPrimaryOrganizer: false,
+                },
+                role,
+              ),
+            );
+
+            dispatch(setCurrentMeetingInfo({ meetingID: meetingID }));
+            dispatch(toggleViewMeetingModal(true));
+            dispatch(setViewTab("meetingDetails"));
+          }
+        }
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [state]);
+
   // ─── Calendar Dashboard Event Handler ──────────────────────────────────
   useEffect(() => {
     if (!CalendarDashboardEventData) {
@@ -273,7 +329,6 @@ const MainMeeting = () => {
     try {
       const data = CalendarDashboardEventData;
       const statusId = Number(data.status);
-      const roleId = Number(data.participantRoleID);
 
       // Handle ACTIVE meetings (status = 10)
       if (isMeetingActive(statusId)) {

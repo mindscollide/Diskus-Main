@@ -45,7 +45,7 @@ import {
 } from "../../store/actions/Talk_Feature_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
@@ -69,7 +69,7 @@ const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
@@ -146,7 +146,6 @@ const Committee = () => {
 
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   const [show, SnackBar] = useSnackbar();
   const [mapgroupsData, setMapGroupData] = useState(null);
 
@@ -262,6 +261,7 @@ const Committee = () => {
       dispatch(viewCommitteePageFlag(false));
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
+
   useEffect(() => {
     if (committeeViewId !== null) {
       const callApi = async () => {
@@ -289,6 +289,7 @@ const Committee = () => {
       callApi(); // Invoke the API call
     }
   }, [committeeViewId]);
+
   useEffect(() => {
     if (committeeList !== null) {
       const callApi = async () => {
@@ -344,6 +345,44 @@ const Committee = () => {
       }
     } catch {}
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const {
+          key,
+          value: {
+            attendeeId,
+            meetingStatusId,
+            isQuickMeeting,
+            videoCallUrl,
+            isVideo,
+            talkGroupId,
+            isChat,
+            isMinutePublished,
+            meetingTitle,
+            standardMeetingType,
+            commmitteeGroupID,
+            userID,
+            organizationID,
+            meetingID,
+          },
+        } = state;
+        if (key === "committee_viewMeeting_action") {
+          dispatch(
+            viewCommitteeDetails({
+              committeeID: commmitteeGroupID,
+              committeeTitle: "Committee Title",
+            }),
+          );
+          setCurrentViewCommitteeTabs(4);
+          localStorage.setItem("ViewCommitteeID", commmitteeGroupID);
+          setViewCommitteePage(true);
+          dispatch(viewCommitteePageFlag(true));
+        }
+      } catch (error) {}
+    }
+  }, [state]);
 
   // useEffect(() => {
   //   try {

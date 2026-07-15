@@ -1,77 +1,118 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  replace,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Spin } from "antd";
 import { useTranslation } from "react-i18next";
-import { validateEmailActionToken } from "../../store/actions/EmailAction_action";
 import { getHomeRoute } from "../../commen/functions/utils";
-import { EMAIL_ACTION_ROUTES } from "./emailActionRoutes";
+import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
 
 /**
  * Landing page for email action links.
  *
  * URL formats supported:
- *   /Diskus/email_action?token=<uniqueToken>
- *   /Diskus/email_action?<uniqueToken>   (opaque query string)
+ *   /Diskus/Redirect?<actionKey>_action=<encryptedToken>   (e.g. ?viewMeeting_action=...)
+ *   /Diskus/Redirect?token=<encryptedToken>
+ *   /Diskus/Redirect?<encryptedToken>   (opaque query string)
  *
  * Flow:
- *   1. Extract token from URL search params or localStorage (set by
+ *   1. Extract the token from URL search params (or localStorage, set by
  *      private_routes.js when the user was not yet authenticated).
  *   2. Call ServiceManager.ValidateEmailActionToken with the token.
- *   3. On success: store the returned payload in the mapped localStorage key
- *      and navigate to the appropriate page.
+ *   3. On success: look up the returned actionType in EMAIL_ACTION_ROUTES,
+ *      store the payload under the mapped localStorage key, and navigate.
  *   4. On error: show a message and redirect to home after a short delay.
  */
+
 const EmailActionHandler = () => {
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState(null);
-
   useEffect(() => {
-    // Support both ?token=VALUE and opaque ?VALUE query formats
-    const token =
-      searchParams.get("token") ||
-      (window.location.search.length > 1
-        ? window.location.search.slice(1)
-        : null) ||
-      localStorage.getItem("emailActionToken");
+    const validateToken = async () => {
+      const token = location.search || localStorage.getItem("emailActionToken");
 
-    // Always clean up, whether we use it or not
-    localStorage.removeItem("emailActionToken");
+      if (!token) {
+        setErrorMsg(t("Invalid or missing action link."));
+        setTimeout(() => navigate(getHomeRoute()), 2000);
+        return;
+      }
 
-    if (!token) {
-      navigate(getHomeRoute(), { replace: true });
-      return;
-    }
-
-    dispatch(
-      validateEmailActionToken(
-        token,
-        (actionType, payload) => {
-          const config = EMAIL_ACTION_ROUTES[actionType];
-          if (config) {
-            if (payload != null) {
-              localStorage.setItem(config.key, payload);
-            }
-            navigate(config.route, { replace: true });
-          } else {
-            // Unknown action type — go home
-            navigate(getHomeRoute(), { replace: true });
+      const index = token.indexOf("=");
+      const key = token.slice(0, index).replace(/^\?/, "");
+      const value = token.slice(index + 1);
+      // 1 is Quick Meeting, 2 is Board Meeting, 3 is Committee Meeting and 4 is Group Meeting
+      switch (key) {
+        case "viewMeeting_action": {
+          const response = await validateStringEmailApi(
+            value,
+            navigate,
+            t,
+            1,
+            dispatch,
+          );
+          if (response.standardMeetingType === 2) {
+            navigate("/Diskus/Meeting", {
+              state: {
+                key: "viewMeeting_action",
+                value: response,
+              },
+              replace: true,
+            });
+            localStorage.removeItem("emailActionToken");
+            return;
           }
-        },
-        (errMsg) => {
-          setErrorMsg(errMsg || t("Something-went-wrong"));
-          setTimeout(() => navigate(getHomeRoute(), { replace: true }), 2500);
-        },
-      ),
-    );
-  }, []);
+          if (response.standardMeetingType === 3) {
+            navigate("/Diskus/Committee", {
+              state: {
+                key: "committee_viewMeeting_action",
+                value: response,
+              },
+              replace: true,
+            });
+            localStorage.removeItem("emailActionToken");
+            return;
+          }
 
+          if (response.standardMeetingType === 4) {
+            navigate("/Diskus/Groups", {
+              state: {
+                key: "group_viewMeeting_action",
+                value: response,
+              },
+              replace: true,
+            });
+            localStorage.removeItem("emailActionToken");
+            return;
+          }
+          break;
+        }
+
+        case "meetingAction": {
+          // Your logic here
+          break;
+        }
+
+        default: {
+          setErrorMsg(t("Invalid or missing action link."));
+          break;
+        }
+      }
+
+      console.log({ key, value }, "locationlocationlocation");
+    };
+
+    validateToken();
+  }, [dispatch, location.search, navigate, t]);
   if (errorMsg) {
     return (
-      <section className="spinLoaderMain">
+      <section className='spinLoaderMain'>
         <p style={{ color: "#ff4d4f", marginTop: "12px", fontSize: "14px" }}>
           {errorMsg}
         </p>
@@ -80,8 +121,8 @@ const EmailActionHandler = () => {
   }
 
   return (
-    <section className="spinLoaderMain">
-      <Spin size="large" tip={t("Loading")} />
+    <section className='spinLoaderMain'>
+      <Spin size='large' tip={t("Loading")} />
     </section>
   );
 };

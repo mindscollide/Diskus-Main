@@ -10,12 +10,12 @@ const manageCommonLocalStorage = (loginFlowPageRoute, dispatch, dataMap) => {
   localStorage.clear();
   localStorage.setItem(
     "LoginFlowPageRoute",
-    JSON.stringify(loginFlowPageRoute)
+    JSON.stringify(loginFlowPageRoute),
   );
   dispatch(LoginFlowRoutes(loginFlowPageRoute));
 
   Object.entries(dataMap).forEach(([key, value]) =>
-    setLocalStorage(key, value)
+    setLocalStorage(key, value),
   );
 };
 
@@ -25,13 +25,13 @@ export const localStorageManage = (
   setErrorMessage,
   setErrorBar,
   setRememberEmail,
-  setEmail
+  setEmail,
 ) => {
   emailRef.current.focus();
 
   const RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   const RememberPasswordLocal = JSON.parse(
-    localStorage.getItem("remeberPassword")
+    localStorage.getItem("remeberPassword"),
   );
   let LoginFlowPageRoute =
     localStorage.getItem("LoginFlowPageRoute") !== null ||
@@ -67,15 +67,15 @@ export const localStorageManage = (
     viewFolderLink: localStorage.getItem("viewFolderLink"),
     mobilePopUpAppRoute: localStorage.getItem("mobilePopUpAppRoute"),
     reviewSubmittedMinutesLink: localStorage.getItem(
-      "reviewSubmittedMinutesLink"
+      "reviewSubmittedMinutesLink",
     ),
     reviewMinutesLink: localStorage.getItem("reviewMinutesLink"),
     viewMeetingLink: localStorage.getItem("viewMeetingLink"),
     docSignAction: localStorage.getItem("docSignAction"),
     viewPublishMinutesLink: localStorage.getItem("viewPublishMinutesLink"),
     docSignedAction: localStorage.getItem("docSignedAction"),
-    docSignedCrAction: localStorage.getItem("docSignedCrAction")
-
+    docSignedCrAction: localStorage.getItem("docSignedCrAction"),
+    emailActionToken: localStorage.getItem("emailActionToken"),
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

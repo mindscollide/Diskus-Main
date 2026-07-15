@@ -546,26 +546,26 @@ const ViewMeetingModal = () => {
     dispatch(resetCurrentMeetingInfo());
     setEditorRole({ status: null, role: null });
     dispatch(resetViewTabs());
-    dispatch(resetViewGroupDetails());
-    dispatch(resetViewCommitteeDetails());
-    dispatch(
-      listOfMeetingsApi(
-        navigate,
-        t,
-        {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings: currentView && Number(currentView) === 1,
-          ProposedMeetings: currentView && Number(currentView) === 2,
-        },
-        "",
-      ),
-    );
+    // dispatch(resetViewGroupDetails());
+    // dispatch(resetViewCommitteeDetails());
+    // dispatch(
+    //   listOfMeetingsApi(
+    //     navigate,
+    //     t,
+    //     {
+    //       Date: "",
+    //       Title: "",
+    //       HostName: "",
+    //       UserID: Number(userID),
+    //       PageNumber:
+    //         meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+    //       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+    //       PublishedMeetings: currentView && Number(currentView) === 1,
+    //       ProposedMeetings: currentView && Number(currentView) === 2,
+    //     },
+    //     "",
+    //   ),
+    // );
   };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 

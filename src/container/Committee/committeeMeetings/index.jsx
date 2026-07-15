@@ -59,6 +59,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [talkGroupID, setTalkGroupID] = useState(0);
 
+  
+
   useEffect(() => {
     let searchData = {
       CommitteeID: Number(ViewCommitteeID),
