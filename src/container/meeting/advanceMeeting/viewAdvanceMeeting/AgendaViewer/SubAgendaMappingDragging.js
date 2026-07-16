@@ -26,7 +26,7 @@ import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
 import { useEffect } from "react";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
@@ -139,7 +139,7 @@ const SubAgendaMappingDragging = ({
       FileID: Number(record.originalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data,
         t,

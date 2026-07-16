@@ -28,7 +28,7 @@ import SubRequestContributor from "./SubRequestContributor";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useEffect } from "react";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
@@ -138,7 +138,7 @@ const SubAgendaMappingDragging = ({
       FileID: Number(record.originalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data,
         t,

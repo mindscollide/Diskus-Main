@@ -11,7 +11,7 @@ import {
   getSharedFileUsersApi,
   getSharedFolderUsersApi,
   DataRoomDownloadFolderApiFunc,
-  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
   deleteSharedFolderDataroom,
   deleteSharedFileDataroom,
 } from "../../../store/actions/DataRoom_actions";
@@ -284,7 +284,7 @@ const GridViewDataRoom = ({
         let data = {
           FileID: Number(record.id),
         };
-        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+        dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name));
       }
     } else if (data.value === 6) {
       // Delete File and Folder

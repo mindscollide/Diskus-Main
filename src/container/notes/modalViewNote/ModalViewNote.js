@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
 
 const ModalViewNote = ({
   ModalTitle,
@@ -104,7 +104,7 @@ const ModalViewNote = ({
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data2,
         t,

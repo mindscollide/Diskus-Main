@@ -17,7 +17,7 @@ import {
   saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
 } from "../../../../store/actions/Groups_actions";
-import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
@@ -170,7 +170,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data2,
         t,

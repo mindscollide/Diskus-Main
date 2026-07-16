@@ -28,7 +28,7 @@ import {
   convertDateToGMTMinute,
   convertToGMTMinuteTime,
 } from "../../../commen/functions/time_formatter";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions.js";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions.js";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.js";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils.js";
 import { forRecentActivity } from "../../../commen/functions/date_formater.js";
@@ -430,7 +430,7 @@ const ReviewMinutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 

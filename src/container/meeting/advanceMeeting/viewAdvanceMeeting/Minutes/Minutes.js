@@ -59,7 +59,7 @@ import {
   GetStatsForPublishingMinutesByWorkFlowId,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import {
   fileFormatforSignatureFlow,
@@ -494,7 +494,7 @@ const Minutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 

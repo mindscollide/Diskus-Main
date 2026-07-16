@@ -14,7 +14,7 @@ import {
   requestMeetingRecordingTranscriptApi,
   requestMeetingRecordingTranscript_clear,
 } from "../../../../store/actions/NewMeetingActions";
-import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import {
   getFileExtension,
@@ -294,7 +294,7 @@ const MeetingRecording = ({ title }) => {
     let data = {
       FileID: Number(record.fileID),
     };
-    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.fileName));
+    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.fileName));
   };
 
   return (

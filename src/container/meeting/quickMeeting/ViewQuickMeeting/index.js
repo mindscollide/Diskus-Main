@@ -62,7 +62,7 @@ import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonCompo
 import { userLogOutApiFunc } from "@/store/actions/Auth_Sign_Out";
 import { openDocumentViewer } from "@/commen/functions/utils";
 // import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
-import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_actions";
 import { getMeetingStatusfromSocket } from "@/store/actions/GetMeetingUserId";
 import {
   LeaveMeetingApi,
@@ -1241,7 +1241,7 @@ const ModalView = ({ ModalTitle }) => {
       FileID: Number(record.OriginalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         dataRoomData,
         t,

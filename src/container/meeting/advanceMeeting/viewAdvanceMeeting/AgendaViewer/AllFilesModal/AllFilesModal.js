@@ -8,7 +8,7 @@ import styles from "./AllFilesModal.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../../../../commen/functions/utils";
@@ -37,7 +37,7 @@ const AllFilesModal = ({
       FileID: Number(record.originalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data,
         t,

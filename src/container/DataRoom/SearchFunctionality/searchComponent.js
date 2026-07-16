@@ -36,7 +36,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import {
-  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
   DataRoomDownloadFolderApiFunc,
   dataBehaviour,
   deleteSharedFileDataroom,
@@ -421,7 +421,7 @@ const SearchComponent = ({
         let data = {
           FileID: Number(record.id),
         };
-        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+        dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name));
       }
     } else if (data.value === 6) {
       // Delete File and Folder

@@ -42,7 +42,7 @@ import CustomAccordion from "../../components/elements/accordian/CustomAccordion
 import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 const Notes = () => {
   const { t } = useTranslation();
@@ -733,7 +733,7 @@ const Notes = () => {
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data2, t, data.displayFileName)
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data2, t, data.displayFileName)
     );
   };
   const handleClickOpenDoc = (data) => {

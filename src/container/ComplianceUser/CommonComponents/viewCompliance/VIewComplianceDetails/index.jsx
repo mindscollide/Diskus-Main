@@ -161,6 +161,28 @@ const ViewComplianceDetails = () => {
     indicatorSeparator: () => ({
       display: "none",
     }),
+
+    // Applied via the `styles` prop, so — unlike the CSS module rules below
+    // this component that never actually matched (they targeted a
+    // classNamePrefix this Select doesn't use) — these always take effect
+    // regardless of status/classNamePrefix. Without them react-select falls
+    // back to its own default container/value/indicator padding, which is
+    // taller than a plain-text value in the same row, so Bootstrap's Row
+    // stretches to that height and the next row gets pushed down — the
+    // "gap under Status" this fixes.
+    container: (provided) => ({
+      ...provided,
+      margin: 0,
+      marginLeft: "-10px",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "0 8px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      padding: "4px",
+    }),
   };
   const [editComplianceData, setEditComplianceData] = useState(null);
 

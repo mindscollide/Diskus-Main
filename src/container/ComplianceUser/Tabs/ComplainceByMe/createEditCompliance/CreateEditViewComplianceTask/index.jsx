@@ -20,7 +20,6 @@ import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Button, Notification } from "../../../../../../components/elements";
 import DeleteIcon from "../../../../../../assets/images/del.png";
 import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoChecklist/ModalToDoListChecklist";
-import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { ViewToDoList } from "../../../../../../store/actions/ToDoList_action";
@@ -53,7 +52,6 @@ const CreateEditViewComplianceTask = () => {
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
   const [taskView, setTaskView] = useState(false);
 
-  const [notify, SnackBar] = useSnackbar();
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [checkListData, setCheckListData] = useState(0);
 
@@ -100,6 +98,13 @@ const CreateEditViewComplianceTask = () => {
   );
 
   useEffect(() => {
+    // GlobalSnackbar (mounted once at app root) already renders the toast
+    // for this same ComplainceSettingReducerReducer.ResponseMessage — a
+    // second local notify() here caused every task action to display two
+    // identical toasts. This effect now only clears the reducer's message
+    // after the same delay so GlobalSnackbar's own dedupe logic sees
+    // ResponseMessage reset to "" and can fire again for a repeat identical
+    // message (e.g. "Task Created successfully").
     if (
       authorityRespnseMessage !== null &&
       authorityRespnseMessage !== undefined &&
@@ -107,7 +112,6 @@ const CreateEditViewComplianceTask = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        notify(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -382,8 +386,6 @@ const CreateEditViewComplianceTask = () => {
         onConfirm={confirmDeleteTask}
       />
       <ComplianceCloseConfirmationModal />
-
-      {SnackBar}
     </>
   );
 };

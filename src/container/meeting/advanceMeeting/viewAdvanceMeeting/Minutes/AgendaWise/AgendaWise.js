@@ -50,7 +50,7 @@ import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
 } from "../../../../../../commen/functions/time_formatter";
-import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
@@ -434,7 +434,7 @@ const AgendaWise = ({
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 

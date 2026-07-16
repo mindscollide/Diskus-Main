@@ -14,7 +14,7 @@ import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_
 import { viewResolutionModal } from "../../../store/actions/Resolution_actions";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
@@ -46,7 +46,7 @@ const ViewResolution = ({ setViewresolution }) => {
     let data = {
       FileID: Number(fileID),
     };
-    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
+    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
   };
 
   useEffect(() => {

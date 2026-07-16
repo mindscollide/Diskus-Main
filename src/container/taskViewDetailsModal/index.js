@@ -31,7 +31,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
-import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { useMeetingContext } from "../../context/MeetingContext";
 import { getRandomUniqueNumber } from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/drageFunction";
@@ -400,7 +400,7 @@ const TaskViewDetailsModal = ({
     let data = {
       FileID: Number(fileID),
     };
-    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
+    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
   };
 
   const handleLinkClick = (data, ext) => {
