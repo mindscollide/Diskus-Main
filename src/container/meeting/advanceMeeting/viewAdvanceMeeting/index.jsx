@@ -910,7 +910,7 @@ const ViewMeetingModal = () => {
 
                   {checkFeatureIDAvailability(14) && (
                     <Button
-                      text={t("Task")}
+                      text={t("Tasks")}
                       className={
                         actionsPage
                           ? styles["Schedule_meetings_options_active"]

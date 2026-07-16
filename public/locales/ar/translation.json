@@ -2450,7 +2450,7 @@
   "Search-on-resolution-title": "Search on Resolution Title",
   "Search-on-user-name": "Search on User Name",
   "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time": "Unable to join the meeting at this time. Please try after some time",
-  "View-meeting": " الاجتماع عرض ",
+  "View-meeting": " عرض الاجتماع",
   "Please-enter-Contact": "Please enter contact",
   "Minutes-revised-by-organizer": "Minutes Revised by Organizer",
   "The-minute-has-been-sent-for-review-by": "This minute is reviewed by",
@@ -2607,5 +2607,8 @@
   "Task-created-successfully": "Task created successfully",
   "Poll-published-successfully": "Poll published successfully",
   "End-time-must-be-after-start-time": "End time must be after start time",
-  "Date-should-not-be-in-the-past": "Date should not be in the past"
+  "Date-should-not-be-in-the-past": "Date should not be in the past",
+  "Leave-call": "اترك المكالمة",
+  "Task-deleted-successfully": "Task Deleted Successfully",
+  "Task-Created": "Task Created"
 }

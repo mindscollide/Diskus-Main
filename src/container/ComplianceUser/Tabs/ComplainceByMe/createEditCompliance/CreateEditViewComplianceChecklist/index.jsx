@@ -66,8 +66,6 @@ const CreateEditViewComplianceChecklist = () => {
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
-  
-
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
     checklistTitle: "",
@@ -97,19 +95,12 @@ const CreateEditViewComplianceChecklist = () => {
     setNewChecklistIds,
     setTaskCount,
   } = useComplianceContext();
-  
-  
-  
-  
-  
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId,
   );
-
-  
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -122,7 +113,7 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
-    
+
     let error = "";
 
     switch (name) {
@@ -178,7 +169,7 @@ const CreateEditViewComplianceChecklist = () => {
             checkListData.checklistDueDate,
           ),
         };
-        
+
         dispatch(
           AddComplianceChecklistAPI(
             navigate,
@@ -194,7 +185,6 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleDeleteChecklist = (checklistID) => {
-    
     if (checklistID) {
       setDeleteChecklistId(checklistID);
       setDeleteChecklistConfirmationModalState(true);
@@ -202,7 +192,6 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleEditChecklist = (checklistData) => {
-    
     if (checklistData)
       try {
         setAddChecklistCloseState(false);
@@ -340,6 +329,10 @@ const CreateEditViewComplianceChecklist = () => {
     return parsedDate;
   }, [complianceDetailsState?.dueDate]);
 
+  const handleClickNextBtn = () => {
+    setChecklistTabs(3);
+  };
+
   const handleClickPrevBtn = () => {
     setChecklistData({
       checklistTitle: "",
@@ -442,8 +435,6 @@ const CreateEditViewComplianceChecklist = () => {
     complianceDetailsState?.status?.value === 5 ||
     complianceDetailsState?.status?.value === 3;
 
-  
-
   const isReopendCompliance = complianceDetailsState?.status?.value === 6;
 
   const getMinChecklistDueDateFromTasks = () => {
@@ -486,8 +477,6 @@ const CreateEditViewComplianceChecklist = () => {
 
   const isComplianceEditable =
     statusValue !== undefined && editableStatuses.has(statusValue);
-
-  
 
   return (
     <>
@@ -806,11 +795,18 @@ const CreateEditViewComplianceChecklist = () => {
           //     : true
           // }
         />
+
+        <Button
+          text={t("Next")}
+          className={styles["Compliance_NextButton"]}
+          onClick={handleClickNextBtn}
+          disableBtn={getCheckListData?.length > 0 ? false : true}
+        />
       </div>
-      
+
       <ComplianceCloseConfirmationModal />
       <DeleteChecklistConfirmationModal />
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
