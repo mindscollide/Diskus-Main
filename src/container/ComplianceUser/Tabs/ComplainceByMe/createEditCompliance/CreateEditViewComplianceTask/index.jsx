@@ -25,6 +25,7 @@ import ComplianceCloseConfirmationModal from "../../../../CommonComponents/Compl
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { ViewToDoList } from "../../../../../../store/actions/ToDoList_action";
 import TaskViewDetailsModal from "../../../../../taskViewDetailsModal";
+import DeleteChecklistConfirmationModal from "../../../../CommonComponents/DeleteChecklistConfirmationModal";
 
 const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
@@ -45,15 +46,15 @@ const CreateEditViewComplianceTask = () => {
     setCloseConfirmationModal,
     complianceDetailsState,
     newChecklistIds,
+    setDeleteChecklistConfirmationModalState,
   } = useComplianceContext();
 
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
   const [taskView, setTaskView] = useState(false);
-  
 
   const [notify, SnackBar] = useSnackbar();
-
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [checkListData, setCheckListData] = useState(0);
 
   const authorityRespnseMessage = useSelector(
@@ -75,9 +76,6 @@ const CreateEditViewComplianceTask = () => {
     });
   };
 
-  
-  
-
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
       let Data = {
@@ -88,7 +86,7 @@ const CreateEditViewComplianceTask = () => {
       );
     }
   }, [complianceInfo]);
-  
+
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
@@ -100,8 +98,6 @@ const CreateEditViewComplianceTask = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
-
-  
 
   useEffect(() => {
     if (
@@ -143,30 +139,33 @@ const CreateEditViewComplianceTask = () => {
         );
 
         setTaskCount(totalTaskCount);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     } else {
       //  CLEAR UI when API returns null
-      
+
       setComplianceCheckListData([]);
       setTaskCount(0);
       return;
     }
   }, [getAllComplianceChecklistTask]);
 
-  
   const handleDeleteTask = (TaskId) => {
-    
-
+    setSelectedTaskId(TaskId);
+    setDeleteChecklistConfirmationModalState(true);
+  };
+  const confirmDeleteTask = () => {
     let complianceId = complianceInfo?.complianceId;
+
     const Data = {
-      TaskID: TaskId,
+      TaskID: selectedTaskId,
       NewStatusID: 6,
     };
-    dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
-  };
 
+    dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
+
+    setDeleteChecklistConfirmationModalState(false);
+    setSelectedTaskId(null);
+  };
   const handleCloseButton = () => {
     // emptyComplianceState();
     // setChecklistTabs(1);
@@ -192,7 +191,6 @@ const CreateEditViewComplianceTask = () => {
   };
 
   const handleClickTitle = (id) => {
-    
     let Data = { ToDoListID: id };
     dispatch(ViewToDoList(navigate, Data, t, setTaskView));
   };
@@ -214,7 +212,6 @@ const CreateEditViewComplianceTask = () => {
       <div className={styles["checklistAccordian"]}>
         {ComplianceChecklistData && ComplianceChecklistData?.length > 0
           ? ComplianceChecklistData.map((data, index) => {
-              
               const isExpanded = expandedCheckListIds.find(
                 (data2, index) => data2 === data.checklistId,
               );
@@ -238,7 +235,6 @@ const CreateEditViewComplianceTask = () => {
                         <div className={styles["TaskList"]}>
                           {data.taskList.length > 0 &&
                             data.taskList.map((data2, index) => {
-                              
                               return (
                                 <div
                                   className={styles["TaskStyle"]}
@@ -381,9 +377,13 @@ const CreateEditViewComplianceTask = () => {
         />
       )}
 
-      
+      <DeleteChecklistConfirmationModal
+        isTaskDelete={true}
+        onConfirm={confirmDeleteTask}
+      />
       <ComplianceCloseConfirmationModal />
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

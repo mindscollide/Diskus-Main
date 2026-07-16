@@ -102,7 +102,6 @@ const MainCompliance = () => {
     viewTypeDashboard,
     setViewTypeDashboard,
     resetComplianceDashboardFilter,
-    resetComplianceTaskDashboardFilter,
     resetReopenComplianceDashboardFilter,
     complianceStatndingReport,
     endOfComplianceReport,
@@ -161,20 +160,21 @@ const MainCompliance = () => {
   /**
    * Toggle between Manager view (viewType 1) and User view (viewType 2).
    * IMPORTANT: viewType 1/2 is separate from tab index 1/2/3/4.
-   * Resets all three dashboard filter states so tile counts are recalculated.
+   * Resets the ComplianceBy/Reopened dashboard filter states so their tile
+   * counts are recalculated. The Tasks filter (complianceTaskDashboardFilter)
+   * is intentionally excluded — it must keep its selection regardless of the
+   * Switch-to-User-View toggle.
    * localStorage persistence is handled by the viewTypeDashboard effect above.
    */
   const handleSwitchToggle = useCallback(
     (checked) => {
       setViewTypeDashboard(checked ? 2 : 1);
       resetComplianceDashboardFilter();
-      resetComplianceTaskDashboardFilter();
       resetReopenComplianceDashboardFilter();
     },
     [
       setViewTypeDashboard,
       resetComplianceDashboardFilter,
-      resetComplianceTaskDashboardFilter,
       resetReopenComplianceDashboardFilter,
     ],
   );

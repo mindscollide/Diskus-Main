@@ -805,7 +805,7 @@ const CreateEditViewComplianceChecklist = () => {
       </div>
 
       <ComplianceCloseConfirmationModal />
-      <DeleteChecklistConfirmationModal />
+      <DeleteChecklistConfirmationModal isTaskDelete={false} />
       {SnackBar}
     </>
   );
