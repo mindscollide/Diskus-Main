@@ -330,8 +330,11 @@ export const GroupsProvider = ({ children }) => {
 
     const callAddAgendaContributor = async () => {
       try {
-        const getData = await mqttMeetingData(mqttMeetingAcAdded, 2);
-        if (getData) {
+        if (
+          mqttMeetingAcAdded.standardMeetingType === 4 &&
+          mqttMeetingAcAdded.committeeGroupMeetingID === groupInfo?.groupID
+        ) {
+          const getData = await mqttMeetingData(mqttMeetingAcAdded, 2);
           setGroupDraftMeetingData((prev) => [getData, ...prev]);
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
@@ -376,8 +379,12 @@ export const GroupsProvider = ({ children }) => {
 
     const callAddOrganizer = async () => {
       try {
-        const getData = await mqttMeetingData(mqttMeetingOrgAdded, 2);
-        if (getData) {
+        if (
+          mqttMeetingAcAdded.standardMeetingType === 4 &&
+          mqttMeetingAcAdded.committeeGroupMeetingID === groupInfo?.groupID
+        ) {
+          const getData = await mqttMeetingData(mqttMeetingOrgAdded, 2);
+
           setGroupDraftMeetingData((prev) => [getData, ...prev]);
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }

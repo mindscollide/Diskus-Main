@@ -94,7 +94,6 @@ const MainMeeting = () => {
     (state) => state.NewMeetingreducer.CalendarDashboardEventData,
   );
 
-  console.log(CalendarDashboardEventData, "CalendarDashboardEventData");
 
   const calendRef = useRef();
   const navigate = useNavigate();
@@ -123,7 +122,6 @@ const MainMeeting = () => {
     OrganizerName: "",
     DateView: "",
   });
-  console.log(state, "statestatestate");
   // ─── Initial Load ─────────────────────────────────────────────────────────
   useEffect(() => {
     const userID = Number(localStorage.getItem("userID"));
