@@ -1,11 +1,19 @@
 import React, { useEffect } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { getActionValue } from "../commen/functions/utils";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
-
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
+  console.log(
+    Array.from(searchParams.entries()),
+    "searchParamssearchParamssearchParams",
+  );
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
     const callRoutingFunction = async () => {
@@ -365,18 +373,9 @@ const PrivateRoutes = () => {
       }
 
       // Unified email action handler — save token for post-login redirect
-      if (
-        currentUrl.toLowerCase().includes("Diskus/email_action".toLowerCase())
-      ) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const emailToken =
-          urlParams.get("token") ||
-          (window.location.search.length > 1
-            ? window.location.search.slice(1)
-            : null);
-        if (emailToken) {
-          localStorage.setItem("emailActionToken", emailToken);
-        }
+      if (currentUrl.toLowerCase().includes("Diskus/Redirect".toLowerCase())) {
+        let getValue = getActionValue(currentUrl, "Redirected?");
+        localStorage.setItem("emailActionToken", getValue);
       }
     };
     callRoutingFunction();
@@ -400,33 +399,8 @@ const PrivateRoutes = () => {
   ) : (
     <Navigate
       to={
-        (currentUrl !== "" &&
-          (currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
-            ) ||
-            currentUrl
-              .toLowerCase()
-              .includes("Diskus/dataroom".toLowerCase()) ||
-            currentUrl
-              .toLowerCase()
-              .includes(
-                "Diskus/documentViewer?documentViewer_action".toLowerCase(),
-              ) ||
-            currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
-            currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
-            currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||
-            currentUrl
-              .toLowerCase()
-              .includes("Diskus/committee".toLowerCase()) ||
-            currentUrl
-              .toLowerCase()
-              .includes("Diskus/resolution".toLowerCase()) ||
-            currentUrl
-              .toLowerCase()
-              .includes("Diskus/email_action".toLowerCase()))) ||
-        currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase())
+        currentUrl !== "" &&
+        currentUrl.toLowerCase().includes("diskus/redirected".toLowerCase())
           ? "/"
           : currentUser === null && token === ""
             ? "/"

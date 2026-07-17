@@ -377,6 +377,7 @@ const CreateEditViewComplianceTask = () => {
         <TaskViewDetailsModal
           viewFlagToDo={taskView}
           setViewFlagToDo={setTaskView}
+          isCompliance={true}
         />
       )}
 

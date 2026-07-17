@@ -267,7 +267,7 @@ const mapTaskAgendaMainApi = (
               dispatch(
                 mapTaskAgendaSuccess(
                   response.data.responseResult,
-                  t("Task-created-successfully"),
+                  t("Task-Created"),
                 ),
               );
               let Data = {
@@ -507,8 +507,7 @@ const saveMeetingActionsDocuments = (
                 "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase(),
               )
           ) {
-            const successMessage =
-              value === 7 ? "" : t("Update-successful");
+            const successMessage = value === 7 ? "" : t("Update-successful");
 
             dispatch(
               saveTaskDocuments_success(

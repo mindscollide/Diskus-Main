@@ -45,7 +45,7 @@ import {
   activeChatBoxGS,
 } from "../../store/actions/Talk_Feature_actions";
 import { Plus } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { useGroupsContext } from "../../context/GroupsContext";
@@ -67,6 +67,9 @@ import { useMeetingContext } from "../../context/MeetingContext";
 const Groups = () => {
   const { t } = useTranslation();
   const { setEditorRole } = useMeetingContext();
+
+  const { state, pathname } = useLocation();
+
   //Context For Groups
   const {
     ViewGroupPage,
@@ -301,6 +304,44 @@ const Groups = () => {
       } catch (error) {}
     }
   }, [GroupsReducerrealtimeGroupStatus]);
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const {
+          key,
+          value: {
+            attendeeId,
+            meetingStatusId,
+            isQuickMeeting,
+            videoCallUrl,
+            isVideo,
+            talkGroupId,
+            isChat,
+            isMinutePublished,
+            meetingTitle,
+            standardMeetingType,
+            commmitteeGroupID,
+            userID,
+            organizationID,
+            meetingID,
+          },
+        } = state;
+        if (key === "group_viewMeeting_action") {
+          dispatch(
+            viewGroupDetails({
+              groupID: commmitteeGroupID,
+              groupTitle: "Group Title",
+            }),
+          );
+          setCurrentViewGroupTabs(4);
+          localStorage.setItem("ViewGroupID", commmitteeGroupID);
+          setViewGroupPage(true);
+          dispatch(viewGroupPageFlag(true));
+        }
+      } catch (error) {}
+    }
+  }, [state]);
 
   const handleClickMeetingTab = (data) => {
     dispatch(

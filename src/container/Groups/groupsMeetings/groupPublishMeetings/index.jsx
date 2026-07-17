@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Popover } from "antd";
 import { Col, Row } from "react-bootstrap";
 import moment from "moment";
@@ -116,6 +116,7 @@ const GroupPublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { state, pathname } = useLocation();
 
   // ─── Redux selectors ──────────────────────────────────────────────────────
 
@@ -267,6 +268,61 @@ const GroupPublishedMeetingList = () => {
       dispatch(GetAllUsersGroupsRoomsList(navigate, uid, orgId, t)),
     ]);
   };
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const {
+          key,
+          value: { meetingStatusId, isQuickMeeting, meetingID, attendeeId },
+        } = state;
+
+        if (key === "group_viewMeeting_action") {
+          // If the meeting is Published State
+          if (meetingStatusId === 1) {
+            // If the is Quick Meeting, then open the Quick Meeting View Modal
+            if (isQuickMeeting) {
+              dispatch(
+                getViewMeetingByMeetingIdApi(
+                  navigate,
+                  t,
+                  { MeetingID: meetingID },
+                  "ViewQuickMeetingFromListing",
+                  { setIsQuickMeetingView },
+                ),
+              );
+            }
+            // if the meeting is not Quick Meeting, then open the Advance Meeting View Modal
+
+            const role =
+              attendeeId === 2
+                ? "Participant"
+                : attendeeId === 3
+                  ? "Agenda Contributor"
+                  : "Organizer";
+
+            setEditorRole(
+              buildEditorRole(
+                {
+                  status: meetingStatusId,
+                  isPrimaryOrganizer: false,
+                },
+                role,
+              ),
+            );
+
+            dispatch(setCurrentMeetingInfo({ meetingID: meetingID }));
+            dispatch(toggleViewMeetingModal(true));
+            dispatch(setViewTab("meetingDetails"));
+          }
+        }
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [state]);
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
 
@@ -842,7 +898,6 @@ const GroupPublishedMeetingList = () => {
         title: (
           <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Type")}</span>
-          
           </div>
         ),
         dataIndex: "type",

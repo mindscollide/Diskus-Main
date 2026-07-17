@@ -2776,7 +2776,7 @@ const VideoCallNormalHeader = ({
                       />
                       <Button
                         className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        text={t("Cancel")}
                         onClick={closeVideoPanel}
                       />
                     </>
@@ -2798,7 +2798,7 @@ const VideoCallNormalHeader = ({
 
                       <Button
                         className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        text={t("Cancel")}
                         onClick={closeVideoPanel}
                       />
                     </>

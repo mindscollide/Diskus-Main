@@ -38,6 +38,7 @@ const ComplianceCard = ({
   showHoverIcon = false,
   onIconClick,
   showAttachement = false,
+  onTitleClick,
 }) => {
   const criticality = getCriticalityConfig(criticalityId);
   const showProgress = progress !== undefined;
@@ -66,7 +67,13 @@ const ComplianceCard = ({
         <Row className={styles.titleRow}>
           <Col span={24}>
             <div className={styles.titleContainer}>
-              <h3 className={styles.title}>{title}</h3>
+              <h3
+                className={styles.title}
+                onClick={onTitleClick}
+                style={{ cursor: onTitleClick ? "pointer" : styles.title }}
+              >
+                {title}
+              </h3>
               {showHoverIcon && isHovered && (
                 <div className={styles.iconContainer} onClick={handleIconClick}>
                   <img

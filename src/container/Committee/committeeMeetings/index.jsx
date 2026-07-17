@@ -59,6 +59,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [talkGroupID, setTalkGroupID] = useState(0);
 
+  
+
   useEffect(() => {
     let searchData = {
       CommitteeID: Number(ViewCommitteeID),
@@ -227,7 +229,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 ) : null}
 
                 {/* Propose new meeting option - Feature ID 12 */}
-                {checkFeatureIDAvailability(12) ? (
+                {/* {checkFeatureIDAvailability(12) ? (
                   <>
                     <ReactBootstrapDropdown.Item
                       className={styles["dropdown-item"]}
@@ -235,7 +237,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       {t("Propose-new-meeting")}
                     </ReactBootstrapDropdown.Item>
                   </>
-                ) : null}
+                ) : null} */}
               </ReactBootstrapDropdown.Menu>
             </ReactBootstrapDropdown>
             // <Button
