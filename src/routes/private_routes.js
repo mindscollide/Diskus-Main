@@ -17,7 +17,7 @@ const PrivateRoutes = () => {
               "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
             )
         ) {
-          const parts = currentUrl.split("/Meeting/")[1];
+          // const parts = currentUrl.split("/Meeting/")[1];
           // Extract action parameter from URL
           let getValue = getActionValue(
             currentUrl,
@@ -25,7 +25,7 @@ const PrivateRoutes = () => {
           );
 
           localStorage.setItem("RSVP", getValue);
-          localStorage.setItem("mobilePopUpAppRoute", parts);
+          // localStorage.setItem("mobilePopUpAppRoute", parts);
         }
 
         // Action: Data Room
@@ -113,6 +113,16 @@ const PrivateRoutes = () => {
         ) {
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("UserMeetPropoDatPoll", parts);
+        }
+
+        // Action : Committee Advance Meeting
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("DisKus/committee?viewMeeting_action".toLowerCase())
+        ) {
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("committee_viewMeeting_action", parts);
         }
 
         // Action: Poll Expire
@@ -356,9 +366,7 @@ const PrivateRoutes = () => {
 
       // Unified email action handler — save token for post-login redirect
       if (
-        currentUrl
-          .toLowerCase()
-          .includes("Diskus/email_action".toLowerCase())
+        currentUrl.toLowerCase().includes("Diskus/email_action".toLowerCase())
       ) {
         const urlParams = new URLSearchParams(window.location.search);
         const emailToken =
