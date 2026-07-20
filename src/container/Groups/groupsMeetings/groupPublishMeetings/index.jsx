@@ -88,6 +88,7 @@ import {
 import { useGroupsContext } from "../../../../context/GroupsContext";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import { validateStringEmail_success, validateStringMeetingEmail_clear } from "../../../../store/actions/NewMeetingActions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -131,6 +132,9 @@ const GroupPublishedMeetingList = () => {
   );
   const shareViaDataRoomPathConfirmModal = useSelector(
     (s) => s.NewMeetingreducer.shareViaDataRoomPathConfirmation,
+  );
+  const validatencryptedstringState = useSelector(
+    (state) => state.NewMeetingreducer.validatencryptedstring,
   );
 
   // ─── Context ──────────────────────────────────────────────────────────────
@@ -270,59 +274,149 @@ const GroupPublishedMeetingList = () => {
   };
 
   useEffect(() => {
-    if (state !== null) {
-      try {
-        const {
-          key,
-          value: { meetingStatusId, isQuickMeeting, meetingID, attendeeId },
-        } = state;
+    if (!validatencryptedstringState) return;
 
-        if (key === "group_viewMeeting_action") {
-          // If the meeting is Published State
-          if (meetingStatusId === 1) {
-            // If the is Quick Meeting, then open the Quick Meeting View Modal
-            if (isQuickMeeting) {
-              dispatch(
-                getViewMeetingByMeetingIdApi(
-                  navigate,
-                  t,
-                  { MeetingID: meetingID },
-                  "ViewQuickMeetingFromListing",
-                  { setIsQuickMeetingView },
-                ),
-              );
-            }
-            // if the meeting is not Quick Meeting, then open the Advance Meeting View Modal
+    try {
+      const {
+        key,
+        value: {
+          attendeeId,
+          meetingStatusId,
+          isQuickMeeting,
+          videoCallUrl,
+          isVideo,
+          talkGroupId,
+          isChat,
+          isMinutePublished,
+          meetingTitle,
+          standardMeetingType,
+          commmitteeGroupID,
+          userID,
+          organizationID,
+          meetingID,
+        },
+      } = validatencryptedstringState;
 
-            const role =
-              attendeeId === 2
-                ? "Participant"
-                : attendeeId === 3
-                  ? "Agenda Contributor"
-                  : "Organizer";
+      if (
+        key === "groups_viewMeeting_action" ||
+        key === "groups_meetingStr_action"
+      ) {
+        if (meetingStatusId === 10) {
+          const role =
+            Number(attendeeId) === 2
+              ? "Participant"
+              : Number(attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer";
 
-            setEditorRole(
-              buildEditorRole(
+          const meetingId = Number(meetingID);
+
+          if (isQuickMeeting) {
+            dispatch(
+              joinMeetingApi(
+                navigate,
+                t,
                 {
-                  status: meetingStatusId,
-                  isPrimaryOrganizer: false,
+                  VideoCallURL: videoCallUrl,
+                  FK_MDID: Number(meetingId),
+                  DateTime: getCurrentDateTimeUTC(),
                 },
-                role,
+                "JoinQuickMeetingFromListing",
+                {
+                  record: null,
+                  setIsQuickMeetingView,
+                },
               ),
             );
 
-            dispatch(setCurrentMeetingInfo({ meetingID: meetingID }));
-            dispatch(toggleViewMeetingModal(true));
-            dispatch(setViewTab("meetingDetails"));
+            dispatch(validateStringMeetingEmail_clear());
+
+            return;
+          } else {
+            // Set state synchronously BEFORE dispatch — no stale closure issue
+            localStorage.setItem("videoCallURL", videoCallUrl);
+            setVideoTalk({
+              isChat: isChat,
+              isVideoCall: isVideo,
+              talkGroupID: talkGroupId,
+            });
+
+            setEditorRole({
+              status: meetingStatusId,
+              role,
+              isPrimaryOrganizer: false,
+            });
+
+            dispatch(
+              joinMeetingApi(
+                navigate,
+                t,
+                {
+                  VideoCallURL: videoCallUrl,
+                  FK_MDID: Number(meetingId),
+                  DateTime: getCurrentDateTimeUTC(),
+                },
+                "GroupJoinMeetingFromListing",
+                {
+                  role,
+                  isQuickMeeting: isQuickMeeting,
+                  record: { isQuickMeeting, title: meetingTitle },
+                },
+              ),
+            );
           }
+
+          dispatch(validateStringMeetingEmail_clear());
+
+          return;
         }
-        navigate(pathname, {
-          replace: true,
-          state: null,
-        });
-      } catch (error) {}
+        // Quick Meeting
+        if (isQuickMeeting) {
+          dispatch(
+            getViewMeetingByMeetingIdApi(
+              navigate,
+              t,
+              { MeetingID: meetingID },
+              "ViewQuickMeetingFromListing",
+              { setIsQuickMeetingView },
+            ),
+          );
+          dispatch(validateStringMeetingEmail_clear());
+
+          return;
+        } else {
+          // Advanced Meeting
+          const role =
+            Number(attendeeId) === 2
+              ? "Participant"
+              : Number(attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer";
+
+          setEditorRole({
+            status: meetingStatusId,
+            role,
+            isPrimaryOrganizer: false,
+          });
+          dispatch(setViewTab("meetingDetails"));
+
+          dispatch(
+            setCurrentMeetingInfo({
+              meetingID: meetingID,
+              meetingTitle: meetingTitle,
+              // mapFolderId: 0,
+            }),
+          );
+          dispatch(toggleViewMeetingModal(true));
+          dispatch(validateStringMeetingEmail_clear());
+
+          return;
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, [state]);
+  }, [validatencryptedstringState]);
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
 

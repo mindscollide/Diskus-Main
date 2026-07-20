@@ -539,13 +539,18 @@ const ViewMeetingModal = () => {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [dispatch]);
+  }, []);
 
   const handleCloseMeeting = () => {
-    dispatch(toggleViewMeetingModal(false));
-    dispatch(resetCurrentMeetingInfo());
-    setEditorRole({ status: null, role: null });
-    dispatch(resetViewTabs());
+    try {
+      setEditorRole({ status: null, role: null });
+      dispatch(resetViewTabs());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetCurrentMeetingInfo());
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+
     // dispatch(resetViewGroupDetails());
     // dispatch(resetViewCommitteeDetails());
     // dispatch(

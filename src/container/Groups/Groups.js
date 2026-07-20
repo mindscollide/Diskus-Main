@@ -63,12 +63,17 @@ import {
 } from "../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
+import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
 
 const Groups = () => {
   const { t } = useTranslation();
   const { setEditorRole } = useMeetingContext();
 
-  const { state, pathname } = useLocation();
+  const groupsMeetingView = localStorage.getItem("groups_viewMeeting_action");
+
+  const groupsMeetingstr = localStorage.getItem("groups_meetingStr_action");
+
+  const groupsMeetingUpd = localStorage.getItem("groups_meetingUpd_action");
 
   //Context For Groups
   const {
@@ -306,42 +311,56 @@ const Groups = () => {
   }, [GroupsReducerrealtimeGroupStatus]);
 
   useEffect(() => {
-    if (state !== null) {
+    if (
+      groupsMeetingView !== null ||
+      groupsMeetingstr !== null ||
+      groupsMeetingUpd !== null
+    ) {
       try {
-        const {
-          key,
-          value: {
-            attendeeId,
-            meetingStatusId,
-            isQuickMeeting,
-            videoCallUrl,
-            isVideo,
-            talkGroupId,
-            isChat,
-            isMinutePublished,
-            meetingTitle,
-            standardMeetingType,
-            commmitteeGroupID,
-            userID,
-            organizationID,
-            meetingID,
-          },
-        } = state;
-        if (key === "group_viewMeeting_action") {
-          dispatch(
-            viewGroupDetails({
-              groupID: commmitteeGroupID,
-              groupTitle: "Group Title",
-            }),
+        const callFun = async () => {
+          const encryptedvalue =
+            groupsMeetingView || groupsMeetingstr || groupsMeetingUpd;
+          const encryptedKey =
+            groupsMeetingView !== null
+              ? "groups_viewMeeting_action"
+              : groupsMeetingstr !== null
+                ? "groups_meetingStr_action"
+                : groupsMeetingView
+                  ? "groups_meetingUpd_action"
+                  : "";
+          const response = await validateStringEmailApi(
+            encryptedvalue,
+            navigate,
+            t,
+            1,
+            dispatch,
+            encryptedKey,
           );
-          setCurrentViewGroupTabs(4);
-          localStorage.setItem("ViewGroupID", commmitteeGroupID);
-          setViewGroupPage(true);
-          dispatch(viewGroupPageFlag(true));
-        }
-      } catch (error) {}
+
+          const { standardMeetingType, commmitteeGroupID } = response;
+          if (standardMeetingType === 4) {
+            dispatch(
+              viewGroupDetails({
+                groupID: commmitteeGroupID,
+                groupTitle:
+                  "Group Title" /* Group Title will update when new attribute receives  */,
+              }),
+            );
+            setCurrentViewGroupTabs(4);
+            localStorage.setItem("ViewGroupID", commmitteeGroupID);
+            setViewGroupPage(true);
+            dispatch(viewGroupPageFlag(true));
+          }
+
+          localStorage.removeItem("groups_viewMeeting_action");
+          localStorage.removeItem("groups_meetingStr_action");
+        };
+        callFun();
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, [state]);
+  }, [groupsMeetingView, groupsMeetingUpd, groupsMeetingstr]);
 
   const handleClickMeetingTab = (data) => {
     dispatch(

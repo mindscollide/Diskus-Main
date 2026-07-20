@@ -419,14 +419,15 @@ export const CommitteeProvider = ({ children }) => {
   useEffect(() => {
     if (
       committeeProposedMeetingStatusProposedMqttData !== null &&
-      committeeProposedMeetingStatusProposedMqttData !== undefined
+      committeeProposedMeetingStatusProposedMqttData !== undefined &&
+      committeeInfo !== null
     ) {
       try {
         const updateMeetingData = async () => {
           const { meeting, committeeID } =
             committeeProposedMeetingStatusProposedMqttData;
 
-          if (Number(committeeID) === Number(committeeInfo.committeeID)) {
+          if (Number(committeeID) === Number(committeeInfo?.committeeID)) {
           }
 
           const indexToUpdate = committeeProposedMeetingData.findIndex(
@@ -462,7 +463,7 @@ export const CommitteeProvider = ({ children }) => {
         console.log(error);
       }
     }
-  }, [committeeProposedMeetingStatusProposedMqttData]);
+  }, [committeeProposedMeetingStatusProposedMqttData, committeeInfo]);
 
   useEffect(() => {
     if (MeetingStatusSocket == null) return;

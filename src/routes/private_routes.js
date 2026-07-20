@@ -42,8 +42,35 @@ const PrivateRoutes = () => {
             .toLowerCase()
             .includes("Diskus/dataroom?action=".toLowerCase())
         ) {
-          const parts = currentUrl.split("action=/")[1];
           localStorage.setItem("DataRoomEmail", currentUrl);
+        }
+
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("/DisKus/Meeting?viewMeeting_action=".toLowerCase())
+        ) {
+          let getValue = getActionValue(currentUrl, "viewMeeting_action=");
+          localStorage.setItem("viewMeetingLink", getValue);
+        }
+
+        // Action : Committee Advance Meeting
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("DisKus/committee?viewMeeting_action".toLowerCase())
+        ) {
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("committee_viewMeeting_action", parts);
+        }
+
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("DisKus/groups?viewMeeting_action".toLowerCase())
+        ) {
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("groups_viewMeeting_action", parts);
         }
 
         // Action: Meeting Minute Collaboration
@@ -70,6 +97,25 @@ const PrivateRoutes = () => {
           localStorage.setItem("meetingprop", parts);
         }
 
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/committee?Meetingproposed_action=".toLowerCase())
+        ) {
+          // Add action-specific logic here if needed
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("committee_meetingprop_action", parts);
+        }
+
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/groups?Meetingproposed_action=".toLowerCase())
+        ) {
+          // Add action-specific logic here if needed
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("groups_meetingprop_action", parts);
+        }
         // Action: Cancel Meeting
         if (
           currentUrl
@@ -100,6 +146,24 @@ const PrivateRoutes = () => {
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("meetingUpd", parts);
         }
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/Committee?Updatemeeting_action=".toLowerCase())
+        ) {
+          // Add action-specific logic here if needed
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("committee_meetingUpd_action", parts);
+        }
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/Groups?Updatemeeting_action=".toLowerCase())
+        ) {
+          // Add action-specific logic here if needed
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("groups_meetingUpd_action", parts);
+        }
 
         // Action: Start Meeting
         if (
@@ -111,6 +175,25 @@ const PrivateRoutes = () => {
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("meetingStr", parts);
         }
+        // Action: Start Meeting
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/committee?Startmeeting_action=".toLowerCase())
+        ) {
+          // Add action-specific logic here if needed
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("committee_meetingStr_action", parts);
+        }
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/groups?Startmeeting_action=".toLowerCase())
+        ) {
+          // Add action-specific logic here if needed
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("groups_meetingStr_action", parts);
+        }
 
         if (
           currentUrl
@@ -121,16 +204,6 @@ const PrivateRoutes = () => {
         ) {
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("UserMeetPropoDatPoll", parts);
-        }
-
-        // Action : Committee Advance Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("DisKus/committee?viewMeeting_action".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("committee_viewMeeting_action", parts);
         }
 
         // Action: Poll Expire
@@ -307,14 +380,6 @@ const PrivateRoutes = () => {
           let getValue = getActionValue(currentUrl, "viewFol_action=");
           localStorage.setItem("viewFolderLink", getValue);
         }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/DisKus/Meeting?viewMeeting_action=".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "viewMeeting_action=");
-          localStorage.setItem("viewMeetingLink", getValue);
-        }
 
         if (
           currentUrl
@@ -399,8 +464,30 @@ const PrivateRoutes = () => {
   ) : (
     <Navigate
       to={
-        currentUrl !== "" &&
-        currentUrl.toLowerCase().includes("diskus/redirected".toLowerCase())
+        (currentUrl !== "" &&
+          (currentUrl
+            .toLowerCase()
+            .includes(
+              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
+            ) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/dataroom".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes(
+                "Diskus/documentViewer?documentViewer_action".toLowerCase(),
+              ) ||
+            currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
+            currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
+            currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/committee".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/resolution".toLowerCase()))) ||
+        currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase())
           ? "/"
           : currentUser === null && token === ""
             ? "/"

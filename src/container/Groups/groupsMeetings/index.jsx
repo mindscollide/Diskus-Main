@@ -228,7 +228,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
                 ) : null}
 
                 {/* Propose new meeting option - Feature ID 12 */}
-                {/* {checkFeatureIDAvailability(12) ? (
+                {checkFeatureIDAvailability(12) ? (
                   <>
                     <ReactBootstrapDropdown.Item
                       className={styles["dropdown-item"]}
@@ -236,7 +236,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
                       {t("Propose-new-meeting")}
                     </ReactBootstrapDropdown.Item>
                   </>
-                ) : null} */}
+                ) : null}
               </ReactBootstrapDropdown.Menu>
             </ReactBootstrapDropdown>
             // <Button
