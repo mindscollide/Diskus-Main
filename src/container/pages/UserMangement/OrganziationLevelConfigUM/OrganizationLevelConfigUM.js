@@ -1356,7 +1356,7 @@ const OrganizationLevelConfigUM = () => {
                       </Col>
                     </Row>
                   </div>
-                  <hr />
+                  <hr />  
                 </>
               ) : null}
 

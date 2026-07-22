@@ -52,7 +52,12 @@ import {
   stopScreenShareOnPresenterStarting,
   toggleParticipantsVisibility,
   updatedParticipantListForPresenter,
+  videoChatMessagesFlag,
 } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  chatBoxActiveFlag,
+  activeChatBoxGS,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
@@ -537,6 +542,12 @@ const VideoPanelNormal = () => {
           dispatch(minimizeVideoPanelFlag(false));
           dispatch(maximizeVideoPanelFlag(false));
           dispatch(maxParticipantVideoRemoved(true));
+          // Close any open chat panel the moment the "removed by host" MQTT
+          // is received, instead of waiting for the participant to click
+          // "Close" on the removed modal.
+          dispatch(videoChatMessagesFlag(false));
+          dispatch(chatBoxActiveFlag(false));
+          dispatch(activeChatBoxGS(false));
           // Participant room Id and usrrGuid
           let participantRoomIds = localStorage.getItem("participantRoomId");
           let participantUID = localStorage.getItem("participantUID");

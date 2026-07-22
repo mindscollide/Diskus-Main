@@ -57,6 +57,7 @@ import {
   participantWaitingListBox,
   toggleParticipantsVisibility,
   disableZoomBeforeJoinSession,
+  videoChatMessagesFlag,
 } from "@/store/actions/VideoFeature_actions";
 import emptyContributorState from "@/assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -1037,6 +1038,16 @@ const onClickVideoIconOpenVideo = () => {
       setResumeRecordingState(false);
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
+      // Close any chat panel left open from the presentation. This is the
+      // PRESENTER's own local "stop presenting" action — separate from
+      // Dashboard.js's stopPresenterView, which only runs for the MQTT
+      // broadcast that OTHER viewers receive. Without this, the presenter's
+      // own chat panel (opened via the video-chat toggle or
+      // openMeetingGroupChat's ChatBoxActiveFlag/ActiveChatBoxGS) never got
+      // reset when they stopped presenting and/or left the meeting video.
+      dispatch(videoChatMessagesFlag(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(activeChatBoxGS(false));
       // if (presenterMeetingId === currentMeeting) {
       console.log("Check Stop");
       if (value === 1) {
