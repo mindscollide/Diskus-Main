@@ -272,7 +272,7 @@ const SceduleProposedmeeting = () => {
             );
 
             // Never show tick for None of the above
-            if (!isNoneOfAbove && proposedDate?.isSelected) {
+            if (proposedDate?.isSelected) {
               return (
                 <img
                   src={BlueTick}

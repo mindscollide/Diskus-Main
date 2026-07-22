@@ -45,7 +45,7 @@ import {
 } from "../../store/actions/Talk_Feature_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
@@ -64,6 +64,7 @@ import {
   toggleViewMeetingModal,
 } from "../../store/actions/ModalStates_actions";
 import { useMeetingContext } from "../../context/MeetingContext";
+import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -146,7 +147,6 @@ const Committee = () => {
 
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   const [show, SnackBar] = useSnackbar();
   const [mapgroupsData, setMapGroupData] = useState(null);
 
@@ -154,6 +154,16 @@ const Committee = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const committeeList = localStorage.getItem("committeeList");
   const committeeViewId = localStorage.getItem("committeeView_Id");
+  const committeeMeetingView = localStorage.getItem(
+    "committee_viewMeeting_action",
+  );
+  const committee_meetingStr = localStorage.getItem(
+    "committee_meetingStr_action",
+  );
+  const committee_meetingupd = localStorage.getItem(
+    "committee_meetingUpd_action",
+  );
+  const committee_meetingprop = localStorage.getItem("committee_meetingprop_action")
   useEffect(() => {
     try {
       // Handle the current page logic
@@ -187,59 +197,6 @@ const Committee = () => {
       }
 
       // Validate and process committee view by ID if present in localStorage
-
-      if (committeeViewId !== null) {
-        const callApi = async () => {
-          // Validate the encrypted committee view ID
-          const getResponse = await dispatch(
-            validateEncryptedStringViewCommitteeDetailLinkApi(
-              committeeViewId,
-              navigate,
-              t,
-            ),
-          );
-
-          if (
-            getResponse.isExecuted === true &&
-            getResponse.responseCode === 1
-          ) {
-            // Set necessary states and flags for viewing committee details
-            setCurrentViewCommitteeTabs(1); // Switch to the committee details tab
-            localStorage.setItem(
-              "ViewCommitteeID",
-              getResponse.response.committeeID,
-            ); // Save the committee ID in localStorage
-            setViewCommitteePage(true); // Navigate to group page
-            dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
-          }
-          localStorage.removeItem("committeeView_Id"); // Cleanup the localStorage key
-        };
-        callApi(); // Invoke the API call
-      }
-
-      if (committeeList !== null) {
-        const callApi = async () => {
-          // Validate the encrypted committee view ID
-          const getResponse = await dispatch(
-            validateEncryptedStringViewCommitteeListLinkApi(
-              committeeList,
-              navigate,
-              t,
-            ),
-          );
-          if (
-            getResponse.isExecuted === true &&
-            getResponse.responseCode === 1
-          ) {
-            localStorage.removeItem("CoArcurrentPage");
-            localStorage.setItem("CocurrentPage", 1);
-            dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
-          }
-
-          localStorage.removeItem("committeeList"); // Cleanup the localStorage key
-        };
-        callApi(); // Invoke the API call
-      }
     } catch (error) {
       // Log any errors for debugging
     }
@@ -248,13 +205,12 @@ const Committee = () => {
     return () => {
       localStorage.removeItem("committeeView_Id");
       localStorage.removeItem("committeeList");
-      dispatch(resetViewCommitteeDetails());
       localStorage.removeItem("ViewCommitteeID");
       localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
       setEditorRole({ status: null, role: null });
+      dispatch(resetViewCommitteeDetails());
       dispatch(toggleCreateEditMeetingModal(false));
       dispatch(resetCreateEditTabs());
-      dispatch(resetCurrentMeetingInfo());
       dispatch(resetCurrentMeetingInfo());
       dispatch(toggleViewMeetingModal(false));
       dispatch(resetViewTabs());
@@ -262,6 +218,7 @@ const Committee = () => {
       dispatch(viewCommitteePageFlag(false));
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
+
   useEffect(() => {
     if (committeeViewId !== null) {
       const callApi = async () => {
@@ -289,6 +246,7 @@ const Committee = () => {
       callApi(); // Invoke the API call
     }
   }, [committeeViewId]);
+
   useEffect(() => {
     if (committeeList !== null) {
       const callApi = async () => {
@@ -344,6 +302,72 @@ const Committee = () => {
       }
     } catch {}
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
+
+  useEffect(() => {
+    if (
+      committeeMeetingView !== null ||
+      committee_meetingStr !== null ||
+      committee_meetingupd !== null
+    ) {
+      try {
+        const callFun = async () => {
+          const encryptedvalue =
+            committeeMeetingView ||
+            committee_meetingStr ||
+            committee_meetingupd;
+          const encryptedKey =
+            committeeMeetingView !== null
+              ? "committee_viewMeeting_action"
+              : committee_meetingStr !== null
+                ? "committee_meetingStr_action"
+                : committee_meetingupd
+                  ? "committee_meetingUpd_action"
+                  : "";
+          const response = await validateStringEmailApi(
+            encryptedvalue,
+            navigate,
+            t,
+            1,
+            dispatch,
+            encryptedKey,
+          );
+
+          const { standardMeetingType, commmitteeGroupID } = response;
+          if (standardMeetingType === 3) {
+            dispatch(
+              viewCommitteeDetails({
+                committeeID: commmitteeGroupID,
+                committeeTitle: "Committee Title",
+              }),
+            );
+            setCurrentViewCommitteeTabs(4);
+            localStorage.setItem("ViewCommitteeID", commmitteeGroupID);
+            setViewCommitteePage(true);
+            dispatch(viewCommitteePageFlag(true));
+          }
+
+          localStorage.removeItem("committee_viewMeeting_action");
+          localStorage.removeItem("committee_meetingStr_action");
+          localStorage.removeItem("committee_meetingUpd_action");
+        };
+        callFun();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [committeeMeetingView, committee_meetingStr, committee_meetingupd]);
+
+  useEffect(() => {
+    if(committee_meetingprop !== null) {
+      try {
+        
+      } catch (error) {
+        
+      }
+    }
+  }, [
+    committee_meetingprop
+  ])
 
   // useEffect(() => {
   //   try {

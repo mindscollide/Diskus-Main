@@ -63,7 +63,7 @@ const GroupProposedMeetings = () => {
     currentLengthProposedGroupMeeting,
     setCurrentLengthProposedGroupMeeting,
   } = useGroupsContext();
-  let MeetingProp = localStorage.getItem("meetingprop");
+  let MeetingProp = localStorage.getItem("groups_meetingprop_action");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
   const {
@@ -134,7 +134,7 @@ const GroupProposedMeetings = () => {
   };
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState("descend");
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {

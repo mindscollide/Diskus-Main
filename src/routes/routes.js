@@ -525,7 +525,7 @@ export const router = createBrowserRouter(
             }
           />
           <Route
-            path='email_action'
+            path='Redirected'
             element={
               <ErrorBoundary
                 FallbackComponent={ErrorFallback}

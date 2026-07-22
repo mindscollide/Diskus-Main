@@ -8364,3 +8364,7 @@ td.ant-table-column-sort {
   width: 180px !important;
   padding: 12px 0 !important;
 }
+
+.userlogin_history_tableP .ant-table.ant-table-sticky-holder{
+  z-index: 2 !important;
+}

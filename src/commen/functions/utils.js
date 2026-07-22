@@ -3004,7 +3004,8 @@ export const handleNavigation = (
     //   navigate("/Admin/ManageUsers");
     // } else if (userRights) {
     if (emailActionToken !== null) {
-      navigate("/Diskus/email_action");
+      navigate("/Diskus/Redirected");
+      return
     } else if (RSVP !== null) {
       navigate("/Diskus/Meeting/Useravailabilityformeeting");
     } else if (

@@ -396,6 +396,7 @@ const DocumentViewer = () => {
       "viewControlsOverlay",
       "contextMenuPopup",
       "header",
+      "default-top-header"
     ];
     instance.UI.disableElements(disabledElements);
   }; // Set Permissions

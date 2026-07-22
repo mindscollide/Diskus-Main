@@ -67,7 +67,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
           const declineCommentNewData = declinedSignatories.reduce(
             (acc, data) => {
               const comment = declinedComments.find(
-                (comment) => comment.userId === data.userID
+                (comment) => comment.userID === data.userID
               );
               if (comment) acc.push({ ...data, ...comment });
               return acc;
@@ -77,7 +77,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
           setComments(declineCommentNewData);
         }
       } catch (error) {
-        
+        console.error("Error processing signatories data:", error);
       }
     }
   }, [SignatureWorkFlowReducer.getAllSignatoriesStatusWise]);
@@ -188,7 +188,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
             <h2 className={styles["Signatories_heading"]}>
               {t("Signatories")}{" "}
               {`(${
-                TotalCountOfSignatories < 9
+                TotalCountOfSignatories < 10
                   ? `0${TotalCountOfSignatories}`
                   : TotalCountOfSignatories
               })`}

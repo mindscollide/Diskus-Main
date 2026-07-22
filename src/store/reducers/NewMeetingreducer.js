@@ -676,8 +676,6 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
       }
 
-   
-
       case actions.CANCEL_AGENDA_CONTRIBUTOR: {
         return {
           ...state,
@@ -1118,8 +1116,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       }
 
       case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
-
-
         return {
           ...state,
           Loading: action.loader,
@@ -2213,8 +2209,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       }
 
       case actions.MQTT_MEETING_STATUS_PUBLISHED: {
-        
-
         return {
           ...state,
           meetingStatusPublishedMqttData: action.response,
@@ -2266,7 +2260,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       //Validate Empty String User Availibility For Meeting
 
       case actions.VALIDATE_EMPTY_STRING_INIT: {
-        // 
+        //
         return {
           ...state,
           Loading: true,
@@ -2576,6 +2570,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
       }
 
+      case actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_CLEAR: {
+        return {
+          ...state,
+          validatencryptedstring: null,
+        };
+      }
+
       case actions.BOARD_DECK_MODAL: {
         return {
           ...state,
@@ -2603,8 +2604,6 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
       }
       case actions.GETDASHBOARDMEETINGDATA_SUCCESS: {
-
-
         return {
           ...state,
           Loading: false,
@@ -2931,9 +2930,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
         };
     }
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 export default NewMeetingreducer;

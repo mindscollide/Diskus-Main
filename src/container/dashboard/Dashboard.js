@@ -299,6 +299,8 @@ const Dashboard = () => {
     setInCallParticipantsList,
     videoTalk,
     setVideoChatUnreadCount,
+      unSaveChangesModalForMeeting,
+    setUnSaveChangesModalForMeeting,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -8501,7 +8503,7 @@ const Dashboard = () => {
               }
             />
           )}
-          {cancelConfirmationModal && <CancelConfirmationModal />}
+          {unSaveChangesModalForMeeting && <CancelConfirmationModal />}
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />

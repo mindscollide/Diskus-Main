@@ -34,6 +34,7 @@
 }
 .report_search_Box {
   position: relative;
+  z-index: 3 !important;
 }
 
 .userLoginHistory_Box {
@@ -42,9 +43,11 @@
   background-color: #fff;
   border: 1px solid #e1e1e1 !important;
   position: absolute;
-  z-index: 1;
+  z-index: 3 !important;
+
   border-radius: 4px;
   padding: 10px;
+  
 }
 .searchbox_icon_userhistoryLogin {
   position: absolute !important;

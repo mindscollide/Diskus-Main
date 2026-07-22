@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Popover } from "antd";
 import { Col, Row } from "react-bootstrap";
 import moment from "moment";
@@ -89,6 +89,15 @@ import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import {
+  buildEditorRole,
+  buildVideoTalk,
+  setMeetingLocalStorage,
+} from "../../../meeting/commonComponents/helpers";
+import {
+  validateStringEmail_success,
+  validateStringMeetingEmail_clear,
+} from "../../../../store/actions/NewMeetingActions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -117,6 +126,11 @@ const CommitteePublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { state, pathname } = useLocation();
+
+  const committeeMeetingView = localStorage.getItem(
+    "committee_viewMeeting_action",
+  );
 
   // ─── Redux selectors ──────────────────────────────────────────────────────
 
@@ -131,6 +145,10 @@ const CommitteePublishedMeetingList = () => {
   );
   const shareViaDataRoomPathConfirmModal = useSelector(
     (s) => s.NewMeetingreducer.shareViaDataRoomPathConfirmation,
+  );
+
+  const validatencryptedstringState = useSelector(
+    (state) => state.NewMeetingreducer.validatencryptedstring,
   );
 
   // ─── Context ──────────────────────────────────────────────────────────────
@@ -211,29 +229,151 @@ const CommitteePublishedMeetingList = () => {
     [t],
   );
 
-  // ─── Helpers ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!validatencryptedstringState) return;
 
-  const buildEditorRole = (record) => ({
-    status: record.status,
-    role: record.isParticipant
-      ? "Participant"
-      : record.isAgendaContributor
-        ? "Agenda Contributor"
-        : "Organizer",
-    isPrimaryOrganizer: record.isPrimaryOrganizer,
-  });
+    try {
+      const {
+        key,
+        value: {
+          attendeeId,
+          meetingStatusId,
+          isQuickMeeting,
+          videoCallUrl,
+          isVideo,
+          talkGroupId,
+          isChat,
+          isMinutePublished,
+          meetingTitle,
+          standardMeetingType,
+          commmitteeGroupID,
+          userID,
+          organizationID,
+          meetingID,
+        },
+      } = validatencryptedstringState;
 
-  const buildVideoTalk = (record) => ({
-    isChat: record.isChat,
-    isVideoCall: record.isVideoCall,
-    talkGroupID: record.talkGroupID,
-  });
+      if (
+        key === "committee_viewMeeting_action" ||
+        key === "committee_meetingStr_action" ||
+        key === "committee_meetingUpd_action"
+      ) {
+        if (meetingStatusId === 10) {
+          const role =
+            Number(attendeeId) === 2
+              ? "Participant"
+              : Number(attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer";
 
-  const setMeetingLocalStorage = (record) => {
-    localStorage.setItem("videoCallURL", record.videoCallURL);
-    localStorage.setItem("isMinutePublished", record.isMinutePublished);
-    localStorage.setItem("meetingTitle", record.title);
-  };
+          const meetingId = Number(meetingID);
+
+          if (isQuickMeeting) {
+            dispatch(
+              joinMeetingApi(
+                navigate,
+                t,
+                {
+                  VideoCallURL: videoCallUrl,
+                  FK_MDID: Number(meetingId),
+                  DateTime: getCurrentDateTimeUTC(),
+                },
+                "JoinQuickMeetingFromListing",
+                {
+                  record: null,
+                  setIsQuickMeetingView,
+                },
+              ),
+            );
+
+            dispatch(validateStringMeetingEmail_clear());
+
+            return;
+          } else {
+            // Set state synchronously BEFORE dispatch — no stale closure issue
+            localStorage.setItem("videoCallURL", videoCallUrl);
+            setVideoTalk({
+              isChat: isChat,
+              isVideoCall: isVideo,
+              talkGroupID: talkGroupId,
+            });
+
+            setEditorRole({
+              status: meetingStatusId,
+              role,
+              isPrimaryOrganizer: false,
+            });
+
+            dispatch(
+              joinMeetingApi(
+                navigate,
+                t,
+                {
+                  VideoCallURL: videoCallUrl,
+                  FK_MDID: Number(meetingId),
+                  DateTime: getCurrentDateTimeUTC(),
+                },
+                "CommitteeJoinMeetingFromListing",
+                {
+                  role,
+                  isQuickMeeting: isQuickMeeting,
+                  record: { isQuickMeeting, title: meetingTitle },
+                },
+              ),
+            );
+          }
+
+          dispatch(validateStringMeetingEmail_clear());
+
+          return;
+        }
+        // Quick Meeting
+        if (isQuickMeeting) {
+          dispatch(
+            getViewMeetingByMeetingIdApi(
+              navigate,
+              t,
+              { MeetingID: meetingID },
+              "ViewQuickMeetingFromListing",
+              { setIsQuickMeetingView },
+            ),
+          );
+          dispatch(validateStringMeetingEmail_clear());
+
+          return;
+        } else {
+          // Advanced Meeting
+          const role =
+            Number(attendeeId) === 2
+              ? "Participant"
+              : Number(attendeeId) === 4
+                ? "Agenda Contributor"
+                : "Organizer";
+
+          setEditorRole({
+            status: meetingStatusId,
+            role,
+            isPrimaryOrganizer: false,
+          });
+          dispatch(setViewTab("meetingDetails"));
+
+          dispatch(
+            setCurrentMeetingInfo({
+              meetingID: meetingID,
+              meetingTitle: meetingTitle,
+              // mapFolderId: 0,
+            }),
+          );
+          dispatch(toggleViewMeetingModal(true));
+          dispatch(validateStringMeetingEmail_clear());
+
+          return;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [validatencryptedstringState]);
 
   // ─── Group Chat ───────────────────────────────────────────────────────────
 

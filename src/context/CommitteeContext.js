@@ -331,8 +331,17 @@ export const CommitteeProvider = ({ children }) => {
         if (mqttMeetingAcAdded !== null && mqttMeetingAcAdded !== undefined) {
           let newObj = mqttMeetingAcAdded;
           try {
-            let getData = await mqttMeetingData(newObj, 2);
-            setCommitteeDraftMeetingData((prevData) => [getData, ...prevData]);
+            if (
+              newObj.standardMeetingType === 3 &&
+              newObj.committeeGroupMeetingID === committeeInfo?.committeeID
+            ) {
+              let getData = await mqttMeetingData(newObj, 2);
+              setCommitteeDraftMeetingData((prevData) => [
+                getData,
+                ...prevData,
+              ]);
+              setCommitteeDraftMeetingDataRecord((prev) => prev + 1);
+            }
           } catch (error) {}
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -368,8 +377,17 @@ export const CommitteeProvider = ({ children }) => {
         if (mqttMeetingOrgAdded !== null && mqttMeetingOrgAdded !== undefined) {
           let newObj = mqttMeetingOrgAdded;
           try {
-            let getData = await mqttMeetingData(newObj, 2);
-            setCommitteeDraftMeetingData((prevData) => [getData, ...prevData]);
+            if (
+              newObj.standardMeetingType === 3 &&
+              newObj.committeeGroupMeetingID === committeeInfo?.committeeID
+            ) {
+              let getData = await mqttMeetingData(newObj, 2);
+              setCommitteeDraftMeetingData((prevData) => [
+                getData,
+                ...prevData,
+              ]);
+              setCommitteeDraftMeetingDataRecord((prev) => prev + 1);
+            }
           } catch (error) {}
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
@@ -401,14 +419,15 @@ export const CommitteeProvider = ({ children }) => {
   useEffect(() => {
     if (
       committeeProposedMeetingStatusProposedMqttData !== null &&
-      committeeProposedMeetingStatusProposedMqttData !== undefined
+      committeeProposedMeetingStatusProposedMqttData !== undefined &&
+      committeeInfo !== null
     ) {
       try {
         const updateMeetingData = async () => {
           const { meeting, committeeID } =
             committeeProposedMeetingStatusProposedMqttData;
 
-          if (Number(committeeID) === Number(committeeInfo.committeeID)) {
+          if (Number(committeeID) === Number(committeeInfo?.committeeID)) {
           }
 
           const indexToUpdate = committeeProposedMeetingData.findIndex(
@@ -444,7 +463,7 @@ export const CommitteeProvider = ({ children }) => {
         console.log(error);
       }
     }
-  }, [committeeProposedMeetingStatusProposedMqttData]);
+  }, [committeeProposedMeetingStatusProposedMqttData, committeeInfo]);
 
   useEffect(() => {
     if (MeetingStatusSocket == null) return;
@@ -594,7 +613,7 @@ export const CommitteeProvider = ({ children }) => {
         setCurrentPageProposedCommitteeMeeting,
         currentLengthProposedCommitteeMeeting,
         setCurrentLengthProposedCommitteeMeeting,
-        
+
         currentPageDraftCommitteeMeeting,
         setCurrentPageDraftCommitteeMeeting,
         currentLengthDraftCommitteeMeeting,

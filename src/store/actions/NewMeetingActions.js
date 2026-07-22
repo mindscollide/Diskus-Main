@@ -4992,7 +4992,7 @@ const SaveAgendaWiseDocumentsApiFunc = (
             await dispatch(
               showSavedAgendaWiseDocumentSuccess(
                 response.data.responseResult,
-                t("List-updated-successfully"),
+                "",
               ),
             );
             const meetingId =
@@ -7866,7 +7866,7 @@ const validateStringEmail_init = () => {
     type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_INIT,
   };
 };
-const validateStringEmail_success = (response, message) => {
+export const validateStringEmail_success = (response, message) => {
   return {
     type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_SUCCESS,
     response: response,
@@ -7881,12 +7881,19 @@ const validateStringEmail_fail = (message) => {
   };
 };
 
+export const validateStringMeetingEmail_clear = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTEDSTRING_EMAIL_RELATED_CLEAR,
+  };
+};
+
 const validateStringEmailApi = (
   emailString,
   navigate,
   t,
   RouteNo,
   dispatch,
+  encryptedKey = "",
 ) => {
   return new Promise((resolve, reject) => {
     let Data = {
@@ -7913,6 +7920,7 @@ const validateStringEmailApi = (
                 t,
                 RouteNo,
                 dispatch,
+                encryptedKey,
               ),
             ),
           );
@@ -7927,11 +7935,16 @@ const validateStringEmailApi = (
             ) {
               await dispatch(
                 validateStringEmail_success(
-                  response.data.responseResult?.data,
+                  {
+                    key: encryptedKey,
+                    value: response.data.responseResult?.data,
+                  },
                   t("Successfully"),
                 ),
               );
-              dispatch(emailRouteID(RouteNo));
+              if (encryptedKey === "") {
+                dispatch(emailRouteID(RouteNo));
+              }
               resolve(response.data.responseResult.data);
             } else if (
               response.data.responseResult.responseMessage

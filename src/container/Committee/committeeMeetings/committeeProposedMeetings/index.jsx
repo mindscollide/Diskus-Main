@@ -142,7 +142,7 @@ const CommitteeProposedMeetings = () => {
   };
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState("descend");
   const [duplicatedRows, setDuplicatedRows] = useState([]);
 
   // Meeting Type Filter State

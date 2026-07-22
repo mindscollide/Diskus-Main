@@ -539,33 +539,38 @@ const ViewMeetingModal = () => {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [dispatch]);
+  }, []);
 
   const handleCloseMeeting = () => {
-    dispatch(toggleViewMeetingModal(false));
-    dispatch(resetCurrentMeetingInfo());
-    setEditorRole({ status: null, role: null });
-    dispatch(resetViewTabs());
-    dispatch(resetViewGroupDetails());
-    dispatch(resetViewCommitteeDetails());
-    dispatch(
-      listOfMeetingsApi(
-        navigate,
-        t,
-        {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings: currentView && Number(currentView) === 1,
-          ProposedMeetings: currentView && Number(currentView) === 2,
-        },
-        "",
-      ),
-    );
+    try {
+      setEditorRole({ status: null, role: null });
+      dispatch(resetViewTabs());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetCurrentMeetingInfo());
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+
+    // dispatch(resetViewGroupDetails());
+    // dispatch(resetViewCommitteeDetails());
+    // dispatch(
+    //   listOfMeetingsApi(
+    //     navigate,
+    //     t,
+    //     {
+    //       Date: "",
+    //       Title: "",
+    //       HostName: "",
+    //       UserID: Number(userID),
+    //       PageNumber:
+    //         meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+    //       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+    //       PublishedMeetings: currentView && Number(currentView) === 1,
+    //       ProposedMeetings: currentView && Number(currentView) === 2,
+    //     },
+    //     "",
+    //   ),
+    // );
   };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 
