@@ -255,7 +255,7 @@ const CommitteePublishedMeetingList = () => {
 
       if (
         key === "committee_viewMeeting_action" ||
-        key === "committee_meetingStr_action" || 
+        key === "committee_meetingStr_action" ||
         key === "committee_meetingUpd_action"
       ) {
         if (meetingStatusId === 10) {

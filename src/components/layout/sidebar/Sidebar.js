@@ -544,10 +544,8 @@ const Sidebar = () => {
       ) {
         localStorage.setItem("navigateLocation", navigateLocationKey);
         setUnSaveChangesModalForMeeting(true);
-        return;
       } else {
         navigate(targetPath);
-        return;
       }
 
       // }

@@ -1309,7 +1309,7 @@
   "NEW_POLL_PUBLISHED": "تم نشر استطلاع جديد  [Poll Title] لمراجعتك..",
   "POLL_UPDATED": "تم تحديث استطلاع [Poll Title]",
   "POLL_EXPIRED": "لقد مر تاريخ استحقاق استطلاع [Poll Title]",
-  "PUBLISHED_POLL_DELETED": "تم حذف إستطلاع  [Poll Title]",
+  "PUBLISHED_POLL_DELETED": "تم حذف [Poll Title]",
   "Closing-report": "التقرير الختامي",
   "Functional-review": "المراجعة الوظيفية",
   "Finance-summary": "ملخص المالية",

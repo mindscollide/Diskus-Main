@@ -132,7 +132,7 @@ const RejectCommentModal = ({
               onChange={(e) => setCommentText(e.target.value)} // Update text area value if typed directly
               labelClassName={"d-none"} // Custom CSS class for label (hidden)
               timeClass={"d-none"} // Custom CSS class for time (hidden)
-              maxLength={7800}
+              maxLength={8000}
             />
             {/* Predefined comment options */}
             {commentsList !== null && commentsList !== undefined

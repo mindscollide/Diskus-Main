@@ -134,7 +134,7 @@ const GroupProposedMeetings = () => {
   };
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState("descend");
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {

@@ -4992,7 +4992,7 @@ const SaveAgendaWiseDocumentsApiFunc = (
             await dispatch(
               showSavedAgendaWiseDocumentSuccess(
                 response.data.responseResult,
-                t("List-updated-successfully"),
+                "",
               ),
             );
             const meetingId =
