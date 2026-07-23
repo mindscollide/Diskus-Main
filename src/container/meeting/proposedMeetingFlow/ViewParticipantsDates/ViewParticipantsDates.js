@@ -105,14 +105,14 @@ const ViewParticipantsDates = () => {
         getMeetingDetailsByMeetingIdApi(navigate, t, Data, "", {}),
       );
     } else {
-      let Data = {
-        MeetingID: Number(currentMeetingID),
-      };
+      // let Data = {
+      //   MeetingID: Number(currentMeetingID),
+      // };
 
-      await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
-      await dispatch(
-        getMeetingDetailsByMeetingIdApi(navigate, t, Data, "", {}),
-      );
+      // await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
+      // await dispatch(
+      //   getMeetingDetailsByMeetingIdApi(navigate, t, Data, "", {}),
+      // );
     }
   };
 

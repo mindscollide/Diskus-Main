@@ -2866,7 +2866,7 @@ export const getMeetingDetailsByMeetingIdApi = (
 
               case "ProposedMeetingViewForParticipant":
                 dispatch(
-                  getUserSelectProposedWiseApi(navigate, t, Data, "", object),
+                  getUserSelectProposedWiseApi(navigate, t, Data, "ProposedMeetingViewForParticipant", object),
                 );
 
                 break;

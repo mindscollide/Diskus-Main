@@ -162,7 +162,7 @@ const SceduleProposedmeeting = () => {
     let findIsSelected = proposedDatesData.find(
       (propsedData, index) => propsedData.isSelected === true,
     );
-
+    console.log(proposedDatesData, findIsSelected, "");
     if (findIsSelected) {
       dispatch(
         scheduleMeetingFromProposedMeetingApi(
@@ -234,6 +234,7 @@ const SceduleProposedmeeting = () => {
             style={{
               cursor: isNoneOfAbove ? "default" : "pointer",
               opacity: isNoneOfAbove ? 0.6 : 1,
+              pointerEvents: isNoneOfAbove ? "none" : "default",
             }}
             onClick={() => {
               if (isNoneOfAbove) return;
@@ -352,6 +353,12 @@ const SceduleProposedmeeting = () => {
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}
                           onClick={scheduleHitButton}
+                          disableBtn={
+                            proposedDatesData.length > 0 &&
+                            proposedDatesData.every((data, index) =>
+                              data.isSelected === false ? true : false,
+                            )
+                          }
                         />
                       </Col>
                     </Row>
