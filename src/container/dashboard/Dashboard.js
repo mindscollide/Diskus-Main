@@ -5023,9 +5023,16 @@ const Dashboard = () => {
           }));
         }
         if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase())
+          // Exact match only — "SIGNATURE_DOCUMENT_STATUS_CHANGE" is a prefix
+          // of "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES", so the old
+          // .includes() check also matched that message and incorrectly
+          // dispatched SignatureDocumentStatusChange for it too. That extra
+          // dispatch patches a signatory's row status in the creator's list
+          // (ApprovalSend.js), which caused a signee's pending count to be
+          // touched a second time when they were just notified the document
+          // was fully signed — not when they took an action themselves.
+          data.payload.message.toLowerCase() ===
+          "SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase()
         ) {
           dispatch(SignatureDocumentStatusChange(data.payload));
           //here to decrease the signature count

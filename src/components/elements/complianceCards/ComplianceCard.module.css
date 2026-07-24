@@ -17,9 +17,14 @@
   font-weight: 600;
   font-family: "Montserrat";
   color: #6172d6;
-  /* Allow the title to shrink inside the flex row so the icon is never hidden */
-  flex: 1;
+  /* flex: 0 1 auto (not flex: 1) — the element sizes to its text content
+     instead of stretching to fill the row, so the clickable/hoverable area
+     matches exactly the visible title text, not the whole row width. It can
+     still shrink (word-break below) so long titles wrap instead of pushing
+     the hover icon out of view. */
+  flex: 0 1 auto;
   min-width: 0;
+  max-width: 100%;
   /* Wrap long text rather than overflowing */
   word-break: break-word;
   overflow-wrap: break-word;
