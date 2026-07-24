@@ -92,8 +92,6 @@ const ProposedMeeting = () => {
 
   const handleClickActions = (record) => {
     if (record.isParticipant) {
-      // record.responseDeadLine
-      // record.pK_MDID
       dispatch(
         getMeetingDetailsByMeetingIdApi(
           navigate,

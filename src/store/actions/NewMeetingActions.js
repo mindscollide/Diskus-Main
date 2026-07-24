@@ -8690,16 +8690,7 @@ const GetMeetingStatusDataFail = (message) => {
   };
 };
 
-const GetMeetingStatusDataAPI = (
-  navigate,
-  t,
-  Data,
-  setEditorRole,
-  FlagOnRouteClickAdvanceMeet,
-  Check,
-  setVideoTalk,
-  setViewFlag,
-) => {
+const GetMeetingStatusDataAPI = (navigate, t, Data, routePath, object = {}) => {
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
     let form = new FormData();
@@ -8710,16 +8701,7 @@ const GetMeetingStatusDataAPI = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(
-            GetMeetingStatusDataAPI(
-              navigate,
-              t,
-              Data,
-              setEditorRole,
-              FlagOnRouteClickAdvanceMeet,
-              Check,
-              setVideoTalk,
-              setViewFlag,
-            ),
+            GetMeetingStatusDataAPI(navigate, t, Data, routePath, object),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -8733,143 +8715,143 @@ const GetMeetingStatusDataAPI = (
               dispatch(
                 GetMeetingStatusDataSuccess(response.data.responseResult, ""),
               );
-              try {
-                //Send Response By Date for Proposed Meeting
-                localStorage.setItem(
-                  "NotificationClickSendResponseByDate",
-                  response.data.responseResult.sendResponseByDeadline,
-                );
+              // try {
+              //   //Send Response By Date for Proposed Meeting
+              //   localStorage.setItem(
+              //     "NotificationClickSendResponseByDate",
+              //     response.data.responseResult.sendResponseByDeadline,
+              //   );
 
-                //For Global Use Meeting Status ID
-                localStorage.setItem(
-                  "MeetingStatusID",
-                  response.data.responseResult.meetingStatusID,
-                );
+              //   //For Global Use Meeting Status ID
+              //   localStorage.setItem(
+              //     "MeetingStatusID",
+              //     response.data.responseResult.meetingStatusID,
+              //   );
 
-                // For Setting Minutes Published Status
-                localStorage.setItem(
-                  "MinutesPublishedStatus",
-                  response.data.responseResult.isMinutesPublished,
-                );
+              //   // For Setting Minutes Published Status
+              //   localStorage.setItem(
+              //     "MinutesPublishedStatus",
+              //     response.data.responseResult.isMinutesPublished,
+              //   );
 
-                //Global Edit States Context State
-                isFunction(setEditorRole) &&
-                  setEditorRole({
-                    status: Number(
-                      response.data.responseResult.meetingStatusID,
-                    ),
-                    role:
-                      Number(response.data.responseResult.attendeeRoleID) === 2
-                        ? "Participant"
-                        : Number(
-                              response.data.responseResult.attendeeRoleID,
-                            ) === 4
-                          ? "Agenda Contributor"
-                          : "Organizer",
-                    isPrimaryOrganizer: false,
-                  });
+              //   //Global Edit States Context State
+              //   isFunction(setEditorRole) &&
+              //     setEditorRole({
+              //       status: Number(
+              //         response.data.responseResult.meetingStatusID,
+              //       ),
+              //       role:
+              //         Number(response.data.responseResult.attendeeRoleID) === 2
+              //           ? "Participant"
+              //           : Number(
+              //                 response.data.responseResult.attendeeRoleID,
+              //               ) === 4
+              //             ? "Agenda Contributor"
+              //             : "Organizer",
+              //       isPrimaryOrganizer: false,
+              //     });
 
-                // For Notification ID === 9
-                if (FlagOnRouteClickAdvanceMeet === true) {
-                  dispatch(toggleViewMeetingModal(true));
-                  // dispatch(scheduleMeetingPageFlag(false));
-                  // isFunction(setViewAdvanceMeetingModal) &&
-                  //   setViewAdvanceMeetingModal(true);
-                  // dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                }
-                //Global Video Chat And Group ID Context State
-                isFunction(setVideoTalk) &&
-                  setVideoTalk({
-                    isChat: response.data.responseResult.isChat,
-                    isVideoCall: response.data.responseResult.isVideoCall,
-                    talkGroupID: response.data.responseResult.talkGroupID,
-                  });
+              //   // For Notification ID === 9
+              //   if (FlagOnRouteClickAdvanceMeet === true) {
+              //     dispatch(toggleViewMeetingModal(true));
+              //     // dispatch(scheduleMeetingPageFlag(false));
+              //     // isFunction(setViewAdvanceMeetingModal) &&
+              //     //   setViewAdvanceMeetingModal(true);
+              //     // dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              //   }
+              //   //Global Video Chat And Group ID Context State
+              //   isFunction(setVideoTalk) &&
+              //     setVideoTalk({
+              //       isChat: response.data.responseResult.isChat,
+              //       isVideoCall: response.data.responseResult.isVideoCall,
+              //       talkGroupID: response.data.responseResult.talkGroupID,
+              //     });
 
-                //Joining Meeting Scenario
-                if (Check === 1) {
-                  let joinMeetingData = {
-                    VideoCallURL: response.data.responseResult.videoCallUrl,
-                    FK_MDID: Number(
-                      localStorage.getItem("NotificationAdvanceMeetingID"),
-                    ),
-                    DateTime: getCurrentDateTimeUTC(),
-                  };
+              //   //Joining Meeting Scenario
+              //   if (Check === 1) {
+              //     let joinMeetingData = {
+              //       VideoCallURL: response.data.responseResult.videoCallUrl,
+              //       FK_MDID: Number(
+              //         localStorage.getItem("NotificationAdvanceMeetingID"),
+              //       ),
+              //       DateTime: getCurrentDateTimeUTC(),
+              //     };
 
-                  dispatch(
-                    JoinCurrentMeeting(
-                      JSON.parse(
-                        localStorage.getItem("QuickMeetingCheckNotification"),
-                      ),
-                      navigate,
-                      t,
-                      joinMeetingData,
-                    ),
-                  );
-                } else if (Check === 2) {
-                  if (
-                    Number(response.data.responseResult.meetingStatusID) === 12
-                  ) {
-                    localStorage.setItem("ProposedMeetingOrganizer", true);
-                    localStorage.setItem(
-                      "ProposedMeetingOrganizerMeetingID",
-                      Data.MeetingID,
-                    );
-                    dispatch(showSceduleProposedMeeting(true));
-                  } else if (
-                    Number(response.data.responseResult.meetingStatusID) !== 12
-                  ) {
-                    localStorage.setItem(
-                      "NotificationClickMeetingID",
-                      Data.MeetingID,
-                    );
-                    // setViewFlag is for setAdvanceMeetingModalID set meeting ID
-                    isFunction(setViewFlag) && setViewFlag(Data.MeetingID);
-                    dispatch(toggleViewMeetingModal(true));
+              //     dispatch(
+              //       JoinCurrentMeeting(
+              //         JSON.parse(
+              //           localStorage.getItem("QuickMeetingCheckNotification"),
+              //         ),
+              //         navigate,
+              //         t,
+              //         joinMeetingData,
+              //       ),
+              //     );
+              //   } else if (Check === 2) {
+              //     if (
+              //       Number(response.data.responseResult.meetingStatusID) === 12
+              //     ) {
+              //       localStorage.setItem("ProposedMeetingOrganizer", true);
+              //       localStorage.setItem(
+              //         "ProposedMeetingOrganizerMeetingID",
+              //         Data.MeetingID,
+              //       );
+              //       dispatch(showSceduleProposedMeeting(true));
+              //     } else if (
+              //       Number(response.data.responseResult.meetingStatusID) !== 12
+              //     ) {
+              //       localStorage.setItem(
+              //         "NotificationClickMeetingID",
+              //         Data.MeetingID,
+              //       );
+              //       // setViewFlag is for setAdvanceMeetingModalID set meeting ID
+              //       isFunction(setViewFlag) && setViewFlag(Data.MeetingID);
+              //       dispatch(toggleViewMeetingModal(true));
 
-                    dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                  }
-                } else if (Check === 3) {
-                  //Notification for being added as a minute reviewer
-                  let Data = {
-                    MeetingID: Number(
-                      localStorage.getItem("NotificationClickMinutesMeetingID"),
-                    ),
-                  };
-                  dispatch(
-                    MinutesWorkFlowActorStatusNotificationAPI(
-                      Data,
-                      navigate,
-                      t,
-                    ),
-                  );
-                } else if (Check === 4) {
-                  let joinMeetingData = {
-                    VideoCallURL: response.data.responseResult.videoCallUrl,
-                    FK_MDID: Number(
-                      localStorage.getItem("NotificationAdvanceMeetingID"),
-                    ),
-                    DateTime: getCurrentDateTimeUTC(),
-                  };
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              //     }
+              //   } else if (Check === 3) {
+              //     //Notification for being added as a minute reviewer
+              //     let Data = {
+              //       MeetingID: Number(
+              //         localStorage.getItem("NotificationClickMinutesMeetingID"),
+              //       ),
+              //     };
+              //     dispatch(
+              //       MinutesWorkFlowActorStatusNotificationAPI(
+              //         Data,
+              //         navigate,
+              //         t,
+              //       ),
+              //     );
+              //   } else if (Check === 4) {
+              //     let joinMeetingData = {
+              //       VideoCallURL: response.data.responseResult.videoCallUrl,
+              //       FK_MDID: Number(
+              //         localStorage.getItem("NotificationAdvanceMeetingID"),
+              //       ),
+              //       DateTime: getCurrentDateTimeUTC(),
+              //     };
 
-                  dispatch(
-                    JoinCurrentMeeting(
-                      JSON.parse(
-                        localStorage.getItem("QuickMeetingCheckNotification"),
-                      ),
-                      navigate,
-                      t,
-                      joinMeetingData,
-                      setViewFlag,
-                      false,
-                      false,
-                      0,
-                      false,
-                      false,
-                      true,
-                    ),
-                  );
-                }
-              } catch (error) {}
+              //     dispatch(
+              //       JoinCurrentMeeting(
+              //         JSON.parse(
+              //           localStorage.getItem("QuickMeetingCheckNotification"),
+              //         ),
+              //         navigate,
+              //         t,
+              //         joinMeetingData,
+              //         setViewFlag,
+              //         false,
+              //         false,
+              //         0,
+              //         false,
+              //         false,
+              //         true,
+              //       ),
+              //     );
+              //   }
+              // } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
