@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -34,6 +33,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import useApryseWebViewer from "../hooks/useApryseWebViewer";
 
 // ─── Pure helpers (no component state) ──────────────────────────────────────
 
@@ -256,19 +256,10 @@ const SignatureViewer = () => {
     [],
   );
 
-  // ─── Viewer DOM ref ──────────────────────────────────────────────────────
-  const viewerRef = useRef(null);
-
-  /**
-   * Guard: prevents WebViewer from being initialised more than once.
-   * This is the root cause of the "stop re-rendering" issue — React strict-mode
-   * and dependency-array changes were firing the effect multiple times.
-   */
-  const viewerInitialized = useRef(false);
+  // ─── Viewer DOM ref + shared Apryse bootstrap ───────────────────────────────
+  const { viewerRef, instance, initWebViewer } = useApryseWebViewer();
 
   // ─── State ───────────────────────────────────────────────────────────────
-  const [instance, setInstance] = useState(null);
-
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [signerData, setSignerData] = useState([]);
@@ -748,23 +739,15 @@ const SignatureViewer = () => {
 
   // ─── WebViewer initialisation ────────────────────────────────────────────
   //
-  // Guarded by `viewerInitialized` ref so this block runs EXACTLY ONCE even
-  // if React re-renders or StrictMode double-invokes effects.
+  // initWebViewer() (from useApryseWebViewer) is guarded internally so this
+  // block runs EXACTLY ONCE even if React re-renders or StrictMode
+  // double-invokes effects.
   //
   useEffect(() => {
-    if (!pdfData.attachmentBlob || !viewerRef.current) return;
-    if (viewerInitialized.current) return; // ← the key guard
-    viewerInitialized.current = true;
+    if (!pdfData.attachmentBlob) return;
 
-    WebViewer(
-      {
-        path: "/webviewer/lib",
-        fullAPI: true,
-        licenseKey: process.env.REACT_APP_APRYSEKEY,
-      },
-      viewerRef.current,
-    ).then((inst) => {
-      setInstance(inst);
+    initWebViewer().then((inst) => {
+      if (!inst) return;
       const { UI, Core } = inst;
       const { documentViewer, annotationManager, Annotations } = Core;
 

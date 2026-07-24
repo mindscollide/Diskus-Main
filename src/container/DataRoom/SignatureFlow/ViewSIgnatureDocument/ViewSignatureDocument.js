@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from "react";
-import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
@@ -18,64 +17,9 @@ import {
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
-
-/**
- * Async: strip only <apref> elements whose referenced PDF object does NOT exist
- * in the document's XRef table.
- *
- * When <apref> nodes reference PDF objects that have been removed or were never
- * embedded (e.g. after server-side re-processing), Apryse logs:
- *   "Error in Promise.all for appearanceReference N on page M"
- *   {type: 'PDFWorkerError', message: '…Can not find any annotation…'}
- * followed by a cascade TypeError (reading 'children').
- *
- * Valid appearance references are preserved (they resolve successfully against
- * the XRef table).  In this view-only component all Sig widgets are removed
- * beforehand by processXmlToHideFields, so no signature visuals are at risk.
- *
- * @param {string} xfdfStr - processed XFDF string
- * @param {object} pdfDoc  - Apryse PDFDoc (requires fullAPI: true)
- * @returns {Promise<string>}
- */
-const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc) => {
-  try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(xfdfStr, "text/xml");
-    const aprefs = Array.from(doc.querySelectorAll("apref"));
-
-    if (!aprefs.length) return xfdfStr;
-
-    if (pdfDoc) {
-      for (const apref of aprefs) {
-        const objnum = parseInt(apref.getAttribute("objnum") ?? "0", 10);
-
-        // PDF object 0 is the null/free object — never a valid appearance stream
-        if (objnum === 0) {
-          apref.remove();
-          continue;
-        }
-
-        try {
-          const obj = await pdfDoc.getXRefTableEntry(objnum);
-          const missing =
-            !obj ||
-            (typeof obj.isNull === "function" && (await obj.isNull()));
-          if (missing) apref.remove();
-        } catch {
-          // Object unreachable — strip defensively
-          apref.remove();
-        }
-      }
-    } else {
-      // No pdfDoc available — strip all apref as safe fallback
-      doc.querySelectorAll("apref").forEach((node) => node.remove());
-    }
-
-    return new XMLSerializer().serializeToString(doc);
-  } catch {
-    return xfdfStr; // parsing failed — return original unchanged
-  }
-};
+import useApryseWebViewer, {
+  stripInvalidAppearanceRefs,
+} from "../hooks/useApryseWebViewer";
 
 const ViewSignatureDocument = () => {
   const location = useLocation();
@@ -99,7 +43,11 @@ const ViewSignatureDocument = () => {
 
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
-  const viewer = useRef(null);
+  const {
+    viewerRef: viewer,
+    instance: Instance,
+    initWebViewer,
+  } = useApryseWebViewer();
   const [signerData, setSignerData] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
   const [reasonModal, setReasonModal] = useState(false);
@@ -127,7 +75,6 @@ const ViewSignatureDocument = () => {
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
-  const [Instance, setInstance] = useState(null);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
 
   const userAnnotationsCopyData = useRef(userAnnotationsCopy);
@@ -165,34 +112,8 @@ const ViewSignatureDocument = () => {
 
   // === End === //
 
-  // ── Suppress Apryse internal appearance-stream crash ──────────────────────
-  // Apryse's appearance-loading runs in an un-caught internal Promise; when an
-  // <apref> object is missing from the PDF it rejects with a TypeError reading
-  // 'children'.  The rejection is unhandled inside webviewer-core.min.js —
-  // our try/catch around importAnnotations never sees it.  This handler
-  // silences only that specific internal rejection; all other unhandled
-  // rejections are left untouched.
-  useEffect(() => {
-    const suppressApryseChildrenError = (event) => {
-      const reason = event?.reason;
-      if (
-        reason instanceof TypeError &&
-        typeof reason.message === "string" &&
-        reason.message.includes("children") &&
-        typeof reason.stack === "string" &&
-        reason.stack.includes("webviewer-core.min.js")
-      ) {
-        event.preventDefault();
-      }
-    };
-    window.addEventListener("unhandledrejection", suppressApryseChildrenError);
-    return () => {
-      window.removeEventListener(
-        "unhandledrejection",
-        suppressApryseChildrenError,
-      );
-    };
-  }, []);
+  // The Apryse "reading children" crash suppression lives inside
+  // useApryseWebViewer() now — see hooks/useApryseWebViewer.js.
 
   // === Api calling === //
   async function apiCall(Data) {
@@ -460,16 +381,8 @@ const ViewSignatureDocument = () => {
   // === It's triggered when we update the blob file in our local state ===
   useEffect(() => {
     if (pdfResponceData.attachmentBlob !== "") {
-      WebViewer(
-        {
-          path: "/webviewer/lib",
-          showLocalFilePicker: true,
-          fullAPI: true,
-          licenseKey: process.env.REACT_APP_APRYSEKEY, // sign up to get a free trial key at https://dev.apryse.com
-        },
-        viewer.current,
-      ).then(async (instance) => {
-        setInstance(instance);
+      initWebViewer({ showLocalFilePicker: true }).then(async (instance) => {
+        if (!instance) return;
         const UI = instance.UI;
 
         UI.loadDocument(handleBlobFiles(pdfResponceData.attachmentBlob), {
