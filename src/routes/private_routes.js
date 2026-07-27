@@ -358,6 +358,16 @@ const PrivateRoutes = () => {
           let getValue = getActionValue(currentUrl, "Tasks_action=");
           localStorage.setItem("taskListView", getValue);
         }
+
+        // DisKus/compliance?comptask_action
+            if (
+          currentUrl
+            .toLowerCase()
+            .includes("Diskus/compliance?comptask_action".toLowerCase())
+        ) {
+          let getValue = getActionValue(currentUrl, "comptask_action=");
+          localStorage.setItem("comptaskView", getValue);
+        }
         if (
           currentUrl
             .toLowerCase()

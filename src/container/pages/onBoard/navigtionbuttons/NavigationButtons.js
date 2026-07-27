@@ -137,7 +137,7 @@ const NavigationButtons = () => {
           </Row>
           <Row>
             <Col
-              onClick={() => handleNavigation(navigate, false, dispatch)}
+              onClick={() => handleNavigation(navigate, null, false, [] , [] ,dispatch)}
               className='d-flex justify-content-center mt-2'>
               <h3 className={`tour-skip_demo ${currentLanguage}`}>
                 {t("Skip-demo")}

@@ -2947,119 +2947,129 @@ export const handleNavigation = (
   navigate,
   response,
   isFirstLogin,
-  userRights,
-  adminRights,
+  userRights = [],
+  adminRights = [],
   dispatch,
 ) => {
-  let ComplianceFeature = [3, 13, 14, 77];
-  let OnlyComplianceFeature =
-    Array.isArray(userRights) &&
-    userRights.every((data, index) =>
-      ComplianceFeature.includes(data.packageFeatureID),
-    );
+  try {
+    let ComplianceFeature = [3, 13, 14, 77];
+    let userRightsFeaturesIds =
+      localStorage.getItem("packageFeatureIDs") !== null
+        ? JSON.parse(localStorage.getItem("packageFeatureIDs"))
+        : [];
+    let OnlyComplianceFeature =
+      Array.isArray(userRightsFeaturesIds) &&
+      userRightsFeaturesIds.every((packageFeatureID, index) =>
+        ComplianceFeature.includes(packageFeatureID),
+      );
 
-  if (OnlyComplianceFeature) {
-    localStorage.setItem("OnlyComplianceAllowed", OnlyComplianceFeature);
-  }
-  const emailActionToken = localStorage.getItem("emailActionToken");
-  const RSVP = localStorage.getItem("RSVP");
-  const dataroomValue = localStorage.getItem("DataRoomEmail");
-  const AgCont = localStorage.getItem("AgCont");
-  const AdOrg = localStorage.getItem("AdOrg");
-  const MeetingStr = localStorage.getItem("meetingStr");
-  const MeetinUpd = localStorage.getItem("meetingUpd");
-  const MeetingMin = localStorage.getItem("meetingMin");
-  const Meetingprop = localStorage.getItem("meetingprop");
-  const meetingCanc = localStorage.getItem("meetingCanc");
-  const mtAgUpdate = localStorage.getItem("mtAgUpdate");
-  const UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
-  const pollExpire = localStorage.getItem("pollExpire");
-  const PollUpd = localStorage.getItem("poUpda");
-  const PollPublish = localStorage.getItem("poPub");
-  const documentViewer = localStorage.getItem("documentViewer");
-  const viewFolderLink = localStorage.getItem("viewFolderLink");
-  const committeeView_Id = localStorage.getItem("committeeView_Id");
-  const committeeList = localStorage.getItem("committeeList");
-  const groupView_Id = localStorage.getItem("groupView_Id");
-  const groupList = localStorage.getItem("groupList");
-  const taskListView_Id = localStorage.getItem("taskListView_Id");
-  const taskListView = localStorage.getItem("taskListView");
-  const reviewSubmittedMinutesLink = localStorage.getItem(
-    "reviewSubmittedMinutesLink",
-  );
-  const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
-  const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
-  const viewMeetingLink = localStorage.getItem("viewMeetingLink");
-  const docSignAction = localStorage.getItem("docSignAction");
-  const docSignedAction = localStorage.getItem("docSignedAction");
-  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
-  if (isFirstLogin) {
-    // if (adminRights) {
-    //   navigate("/Admin/ManageUsers");
-    // } else if (userRights) {
-    navigate("/onboard");
-    // }
-  } else if (!isFirstLogin) {
-    // if (adminRights) {
-    //   navigate("/Admin/ManageUsers");
-    // } else if (userRights) {
-    if (emailActionToken !== null) {
-      navigate("/Diskus/Redirected");
-      return
-    } else if (RSVP !== null) {
-      navigate("/Diskus/Meeting/Useravailabilityformeeting");
-    } else if (
-      dataroomValue !== null ||
-      documentViewer !== null ||
-      viewFolderLink !== null ||
-      docSignedCrAction !== null
-    ) {
-      navigate("/Diskus/dataroom");
-    } else if (
-      MeetingStr !== null ||
-      MeetinUpd !== null ||
-      MeetingMin !== null ||
-      Meetingprop !== null ||
-      AgCont !== null ||
-      AdOrg !== null ||
-      mtAgUpdate !== null ||
-      UserMeetPropoDatPoll !== null ||
-      meetingCanc !== null ||
-      reviewSubmittedMinutesLink !== null ||
-      viewPublishMinutesLink !== null ||
-      viewMeetingLink !== null
-    ) {
-      navigate("/Diskus/Meeting");
-    } else if (
-      PollPublish !== null ||
-      PollUpd !== null ||
-      pollExpire !== null
-    ) {
-      navigate("/Diskus/polling");
-    } else if (committeeView_Id !== null || committeeList !== null) {
-      navigate("/Diskus/committee");
-    } else if (groupView_Id !== null || groupList !== null) {
-      navigate("/Diskus/groups");
-    } else if (taskListView_Id !== null || taskListView !== null) {
-      navigate("/Diskus/todolist");
-    } else if (
-      reviewMinutesLink !== null ||
-      docSignAction !== null ||
-      docSignedAction !== null
-    ) {
-      navigate("/Diskus/Minutes");
-    } else {
-      if (OnlyComplianceFeature) {
-        navigate("/Diskus/compliance");
-        return;
-      }
-      navigate("/Diskus/");
+    if (OnlyComplianceFeature) {
+      localStorage.setItem("OnlyComplianceAllowed", OnlyComplianceFeature);
     }
-    // }
-  } else {
-    // dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
-    clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-    dispatch(LoginFlowRoutes(1));
+    const emailActionToken = localStorage.getItem("emailActionToken");
+    const RSVP = localStorage.getItem("RSVP");
+    const dataroomValue = localStorage.getItem("DataRoomEmail");
+    const AgCont = localStorage.getItem("AgCont");
+    const AdOrg = localStorage.getItem("AdOrg");
+    const MeetingStr = localStorage.getItem("meetingStr");
+    const MeetinUpd = localStorage.getItem("meetingUpd");
+    const MeetingMin = localStorage.getItem("meetingMin");
+    const Meetingprop = localStorage.getItem("meetingprop");
+    const meetingCanc = localStorage.getItem("meetingCanc");
+    const mtAgUpdate = localStorage.getItem("mtAgUpdate");
+    const UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
+    const pollExpire = localStorage.getItem("pollExpire");
+    const PollUpd = localStorage.getItem("poUpda");
+    const PollPublish = localStorage.getItem("poPub");
+    const documentViewer = localStorage.getItem("documentViewer");
+    const viewFolderLink = localStorage.getItem("viewFolderLink");
+    const committeeView_Id = localStorage.getItem("committeeView_Id");
+    const committeeList = localStorage.getItem("committeeList");
+    const groupView_Id = localStorage.getItem("groupView_Id");
+    const groupList = localStorage.getItem("groupList");
+    const taskListView_Id = localStorage.getItem("taskListView_Id");
+    const taskListView = localStorage.getItem("taskListView");
+    const reviewSubmittedMinutesLink = localStorage.getItem(
+      "reviewSubmittedMinutesLink",
+    );
+    const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
+    const viewPublishMinutesLink = localStorage.getItem(
+      "viewPublishMinutesLink",
+    );
+    const viewMeetingLink = localStorage.getItem("viewMeetingLink");
+    const docSignAction = localStorage.getItem("docSignAction");
+    const docSignedAction = localStorage.getItem("docSignedAction");
+    const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+    if (isFirstLogin) {
+      // if (adminRights) {
+      //   navigate("/Admin/ManageUsers");
+      // } else if (userRights) {
+      navigate("/onboard");
+      // }
+    } else if (!isFirstLogin) {
+      // if (adminRights) {
+      //   navigate("/Admin/ManageUsers");
+      // } else if (userRights) {
+      if (emailActionToken !== null) {
+        navigate("/Diskus/Redirected");
+        return;
+      } else if (RSVP !== null) {
+        navigate("/Diskus/Meeting/Useravailabilityformeeting");
+      } else if (
+        dataroomValue !== null ||
+        documentViewer !== null ||
+        viewFolderLink !== null ||
+        docSignedCrAction !== null
+      ) {
+        navigate("/Diskus/dataroom");
+      } else if (
+        MeetingStr !== null ||
+        MeetinUpd !== null ||
+        MeetingMin !== null ||
+        Meetingprop !== null ||
+        AgCont !== null ||
+        AdOrg !== null ||
+        mtAgUpdate !== null ||
+        UserMeetPropoDatPoll !== null ||
+        meetingCanc !== null ||
+        reviewSubmittedMinutesLink !== null ||
+        viewPublishMinutesLink !== null ||
+        viewMeetingLink !== null
+      ) {
+        navigate("/Diskus/Meeting");
+      } else if (
+        PollPublish !== null ||
+        PollUpd !== null ||
+        pollExpire !== null
+      ) {
+        navigate("/Diskus/polling");
+      } else if (committeeView_Id !== null || committeeList !== null) {
+        navigate("/Diskus/committee");
+      } else if (groupView_Id !== null || groupList !== null) {
+        navigate("/Diskus/groups");
+      } else if (taskListView_Id !== null || taskListView !== null) {
+        navigate("/Diskus/todolist");
+      } else if (
+        reviewMinutesLink !== null ||
+        docSignAction !== null ||
+        docSignedAction !== null
+      ) {
+        navigate("/Diskus/Minutes");
+      } else {
+        if (OnlyComplianceFeature) {
+          navigate("/Diskus/compliance");
+          return;
+        }
+        navigate("/Diskus/");
+      }
+      // }
+    } else {
+      // dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+      clearLocalStorageAtloginresponce(dispatch, 2, navigate);
+      dispatch(LoginFlowRoutes(1));
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
