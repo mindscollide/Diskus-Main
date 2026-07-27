@@ -26,6 +26,7 @@ import SearchComplianceBoxModal from "./CommonComponents/searchComplianceBoxModa
 import SearchComplianceReportModal from "./CommonComponents/searchComplianceReportModal";
 
 import styles from "./mainCompliance.module.css";
+import { validateEncryptedStringViewTaskDetailLinkApi } from "../../store/actions/ToDoList_action";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -86,6 +87,8 @@ const MainCompliance = () => {
       state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated,
   );
 
+  const comptaskView = localStorage.getItem("comptaskView");
+
   // ── Context ───────────────────────────────────────────────────────────────
   const {
     createEditCompliance,
@@ -116,7 +119,32 @@ const MainCompliance = () => {
     fiscalStartMonth: MqttOrganizationSettingUpdated?.fiscalStartMonth,
   });
 
-  
+  useEffect(() => {
+    if (comptaskView !== null) {
+      try {
+        const callAPi = async () => {
+          const parsedView = await dispatch(
+            validateEncryptedStringViewTaskDetailLinkApi(
+              comptaskView,
+              navigate,
+              t,
+            ),
+          );
+          console.log("parsedView", parsedView);
+          const {responseCode, response} = parsedView
+          if(responseCode === 1) {
+            const { complianceId, taskId, checklistID } = response;
+            
+          }
+        };
+        callAPi();
+      } catch (error) {}
+    }
+  }, [comptaskView]);
+
+  // ── Effects ───────────────────────────────────────────────────────────────
+
+  /** Fetch compliance + task statuses once on mount. */
 
   // ── Effects ───────────────────────────────────────────────────────────────
 
@@ -270,8 +298,7 @@ const MainCompliance = () => {
           sm={12}
           md={6}
           lg={6}
-          className="d-flex justify-content-start align-items-center mb-2"
-        >
+          className='d-flex justify-content-start align-items-center mb-2'>
           <span className={styles["Compliance_dashboard_heading"]}>
             {heading}
           </span>
@@ -293,8 +320,7 @@ const MainCompliance = () => {
             mainComplianceTabs === TAB.DASHBOARD
               ? "d-flex justify-content-end align-items-center gap-2"
               : undefined
-          }
-        >
+          }>
           {mainComplianceTabs === TAB.DASHBOARD && (
             <>
               <span className={styles["SwitchUserView_Text"]}>
@@ -322,8 +348,7 @@ const MainCompliance = () => {
           sm={12}
           md={9}
           lg={9}
-          className="d-flex justify-content-start flex-wrap gap-2 align-items-center"
-        >
+          className='d-flex justify-content-start flex-wrap gap-2 align-items-center'>
           {tabItems.map(({ tab, label, onClick }) => (
             <CustomButton
               key={tab}
@@ -342,9 +367,8 @@ const MainCompliance = () => {
           sm={12}
           md={3}
           lg={3}
-          className="d-flex justify-content-end gap-2 align-items-center"
-        >
-          <img src={FiscalYearCalendar_Icon} alt="Fiscal year calendar" />
+          className='d-flex justify-content-end gap-2 align-items-center'>
+          <img src={FiscalYearCalendar_Icon} alt='Fiscal year calendar' />
           <span className={styles["Fiscalyear_text"]}>
             {`Fiscal Year: ${fiscalYearRange ?? t("No-fiscal-year")}`}
           </span>
