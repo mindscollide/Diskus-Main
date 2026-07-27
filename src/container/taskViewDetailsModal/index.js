@@ -115,9 +115,18 @@ const TaskViewDetailsModal = ({
     dispatch(postComments(null));
 
     setTaskCreatorID(parseInt(createrID));
+    // Lets the MQTT "NEW_COMMENT_CREATION"/"NEW_COMMENT_DELETION" handlers in
+    // Dashboard.js know the Compliance Task modal is already open for this
+    // comment, so they skip the "Refer to Task List for details" toast.
+    if (isCompliance) {
+      sessionStorage.setItem("complianceTaskViewModalOpen", "true");
+    }
     return () => {
       dispatch(postComments(null));
       setTaskAssigneeComments([]);
+      if (isCompliance) {
+        sessionStorage.removeItem("complianceTaskViewModalOpen");
+      }
       //task Object
       setTask({
         PK_TID: 0,

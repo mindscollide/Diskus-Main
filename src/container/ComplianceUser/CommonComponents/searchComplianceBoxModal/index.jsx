@@ -215,12 +215,14 @@ const SearchComplianceBoxModal = () => {
     // setData([]);
     setSearchCompliancePayload({
       complianceTitle: "",
+      complianceTitleOutside: "",
       dueDateFrom: "",
       dueDateTo: "",
       authorityShortCode: "",
       pageNumber: 0,
       length: 10,
     });
+    setEnterpressed(false);
 
     const Data = {
       complianceTitle: "",

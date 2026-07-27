@@ -873,16 +873,13 @@ const AddTaskMappingToChecklistAPI = (
                   t("Task-mapped-successfully"),
                 ),
               );
-              const Data_compId = {
-                complianceId: complianceId,
-              };
-              dispatch(
-                GetComplianceChecklistsWithTasksByComplianceIdAPI(
-                  navigate,
-                  Data_compId,
-                  t,
-                ),
-              );
+              // Checklist refresh (GetComplianceChecklistsWithTasksByComplianceId)
+              // is no longer fired from here — for the Compliance "Create Task"
+              // flow this API now runs before CreateUpdateToDoDataRoomMap/
+              // SaveTaskDocumentsAndAssignees/SaveToDoDocuments, so refreshing
+              // here would show the task before its documents/assignees are
+              // saved. The caller (ToDoList_action.js) now triggers the
+              // refresh itself once the whole task-creation chain completes.
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

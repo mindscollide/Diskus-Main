@@ -33,7 +33,10 @@ import {
 import { updateTodoStatusFunc } from "./GetTodos";
 import { emptyCommentState } from "./Post_AssigneeComments";
 import axiosInstance from "../../commen/functions/axiosInstance";
-import { AddTaskMappingToChecklistAPI } from "./ComplainSettingActions";
+import {
+  AddTaskMappingToChecklistAPI,
+  GetComplianceChecklistsWithTasksByComplianceIdAPI,
+} from "./ComplainSettingActions";
 
 const ClearMappingFolderID = () => {
   return {
@@ -208,7 +211,15 @@ const setTodoStatusDataFormSocket = (response) => {
 };
 //Creating A ToDoList
 
-const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
+const CreateToDoList = (
+  navigate,
+  object,
+  t,
+  setCreateTaskID,
+  value,
+  checklistId,
+  complianceId
+) => {
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
@@ -219,7 +230,17 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CreateToDoList(navigate, object, t, setCreateTaskID, value));
+          dispatch(
+            CreateToDoList(
+              navigate,
+              object,
+              t,
+              setCreateTaskID,
+              value,
+              checklistId,
+              complianceId
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -232,11 +253,28 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
               await dispatch(ShowNotification(""));
               // await dispatch(SetLoaderFalse());
 
-              setCreateTaskID(Number(response.data.responseResult.tid));
+              const newTaskID = Number(response.data.responseResult.tid);
+              setCreateTaskID(newTaskID);
               if (value === 1) {
               } else {
+                if (checklistId && complianceId) {
+                  // Compliance "Create Task" flow: map the task to its
+                  // checklist right away, so AddTaskMappingToChecklist runs
+                  // before the folder/document chain below (requested API
+                  // order: CreateToDoList -> AddTaskMappingToChecklist ->
+                  // CreateUpdateToDoDataRoomMap -> SaveTaskDocumentsAndAssignees
+                  // -> SaveToDoDocuments -> GetComplianceChecklistsWithTasksByComplianceId).
+                  await dispatch(
+                    AddTaskMappingToChecklistAPI(
+                      navigate,
+                      { checklistId, taskIds: [newTaskID] },
+                      t,
+                      complianceId
+                    )
+                  );
+                }
                 let Data = {
-                  ToDoID: Number(response.data.responseResult.tid),
+                  ToDoID: newTaskID,
                   ToDoTitle: object.Task.Title,
                   IsUpdateFlow: false,
                   AssigneeList: object.TaskAssignedTo.map(
@@ -860,8 +898,7 @@ const deleteCommentApi = (navigate, t, commmentID, taskID) => {
               await dispatch(
                 deleteComment_success(
                   response.data.responseResult,
-                  ""
-                  // t("Comment-deleted")
+                  t("Comment-deleted")
                 )
               );
               dispatch(deleteTodoCommentSpinner(false));
@@ -1691,12 +1728,16 @@ const saveTaskDocumentsApi = (
               }
               // Create Task from Meeting Actions
               if (value === 7) {
-                let Data2 = {
-                  checklistId: checkListId,
-                  taskIds: [Number(Data.ToDoID)],
-                };
+                // AddTaskMappingToChecklist already ran earlier (right after
+                // CreateToDoList, before this folder/document chain) — this
+                // is now the last step of the compliance "Create Task" flow,
+                // so refresh the checklist/task list here instead.
                 dispatch(
-                  AddTaskMappingToChecklistAPI(navigate, Data2, t, complianceId)
+                  GetComplianceChecklistsWithTasksByComplianceIdAPI(
+                    navigate,
+                    { complianceId },
+                    t
+                  )
                 );
                 setShow(false);
               }

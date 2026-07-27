@@ -1,8 +1,5 @@
 const disableConsole = () => {
-  if (
-    process.env.REACT_APP_ENV === "uat" ||
-    process.env.REACT_APP_ENV === "prod"
-  ) {
+  if (process.env.REACT_APP_ENV === "prod") {
     const noop = () => {};
 
     console.log = noop;
