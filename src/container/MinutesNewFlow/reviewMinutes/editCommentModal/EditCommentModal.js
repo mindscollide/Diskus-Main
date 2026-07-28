@@ -301,7 +301,7 @@ const EditCommentModal = ({
               labelClassName={"d-none"} // CSS class for label
               timeClass={"d-none"} // CSS class for time
               onChange={handleCommentChange}
-              maxLength={7800}
+              maxLength={8000}
             />
           </>
         }
