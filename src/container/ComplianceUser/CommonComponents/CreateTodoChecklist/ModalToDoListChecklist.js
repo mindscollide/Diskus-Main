@@ -320,7 +320,17 @@ const ModalToDoListChecklist = ({
         taskAssignedTO.length > 0 ? taskAssignedTO : TaskAssignedTo, // Assigned users
       // TasksAttachments, // Uncomment if attachments are needed
     };
-    dispatch(CreateToDoList(navigate, Data, t, setCreateTaskID, 2));
+    dispatch(
+      CreateToDoList(
+        navigate,
+        Data,
+        t,
+        setCreateTaskID,
+        2,
+        checkListData.checklistId,
+        complianceInfo.complianceId
+      )
+    );
   };
 
   const uploadTaskDocuments = async (folderID) => {

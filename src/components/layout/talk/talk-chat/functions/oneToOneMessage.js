@@ -161,14 +161,14 @@ export const markStarUnstarFunction = (
         } else if (messageOtoUnStarred.isFlag === 0) {
           messageOtoUnStarred.isFlag = 1;
         }
+        setAllOtoMessages(
+          allOtoMessages.map((data) =>
+            data.messageID === messageOtoUnStarred.messageID
+              ? messageOtoUnStarred
+              : data
+          )
+        );
       }
-      setAllOtoMessages(
-        allOtoMessages.map((data) =>
-          data.messageID === messageOtoUnStarred.messageID
-            ? messageOtoUnStarred
-            : data
-        )
-      );
     } else if (mqttUnStarMessageData.messageType === "G") {
       let messageGroupUnStarred = allGroupMessages.find(
         (item) => item.messageID === mqttUnStarMessageData.messageID
@@ -179,14 +179,14 @@ export const markStarUnstarFunction = (
         } else if (messageGroupUnStarred.isFlag === 0) {
           messageGroupUnStarred.isFlag = 1;
         }
+        setAllGroupMessages(
+          allGroupMessages.map((data) =>
+            data.messageID === messageGroupUnStarred.messageID
+              ? messageGroupUnStarred
+              : data
+          )
+        );
       }
-      setAllGroupMessages(
-        allGroupMessages.map((data) =>
-          data.messageID === messageGroupUnStarred.messageID
-            ? messageGroupUnStarred
-            : data
-        )
-      );
     }
   }
 };

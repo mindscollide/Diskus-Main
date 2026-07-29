@@ -201,7 +201,6 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className="d-flex gap-3"
                                       >
                                         {viewProgressPollsDetails.AllowMultipleAnswers ===
                                         true ? (

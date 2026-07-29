@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
   Modal,
-  Notification,
   AttachmentViewer,
 } from "../../../components/elements";
 import { Row, Col, Container, Form } from "react-bootstrap";
@@ -22,10 +21,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
-import {
-  maxFileSize,
-  removeHTMLTagsAndTruncate,
-} from "../../../commen/functions/utils";
+import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
 import { useNotesContext } from "../../../context/NotesContext";
 import { useSelector } from "react-redux";
 import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";

@@ -11,7 +11,6 @@ import ViewComplianceTasks from "./ViewComplianceTasks";
 import { Button, Notification } from "../../../../components/elements";
 import ReopenOrOnHoldDetailsModal from "../ReopenOrOnHoldDetailsModal";
 import ArrowBack from "../../../../assets/images/arrow-left-compliance.png";
-import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { useDispatch } from "react-redux";
 import {
   clearAuthorityMessage,
@@ -24,7 +23,6 @@ const ViewCompliance = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [show, SnackBar] = useSnackbar();
   const complainceRespnseMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
@@ -177,6 +175,13 @@ const ViewCompliance = () => {
   
 
   useEffect(() => {
+    // GlobalSnackbar (mounted once at app root) already renders the toast
+    // for this same ComplainceSettingReducerReducer.ResponseMessage — a
+    // second local show() here caused every compliance action to display
+    // two identical toasts. This effect now only clears the reducer's
+    // message after the same delay so GlobalSnackbar's own dedupe logic
+    // sees ResponseMessage reset to "" and can fire again for a repeat
+    // identical message.
     if (
       complainceRespnseMessage !== null &&
       complainceRespnseMessage !== undefined &&
@@ -184,7 +189,6 @@ const ViewCompliance = () => {
       complainceSeverityMessage !== null
     ) {
       try {
-        show(complainceRespnseMessage, complainceSeverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -335,7 +339,6 @@ const ViewCompliance = () => {
       
 
       <ReopenOrOnHoldDetailsModal />
-    {SnackBar}
     </>
   );
 };

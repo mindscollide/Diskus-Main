@@ -1538,7 +1538,7 @@ const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
               dispatch(
                 updateVote_Success(
                   response.data.responseResult,
-                  t("Record-updated-successfully")
+                  t("Voted-successfully")
                 )
               );
               setVoteresolution(false);

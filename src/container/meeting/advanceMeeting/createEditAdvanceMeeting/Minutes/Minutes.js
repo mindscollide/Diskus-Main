@@ -56,7 +56,7 @@ import {
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 import { meetingIdReducer } from "../../../../../store/reducers";
 import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const Minutes = () => {
   const { editorRole, setEditorRole, setGoBackCancelModal } =
@@ -712,7 +712,7 @@ const Minutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 

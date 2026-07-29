@@ -4,7 +4,6 @@ import {
   Modal,
   Button,
   Checkbox,
-  Notification,
   CustomRadio2,
 } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";

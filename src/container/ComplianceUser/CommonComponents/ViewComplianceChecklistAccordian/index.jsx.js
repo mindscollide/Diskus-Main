@@ -306,6 +306,20 @@ const ViewComplianceChecklistAccordian = () => {
     indicatorSeparator: () => ({
       display: "none",
     }),
+
+    container: (provided) => ({
+      ...provided,
+      margin: 0,
+      marginLeft: "-10px",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "0 8px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      padding: "4px",
+    }),
   };
 
   const handleClickOnHoldModal = useCallback(() => {
@@ -431,7 +445,7 @@ const ViewComplianceChecklistAccordian = () => {
                           )}`}</div>
                           {complianceViewMode === "byMe" ? (
                             <Select
-                              isSearchable={true}
+                              isSearchable={false}
                               options={checklistStatusOptions}
                               labelInValue={t("Status")}
                               onChange={(selectedOption) =>

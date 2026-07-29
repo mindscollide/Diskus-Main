@@ -35,11 +35,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [abstain, setAbstain] = useState(0);
   const [totalVoters, setTotalVoters] = useState(0);
   const [isResolutionTitle, setResolutionTitle] = useState("");
-  const [isVotingMethod, setVotingMethod] = useState("");
   const [isVotingMethodId, setVotingMethodId] = useState(0);
   const [voteId, setVoteId] = useState(0);
   const [voter, setVoter] = useState([]);
-  const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
   const options = {
     backgroundColor: "transparent",
@@ -117,14 +115,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
         try {
           let getVoteresult = VoteDetails;
           setResolutionTitle(getVoteresult.resolutionTite);
-          setVotingMethod(getVoteresult.votingMethod);
           setVotingMethodId(getVoteresult.votingMethodID);
           setApproved(getVoteresult.approvedVotes);
           setAbstain(getVoteresult?.abstainVotes);
           setPending(getVoteresult.pendingVoters);
           setNonApproved(getVoteresult.nonApprovedVotes);
           setTotalVoters(getVoteresult.totalVoters);
-          setDecision(getVoteresult.decision);
           setVoter(getVoteresult.voters);
           let findVoters = getVoteresult.voters.find(
             (data, index) =>

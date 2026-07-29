@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useSelector } from "react-redux";
-import { Row, Col, Container, ProgressBar } from "react-bootstrap";
+import { Row, Col, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import {
   utcConvertintoGMT,
@@ -25,8 +25,6 @@ import ArrowUpIcon from "./../Images/Arrow-up.png";
 import NoApprovals from "./../Images/No-Approvals.png";
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import {
-  getAllPendingApprovalStatusApi,
-  getAllPendingApprovalsStatsApi,
   validateEncryptedMinutesReviewerApi,
   validateEncryptedMinutesReviewer_clear,
 } from "../../../store/actions/workflow_actions";
@@ -34,17 +32,14 @@ import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { MeetingContext } from "../../../context/MeetingContext";
+
+const DEFAULT_PENDING_APPROVALS_PAGE = { sRow: 0, Length: 10 };
+
 // Functional component for pending approvals section
 const PendingApproval = () => {
   const { t } = useTranslation(); // Translation hook
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
-  //newly implemented record
-  // Select the MQTT payloads from Redux
-  const AddedAsMinuteReviwer = useSelector(
-    (state) => state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload,
-  );
-
   const GetMinuteReviewPendingApprovalsByReviewerIdData = useSelector(
     (state) =>
       state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData,
@@ -70,11 +65,8 @@ const PendingApproval = () => {
   const [reviewAndSignActive, setReviewAndSignActive] = useState(false);
   const [progress, setProgress] = useState([]);
 
-  const {
-    pendingApprovalCount,
-    setPendingApprovalTabCount,
-    pendingApprovalsTabCount,
-  } = useContext(MeetingContext);
+  const { setPendingApprovalTabCount, pendingApprovalsTabCount } =
+    useContext(MeetingContext);
 
   const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
@@ -99,7 +91,7 @@ const PendingApproval = () => {
 
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = async () => {
-    let Data = { sRow: 0, Length: 10 };
+    let Data = DEFAULT_PENDING_APPROVALS_PAGE;
     await dispatch(
       GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t),
     );
@@ -177,6 +169,13 @@ const PendingApproval = () => {
     </Menu>
   );
 
+  const toggleSort = (setter) => () =>
+    setter((order) => {
+      if (order === "descend") return "ascend";
+      if (order === "ascend") return null;
+      return "descend";
+    });
+
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
@@ -201,15 +200,7 @@ const PendingApproval = () => {
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       sortOrderMeetingTitle,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderMeetingTitle((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderMeetingTitle) }),
       render: (text, record) => (
         <p
           onClick={() => {
@@ -250,15 +241,7 @@ const PendingApproval = () => {
       sorter: (a, b) =>
         a.requestedBy.toLowerCase().localeCompare(b.requestedBy.toLowerCase()),
       sortOrderReviewRequest,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderReviewRequest((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderReviewRequest) }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
           {text}
@@ -286,15 +269,7 @@ const PendingApproval = () => {
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
       sortOrderLeaveDateTime,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderLeaveDateTime((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderLeaveDateTime) }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
           {newDateFormatterForMinutesPendingApproval(text, lang)}
@@ -345,7 +320,7 @@ const PendingApproval = () => {
   const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
 
   useEffect(() => {
-    let Data = { sRow: 0, Length: 10 };
+    let Data = DEFAULT_PENDING_APPROVALS_PAGE;
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
     dispatch(GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}));
     // Notification Click Rendering if Clicked on Notification Added you as Reviewer

@@ -54,8 +54,7 @@ const postAssgineeComment = (navigate, data, t) => {
               await dispatch(
                 postCommentsSuccess(
                   response.data.responseResult,
-                  "",
-                  // t("Comment-added-successfully")
+                  t("Comment-added-successfully"),
                 ),
               );
             } else if (

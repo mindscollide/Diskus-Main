@@ -16,7 +16,12 @@ import {
   participantVideoNavigationScreen,
   setAudioControlHost,
   setVideoControlHost,
+  videoChatMessagesFlag,
 } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  chatBoxActiveFlag,
+  activeChatBoxGS,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import "./maxParticipantVideoRemovedComponent.css";
 
 const MaxParticipantVideoRemovedComponent = () => {
@@ -44,6 +49,13 @@ const MaxParticipantVideoRemovedComponent = () => {
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(participantPopup(false));
+    // Close any chat panel this participant had open — the host removing
+    // them from the meeting never reset it before, so their chat panel
+    // (VideoChatMessagesFlag, or the meeting-group chat opened via
+    // ChatBoxActiveFlag/ActiveChatBoxGS) stayed open after being kicked.
+    dispatch(videoChatMessagesFlag(false));
+    dispatch(chatBoxActiveFlag(false));
+    dispatch(activeChatBoxGS(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
   };

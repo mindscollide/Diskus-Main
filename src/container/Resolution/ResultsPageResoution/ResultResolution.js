@@ -30,20 +30,17 @@ const ResultResolution = ({
   const ResolutionReducergetResolutionResult = useSelector(
     (state) => state.ResolutionReducer.getResolutionResult
   );
-  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
   const [resolutionID, setResolutionID] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0);
-  const [votingMethod, setVotingMethod] = useState("");
   const [isVotingMethodId, setVotingMethodId] = useState(0);
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
   const [voter, setVoter] = useState([]);
-  const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
   
   const options = {
@@ -125,11 +122,9 @@ const ResultResolution = ({
         let isAbstainValue = resolutionresult.abstainVotes;
         setApproved(resolutionresult.approvedVotes);
         setAbstain(isAbstainValue || 0);
-        setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);
         setTotalVoters(resolutionresult.totalVoters);
-        setDecision(resolutionresult.decision);
         setVoter(resolutionresult.voters);
         setResolutionID(resolutionresult.resolutionID);
         setResolutionTitle(resolutionresult.resolutionTite);

@@ -1390,7 +1390,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   >
                     <img
                       onClick={
-                        !presenterViewHostFlag && !globallyScreenShare
+                        !presenterViewHostFlag &&
+                        !presenterViewJoinFlag &&
+                        !globallyScreenShare
                           ? handleScreenShareButton
                           : null
                       }

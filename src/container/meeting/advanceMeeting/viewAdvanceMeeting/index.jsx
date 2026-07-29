@@ -175,6 +175,14 @@ const ViewMeetingModal = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
+
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -551,26 +559,26 @@ const ViewMeetingModal = () => {
       console.log(error, "errorerrorerrorerrorerror");
     }
 
-    // dispatch(resetViewGroupDetails());
-    // dispatch(resetViewCommitteeDetails());
-    // dispatch(
-    //   listOfMeetingsApi(
-    //     navigate,
-    //     t,
-    //     {
-    //       Date: "",
-    //       Title: "",
-    //       HostName: "",
-    //       UserID: Number(userID),
-    //       PageNumber:
-    //         meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-    //       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-    //       PublishedMeetings: currentView && Number(currentView) === 1,
-    //       ProposedMeetings: currentView && Number(currentView) === 2,
-    //     },
-    //     "",
-    //   ),
-    // );
+    if (committeeInfo === null && groupInfo === null) {
+      dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+            PublishedMeetings: currentView && Number(currentView) === 1,
+            ProposedMeetings: currentView && Number(currentView) === 2,
+          },
+          "",
+        ),
+      );
+    }
   };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 

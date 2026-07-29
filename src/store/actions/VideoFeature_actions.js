@@ -430,6 +430,8 @@ const hideUnHideParticipantGuestFail = (message) => {
 const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
   return (dispatch) => {
     let form = new FormData();
+    form.append("RequestMethod", hideUnHidePaticipantVideo.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {

@@ -61,7 +61,7 @@ import {
   saveFilesQuickMeetingApi,
   uploadDocumentsQuickMeetingApi,
 } from "@/store/actions/NewMeetingActions";
-import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
@@ -2118,7 +2118,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       FileID: Number(record.OriginalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         dataRoomData,
         t,
