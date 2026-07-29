@@ -15,7 +15,6 @@ import {
   TextField,
   Button,
   Checkbox,
-  Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -31,25 +30,15 @@ import {
   getAllResolutionStatus,
   getAllVotingMethods,
   cancelResolutionApi,
-  clearResponseMessage,
   updateResolutionModal,
   updateResolution,
   uploadDocumentsResolutionApi,
   saveFilesResolutionApi,
   getAllGroupsandCommitteesforResolution,
 } from "../../../store/actions/Resolution_actions";
-import moment from "moment";
 import {
   convertIntoDateObject,
-  createConvert,
-  editResolutionDate,
-  editResolutionTime,
-  editResolutionTimeView,
-  forRecentActivity,
   multiDatePickerDateChangIntoUTC,
-  removeDashesFromDate,
-  RemoveTimeDashes,
-  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
@@ -78,9 +67,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const ResolutionReducerGetAllVotingMethods = useSelector(
     (state) => state.ResolutionReducer.GetAllVotingMethods
   );
-  const ResolutionReducerResponseMessage = useSelector(
-    (state) => state.ResolutionReducer.ResponseMessage
-  );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -107,7 +93,7 @@ const EditResolution = ({ setCancelresolution }) => {
   const [isVoter, setVoter] = useState(true);
   const [show, SnackBar] = useSnackbar();
   const [votingMethods, setVotingMethods] = useState([]);
-  const [decision, setDecision] = useState({
+  const [decision] = useState({
     label: t("Decision-pending"),
     value: 1,
   });
@@ -120,7 +106,7 @@ const EditResolution = ({ setCancelresolution }) => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  const [reminderData, setReminderData] = useState([
+  const [reminderData] = useState([
     {
       label: "10 minutes before",
       value: 1,
@@ -246,12 +232,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const resolutiondiscard = () => {
     setDsicardresolution(true);
   };
-  const dateformatYYYYMMDD = (date) => {
-    if (!!date && typeof date === "string") {
-      return moment(date).add(1, "days").toDate();
-    }
-  };
-
   const resolutioncancell = (id) => {
     setCancelResolutionID(id);
     setResolutioncancel(true);
@@ -326,6 +306,13 @@ const EditResolution = ({ setCancelresolution }) => {
     setFileSize(fileSizefound);
   };
 
+  const toVoterPayload = (id, email) => ({
+    FK_UID: id,
+    FK_VotingStatus_ID: 3,
+    Notes: "",
+    Email: email,
+  });
+
   const addVoters = () => {
     let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
     let voters_Data = [...voters];
@@ -367,12 +354,9 @@ const EditResolution = ({ setCancelresolution }) => {
 
               if (checkIfExistInVoters.length > 0) {
                 checkIfExistInVoters.forEach((userData, index) => {
-                  voters_Data.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  voters_Data.push(
+                    toVoterPayload(userData.userID, userData.emailAddress),
+                  );
                   voters_DataView.push(userData);
                 });
               } else {
@@ -417,12 +401,9 @@ const EditResolution = ({ setCancelresolution }) => {
               );
               if (checkIfExistInVoters.length > 0) {
                 checkIfExistInVoters.forEach((userData) => {
-                  voters_Data.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  voters_Data.push(
+                    toVoterPayload(userData.userID, userData.emailAddress),
+                  );
                   voters_DataView.push(userData);
                 });
               } else {
@@ -447,12 +428,9 @@ const EditResolution = ({ setCancelresolution }) => {
               if (organizationUsers.length > 0) {
                 organizationUsers.forEach((voeterdata, index) => {
                   if (voeterdata.userID === voterInfo.value) {
-                    voters_Data.push({
-                      FK_UID: voeterdata.userID,
-                      FK_VotingStatus_ID: 3,
-                      Notes: "",
-                      Email: voeterdata.emailAddress,
-                    });
+                    voters_Data.push(
+                      toVoterPayload(voeterdata.userID, voeterdata.emailAddress),
+                    );
                     voters_DataView.push(voeterdata);
                   }
                 });
@@ -521,12 +499,9 @@ const EditResolution = ({ setCancelresolution }) => {
 
               if (checkIfExistInNonVoters.length > 0) {
                 checkIfExistInNonVoters.forEach((userData) => {
-                  nonVotersData.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  nonVotersData.push(
+                    toVoterPayload(userData.userID, userData.emailAddress),
+                  );
                   nonVotersDataView.push(userData);
                 });
               } else {
@@ -571,12 +546,9 @@ const EditResolution = ({ setCancelresolution }) => {
               );
               if (checkIfExistInNonVoters.length > 0) {
                 checkIfExistInNonVoters.forEach((userData) => {
-                  nonVotersData.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  nonVotersData.push(
+                    toVoterPayload(userData.userID, userData.emailAddress),
+                  );
                   nonVotersDataView.push(userData);
                 });
               } else {
@@ -600,12 +572,9 @@ const EditResolution = ({ setCancelresolution }) => {
               if (organizationUsers.length > 0) {
                 organizationUsers.forEach((voeterdata, index) => {
                   if (voeterdata.userID === nonVoterInfo.value) {
-                    nonVotersData.push({
-                      FK_UID: voeterdata.userID,
-                      FK_VotingStatus_ID: 3,
-                      Notes: "",
-                      Email: voeterdata.emailAddress,
-                    });
+                    nonVotersData.push(
+                      toVoterPayload(voeterdata.userID, voeterdata.emailAddress),
+                    );
                     nonVotersDataView.push(voeterdata);
                   }
                 });
@@ -751,156 +720,48 @@ const EditResolution = ({ setCancelresolution }) => {
     customRequest() {},
   };
 
+  const buildResolutionModelData = () => ({
+    ResolutionModel: {
+      FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
+      FK_ResolutionVotingMethodID:
+        editResolutionData.FK_ResolutionVotingMethodID,
+      Title: editResolutionData.Title,
+      NotesToVoter: editResolutionData.NotesToVoter,
+      CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
+        circulationDateTime.date
+      ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+        circulationDateTime.time
+      ).slice(8, 14)}`,
+      DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
+        votingDateTime.date
+      ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+        votingDateTime.time
+      ).slice(8, 14)}`,
+      FK_ResolutionReminderFrequency_ID:
+        editResolutionData.FK_ResolutionReminderFrequency_ID,
+      FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
+      PK_ResolutionID: editResolutionData.pK_ResolutionID,
+      DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
+        decisionDateTime.date
+      ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
+        decisionDateTime.time
+      ).slice(8, 14)}`,
+      IsResolutionPublic: editResolutionData.IsResolutionPublic,
+      FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+      FK_UID: JSON.parse(localStorage.getItem("userID")),
+    },
+  });
+
   const handleCirculateResolution = async () => {
-    if (fileForSend.length > 0) {
-      setsendStatus(2);
-      let Data = {
-        ResolutionModel: {
-          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
-          FK_ResolutionVotingMethodID:
-            editResolutionData.FK_ResolutionVotingMethodID,
-          Title: editResolutionData.Title,
-          NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.time
-          ).slice(8, 14)}`,
-          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
-            votingDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            votingDateTime.time
-          ).slice(8, 14)}`,
-
-          FK_ResolutionReminderFrequency_ID:
-            editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
-          PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.time
-          ).slice(8, 14)}`,
-
-          IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
-          FK_UID: JSON.parse(localStorage.getItem("userID")),
-        },
-      };
-      
-      dispatch(createResolution(navigate, Data, voters, t));
-    } else {
-      setsendStatus(2);
-      let Data = {
-        ResolutionModel: {
-          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
-          FK_ResolutionVotingMethodID:
-            editResolutionData.FK_ResolutionVotingMethodID,
-          Title: editResolutionData.Title,
-          NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.time
-          ).slice(8, 14)}`,
-          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
-            votingDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            votingDateTime.time
-          ).slice(8, 14)}`,
-          FK_ResolutionReminderFrequency_ID:
-            editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
-          PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.time
-          ).slice(8, 14)}`,
-          IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
-          FK_UID: JSON.parse(localStorage.getItem("userID")),
-        },
-      };
-      
-
-      dispatch(createResolution(navigate, Data, voters, t));
-    }
+    setsendStatus(2);
+    let Data = buildResolutionModelData();
+    dispatch(createResolution(navigate, Data, voters, t));
   };
 
   const handleUpdateResolution = async () => {
-    if (fileForSend.length > 0) {
-      setsendStatus(1);
-      let Data = {
-        ResolutionModel: {
-          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
-          FK_ResolutionVotingMethodID:
-            editResolutionData.FK_ResolutionVotingMethodID,
-          Title: editResolutionData.Title,
-          NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.time
-          ).slice(8, 14)}`,
-          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
-            votingDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            votingDateTime.time
-          ).slice(8, 14)}`,
-          FK_ResolutionReminderFrequency_ID:
-            editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
-          PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.time
-          ).slice(8, 14)}`,
-          IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
-          FK_UID: JSON.parse(localStorage.getItem("userID")),
-        },
-      };
-      
-      dispatch(createResolution(navigate, Data, voters, t));
-    } else {
-      setsendStatus(1);
-      let Data = {
-        ResolutionModel: {
-          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
-          FK_ResolutionVotingMethodID:
-            editResolutionData.FK_ResolutionVotingMethodID,
-          Title: editResolutionData.Title,
-          NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: `${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            circulationDateTime.time
-          ).slice(8, 14)}`,
-          DeadlineDateTime: `${multiDatePickerDateChangIntoUTC(
-            votingDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            votingDateTime.time
-          ).slice(8, 14)}`,
-          FK_ResolutionReminderFrequency_ID:
-            editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
-          PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: `${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.date
-          ).slice(0, 8)}${multiDatePickerDateChangIntoUTC(
-            decisionDateTime.time
-          ).slice(8, 14)}`,
-          IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
-          FK_UID: JSON.parse(localStorage.getItem("userID")),
-        },
-      };
-      
-
-      dispatch(createResolution(navigate, Data, voters, t));
-    }
+    setsendStatus(1);
+    let Data = buildResolutionModelData();
+    dispatch(createResolution(navigate, Data, voters, t));
   };
 
   const createResolutionHandleClick = async (id) => {
@@ -1123,12 +984,7 @@ const EditResolution = ({ setCancelresolution }) => {
         meetingAttendeesList
           .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
           .forEach((data) => {
-            sendVoter.push({
-              FK_UID: data.pK_UID,
-              FK_VotingStatus_ID: 3,
-              Notes: "",
-              Email: data.emailAddress,
-            });
+            sendVoter.push(toVoterPayload(data.pK_UID, data.emailAddress));
             viewVoter.push(data);
           });
         setVoters(sendVoter);
@@ -1142,12 +998,7 @@ const EditResolution = ({ setCancelresolution }) => {
         meetingAttendeesList
           .filter((assigneeData) => assigneeData.pK_UID === voterMember.fK_UID)
           .forEach((data) => {
-            sendVoter.push({
-              FK_UID: data.pK_UID,
-              FK_VotingStatus_ID: 3,
-              Notes: "",
-              Email: data.emailAddress,
-            });
+            sendVoter.push(toVoterPayload(data.pK_UID, data.emailAddress));
             viewVoter.push(data);
           });
         setNonVoters(sendVoter);
@@ -1385,12 +1236,7 @@ const EditResolution = ({ setCancelresolution }) => {
                 (assigneeData) => assigneeData.userID === voterMember.fK_UID
               )
               .forEach((data) => {
-                vTrs.push({
-                  FK_UID: data.userID,
-                  FK_VotingStatus_ID: 3,
-                  Notes: "",
-                  Email: data.emailAddress,
-                });
+                vTrs.push(toVoterPayload(data.userID, data.emailAddress));
                 vTrsVie.push(data);
               });
           });
@@ -1409,12 +1255,7 @@ const EditResolution = ({ setCancelresolution }) => {
                   assigneeData.userID === voterMember.fK_UID
               )
               .forEach((data, index) => {
-                nVtr.push({
-                  FK_UID: data.userID,
-                  FK_VotingStatus_ID: 3,
-                  Notes: "",
-                  Email: data.emailAddress,
-                });
+                nVtr.push(toVoterPayload(data.userID, data.emailAddress));
                 nVtrVie.push(data);
               });
           });

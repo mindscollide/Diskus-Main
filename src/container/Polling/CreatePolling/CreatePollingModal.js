@@ -38,10 +38,10 @@ const CreatePolling = () => {
   registerLocale("en", enGB);
   //For Custom language datepicker
   const PollsReducergellAllCommittesandGroups = useSelector(
-    (state) => state.PollsReducer.gellAllCommittesandGroups
+    (state) => state.PollsReducer.gellAllCommittesandGroups,
   );
   const PollsReducercreatePollmodal = useSelector(
-    (state) => state.PollsReducer.createPollmodal
+    (state) => state.PollsReducer.createPollmodal,
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -231,14 +231,14 @@ const CreatePolling = () => {
         selectedsearch.forEach((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value,
             );
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
                 groupUsers.forEach((gUser) => {
                   let check2 = members.find(
-                    (data) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID,
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -250,14 +250,14 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = pollsData.committees.find(
-              (data) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value,
             );
             if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
                 committeesUsers.forEach((cUser) => {
                   let check2 = members.find(
-                    (data) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID,
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -269,12 +269,12 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = members.find(
-              (data) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value,
             );
             if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value,
               );
 
               if (check2 !== undefined) {
@@ -289,15 +289,11 @@ const CreatePolling = () => {
           }
         });
       } catch {}
-      
 
-      
       const uniqueData = new Set(tem.map(JSON.stringify));
-      
 
       // Convert the Set back to an array of objects
       const result = Array.from(uniqueData).map(JSON.parse);
-      
 
       setMembers(result);
       setSelectedsearch([]);
@@ -317,9 +313,7 @@ const CreatePolling = () => {
         ...createPollData,
         date: DateDate,
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // for create polls
@@ -403,7 +397,7 @@ const CreatePolling = () => {
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
-      })
+      }),
     );
   };
 
@@ -625,7 +619,7 @@ const CreatePolling = () => {
                                                     height='31.76px'
                                                     onClick={() =>
                                                       HandleCancelFunction(
-                                                        index
+                                                        index,
                                                       )
                                                     }
                                                     className={
@@ -930,8 +924,8 @@ const CreatePolling = () => {
           size={defineUnsaveModal ? "md" : "xl"}
         />
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

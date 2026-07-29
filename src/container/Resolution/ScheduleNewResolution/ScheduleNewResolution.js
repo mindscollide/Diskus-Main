@@ -174,11 +174,10 @@ const ScheduleNewResolution = () => {
 
   useEffect(() => {
     if (currentLanguage !== null && currentLanguage !== undefined) {
+      setCalendarValue(gregorian);
       if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
         setLocalValue(gregorian_ar);
       }
     }
@@ -187,7 +186,6 @@ const ScheduleNewResolution = () => {
     dispatch(getAllVotingMethods(navigate, t, true));
     dispatch(getAllResolutionStatus(navigate, t, true));
     dispatch(getAllGroupsandCommitteesforResolution(navigate, t));
-    return;
   }, []);
 
   const dateformatYYYYMMDD = (date) => {
@@ -272,10 +270,16 @@ const ScheduleNewResolution = () => {
     fileForSend.splice(fileForSendingIndex, 1);
     setFileForSend(fileForSend);
     setFileSize(fileSizefound);
-    let searchIndex = tasksAttachments;
-    searchIndex.splice(index, 1);
+    tasksAttachments.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
+
+  const toVoterPayload = (user) => ({
+    FK_UID: user.userID,
+    FK_VotingStatus_ID: 3,
+    Notes: "",
+    Email: user.emailAddress,
+  });
 
   const addVoters = () => {
     let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
@@ -318,12 +322,7 @@ const ScheduleNewResolution = () => {
 
               if (checkIfExistInVoters.length > 0) {
                 checkIfExistInVoters.forEach((userData) => {
-                  voters_Data.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  voters_Data.push(toVoterPayload(userData));
                   voters_DataView.push(userData);
                 });
               } else {
@@ -368,12 +367,7 @@ const ScheduleNewResolution = () => {
               );
               if (checkIfExistInVoters.length > 0) {
                 checkIfExistInVoters.forEach((userData, index) => {
-                  voters_Data.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  voters_Data.push(toVoterPayload(userData));
                   voters_DataView.push(userData);
                 });
               } else {
@@ -398,12 +392,7 @@ const ScheduleNewResolution = () => {
               if (organizationUsers.length > 0) {
                 organizationUsers.forEach((voeterdata) => {
                   if (voeterdata.userID === voterInfo.value) {
-                    voters_Data.push({
-                      FK_UID: voeterdata.userID,
-                      FK_VotingStatus_ID: 3,
-                      Notes: "",
-                      Email: voeterdata.emailAddress,
-                    });
+                    voters_Data.push(toVoterPayload(voeterdata));
                     voters_DataView.push(voeterdata);
                   }
                 });
@@ -472,12 +461,7 @@ const ScheduleNewResolution = () => {
 
               if (checkIfExistInNonVoters.length > 0) {
                 checkIfExistInNonVoters.forEach((userData, index) => {
-                  nonVotersData.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  nonVotersData.push(toVoterPayload(userData));
                   nonVotersDataView.push(userData);
                 });
               } else {
@@ -525,12 +509,7 @@ const ScheduleNewResolution = () => {
               );
               if (checkIfExistInNonVoters.length > 0) {
                 checkIfExistInNonVoters.forEach((userData) => {
-                  nonVotersData.push({
-                    FK_UID: userData.userID,
-                    FK_VotingStatus_ID: 3,
-                    Notes: "",
-                    Email: userData.emailAddress,
-                  });
+                  nonVotersData.push(toVoterPayload(userData));
                   nonVotersDataView.push(userData);
                 });
               } else {
@@ -557,12 +536,7 @@ const ScheduleNewResolution = () => {
               if (organizationUsers.length > 0) {
                 organizationUsers.forEach((voeterdata) => {
                   if (voeterdata.userID === nonVoterInfo.value) {
-                    nonVotersData.push({
-                      FK_UID: voeterdata.userID,
-                      FK_VotingStatus_ID: 3,
-                      Notes: "",
-                      Email: voeterdata.emailAddress,
-                    });
+                    nonVotersData.push(toVoterPayload(voeterdata));
                     nonVotersDataView.push(voeterdata);
                   }
                 });
@@ -649,81 +623,54 @@ const ScheduleNewResolution = () => {
     }
   };
 
+  // Same 10-clause validity check shared by save and circulate.
+  const isResolutionFormValid = () =>
+    createResolutionData.Title !== "" &&
+    circulationDateTime.dateValue !== "" &&
+    decisionDateTime.dateValue !== "" &&
+    votingDateTime.dateValue !== "" &&
+    decisionDateTime.time !== "" &&
+    circulationDateTime.time !== "" &&
+    votingDateTime.time !== "" &&
+    createResolutionData.NotesToVoter !== "" &&
+    createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
+    createResolutionData.FK_ResolutionReminderFrequency_ID !== 0;
+
+  const buildResolutionModelData = (statusID) => ({
+    ResolutionModel: {
+      FK_ResolutionStatusID: statusID,
+      FK_ResolutionVotingMethodID:
+        createResolutionData.FK_ResolutionVotingMethodID,
+      Title: createResolutionData.Title,
+      NotesToVoter: createResolutionData.NotesToVoter,
+      CirculationDateTime: createConvert(
+        removeDashesFromDate(circulationDateTime.date) +
+          RemoveTimeDashes(circulationDateTime.time),
+      ),
+      DeadlineDateTime: createConvert(
+        removeDashesFromDate(votingDateTime.date) +
+          RemoveTimeDashes(votingDateTime.time),
+      ),
+      FK_ResolutionReminderFrequency_ID:
+        createResolutionData.FK_ResolutionReminderFrequency_ID,
+      FK_ResolutionDecision_ID: decision.value,
+      DecisionAnnouncementDateTime: createConvert(
+        removeDashesFromDate(decisionDateTime.date) +
+          RemoveTimeDashes(decisionDateTime.time),
+      ),
+      IsResolutionPublic: createResolutionData.IsResolutionPublic,
+      FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+      FK_UID: JSON.parse(localStorage.getItem("userID")),
+    },
+  });
+
   const resolutionSaveHandler = async () => {
-    if (
-      createResolutionData.Title !== "" &&
-      circulationDateTime.dateValue !== "" &&
-      decisionDateTime.dateValue !== "" &&
-      votingDateTime.dateValue !== "" &&
-      decisionDateTime.time !== "" &&
-      circulationDateTime.time !== "" &&
-      votingDateTime.time !== "" &&
-      createResolutionData.NotesToVoter !== "" &&
-      createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
-      createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
-    ) {
+    if (isResolutionFormValid()) {
       setsendStatus(1);
+      let Data = buildResolutionModelData(1);
       if (fileForSend.length > 0) {
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: 1,
-            FK_ResolutionVotingMethodID:
-              createResolutionData.FK_ResolutionVotingMethodID,
-            Title: createResolutionData.Title,
-            NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time),
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time),
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: decision.value,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time),
-            ),
-            IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID"),
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
         await dispatch(createResolution(navigate, Data, voters, t));
       } else {
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: 1,
-            FK_ResolutionVotingMethodID:
-              createResolutionData.FK_ResolutionVotingMethodID,
-            Title: createResolutionData.Title,
-            NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time),
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time),
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: decision.value,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time),
-            ),
-            IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID"),
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
         dispatch(createResolution(navigate, Data, voters, t));
         setTasksAttachments([]);
       }
@@ -734,93 +681,17 @@ const ScheduleNewResolution = () => {
   };
 
   const resolutionCirculateHandler = async () => {
-    if (
-      createResolutionData.Title !== "" &&
-      circulationDateTime.dateValue !== "" &&
-      decisionDateTime.dateValue !== "" &&
-      votingDateTime.dateValue !== "" &&
-      decisionDateTime.time !== "" &&
-      circulationDateTime.time !== "" &&
-      votingDateTime.time !== "" &&
-      createResolutionData.NotesToVoter !== "" &&
-      createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
-      createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
-    ) {
+    if (isResolutionFormValid()) {
       setsendStatus(2);
-      if (fileForSend.length > 0) {
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: 2,
-            FK_ResolutionVotingMethodID:
-              createResolutionData.FK_ResolutionVotingMethodID,
-            Title: createResolutionData.Title,
-            NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time),
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time),
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: decision.value,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time),
-            ),
-            IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID"),
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
-        if (Object.keys(voters).length <= 0) {
-          setError(true);
-          setVoter(true);
-          setNonVoter(false);
-        } else {
-          dispatch(createResolution(navigate, Data, voters, t));
-        }
+      let Data = buildResolutionModelData(2);
+      if (Object.keys(voters).length <= 0) {
+        setError(true);
+        setVoter(true);
+        setNonVoter(false);
       } else {
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: 2,
-            FK_ResolutionVotingMethodID:
-              createResolutionData.FK_ResolutionVotingMethodID,
-            Title: createResolutionData.Title,
-            NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time),
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time),
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: decision.value,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time),
-            ),
-            IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID"),
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
-        if (Object.keys(voters).length <= 0) {
-          setError(true);
-          setVoter(true);
-          setNonVoter(false);
-        } else {
-          dispatch(createResolution(navigate, Data, voters, t));
-        }
+        dispatch(createResolution(navigate, Data, voters, t));
+      }
+      if (fileForSend.length <= 0) {
         setTasksAttachments([]);
       }
     } else {
@@ -1112,7 +983,6 @@ const ScheduleNewResolution = () => {
         time: formattedTime,
         timeCirculationforView: date,
       });
-    } else {
     }
   };
 
@@ -1132,7 +1002,6 @@ const ScheduleNewResolution = () => {
         time: formattedTime,
         timeVotingforView: date,
       });
-    } else {
     }
   };
 
@@ -1151,7 +1020,6 @@ const ScheduleNewResolution = () => {
         time: formattedTime,
         timeCirculationforView: date,
       });
-    } else {
     }
   };
 

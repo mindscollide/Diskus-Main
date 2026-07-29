@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
-import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const currentLanguage = localStorage.getItem("i18nextLng");
