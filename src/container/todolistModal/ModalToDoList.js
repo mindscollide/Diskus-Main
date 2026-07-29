@@ -3,14 +3,13 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import "./ModalToDoList.css";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   TextField,
   Button,
   Modal,
-  Notification,
   AttachmentViewer,
 } from "./../../components/elements";
 import {
@@ -33,6 +32,14 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { maxFileSize } from "../../commen/functions/utils";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
+
+const INITIAL_TASK = {
+  PK_TID: 1,
+  Title: "",
+  Description: "",
+  IsMainTask: true,
+  creationDate: "",
+};
 
 const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
   //For Localization
@@ -58,13 +65,6 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
@@ -96,24 +96,14 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
   }, [currentLanguage]);
 
   //task Object
-  const [task, setTask] = useState({
-    PK_TID: 1,
-    Title: "",
-    Description: "",
-    IsMainTask: true,
-    creationDate: "",
-  });
-  
+  const [task, setTask] = useState(INITIAL_TASK);
+
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
 
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  
-
-  const [taskAssignedName, setTaskAssignedName] = useState([]);
-  const [assignees, setAssignees] = useState([]);
   const [createTaskID, setCreateTaskID] = useState(0);
 
   //Upload File States
@@ -135,17 +125,8 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
       return () => {
         setCloseConfirmationBox(false);
         setIsCreateTodo(true);
-        setTask({
-          ...task,
-          PK_TID: 1,
-          Title: "",
-          Description: "",
-          IsMainTask: true,
-          creationDate: "",
-        });
+        setTask(INITIAL_TASK);
         setTaskAssignedTo([]);
-        setTaskAssignedName([]);
-        setAssignees([]);
         setFileForSend([]);
         setTasksAttachments({ TasksAttachments: [] });
       };
@@ -168,7 +149,7 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
       ) {
         let PresenterData = [];
         data.forEach((user, index) => {
-          PresenterData.push({
+          const presenterOption = {
             label: (
               <>
                 <Row>
@@ -192,34 +173,11 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
             ),
             value: user.pK_UID,
             name: user.name,
-          });
+          };
+          PresenterData.push(presenterOption);
           if (Number(user.pK_UID) === Number(createrID)) {
             setTaskAssignedTo([user.pK_UID]);
-            setPresenterValue({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{user.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: user.pK_UID,
-              name: user.name,
-            });
+            setPresenterValue(presenterOption);
           }
         });
 
@@ -327,12 +285,6 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
       }
     });
   };
-
-  useEffect(() => {
-    if (taskAssignedName.length > 1) {
-      show(t("Only-one-assignee-allow"), "error");
-    }
-  }, [taskAssignedName.length]);
 
   //Input Field Assignee Change
   const onChangeSearch = (item) => {
@@ -466,27 +418,6 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
     }
   }, [toDoListReducertodoDocumentsMappingData]);
 
-  const handleDeleteAttendee = (data, index) => {
-    let newDataAssignees = [...assignees];
-    newDataAssignees.splice(index, 1);
-    let newDataTaskAssignedTo = [...TaskAssignedTo];
-    newDataTaskAssignedTo.splice(index, 1);
-
-    setAssignees(newDataAssignees);
-    setTaskAssignedName([]);
-    setTaskAssignedTo(newDataTaskAssignedTo);
-  };
-
-  function CustomInput({ onFocus, value, onChange }) {
-    return (
-      <input
-        onFocus={onFocus}
-        value={value}
-        onChange={onChange}
-        className="input-with-icon"
-      />
-    );
-  }
   const handleCloseConfirmationModal = () => {
     setShow(false);
     setCloseConfirmationBox(false);

@@ -9,7 +9,6 @@ import {
   newDateFormaterAsPerUTC,
   startDateTimeMeetingCalendar,
 } from "../../../commen/functions/date_formater";
-import { Notification } from "../../../components/elements";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -27,6 +26,73 @@ import {
 } from "../../../store/actions/GetMeetingUserId";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import styles from "./Calendar.module.css";
+
+// Maps a calendar event source ID to its translated label
+const getEventSourceLabel = (fK_CESID, t) => {
+  switch (fK_CESID) {
+    case 1:
+      return t("Google");
+    case 2:
+      return t("Office");
+    case 3:
+      return t("Diskus");
+    case 4:
+      return t("Microsoft");
+    default:
+      return "";
+  }
+};
+
+// Maps a calendar event type ID to its translated label
+const getEventTypeLabel = (fK_CETID, t) => {
+  switch (fK_CETID) {
+    case 1:
+      return t("None");
+    case 2:
+      return t("Meeting");
+    case 3:
+      return t("Task");
+    case 4:
+      return t("Resolution");
+    case 5:
+      return t("Polls");
+    default:
+      return "";
+  }
+};
+
+// Builds the dashboard's calendar-event shape from a meeting-socket payload
+const buildDashboardCalendarEvent = (
+  meetingData,
+  t,
+  { participantRoleID, attendeeRoleID },
+) => ({
+  pK_MDID: meetingData.pK_MDID,
+  pK_CEID: meetingData.pK_CEID,
+  fK_TZID: meetingData.fK_TZID,
+  fK_CETID: meetingData.fK_CETID,
+  fK_CESID: meetingData.fK_CESID,
+  location: meetingData.location,
+  eventDate: meetingData.dateOfMeeting,
+  startTime: meetingData.meetingStartTime,
+  endTime: meetingData.meetingEndTime,
+  title: meetingData.title,
+  description: "",
+  calenderEventSource: getEventSourceLabel(meetingData.fK_CESID, t),
+  calenderEventType: getEventTypeLabel(meetingData.fK_CETID, t),
+  timeZone: meetingData.timeZone,
+  statusID: meetingData.status,
+  participantRoleID: participantRoleID,
+  isQuickMeeting: meetingData.isQuickMeeting,
+  videoCallURL: meetingData.videoCallURL,
+  isChat: meetingData.isChat,
+  isVideoCall: meetingData.isVideoCall,
+  talkGroupID: meetingData.talkGroupID,
+  isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
+  isMinutePublished: meetingData.isMinutePublished ? true : false,
+  attendeeRoleID: attendeeRoleID,
+});
+
 const NewCalendar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -144,28 +210,8 @@ const NewCalendar = () => {
           endTime: calenderData.endTime,
           title: calenderData.title,
           description: calenderData.description,
-          calenderEventSource:
-            calenderData.fK_CESID === 1
-              ? t("Google")
-              : calenderData.fK_CESID === 2
-                ? t("Office")
-                : calenderData.fK_CESID === 3
-                  ? t("Diskus")
-                  : calenderData.fK_CESID === 4
-                    ? t("Microsoft")
-                    : "",
-          calenderEventType:
-            calenderData.fK_CETID === 1
-              ? t("None")
-              : calenderData.fK_CETID === 2
-                ? t("Meeting")
-                : calenderData.fK_CETID === 3
-                  ? t("Task")
-                  : calenderData.fK_CETID === 4
-                    ? t("Resolution")
-                    : calenderData.fK_CETID === 5
-                      ? t("Polls")
-                      : "",
+          calenderEventSource: getEventSourceLabel(calenderData.fK_CESID, t),
+          calenderEventType: getEventTypeLabel(calenderData.fK_CETID, t),
           timeZone: calenderData.timeZone,
           statusID: calenderData.statusID,
           participantRoleID: calenderData.participantRoleID,
@@ -344,29 +390,50 @@ const NewCalendar = () => {
     }
   };
 
+  // Sets a status value on the matching calendar/event entries by meeting ID
+  const updateEventStatus = (meetingID, newStatusID) => {
+    setCalendarEvents((calendarEventData) => {
+      return calendarEventData.map((data) => {
+        if (Number(data.pK_MDID) === Number(meetingID)) {
+          data.statusID = newStatusID;
+        }
+        return data;
+      });
+    });
+    setEvents((event) =>
+      event.map((eventData, index) => {
+        if (eventData.pK_MDID === Number(meetingID)) {
+          eventData.status = newStatusID;
+        }
+        return eventData;
+      }),
+    );
+  };
+
+  // Adds a new dashboard calendar event, or updates the matching one by pK_MDID
+  const upsertCalendarEvent = (isExistAlready, dashboardData, formattedDate) => {
+    if (isExistAlready === -1) {
+      setCalendarEvents([...calendarEvents, dashboardData]);
+      setDates((prev) => [...prev, formattedDate]);
+    } else {
+      setCalendarEvents((calendarEventData) => {
+        return calendarEventData.map((data) => {
+          if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+            return dashboardData;
+          } else {
+            return data;
+          }
+        });
+      });
+    }
+  };
+
   useEffect(() => {
     try {
       if (meetingIdReducer.MeetingStatusEnded !== null) {
         try {
           let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-
-          setCalendarEvents((calendarEventData) => {
-            return calendarEventData.map((data) => {
-              if (Number(data.pK_MDID) === Number(meetingID)) {
-                // Assuming statusID is defined somewhere and you want to update it for this data item
-                data.statusID = 9;
-              }
-              return data; // Always return the data item
-            });
-          });
-          setEvents((event) =>
-            event.map((eventData, index) => {
-              if (eventData.pK_MDID === Number(meetingID)) {
-                eventData.status = 9;
-              }
-              return eventData;
-            }),
-          );
+          updateEventStatus(meetingID, 9);
           // dispatch(getMeetingStatusfromSocket(null));
           dispatch(mqttCurrentMeetingEnded(null));
         } catch (error) {}
@@ -395,52 +462,10 @@ const NewCalendar = () => {
           },
         )?.meetingAttendeeRole.pK_MARID;
 
-        let dashboardData = {
-          pK_MDID: meetingData.pK_MDID,
-          pK_CEID: meetingData.pK_CEID,
-          fK_TZID: meetingData.fK_TZID,
-          fK_CETID: meetingData.fK_CETID,
-          fK_CESID: meetingData.fK_CESID,
-          location: meetingData.location,
-          eventDate: meetingData.dateOfMeeting,
-          startTime: meetingData.meetingStartTime,
-          endTime: meetingData.meetingEndTime,
-          title: meetingData.title,
-          description: "",
-          calenderEventSource:
-            meetingData.fK_CESID === 1
-              ? t("Google")
-              : meetingData.fK_CESID === 2
-                ? t("Office")
-                : meetingData.fK_CESID === 3
-                  ? t("Diskus")
-                  : meetingData.fK_CESID === 4
-                    ? t("Microsoft")
-                    : "",
-          calenderEventType:
-            meetingData.fK_CETID === 1
-              ? t("None")
-              : meetingData.fK_CETID === 2
-                ? t("Meeting")
-                : meetingData.fK_CETID === 3
-                  ? t("Task")
-                  : meetingData.fK_CETID === 4
-                    ? t("Resolution")
-                    : meetingData.fK_CETID === 5
-                      ? t("Polls")
-                      : "",
-          timeZone: meetingData.timeZone,
-          statusID: meetingData.status,
+        let dashboardData = buildDashboardCalendarEvent(meetingData, t, {
           participantRoleID: findPartcipantRoleID,
-          isQuickMeeting: meetingData.isQuickMeeting,
-          videoCallURL: meetingData.videoCallURL,
-          isChat: meetingData.isChat,
-          isVideoCall: meetingData.isVideoCall,
-          talkGroupID: meetingData.talkGroupID,
-          isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
-          isMinutePublished: meetingData.isMinutePublished ? true : false,
           attendeeRoleID: findPartcipantRoleID,
-        };
+        });
 
         // Check if the meeting ID already exists in the upComingEvents array
         const isExistAlready = calendarEvents.findIndex(
@@ -457,20 +482,7 @@ const NewCalendar = () => {
         }
 
         // If meeting ID doesn't exist, add the meeting data to upComingEvents
-        if (isExistAlready === -1) {
-          setCalendarEvents([...calendarEvents, dashboardData]);
-          setDates((prev) => [...prev, formattedDate]);
-        } else {
-          setCalendarEvents((calendarEventData) => {
-            return calendarEventData.map((data) => {
-              if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
-                return dashboardData;
-              } else {
-                return data;
-              }
-            });
-          });
-        }
+        upsertCalendarEvent(isExistAlready, dashboardData, formattedDate);
       }
     } catch (error) {}
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
@@ -495,52 +507,10 @@ const NewCalendar = () => {
           },
         )?.meetingAttendeeRole.pK_MARID;
 
-        let dashboardData = {
-          pK_MDID: meetingData.pK_MDID,
-          pK_CEID: meetingData.pK_CEID,
-          fK_TZID: meetingData.fK_TZID,
-          fK_CETID: meetingData.fK_CETID,
-          fK_CESID: meetingData.fK_CESID,
-          location: meetingData.location,
-          eventDate: meetingData.dateOfMeeting,
-          startTime: meetingData.meetingStartTime,
-          endTime: meetingData.meetingEndTime,
-          title: meetingData.title,
-          description: "",
-          calenderEventSource:
-            meetingData.fK_CESID === 1
-              ? t("Google")
-              : meetingData.fK_CESID === 2
-                ? t("Office")
-                : meetingData.fK_CESID === 3
-                  ? t("Diskus")
-                  : meetingData.fK_CESID === 4
-                    ? t("Microsoft")
-                    : "",
-          calenderEventType:
-            meetingData.fK_CETID === 1
-              ? t("None")
-              : meetingData.fK_CETID === 2
-                ? t("Meeting")
-                : meetingData.fK_CETID === 3
-                  ? t("Task")
-                  : meetingData.fK_CETID === 4
-                    ? t("Resolution")
-                    : meetingData.fK_CETID === 5
-                      ? t("Polls")
-                      : "",
-          timeZone: meetingData.timeZone,
-          statusID: meetingData.status,
+        let dashboardData = buildDashboardCalendarEvent(meetingData, t, {
           participantRoleID: findPartcipantRoleID,
-          isQuickMeeting: meetingData.isQuickMeeting,
-          videoCallURL: meetingData.videoCallURL,
-          isChat: meetingData.isChat,
-          isVideoCall: meetingData.isVideoCall,
-          talkGroupID: meetingData.talkGroupID,
-          isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
-          isMinutePublished: meetingData.isMinutePublished ? true : false,
           attendeeRoleID: meetingData.attendeeRoleID,
-        };
+        });
         // Check if the meeting ID already exists in the upComingEvents array
         const isExistAlready = calendarEvents.findIndex(
           (data) => data.pK_MDID === meetingData.pK_MDID,
@@ -578,20 +548,7 @@ const NewCalendar = () => {
         }
 
         // If meeting ID doesn't exist, add the meeting data to upComingEvents
-        if (isExistAlready === -1) {
-          setCalendarEvents([...calendarEvents, dashboardData]);
-          setDates((prev) => [...prev, formattedDate]);
-        } else {
-          setCalendarEvents((calendarEventData) => {
-            return calendarEventData.map((data) => {
-              if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
-                return dashboardData;
-              } else {
-                return data;
-              }
-            });
-          });
-        }
+        upsertCalendarEvent(isExistAlready, dashboardData, formattedDate);
         dispatch(allMeetingsSocket(null));
       } catch (error) {
         dispatch(allMeetingsSocket(null));
@@ -625,24 +582,7 @@ const NewCalendar = () => {
             .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
         ) {
           let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
-          setCalendarEvents((calendarEventData) => {
-            return calendarEventData.map((data) => {
-              if (Number(data.pK_MDID) === Number(meetingID)) {
-                // Assuming statusID is defined somewhere and you want to update it for this data item
-                data.statusID = 10;
-              }
-              return data; // Always return the data item
-            });
-          });
-
-          setEvents((event) =>
-            event.map((eventData, index) => {
-              if (eventData.pK_MDID === Number(meetingID)) {
-                eventData.status = 10;
-              }
-              return eventData;
-            }),
-          );
+          updateEventStatus(meetingID, 10);
         }
 
         dispatch(getMeetingStatusfromSocket(null));

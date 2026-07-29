@@ -7,7 +7,6 @@ import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
 import {
   ViewToDoList,
-  clearResponce,
   saveTaskDocumentsApi,
   createTaskCommitteeMQTT,
 } from "../../../store/actions/ToDoList_action";
@@ -15,7 +14,6 @@ import "antd/dist/antd.min.css";
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import {
-  cleareMessage,
   getTodoStatus,
   updateTodoStatusFunc,
 } from "../../../store/actions/GetTodos";
@@ -47,28 +45,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     (state) => state.toDoListReducer.createTaskCommittee,
   );
 
-  const assigneesResponseMessage = useSelector(
-    (state) => state.assignees.ResponseMessage,
-  );
-
   const getTodosStatusUpdateTodoStatusMessage = useSelector(
     (state) => state.getTodosStatus.UpdateTodoStatusMessage,
   );
 
-  const getTodosStatusResponseMessage = useSelector(
-    (state) => state.getTodosStatus.ResponseMessage,
-  );
-
-  const getTodosStatusUpdateTodoStatus = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatus,
-  );
-
   const PollsReducergetTodoCommitteeTask = useSelector(
     (state) => state.PollsReducer.getTodoCommitteeTask,
-  );
-
-  const PollsReducerResponseMessage = useSelector(
-    (state) => state.PollsReducer.ResponseMessage,
   );
 
   const todoStatusResponse = useSelector((state) => state.todoStatus.Response);
@@ -77,7 +59,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   const [rowsToDo, setRowToDo] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [show, setShow] = useState(false);
-  const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
@@ -86,12 +67,6 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
   const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
   const [taskDeadlineSort, setDeadlineSort] = useState(null);
-  const [searchData, setSearchData] = useState({
-    Date: "",
-    Title: "",
-    AssignedToName: "",
-    UserID: 0,
-  });
   const [notify, SnackBar] = useSnackbar();
   const [statusOptions, setStatusOptions] = useState([]);
   //Get Current User ID
@@ -329,6 +304,13 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     </Menu>
   );
 
+  const toggleSort = (setter) => () =>
+    setter((order) => {
+      if (order === "descend") return "ascend";
+      if (order === "ascend") return null;
+      return "descend";
+    });
+
   const columnsToDo = [
     {
       title: (
@@ -350,15 +332,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       taskDeadlineSort,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setTaskTitleSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setTaskTitleSort) }),
       render: (text, record) => (
         <p
           className='todolist-title-col'
@@ -389,15 +363,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       ellipsis: true,
 
       // align: "left",
-      onHeaderCell: () => ({
-        onClick: () => {
-          setTaskAssignedBySort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setTaskAssignedBySort) }),
       sorter: (a, b) => {
         return (
           a?.taskCreator?.name
@@ -446,15 +412,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           .toLowerCase()
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
       taskAssignedToSort,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setTaskAssignedToSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setTaskAssignedToSort) }),
       render: (text, record) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
@@ -509,15 +467,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
       align: "center",
       sortDirections: ["descend", "ascend"],
-      onHeaderCell: () => ({
-        onClick: () => {
-          setDeadlineSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setDeadlineSort) }),
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),

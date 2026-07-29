@@ -23,7 +23,6 @@ import Select from "react-select";
 import {
   AttachmentViewer,
   Button,
-  Notification,
   TextField,
 } from "../../components/elements";
 import { Spin, Tooltip } from "antd";
@@ -44,6 +43,7 @@ import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileWithFooterApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
+import { buildNotesSearchPayload, normalizeNotesList } from "./notes.helpers";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -115,45 +115,16 @@ const Notes = () => {
   useEffect(() => {
     try {
       if (notesPagesize !== null && notesPage !== null) {
-        let Data = {
-          UserID: parseInt(createrID),
-          OrganizationID: JSON.parse(OrganizationID),
-          Title: "",
-          isDocument: false,
-          isSpreadSheet: false,
-          isPresentation: false,
-          isForms: false,
-          isImages: false,
-          isPDF: false,
-          isVideos: false,
-          isAudios: false,
-          isSites: false,
-          CreatedDate: "",
+        let Data = buildNotesSearchPayload({
           PageNumber: JSON.parse(notesPage),
           Length: JSON.parse(notesPagesize),
-        };
+        });
         dispatch(GetNotes(navigate, Data, t));
       } else {
         localStorage.setItem("notesPage", 1);
         localStorage.setItem("notesPageSize", 50);
 
-        let Data = {
-          UserID: parseInt(createrID),
-          OrganizationID: JSON.parse(OrganizationID),
-          Title: "",
-          isDocument: false,
-          isSpreadSheet: false,
-          isPresentation: false,
-          isForms: false,
-          isImages: false,
-          isPDF: false,
-          isVideos: false,
-          isAudios: false,
-          isSites: false,
-          CreatedDate: "",
-          PageNumber: 1,
-          Length: 50,
-        };
+        let Data = buildNotesSearchPayload();
         dispatch(GetNotes(navigate, Data, t));
       }
       setCreateNotesModal(false);
@@ -182,54 +153,16 @@ const Notes = () => {
           Array.isArray(NotesReducer.GetAllNotesResponse.getNotes) &&
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
-          let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
-            notes.push({
-              date: data.date,
-              description: data.description,
-              fK_NotesStatus: data.fK_NotesStatus,
-              fK_OrganizationID: data.fK_OrganizationID,
-              fK_UserID: data.fK_UserID,
-              isAttachment: data.isAttachment,
-              isStarred: data.isStarred,
-              modifiedDate: data.modifiedDate,
-              modifiedTime: data.modifiedTime,
-              notesAttachments: data.notesAttachments,
-              notesStatus: data.notesStatus,
-              organizationName: data.organizationName,
-              pK_NotesID: data.pK_NotesID,
-              time: data.time,
-              title: data.title,
-              username: data.username,
-            });
-          });
-          setNotes(notes);
+          setNotes(
+            normalizeNotesList(NotesReducer.GetAllNotesResponse.getNotes)
+          );
         } else if (
           typeof NotesReducer.GetAllNotesResponse.getNotes === "object" &&
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
-          let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.forEach((data) => {
-            notes.push({
-              date: data.date,
-              description: data.description,
-              fK_NotesStatus: data.fK_NotesStatus,
-              fK_OrganizationID: data.fK_OrganizationID,
-              fK_UserID: data.fK_UserID,
-              isAttachment: data.isAttachment,
-              isStarred: data.isStarred,
-              modifiedDate: data.modifiedDate,
-              modifiedTime: data.modifiedTime,
-              notesAttachments: data.notesAttachments,
-              notesStatus: data.notesStatus,
-              organizationName: data.organizationName,
-              pK_NotesID: data.pK_NotesID,
-              time: data.time,
-              title: data.title,
-              username: data.username,
-            });
-          });
-          setNotes(notes);
+          setNotes(
+            normalizeNotesList(NotesReducer.GetAllNotesResponse.getNotes)
+          );
         } else {
           setNotes([]);
         }
@@ -346,23 +279,7 @@ const Notes = () => {
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
       setEnterpressed(true);
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: noteSearchState.searchValue,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isImages: false,
-        isPDF: false,
-        isVideos: false,
-        isAudios: false,
-        isSites: false,
-        CreatedDate: "",
-        PageNumber: 1,
-        Length: 50,
-      };
+      let Data = buildNotesSearchPayload({ Title: noteSearchState.searchValue });
       dispatch(GetNotes(navigate, Data, t));
     }
   };
@@ -373,23 +290,7 @@ const Notes = () => {
       searchValue: "",
     });
     setSearchnotes(false);
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
-      Title: "",
-      isDocument: false,
-      isSpreadSheet: false,
-      isPresentation: false,
-      isForms: false,
-      isImages: false,
-      isPDF: false,
-      isVideos: false,
-      isAudios: false,
-      isSites: false,
-      CreatedDate: "",
-      PageNumber: 1,
-      Length: 50,
-    };
+    let Data = buildNotesSearchPayload();
     dispatch(GetNotes(navigate, Data, t));
   };
 
@@ -431,23 +332,7 @@ const Notes = () => {
         Type: null,
       }));
 
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isImages: false,
-        isPDF: false,
-        isVideos: false,
-        isAudios: false,
-        isSites: false,
-        CreatedDate: "",
-        PageNumber: 1,
-        Length: 50,
-      };
+      let Data = buildNotesSearchPayload();
 
       dispatch(GetNotes(navigate, Data, t));
     } else {
@@ -520,23 +405,7 @@ const Notes = () => {
       ...prevState,
       Type: null,
     }));
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
-      Title: "",
-      isDocument: false,
-      isSpreadSheet: false,
-      isPresentation: false,
-      isForms: false,
-      isImages: false,
-      isPDF: false,
-      isVideos: false,
-      isAudios: false,
-      isSites: false,
-      CreatedDate: "",
-      PageNumber: 1,
-      Length: 50,
-    };
+    let Data = buildNotesSearchPayload();
     dispatch(GetNotes(navigate, Data, t));
   };
 
@@ -708,9 +577,7 @@ const Notes = () => {
   };
 
   const handleSearchEvent = () => {
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
+    let Data = buildNotesSearchPayload({
       Title: searchBoxState.searchByTitle,
       isDocument: searchBoxState.isDocument,
       isSpreadSheet: searchBoxState.isSpreadSheet,
@@ -722,9 +589,7 @@ const Notes = () => {
       isAudios: searchBoxState.isAudios,
       isSites: searchBoxState.isSites,
       CreatedDate: searchBoxState.Date,
-      PageNumber: 1,
-      Length: 50,
-    };
+    });
     dispatch(GetNotes(navigate, Data, t));
   };
 

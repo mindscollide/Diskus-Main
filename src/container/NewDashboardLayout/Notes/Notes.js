@@ -20,6 +20,7 @@ import { Col, Row } from "react-bootstrap";
 import { formatToLocalTimezone } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { useNotesContext } from "../../../context/NotesContext";
+import { buildNotesSearchPayload } from "../../notes/notes.helpers";
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const NotesReducer = useSelector((state) => state.NotesReducer);
@@ -31,31 +32,13 @@ const Notes = () => {
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
   const [getNoteID, setGetNoteID] = useState(0);
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
 
   const calApi = async () => {
     // Notes Feature
     if (checkFeatureIDAvailability(6)) {
       await dispatch(getNotes_Init());
 
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isImages: false,
-        isPDF: false,
-        isVideos: false,
-        isAudios: false,
-        isSites: false,
-        CreatedDate: "",
-        PageNumber: 1,
-        Length: 50,
-      };
+      let Data = buildNotesSearchPayload();
 
       dispatch(GetNotes(navigate, Data, t));
     }
@@ -96,28 +79,6 @@ const Notes = () => {
         if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
           let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.forEach((data, index) => {
-            notes.push(data);
-          });
-          setNotes(notes);
-        } else {
-          setNotes([]);
-        }
-      } else {
-        setNotes([]);
-      }
-    } catch (error) {}
-  }, [NotesReducer.GetAllNotesResponse]);
-
-  // render Notes Data
-  useEffect(() => {
-    try {
-      if (
-        NotesReducer.GetAllNotesResponse !== null &&
-        NotesReducer.GetAllNotesResponse !== undefined
-      ) {
-        if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
-          let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push(data);
           });
           setNotes(notes);

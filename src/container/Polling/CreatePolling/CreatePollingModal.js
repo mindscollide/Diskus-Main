@@ -1,13 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { Checkbox, Modal, Notification } from "../../../components/elements";
-import DatePicker, { DateObject } from "react-multi-date-picker";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
+import React, { useEffect } from "react";
+import { Checkbox, Modal } from "../../../components/elements";
+import DatePicker from "react-multi-date-picker";
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -34,11 +32,8 @@ import { validateInput } from "../../../commen/functions/regex";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 const CreatePolling = () => {
-  const datePickerRef = useRef();
   const animatedComponents = makeAnimated();
-  let dateFormat = "DD/MM/YYYY";
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const calendRef = useRef();
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   //For Custom language datepicker
@@ -84,21 +79,10 @@ const CreatePolling = () => {
     },
   ]);
 
-  const handleIconClick = () => {
-    if (datePickerRef.current) {
-      datePickerRef.current.openCalendar();
-    }
-  };
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   useEffect(() => {
-    if (currentLanguage === "ar") {
-      moment.locale(currentLanguage);
-    } else if (currentLanguage === "fr") {
-      moment.locale(currentLanguage);
-    } else {
-      moment.locale(currentLanguage);
-    }
+    moment.locale(currentLanguage);
   }, [currentLanguage]);
 
   useEffect(() => {
@@ -232,6 +216,12 @@ const CreatePolling = () => {
     setSelectedsearch(value);
   };
 
+  const buildMember = (source, displayPicture = "") => ({
+    userName: source.userName,
+    userID: source.userID,
+    displayPicture,
+  });
+
   // for add user for assignes
   const handleAddUsers = () => {
     let pollsData = PollsReducergellAllCommittesandGroups;
@@ -252,11 +242,7 @@ const CreatePolling = () => {
                   );
                   if (check2 !== undefined) {
                   } else {
-                    let newUser = {
-                      userName: gUser.userName,
-                      userID: gUser.userID,
-                      displayPicture: "",
-                    };
+                    let newUser = buildMember(gUser);
                     tem.push(newUser);
                   }
                 });
@@ -275,11 +261,7 @@ const CreatePolling = () => {
                   );
                   if (check2 !== undefined) {
                   } else {
-                    let newUser = {
-                      userName: cUser.userName,
-                      userID: cUser.userID,
-                      displayPicture: "",
-                    };
+                    let newUser = buildMember(cUser);
                     tem.push(newUser);
                   }
                 });
@@ -296,12 +278,10 @@ const CreatePolling = () => {
               );
 
               if (check2 !== undefined) {
-                let newUser = {
-                  userName: check2.userName,
-                  userID: check2.userID,
-                  displayPicture:
-                    check2.profilePicture.displayProfilePictureName,
-                };
+                let newUser = buildMember(
+                  check2,
+                  check2.profilePicture.displayProfilePictureName,
+                );
                 tem.push(newUser);
               }
             }
@@ -340,11 +320,6 @@ const CreatePolling = () => {
     } catch (error) {
       
     }
-  };
-
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
-    return newDate;
   };
 
   // for create polls
@@ -449,17 +424,18 @@ const CreatePolling = () => {
     }
   };
 
+  const removeAtIndex = (array, index, setter) => {
+    let copy = [...array];
+    copy.splice(index, 1);
+    setter(copy);
+  };
+
   const HandleCancelFunction = (index) => {
-    let optionscross = [...options];
-    optionscross.splice(index, 1);
-    setOptions(optionscross);
+    removeAtIndex(options, index, setOptions);
   };
 
   const cancellAnyUser = (index) => {
-    
-    let removeData = [...members];
-    removeData.splice(index, 1);
-    setMembers(removeData);
+    removeAtIndex(members, index, setMembers);
   };
 
   const HandlecancellButton = () => {

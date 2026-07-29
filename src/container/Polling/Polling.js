@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Polling.module.css";
 import { Row, Col } from "react-bootstrap";
-import {
-  Button,
-  Table,
-  TextField,
-  Notification,
-} from "../../components/elements";
+import { Button, Table, TextField } from "../../components/elements";
 import { Dropdown, Menu, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
@@ -50,7 +45,6 @@ import {
   resolutionResultTable,
   utcConvertintoGMT,
 } from "../../commen/functions/date_formater";
-import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
@@ -61,6 +55,18 @@ import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
 import ArrowDownIcon from "../MinutesNewFlow/Images/Arrow-down.png";
 import ArrowUpIcon from "../MinutesNewFlow/Images/Arrow-up.png";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+
+// Default poll search payload, scoped to a user/org, with per-call overrides
+const buildPollSearchPayload = (userID, organizationID, overrides = {}) => ({
+  UserID: parseInt(userID),
+  OrganizationID: parseInt(organizationID),
+  PollTitle: "",
+  CreatorName: "",
+  PageNumber: 1,
+  Length: 50,
+  ...overrides,
+});
+
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -104,7 +110,7 @@ const Polling = () => {
   );
   const [enterpressed, setEnterpressed] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [show, SnackBar] = useSnackbar();
+  const [, SnackBar] = useSnackbar();
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
@@ -137,26 +143,15 @@ const Polling = () => {
   const currentPageSize = localStorage.getItem("pollingPageSize");
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
-      let data = {
-        UserID: parseInt(userID),
-        PollTitle: "",
-        OrganizationID: parseInt(organizationID),
-        CreatorName: "",
+      let data = buildPollSearchPayload(userID, organizationID, {
         PageNumber: JSON.parse(currentPage),
         Length: JSON.parse(currentPageSize),
-      };
+      });
       dispatch(searchPollsApi(navigate, t, data));
     } else {
       localStorage.setItem("pollingPage", 1);
       localStorage.setItem("pollingPageSize", 50);
-      let data = {
-        UserID: parseInt(userID),
-        PollTitle: "",
-        OrganizationID: parseInt(organizationID),
-        CreatorName: "",
-        PageNumber: 1,
-        Length: 50,
-      };
+      let data = buildPollSearchPayload(userID, organizationID);
       dispatch(searchPollsApi(navigate, t, data));
     }
 
@@ -200,65 +195,53 @@ const Polling = () => {
     }
   }, [state]);
 
+  // Validates an email-deep-link route value, then loads the referenced poll
+  const handlePollEmailRoute = (
+    routeValue,
+    storageKey,
+    check,
+    removeKeyBeforeDispatch,
+  ) => {
+    validateStringPollApi(routeValue, navigate, t, 2, dispatch)
+      .then(async (result) => {
+        if (removeKeyBeforeDispatch) localStorage.removeItem(storageKey);
+        let data = {
+          PollID: result.pollID,
+          UserID: parseInt(result.userID),
+        };
+        await dispatch(getPollsByPollIdApi(navigate, data, check, t));
+        if (!removeKeyBeforeDispatch) localStorage.removeItem(storageKey);
+      })
+      .catch((error) => {});
+  };
+
   // Email Route for poll Published
   useEffect(() => {
     if (pollPub !== null) {
-      validateStringPollApi(pollPub, navigate, t, 2, dispatch)
-        .then(async (result) => {
-          localStorage.removeItem("poPub");
-          let data = {
-            PollID: result.pollID,
-            UserID: parseInt(result.userID),
-          };
-          await dispatch(getPollsByPollIdApi(navigate, data, 5, t));
-        })
-        .catch((error) => {});
+      handlePollEmailRoute(pollPub, "poPub", 5, true);
     }
   }, [pollPub]);
   useEffect(() => {
     if (pollExpire !== null) {
-      validateStringPollApi(pollExpire, navigate, t, 2, dispatch)
-        .then(async (result) => {
-          localStorage.removeItem("pollExpire");
-          let data = {
-            PollID: result.pollID,
-            UserID: parseInt(result.userID),
-          };
-          await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
-        })
-        .catch((error) => {});
+      handlePollEmailRoute(pollExpire, "pollExpire", 4, true);
     }
   }, [pollExpire]);
 
   useEffect(() => {
     if (pollUpda !== null) {
-      validateStringPollApi(pollUpda, navigate, t, 2, dispatch)
-        .then(async (result) => {
-          let data = {
-            PollID: result.pollID,
-            UserID: parseInt(result.userID),
-          };
-          await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
-          localStorage.removeItem("poUpda");
-        })
-        .catch((error) => {});
+      handlePollEmailRoute(pollUpda, "poUpda", 4, false);
     }
   }, [pollUpda]);
-
   useEffect(() => {
     try {
       if (
         PollsReducerSearchPolls !== null &&
-        PollsReducerSearchPolls !== undefined
+        PollsReducerSearchPolls !== undefined &&
+        PollsReducerSearchPolls.polls.length > 0
       ) {
-        if (PollsReducerSearchPolls.polls.length > 0) {
-          setTotalRecords(PollsReducerSearchPolls.totalRecords);
-          setRows(PollsReducerSearchPolls.polls);
-          setDublicatedrows(PollsReducerSearchPolls.polls);
-        } else {
-          setRows([]);
-          setDublicatedrows([]);
-        }
+        setTotalRecords(PollsReducerSearchPolls.totalRecords);
+        setRows(PollsReducerSearchPolls.polls);
+        setDublicatedrows(PollsReducerSearchPolls.polls);
       } else {
         setRows([]);
         setDublicatedrows([]);
@@ -267,13 +250,7 @@ const Polling = () => {
   }, [PollsReducerSearchPolls]);
 
   useEffect(() => {
-    if (currentLanguage === "ar") {
-      moment.locale(currentLanguage);
-    } else if (currentLanguage === "fr") {
-      moment.locale(currentLanguage);
-    } else {
-      moment.locale(currentLanguage);
-    }
+    moment.locale(currentLanguage);
   }, [currentLanguage]);
 
   // MQTT for Polls Add , Update & Delete
@@ -326,6 +303,14 @@ const Polling = () => {
     } catch (error) {}
   }, [PollsReducernewPollDelete]);
 
+  const dispatchViewPollById = (pollID, check) => {
+    let data = {
+      PollID: pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(getPollsByPollIdApi(navigate, data, check, t));
+  };
+
   const handleEditpollModal = (record) => {
     let check = 0;
 
@@ -335,13 +320,8 @@ const Polling = () => {
       check = 2;
     }
 
-    let data = {
-      PollID: record.pollID,
-      UserID: parseInt(userID),
-    };
-
     if (Object.keys(record).length > 0) {
-      dispatch(getPollsByPollIdApi(navigate, data, check, t));
+      dispatchViewPollById(record.pollID, check);
     }
   };
 
@@ -368,23 +348,14 @@ const Polling = () => {
       check = 4;
     }
 
-    let data = {
-      PollID: record.pollID,
-      UserID: parseInt(userID),
-    };
-
     if (Object.keys(record).length > 0) {
-      dispatch(getPollsByPollIdApi(navigate, data, check, t));
+      dispatchViewPollById(record.pollID, check);
     }
   };
 
   const ViewTitleBeforeDueDatePassed = (record) => {
     if (Object.keys(record).length > 0) {
-      let data = {
-        PollID: record.pollID,
-        UserID: parseInt(userID),
-      };
-      dispatch(getPollsByPollIdApi(navigate, data, 5, t));
+      dispatchViewPollById(record.pollID, 5);
     }
   };
 
@@ -401,15 +372,11 @@ const Polling = () => {
       searchValue: searchBoxState.searchByTitle,
     });
 
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
+    let data = buildPollSearchPayload(userID, organizationID, {
       PollTitle: searchBoxState.searchByTitle,
       CreatorName: searchBoxState.searchByName,
       Title: searchBoxState.searchByTitle,
-      PageNumber: 1,
-      Length: 50,
-    };
+    });
     dispatch(searchPollsApi(navigate, t, data));
   };
 
@@ -512,12 +479,15 @@ const Polling = () => {
     // let data = {
     //   PollID: Number(ID),
     // };
-    let data = {
-      PollID: Number(ID),
-      UserID: parseInt(userID),
-    };
-    dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+    dispatchViewPollById(Number(ID), 3);
   };
+
+  const toggleSort = (setter) => () =>
+    setter((order) => {
+      if (order === "descend") return "ascend";
+      if (order === "ascend") return null;
+      return "descend";
+    });
 
   const PollTableColumns = [
     {
@@ -544,15 +514,7 @@ const Polling = () => {
       sorter: (a, b) =>
         a.pollTitle.toLowerCase().localeCompare(b.pollTitle.toLowerCase()),
       sortOrderPollingTitle,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderPollingTitle((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderPollingTitle) }),
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
@@ -647,15 +609,7 @@ const Polling = () => {
       align: currentLanguage === "en" ? "left" : "right",
       sorter: (a, b) =>
         utcConvertintoGMT(a.dueDate) - utcConvertintoGMT(b.dueDate),
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderDueDate((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderDueDate) }),
       render: (text, record) => {
         return _justShowDateformatBilling(text, currentLanguage);
       },
@@ -681,15 +635,7 @@ const Polling = () => {
       sorter: (a, b) =>
         a.pollCreator.toLowerCase().localeCompare(b.pollCreator.toLowerCase()),
       sortOrderCreatedBy,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderCreatedBy((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderCreatedBy) }),
       render: (text, record) => {
         return <span className='text-truncate d-block'>{text}</span>;
       },
@@ -899,14 +845,9 @@ const Polling = () => {
     if (e.key === "Enter") {
       setEnterpressed(true);
       setIsSearching(true);
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        CreatorName: "",
+      let data = buildPollSearchPayload(userID, organizationID, {
         PollTitle: pollsState.searchValue,
-        PageNumber: 1,
-        Length: 50,
-      };
+      });
       dispatch(searchPollsApi(navigate, t, data));
     }
   };
@@ -963,14 +904,12 @@ const Polling = () => {
   };
 
   const handleChangePagination = (current, pageSize) => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
+    let data = buildPollSearchPayload(userID, organizationID, {
       CreatorName: searchBoxState.searchByName,
       PollTitle: searchBoxState.searchByTitle,
       PageNumber: Number(current),
       Length: Number(pageSize),
-    };
+    });
     localStorage.setItem("pollingPage", Number(current));
     localStorage.setItem("pollingPageSize", Number(pageSize));
     dispatch(searchPollsApi(navigate, t, data));
@@ -978,11 +917,7 @@ const Polling = () => {
 
   const handleVotePolls = (record) => {
     if (Object.keys(record).length > 0) {
-      let data = {
-        PollID: record.pollID,
-        UserID: parseInt(userID),
-      };
-      dispatch(getPollsByPollIdApi(navigate, data, 5, t));
+      dispatchViewPollById(record.pollID, 5);
     }
   };
 
@@ -994,14 +929,7 @@ const Polling = () => {
     });
     setSearchpoll(false);
     setIsSearching(false);
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: "",
-      PollTitle: "",
-      PageNumber: 1,
-      Length: 50,
-    };
+    let data = buildPollSearchPayload(userID, organizationID);
     dispatch(searchPollsApi(navigate, t, data));
   };
 
@@ -1012,14 +940,7 @@ const Polling = () => {
     });
     setIsSearching(false);
     setSearchpoll(false);
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: "",
-      PollTitle: "",
-      PageNumber: 1,
-      Length: 50,
-    };
+    let data = buildPollSearchPayload(userID, organizationID);
     dispatch(searchPollsApi(navigate, t, data));
   };
 

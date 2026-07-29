@@ -3,7 +3,6 @@ import {
   AttachmentViewer,
   Button,
   Modal,
-  Notification,
 } from "../../../components/elements";
 import CustomUpload from "../../../components/elements/upload/Upload";
 import ReactQuill, { Quill } from "react-quill";
@@ -27,10 +26,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
-import {
-  maxFileSize,
-  removeHTMLTagsAndTruncate,
-} from "../../../commen/functions/utils";
+import { removeHTMLTagsAndTruncate } from "../../../commen/functions/utils";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { Spin } from "antd";
 import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";

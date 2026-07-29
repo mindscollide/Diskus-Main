@@ -26,6 +26,51 @@ const EditCommentModal = ({
 
   const { MinutesReducer } = useSelector((state) => state);
 
+  // Replaces the matching declinedReviews entry with an edited copy, or
+  // (if none matches yet) appends the current user's own edit entry.
+  const buildUpdatedReview = (review, updateData) => {
+    if (review.fK_WorkFlowActor_ID === 0) {
+      return {
+        ...review,
+        fK_ActorBundlesStatus_ID: 0,
+        fK_UID: currentUserID,
+        fK_WorkFlowActor_ID: 0,
+        fK_WorkFlowActionableBundle_ID: 0,
+        fK_ActorBundlesStatusState_ID: 2,
+        actorName: currentUserName,
+        reason: updateData.reason,
+        modifiedOn: new Date()
+          .toISOString()
+          .replace(/[-:T.]/g, "")
+          .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
+        userProfilePicture: {
+          userID: currentUserID,
+          orignalProfilePictureName: "",
+          displayProfilePictureName:
+            MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
+        },
+      };
+    } else if (
+      review.fK_WorkFlowActor_ID === editCommentLocal.fK_WorkFlowActor_ID
+    ) {
+      return {
+        ...review,
+        fK_ActorBundlesStatus_ID: editCommentLocal.fK_ActorBundlesStatus_ID,
+        fK_UID: editCommentLocal.fK_UID,
+        fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
+        fK_WorkFlowActionableBundle_ID:
+          editCommentLocal.fK_WorkFlowActionableBundle_ID,
+        fK_ActorBundlesStatusState_ID:
+          editCommentLocal.fK_ActorBundlesStatusState_ID,
+        actorName: editCommentLocal.actorName,
+        reason: updateData.reason,
+        modifiedOn: editCommentLocal.modifiedOn,
+        userProfilePicture: editCommentLocal.userProfilePicture,
+      };
+    }
+    return review;
+  };
+
   const updateRejectMinutesAgenda = (
     minutesData,
     updateData,
@@ -36,51 +81,7 @@ const EditCommentModal = ({
       const updatedMinuteData = agenda.minuteData.map((minute) => {
         if (minute.minuteID === parentMinuteID.minuteID) {
           const updatedDeclinedReviews = minute.declinedReviews.map(
-            (review) => {
-              if (review.fK_WorkFlowActor_ID === 0) {
-                return {
-                  ...review,
-                  fK_ActorBundlesStatus_ID: 0,
-                  fK_UID: currentUserID,
-                  fK_WorkFlowActor_ID: 0,
-                  fK_WorkFlowActionableBundle_ID: 0,
-                  fK_ActorBundlesStatusState_ID: 2,
-                  actorName: currentUserName,
-                  reason: updateData.reason,
-                  modifiedOn: new Date()
-                    .toISOString()
-                    .replace(/[-:T.]/g, "")
-                    .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-                  userProfilePicture: {
-                    userID: currentUserID,
-                    orignalProfilePictureName: "",
-                    displayProfilePictureName:
-                      MinutesReducer?.CurrentUserPicture
-                        ?.displayProfilePictureName,
-                  },
-                };
-              } else if (
-                review.fK_WorkFlowActor_ID ===
-                editCommentLocal.fK_WorkFlowActor_ID
-              ) {
-                return {
-                  ...review,
-                  fK_ActorBundlesStatus_ID:
-                    editCommentLocal.fK_ActorBundlesStatus_ID,
-                  fK_UID: editCommentLocal.fK_UID,
-                  fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
-                  fK_WorkFlowActionableBundle_ID:
-                    editCommentLocal.fK_WorkFlowActionableBundle_ID,
-                  fK_ActorBundlesStatusState_ID:
-                    editCommentLocal.fK_ActorBundlesStatusState_ID,
-                  actorName: editCommentLocal.actorName,
-                  reason: updateData.reason,
-                  modifiedOn: editCommentLocal.modifiedOn,
-                  userProfilePicture: editCommentLocal.userProfilePicture,
-                };
-              }
-              return review;
-            },
+            (review) => buildUpdatedReview(review, updateData),
           );
 
           return {
@@ -98,51 +99,7 @@ const EditCommentModal = ({
         const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
           if (subMinute.minuteID === parentMinuteID.minuteID) {
             const updatedDeclinedReviews = subMinute.declinedReviews.map(
-              (review) => {
-                if (review.fK_WorkFlowActor_ID === 0) {
-                  return {
-                    ...review,
-                    fK_ActorBundlesStatus_ID: 0,
-                    fK_UID: currentUserID,
-                    fK_WorkFlowActor_ID: 0,
-                    fK_WorkFlowActionableBundle_ID: 0,
-                    fK_ActorBundlesStatusState_ID: 2,
-                    actorName: currentUserName,
-                    reason: updateData.reason,
-                    modifiedOn: new Date()
-                      .toISOString()
-                      .replace(/[-:T.]/g, "")
-                      .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-                    userProfilePicture: {
-                      userID: currentUserID,
-                      orignalProfilePictureName: "",
-                      displayProfilePictureName:
-                        MinutesReducer?.CurrentUserPicture
-                          ?.displayProfilePictureName,
-                    },
-                  };
-                } else if (
-                  review.fK_WorkFlowActor_ID ===
-                  editCommentLocal.fK_WorkFlowActor_ID
-                ) {
-                  return {
-                    ...review,
-                    fK_ActorBundlesStatus_ID:
-                      editCommentLocal.fK_ActorBundlesStatus_ID,
-                    fK_UID: editCommentLocal.fK_UID,
-                    fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
-                    fK_WorkFlowActionableBundle_ID:
-                      editCommentLocal.fK_WorkFlowActionableBundle_ID,
-                    fK_ActorBundlesStatusState_ID:
-                      editCommentLocal.fK_ActorBundlesStatusState_ID,
-                    actorName: editCommentLocal.actorName,
-                    reason: updateData.reason,
-                    modifiedOn: editCommentLocal.modifiedOn,
-                    userProfilePicture: editCommentLocal.userProfilePicture,
-                  };
-                }
-                return review;
-              },
+              (review) => buildUpdatedReview(review, updateData),
             );
 
             return {
@@ -172,49 +129,9 @@ const EditCommentModal = ({
   ) => {
     return minutesData.map((minute) => {
       if (minute.minuteID === parentMinuteID.minuteID) {
-        const updatedDeclinedReviews = minute.declinedReviews.map((review) => {
-          if (review.fK_WorkFlowActor_ID === 0) {
-            return {
-              ...review,
-              fK_ActorBundlesStatus_ID: 0,
-              fK_UID: currentUserID,
-              fK_WorkFlowActor_ID: 0,
-              fK_WorkFlowActionableBundle_ID: 0,
-              fK_ActorBundlesStatusState_ID: 2,
-              actorName: currentUserName,
-              reason: updateData.reason,
-              modifiedOn: new Date()
-                .toISOString()
-                .replace(/[-:T.]/g, "")
-                .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-              userProfilePicture: {
-                userID: currentUserID,
-                orignalProfilePictureName: "",
-                displayProfilePictureName:
-                  MinutesReducer?.CurrentUserPicture?.displayProfilePictureName,
-              },
-            };
-          } else if (
-            review.fK_WorkFlowActor_ID === editCommentLocal.fK_WorkFlowActor_ID
-          ) {
-            return {
-              ...review,
-              fK_ActorBundlesStatus_ID:
-                editCommentLocal.fK_ActorBundlesStatus_ID,
-              fK_UID: editCommentLocal.fK_UID,
-              fK_WorkFlowActor_ID: editCommentLocal.fK_WorkFlowActor_ID,
-              fK_WorkFlowActionableBundle_ID:
-                editCommentLocal.fK_WorkFlowActionableBundle_ID,
-              fK_ActorBundlesStatusState_ID:
-                editCommentLocal.fK_ActorBundlesStatusState_ID,
-              actorName: editCommentLocal.actorName,
-              reason: updateData.reason,
-              modifiedOn: editCommentLocal.modifiedOn,
-              userProfilePicture: editCommentLocal.userProfilePicture,
-            };
-          }
-          return review;
-        });
+        const updatedDeclinedReviews = minute.declinedReviews.map((review) =>
+          buildUpdatedReview(review, updateData),
+        );
 
         return {
           ...minute,
