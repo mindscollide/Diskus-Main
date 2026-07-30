@@ -77,6 +77,8 @@ const ViewComplianceTasks = () => {
     allTasksStatusForFilter,
     viewComplianceTasksContextData,
     setViewComplianceTasksContextData,
+    deepLinkTaskId,
+    setDeepLinkTaskId,
   } = useComplianceContext();
 
   const getAllComplianceChecklistTask = useSelector(
@@ -125,6 +127,17 @@ const ViewComplianceTasks = () => {
       setViewComplianceTasksContextData([]);
     }
   }, [complianceDetailsState?.complianceId]);
+
+  // Deep-link: comptask_action email → MainCompliance sets this once the
+  // right Compliance/tab is showing. Open that task's detail modal the same
+  // way a manual row click does (handleClickTitle), then clear the flag.
+  useEffect(() => {
+    if (deepLinkTaskId) {
+      dispatch(ViewToDoList(navigate, { ToDoListID: deepLinkTaskId }, t, setTaskView));
+      setDeepLinkTaskId(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deepLinkTaskId]);
 
   useEffect(() => {
     if (

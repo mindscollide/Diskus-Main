@@ -50,7 +50,7 @@ const ReviewSignature = () => {
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   const workflowResponseMessage = useSelector((state) => state.webViewer);
   const globalState = useSelector((state) => state);
-  
+
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,
   );
@@ -78,7 +78,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-  
+
   const [reviewSignature, setReviewSignature] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [signatoriesList, setSignatoriesList] = useState(false);
@@ -177,8 +177,6 @@ const ReviewSignature = () => {
     );
   };
 
-  
-
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
       selectedValues.includes(item.status.toString()),
@@ -227,7 +225,6 @@ const ReviewSignature = () => {
   );
 
   const handleClickSignatoriesList = (record) => {
-    
     // setSignatureListVal(value);
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
@@ -354,7 +351,7 @@ const ReviewSignature = () => {
       title: (
         <>
           <span className="d-flex justify-content-center gap-2 align-items-center">
-            {t("Sent-on")}{" "}
+            {t("Received-on")}{" "}
             {sortOrderDateTime === "descend" ? (
               <img src={ArrowUpIcon} alt="" />
             ) : (
@@ -438,11 +435,11 @@ const ReviewSignature = () => {
   ];
 
   // const handleScroll = async () => {
-  //   
+  //
   //   if (totalDataLnegth <= totalRecords) {
   //     setIsScrolling(true);
   //     let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-  //     
+  //
   //     await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
   //   }
   // };
@@ -452,7 +449,7 @@ const ReviewSignature = () => {
       if (totalDataLnegth <= totalRecords) {
         setIsScrolling(true);
         let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-        
+
         await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
         return; // stop further execution if this condition is met
       } else {
@@ -482,9 +479,7 @@ const ReviewSignature = () => {
           setReviewAndSignatureStatus(statusValues);
           setDefaultReviewAndSignatureStatus(defaultStatus);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [getAllPendingApprovalStatuses]);
 
@@ -530,7 +525,7 @@ const ReviewSignature = () => {
           (reviewSignatureData, index) =>
             reviewSignatureData.workFlowID === data.workFlowID,
         );
-        
+
         if (findIfExist === undefined) {
           setReviewSignature([data, ...reviewSignature]);
           setOriginalData([data, originalData]);
@@ -546,7 +541,6 @@ const ReviewSignature = () => {
       if (workflowsignaturedocumentActionByMe !== null) {
         const { data } = workflowsignaturedocumentActionByMe;
 
-        
         setReviewSignature((reviewSignatureCopy) =>
           reviewSignatureCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
@@ -559,9 +553,7 @@ const ReviewSignature = () => {
           ),
         );
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [workflowsignaturedocumentActionByMe]);
   useEffect(() => {
     try {
@@ -579,9 +571,7 @@ const ReviewSignature = () => {
           ),
         );
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [signatureDocumentStatusChangeForSignees]);
 
   return (
@@ -713,14 +703,13 @@ const ReviewSignature = () => {
           {/* )} */}
         </Col>
       </Row>{" "}
-   
       {signatoriesList && (
         <SignatoriesListModal
           signatories_List={signatoriesList}
           setSignatoriesList={setSignatoriesList}
         />
       )}
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
