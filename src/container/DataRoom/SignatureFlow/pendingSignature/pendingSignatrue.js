@@ -976,7 +976,7 @@ const PendingSignatureViewer = () => {
 
               annotationManager.deselectAnnotation(annot);
               if (FIELD_INTERACTION_TOOLS.has(documentViewer.getToolMode()?.name)) {
-                UI.setToolMode(Tools.ToolNames.ANNOTATION_EDIT);
+                UI.setToolMode(Tools.ToolNames.EDIT);
               }
             });
           },
@@ -997,7 +997,7 @@ const PendingSignatureViewer = () => {
         documentViewer.addEventListener("toolModeUpdated", (newTool) => {
           if (!newTool?.name || !FIELD_INTERACTION_TOOLS.has(newTool.name)) return;
           if (!hasOwnedSelection()) {
-            UI.setToolMode(Tools.ToolNames.ANNOTATION_EDIT);
+            UI.setToolMode(Tools.ToolNames.EDIT);
           }
         });
 
@@ -1102,7 +1102,7 @@ const PendingSignatureViewer = () => {
           // 👇 Add this block
           requestAnimationFrame(() => {
             setTimeout(() => {
-              UI.setToolMode(Core.Tools.ToolNames.ANNOTATION_EDIT);
+              UI.setToolMode(Core.Tools.ToolNames.EDIT);
 
               console.log("Current Tool:", UI.getToolMode()?.name);
             }, 200);
