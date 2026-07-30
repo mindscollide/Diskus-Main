@@ -273,20 +273,13 @@ const filterAnnotationsAgainstXFDF = (userAnnotations, xfdfString) => {
   return userAnnotations.map((user) => ({
     ...user,
     xml: user.xml.filter((item) => {
-      try {
-        const ffieldName = new DOMParser()
-          .parseFromString(item.ffield, "text/xml")
-          .documentElement.getAttribute("name");
-        const widgetName = new DOMParser()
-          .parseFromString(item.widget, "text/xml")
-          .documentElement.getAttribute("name");
-        return exists(ffieldName, "ffield") && exists(widgetName, "widget");
-      } catch (err) {
-        // Malformed ffield/widget XML — drop this entry instead of throwing
-        // and aborting the whole save flow.
-        console.error("filterAnnotationsAgainstXFDF: failed to parse item", err, item);
-        return false;
-      }
+      const ffieldName = new DOMParser()
+        .parseFromString(item.ffield, "text/xml")
+        .documentElement.getAttribute("name");
+      const widgetName = new DOMParser()
+        .parseFromString(item.widget, "text/xml")
+        .documentElement.getAttribute("name");
+      return exists(ffieldName, "ffield") && exists(widgetName, "widget");
     }),
   }));
 };
@@ -315,14 +308,6 @@ const getAnnotationOwnerIDFromSubject = (annot) => {
  * Widget annotations  → ownership is determined by comparing the widget's
  *                       field name against currentUserFieldNames (a Set).
  * FreeText annotations → ownership is determined via the Subject attribute.
- * Signature appearance annotations (the visible ink/image "stamp" created
- *   when a Sig widget is signed, retrievable via
- *   widget.getAssociatedSignatureAnnotation()) → these are separate
- *   annotation objects from the widget itself and don't have a Subject or
- *   a field, so ownership is inherited from whichever widget they're
- *   associated with. This is what lets a user select + delete (via the
- *   standard delete tool/button) only their own signature to correct it,
- *   while leaving the widget itself intact for re-signing.
  *
  * Non-owner annotations:
  *   • annotation-level  Locked = true, ReadOnly = true
@@ -338,23 +323,6 @@ const applyAnnotationLocks = (
   currentUserID,
   currentUserFieldNames,
 ) => {
-  // ── Pre-pass: find signature "stamp" annotations that belong to widgets
-  // owned by the current user, so they can be treated as owned below. ──
-  const ownedSignatureAnnotIds = new Set();
-  annotations.forEach((a) => {
-    try {
-      if (typeof a.getField === "function" && typeof a.getAssociatedSignatureAnnotation === "function") {
-        const fieldName = a.getField()?.name;
-        if (fieldName && currentUserFieldNames.has(fieldName)) {
-          const assoc = a.getAssociatedSignatureAnnotation();
-          if (assoc?.Id) ownedSignatureAnnotIds.add(assoc.Id);
-        }
-      }
-    } catch {
-      /* ignore — fall through to normal ownership checks below */
-    }
-  });
-
   annotations.forEach((annot) => {
     const isWidget =
       typeof annot.getField === "function" ||
@@ -362,9 +330,7 @@ const applyAnnotationLocks = (
 
     let isOwner = false;
 
-    if (annot.Id && ownedSignatureAnnotIds.has(annot.Id)) {
-      isOwner = true;
-    } else if (isWidget) {
+    if (isWidget) {
       try {
         const field = annot.getField?.();
         const fieldName = field?.name;
@@ -523,6 +489,7 @@ const PendingSignatureViewer = () => {
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
+    ResponseMessage,
     getSignatureFileAnnotationResponse,
   } = useSelector((s) => s.SignatureWorkFlowReducer);
 
@@ -706,9 +673,7 @@ const PendingSignatureViewer = () => {
         setUserAnnotations(reverted);
         setUserAnnotationsCopy(reverted);
       }
-    } catch (err) {
-      console.error("getAllFieldsByWorkflowID effect failed:", err);
-    }
+    } catch (err) {}
   }, [getAllFieldsByWorkflowID]);
 
   // ── getWorkfFlowByFileId ───────────────────────────────────────────────────
@@ -766,9 +731,7 @@ const PendingSignatureViewer = () => {
         creatorID: workFlow.creatorID,
         isCreator: workFlow.isCreator,
       }));
-    } catch (err) {
-      console.error("getWorkfFlowByFileId effect failed:", err);
-    }
+    } catch (err) {}
   }, [getWorkfFlowByFileId, fieldsData]);
 
   // ── getSignatureFileAnnotationResponse ────────────────────────────────────
@@ -827,9 +790,7 @@ const PendingSignatureViewer = () => {
         xfdfData: hideFreetextXmlString,
         attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
       }));
-    } catch (err) {
-      console.error("getSignatureFileAnnotationResponse effect failed:", err);
-    }
+    } catch (err) {}
   }, [getSignatureFileAnnotationResponse]);
 
   // ─── Save / submit handler ────────────────────────────────────────────────
@@ -934,9 +895,7 @@ const PendingSignatureViewer = () => {
             },
           ),
         );
-      } catch (err) {
-        console.error("handleSave failed:", err);
-      }
+      } catch (err) {}
     },
     [docWorkflowID, dispatch, navigate, t],
   );
@@ -987,9 +946,6 @@ const PendingSignatureViewer = () => {
     )
       return;
 
-    let documentLoadedHandler = null;
-    let documentViewerForCleanup = null;
-
     const init = async () => {
       try {
         const inst = await WebViewer(
@@ -1006,9 +962,6 @@ const PendingSignatureViewer = () => {
 
         const { UI, Core } = inst;
         const { documentViewer, annotationManager, Tools } = Core;
-        documentViewerForCleanup = documentViewer;
-
-        console.log({ Tools }, "ToolsToolsToolsToolsToolsToolsToolsTools");
 
         // ── Restrict signature creation to the current user's own field ──────
         //
@@ -1062,16 +1015,10 @@ const PendingSignatureViewer = () => {
           filename: pdfData.title,
         });
 
-        // NOTE: "annotationDeleteButton" and "annotationPopup" are intentionally
-        // left enabled (not in the list below) so a user can select their own
-        // signature and delete it to re-sign. This is safe because
-        // applyAnnotationLocks() sets Locked = true on every annotation that
-        // doesn't belong to the current user — Apryse's built-in select/delete
-        // tool respects Locked and won't let a user select-for-delete or delete
-        // anything that isn't theirs.
         UI.disableElements([
           "linkButton",
           "annotationStyleEditButton",
+          "annotationDeleteButton",
           "indexPanel",
           "formFieldPanel",
           "groupedLeftHeaderButtons",
@@ -1117,6 +1064,7 @@ const PendingSignatureViewer = () => {
           "viewControlsOverlay",
           "contextMenuPopup",
           "signaturePanelButton",
+          "annotationPopup",
           "richTextPopup",
           "toolbarGroup-Annotate",
           "leftPanelButton",
@@ -1124,49 +1072,48 @@ const PendingSignatureViewer = () => {
           "toolbarGroup-Forms",
         ]);
 
-        documentLoadedHandler = async () => {
+        documentViewer.addEventListener("documentLoaded", async () => {
           await documentViewer.getAnnotationsLoadedPromise();
           UI.setFitMode(UI.FitMode.FitWidth);
 
           if (pdfXfdfRef.current) {
             try {
+              // Validate each <apref> objnum against the PDF XRef table;
+              // strip references to missing objects (they cause the
+              // "Can not find any annotation" PDFWorkerError) while keeping
+              // valid ones so already-signed signature visuals stay visible.
               const pdfDoc = await documentViewer.getDocument().getPDFDoc();
-
               const cleanedXFDF = await stripInvalidAppearanceRefs(
                 sanitizeXFDF(pdfXfdfRef.current, documentViewer),
                 pdfDoc,
                 userAnnotationsRef.current,
               );
-
               await annotationManager.importAnnotations(cleanedXFDF);
 
               const currentUserID = getCurrentUserID();
 
+              // Apply locks to all annotations
               applyAnnotationLocks(
                 annotationManager,
                 annotationManager.getAnnotationsList(),
                 currentUserID,
                 currentUserFieldNamesRef.current,
               );
-            } catch (err) {
-              console.error(err);
-            }
+            } catch (err) {}
           }
 
-          documentViewer.refreshAll();
-          documentViewer.updateView();
-
-          // 👇 Add this block
           requestAnimationFrame(() => {
             setTimeout(() => {
-              UI.setToolMode(Core.Tools.ToolNames.ANNOTATION_EDIT);
+              UI.setToolMode(Core.Tools.ToolNames.EDIT);
 
               console.log("Current Tool:", UI.getToolMode()?.name);
             }, 200);
           });
-        };
+          documentViewer.refreshAll();
+          documentViewer.updateView();
 
-        documentViewer.addEventListener("documentLoaded", documentLoadedHandler);
+        });
+
         // Header buttons
         const topHeader = UI.getModularHeader("default-top-header");
         const existingItems = topHeader.getItems();
@@ -1182,7 +1129,6 @@ const PendingSignatureViewer = () => {
             dataElement: "declineButton",
             label: t("Decline"),
             title: t("Decline"),
-            text: t("Decline"),
             onClick: () => setReasonModal(true),
             style: {
               background: "#fff",
@@ -1242,21 +1188,10 @@ const PendingSignatureViewer = () => {
         }
 
         topHeader.setItems([...existingItems, actionGroup]);
-      } catch (err) {
-        console.error("WebViewer init failed:", err);
-      }
+      } catch (err) {}
     };
 
     init();
-
-    return () => {
-      if (documentViewerForCleanup && documentLoadedHandler) {
-        documentViewerForCleanup.removeEventListener(
-          "documentLoaded",
-          documentLoadedHandler,
-        );
-      }
-    };
   }, [pdfData.attachmentBlob]);
 
   // ── annotationChanged + fieldChanged event listeners ──────────────────────
@@ -1285,9 +1220,7 @@ const PendingSignatureViewer = () => {
         }));
         mergeXFDFIntoAnnotations(xfdfString, selectedUserRef.current, snapshot);
         setUserAnnotations(snapshot);
-      } catch (err) {
-        console.error("annotationChanged handler failed:", err);
-      }
+      } catch (err) {}
 
       // Re-apply locks after changes
       applyAnnotationLocks(
@@ -1340,9 +1273,7 @@ const PendingSignatureViewer = () => {
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
-      } catch (err) {
-        console.error("fieldChanged handler failed:", err);
-      }
+      } catch (err) {}
     };
 
     annotationManager.addEventListener("annotationChanged", annotHandler);
