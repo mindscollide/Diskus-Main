@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, AttachmentViewer } from "../../../components/elements";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ModalViewNote.module.css";
 import { useSelector } from "react-redux";

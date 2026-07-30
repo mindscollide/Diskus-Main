@@ -6,7 +6,6 @@ import {
   Modal,
   TimePickers,
   CustomDatePicker,
-  Notification,
   InputSearchFilter,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
@@ -23,7 +22,7 @@ import { DownloadFile } from "../../store/actions/Download_action";
 import "./ModalUpdateToDo.css";
 import { useNavigate } from "react-router-dom";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
-const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
+const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo }) => {
   const { t } = useTranslation();
   const [show, SnackBar] = useSnackbar();
   const toDoListReducerData = useSelector(
@@ -120,12 +119,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         CreationDateTime: "",
         PK_TID: viewData.pK_TID,
       });
-      if (viewData.taskAssignedTo !== undefined) {
-        viewData.taskAssignedTo.forEach((data, index) => {
-          if (data.pK_UID === TaskAssignedTo) {
-          }
-        });
-      }
       let listOfAssignees = toDoListReducerData.taskAssignedTo;
       if (listOfAssignees !== undefined) {
         let tem = [];

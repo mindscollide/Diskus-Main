@@ -496,6 +496,7 @@ const Talk = () => {
     ) {
       setActiveVideoIcon(false);
       dispatch(videoChatPanel(false));
+      dispatch(activeChatBoxGS(false));
       // dispatch(participantPopup(false))
     }
   };
@@ -505,7 +506,39 @@ const Talk = () => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [activeVideoIcon, presenterViewHostFlag, presenterViewJoinFlag, isMeetingVideo, isWaiting]);
+  }, [
+    activeVideoIcon,
+    presenterViewHostFlag,
+    presenterViewJoinFlag,
+    isMeetingVideo,
+    isWaiting,
+    ActiveChatBoxGS,
+  ]);
+
+  // ── Talk (chat) panel — click outside closes just the chat panel ─────────
+  //
+  // Separate from videoPanelRef above (which wraps the whole talk_nav,
+  // covering both TalkVideo and TalkNew): this ref wraps only <TalkNew />,
+  // so clicking outside the chat panel specifically closes it, independent
+  // of whatever the video panel's own outside-click logic does.
+  const talkPanelRef = useRef(null);
+
+  const handleTalkPanelOutsideClick = (event) => {
+    if (
+      talkPanelRef.current &&
+      !talkPanelRef.current.contains(event.target) &&
+      ActiveChatBoxGS
+    ) {
+      dispatch(activeChatBoxGS(false));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleTalkPanelOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleTalkPanelOutsideClick);
+    };
+  }, [ActiveChatBoxGS]);
 
   useEffect(() => {
     if (activeCall === true) {
@@ -529,7 +562,9 @@ const Talk = () => {
     checkFeatureID(19) || checkFeatureID(20) || checkFeatureID(21);
   return (
     <>
-      <div ref={videoPanelRef} className={`talk_nav ${currentLang}`}>
+      <div
+        ref={ActiveChatBoxGS ? talkPanelRef : videoPanelRef}
+        className={`talk_nav ${currentLang}`}>
         {ActiveChatBoxGS === true ? (
           <TalkNew />
         ) : activeVideoIcon === true ? (

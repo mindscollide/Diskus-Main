@@ -13,10 +13,6 @@ const PollDetails = () => {
     (state) => state.PollsReducer.Allpolls
   );
 
-  const PollsReducerviewVotess = useSelector((state) => state.PollsReducer);
-
-  
-  
   const PollsReducerviewVotesDetails = useSelector(
     (state) => state.PollsReducer.viewVotesDetails
   );
@@ -29,10 +25,8 @@ const PollDetails = () => {
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
 
   useEffect(() => {
-    let vieVotePollDetails = PollsReducerviewVotes;
-    
     if (PollsReducerviewVotes !== undefined && PollsReducerviewVotes !== null) {
-      const { pollDetails, pollOptions, pollParticipants, selectedAnswers } =
+      const { pollDetails, pollOptions, pollParticipants } =
         PollsReducerviewVotes.poll;
 
       let Options = [];

@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Resolution.module.css";
-import {
-  Button,
-  TextField,
-  TableToDo,
-  Notification,
-} from "../../components/elements";
+import { Button, TextField, TableToDo } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import searchicon from "../../assets/images/searchicon.svg";
 import plusbutton from "../../assets/images/Group 119.svg";
@@ -37,7 +32,7 @@ import {
   resolutionMQTTVoteCounter,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import {
   newTimeFormaterForResolutionAsPerUTCFullDate,
   resolutionResultTable,
@@ -112,9 +107,6 @@ const Resolution = () => {
   const ResolutionReducerupdateResolutionModal = useSelector(
     (state) => state.ResolutionReducer.updateResolutionModal,
   );
-  const ResolutionReducerLoading = useSelector(
-    (state) => state.ResolutionReducer.Loading,
-  );
   const AccessDeniedGlobalState = useSelector(
     (state) => state.PollsReducer.AccessDeniedPolls,
   );
@@ -138,7 +130,6 @@ const Resolution = () => {
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [resolutionAttachments, setResolutionAttachments] = useState([]);
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
-  const [searchResultsArea, setSearchResultsArea] = useState(false);
   const [allSearchInput, setAllSearchInput] = useState("");
   let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
   let moderatorPage = localStorage.getItem("moderatorPage");
@@ -270,60 +261,35 @@ const Resolution = () => {
     votingDate: "",
   });
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-
   const showSearchOptions = () => {
     setIsSearching(true);
-    let getUserID = JSON.parse(localStorage.getItem("userID"));
     let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
     let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
+    let circulationDate = `${createConvert(searchModalDates.circulationDate)}`;
+    let votingDeadlineDate = `${createConvert(searchModalDates.votingDate)}`;
 
     if (resolutionView === 1) {
-      let Data = {
-        FK_UID: getUserID,
-        ResolutionStatus: buttonTab,
-        Title: "",
-        PageNumber: moderatorPage !== null ? moderatorPage : 1,
-        Length: moderatorRows !== null ? moderatorRows : 50,
-        CirculationDate: `${createConvert(searchModalDates.circulationDate)}`,
-        VotingDeadlineDate: `${createConvert(searchModalDates.votingDate)}`,
-      };
       dispatch(
         getResolutions(
           navigate,
           buttonTab,
           t,
-          Data.Title,
-          Data.CirculationDate,
-          Data.VotingDeadlineDate,
+          "",
+          circulationDate,
+          votingDeadlineDate,
         ),
       );
-      setSearchResultsArea(false);
       setSearchIcon(false);
     } else {
-      let Data = {
-        FK_UID: getUserID,
-        ResolutionStatus: buttonTab,
-        Title: "",
-        PageNumber: moderatorPage !== null ? moderatorPage : 1,
-        Length: moderatorRows !== null ? moderatorRows : 50,
-        CirculationDate: `${createConvert(searchModalDates.circulationDate)}`,
-        VotingDeadlineDate: `${createConvert(searchModalDates.votingDate)}`,
-      };
-      setSearchResultsArea(false);
       setSearchIcon(false);
       dispatch(
         getVoterResolution(
           navigate,
           buttonTab,
           t,
-          Data.Title,
-          Data.CirculationDate,
-          Data.VotingDeadlineDate,
+          "",
+          circulationDate,
+          votingDeadlineDate,
         ),
       );
     }
@@ -341,7 +307,6 @@ const Resolution = () => {
       votingDate: "",
     });
     setAllSearchInput("");
-    setSearchResultsArea(false);
     setSearchIcon(false);
   };
 
@@ -459,36 +424,17 @@ const Resolution = () => {
     if (event.key === "Enter") {
       setEnterpressed(true);
       setIsSearching(true);
-      let getUserID = JSON.parse(localStorage.getItem("userID"));
       let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
       let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
       if (resolutionView === 1) {
         if (allSearchInput !== "") {
-          let Data = {
-            FK_UID: getUserID,
-            ResolutionStatus: buttonTab,
-            Title: allSearchInput,
-            PageNumber: moderatorPage !== null ? moderatorPage : 1,
-            Length: moderatorRows !== null ? moderatorRows : 50,
-            CirculationDate: "",
-            VotingDeadlineDate: "",
-          };
-          dispatch(getResolutions(navigate, buttonTab, t, Data.Title));
+          dispatch(getResolutions(navigate, buttonTab, t, allSearchInput));
         } else {
           dispatch(getResolutions(navigate, buttonTab, t));
         }
       } else {
         if (allSearchInput !== "") {
-          let Data = {
-            FK_UID: getUserID,
-            ResolutionStatus: buttonTab,
-            Title: allSearchInput,
-            PageNumber: moderatorPage !== null ? moderatorPage : 1,
-            Length: moderatorRows !== null ? moderatorRows : 50,
-            CirculationDate: "",
-            VotingDeadlineDate: "",
-          };
-          dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title));
+          dispatch(getVoterResolution(navigate, buttonTab, t, allSearchInput));
         } else {
           dispatch(getVoterResolution(navigate, buttonTab, t));
         }
@@ -544,6 +490,42 @@ const Resolution = () => {
       }
     }
   }, [resolutionVoteCounter]);
+
+  const renderResolutionResultIcon = (record) => {
+    let newDate = new Date();
+    let votingDeadline = resolutionResultTable(record.votingDeadline);
+    let isClosed =
+      record.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
+        ? true
+        : false;
+    if (votingDeadline < newDate) {
+      return (
+        <img
+          draggable="false"
+          className={styles["Result_Icon_cursor_pointer"]}
+          src={ResultResolutionIcon}
+          alt=""
+          onClick={() => getResultHandle(record.resolutionID, isClosed)}
+        />
+      );
+    } else {
+      return "";
+    }
+  };
+
+  // Decision-label renderer shared by the moderator (open) and moderator
+  // (closed) tables — both use the same 4-way mapping including "Tie".
+  const renderModeratorDecisionLabel = (text) => {
+    if (text === "Approved") {
+      return <span className={styles["decision_Approved"]}>{t(text)}</span>;
+    } else if (text === "Not Approved") {
+      return <span className={styles["decision_non_Approved"]}>{t(text)}</span>;
+    } else if (text === "Tie") {
+      return <span className={styles["decision_text_Pending"]}>{t(text)}</span>;
+    } else {
+      return <span className={styles["decision_text_Pending"]}>{t(text)}</span>;
+    }
+  };
 
   // moderator all and current columns
   const columnsModerator = [
@@ -612,23 +594,7 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "95px",
-      render: (text) => {
-        if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
-        } else if (text === "Not Approved") {
-          return (
-            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
-          );
-        } else if (text === "Tie") {
-          return (
-            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
-          );
-        } else {
-          return (
-            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
-          );
-        }
-      },
+      render: (text) => renderModeratorDecisionLabel(text),
     },
     {
       title: t("Vote-count"),
@@ -649,25 +615,7 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, record) => {
-        let newDate = new Date();
-        let votingDeadline = resolutionResultTable(record.votingDeadline);
-        let isClosed =
-          record.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
-            ? true
-            : false;
-        if (votingDeadline < newDate) {
-          return (
-            <img
-              draggable="false"
-              className={styles["Result_Icon_cursor_pointer"]}
-              src={ResultResolutionIcon}
-              alt=""
-              onClick={() => getResultHandle(record.resolutionID, isClosed)}
-            />
-          );
-        } else {
-          return "";
-        }
+        return renderResolutionResultIcon(record);
         // if (record.resolutionStatus?.toLowerCase() === "Closed".toLowerCase()) {
         //   return (
         //     <Tooltip placement="bottomLeft" title={t("Result")}>
@@ -816,23 +764,7 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
-      render: (text) => {
-        if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
-        } else if (text === "Not Approved") {
-          return (
-            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
-          );
-        } else if (text === "Tie") {
-          return (
-            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
-          );
-        } else {
-          return (
-            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
-          );
-        }
-      },
+      render: (text) => renderModeratorDecisionLabel(text),
     },
     {
       title: t("Vote-count"),
@@ -854,27 +786,7 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (text, data) => {
-        let newDate = new Date();
-        let votingDeadline = resolutionResultTable(data.votingDeadline);
-        let isClosed =
-          data.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
-            ? true
-            : false;
-        if (votingDeadline < newDate) {
-          return (
-            <img
-              draggable="false"
-              className={styles["Result_Icon_cursor_pointer"]}
-              src={ResultResolutionIcon}
-              alt=""
-              onClick={() => getResultHandle(data.resolutionID, isClosed)}
-            />
-          );
-        } else {
-          return "";
-        }
-      },
+      render: (text, data) => renderResolutionResultIcon(data),
     },
     {
       title: t("Status"),
@@ -1240,6 +1152,28 @@ const Resolution = () => {
     }
   };
 
+  // Builds the voter-resolution list entry from an MQTT payload matched via
+  // .filter() (an array of matches, source at [0]) rather than .find().
+  const buildVoterResolutionFromFilterMatch = (getData, findVoterisValid) => ({
+    attachments: getData.attachments,
+    decision: getData.resolution.resolutionDecision,
+    decisionDate: getData.resolution.decisionAnnouncementDateTime,
+    fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
+    isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
+    isAttachmentAvailable: getData.isAttachmentAvailable,
+    isVoter: findVoterisValid[0].isVoter,
+    resolutionID: getData.resolution.pK_ResolutionID,
+    resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
+    resolutionTitle: getData.resolution.title,
+    voterID: findVoterisValid[0].pK_RV_ID,
+    votingDeadline: getData.resolution.votingDeadline,
+    votingMethod: getData.resolution.votingMethod,
+    votingStatus: findVoterisValid[0].status,
+  });
+
+  const filterOutCancelledResolution = (list, cancelledResolutionID) =>
+    list.filter((obj) => obj.resolutionID !== cancelledResolutionID);
+
   // voter resolution state manage
   useEffect(() => {
     try {
@@ -1326,13 +1260,13 @@ const Resolution = () => {
     try {
       if (ResolutionReducermqttResolutionCancelled !== null) {
         try {
-          let findCancelledResolution = isSearchVoter.filter(
-            (obj) =>
-              obj.resolutionID !==
+          setSearchVoter(
+            filterOutCancelledResolution(
+              isSearchVoter,
               ResolutionReducermqttResolutionCancelled.resolution
                 .pK_ResolutionID,
+            ),
           );
-          setSearchVoter(findCancelledResolution);
         } catch {}
       }
     } catch (error) {
@@ -1350,54 +1284,30 @@ const Resolution = () => {
         );
         if (resolutionView === 2) {
           if (buttonTab === 1) {
-            let findCancelledResolution = isSearchVoter.filter(
-              (obj) =>
-                obj.resolutionID !==
+            setSearchVoter(
+              filterOutCancelledResolution(
+                isSearchVoter,
                 ResolutionReducermqttResolutionCancelled.resolution
                   .pK_ResolutionID,
+              ),
             );
-            setSearchVoter(findCancelledResolution);
           } else if (buttonTab === 2) {
             let findVoterisValid =
               getData?.voters.filter((obj) => obj.fK_UID === Number(userID)) ||
               getData?.nonVoters.filter((obj) => obj.fK_UID === Number(userID));
-            let voterResolution = {
-              attachments: getData.attachments,
-              decision: getData.resolution.resolutionDecision,
-              decisionDate: getData.resolution.decisionAnnouncementDateTime,
-              fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-              isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
-              isAttachmentAvailable: getData.isAttachmentAvailable,
-              isVoter: findVoterisValid[0].isVoter,
-              resolutionID: getData.resolution.pK_ResolutionID,
-              resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-              resolutionTitle: getData.resolution.title,
-              voterID: findVoterisValid[0].pK_RV_ID,
-              votingDeadline: getData.resolution.votingDeadline,
-              votingMethod: getData.resolution.votingMethod,
-              votingStatus: findVoterisValid[0].status,
-            };
+            let voterResolution = buildVoterResolutionFromFilterMatch(
+              getData,
+              findVoterisValid,
+            );
             setSearchVoter([voterResolution, ...isSearchVoter]);
           } else if (buttonTab === 3) {
             let findVoterisValid =
               getData?.voters.filter((obj) => obj.fK_UID === Number(userID)) ||
               getData?.nonVoters.filter((obj) => obj.fK_UID === Number(userID));
-            let voterResolution = {
-              attachments: getData.attachments,
-              decision: getData.resolution.resolutionDecision,
-              decisionDate: getData.resolution.decisionAnnouncementDateTime,
-              fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-              isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
-              isAttachmentAvailable: getData.isAttachmentAvailable,
-              isVoter: findVoterisValid[0].isVoter,
-              resolutionID: getData.resolution.pK_ResolutionID,
-              resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
-              resolutionTitle: getData.resolution.title,
-              voterID: findVoterisValid[0].pK_RV_ID,
-              votingDeadline: getData.resolution.votingDeadline,
-              votingMethod: getData.resolution.votingMethod,
-              votingStatus: findVoterisValid[0].status,
-            };
+            let voterResolution = buildVoterResolutionFromFilterMatch(
+              getData,
+              findVoterisValid,
+            );
             let copyData = [...isSearchVoter];
             copyData.splice(findIndexResolution, 1, voterResolution);
             setSearchVoter(copyData);

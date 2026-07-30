@@ -51,7 +51,6 @@ import {
   Button,
   TableToDo,
   TextField,
-  Notification,
 } from "../../../components/elements";
 import {
   ViewToDoList,
@@ -94,6 +93,12 @@ import "./Todolist.css";
 const EMPTY_SEARCH = { Date: "", Title: "", AssignedToName: "", UserID: 0 };
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 15;
+
+/** Empty search payload scoped to a given user */
+const buildEmptySearchPayload = (creatorID) => ({
+  ...EMPTY_SEARCH,
+  UserID: creatorID,
+});
 
 /** Maps status ID → CSS class name for both the Select and plain-text renders */
 const STATUS_CLASS_MAP = {
@@ -143,15 +148,6 @@ const TodoList = () => {
   );
   const ToDoDetails = useSelector((s) => s.toDoListReducer.ToDoDetails);
   const ResponseStatusReducer = useSelector((s) => s.todoStatus.Response);
-  const UpdateTodoStatusMessage = useSelector(
-    (s) => s.getTodosStatus.UpdateTodoStatusMessage,
-  );
-  const ResponseMessageTodoStatusReducer = useSelector(
-    (s) => s.getTodosStatus.ResponseMessage,
-  );
-  const UpdateTodoStatus = useSelector(
-    (s) => s.getTodosStatus.UpdateTodoStatus,
-  );
 
   // ── UI state ─────────────────────────────────────────────────────────────
   const [isExpand, setExpand] = useState(false);
@@ -160,13 +156,6 @@ const TodoList = () => {
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   /** Set true so the next ToDoDetails change triggers the update modal */
   const [pendingUpdate, setPendingUpdate] = useState(false);
-
-  // ── Snack-bar notification ───────────────────────────────────────────────
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   // ── Table data ───────────────────────────────────────────────────────────
   const [rowsToDo, setRowToDo] = useState([]);
@@ -290,7 +279,6 @@ const TodoList = () => {
       setViewFlagToDo(false);
       setUpdateFlagToDo(false);
       setPendingUpdate(false);
-      setOpen({ open: false, message: "", severity: "error" });
       setTaskTitleSort(null);
       setTaskAssignedBySort(null);
       setTaskAssignedToSort(null);
@@ -478,7 +466,7 @@ const TodoList = () => {
         !searchData.Date && !searchData.Title && !searchData.AssignedToName;
 
       const payload = isEmpty
-        ? { ...EMPTY_SEARCH, UserID: creatorID }
+        ? buildEmptySearchPayload(creatorID)
         : {
             Date: searchData.Date
               ? multiDatePickerDateChangIntoUTC(searchData.Date).slice(0, 8)
@@ -511,7 +499,7 @@ const TodoList = () => {
       dispatch(
         SearchTodoListApi(
           navigate,
-          { ...EMPTY_SEARCH, UserID: creatorID },
+          buildEmptySearchPayload(creatorID),
           DEFAULT_PAGE,
           DEFAULT_PAGE_SIZE,
           t,
@@ -577,7 +565,7 @@ const TodoList = () => {
         searchData.Date || searchData.Title || searchData.AssignedToName;
 
       if (hasActiveSearch) {
-        const freshSearch = { ...EMPTY_SEARCH, UserID: creatorID };
+        const freshSearch = buildEmptySearchPayload(creatorID);
         setSearchData(freshSearch);
         dispatch(
           SearchTodoListApi(

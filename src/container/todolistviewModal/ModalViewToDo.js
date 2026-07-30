@@ -7,7 +7,6 @@ import CrossIcon from "../../assets/images/CrossIcon.svg";
 import {
   TextField,
   Modal,
-  Notification,
   TodoAssgineeEmployeeCard,
   TextArea,
   Button,
@@ -24,7 +23,6 @@ import { getRandomUniqueNumber } from "@/container/meeting/advanceMeeting/create
 import { useDispatch, useSelector } from "react-redux";
 import {
   postAssgineeComment,
-  HideNotificationTodoComment,
   emptyCommentState,
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
@@ -32,8 +30,17 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileWithFooterApiFunc } from "../../store/actions/DataRoom_actions";
-import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { useMeetingContext } from "../../context/MeetingContext";
+
+const RESET_TASK = {
+  PK_TID: 0,
+  Title: "",
+  Description: "",
+  IsMainTask: true,
+  DeadLineDate: "",
+  DeadLineTime: "",
+  CreationDateTime: "",
+};
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
@@ -58,10 +65,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     (state) => state.postAssigneeComments.DeleteCommentsId
   );
 
-  const postAssigneeCommentsResponseMessege = useSelector(
-    (state) => state.postAssigneeComments.ResponseMessage
-  );
-
   const CommentsData = useSelector(
     (state) => state.postAssigneeComments.Comments
   );
@@ -74,23 +77,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //Notification State
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-
   //task Object
-  const [task, setTask] = useState({
-    PK_TID: 0,
-    Title: "",
-    Description: "",
-    IsMainTask: true,
-    DeadLineDate: "",
-    DeadLineTime: "",
-    CreationDateTime: "",
-  });
+  const [task, setTask] = useState(RESET_TASK);
 
   //Current Date
   let currentDateTime = new Date();
@@ -123,15 +111,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       dispatch(postComments(null));
       setTaskAssigneeComments([]);
       //task Object
-      setTask({
-        PK_TID: 0,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
+      setTask(RESET_TASK);
     };
   }, []);
   useEffect(() => {
@@ -162,13 +142,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let listOfAssignees = TodoListReducerData.taskAssignedTo;
 
       if (listOfAssignees !== undefined) {
-        let tem = [];
         let assigneedetails = [];
-        let assigneeinfo = [];
-        let temid = [];
         listOfAssignees.forEach((data, index) => {
-          tem.push(data.name);
-          temid.push(data.pK_UID);
           assigneedetails.push({
             pK_UID: JSON.parse(data.pK_UID),
             name: data.name,
@@ -185,11 +160,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               currentLanguage
             ),
           });
-        });
-        listOfAssignees.forEach((data, index) => {
-          if (data.pK_UID === Number(createrID)) {
-            assigneeinfo.push(data);
-          }
         });
         setTaskAssignedTo(assigneedetails);
       }
@@ -227,15 +197,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         setTaskAssigneeComments(assigneescommentsArr);
       }
     } else {
-      setTask({
-        PK_TID: 0,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
+      setTask(RESET_TASK);
       setAssgieeComments([]);
     }
   }, [TodoListReducerData]);
@@ -320,16 +282,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setViewFlagToDo(false);
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
+      setTask({ ...RESET_TASK, PK_TID: 1 });
       setTaskAssignedTo([]);
       setTasksAttachments({ TasksAttachments: [] });
       setTaskAssigneeComments([]);
@@ -351,15 +304,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           dispatch(postComments(null));
           setTaskAssigneeComments([]);
           //task Object
-          setTask({
-            PK_TID: 0,
-            Title: "",
-            Description: "",
-            IsMainTask: true,
-            DeadLineDate: "",
-            DeadLineTime: "",
-            CreationDateTime: "",
-          });
+          setTask(RESET_TASK);
         }
       }
     } catch { }
