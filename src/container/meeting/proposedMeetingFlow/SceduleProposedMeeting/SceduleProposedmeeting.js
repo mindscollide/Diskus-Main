@@ -355,8 +355,9 @@ const SceduleProposedmeeting = () => {
                           onClick={scheduleHitButton}
                           disableBtn={
                             proposedDatesData.length > 0 &&
-                            proposedDatesData.every((data, index) =>
-                              data.isSelected === false ? true : false,
+                            proposedDatesData.every(
+                              ({ isSelected, proposedDate }) =>
+                                !isSelected || proposedDate === "10000101",
                             )
                           }
                         />
