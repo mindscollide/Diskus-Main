@@ -4529,7 +4529,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "MISSED_CALLS_COUNT".toLowerCase()
         ) {
-          dispatch(missedCallCount(data.payload, data.payload.message));
+          dispatch(missedCallCount(data.payload, ""));
         } else if (
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
