@@ -326,6 +326,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
+
+  useEffect(() => {
+    if(talkStateData.ActiveChatData !== null ) {
+      console.log(talkStateData.ActiveChatData, "ActiveChatDataActiveChatData")
+    }
+  },[talkStateData.ActiveChatData])
   useEffect(() => {
     if (talkStateData.ActiveChatData.messageType === "G") {
       let Data = {
@@ -1692,7 +1698,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser]);
 
-  useEffect(() => {}, [talkStateData.ActiveChatData]);
+  // useEffect(() => {}, [talkStateData.ActiveChatData]);
+
+  
 
   useEffect(() => {
     if (
