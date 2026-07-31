@@ -35,8 +35,6 @@ const GuestJoinRequest = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
-  
-
   const [getRoomId, setGetRoomId] = useState("");
 
   // let roomID = localStorage.getItem("activeRoomID");
@@ -144,9 +142,7 @@ const GuestJoinRequest = () => {
     // Play audio after the user has interacted with the page
     const playAudio = () => {
       audioElement.loop = false;
-      audioElement.play().catch((error) => {
-        
-      });
+      audioElement.play().catch((error) => {});
       document.removeEventListener("click", playAudio); // Remove event listener after playing
     };
 
@@ -226,7 +222,7 @@ const GuestJoinRequest = () => {
                             variant="success"
                           />
                         ) : (
-                          t("Deny")
+                          <>{t("Deny")}</>
                         )
                       }
                       disableBtn={loadingDeny}
@@ -242,7 +238,7 @@ const GuestJoinRequest = () => {
                         loadingAdmit ? (
                           <Spinner animation="border" size="sm" />
                         ) : (
-                          t("Admit")
+                          <>{t("Admit")}</>
                         )
                       }
                       disableBtn={loadingAdmit}
