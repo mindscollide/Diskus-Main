@@ -23,12 +23,16 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Cookies from "js-cookie";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import {
+  Button,
+  CustomRadio2,
+  Notification,
+} from "../../../../../components/elements";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 const TwoFactorMultipleDevices = () => {
   const AuthreducerAuthenticateAFAResponse = useSelector(
-    (state) => state.Authreducer.AuthenticateAFAResponse
+    (state) => state.Authreducer.AuthenticateAFAResponse,
   );
 
   const { t } = useTranslation();
@@ -51,6 +55,8 @@ const TwoFactorMultipleDevices = () => {
   const [notificationemail, setNotificationemail] = useState(false);
   const [notificationsms, setNotificationsms] = useState(false);
 
+const [notificationType, setNotificationType] = useState("");
+
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -63,11 +69,11 @@ const TwoFactorMultipleDevices = () => {
   let newClient = Helper.socket;
 
   const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
   );
 
   const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
   );
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
@@ -80,18 +86,21 @@ const TwoFactorMultipleDevices = () => {
     setNotificationdevice(true);
     setNotificationemail(false);
     setNotificationsms(false);
+    setNotificationType("device");
   };
 
   const changeHandler2 = (e) => {
     setNotificationemail(true);
     setNotificationdevice(false);
     setNotificationsms(false);
+    setNotificationType("email");
   };
 
   const changeHandler3 = (e) => {
     setNotificationsms(true);
     setNotificationdevice(false);
     setNotificationemail(false);
+    setNotificationType("sms");
   };
 
   const onClickSendOnDevice = (e) => {
@@ -155,8 +164,8 @@ const TwoFactorMultipleDevices = () => {
             userID,
             navigate,
             setSeconds,
-            setMinutes
-          )
+            setMinutes,
+          ),
         );
       }
     }
@@ -173,8 +182,6 @@ const TwoFactorMultipleDevices = () => {
   }, [Helper.socket]);
 
   const handleGoback = () => {
-    
-
     localStorage.setItem("LoginFlowPageRoute", 2);
     dispatch(LoginFlowRoutes(2));
   };
@@ -210,9 +217,11 @@ const TwoFactorMultipleDevices = () => {
                         <img
                           draggable='false'
                           src={
-                            PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
-                              ? DiskusLogoArabic
-                              : img1
+                            PSO_LOGO
+                              ? PSOLogo
+                              : localStorage.getItem("i18nextLng") === "ar"
+                                ? DiskusLogoArabic
+                                : img1
                           }
                           width={PSO_LOGO ? 120 : 200}
                           alt='diskus_logo'
@@ -246,12 +255,15 @@ const TwoFactorMultipleDevices = () => {
                         </Col>
                       </Row>
 
-                      <section className="my-4">
-                        <Row >
+                      <section className='my-4'>
+                      
+                        <Row>
                           <Col
                             sm={12}
                             md={12}
                             lg={12}
+                            onClick={changeHandler1}
+                            style={{ cursor: "pointer" }}
                             className='d-flex justify-content-between '>
                             <div className='d-flex gap-2 align-items-center'>
                               <img
@@ -275,11 +287,10 @@ const TwoFactorMultipleDevices = () => {
                               </span>
                             </div>
                             <div>
-                              <Form.Check
-                                type='radio'
+                              <CustomRadio2
                                 onChange={changeHandler1}
-                                value={"SEND NOTIFICATION ON DEVICE"}
-                                name='2faverificationSendEmail'
+                                value={[notificationType]}
+                                Optios='device'
                               />
                             </div>
                           </Col>
@@ -289,6 +300,8 @@ const TwoFactorMultipleDevices = () => {
                             sm={12}
                             md={12}
                             lg={12}
+                            onClick={changeHandler2}
+                            style={{ cursor: "pointer" }}
                             className='d-flex justify-content-between '>
                             <div className='d-flex gap-2 align-items-center'>
                               <img
@@ -312,11 +325,10 @@ const TwoFactorMultipleDevices = () => {
                               </span>
                             </div>
                             <div>
-                              <Form.Check
+                              <CustomRadio2
                                 onChange={changeHandler2}
-                                type='radio'
-                                value={"SEND CODE ON EMAIL"}
-                                name='2faverificationSendEmail'
+                                value={[notificationType]}
+                                Optios='email'
                               />
                             </div>
                           </Col>
@@ -327,6 +339,8 @@ const TwoFactorMultipleDevices = () => {
                             sm={12}
                             md={12}
                             lg={12}
+                            onClick={changeHandler3}
+                            style={{ cursor: "pointer" }}
                             className='d-flex justify-content-between '>
                             <div className='d-flex gap-2 align-items-center'>
                               <img
@@ -350,12 +364,11 @@ const TwoFactorMultipleDevices = () => {
                               </span>
                             </div>
                             <div>
-                              <Form.Check
+                              <CustomRadio2
                                 onChange={changeHandler3}
-                                value={"SEND CODE ON SMS"}
-                                type='radio'
-                                name='2faverificationSendEmail'
-                              />{" "}
+                                value={[notificationType]}
+                                Optios='sms'
+                              />
                             </div>{" "}
                           </Col>
                         </Row>
@@ -425,9 +438,9 @@ const TwoFactorMultipleDevices = () => {
                 {PSO_LOGO && (
                   <img
                     src={PSOPowerdBy}
-                    alt=""
-                    draggable="false"
-                              className={styles.PoweredIcon_Diskus_Icon}
+                    alt=''
+                    draggable='false'
+                    className={styles.PoweredIcon_Diskus_Icon}
                   />
                 )}
               </Col>
@@ -435,8 +448,8 @@ const TwoFactorMultipleDevices = () => {
           </Col>
         </Row>
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };
