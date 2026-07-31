@@ -3004,6 +3004,10 @@ export const handleNavigation = (
       // if (adminRights) {
       //   navigate("/Admin/ManageUsers");
       // } else if (userRights) {
+
+      if(OnlyComplianceFeature) {
+        return navigate("/Diskus/compliance")
+      }
       navigate("/onboard");
       // }
     } else if (!isFirstLogin) {

@@ -11,7 +11,7 @@ import { useMeetingContext } from "../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 
 // Components
-import { Table } from "../../../components/elements";
+import { Table, useSnackbar } from "../../../components/elements";
 import CustomButton from "../../../components/elements/button/Button";
 import EmptyTableComponent from "@/container/meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
@@ -50,6 +50,7 @@ import {
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   GetAllUserChats,
+  activeChat,
 } from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -60,6 +61,7 @@ import {
   footerActionStatus,
   createGroupScreen,
   activeChatBoxGS,
+  chatBoxActiveFlag,
 } from "../../../store/actions/Talk_Feature_actions";
 
 // Icons
@@ -120,6 +122,7 @@ const parseDateTime = (str) =>
 const PublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
 
   // ─── Redux selectors ──────────────────────────────────────────────────────
@@ -135,6 +138,10 @@ const PublishedMeetingList = () => {
   );
   const shareViaDataRoomPathConfirmModal = useSelector(
     (s) => s.NewMeetingreducer.shareViaDataRoomPathConfirmation,
+  );
+
+  const talkStateDataAllUserChats = useSelector(
+    (state) => state.talkStateData.AllUserChats,
   );
 
   // ─── Context ──────────────────────────────────────────────────────────────
@@ -169,7 +176,7 @@ const PublishedMeetingList = () => {
   } = useNewMeetingContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
-
+  const [open, setOpen] = useState(false);
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
@@ -241,38 +248,55 @@ const PublishedMeetingList = () => {
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
-    if (data.talkGroupID === 0) return;
-
-    dispatch(createShoutAllScreen(false));
-    dispatch(addNewChatScreen(false));
-    dispatch(footerActionStatus(false));
-    dispatch(createGroupScreen(false));
-    dispatch(recentChatFlag(true));
-    dispatch(activeChatBoxGS(true));
-    dispatch(headerShowHideStatus(true));
-    dispatch(footerShowHideStatus(true));
-
-    const uid = parseInt(userID);
-    const orgId = parseInt(currentOrganizationId);
-
-    await Promise.all([
-      dispatch(GetAllUserChats(navigate, uid, orgId, t)),
-      dispatch(
-        GetGroupMessages(
-          navigate,
-          {
-            UserID: uid,
-            ChannelID: currentOrganizationId,
-            GroupID: data.talkGroupID,
-            NumberOfMessages: 50,
-            OffsetMessage: 0,
-          },
-          t,
-        ),
-      ),
-      dispatch(GetAllUsers(navigate, uid, orgId, t)),
-      dispatch(GetAllUsersGroupsRoomsList(navigate, uid, orgId, t)),
-    ]);
+    if (data.talkGroupID !== 0) {
+      let allChatMessages =
+        talkStateDataAllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === data.talkGroupID,
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+        localStorage.setItem("activeOtoChatID", data.talkGroupID);
+        dispatch(createShoutAllScreen(false));
+        dispatch(addNewChatScreen(false));
+        dispatch(footerActionStatus(false));
+        dispatch(createGroupScreen(false));
+        dispatch(chatBoxActiveFlag(false));
+        dispatch(recentChatFlag(true));
+        dispatch(activeChatBoxGS(true));
+        dispatch(chatBoxActiveFlag(true));
+        dispatch(headerShowHideStatus(true));
+        dispatch(footerShowHideStatus(true));
+        let chatGroupData = {
+          UserID: parseInt(localStorage.getItem("userID")),
+          ChannelID: currentOrganizationId,
+          GroupID: data.talkGroupID,
+          NumberOfMessages: 50,
+          OffsetMessage: 0,
+        };
+        dispatch(GetGroupMessages(navigate, chatGroupData, t));
+        dispatch(
+          GetAllUsers(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        dispatch(
+          GetAllUsersGroupsRoomsList(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+      } else {
+        show(t("No-talk-group-created"), "error");
+      }
+    } else {
+      show(t("No-talk-group-created"), "error");
+    }
   };
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
@@ -681,6 +705,10 @@ const PublishedMeetingList = () => {
     }
   };
 
+  const handelChangePopoverOpen = (open) => {
+    console.log(open, "handelChangePopoverOpen");
+    setOpen(!open);
+  };
   // ─── Table Columns ────────────────────────────────────────────────────────
 
   const columns = useMemo(() => {
@@ -1063,10 +1091,10 @@ const PublishedMeetingList = () => {
             <div className='d-flex justify-content-center align-items-center'>
               <Popover
                 content={moreButtons(record)}
-                trigger='click'
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
+                trigger={"click"}
                 placement='bottomRight'>
                 <CustomButton
                   className={styles.MoreMeetingButton}
@@ -1237,6 +1265,7 @@ const PublishedMeetingList = () => {
         />
       )}
       {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
+      {SnackBar}
     </>
   );
 };
