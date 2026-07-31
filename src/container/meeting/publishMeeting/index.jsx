@@ -254,7 +254,7 @@ const PublishedMeetingList = () => {
       let allChatMessages =
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
       const foundRecord =
-        allChatMessages &&
+        Array.isArray(allChatMessages) &&
         allChatMessages.find((item) => item.id === data.talkGroupID);
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
