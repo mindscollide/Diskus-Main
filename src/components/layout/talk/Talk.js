@@ -484,23 +484,32 @@ const Talk = () => {
 
   const videoPanelRef = useRef(null);
 
+  // Ant Design overlays (Select dropdown, Popover, Dropdown, Tooltip, Modal,
+  // ...) render their content via a portal appended to document.body by
+  // default — NOT nested inside the DOM tree where they're written in JSX.
+  // A click inside one of these (e.g. picking "Private-Message" from the
+  // chat-filter <Select> in talkHeader.js) has an event.target that is never
+  // a descendant of videoPanelRef/talkPanelRef even though the dropdown is
+  // logically part of the panel, so without this check that click gets
+  // misread as "clicked outside" and closes the whole panel.
+  const isInsideAntOverlay = (target) =>
+    !!target?.closest?.(
+      ".ant-select-dropdown, .ant-popover, .ant-dropdown, .ant-modal-wrap, .ant-tooltip, .ant-picker-dropdown, .ant-drawer",
+    );
+
   const handleOutsideClick = (event) => {
     const contains =
       videoPanelRef.current && videoPanelRef.current.contains(event.target);
     if (
       videoPanelRef.current &&
       !contains &&
+      !isInsideAntOverlay(event.target) &&
       activeVideoIcon &&
       !presenterViewHostFlag &&
       !presenterViewJoinFlag &&
       !isMeetingVideo &&
       !isWaiting
     ) {
-      console.log("handleOutsideClick (video panel): CLOSING", {
-        target: event.target,
-        contains,
-        activeVideoIcon,
-      });
       setActiveVideoIcon(false);
       dispatch(videoChatPanel(false));
       dispatch(activeChatBoxGS(false));
@@ -540,12 +549,12 @@ const Talk = () => {
   const handleTalkPanelOutsideClick = (event) => {
     const contains =
       talkPanelRef.current && talkPanelRef.current.contains(event.target);
-    if (talkPanelRef.current && !contains && ActiveChatBoxGS) {
-      console.log("handleTalkPanelOutsideClick: CLOSING", {
-        target: event.target,
-        contains,
-        ActiveChatBoxGS,
-      });
+    if (
+      talkPanelRef.current &&
+      !contains &&
+      !isInsideAntOverlay(event.target) &&
+      ActiveChatBoxGS
+    ) {
       dispatch(activeChatBoxGS(false));
     }
   };

@@ -176,7 +176,9 @@ const PublishedMeetingList = () => {
   } = useNewMeetingContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
-  const [open, setOpen] = useState(false);
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
@@ -251,9 +253,9 @@ const PublishedMeetingList = () => {
     if (data.talkGroupID !== 0) {
       let allChatMessages =
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
-      const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID,
-      );
+      const foundRecord =
+        allChatMessages &&
+        allChatMessages.find((item) => item.id === data.talkGroupID);
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
         localStorage.setItem("activeOtoChatID", data.talkGroupID);
@@ -277,6 +279,14 @@ const PublishedMeetingList = () => {
         dispatch(GetGroupMessages(navigate, chatGroupData, t));
         dispatch(
           GetAllUsers(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        dispatch(
+          GetAllUserChats(
             navigate,
             parseInt(localStorage.getItem("userID")),
             parseInt(currentOrganizationId),
@@ -553,7 +563,10 @@ const PublishedMeetingList = () => {
         {canShow.edit && (
           <div
             className={styles.morebtn}
-            onClick={() => handleEditMeeting(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleEditMeeting(record);
+            }}>
             <img src={EditIcon} alt='' width='16' height='16' />
             <span>{t("Edit-meeting")}</span>
           </div>
@@ -562,7 +575,10 @@ const PublishedMeetingList = () => {
         {canShow.talk && (
           <div
             className={styles.morebtn}
-            onClick={() => groupChatInitiation(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              groupChatInitiation(record);
+            }}>
             <img src={ChatIcon} alt='' width='16' height='16' />
             <span>{t("Talk")}</span>
           </div>
@@ -571,7 +587,10 @@ const PublishedMeetingList = () => {
         {canShow.viewAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewAgenda(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewAgenda(record);
+            }}>
             <img src={AgendaIcon} alt='' width='16' height='16' />
             <span>{t("View-agenda")}</span>
           </div>
@@ -580,7 +599,10 @@ const PublishedMeetingList = () => {
         {canShow.attendance && (
           <div
             className={styles.morebtn}
-            onClick={() => onClickDownloadIcon(record.pK_MDID)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              onClickDownloadIcon(record.pK_MDID);
+            }}>
             <img src={ClipboardIcon} alt='' width='16' height='16' />
             <span>{t("Attendance-report")}</span>
           </div>
@@ -589,7 +611,10 @@ const PublishedMeetingList = () => {
         {canShow.recording && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickDownloadBtn(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickDownloadBtn(record);
+            }}>
             <img src={DownloadVideoIcon} alt='' width='16' height='16' />
             <span>{t("Download-video-recording")}</span>
           </div>
@@ -598,7 +623,10 @@ const PublishedMeetingList = () => {
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewMinutes(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewMinutes(record);
+            }}>
             <img src={DownloadVideoIcon} alt='' width='16' height='16' />
             <span>{t("View-minutes")}</span>
           </div>
@@ -607,7 +635,10 @@ const PublishedMeetingList = () => {
         {canShow.contributeAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickContributeAgenda(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickContributeAgenda(record);
+            }}>
             <img src={AgendaIcon} alt='' width='16' height='16' />
             <span>{t("Contribute-agenda")}</span>
           </div>
@@ -705,9 +736,8 @@ const PublishedMeetingList = () => {
     }
   };
 
-  const handelChangePopoverOpen = (open) => {
-    console.log(open, "handelChangePopoverOpen");
-    setOpen(!open);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
   // ─── Table Columns ────────────────────────────────────────────────────────
 
@@ -1095,7 +1125,11 @@ const PublishedMeetingList = () => {
                 className='moreOptionsPopover'
                 showArrow={false}
                 trigger={"click"}
-                placement='bottomRight'>
+                placement='bottomRight'
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }>
                 <CustomButton
                   className={styles.MoreMeetingButton}
                   text={t("More")}
@@ -1119,6 +1153,7 @@ const PublishedMeetingList = () => {
     selectedValues,
     statusFilters,
     t,
+    openPopoverMeetingID,
   ]);
 
   // ─── Table Sort Handler ───────────────────────────────────────────────────
