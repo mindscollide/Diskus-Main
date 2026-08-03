@@ -1,17 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { Checkbox, Modal, Notification } from "../../../components/elements";
+import { Checkbox, Modal } from "../../../components/elements";
 import styles from "./UpdatePolls.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
@@ -243,6 +241,12 @@ const UpdatePolls = () => {
 
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
+  const buildMember = (source, displayPicture = "") => ({
+    userName: source.userName,
+    userID: source.userID,
+    displayPicture,
+  });
+
   // for add user for assignes
   const handleAddUsers = () => {
     let pollsData = PollsReducergellAllCommittesandGroups;
@@ -263,11 +267,7 @@ const UpdatePolls = () => {
                   );
                   if (check2 !== undefined) {
                   } else {
-                    let newUser = {
-                      userName: gUser.userName,
-                      userID: gUser.userID,
-                      displayPicture: "",
-                    };
+                    let newUser = buildMember(gUser);
                     tem.push(newUser);
                   }
                 });
@@ -286,11 +286,7 @@ const UpdatePolls = () => {
                   );
                   if (check2 !== undefined) {
                   } else {
-                    let newUser = {
-                      userName: cUser.userName,
-                      userID: cUser.userID,
-                      displayPicture: "",
-                    };
+                    let newUser = buildMember(cUser);
                     tem.push(newUser);
                   }
                 });
@@ -306,12 +302,10 @@ const UpdatePolls = () => {
                 (data) => data.userID === seledtedData.value
               );
               if (check2 !== undefined) {
-                let newUser = {
-                  userName: check2.userName,
-                  userID: check2.userID,
-                  displayPicture:
-                    check2.profilePicture.displayProfilePictureName,
-                };
+                let newUser = buildMember(
+                  check2,
+                  check2.profilePicture.displayProfilePictureName,
+                );
                 tem.push(newUser);
               }
             }
@@ -347,10 +341,14 @@ const UpdatePolls = () => {
     }
   };
 
+  const removeAtIndex = (array, index, setter) => {
+    let copy = [...array];
+    copy.splice(index, 1);
+    setter(copy);
+  };
+
   const cancellAnyUser = (index) => {
-    let removeData = [...pollmembers];
-    removeData.splice(index, 1);
-    setPollmembers(removeData);
+    removeAtIndex(pollmembers, index, setPollmembers);
   };
 
   const HandleOptionChange = (e) => {
@@ -378,9 +376,7 @@ const UpdatePolls = () => {
   };
 
   const HandleCancelFunction = (index) => {
-    let optionscross = [...options];
-    optionscross.splice(index, 1);
-    setOptions(optionscross);
+    removeAtIndex(options, index, setOptions);
   };
 
   const HandlecancellButton = () => {
@@ -417,20 +413,6 @@ const UpdatePolls = () => {
       datePickerRef.current.openCalendar();
     }
   };
-  const CustomIcon = () => (
-    <div className="custom-icon-wrapper">
-      <img
-        src={EditIcon}
-        alt="Edit Icon"
-        height="11.11px"
-        width="11.54px"
-        className="custom-icon cursor-pointer"
-        onClick={handleIconClick}
-        draggable="false"
-      />
-    </div>
-  );
-
   const handleUpdateClick = (value) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");

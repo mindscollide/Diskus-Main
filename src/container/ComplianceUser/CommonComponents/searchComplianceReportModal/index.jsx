@@ -164,9 +164,7 @@ const SearchComplianceReportModal = () => {
         <Col lg={12} md={12} sm={12} xs={12}>
           <span ref={searchBoxRef} className="position-relative">
             <TextField
-              placeholder={t(
-                "Report-title.click-the-icon-to-view-more-options",
-              )}
+              placeholder={t("Search")}
               name={"reportTitleOutside"}
               disable={searchbox}
               value={searchComplianceReportPayload?.reportTitleOutside}

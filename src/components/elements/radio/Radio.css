@@ -58,3 +58,6 @@ input[type="radio"] {
   position: absolute;
   border: none !important;
 }
+span.ant-radio+* {
+  padding:  0 !important;
+}

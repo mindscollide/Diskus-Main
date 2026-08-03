@@ -8,8 +8,6 @@ import DeleteIcon from "../../../../assets/images/delete_dataroom.png";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { LoadingOutlined } from "@ant-design/icons";
 import EmtpyImage from "../../../../assets/images/SendApproval_emptyIcon.png";
-import SorterIconAscend from "../../../../assets/images/approval_sorter_icon_ascend.svg";
-import SorterIconDescend from "../../../../assets/images/approval_sorter_icon_descend.svg";
 import SignatoriesListModal from "./SignatoriesList/SignatoriesListModal";
 import {
   getFileExtension,
@@ -392,11 +390,8 @@ const ApprovalSend = () => {
         "noopener noreferrer",
       );
     } else {
-      let reponseData = JSON.stringify(record.fileID);
       window.open(
-        `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
-          reponseData,
-        )}`,
+        `/Diskus/viewSignDocument?documentID=${encodeURIComponent(reponseData)}`,
         "_blank",
         "noopener noreferrer",
       );
@@ -420,8 +415,8 @@ const ApprovalSend = () => {
           if (isScrolling) {
             setIsScrolling(false);
             setApprovalsData([
-              ...signatureFlowDocumentsForCreator,
               ...approvalsData,
+              ...signatureFlowDocumentsForCreator,
             ]);
             setOriginalData([
               ...originalData,
@@ -454,11 +449,10 @@ const ApprovalSend = () => {
           }
         }
       } catch (error) {
-        
+        console.error("Error processing signature documents:", error);
         setApprovalsData([]);
         setTotalRecords(0);
         setPageNo(1);
-
         setDataLength(0);
         setIsScrolling(false);
       }
@@ -513,7 +507,7 @@ const ApprovalSend = () => {
           dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
         }
       } catch (error) {
-        
+        console.error("Error processing approval statuses:", error);
       }
     }
   }, [SignatureWorkFlowReducer.getAllPendingApprovalStatuses]);
@@ -557,7 +551,9 @@ const ApprovalSend = () => {
           setTotalRecords(totalRecords + 1);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error processing workflow document update:", error);
+    }
   }, [workflowsignaturedocumentbyme]);
 
   useEffect(() => {
@@ -577,7 +573,7 @@ const ApprovalSend = () => {
         );
       }
     } catch (error) {
-      
+      console.error("Error processing document status change:", error);
     }
   }, [workflowSignaturedocumentStatusChange]);
 

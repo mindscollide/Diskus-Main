@@ -120,6 +120,11 @@ export const ComlianceProvider = ({ children }) => {
   const [expandChecklistOnTasksPage, setExpandChecklistOnTasksPage] =
     useState(null);
 
+  // Set by the comptask_action email deep-link handler (MainCompliance) with
+  // the taskID to auto-open once ViewComplianceTasks mounts and the correct
+  // Compliance/tab is showing. Consumed and reset by ViewComplianceTasks.
+  const [deepLinkTaskId, setDeepLinkTaskId] = useState(null);
+
   const [viewComplianceTasksContextData, setViewComplianceTasksContextData] =
     useState(null);
 
@@ -1029,6 +1034,8 @@ export const ComlianceProvider = ({ children }) => {
         setAllCheckListByComplianceId,
         expandChecklistOnTasksPage,
         setExpandChecklistOnTasksPage,
+        deepLinkTaskId,
+        setDeepLinkTaskId,
         complianceByMeList,
         setComplianceByMeList,
         complianceByMeTotal,

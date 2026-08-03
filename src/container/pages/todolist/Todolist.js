@@ -51,7 +51,6 @@ import {
   Button,
   TableToDo,
   TextField,
-  Notification,
 } from "../../../components/elements";
 import {
   ViewToDoList,
@@ -94,6 +93,12 @@ import "./Todolist.css";
 const EMPTY_SEARCH = { Date: "", Title: "", AssignedToName: "", UserID: 0 };
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 15;
+
+/** Empty search payload scoped to a given user */
+const buildEmptySearchPayload = (creatorID) => ({
+  ...EMPTY_SEARCH,
+  UserID: creatorID,
+});
 
 /** Maps status ID → CSS class name for both the Select and plain-text renders */
 const STATUS_CLASS_MAP = {
@@ -143,15 +148,6 @@ const TodoList = () => {
   );
   const ToDoDetails = useSelector((s) => s.toDoListReducer.ToDoDetails);
   const ResponseStatusReducer = useSelector((s) => s.todoStatus.Response);
-  const UpdateTodoStatusMessage = useSelector(
-    (s) => s.getTodosStatus.UpdateTodoStatusMessage,
-  );
-  const ResponseMessageTodoStatusReducer = useSelector(
-    (s) => s.getTodosStatus.ResponseMessage,
-  );
-  const UpdateTodoStatus = useSelector(
-    (s) => s.getTodosStatus.UpdateTodoStatus,
-  );
 
   // ── UI state ─────────────────────────────────────────────────────────────
   const [isExpand, setExpand] = useState(false);
@@ -160,13 +156,6 @@ const TodoList = () => {
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   /** Set true so the next ToDoDetails change triggers the update modal */
   const [pendingUpdate, setPendingUpdate] = useState(false);
-
-  // ── Snack-bar notification ───────────────────────────────────────────────
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
 
   // ── Table data ───────────────────────────────────────────────────────────
   const [rowsToDo, setRowToDo] = useState([]);
@@ -234,6 +223,22 @@ const TodoList = () => {
       })();
     }
 
+    // Deep-link: open a task's detail view from a Web Notification click
+    // (WebNotfication.js sets this) — already a plain TaskID from a live
+    // MQTT/API payload, so no decrypt step is needed here.
+    const webNotificationTaskId = localStorage.getItem("webNotificationTaskId");
+    if (webNotificationTaskId) {
+      dispatch(
+        ViewToDoList(
+          navigate,
+          { ToDoListID: Number(webNotificationTaskId) },
+          t,
+          setViewFlagToDo,
+        ),
+      );
+      localStorage.removeItem("webNotificationTaskId");
+    }
+
     // Deep-link: validate a task-list share link (validation only, no UI change)
     const taskListLink = localStorage.getItem("taskListView");
     if (taskListLink) {
@@ -274,7 +279,6 @@ const TodoList = () => {
       setViewFlagToDo(false);
       setUpdateFlagToDo(false);
       setPendingUpdate(false);
-      setOpen({ open: false, message: "", severity: "error" });
       setTaskTitleSort(null);
       setTaskAssignedBySort(null);
       setTaskAssignedToSort(null);
@@ -291,6 +295,29 @@ const TodoList = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // intentionally runs once on mount
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: Web Notification click while already on this page
+  // The mount effect above only reads "webNotificationTaskId" once when the
+  // component first mounts, so it misses clicks that happen while the user
+  // is already sitting on /Diskus/todolist (navigate() to the same route
+  // doesn't remount it). WebNotfication.js fires this event in addition to
+  // setting localStorage, specifically to cover that already-here case.
+  useEffect(() => {
+    const openFromNotification = (e) => {
+      const taskId = e?.detail ?? localStorage.getItem("webNotificationTaskId");
+      if (taskId) {
+        dispatch(
+          ViewToDoList(navigate, { ToDoListID: Number(taskId) }, t, setViewFlagToDo),
+        );
+        localStorage.removeItem("webNotificationTaskId");
+      }
+    };
+    window.addEventListener("webNotificationTaskOpen", openFromNotification);
+    return () =>
+      window.removeEventListener("webNotificationTaskOpen", openFromNotification);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Sync table rows when API data arrives
@@ -439,7 +466,7 @@ const TodoList = () => {
         !searchData.Date && !searchData.Title && !searchData.AssignedToName;
 
       const payload = isEmpty
-        ? { ...EMPTY_SEARCH, UserID: creatorID }
+        ? buildEmptySearchPayload(creatorID)
         : {
             Date: searchData.Date
               ? multiDatePickerDateChangIntoUTC(searchData.Date).slice(0, 8)
@@ -472,7 +499,7 @@ const TodoList = () => {
       dispatch(
         SearchTodoListApi(
           navigate,
-          { ...EMPTY_SEARCH, UserID: creatorID },
+          buildEmptySearchPayload(creatorID),
           DEFAULT_PAGE,
           DEFAULT_PAGE_SIZE,
           t,
@@ -538,7 +565,7 @@ const TodoList = () => {
         searchData.Date || searchData.Title || searchData.AssignedToName;
 
       if (hasActiveSearch) {
-        const freshSearch = { ...EMPTY_SEARCH, UserID: creatorID };
+        const freshSearch = buildEmptySearchPayload(creatorID);
         setSearchData(freshSearch);
         dispatch(
           SearchTodoListApi(
@@ -842,7 +869,14 @@ const TodoList = () => {
           </Dropdown>
         ),
         render: (status, record) => {
-          const cls = `${STATUS_CLASS_MAP[status.pK_TSID] ?? ""} custom-class`;
+          // Pending (2) / In Progress (1) tasks whose deadline has already
+          // passed are shown in red, per the overdue-task display rule.
+          const isOverdue =
+            (Number(status.pK_TSID) === 1 || Number(status.pK_TSID) === 2) &&
+            utcConvertintoGMT(record.deadlineDateTime) < new Date();
+          const cls = `${STATUS_CLASS_MAP[status.pK_TSID] ?? ""} custom-class${
+            isOverdue ? " overdue-status" : ""
+          }`;
           const isOwner = Number(record.taskCreator?.pK_UID) === creatorID;
 
           return isOwner ? (

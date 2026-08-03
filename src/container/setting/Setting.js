@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Switch, Notification } from "../../components/elements";
+import { Button, Switch } from "../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import "./../../i18n";
 import { useTranslation } from "react-i18next";
@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getGoogleValidToken,
   revokeToken,
-  updateUserMessageCleare,
 } from "../../store/actions/UpdateUserGeneralSetting";
 import { getUserSetting } from "../../store/actions/GetUserSetting";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
+import { mapUserProfileToOrganizationSettings } from "./setting.helpers";
 const Organization = () => {
   const settingReducerUserProfileData = useSelector(
     (state) => state.settingReducer.UserProfileData,
@@ -363,142 +363,18 @@ const Organization = () => {
         userProfileData.diskusEventColor,
       );
 
-      let settingData = {
-        EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
-        EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        PushNotificationOnNewMeeting:
-          userProfileData.pushNotificationOnNewMeeting,
-        PushNotificationOnEditMeeting:
-          userProfileData.pushNotificationOnEditMeeting,
-        ShowNotificationonparticipantJoining:
-          userProfileData.showNotificationOnParticipantJoining,
-        Is2FAVerification: userProfileData.iS2FAEnabled,
-        EmailOnCancelledorDeleteMeeting:
-          userProfileData.emailOnCancelledORDeleteMeeting,
-        PushNotificationonCancelledORDeleteMeeting:
-          userProfileData.pushNotificationonCancelledORDeleteMeeting,
-        //New Data inserted
-        DiskusEventColor: userProfileData.diskusEventColor,
-        EmailWhenAddedToCommittee: userProfileData.emailWhenAddedToCommittee,
-        EmailWhenAddedToGroup: userProfileData.emailWhenAddedToGroup,
-        EmailWhenCommitteeIsDissolvedorArchived:
-          userProfileData.emailWhenCommitteeIsDissolvedorArchived,
-        EmailWhenCommitteeIsInActive:
-          userProfileData.emailWhenCommitteeIsInActive,
-        EmailWhenGroupIsClosedorArchived:
-          userProfileData.emailWhenGroupIsClosedorArchived,
-        EmailWhenGroupIsInActive: userProfileData.emailWhenGroupIsInActive,
-        EmailWhenNewResolutionIsCirculated:
-          userProfileData.emailWhenNewResolutionIsCirculated,
-        EmailWhenRemovedFromCommittee:
-          userProfileData.emailWhenRemovedFromCommittee,
-        EmailWhenRemovedFromGroup: userProfileData.emailWhenRemovedFromGroup,
-        EmailWhenResolutionIsCancelledAfterCirculation:
-          userProfileData.emailWhenResolutionIsCancelledAfterCirculation,
-        EmailWhenResolutionIsClosed:
-          userProfileData.emailWhenResolutionIsClosed,
-        PushNotificationWhenAddedToCommittee:
-          userProfileData.pushNotificationWhenAddedToCommittee,
-        PushNotificationWhenAddedToGroup:
-          userProfileData.pushNotificationWhenAddedToGroup,
-        PushNotificationWhenCommitteeIsDissolvedorArchived:
-          userProfileData.pushNotificationWhenCommitteeIsDissolvedorArchived,
-        PushNotificationWhenCommitteeIsInActive:
-          userProfileData.pushNotificationWhenCommitteeIsInActive,
-        PushNotificationWhenGroupIsClosedORArchived:
-          userProfileData.pushNotificationWhenGroupIsClosedORArchived,
-        PushNotificationWhenGroupisSetInactive:
-          userProfileData.pushNotificationWhenGroupisSetInactive,
-        PushNotificationWhenNewResolutionIsCirculated:
-          userProfileData.pushNotificationWhenNewResolutionIsCirculated,
-        PushNotificationWhenRemoveFromGroup:
-          userProfileData.pushNotificationWhenRemoveFromGroup,
-        PushNotificationWhenRemovedFromCommittee:
-          userProfileData.pushNotificationWhenRemovedFromCommittee,
-        PushNotificationWhenResolutionIsClosed:
-          userProfileData.pushNotificationWhenResolutionIsClosed,
-        PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
-          userProfileData.pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
-        UserAllowGoogleCalendarSynch:
-          userProfileData.userAllowGoogleCalendarSynch,
-        UserAllowMicrosoftCalendarSynch:
-          userProfileData.userAllowMicrosoftCalendarSynch,
-        UserName: userProfileData.userName,
-        OfficeEventColor: userProfileData.officeEventColor,
-        GoogleEventColor: userProfileData.googleEventColor,
-      };
-      setOrganizationStates(settingData);
+      setOrganizationStates(
+        mapUserProfileToOrganizationSettings(userProfileData),
+      );
     }
   }, [settingReducerUserProfileData]);
 
   const ResetUserConfigurationSetting = () => {
     let userProfileData = settingReducerUserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
-      let settingData = {
-        EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
-        EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        PushNotificationOnNewMeeting:
-          userProfileData.pushNotificationOnNewMeeting,
-        PushNotificationOnEditMeeting:
-          userProfileData.pushNotificationOnEditMeeting,
-        ShowNotificationonparticipantJoining:
-          userProfileData.showNotificationOnParticipantJoining,
-        Is2FAVerification: userProfileData.iS2FAEnabled,
-        EmailOnCancelledorDeleteMeeting:
-          userProfileData.emailOnCancelledORDeleteMeeting,
-        PushNotificationonCancelledORDeleteMeeting:
-          userProfileData.pushNotificationonCancelledORDeleteMeeting,
-        //New Data inserted
-        DiskusEventColor: userProfileData.diskusEventColor,
-        EmailWhenAddedToCommittee: userProfileData.emailWhenAddedToCommittee,
-        EmailWhenAddedToGroup: userProfileData.emailWhenAddedToGroup,
-        EmailWhenCommitteeIsDissolvedorArchived:
-          userProfileData.emailWhenCommitteeIsDissolvedorArchived,
-        EmailWhenCommitteeIsInActive:
-          userProfileData.emailWhenCommitteeIsInActive,
-        EmailWhenGroupIsClosedorArchived:
-          userProfileData.emailWhenGroupIsClosedorArchived,
-        EmailWhenGroupIsInActive: userProfileData.emailWhenGroupIsInActive,
-        EmailWhenNewResolutionIsCirculated:
-          userProfileData.emailWhenNewResolutionIsCirculated,
-        EmailWhenRemovedFromCommittee:
-          userProfileData.emailWhenRemovedFromCommittee,
-        EmailWhenRemovedFromGroup: userProfileData.emailWhenRemovedFromGroup,
-        EmailWhenResolutionIsCancelledAfterCirculation:
-          userProfileData.emailWhenResolutionIsCancelledAfterCirculation,
-        EmailWhenResolutionIsClosed:
-          userProfileData.emailWhenResolutionIsClosed,
-        PushNotificationWhenAddedToCommittee:
-          userProfileData.pushNotificationWhenAddedToCommittee,
-        PushNotificationWhenAddedToGroup:
-          userProfileData.pushNotificationWhenAddedToGroup,
-        PushNotificationWhenCommitteeIsDissolvedorArchived:
-          userProfileData.pushNotificationWhenCommitteeIsDissolvedorArchived,
-        PushNotificationWhenCommitteeIsInActive:
-          userProfileData.pushNotificationWhenCommitteeIsInActive,
-        PushNotificationWhenGroupIsClosedORArchived:
-          userProfileData.pushNotificationWhenGroupIsClosedORArchived,
-        PushNotificationWhenGroupisSetInactive:
-          userProfileData.pushNotificationWhenGroupisSetInactive,
-        PushNotificationWhenNewResolutionIsCirculated:
-          userProfileData.pushNotificationWhenNewResolutionIsCirculated,
-        PushNotificationWhenRemoveFromGroup:
-          userProfileData.pushNotificationWhenRemoveFromGroup,
-        PushNotificationWhenRemovedFromCommittee:
-          userProfileData.pushNotificationWhenRemovedFromCommittee,
-        PushNotificationWhenResolutionIsClosed:
-          userProfileData.pushNotificationWhenResolutionIsClosed,
-        PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
-          userProfileData.pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
-        UserAllowGoogleCalendarSynch:
-          userProfileData.userAllowGoogleCalendarSynch,
-        UserAllowMicrosoftCalendarSynch:
-          userProfileData.userAllowMicrosoftCalendarSynch,
-        UserName: userProfileData.userName,
-        GoogleEventColor: userProfileData.googleEventColor,
-        OfficeEventColor: userProfileData.officeEventColor,
-      };
-      setOrganizationStates(settingData);
+      setOrganizationStates(
+        mapUserProfileToOrganizationSettings(userProfileData),
+      );
     }
   };
 

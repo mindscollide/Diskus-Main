@@ -8,7 +8,7 @@ import {
   getMeetingRecordingFilesApi,
   requestMeetingRecordingTranscriptApi,
 } from "../../../../../store/actions/NewMeetingActions";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table } from "../../../../../components/elements";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
@@ -216,7 +216,7 @@ const Recording = () => {
     let data = {
       FileID: Number(record.fileID),
     };
-    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.fileName));
+    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.fileName));
   };
   return (
     <Row>

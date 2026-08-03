@@ -58,42 +58,25 @@ const ViewPollProgress = () => {
         });
       }
 
+      const buildOptionData = (newdata, voted) => ({
+        answer: newdata.answer,
+        pollAnswerID: newdata.pollAnswerID,
+        totalVotes: newdata.totalVotes,
+        votePercentage: newdata.votePercentage,
+        voted,
+      });
+
       if (pollSelectedAnswers.length > 0) {
         pollOptions.forEach((newdata, index) => {
           let find = pollSelectedAnswers.find(
             (data, index) => data.pollAnswerID === newdata.pollAnswerID
           );
-          if (find !== undefined) {
-            let changeOptionData = {
-              answer: newdata.answer,
-              pollAnswerID: newdata.pollAnswerID,
-              totalVotes: newdata.totalVotes,
-              votePercentage: newdata.votePercentage,
-              voted: true,
-            };
-            newOption.push(changeOptionData);
-          } else {
-            let changeOptionData = {
-              answer: newdata.answer,
-              pollAnswerID: newdata.pollAnswerID,
-              totalVotes: newdata.totalVotes,
-              votePercentage: newdata.votePercentage,
-              voted: false,
-            };
-            newOption.push(changeOptionData);
-          }
+          newOption.push(buildOptionData(newdata, find !== undefined));
         });
         setPollsOption(newOption);
       } else {
         pollOptions.forEach((newdata, index) => {
-          let changeOptionData = {
-            answer: newdata.answer,
-            pollAnswerID: newdata.pollAnswerID,
-            totalVotes: newdata.totalVotes,
-            votePercentage: newdata.votePercentage,
-            voted: false,
-          };
-          newOption.push(changeOptionData);
+          newOption.push(buildOptionData(newdata, false));
         });
         setPollsOption(newOption);
       }

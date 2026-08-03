@@ -16,6 +16,10 @@ import ar_EG from "antd/es/locale/ar_EG";
 import en_US from "antd/es/locale/en_US";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivityDataNotification } from "../../store/actions/GetUserSetting";
+import {
+  chatBoxActiveFlag,
+  activeChatBoxGS,
+} from "../../store/actions/Talk_Feature_actions";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
 import VideoMaxIncoming from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming";
 import { v4 as uuidv4 } from "uuid";
@@ -74,6 +78,7 @@ import {
   isSharedScreenTriggeredApi,
   participantAcceptandReject,
   notifyParticipantsWhenHostIsTransferred,
+  participantPopup,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -294,6 +299,8 @@ const Dashboard = () => {
     setInCallParticipantsList,
     videoTalk,
     setVideoChatUnreadCount,
+      unSaveChangesModalForMeeting,
+    setUnSaveChangesModalForMeeting,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -770,6 +777,16 @@ const Dashboard = () => {
       // dispatch(setVideoControlHost(true));
       dispatch(setRaisedUnRaisedParticiant(false));
       dispatch(clearPresenterParticipants());
+      // Close any chat panel that was opened while the presentation was
+      // running — neither the video-call chat toggle (VideoChatMessagesFlag)
+      // nor the meeting-group chat opened via openMeetingGroupChat
+      // (ChatBoxActiveFlag / ActiveChatBoxGS) were ever reset when the
+      // presenter stopped presenting, so a viewer's chat panel stayed open
+      // (and, until the earlier fix, duplicated) even after the
+      // presentation had already ended for them.
+      dispatch(videoChatMessagesFlag(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(activeChatBoxGS(false));
       if (isMeeting) {
         console.log("mqtt mqmqmqmqmqmq", StopPresenterViewAwait);
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
@@ -1673,6 +1690,14 @@ const Dashboard = () => {
 
                   dispatch(maximizeVideoPanelFlag(false));
                   dispatch(maxParticipantVideoRemoved(true));
+                  // Close any open chat panel the moment the "removed by
+                  // host" MQTT is received — previously this only happened
+                  // when the participant clicked "Close" on the removed
+                  // modal (maxParticipantVideoRemovedComponent.js), so the
+                  // chat panel stayed visible behind that modal until then.
+                  dispatch(videoChatMessagesFlag(false));
+                  dispatch(chatBoxActiveFlag(false));
+                  dispatch(activeChatBoxGS(false));
                   // Participant room Id and usrrGuid
                   let participantRoomIds =
                     localStorage.getItem("participantRoomId");
@@ -2279,7 +2304,12 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_DELETION".toLowerCase()
         ) {
-          if (data.viewable) {
+          // Same suppression as NEW_COMMENT_CREATION — skip the toast when
+          // the Compliance Task view modal is already open for this comment.
+          const isComplianceTaskModalOpenTodo = JSON.parse(
+            sessionStorage.getItem("complianceTaskViewModalOpen"),
+          );
+          if (data.viewable && !isComplianceTaskModalOpenTodo) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2351,7 +2381,15 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_CREATION".toLowerCase()
         ) {
-          if (data.viewable) {
+          // Suppress this toast only when the Compliance Task view modal
+          // (taskViewDetailsModal) is already open — the user is looking at
+          // the comment as it lands live, so a background toast is noise.
+          // Every other comment-notification scenario (regular To-Do task
+          // view) is unaffected since only that modal sets this flag.
+          const isComplianceTaskModalOpen = JSON.parse(
+            sessionStorage.getItem("complianceTaskViewModalOpen"),
+          );
+          if (data.viewable && !isComplianceTaskModalOpen) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2369,7 +2407,12 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_DELETION".toLowerCase()
         ) {
-          if (data.viewable) {
+          // Same suppression as NEW_COMMENT_CREATION — skip the toast when
+          // the Compliance Task view modal is already open for this comment.
+          const isComplianceTaskModalOpenComment = JSON.parse(
+            sessionStorage.getItem("complianceTaskViewModalOpen"),
+          );
+          if (data.viewable && !isComplianceTaskModalOpenComment) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -3412,6 +3455,30 @@ const Dashboard = () => {
 
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
+          // Multi-tab same-user fix: if the same user is logged in on more
+          // than one tab and the call is accepted from one of them, every
+          // OTHER tab of that same user must also close its own ringer.
+          // The bookkeeping below (falgCheck2 + userID !== data.senderID)
+          // can't detect this — data.senderID is the accepting USER's ID,
+          // which is identical to this tab's own userID since it's the same
+          // person, so that comparison is always false here and the ringer
+          // was never closed. Instead, close THIS tab's ringer purely based
+          // on whether it is still showing one for the exact room that was
+          // just accepted, regardless of who/which tab accepted it.
+          let ringingRoomIDForThisTab = localStorage.getItem("NewRoomID");
+          if (
+            IncomingVideoCallFlagReducer &&
+            Number(data.payload.recepientID) === Number(userID) &&
+            ringingRoomIDForThisTab &&
+            String(ringingRoomIDForThisTab) === String(data.payload.roomID)
+          ) {
+            dispatch(incomingVideoCallFlag(false));
+            localStorage.removeItem("NewRoomID");
+            localStorage.removeItem("incommingCallTypeID");
+            localStorage.removeItem("incommingCallType");
+            localStorage.removeItem("incommingNewCallerID");
+          }
+
           if (isZoomEnabled) {
             console.log("Does Check Recording Start");
             // // Condition For Video Recording
@@ -4281,6 +4348,15 @@ const Dashboard = () => {
             }
             console.log("Check 123");
             dispatch(leaveCallModal(false));
+            // Close the Group Call participant dropdown (ParticipantPopupFlag)
+            // for every recipient when the CALLER ends the call. This handler
+            // (VIDEO_CALL_DISCONNECTED_CALLER) is what actually fires on all
+            // participants' clients for a Group Call — it never routes through
+            // leaveOneToOne/leaveCallForNonMeating (that path is only taken
+            // for CallType===1 in VIDEO_CALL_DISCONNECTED_RECIPIENT), so
+            // without this the flag stayed true across the disconnect and
+            // resurfaced the moment the caller started a new call.
+            dispatch(participantPopup(false));
           }
         } else if (
           data.payload.message.toLowerCase() ===
@@ -4453,7 +4529,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "MISSED_CALLS_COUNT".toLowerCase()
         ) {
-          dispatch(missedCallCount(data.payload, data.payload.message));
+          dispatch(missedCallCount(data.payload, ""));
         } else if (
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
@@ -4947,9 +5023,16 @@ const Dashboard = () => {
           }));
         }
         if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase())
+          // Exact match only — "SIGNATURE_DOCUMENT_STATUS_CHANGE" is a prefix
+          // of "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES", so the old
+          // .includes() check also matched that message and incorrectly
+          // dispatched SignatureDocumentStatusChange for it too. That extra
+          // dispatch patches a signatory's row status in the creator's list
+          // (ApprovalSend.js), which caused a signee's pending count to be
+          // touched a second time when they were just notified the document
+          // was fully signed — not when they took an action themselves.
+          data.payload.message.toLowerCase() ===
+          "SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase()
         ) {
           dispatch(SignatureDocumentStatusChange(data.payload));
           //here to decrease the signature count
@@ -8337,7 +8420,21 @@ const Dashboard = () => {
             </div>
           )}
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
-          {VideoChatMessagesFlagReducer === true ? (
+          {VideoChatMessagesFlagReducer === true &&
+          !(
+            JSON.parse(localStorage.getItem("isMeetingVideo")) ||
+            presenterViewFlag
+          ) ? (
+            // Meeting/Presentation chat is opened via a different mechanism
+            // (onClickCloseChatHandler → openMeetingGroupChat →
+            // ActiveChatBoxGS → <TalkNew/> → ChatBoxActiveFlag-gated
+            // <TalkChat2/>) which renders its own TalkChat2 already. That
+            // same click also sets VideoChatMessagesFlag true, so without
+            // this guard this second, separate TalkChat2 instance rendered
+            // on top of it — the "double chat panel" seen during
+            // presentations/meetings. 1:1 video calls don't go through
+            // openMeetingGroupChat, so they still render this instance as
+            // before.
             <TalkChat2
               chatParentHead='chat-messenger-head-video'
               chatMessageClass='chat-messenger-head-video'
@@ -8413,7 +8510,7 @@ const Dashboard = () => {
               }
             />
           )}
-          {cancelConfirmationModal && <CancelConfirmationModal />}
+          {unSaveChangesModalForMeeting && <CancelConfirmationModal />}
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />

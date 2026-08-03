@@ -155,8 +155,6 @@ const ScheduleMeetingFail = (message) => {
 
 //SaveNONAPIDisputes
 const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
-  let createrID = localStorage.getItem("userID");
-
   return (dispatch) => {
     dispatch(ScheculeMeetingInit());
     dispatch(meetingLoaderDashboard(true));

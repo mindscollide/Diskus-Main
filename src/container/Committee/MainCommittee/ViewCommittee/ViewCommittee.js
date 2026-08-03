@@ -18,7 +18,7 @@ import {
 } from "../../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
 import featherupload from "../../../../assets/images/featherupload.svg";
-import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../store/actions/DataRoom_actions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import {
   fileFormatforSignatureFlow,
@@ -144,7 +144,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data2,
         t,

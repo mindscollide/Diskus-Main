@@ -54,8 +54,6 @@ const ViewComplianceTasks = () => {
   const [activeSortedChecklistId, setActiveSortedChecklistId] = useState(null);
   const [taskStatus, setTaskStatus] = useState([]);
 
-  
-
   // Status Options
   const TASK_STATUS_TRANSITIONS = {
     2: [1, 4], // Pending → In Progress, Cancelled
@@ -79,11 +77,9 @@ const ViewComplianceTasks = () => {
     allTasksStatusForFilter,
     viewComplianceTasksContextData,
     setViewComplianceTasksContextData,
+    deepLinkTaskId,
+    setDeepLinkTaskId,
   } = useComplianceContext();
-  
-  
-  
-  
 
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
@@ -96,8 +92,6 @@ const ViewComplianceTasks = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceIdForMe,
   );
-
-  
 
   useEffect(() => {
     if (allTasksStatusForFilter?.length > 0) {
@@ -113,7 +107,6 @@ const ViewComplianceTasks = () => {
 
   useEffect(() => {
     if (complianceDetailsState.complianceId !== 0) {
-      
       let Data = {
         complianceId: complianceDetailsState.complianceId,
       };
@@ -134,6 +127,17 @@ const ViewComplianceTasks = () => {
       setViewComplianceTasksContextData([]);
     }
   }, [complianceDetailsState?.complianceId]);
+
+  // Deep-link: comptask_action email → MainCompliance sets this once the
+  // right Compliance/tab is showing. Open that task's detail modal the same
+  // way a manual row click does (handleClickTitle), then clear the flag.
+  useEffect(() => {
+    if (deepLinkTaskId) {
+      dispatch(ViewToDoList(navigate, { ToDoListID: deepLinkTaskId }, t, setTaskView));
+      setDeepLinkTaskId(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deepLinkTaskId]);
 
   useEffect(() => {
     if (
@@ -202,7 +206,6 @@ const ViewComplianceTasks = () => {
 
     resetAllSorts();
 
-    
     if (sorter.columnKey === "taskTitle") {
       setTaskTitleSort(sorter.order);
     }
@@ -235,6 +238,8 @@ const ViewComplianceTasks = () => {
         return "#26C6DA";
       case "Closed":
         return "#616161";
+      case "Pending":
+        return "#5f78d6";
       default:
         return "#000";
     }
@@ -278,7 +283,6 @@ const ViewComplianceTasks = () => {
 
   // functions
   const handleStatusChange = (taskId, selectedStatus) => {
-    
     setViewComplianceTasksContextData(
       (prev) =>
         prev.map((checklist) => ({
@@ -299,7 +303,6 @@ const ViewComplianceTasks = () => {
   };
 
   const statusChangeHandler = (statusId, taskId) => {
-    
     let complianceId = complianceDetailsState?.complianceId;
     const Data = {
       TaskID: taskId,
@@ -386,7 +389,7 @@ const ViewComplianceTasks = () => {
       ),
       dataIndex: "taskTitle",
       key: "taskTitle",
-      width: "25%",
+      width: "45%",
       ellipsis: true,
       align: "left",
       render: (text, record) => (
@@ -430,11 +433,10 @@ const ViewComplianceTasks = () => {
 
       dataIndex: "assignedUsers",
       key: "assignedUsers",
-      width: "15%",
+      width: "17%",
       align: "left",
       ellipsis: true,
       render: (text, record) => {
-        
         const firstUser = text?.[0];
         return (
           <span className="text-truncate">
@@ -488,7 +490,7 @@ const ViewComplianceTasks = () => {
 
       dataIndex: "deadLineDate",
       key: "deadLineDate",
-      width: "12%",
+      width: "15%",
       align: "left",
       ellipsis: true,
       render: (text) => (
@@ -500,7 +502,7 @@ const ViewComplianceTasks = () => {
       title: t("Status"),
       dataIndex: "taskStatus",
       key: "taskStatus",
-      width: "10%",
+      width: "12%",
       align: "center",
       ...getTaskStatusColumnProps(),
 
@@ -557,7 +559,6 @@ const ViewComplianceTasks = () => {
 
       // Action buttons column
       render: (hasAttachments) => {
-        
         return (
           <Row>
             <Col
@@ -819,6 +820,7 @@ const ViewComplianceTasks = () => {
         <TaskDetailsViewModal
           viewFlagToDo={taskView}
           setViewFlagToDo={setTaskView}
+          isCompliance={true}
         />
       )}
     </>

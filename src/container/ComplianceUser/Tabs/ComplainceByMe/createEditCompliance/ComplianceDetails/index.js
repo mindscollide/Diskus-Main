@@ -43,7 +43,6 @@ import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunc
 import { Check2 } from "react-bootstrap-icons";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
-import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceStatusCancelModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCancel";
 import StatusSubmitForApprovalModal from "../../../../CommonComponents/StatusChangeModals/SubmitForApproval";
 import ComplianceStatusCompleteExceptionModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCompleteModal";
@@ -150,7 +149,6 @@ const ComplainceDetails = () => {
 
   
 
-  const [show, SnackBar] = useSnackbar();
   const [editComplianceData, setEditComplianceData] = useState(null);
 
   //   tags Selection
@@ -399,6 +397,13 @@ const ComplainceDetails = () => {
   }, [GetAllTagsByOrganizationIDData]);
 
   useEffect(() => {
+    // GlobalSnackbar (mounted once at app root) already renders the toast
+    // for this same ComplainceSettingReducerReducer.ResponseMessage — a
+    // second local show() here caused every compliance action to display
+    // two identical toasts. This effect now only clears the reducer's
+    // message after the same delay GlobalSnackbar used to wait for, since
+    // its own dedupe logic needs ResponseMessage to reset to "" before an
+    // identical message (e.g. "Checklist added successfully") can fire again.
     if (
       authorityRespnseMessage !== null &&
       authorityRespnseMessage !== undefined &&
@@ -406,7 +411,6 @@ const ComplainceDetails = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -1227,8 +1231,9 @@ const ComplainceDetails = () => {
             isFormDisabled ||
             (complianceDetailsState.authority.value !== 0 &&
               complianceDetailsState.criticality.value !== 0 &&
-              complianceDetailsState.dueDate !== "" &&
+              !!complianceDetailsState.dueDate &&
               complianceDetailsState.complianceTitle !== "" &&
+              complianceDetailsState.description !== "" &&
               errors.complianceTitle === "")
               ? false
               : true
@@ -1242,7 +1247,6 @@ const ComplainceDetails = () => {
       <StatusSubmitForApprovalModal />
       <ComplianceStatusCompleteExceptionModal />
       {comlianceStatusReopenedModal && <ComplianceStatusReopenedModal />}
-    {SnackBar}
     </>
   );
 };

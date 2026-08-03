@@ -40,7 +40,6 @@ import {
   parseUTCDateString,
 } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
-import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import DeleteChecklistConfirmationModal from "../../../../CommonComponents/DeleteChecklistConfirmationModal";
 const CreateEditViewComplianceChecklist = () => {
@@ -52,7 +51,6 @@ const CreateEditViewComplianceChecklist = () => {
   const cancelBtnRef = useRef(null);
   const accordionContainerRef = useRef(null);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
-  const [show, SnackBar] = useSnackbar();
   const authorityRespnseMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
@@ -65,8 +63,6 @@ const CreateEditViewComplianceChecklist = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
-
-  
 
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
@@ -97,19 +93,12 @@ const CreateEditViewComplianceChecklist = () => {
     setNewChecklistIds,
     setTaskCount,
   } = useComplianceContext();
-  
-  
-  
-  
-  
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId,
   );
-
-  
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -122,7 +111,7 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
-    
+
     let error = "";
 
     switch (name) {
@@ -178,7 +167,7 @@ const CreateEditViewComplianceChecklist = () => {
             checkListData.checklistDueDate,
           ),
         };
-        
+
         dispatch(
           AddComplianceChecklistAPI(
             navigate,
@@ -194,7 +183,6 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleDeleteChecklist = (checklistID) => {
-    
     if (checklistID) {
       setDeleteChecklistId(checklistID);
       setDeleteChecklistConfirmationModalState(true);
@@ -202,7 +190,6 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleEditChecklist = (checklistData) => {
-    
     if (checklistData)
       try {
         setAddChecklistCloseState(false);
@@ -289,6 +276,13 @@ const CreateEditViewComplianceChecklist = () => {
   }, [GetComplianceChecklistsByComplianceId]);
 
   useEffect(() => {
+    // GlobalSnackbar (mounted once at app root) already renders the toast
+    // for this same ComplainceSettingReducerReducer.ResponseMessage — a
+    // second local show() here caused every checklist action to display two
+    // identical toasts. This effect now only clears the reducer's message
+    // after the same delay so GlobalSnackbar's own dedupe logic sees
+    // ResponseMessage reset to "" and can fire again for a repeat identical
+    // message (e.g. "Checklist added successfully").
     if (
       authorityRespnseMessage !== null &&
       authorityRespnseMessage !== undefined &&
@@ -296,7 +290,6 @@ const CreateEditViewComplianceChecklist = () => {
       authorityseverityMessage !== null
     ) {
       try {
-        show(authorityRespnseMessage, authorityseverityMessage);
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -339,6 +332,10 @@ const CreateEditViewComplianceChecklist = () => {
 
     return parsedDate;
   }, [complianceDetailsState?.dueDate]);
+
+  const handleClickNextBtn = () => {
+    setChecklistTabs(3);
+  };
 
   const handleClickPrevBtn = () => {
     setChecklistData({
@@ -442,8 +439,6 @@ const CreateEditViewComplianceChecklist = () => {
     complianceDetailsState?.status?.value === 5 ||
     complianceDetailsState?.status?.value === 3;
 
-  
-
   const isReopendCompliance = complianceDetailsState?.status?.value === 6;
 
   const getMinChecklistDueDateFromTasks = () => {
@@ -486,8 +481,6 @@ const CreateEditViewComplianceChecklist = () => {
 
   const isComplianceEditable =
     statusValue !== undefined && editableStatuses.has(statusValue);
-
-  
 
   return (
     <>
@@ -806,11 +799,17 @@ const CreateEditViewComplianceChecklist = () => {
           //     : true
           // }
         />
+
+        <Button
+          text={t("Next")}
+          className={styles["Compliance_NextButton"]}
+          onClick={handleClickNextBtn}
+          disableBtn={getCheckListData?.length > 0 ? false : true}
+        />
       </div>
-      
+
       <ComplianceCloseConfirmationModal />
-      <DeleteChecklistConfirmationModal />
-    {SnackBar}
+      <DeleteChecklistConfirmationModal isTaskDelete={false} />
     </>
   );
 };

@@ -736,6 +736,14 @@ const VideoCallNormalHeader = ({
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     dispatch(participantPopup(false));
+    // Close any chat panel this user had open — leaveSuccess() is the shared
+    // cleanup called whenever THIS client leaves (meeting video as host or
+    // participant, presenter, or a 1-to-1/group call), so without this the
+    // chat panel (VideoChatMessagesFlag, or the meeting-group chat opened
+    // via ChatBoxActiveFlag/ActiveChatBoxGS) stayed open after leaving.
+    dispatch(videoChatMessagesFlag(false));
+    dispatch(chatBoxActiveFlag(false));
+    dispatch(activeChatBoxGS(false));
     setIsMicActive(true);
     dispatch(setRaisedUnRaisedParticiant(false));
     localStorage.setItem("MicOff", true);
@@ -2776,7 +2784,7 @@ const VideoCallNormalHeader = ({
                       />
                       <Button
                         className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        text={t("Cancel")}
                         onClick={closeVideoPanel}
                       />
                     </>
@@ -2798,7 +2806,7 @@ const VideoCallNormalHeader = ({
 
                       <Button
                         className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        text={t("Cancel")}
                         onClick={closeVideoPanel}
                       />
                     </>

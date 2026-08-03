@@ -77,6 +77,12 @@
   background: #6172d6;
   padding: 12px 30px;
 }
+
+.Compliance_NextButton:disabled {
+  background: #6172d6;
+  border: 1px solid #6172d6;
+  opacity: 0.5;
+}
 .ChecklistButtonPosition {
   margin: 15px 0;
   display: flex;
@@ -93,6 +99,7 @@
   gap: 10px;
   align-items: end;
   justify-content: end;
+  margin-top: 15px;
   /* bottom: 20px;
   right: 20px; */
   /* position: sticky;
@@ -245,4 +252,23 @@
 
 .NoCursorAlign {
   cursor: not-allowed;
+}
+
+.Compliance_NextButton {
+  border-radius: 4px;
+  background: #6172d6;
+  font-weight: 600;
+  border: 1px solid #6172d6;
+  font-size: 12px;
+  padding: 12px 30px;
+  /* height: 39px;
+  width: 89px; */
+}
+
+.Compliance_NextButton:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #6172d6;
+  background: #6172d6;
+  padding: 12px 30px;
+  /* height: 39px;
+  width: 89px; */
 }

@@ -544,7 +544,6 @@ const Header2 = ({ isVideo }) => {
   };
 
   const homePageDashboardClickNoCall = () => {
-    localStorage.setItem("navigateLocation", "MainDashBoard");
     SideBarGlobalNavigationFunctionNew(
       dispatch,
       navigate,

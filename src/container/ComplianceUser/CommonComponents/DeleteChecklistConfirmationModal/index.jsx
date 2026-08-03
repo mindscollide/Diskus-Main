@@ -7,7 +7,10 @@ import { Button, Modal } from "../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { DeleteCheckListAPI } from "../../../../store/actions/ComplainSettingActions";
-const DeleteChecklistConfirmationModal = () => {
+const DeleteChecklistConfirmationModal = ({
+  isTaskDelete = false,
+  onConfirm = null,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -23,22 +26,25 @@ const DeleteChecklistConfirmationModal = () => {
 
   const handleYesButton = () => {
     try {
+      if (isTaskDelete && onConfirm) {
+        onConfirm();
+        return;
+      }
+
       const Data = {
         checklistId: deleteChecklistId,
       };
-      
+
       dispatch(
         DeleteCheckListAPI(
           navigate,
           Data,
           t,
           complianceInfo,
-          setDeleteChecklistConfirmationModalState
-        )
+          setDeleteChecklistConfirmationModalState,
+        ),
       );
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleNoButton = () => {
@@ -46,6 +52,11 @@ const DeleteChecklistConfirmationModal = () => {
     resetModalStates();
   };
 
+  const confirmationMessage = isTaskDelete
+    ? t("Are-you-sure-to-delete-this-task?")
+    : t(
+        "All-the-associated-tasks-within-this-checklist-will-also-be-deleted.-Are-you-sure-you-want-to-delete-this-checklist?",
+      );
   return (
     <Modal
       show={deleteChecklistConfirmationModalState}
@@ -58,9 +69,7 @@ const DeleteChecklistConfirmationModal = () => {
           <Row>
             <Col lg={12} md={12} sm={12} xs={12} className="text-center">
               <div className={styles["ConfirmationHeading"]}>
-                {t(
-                  "All-the-associated-tasks-within-this-checklist-will-also-be-deleted.-Are-you-sure-you-want-to-delete-this-checklist?"
-                )}
+                {confirmationMessage}
               </div>
             </Col>
           </Row>

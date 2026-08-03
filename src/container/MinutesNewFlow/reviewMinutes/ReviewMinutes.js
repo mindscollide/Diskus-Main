@@ -28,7 +28,7 @@ import {
   convertDateToGMTMinute,
   convertToGMTMinuteTime,
 } from "../../../commen/functions/time_formatter";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions.js";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions.js";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.js";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils.js";
 import { forRecentActivity } from "../../../commen/functions/date_formater.js";
@@ -84,7 +84,6 @@ const ReviewMinutes = () => {
 
   const [workflowID, setWorkflowID] = useState(0);
   const [minutesAgenda, setMinutesAgenda] = useState([]);
-  const [minutesAgendaHierarchy, setMinutesAgendaHierarchy] = useState([]);
   const [minutesGeneral, setMinutesGeneral] = useState([]);
   const [minutesToReview, setMinutesToReview] = useState(0);
   const [minuteDataToReject, setMinuteDataToReject] = useState(null);
@@ -222,7 +221,12 @@ const ReviewMinutes = () => {
     dispatch(AcceptRejectMinuteReview(Data, navigate, t));
   };
 
-  const updateRejectMinutes = (minutesData, rejectData) => {
+  // Returns the minute unchanged unless its ID matches rejectData.minuteID,
+  // in which case it gets a freshly-appended declined review.
+  const rejectMinuteIfMatch = (minute, rejectData) => {
+    if (minute.minuteID !== rejectData.minuteID) {
+      return minute;
+    }
     const newDeclinedReview = {
       fK_ActorBundlesStatus_ID: 0,
       fK_UID: currentUserID,
@@ -237,42 +241,26 @@ const ReviewMinutes = () => {
         .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
       userProfilePicture: rejectData.userProfilePicture,
     };
+    return {
+      ...minute,
+      reason: rejectData.reason,
+      actorBundleStatusID: rejectData.actorBundleStatusID,
+      declinedReviews: [...minute.declinedReviews, newDeclinedReview],
+    };
+  };
 
+  const updateRejectMinutes = (minutesData, rejectData) => {
     return minutesData.map((agenda) => {
       // Update main minuteData
-      const updatedMinuteData = agenda.minuteData.map((minute) => {
-        if (minute.minuteID === rejectData.minuteID) {
-          const updatedDeclinedReviews = [
-            ...minute.declinedReviews,
-            newDeclinedReview,
-          ];
-          return {
-            ...minute,
-            reason: rejectData.reason,
-            actorBundleStatusID: rejectData.actorBundleStatusID,
-            declinedReviews: updatedDeclinedReviews,
-          };
-        }
-        return minute;
-      });
+      const updatedMinuteData = agenda.minuteData.map((minute) =>
+        rejectMinuteIfMatch(minute, rejectData),
+      );
 
       // Update subMinutes if they exist
       const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
-        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
-          if (subMinute.minuteID === rejectData.minuteID) {
-            const updatedDeclinedReviews = [
-              ...subMinute.declinedReviews,
-              newDeclinedReview,
-            ];
-            return {
-              ...subMinute,
-              reason: rejectData.reason,
-              actorBundleStatusID: rejectData.actorBundleStatusID,
-              declinedReviews: updatedDeclinedReviews,
-            };
-          }
-          return subMinute;
-        });
+        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) =>
+          rejectMinuteIfMatch(subMinute, rejectData),
+        );
         return { ...subAgenda, minuteData: updatedSubMinuteData };
       });
 
@@ -285,77 +273,41 @@ const ReviewMinutes = () => {
   };
 
   const updateRejectMinutesGeneral = (minutesData, rejectData) => {
-    const newDeclinedReview = {
-      fK_ActorBundlesStatus_ID: 0,
-      fK_UID: currentUserID,
-      fK_WorkFlowActor_ID: 0,
-      fK_WorkFlowActionableBundle_ID: 0,
-      fK_ActorBundlesStatusState_ID: 2,
-      actorName: currentUserName,
-      reason: rejectData.reason,
-      modifiedOn: new Date()
-        .toISOString()
-        .replace(/[-:T.]/g, "")
-        .slice(0, -3), // current UTC datetime in yyyymmddhhmmss format
-      userProfilePicture: rejectData.userProfilePicture,
-    };
+    return minutesData.map((minute) => rejectMinuteIfMatch(minute, rejectData));
+  };
 
-    return minutesData.map((minute) => {
-      if (minute.minuteID === rejectData.minuteID) {
-        const updatedDeclinedReviews = [
-          ...minute.declinedReviews,
-          newDeclinedReview,
-        ];
-        return {
-          ...minute,
-          reason: rejectData.reason,
-          actorBundleStatusID: rejectData.actorBundleStatusID,
-          declinedReviews: updatedDeclinedReviews,
-        };
-      }
+  // Returns the minute unchanged unless its ID matches targetMinuteID, in
+  // which case it's marked accepted and the current user's declined review
+  // (if any) is cleared.
+  const acceptMinuteIfMatch = (minute, targetMinuteID) => {
+    if (minute.minuteID !== targetMinuteID) {
       return minute;
-    });
+    }
+    return {
+      ...minute,
+      reason: "",
+      actorBundleStatusID: 3,
+      declinedReviews:
+        minute.declinedReviews.length > 0
+          ? minute.declinedReviews.filter(
+              (userReview, index) => currentUserID !== userReview.fK_UID,
+            )
+          : [],
+    };
   };
 
   const updateAcceptMinutes = (minutesData, rejectData) => {
     return minutesData.map((agenda) => {
       // Update main minuteData
-      const updatedMinuteData = agenda.minuteData.map((minute) => {
-        if (minute.minuteID === rejectData.minuteID) {
-          return {
-            ...minute,
-            reason: "",
-            actorBundleStatusID: 3,
-            declinedReviews:
-              minute.declinedReviews.length > 0
-                ? minute.declinedReviews.filter(
-                    (userReview, index) => currentUserID !== userReview.fK_UID,
-                  )
-                : [],
-          };
-        }
-        return minute;
-      });
+      const updatedMinuteData = agenda.minuteData.map((minute) =>
+        acceptMinuteIfMatch(minute, rejectData.minuteID),
+      );
 
       // Update subMinutes if they exist
       const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
-        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
-          if (subMinute.minuteID === rejectData.minuteID) {
-            return {
-              ...subMinute,
-              reason: "",
-              actorBundleStatusID: 3,
-              declinedReviews:
-                subMinute.declinedReviews.length > 0
-                  ? subMinute.declinedReviews.filter(
-                      (userReview, index) =>
-                        currentUserID !== userReview.fK_UID,
-                    )
-                  : [],
-            };
-          }
-          return subMinute;
-        });
+        const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) =>
+          acceptMinuteIfMatch(subMinute, rejectData.minuteID),
+        );
         return { ...subAgenda, minuteData: updatedSubMinuteData };
       });
 
@@ -375,22 +327,9 @@ const ReviewMinutes = () => {
     const updatedMinutesAgenda = updateAcceptMinutes(minutesAgenda, data);
 
     // Update MinutesGeneral
-    const updatedMinutesGeneral = minutesGeneral.map((minute) => {
-      if (minute.minuteID === data.minuteID) {
-        return {
-          ...minute,
-          reason: "",
-          actorBundleStatusID: 3,
-          declinedReviews:
-            minute.declinedReviews.length > 0
-              ? minute.declinedReviews.filter(
-                  (userReview, index) => currentUserID !== userReview.fK_UID,
-                )
-              : [],
-        };
-      }
-      return minute;
-    });
+    const updatedMinutesGeneral = minutesGeneral.map((minute) =>
+      acceptMinuteIfMatch(minute, data.minuteID),
+    );
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
@@ -430,7 +369,7 @@ const ReviewMinutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 
@@ -463,7 +402,6 @@ const ReviewMinutes = () => {
       dispatch(reviewMinutesPage(false));
       dispatch(pendingApprovalPage(true));
       setMinutesAgenda([]);
-      setMinutesAgendaHierarchy([]);
       setMinutesGeneral([]);
       setMinutesToReview(0);
       dispatch(rejectCommentModal(false));
@@ -473,58 +411,27 @@ const ReviewMinutes = () => {
   useEffect(() => {
     try {
       //If the User Been Redirected By Clicking on the Notification that has been Added as a reviewer in the Particular meeting minutes
-      if (JSON.parse(localStorage.getItem("MinutesOperations")) === true) {
-        let NotificationClickMeetingMinutesID = localStorage.getItem(
-          "NotificationClickMinutesMeetingID",
-        );
-        let allAgendaWiseDocs = {
-          MDID: Number(NotificationClickMeetingMinutesID),
-        };
-        let Data = {
-          MeetingID: Number(NotificationClickMeetingMinutesID),
-        };
-        dispatch(
-          AllDocumentsForAgendaWiseMinutesApiFunc(
-            navigate,
-            t,
-            allAgendaWiseDocs,
-          ),
-        );
+      const meetingID =
+        JSON.parse(localStorage.getItem("MinutesOperations")) === true
+          ? Number(localStorage.getItem("NotificationClickMinutesMeetingID"))
+          : currentMeetingMinutesToReviewData?.meetingID;
 
-        dispatch(
-          DocumentsOfMeetingGenralMinutesApiFunc(
-            navigate,
-            allAgendaWiseDocs,
-            t,
-          ),
-        );
+      let allAgendaWiseDocs = { MDID: meetingID };
+      let Data = { MeetingID: meetingID };
 
-        dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
-      } else {
-        let allAgendaWiseDocs = {
-          MDID: currentMeetingMinutesToReviewData?.meetingID,
-        };
-        let Data = {
-          MeetingID: currentMeetingMinutesToReviewData?.meetingID,
-        };
-        dispatch(
-          AllDocumentsForAgendaWiseMinutesApiFunc(
-            navigate,
-            t,
-            allAgendaWiseDocs,
-          ),
-        );
+      dispatch(
+        AllDocumentsForAgendaWiseMinutesApiFunc(
+          navigate,
+          t,
+          allAgendaWiseDocs,
+        ),
+      );
 
-        dispatch(
-          DocumentsOfMeetingGenralMinutesApiFunc(
-            navigate,
-            allAgendaWiseDocs,
-            t,
-          ),
-        );
+      dispatch(
+        DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t),
+      );
 
-        dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
-      }
+      dispatch(GetMinutesForReviewerByMeetingId(navigate, t, Data, "", {}));
     } catch (error) {
       console.log(error);
     }
@@ -624,43 +531,6 @@ const ReviewMinutes = () => {
     getallDocumentsForAgendaWiseMinutes,
   ]);
 
-  function filterEmptyReasons(state) {
-    // Iterate through the main state
-    state.forEach((item) => {
-      // Iterate through minuteData
-      item.minuteData.forEach((minute) => {
-        // Filter declinedReviews where reason is not empty
-        minute.declinedReviews = minute.declinedReviews.filter(
-          (review) => review.reason !== "",
-        );
-      });
-
-      // Iterate through subMinutes
-      item.subMinutes.forEach((subItem) => {
-        subItem.minuteData.forEach((minute) => {
-          // Filter declinedReviews where reason is not empty
-          minute.declinedReviews = minute.declinedReviews.filter(
-            (review) => review.reason !== "",
-          );
-        });
-      });
-    });
-
-    return state;
-  }
-
-  function filterEmptyReasonsForStateGeneral(state) {
-    // Iterate through the state array
-    state.forEach((item) => {
-      // Filter declinedReviews where reason is not empty
-      item.declinedReviews = item.declinedReviews.filter(
-        (review) => review.reason !== "",
-      );
-    });
-
-    return state;
-  }
-
   // useEffect(() => {
   //   try {
   //     if (minuteDataToReject) {
@@ -694,19 +564,19 @@ const ReviewMinutes = () => {
       // Determine if the minute was already in a reviewed state (not pending)
       const wasAlreadyReviewed = minuteDataToReject?.actorBundleStatusID !== 2;
 
-      if (minuteViewFlag === 0) {
-        const updatedMinuteData = {
-          ...minuteDataToReject,
-          reason: commentText,
-          actorBundleStatusID: 4,
-          userProfilePicture: {
-            userID: currentUserID,
-            orignalProfilePictureName: "",
-            displayProfilePictureName:
-              CurrentUserPicture?.displayProfilePictureName,
-          },
-        };
+      const updatedMinuteData = {
+        ...minuteDataToReject,
+        reason: commentText,
+        actorBundleStatusID: 4,
+        userProfilePicture: {
+          userID: currentUserID,
+          orignalProfilePictureName: "",
+          displayProfilePictureName:
+            CurrentUserPicture?.displayProfilePictureName,
+        },
+      };
 
+      if (minuteViewFlag === 0) {
         let updatedMinutesData = updateRejectMinutesGeneral(
           minutesGeneral,
           updatedMinuteData,
@@ -719,18 +589,6 @@ const ReviewMinutes = () => {
           setMinutesToReview((prevCount) => Math.max(0, prevCount - 1));
         }
       } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
-        const updatedMinuteData = {
-          ...minuteDataToReject,
-          reason: commentText,
-          actorBundleStatusID: 4,
-          userProfilePicture: {
-            userID: currentUserID,
-            orignalProfilePictureName: "",
-            displayProfilePictureName:
-              CurrentUserPicture?.displayProfilePictureName,
-          },
-        };
-
         let updatedMinutesAgenda = updateRejectMinutes(
           minutesAgenda,
           updatedMinuteData,

@@ -26,6 +26,8 @@ import SearchComplianceBoxModal from "./CommonComponents/searchComplianceBoxModa
 import SearchComplianceReportModal from "./CommonComponents/searchComplianceReportModal";
 
 import styles from "./mainCompliance.module.css";
+import { validateEncryptedStringViewTaskDetailLinkApi } from "../../store/actions/ToDoList_action";
+import { ViewComplianceDetailsByViewTypeAPI } from "../../store/actions/ComplainSettingActions";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -86,6 +88,8 @@ const MainCompliance = () => {
       state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated,
   );
 
+  const comptaskView = localStorage.getItem("comptaskView");
+
   // ── Context ───────────────────────────────────────────────────────────────
   const {
     createEditCompliance,
@@ -94,6 +98,7 @@ const MainCompliance = () => {
     setMainComplianceTabs,
     setComplianceAddEditViewState,
     showViewCompliance,
+    setShowViewCompliance,
     setComplianceViewMode,
     setSearchCompliancePayload,
     setsearchbox,
@@ -102,13 +107,14 @@ const MainCompliance = () => {
     viewTypeDashboard,
     setViewTypeDashboard,
     resetComplianceDashboardFilter,
-    resetComplianceTaskDashboardFilter,
     resetReopenComplianceDashboardFilter,
     complianceStatndingReport,
     endOfComplianceReport,
     endOfQuarterReport,
     accumulativeReport,
     setIsComplianceCreateOrEdit,
+    setViewComplianceDetailsTab,
+    setDeepLinkTaskId,
   } = useComplianceContext();
 
   // ── Fiscal year (driven by MQTT org settings) ─────────────────────────────
@@ -117,7 +123,56 @@ const MainCompliance = () => {
     fiscalStartMonth: MqttOrganizationSettingUpdated?.fiscalStartMonth,
   });
 
-  
+  // Email deep-link: "Diskus/compliance?comptask_action=<token>" — private_routes.js
+  // stashes the token under "comptaskView". Decrypt it, open the specific
+  // Compliance (For-Me side, since this is always the assignee's own task
+  // email), switch to the Tasks tab, and flag the task ID so
+  // ViewComplianceTasks auto-opens its detail modal once mounted.
+  useEffect(() => {
+    if (comptaskView !== null) {
+      const callApi = async () => {
+        try {
+          const parsedView = await dispatch(
+            validateEncryptedStringViewTaskDetailLinkApi(
+              comptaskView,
+              navigate,
+              t,
+            ),
+          );
+          const { responseCode, response } = parsedView;
+          if (responseCode === 1) {
+            const { complianceID, taskID } = response;
+
+            setComplianceViewMode("forMe");
+            setMainComplianceTabs(TAB.FOR_ME);
+            setViewComplianceDetailsTab(2);
+            setDeepLinkTaskId(taskID);
+
+            dispatch(
+              ViewComplianceDetailsByViewTypeAPI(
+                navigate,
+                { complianceId: complianceID, viewType: 2 },
+                t,
+                2,
+                setComplianceAddEditViewState,
+                setCreateEditComplaince,
+                setShowViewCompliance,
+              ),
+            );
+          }
+        } catch (error) {
+        } finally {
+          localStorage.removeItem("comptaskView");
+        }
+      };
+      callApi();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comptaskView]);
+
+  // ── Effects ───────────────────────────────────────────────────────────────
+
+  /** Fetch compliance + task statuses once on mount. */
 
   // ── Effects ───────────────────────────────────────────────────────────────
 
@@ -161,20 +216,21 @@ const MainCompliance = () => {
   /**
    * Toggle between Manager view (viewType 1) and User view (viewType 2).
    * IMPORTANT: viewType 1/2 is separate from tab index 1/2/3/4.
-   * Resets all three dashboard filter states so tile counts are recalculated.
+   * Resets the ComplianceBy/Reopened dashboard filter states so their tile
+   * counts are recalculated. The Tasks filter (complianceTaskDashboardFilter)
+   * is intentionally excluded — it must keep its selection regardless of the
+   * Switch-to-User-View toggle.
    * localStorage persistence is handled by the viewTypeDashboard effect above.
    */
   const handleSwitchToggle = useCallback(
     (checked) => {
       setViewTypeDashboard(checked ? 2 : 1);
       resetComplianceDashboardFilter();
-      resetComplianceTaskDashboardFilter();
       resetReopenComplianceDashboardFilter();
     },
     [
       setViewTypeDashboard,
       resetComplianceDashboardFilter,
-      resetComplianceTaskDashboardFilter,
       resetReopenComplianceDashboardFilter,
     ],
   );
@@ -270,8 +326,7 @@ const MainCompliance = () => {
           sm={12}
           md={6}
           lg={6}
-          className="d-flex justify-content-start align-items-center mb-2"
-        >
+          className='d-flex justify-content-start align-items-center mb-2'>
           <span className={styles["Compliance_dashboard_heading"]}>
             {heading}
           </span>
@@ -293,8 +348,7 @@ const MainCompliance = () => {
             mainComplianceTabs === TAB.DASHBOARD
               ? "d-flex justify-content-end align-items-center gap-2"
               : undefined
-          }
-        >
+          }>
           {mainComplianceTabs === TAB.DASHBOARD && (
             <>
               <span className={styles["SwitchUserView_Text"]}>
@@ -322,8 +376,7 @@ const MainCompliance = () => {
           sm={12}
           md={9}
           lg={9}
-          className="d-flex justify-content-start flex-wrap gap-2 align-items-center"
-        >
+          className='d-flex justify-content-start flex-wrap gap-2 align-items-center'>
           {tabItems.map(({ tab, label, onClick }) => (
             <CustomButton
               key={tab}
@@ -342,9 +395,8 @@ const MainCompliance = () => {
           sm={12}
           md={3}
           lg={3}
-          className="d-flex justify-content-end gap-2 align-items-center"
-        >
-          <img src={FiscalYearCalendar_Icon} alt="Fiscal year calendar" />
+          className='d-flex justify-content-end gap-2 align-items-center'>
+          <img src={FiscalYearCalendar_Icon} alt='Fiscal year calendar' />
           <span className={styles["Fiscalyear_text"]}>
             {`Fiscal Year: ${fiscalYearRange ?? t("No-fiscal-year")}`}
           </span>

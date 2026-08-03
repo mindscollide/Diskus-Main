@@ -866,6 +866,7 @@ const Reports = () => {
                 footer={false}
                 className={"userlogin_history_tableP"}
                 size={"small"}
+                sticky={true}
                 scroll={{
                   x: false,
                 }}

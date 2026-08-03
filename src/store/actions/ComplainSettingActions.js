@@ -873,16 +873,13 @@ const AddTaskMappingToChecklistAPI = (
                   t("Task-mapped-successfully"),
                 ),
               );
-              const Data_compId = {
-                complianceId: complianceId,
-              };
-              dispatch(
-                GetComplianceChecklistsWithTasksByComplianceIdAPI(
-                  navigate,
-                  Data_compId,
-                  t,
-                ),
-              );
+              // Checklist refresh (GetComplianceChecklistsWithTasksByComplianceId)
+              // is no longer fired from here — for the Compliance "Create Task"
+              // flow this API now runs before CreateUpdateToDoDataRoomMap/
+              // SaveTaskDocumentsAndAssignees/SaveToDoDocuments, so refreshing
+              // here would show the task before its documents/assignees are
+              // saved. The caller (ToDoList_action.js) now triggers the
+              // refresh itself once the whole task-creation chain completes.
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1254,7 +1251,6 @@ const AddComplianceChecklistAPI = (
                 response.data.responseResult.data?.checklistId;
 
               if (newChecklistId) {
-                
                 setNewChecklistIds((prev) => [...prev, newChecklistId]);
               }
 
@@ -3320,18 +3316,14 @@ const EditComplianceAPI = (
               );
 
               isFunction(setChecklistTabs) && setChecklistTabs(2);
-              
 
               if (flag === 3) {
-                
                 // The new status is in Data.newStatusId
                 if (
                   Data.newStatusId === 7 ||
                   Data.newStatusId === 9 ||
                   Data.newStatusId === 6
                 ) {
-                  
-
                   await dispatch(
                     ViewComplianceDetailsByViewTypeAPI(
                       navigate,
@@ -4624,7 +4616,8 @@ const ChangeTaskStatusAPI = (navigate, Data, complianceId, t) => {
               await dispatch(
                 ChangeTaskStatusSuccess(
                   response.data.responseResult,
-                  t("Task status changed successfully"),
+                  // t("Task status changed successfully"),
+                  t("Task-deleted-successfully"),
                 ),
               );
               const Data_compId = {
@@ -5126,7 +5119,6 @@ const complianceChecklistDeletedMQTT = (mqttData) => {
 
 // For COMPLIANCE UPDATED MQTT
 const complianceUpdateMQTT = (mqttData) => {
-  
   return {
     type: actions.COMPLIANCE_UPDATED_MQTT,
     payload: mqttData,
@@ -5135,8 +5127,6 @@ const complianceUpdateMQTT = (mqttData) => {
 
 // For COMPLIANCE REOPENED MQTT
 const complianceReopenMQTT = (mqttData) => {
-  
-
   return {
     type: actions.COMPLIANCE_REOPEN_MQTT,
     payload: mqttData,
@@ -5145,8 +5135,6 @@ const complianceReopenMQTT = (mqttData) => {
 
 // For TASK MAPPED WITH CHECKLIST MQTT
 const taskMappedChecklistMQTT = (mqttData) => {
-  
-
   return {
     type: actions.TASK_MAPPED_WITH_CHECKLIST_MQTT,
     payload: mqttData,
@@ -5187,7 +5175,6 @@ const QuarterlyTaskDashboardManagerMqtt = (data) => {
 
 //For Task Dashboard Mqtt for User
 const TasksDashboardForUserMqtt = (data) => {
-  
   return {
     type: actions.TASK_DASHBOARD_FOR_USER_MQTT,
     payload: data,
@@ -5195,7 +5182,6 @@ const TasksDashboardForUserMqtt = (data) => {
 };
 
 const TasksDashboardFormManagerMqtt = (data) => {
-  
   return {
     type: actions.TASK_DASHBOARD_FOR_MANAGER_MQTT,
     payload: data,
@@ -5568,7 +5554,7 @@ const updateCheckListStatusApi = (navigate, Data, t) => {
 //       // ❌ Default Fallback
 //       return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
 //     } catch (error) {
-//       
+//
 
 //       return dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
 //     }
@@ -5577,8 +5563,6 @@ const updateCheckListStatusApi = (navigate, Data, t) => {
 
 // For TASK STATUS CHANGED FOR USER
 const taskStatusChangedUserMqtt = (mqttData) => {
-  
-
   return {
     type: actions.TASK_STATUS_CHANGED_FOR_USER_MQTT,
     payload: mqttData,

@@ -79,16 +79,9 @@ const ViewComplianceDetails = () => {
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
-  
-
-  
-
-  
-
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
@@ -106,12 +99,6 @@ const ViewComplianceDetails = () => {
   const complianceReopenMqttData = useSelector(
     (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
   );
-
-  
-
-  
-
-  
 
   // styling for select:
   const getStatusColor = (status) => {
@@ -132,6 +119,8 @@ const ViewComplianceDetails = () => {
         return "#26C6DA";
       case "Closed":
         return "#616161";
+      case "Pending":
+        return "#5f78d6";
       default:
         return "#000";
     }
@@ -171,6 +160,28 @@ const ViewComplianceDetails = () => {
 
     indicatorSeparator: () => ({
       display: "none",
+    }),
+
+    // Applied via the `styles` prop, so — unlike the CSS module rules below
+    // this component that never actually matched (they targeted a
+    // classNamePrefix this Select doesn't use) — these always take effect
+    // regardless of status/classNamePrefix. Without them react-select falls
+    // back to its own default container/value/indicator padding, which is
+    // taller than a plain-text value in the same row, so Bootstrap's Row
+    // stretches to that height and the next row gets pushed down — the
+    // "gap under Status" this fixes.
+    container: (provided) => ({
+      ...provided,
+      margin: 0,
+      marginLeft: "-10px",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "0 8px",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      padding: "4px",
     }),
   };
   const [editComplianceData, setEditComplianceData] = useState(null);
@@ -216,7 +227,6 @@ const ViewComplianceDetails = () => {
           ),
         );
       } else {
-        
         dispatch(
           EditComplianceAPI(
             navigate,
@@ -229,10 +239,8 @@ const ViewComplianceDetails = () => {
         );
       }
 
-       //  DATA HERE
-    } catch (error) {
-      
-    }
+      //  DATA HERE
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -247,7 +255,6 @@ const ViewComplianceDetails = () => {
     );
     const selectedStatusId =
       tempSelectComplianceStatus?.value || complianceDetailsState.status.value;
-    
 
     // For On Hold status (7) and Cancel status (9), use the stored options
     const isOnHoldOrCancel =
@@ -278,9 +285,6 @@ const ViewComplianceDetails = () => {
         : 0, // On Hold Compliance Including Checklist and Task
     };
 
-    
-    
-
     setComplianceDetailsViewState((prev) => ({
       ...prev,
       status: selectedOption,
@@ -298,7 +302,7 @@ const ViewComplianceDetails = () => {
         complianceId: complianceInfo.complianceId,
         complianceTitle: complianceDetailsState.complianceTitle,
       };
-      
+
       setEditComplianceData(Data);
       dispatch(
         AddReopenComplianceAPI(
@@ -310,13 +314,12 @@ const ViewComplianceDetails = () => {
       );
       return;
     }
-    
-    // 
+
+    //
     dispatch(EditComplianceAPI(navigate, Data, t, null, 3));
   };
 
   const handleChangeComplianceStatus = (event) => {
-    
     //  ALWAYS RESET TYPE WHEN COMING FROM COMPLIANCE
     setStatusChangeType("compliance");
 
@@ -348,7 +351,6 @@ const ViewComplianceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
         if (checkAnyChecklistOnPendingState) {
-          
           resetModalStates();
           setTempSelectedComplianceStatus(event);
           setSubmitForApprovalModal(true);
@@ -376,9 +378,7 @@ const ViewComplianceDetails = () => {
 
     // status change to On Hold
     if (event.value === 7) {
-      
       if (complianceDetailsState.status.value === 7) {
-        
         // setTempSelectedComplianceStatus(event);
         // setComplianceOnHoldModal(true);
       } else if (complianceDetailsState.status.value !== 7) {
@@ -401,7 +401,6 @@ const ViewComplianceDetails = () => {
     }
     // Status chnage to In Progress
     if (event.value === 2) {
-      
       updateCompliance(event);
       resetModalStates();
 
@@ -425,7 +424,6 @@ const ViewComplianceDetails = () => {
   }, [tempSelectComplianceStatus]);
 
   const handleClickOnHoldModal = useCallback(() => {
-    
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);
 
@@ -487,7 +485,7 @@ const ViewComplianceDetails = () => {
   ]);
 
   const handleClickCancelModal = useCallback(() => {
-    // 
+    //
     setComplianceCancelModal(false);
     setComplianceStatusChangeReasonModal(true);
     // if (tempSelectComplianceStatus) {
@@ -501,7 +499,7 @@ const ViewComplianceDetails = () => {
   ]);
 
   const handleClickReOpendModal = useCallback(() => {
-    // 
+    //
 
     if (tempSelectComplianceStatus) {
       updateCompliance(tempSelectComplianceStatus);
@@ -527,9 +525,6 @@ const ViewComplianceDetails = () => {
       viewComplianceByMeDetails.checklistTasks.every(
         (t) => t?.taskStatus?.statusId === 5,
       );
-
-    
-    
 
     // Filter out "On Hold" if everything is completed
     if (allChecklistsCompleted && allTasksCompleted) {

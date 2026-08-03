@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../components/elements";
+import { Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,6 @@ import {
   getMicrosoftValidToken,
   revokeMicrosoftTokenApi,
   revokeToken,
-  updateUserMessageCleare,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
@@ -48,14 +47,15 @@ const UserSettings = ({ googleClientIDs }) => {
     (state) => state.settingReducer.severity,
   );
 
-  const [securitystate, setSecuritystate] = useState(true);
-  const [todo, setTodo] = useState(false);
-  const [meetingsState, setmeetingsState] = useState(false);
-  const [calender, setCalender] = useState(false);
-  const [committee, setCommittee] = useState(false);
-  const [group, setGroup] = useState(false);
-  const [resolution, setResolution] = useState(false);
-  const [polls, setpolls] = useState(false);
+  const [activeTab, setActiveTab] = useState("security");
+  const securitystate = activeTab === "security";
+  const todo = activeTab === "todo";
+  const meetingsState = activeTab === "meeting";
+  const calender = activeTab === "calendar";
+  const committee = activeTab === "committee";
+  const group = activeTab === "group";
+  const resolution = activeTab === "resolution";
+  const polls = activeTab === "polls";
   const roleID = localStorage.getItem("roleID");
 
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
@@ -252,93 +252,14 @@ const UserSettings = ({ googleClientIDs }) => {
     }
   }, [settingReducerData]);
 
-  const openSecurityTab = () => {
-    setSecuritystate(true);
-    setmeetingsState(false);
-    setCalender(false);
-    setCommittee(false);
-    setGroup(false);
-    setResolution(false);
-    setpolls(false);
-    setTodo(false);
-  };
-
-  const openMeetingTab = () => {
-    setmeetingsState(true);
-    setSecuritystate(false);
-    setCalender(false);
-    setCommittee(false);
-    setGroup(false);
-    setResolution(false);
-    setpolls(false);
-    setTodo(false);
-  };
-
-  const opentodo = () => {
-    setTodo(true);
-    setSecuritystate(false);
-    setmeetingsState(false);
-    setCalender(false);
-    setCommittee(false);
-    setGroup(false);
-    setResolution(false);
-    setpolls(false);
-  };
-
-  const openCalenderTab = () => {
-    setCalender(true);
-    setmeetingsState(false);
-    setSecuritystate(false);
-    setCommittee(false);
-    setGroup(false);
-    setResolution(false);
-    setpolls(false);
-    setTodo(false);
-  };
-
-  const openCommitteTab = () => {
-    setCommittee(true);
-    setCalender(false);
-    setmeetingsState(false);
-    setSecuritystate(false);
-    setGroup(false);
-    setResolution(false);
-    setpolls(false);
-    setTodo(false);
-  };
-
-  const openGroupTab = () => {
-    setGroup(true);
-    setCommittee(false);
-    setCalender(false);
-    setmeetingsState(false);
-    setSecuritystate(false);
-    setResolution(false);
-    setpolls(false);
-    setTodo(false);
-  };
-
-  const openResolutionTab = () => {
-    setResolution(true);
-    setGroup(false);
-    setCommittee(false);
-    setCalender(false);
-    setmeetingsState(false);
-    setSecuritystate(false);
-    setpolls(false);
-    setTodo(false);
-  };
-
-  const openPollsTab = () => {
-    setpolls(true);
-    setResolution(false);
-    setGroup(false);
-    setCommittee(false);
-    setCalender(false);
-    setmeetingsState(false);
-    setSecuritystate(false);
-    setTodo(false);
-  };
+  const openSecurityTab = () => setActiveTab("security");
+  const openMeetingTab = () => setActiveTab("meeting");
+  const opentodo = () => setActiveTab("todo");
+  const openCalenderTab = () => setActiveTab("calendar");
+  const openCommitteTab = () => setActiveTab("committee");
+  const openGroupTab = () => setActiveTab("group");
+  const openResolutionTab = () => setActiveTab("resolution");
+  const openPollsTab = () => setActiveTab("polls");
 
   const onChangeIsTwoFaceEnabled = (e) => {
     let value = e.target.checked;

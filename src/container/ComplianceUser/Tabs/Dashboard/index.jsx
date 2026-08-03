@@ -52,8 +52,6 @@ const ComplianceDashboard = () => {
     complianceDashboardFilter,
     complianceTaskDashboardFilter,
     reopendComplianceDashboardFilter,
-    resetComplianceDashboardFilter,
-    resetComplianceTaskDashboardFilter,
     resetReopenComplianceDashboardFilter,
   } = useComplianceContext();
 
@@ -67,9 +65,11 @@ const ComplianceDashboard = () => {
   // ── Mount effect ──────────────────────────────────────────────────────────
 
   useEffect(() => {
-    // Reset all three dashboard filters so tile counts are fresh on each visit.
-    resetComplianceDashboardFilter();
-    resetComplianceTaskDashboardFilter();
+    // Reset the Reopened-Compliance dashboard filter so its tile count is
+    // fresh on each visit. Both the Tasks filter (complianceTaskDashboardFilter)
+    // and the ComplianceBy filter (complianceDashboardFilter) are intentionally
+    // excluded — they must persist across tab switches so the user's dropdown
+    // selection survives leaving and returning to Dashboard.
     resetReopenComplianceDashboardFilter();
 
     // Restore viewType before any API effects fire (see component JSDoc above).

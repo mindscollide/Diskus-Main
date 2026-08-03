@@ -59,7 +59,7 @@ import {
   GetStatsForPublishingMinutesByWorkFlowId,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import {
   fileFormatforSignatureFlow,
@@ -132,7 +132,7 @@ const Minutes = () => {
       errorStatus: false,
     },
   });
-  console.log(fileAttachments, "fileAttachmentsfileAttachments")
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
   const [addAgendaWiseFields, setAgendaWiseFields] = useState({
     Description: {
       value: "",
@@ -331,7 +331,7 @@ const Minutes = () => {
         },
       });
       setisEdit(true);
-    } 
+    }
     let Retrive = {
       FK_MeetingGeneralMinutesID: data.minuteID,
     };
@@ -340,17 +340,20 @@ const Minutes = () => {
     );
     // Ensure data.minutesDetails is not undefined or null before setting the state
   };
-  console.log(generalMinutesDocument, "generalMinutesDocumentgeneralMinutesDocument")
+  console.log(
+    generalMinutesDocument,
+    "generalMinutesDocumentgeneralMinutesDocument",
+  );
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
     try {
       if (
         generalMinutesDocument !== undefined &&
-        generalMinutesDocument !== null 
+        generalMinutesDocument !== null
       ) {
         let files = [];
         let prevData = [];
-        const {data = []} = generalMinutesDocument
+        const { data = [] } = generalMinutesDocument;
         console.log(data, "generalMinutesDocument");
         data.forEach((data, index) => {
           files.push({
@@ -383,7 +386,9 @@ const Minutes = () => {
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(
-      GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID),
+      GetAllGeneralMinutesApiFunc(navigate, t, Meet, "getallGeneralMinutes", {
+        advanceMeetingModalID,
+      }),
     );
     let Data2 = {
       isAgenda: false,
@@ -465,8 +470,10 @@ const Minutes = () => {
       let Meet = {
         MeetingID: Number(advanceMeetingModalID),
       };
-      await dispatch(
-        GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID),
+      dispatch(
+        GetAllGeneralMinutesApiFunc(navigate, t, Meet, "getallGeneralMinutes", {
+          advanceMeetingModalID,
+        }),
       );
     }
     setFileAttachments([]);
@@ -494,7 +501,7 @@ const Minutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
     );
   };
 
@@ -723,12 +730,15 @@ const Minutes = () => {
       GetMinuteReviewFlowByMeetingId(navigate, t, newData, "", {}),
     );
 
-    await dispatch(
+    dispatch(
       GetAllGeneralMinutesApiFunc(
         navigate,
         t,
         newData,
-        Number(advanceMeetingModalID),
+        "getallGeneralMinutes",
+        {
+          advanceMeetingModalID,
+        },
       ),
     );
 

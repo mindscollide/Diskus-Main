@@ -14,7 +14,6 @@ import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 
 import {
-  Notification,
   Modal,
   Button,
   TextField,
@@ -34,6 +33,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { useApryseDocument } from "../../../../context/DocumentContext";
 
 // ─── Pure helpers (no component state) ──────────────────────────────────────
 
@@ -237,7 +237,8 @@ const SignatureViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { signatureDocumentViewer } = useApryseDocument();
 
   const { webViewer } = useSelector((s) => s);
   const { assignees } = useSelector((s) => s);
@@ -746,6 +747,86 @@ const SignatureViewer = () => {
   useEffect(() => { handleSendClickRef.current = handleSendClick; }, [handleSendClick]);
   useEffect(() => { handlePublishRef.current = handlePublish; }, [handlePublish]);
 
+  // ─── Header buttons (Cancel/Save/Send) ────────────────────────────────────
+  //
+  // Apryse's CustomButton/GroupedItems are plain JS UI objects created once,
+  // not React — label/title text is whatever t() returned AT CREATION TIME
+  // and never updates on its own. Extracted so it can be re-invoked whenever
+  // the language changes, to actually refresh the button text.
+  const renderHeaderButtons = (inst) => {
+    const { UI } = inst;
+
+    const cancelButton = new UI.Components.CustomButton({
+      dataElement: "cancelButton",
+      label: t("Cancel"),
+      title: t("Cancel"),
+      onClick: () => window.close(),
+      style: {
+        background: "#fff",
+        border: "1px solid #e1e1e1",
+        color: "#5a5a5a",
+        padding: "8px 30px",
+        borderRadius: "4px",
+      },
+    });
+
+    const saveButton = new UI.Components.CustomButton({
+      dataElement: "saveButton",
+      label: t("Save"),
+      title: t("Save"),
+      // Always calls the latest handleSave via ref — avoids stale closure
+      onClick: () => handleSaveRef.current?.(),
+      style: {
+        background: "#fff",
+        border: "1px solid #e1e1e1",
+        color: "#5a5a5a",
+        padding: "8px 30px",
+        borderRadius: "4px",
+        marginLeft: "10px",
+      },
+    });
+
+    const publishButton = new UI.Components.CustomButton({
+      dataElement: "publishButton",
+      label: t("Send"),
+      title: t("Send"),
+      // Always calls the latest handleSendClick via ref — avoids stale closure
+      onClick: () => handleSendClickRef.current?.(),
+      style: {
+        background: "#6172d6",
+        border: "1px solid #6172d6",
+        color: "#fff",
+        padding: "8px 30px",
+        borderRadius: "4px",
+        marginLeft: "10px",
+      },
+    });
+
+    const topHeader = UI.getModularHeader("default-top-header");
+    const existingItems = topHeader
+      .getItems()
+      .filter((item) => item.dataElement !== "signatureFlowActionButtons");
+
+    const actionButtonsGroup = new UI.Components.GroupedItems({
+      dataElement: "signatureFlowActionButtons",
+      grow: 0,
+      gap: 8,
+      position: "end",
+      alwaysVisible: true,
+      items: [cancelButton, saveButton, publishButton],
+    });
+
+    topHeader.setItems([...existingItems, actionButtonsGroup]);
+  };
+
+  // Re-render the header buttons whenever the language changes, since
+  // renderHeaderButtons only bakes in the current t() text at call time.
+  useEffect(() => {
+    if (!instance) return;
+    renderHeaderButtons(instance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instance, i18n.language]);
+
   // ─── WebViewer initialisation ────────────────────────────────────────────
   //
   // Guarded by `viewerInitialized` ref so this block runs EXACTLY ONCE even
@@ -765,6 +846,7 @@ const SignatureViewer = () => {
       viewerRef.current,
     ).then((inst) => {
       setInstance(inst);
+      signatureDocumentViewer.current = inst;
       const { UI, Core } = inst;
       const { documentViewer, annotationManager, Annotations } = Core;
 
@@ -798,53 +880,6 @@ const SignatureViewer = () => {
         annotationManager.updateAnnotation(ann);
         annotationManager.redrawAnnotation(ann);
       };
-
-      // ─── Header buttons ────────────────────────────────────────────────
-      const cancelButton = new UI.Components.CustomButton({
-        dataElement: "cancelButton",
-        label: t("Cancel"),
-        title: t("Cancel"),
-        onClick: () => window.close(),
-        style: {
-          background: "#fff",
-          border: "1px solid #e1e1e1",
-          color: "#5a5a5a",
-          padding: "8px 30px",
-          borderRadius: "4px",
-        },
-      });
-
-      const saveButton = new UI.Components.CustomButton({
-        dataElement: "saveButton",
-        label: t("Save"),
-        title: t("Save"),
-        // Always calls the latest handleSave via ref — avoids stale closure
-        onClick: () => handleSaveRef.current?.(),
-        style: {
-          background: "#fff",
-          border: "1px solid #e1e1e1",
-          color: "#5a5a5a",
-          padding: "8px 30px",
-          borderRadius: "4px",
-          marginLeft: "10px",
-        },
-      });
-
-      const publishButton = new UI.Components.CustomButton({
-        dataElement: "publishButton",
-        label: t("Send"),
-        title: t("Send"),
-        // Always calls the latest handleSendClick via ref — avoids stale closure
-        onClick: () => handleSendClickRef.current?.(),
-        style: {
-          background: "#6172d6",
-          border: "1px solid #6172d6",
-          color: "#fff",
-          padding: "8px 30px",
-          borderRadius: "4px",
-          marginLeft: "10px",
-        },
-      });
 
       // ─── Custom left panel ─────────────────────────────────────────────
       //
@@ -950,21 +985,8 @@ const SignatureViewer = () => {
       // ─── Header layout ─────────────────────────────────────────────────
       const topHeader = UI.getModularHeader("default-top-header");
       const existingItems = topHeader.getItems();
-
-      const actionButtonsGroup = new UI.Components.GroupedItems({
-        dataElement: "signatureFlowActionButtons",
-        grow: 0,
-        gap: 8,
-        position: "end",
-        alwaysVisible: true,
-        items: [cancelButton, saveButton, publishButton],
-      });
-
-      topHeader.setItems([
-        customPanelToggle,
-        ...existingItems,
-        actionButtonsGroup,
-      ]);
+      topHeader.setItems([customPanelToggle, ...existingItems]);
+      renderHeaderButtons(inst);
       UI.setActiveLeftPanel("customPanel");
 
       // ─── Document loaded ───────────────────────────────────────────────

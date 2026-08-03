@@ -2866,7 +2866,7 @@ export const getMeetingDetailsByMeetingIdApi = (
 
               case "ProposedMeetingViewForParticipant":
                 dispatch(
-                  getUserSelectProposedWiseApi(navigate, t, Data, "", object),
+                  getUserSelectProposedWiseApi(navigate, t, Data, "ProposedMeetingViewForParticipant", object),
                 );
 
                 break;
@@ -3315,7 +3315,18 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                       ),
                     );
                     break;
-
+                  case "CommitteeJoinMeetingFromListing":
+                    dispatch(setViewTab("agendaViewer"));
+                    dispatch(toggleViewMeetingModal(true));
+                    localStorage.setItem("meetingTitle", record.title);
+                    dispatch(
+                      setCurrentMeetingInfo({
+                        meetingID: Data.FK_MDID,
+                        meetingTitle: record.title,
+                        // mapFolderId: 0,
+                      }),
+                    );
+                    break;
                   default:
                     break;
                 }
@@ -3740,7 +3751,7 @@ export const saveParcipantsProposeMeetingApi = (
               dispatch(
                 saveParcipantsProposeMeetingSuccess(
                   response.data.responseResult,
-                  ""
+                  "",
                   // t("Successfully-updated-participants-list"),
                 ),
               );

@@ -597,9 +597,9 @@ body[dir="rtl"] span.participants-counter-For-Host {
 
 body[dir="rtl"] span.participants-counter-For-Host-waiting-counter {
   position: absolute;
-  top: 0;
-  left: -17px;
-  right: auto;
+  top: -40;
+  left: auto;
+  right: 17px;
   background: #55ce5c !important;
   color: #fff;
   width: 16px;
@@ -971,10 +971,41 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   flex-direction: row;
 }
 
+body[dir="rtl"] .Record-Start-Background-MeetingVideo {
+  position: relative;
+  cursor: pointer;
+  top: 2px;
+  right: auto;
+  left: 71px;
+  height: 40px;
+  width: 190px;
+  padding: 0px 20px;
+  background-color: #e1e1e1 !important;
+  border-radius: 8px !important;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+}
+
 .Record-Start-BackgroundRed-VideoMeeting {
   position: relative;
   right: 70px;
   top: 2px;
+  height: 40px;
+  background-color: red !important;
+  border-radius: 8px !important;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+}
+
+body[dir="rtl"] .Record-Start-BackgroundRed-VideoMeeting {
+  position: relative;
+  right: auto;
+  left: 70px;
+  top: 2px;
+  gap: 8px;
   height: 40px;
   background-color: red !important;
   border-radius: 8px !important;

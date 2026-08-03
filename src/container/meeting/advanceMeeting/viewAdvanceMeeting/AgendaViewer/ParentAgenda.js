@@ -21,7 +21,7 @@ import Urls from "./Urls";
 import RequestContributor from "./RequestContributor";
 import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
 import { getFileExtension } from "@/container/DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
@@ -171,7 +171,7 @@ const ParentAgenda = ({
       FileID: Number(record.originalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data,
         t,

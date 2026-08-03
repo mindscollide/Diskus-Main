@@ -10,7 +10,6 @@ import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 import {
   ViewToDoList,
-  clearResponce,
   createTaskGroupMQTT,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
@@ -19,13 +18,11 @@ import "antd/dist/antd.min.css";
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import {
-  cleareMessage,
   getTodoStatus,
   updateTodoStatusFunc,
 } from "../../../store/actions/GetTodos";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
@@ -44,45 +41,25 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const { todoStatus } = state;
 
   const toDoListReducersocketTodoStatusData = useSelector(
-    (state) => state.toDoListReducer.socketTodoStatusData
+    (state) => state.toDoListReducer.socketTodoStatusData,
   );
 
   const toDoListReducercreateTaskGroup = useSelector(
-    (state) => state.toDoListReducer.createTaskGroup
+    (state) => state.toDoListReducer.createTaskGroup,
   );
 
   const toDoListReducerToDoDetails = useSelector(
-    (state) => state.toDoListReducer.ToDoDetails
-  );
-
-  const toDoListReducerResponseMessage = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage
+    (state) => state.toDoListReducer.ToDoDetails,
   );
 
   const todoStatusResponse = useSelector((state) => state.todoStatus.Response);
 
-  const assigneesResponseMessage = useSelector(
-    (state) => state.assignees.ResponseMessage
-  );
-
-  const assigneesgetTodosStatus = useSelector(
-    (state) => state.assignees.getTodosStatus
-  );
-
   const assigneesUpdateTodoStatusMessage = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatusMessage
-  );
-
-  const getTodosStatusResponseMessage = useSelector(
-    (state) => state.getTodosStatus.ResponseMessage
-  );
-
-  const getTodoStatusUpdateTodoStatus = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatus
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage,
   );
 
   const PollsReducertodoGetGroupTask = useSelector(
-    (state) => state.PollsReducer.todoGetGroupTask
+    (state) => state.PollsReducer.todoGetGroupTask,
   );
 
   const dispatch = useDispatch();
@@ -118,9 +95,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         };
         dispatch(getTasksByGroupIDApi(navigate, t, newData));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, []);
 
   // Remove task from mqtt response
@@ -182,9 +157,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         setRowToDo([]);
         setOriginalData([]);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [PollsReducertodoGetGroupTask]);
 
   useEffect(() => {
@@ -196,9 +169,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
         dispatch(createTaskGroupMQTT(null));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [toDoListReducercreateTaskGroup]);
 
   // SET STATUS VALUES
@@ -231,9 +202,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       setStatusValues(newArrStatus);
 
       setStatusOptions(optionsArr);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [todoStatus]);
 
   // for modal create  handler
@@ -245,7 +214,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const viewModalHandler = (id) => {
     let Data = { ToDoListID: id };
     dispatch(
-      ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
+      ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal),
     );
   };
 
@@ -292,13 +261,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.pK_TSID.toString())
+      selectedValues.includes(item.status.pK_TSID.toString()),
     );
     setRowToDo(filteredData);
     setVisible(false);
@@ -341,6 +310,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     </Menu>
   );
 
+  const toggleSort = (setter) => () =>
+    setter((order) => {
+      if (order === "descend") return "ascend";
+      if (order === "ascend") return null;
+      return "descend";
+    });
+
   const columnsToDo = [
     {
       title: (
@@ -361,15 +337,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       taskDeadlineSort,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setTaskTitleSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setTaskTitleSort) }),
       render: (text, record) => (
         <p
           className='todolist-title-col'
@@ -396,15 +364,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       key: "taskCreator",
       width: "20%",
       align: "center",
-      onHeaderCell: () => ({
-        onClick: () => {
-          setTaskAssignedBySort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setTaskAssignedBySort) }),
       sorter: (a, b) => {
         return (
           a?.taskCreator?.name
@@ -451,15 +411,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           .toLowerCase()
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
       taskAssignedToSort,
-      onHeaderCell: () => ({
-        onClick: () => {
-          setTaskAssignedToSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setTaskAssignedToSort) }),
       render: (text, record) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
@@ -514,15 +466,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
       align: "center",
       sortDirections: ["descend", "ascend"],
-      onHeaderCell: () => ({
-        onClick: () => {
-          setDeadlineSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      onHeaderCell: () => ({ onClick: toggleSort(setDeadlineSort) }),
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
@@ -532,7 +476,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           <span className='text-nowrap text-center'>
             {newTimeFormaterAsPerUTCFullDate(
               record.deadlineDateTime,
-              currentLanguage
+              currentLanguage,
             )}
           </span>
         );
@@ -571,14 +515,14 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending  custom-class "
-                    : text.pK_TSID === 3
-                    ? "Upcoming  custom-class "
-                    : text.pK_TSID === 4
-                    ? "Cancelled  custom-class "
-                    : text.pK_TSID === 5
-                    ? "Completed  custom-class "
-                    : null
+                      ? "Pending  custom-class "
+                      : text.pK_TSID === 3
+                        ? "Upcoming  custom-class "
+                        : text.pK_TSID === 4
+                          ? "Cancelled  custom-class "
+                          : text.pK_TSID === 5
+                            ? "Completed  custom-class "
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue, index) => {
@@ -598,14 +542,14 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                 text.pK_TSID === 1
                   ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 3
-                  ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 4
-                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 5
-                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
-                  : null
+                    ? "Pending  custom-class color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                      ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 4
+                        ? "Cancelled   custom-class color-5a5a5a text-center my-1"
+                        : text.pK_TSID === 5
+                          ? "Completed   custom-class color-5a5a5a  text-center my-1"
+                          : null
               }>
               {text.status}
             </p>
@@ -646,9 +590,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setModalsflag(false);
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [toDoListReducerToDoDetails]);
 
   // CHANGE HANDLER STATUS
@@ -668,15 +610,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         ) {
           let copyData = [...rowsToDo];
           let removeDeleteTodo = copyData.filter(
-            (todoData, index) => todoData.pK_TID !== removeTodo
+            (todoData, index) => todoData.pK_TID !== removeTodo,
           );
           setRowToDo(removeDeleteTodo);
           setRemoveTodo(0);
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [assigneesUpdateTodoStatusMessage, removeTodo]);
 
   const scroll = {
@@ -688,21 +628,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       // Other scrollbar options
     },
   };
-  const emptyText = () => {
-    return (
-      <Row>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className='d-flex flex-column align-items-center'>
-          <img src={TodoMessageIcon1} alt='' />
-          <span className='mt-4'> {t("No-Task")}</span>
-        </Col>
-      </Row>
-    );
-  };
-
   return (
     <>
       <div className='todolistContainer_Committee'>
@@ -744,21 +669,14 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           </Col>
         </Row>
       </div>
-      {show ? (
-        <ModalToDoList
-          showModal={show}
-          setShow={setShow}
-          updateFlagToDo={updateFlagToDo}
-          setUpdateFlagToDo={setUpdateFlagToDo}
-          className='toDoViewModal'
-        />
-      ) : viewFlagToDo ? (
+      {show && <ModalToDoList show={show} setShow={setShow} />}
+      {viewFlagToDo && (
         <ModalViewToDo
           viewFlagToDo={viewFlagToDo}
           setViewFlagToDo={setViewFlagToDo}
         />
-      ) : null}
-    {SnackBar}
+      )}
+      {SnackBar}
     </>
   );
 };

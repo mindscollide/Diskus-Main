@@ -111,6 +111,7 @@
   overflow-x: hidden !important;
   overflow-y: auto !important;
   margin-top: 20px !important;
+  row-gap: 10px !important;
 }
 
 .Scroller_For_CreatePollModal2::-webkit-scrollbar {

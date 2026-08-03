@@ -21,9 +21,10 @@ import CustomModal from "../modal/Modal";
 import { Col, Row } from "react-bootstrap";
 import CustomButton from "../button/Button";
 import useSnackbar from "../snack_bar/useSnackbar";
+import { useApryseDocument } from "../../../context/DocumentContext";
 
 const DocumentViewer = () => {
-  const viewer = useRef(null);
+  const { documentApryseViewer } = useApryseDocument();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation(); // Use React Router's useLocation hook
@@ -221,10 +222,12 @@ const DocumentViewer = () => {
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion
         },
-        viewer.current,
+        documentApryseViewer.current,
       )
-        .then((instance) => {
+        .then(async (instance) => {
           setInstance(instance);
+          documentApryseViewer.current = instance;
+
           const { FitMode, setFitMode } = instance.UI;
           const {
             documentViewer,
@@ -396,6 +399,7 @@ const DocumentViewer = () => {
       "viewControlsOverlay",
       "contextMenuPopup",
       "header",
+      "default-top-header",
     ];
     instance.UI.disableElements(disabledElements);
   }; // Set Permissions
@@ -403,7 +407,7 @@ const DocumentViewer = () => {
   return (
     <>
       <div className='document-viewer'>
-        <div className='webviewer' ref={viewer}></div>
+        <div className='webviewer' ref={documentApryseViewer}></div>
       </div>
       {SnackBar}
     </>

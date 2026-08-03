@@ -487,3 +487,6 @@
   font-weight: 600;
   color: #5a5a5a;
 }
+.ant-table-sticky-holder{
+  z-index: 2 !important;
+}

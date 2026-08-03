@@ -215,6 +215,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [allMessages, setAllMessages] = useState([]);
   console.log(allMessages, "allMessagesallMessagesallMessages");
+
+  // Scroll to the bottom-of-list anchor (<div ref={chatMessages} /> at the
+  // end of the message list) whenever the message list changes — covers
+  // both sending/receiving a new message and switching to a different chat.
+  useEffect(() => {
+    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
+  }, [allMessages]);
+
   const [allUsers, setAllUsers] = useState([]);
 
   const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
@@ -318,6 +326,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
+
+  useEffect(() => {
+    if(talkStateData.ActiveChatData !== null ) {
+      console.log(talkStateData.ActiveChatData, "ActiveChatDataActiveChatData")
+    }
+  },[talkStateData.ActiveChatData])
   useEffect(() => {
     if (talkStateData.ActiveChatData.messageType === "G") {
       let Data = {
@@ -498,113 +512,69 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [uploadFileTalk, setUploadFileTalk] = useState({});
 
+  const ALLOWED_ATTACHMENT_EXTENSIONS = [
+    "doc",
+    "docx",
+    "xls",
+    "xlsx",
+    "pdf",
+    "png",
+    "txt",
+    "jpg",
+    "jpeg",
+    "gif",
+  ];
+  const MAX_ATTACHMENT_SIZE = 10000000; // 10MB
+
   const handleFileUpload = (data, uploadType) => {
-    if (uploadType === "document") {
-      const uploadFilePath = data.target.value;
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
-      let file = [];
-      if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif"
-      ) {
-        let data;
-        let sizezero;
-        let size;
-        if (file.length > 0) {
-          file.map((filename, index) => {
-            if (filename.DisplayFileName === uploadedFile.name) {
-              data = false;
-            }
-          });
-          if (uploadedFile.size > 10000000) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
-          if (data === false) {
-          } else if (size === false) {
-          } else if (sizezero === false) {
-          } else {
-            setUploadFileTalk(uploadedFile);
-          }
+    const uploadFilePath = data.target.value;
+    const uploadedFile = data.target.files[0];
+    const ext = uploadedFile.name.split(".").pop().toLowerCase();
 
-          if (size === false) {
-          } else if (sizezero === false) {
-          } else {
-            setUploadFileTalk(uploadedFile);
-          }
-        }
-      }
-      file.push({
-        DisplayAttachmentName: uploadedFile.name,
-        OriginalAttachmentName: uploadFilePath,
-      });
-      setTasksAttachments({ TasksAttachments: file });
-      setUploadOptions(false);
-      setUploadFileTalk(uploadedFile);
-    } else if (uploadType === "image") {
-      const uploadFilePath = data.target.value;
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
-      let file = [];
-      if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif"
-      ) {
-        let data;
-        let sizezero;
-        let size;
-        if (file.length > 0) {
-          file.map((filename, index) => {
-            if (filename.DisplayFileName === uploadedFile.name) {
-              data = false;
-            }
-          });
-          if (uploadedFile.size > 10000000) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
-          if (data === false) {
-          } else if (size === false) {
-          } else if (sizezero === false) {
-          } else {
-            setUploadFileTalk(uploadedFile);
-          }
-
-          if (size === false) {
-          } else if (sizezero === false) {
-          } else {
-            setUploadFileTalk(uploadedFile);
-          }
-        }
-      }
-      setFile(URL.createObjectURL(data.target.files[0]));
-      setUploadOptions(false);
-      setUploadFileTalk(uploadedFile);
-      file.push({
-        DisplayAttachmentName: uploadedFile.name,
-        OriginalAttachmentName: uploadFilePath,
-      });
-      setTasksAttachments({ TasksAttachments: file });
+    if (!ALLOWED_ATTACHMENT_EXTENSIONS.includes(ext)) {
+      show(t("This file type is not supported."), "error");
+      return;
     }
+    if (uploadedFile.size === 0) {
+      show(t("This file is empty."), "error");
+      return;
+    }
+    if (uploadedFile.size > MAX_ATTACHMENT_SIZE) {
+      show(t("File size must not exceed 10MB."), "error");
+      return;
+    }
+    const isDuplicate = tasksAttachments.TasksAttachments.some(
+      (attachment) => attachment.DisplayAttachmentName === uploadedFile.name,
+    );
+    if (isDuplicate) {
+      show(t("This file has already been attached."), "error");
+      return;
+    }
+
+    if (uploadType === "document") {
+      setTasksAttachments({
+        TasksAttachments: [
+          ...tasksAttachments.TasksAttachments,
+          {
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadFilePath,
+          },
+        ],
+      });
+    } else if (uploadType === "image") {
+      setFile(URL.createObjectURL(data.target.files[0]));
+      setTasksAttachments({
+        TasksAttachments: [
+          ...tasksAttachments.TasksAttachments,
+          {
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadFilePath,
+          },
+        ],
+      });
+    }
+    setUploadOptions(false);
+    setUploadFileTalk(uploadedFile);
   };
 
   const deleteFilefromAttachments = (data, index) => {
@@ -1262,8 +1232,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setShowCheckboxes(false);
     setForwardFlag(false);
     forwardUsersChecked?.map((user) => {
-      let { id, type } = user;
-      if (type == "U") {
+      let { id, messageType } = user;
+      if (messageType == "O") {
         messagesChecked?.map((message) =>
           dispatch(
             InsertOTOMessages(
@@ -1279,7 +1249,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ),
           ),
         );
-      } else if (type == "B") {
+      } else if (messageType == "B") {
         messagesChecked?.map((message) =>
           dispatch(
             InsertBroadcastMessages(
@@ -1294,7 +1264,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ),
           ),
         );
-      } else if (type == "G") {
+      } else if (messageType == "G") {
         messagesChecked?.map((message) =>
           dispatch(
             InsertPrivateGroupMessages(
@@ -1352,7 +1322,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       TalkRequest: {
         UserID: Number(currentUserId),
         Message: {
-          MessageType: "G",
+          MessageType: talkStateData.ActiveChatData.messageType,
           MessageIds: messageDeleteIDs,
         },
       },
@@ -1728,7 +1698,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser]);
 
-  useEffect(() => {}, [talkStateData.ActiveChatData]);
+  // useEffect(() => {}, [talkStateData.ActiveChatData]);
+
+  
 
   useEffect(() => {
     if (
@@ -1785,14 +1757,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
             } else if (messageOtoStarred.isFlag === 0) {
               messageOtoStarred.isFlag = 1;
             }
+            setAllMessages(
+              allMessages.map((data) =>
+                data.messageID === messageOtoStarred.messageID
+                  ? messageOtoStarred
+                  : data,
+              ),
+            );
           }
-          setAllMessages(
-            allMessages.map((data) =>
-              data.messageID === messageOtoStarred.messageID
-                ? messageOtoStarred
-                : data,
-            ),
-          );
         } else if (mqttStarMessageData.messageType === "G") {
           let messageGroupStarred = allMessages.find(
             (item) => item.messageID === mqttStarMessageData.messageID,
@@ -1803,14 +1775,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
             } else if (messageGroupStarred.isFlag === 0) {
               messageGroupStarred.isFlag = 1;
             }
+            setAllMessages(
+              allMessages.map((data) =>
+                data.messageID === messageGroupStarred.messageID
+                  ? messageGroupStarred
+                  : data,
+              ),
+            );
           }
-          setAllMessages(
-            allMessages.map((data) =>
-              data.messageID === messageGroupStarred.messageID
-                ? messageGroupStarred
-                : data,
-            ),
-          );
         }
       }
     }
@@ -2476,150 +2448,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
             return updatedMessages;
           });
-        } else if (
-          mqttInsertGroupMessageData.senderID !== undefined &&
-          mqttInsertGroupMessageData.senderID !== null &&
-          mqttInsertGroupMessageData.senderID !== 0 &&
-          mqttInsertGroupMessageData.senderID !== "" &&
-          mqttInsertGroupMessageData.senderID !== "0" &&
-          parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
-        ) {
-          let insertMqttGroupMessageData = {
-            messageID: mqttInsertGroupMessageData.messageID,
-            senderID: mqttInsertGroupMessageData.senderID,
-            receiverID: mqttInsertGroupMessageData.receiverID,
-            messageBody: mqttInsertGroupMessageData.messageBody,
-            senderName: mqttInsertGroupMessageData.senderName,
-            isFlag: 0,
-            sentDate: mqttInsertGroupMessageData.sentDate,
-            currDate: mqttInsertGroupMessageData.currDate,
-            fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
-            fileName: mqttInsertGroupMessageData.fileName,
-            shoutAll: mqttInsertGroupMessageData.shoutAll,
-            frMessages: frMessages,
-            messageCount: 0,
-            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-            base64Image: mqttInsertGroupMessageData.base64Image,
-            attachmentId: mqttInsertGroupMessageData.attachmentId,
-            uid: mqttInsertGroupMessageData.uid,
-            sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
-            isRetry: false,
-          };
-          setAllMessages((prevAllMessages) => {
-            const updatedMessages = prevAllMessages.map((message) => {
-              if (message.uid === insertMqttGroupMessageData.uid) {
-                return {
-                  ...message,
-                  ...insertMqttGroupMessageData,
-                };
-              }
-              return message;
-            });
-
-            const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid,
-            );
-            if (!isUIDInArray) {
-              updatedMessages.push(insertMqttGroupMessageData);
-            }
-
-            return updatedMessages;
-          });
-        } else if (
-          mqttInsertGroupMessageData.senderID !== undefined &&
-          mqttInsertGroupMessageData.senderID !== null &&
-          mqttInsertGroupMessageData.senderID !== 0 &&
-          mqttInsertGroupMessageData.senderID !== "" &&
-          mqttInsertGroupMessageData.senderID !== "0" &&
-          parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
-        ) {
-          let insertMqttGroupMessageData = {
-            messageID: mqttInsertGroupMessageData.messageID,
-            senderID: mqttInsertGroupMessageData.senderID,
-            receiverID: mqttInsertGroupMessageData.receiverID,
-            messageBody: mqttInsertGroupMessageData.messageBody,
-            senderName: mqttInsertGroupMessageData.senderName,
-            isFlag: 0,
-            sentDate: mqttInsertGroupMessageData.sentDate,
-            currDate: mqttInsertGroupMessageData.currDate,
-            fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
-            fileName: mqttInsertGroupMessageData.fileName,
-            shoutAll: mqttInsertGroupMessageData.shoutAll,
-            frMessages: frMessages,
-            messageCount: 0,
-            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-            base64Image: mqttInsertGroupMessageData.base64Image,
-            attachmentId: mqttInsertGroupMessageData.attachmentId,
-            uid: mqttInsertGroupMessageData.uid,
-            sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
-            isRetry: false,
-          };
-          setAllMessages((prevAllMessages) => {
-            const updatedMessages = prevAllMessages.map((message) => {
-              if (message.uid === insertMqttGroupMessageData.uid) {
-                return {
-                  ...message,
-                  ...insertMqttGroupMessageData,
-                };
-              }
-              return message;
-            });
-
-            const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid,
-            );
-            if (!isUIDInArray) {
-              updatedMessages.push(insertMqttGroupMessageData);
-            }
-
-            return updatedMessages;
-          });
-        } else if (
-          talkStateData.ActiveChatData.messageType === "" &&
-          talkStateData.ActiveChatData.id === 0
-        ) {
-          let newGroupMessageChat = {
-            id: mqttInsertGroupMessageData.receiverID,
-            fullName: mqttInsertGroupMessageData.groupName,
-            imgURL: "O.jpg",
-            messageBody: mqttInsertGroupMessageData.messageBody,
-            messageDate: mqttInsertGroupMessageData.sentDate,
-            notiCount: 0,
-            messageType: "G",
-            isOnline: true,
-            companyName: "Tresmark",
-            sentDate: mqttInsertGroupMessageData.sentDate,
-            receivedDate: "",
-            seenDate: "",
-            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-            base64Image: "",
-            attachmentId: 0,
-            senderID: parseInt(messageSendData.SenderID),
-            admin: mqttInsertGroupMessageData.admin,
-            uid: mqttInsertGroupMessageData.uid,
-            isRetry: false,
-          };
-          setAllMessages((prevAllMessages) => {
-            const updatedMessages = prevAllMessages.map((message) => {
-              if (message.uid === newGroupMessageChat.uid) {
-                return {
-                  ...message,
-                  ...newGroupMessageChat,
-                };
-              }
-              return message;
-            });
-
-            const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === newGroupMessageChat.uid,
-            );
-            if (!isUIDInArray) {
-              updatedMessages.push(newGroupMessageChat);
-            }
-
-            return updatedMessages;
-          });
         }
+        // NOTE: a message whose receiverID doesn't match the currently open
+        // group (the branch above) must NOT be appended here — this state
+        // (allMessages) belongs only to the active chat window. Previously,
+        // an unguarded `else if` branch appended it anyway, leaking messages
+        // from other groups into whichever group happened to be open. Any
+        // other group's unread badge/preview is owned by the sidebar list
+        // (recentChats.js), which has its own MQTT listener.
       }
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
@@ -5653,7 +5489,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Picker
                                 data={data}
                                 onEmojiSelect={selectedEmoji}
-                                disabled={true}
+                                disabled={false}
                               />
                             ) : null}
                           </div>

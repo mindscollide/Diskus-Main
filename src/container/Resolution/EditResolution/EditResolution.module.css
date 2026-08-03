@@ -25,8 +25,9 @@ body[dir="rtl"] .Details_New_resolution {
   position: relative !important;
   margin: 10px 0;
   border-radius: 8px !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  --Paper-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   box-shadow: var(--Paper-shadow);
   display: inline-block !important;
   background: #fff !important;
@@ -251,7 +252,7 @@ body[dir="rtl"] .Attachments_resolution {
 }
 
 .Save_button_Createresolution {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
@@ -265,7 +266,7 @@ body[dir="rtl"] .Save_button_Createresolution {
 }
 
 .Discard_button_Createresolution {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
   font-size: 12px !important;
   background: #fb9494;
   font-weight: 600;
@@ -282,7 +283,7 @@ body[dir="rtl"] .Discard_button_Createresolution {
 .Discard_button_Createresolution:active,
 .Discard_button_Createresolution:focus,
 .Discard_button_Createresolution:focus-visible {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
   font-size: 12px !important;
   background: #fb9494 !important;
   color: #fff !important;
@@ -292,7 +293,8 @@ body[dir="rtl"] .Discard_button_Createresolution {
 }
 
 .Update_button_Createresolution {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
+
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
@@ -309,7 +311,8 @@ body[dir="rtl"] .Update_button_Createresolution {
 .Update_button_Createresolution:active,
 .Update_button_Createresolution:focus,
 .Update_button_Createresolution:focus-visible {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
+
   font-size: 12px !important;
   background: #6172d6 !important;
   font-weight: 600;
@@ -322,7 +325,8 @@ body[dir="rtl"] .Update_button_Createresolution {
 .Save_button_Createresolution:active,
 .Save_button_Createresolution:focus,
 .Save_button_Createresolution:focus-visible {
-  padding: 12px 30px !important;
+  padding: 12px 10px !important;
+
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -332,7 +336,8 @@ body[dir="rtl"] .Update_button_Createresolution {
 }
 
 .circulate_button_Createresolution {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
+
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff;
@@ -349,7 +354,8 @@ body[dir="rtl"] .circulate_button_Createresolution {
 .circulate_button_Createresolution:active,
 .circulate_button_Createresolution:focus,
 .circulate_button_Createresolution:focus-visible {
-  padding: 12px 30px !important;
+  padding: 12px 15px !important;
+
   font-size: 12px !important;
   background: #6172d6 !important;
   font-weight: 600;
@@ -527,12 +533,12 @@ body[dir="rtl"] .here_text {
 }
 
 .Cancel_button_Createresolution:is(
-    :active,
-    :focus-visible,
-    :focus,
-    :visited,
-    :hover
-  ) {
+  :active,
+  :focus-visible,
+  :focus,
+  :visited,
+  :hover
+) {
   padding: 12px 15px !important;
   white-space: nowrap !important;
   font-size: 12px !important;

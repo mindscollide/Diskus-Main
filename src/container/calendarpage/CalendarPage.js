@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row, Dropdown } from "react-bootstrap";
-import { Calendar, Notification } from "./../../components/elements";
+import { Calendar } from "./../../components/elements";
 import "./CalendarPage.css";
 import { Plus } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,10 +8,7 @@ import moment from "moment";
 import {
   clearCalendarState,
   getCalendarDataResponse,
-  getEventsDetails,
   getEventsTypes,
-  removeCalendarResponseMessage,
-  removeCalenderDataFunc,
 } from "../../store/actions/GetDataForCalendar";
 import {
   forMainCalendar,
@@ -23,24 +20,89 @@ import {
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
 import TodoListModal from "../todolistModal/ModalToDoList";
-import {
-  clearResponseMessage,
-  ViewMeeting,
-} from "../../store/actions/Get_List_Of_Assignees";
+import { ViewMeeting } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
-import { cleareMessage } from "../../store/actions/Admin_AddUser";
-import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
-import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
-import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../meeting/quickMeeting/ViewQuickMeeting";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
-import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import {
   JoinCurrentMeeting,
   meetingStatusPublishedMqtt,
 } from "../../store/actions/NewMeetingActions";
 import CreateQuickMeeting from "../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import { useNewMeetingContext } from "../../context/NewMeetingContext";
+import {
+  getViewMeetingByMeetingIdApi,
+  joinMeetingApi,
+} from "../../store/actions/NewMeeting2.actions";
+
+// Builds a calendar event object from an external (Google/Microsoft) source payload
+const buildExternalCalendarEvent = (calendarData, { color, titleField }) => ({
+  id: Number(calendarData.calendarEventID),
+  eventID: Number(calendarData.calendarEventSourceID),
+  title:
+    newTimeFormaterAsPerUTCTalkTime(
+      formattedString(calendarData.model?.start?.dateTime),
+    ) +
+    " - " +
+    calendarData.model?.[titleField],
+  allDay: true,
+  start: utcConvertintoGMT(
+    formattedString(calendarData.model?.start?.dateTime),
+  ),
+  end: utcConvertintoGMT(formattedString(calendarData.model?.end?.dateTime)),
+  border: `2px solid ${color}`,
+  backgroundColor: color,
+  calendarTypeId: Number(calendarData.calendarEventTypeID),
+  isQuickMeeting: true,
+  statusID: 1,
+  participantRoleID: 0,
+  attendeeRoleID: 0,
+  isPrimaryOrganizer: false,
+  meetingID: 0,
+  videoCallURL: "",
+  isChat: false,
+  isVideoCall: false,
+  talkGroupID: 0,
+});
+
+// Removes a calendar event by id — usable as a functional setState updater
+const removeEventById = (id) => (prev) => prev.filter((data) => data.id !== id);
+
+// Builds the date-range payload used to fetch calendar data for a user
+const buildCalendarRangePayload = (userID, OrganizationID, start, end) => ({
+  UserID: parseInt(userID),
+  OrganizationID: parseInt(OrganizationID),
+  StartDate: newDateFormaterAsPerUTC(start) + "000000",
+  EndDate: newDateFormaterAsPerUTC(end) + "000000",
+});
+
+// Builds a calendar event object from an internal (Diskus-sourced) calendar record
+const buildInternalCalendarEvent = (cData, { color, extra }) => {
+  const StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
+  const EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
+  const meetingStartTime = newTimeFormaterAsPerUTC(
+    cData.eventDate + cData.startTime,
+  );
+  return {
+    id: parseInt(cData.pK_CEID),
+    eventID: parseInt(cData.fK_CESID),
+    title: meetingStartTime + " - " + cData.title,
+    allDay: true,
+    start: new Date(StartingTime),
+    end: new Date(EndingTime),
+    border: `2px solid ${color}`,
+    backgroundColor: color,
+    calendarTypeId: Number(cData.fK_CETID),
+    isQuickMeeting: cData.isQuickMeeting,
+    statusID: cData.statusID,
+    participantRoleID: cData.participantRoleID,
+    attendeeRoleID: cData.attendeeRoleID,
+    isPrimaryOrganizer: cData.isPrimaryOrganizer,
+    meetingID: cData.pK_MDID,
+    ...extra,
+  };
+};
 
 const CalendarPage = () => {
   const { t } = useTranslation();
@@ -77,8 +139,8 @@ const CalendarPage = () => {
     (state) => state.calendarReducer.microsoftEventDelete,
   );
 
+  const { isQuickMeetingView, setIsQuickMeetingView } = useNewMeetingContext();
   const [meetingModalShow, setMeetingModalShow] = useState(false);
-  const [EventTypes, setEventTypes] = useState([]);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [meetingData, setMeetingData] = useState(null);
   const [calenderData, setCalenderDatae] = useState([]);
@@ -114,11 +176,8 @@ const CalendarPage = () => {
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
-    
     if (value.calendarTypeId === 2) {
-      
       if (value.isQuickMeeting === false) {
-        
         let advancemeetingData = {
           id: value.id,
           isQuickMeeting: value.isQuickMeeting,
@@ -132,47 +191,38 @@ const CalendarPage = () => {
           isVideoCall: value.isVideoCall,
           talkGroupID: value.talkGroupID,
         };
-        
+
         navigate("/Diskus/Meeting", {
           state: { advancemeetingData, CalendaradvanceMeeting: true },
         });
       } else {
-        let Data = {
-          CalendarEventId: value.id,
-          CalendarEventTypeId: value.calendarTypeId,
-        };
         if (Number(value.statusID) === 10) {
-          let joinMeetingData = {
-            VideoCallURL: value.videoCallURL,
-            FK_MDID: value.meetingID,
-            DateTime: getCurrentDateTimeUTC(),
-          };
-
-          await dispatch(
-            JoinCurrentMeeting(
-              true,
+          dispatch(
+            joinMeetingApi(
               navigate,
               t,
-              joinMeetingData,
-              setCalendarViewModal,
-              "",
-              "", // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
-              10, // Calendar View
-              "",
-              "",
+              {
+                VideoCallURL: value.videoCallURL,
+                FK_MDID: value.meetingID,
+                DateTime: getCurrentDateTimeUTC(),
+              },
+              "JoinQuickMeetingFromListing",
+              {
+                record: value,
+                setIsQuickMeetingView,
+              },
             ),
           );
         } else {
-          let viewMeetingData = { MeetingID: Number(value.meetingID) };
-          dispatch(
-            ViewMeeting(
+          await dispatch(
+            getViewMeetingByMeetingIdApi(
               navigate,
-              viewMeetingData,
               t,
-              setCalendarViewModal,
-              false,
-              false,
-              1,
+              { MeetingID: value.meetingID },
+              "ViewQuickMeetingFromListing",
+              {
+                setIsQuickMeetingView,
+              },
             ),
           );
           // dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
@@ -182,12 +232,12 @@ const CalendarPage = () => {
   };
   const callApi = async () => {
     try {
-      let calendarData = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
-      };
+      let calendarData = buildCalendarRangePayload(
+        userID,
+        OrganizationID,
+        startDate,
+        endDate,
+      );
 
       setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
@@ -195,9 +245,7 @@ const CalendarPage = () => {
       if (!getEventTypeIds?.length > 0) {
         await dispatch(getEventsTypes(navigate, t));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   // calling Api for getting data for calendar
@@ -263,12 +311,12 @@ const CalendarPage = () => {
         date.getMonth() - Number(CalenderMonthsSpan),
         1,
       );
-      let calendarData = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
-      };
+      let calendarData = buildCalendarRangePayload(
+        userID,
+        OrganizationID,
+        updateStartDate,
+        startDataUpdate,
+      );
       setStartDataUpdate(updateStartDate);
       dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     } else if (endDataUpdate < value._d) {
@@ -277,12 +325,12 @@ const CalendarPage = () => {
         date.getFullYear(),
         date.getMonth() + Number(CalenderMonthsSpan),
       );
-      let calendarData = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
-      };
+      let calendarData = buildCalendarRangePayload(
+        userID,
+        OrganizationID,
+        endDataUpdate,
+        updateEndDate,
+      );
       setEndDataUpdate(updateEndDate);
       dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     }
@@ -306,7 +354,7 @@ const CalendarPage = () => {
       localStorage.getItem("diskusEventColor") !== null
         ? localStorage.getItem("diskusEventColor")
         : "#000";
-    
+
     let newList;
     if (Object.keys(calenderData).length > 0) {
       if (defaultState) {
@@ -320,78 +368,43 @@ const CalendarPage = () => {
     }
     if (Object.keys(Data).length > 0) {
       Data.forEach((cData) => {
-        let StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
-        let EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
-        let meetingStartTime = newTimeFormaterAsPerUTC(
-          cData.eventDate + cData.startTime,
-        );
         if (cData.fK_CESID === 1) {
-          newList.push({
-            id: parseInt(cData.pK_CEID),
-            eventID: parseInt(cData.fK_CESID),
-            title: meetingStartTime + " - " + cData.title,
-            allDay: true,
-            start: new Date(StartingTime),
-            end: new Date(EndingTime),
-            border: `2px solid ${googleEventColor}`,
-            backgroundColor: googleEventColor,
-            calendarTypeId: Number(cData.fK_CETID),
-            isQuickMeeting: cData.isQuickMeeting,
-            statusID: cData.statusID,
-            participantRoleID: cData.participantRoleID,
-            attendeeRoleID: cData.attendeeRoleID,
-            isPrimaryOrganizer: cData.isPrimaryOrganizer,
-            meetingID: cData.pK_MDID,
-            videoCallURL: "",
-            isChat: false,
-            isVideoCall: false,
-            talkGroupID: 0,
-          });
+          newList.push(
+            buildInternalCalendarEvent(cData, {
+              color: googleEventColor,
+              extra: {
+                videoCallURL: "",
+                isChat: false,
+                isVideoCall: false,
+                talkGroupID: 0,
+              },
+            }),
+          );
         } else if (cData.fK_CESID === 2 || cData.fK_CESID === 4) {
-          newList.push({
-            id: parseInt(cData.pK_CEID),
-            eventID: parseInt(cData.fK_CESID),
-            title: meetingStartTime + " - " + cData.title,
-            allDay: true,
-            start: new Date(StartingTime),
-            end: new Date(EndingTime),
-            border: `2px solid ${officeEventColor}`,
-            backgroundColor: officeEventColor,
-            calendarTypeId: Number(cData.fK_CETID),
-            isQuickMeeting: cData.isQuickMeeting,
-            statusID: cData.statusID,
-            participantRoleID: cData.participantRoleID,
-            attendeeRoleID: cData.attendeeRoleID,
-            isPrimaryOrganizer: cData.isPrimaryOrganizer,
-            meetingID: cData.pK_MDID,
-            videoCallURL: "",
-            isChat: false,
-            isVideoCall: false,
-            talkGroupID: 0,
-          });
+          newList.push(
+            buildInternalCalendarEvent(cData, {
+              color: officeEventColor,
+              extra: {
+                videoCallURL: "",
+                isChat: false,
+                isVideoCall: false,
+                talkGroupID: 0,
+              },
+            }),
+          );
         } else if (cData.fK_CESID === 3) {
-          newList.push({
-            id: parseInt(cData.pK_CEID),
-            eventID: parseInt(cData.fK_CESID),
-            title: meetingStartTime + " - " + cData.title,
-            allDay: true,
-            start: new Date(StartingTime),
-            end: new Date(EndingTime),
-            border: `2px solid ${diskusEventColor}`,
-            backgroundColor: diskusEventColor,
-            calendarTypeId: Number(cData.fK_CETID),
-            isQuickMeeting: cData.isQuickMeeting,
-            statusID: cData.statusID,
-            participantRoleID: cData.participantRoleID,
-            attendeeRoleID: cData.attendeeRoleID,
-            isPrimaryOrganizer: cData.isPrimaryOrganizer,
-            meetingID: cData.pK_MDID,
-            videoCallURL: cData.videoCallURL,
-            isChat: cData.isChat,
-            isVideoCall: cData.isVideoCall,
-            talkGroupID: cData.talkGroupID,
-            isMinutePublished: cData.isMinutePublished,
-          });
+          newList.push(
+            buildInternalCalendarEvent(cData, {
+              color: diskusEventColor,
+              extra: {
+                videoCallURL: cData.videoCallURL,
+                isChat: cData.isChat,
+                isVideoCall: cData.isVideoCall,
+                talkGroupID: cData.talkGroupID,
+                isMinutePublished: cData.isMinutePublished,
+              },
+            }),
+          );
         }
       });
       setCalenderDatae(newList);
@@ -404,43 +417,13 @@ const CalendarPage = () => {
         // Google Calenadar Event Source ID # 01
         // Add New Event in State
         let googleEventColor = localStorage.getItem("googleEventColor");
-
-        let calendarData = googleEventCreate;
-        let newData = {
-          id: Number(calendarData.calendarEventID),
-          eventID: Number(calendarData.calendarEventSourceID),
-          title:
-            newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime),
-            ) +
-            " - " +
-            calendarData.model?.summary,
-          allDay: true,
-          start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime),
-          ),
-          end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime),
-          ),
-          border: `2px solid ${googleEventColor}`,
-          backgroundColor: googleEventColor,
-          calendarTypeId: Number(calendarData.calendarEventTypeID),
-          isQuickMeeting: true,
-          statusID: 1,
-          participantRoleID: 0,
-          attendeeRoleID: 0,
-          isPrimaryOrganizer: false,
-          meetingID: 0,
-          videoCallURL: "",
-          isChat: false,
-          isVideoCall: false,
-          talkGroupID: 0,
-        };
+        let newData = buildExternalCalendarEvent(googleEventCreate, {
+          color: googleEventColor,
+          titleField: "summary",
+        });
         setCalenderDatae([...calenderData, newData]);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [googleEventCreate]);
 
   useEffect(() => {
@@ -449,38 +432,10 @@ const CalendarPage = () => {
         // Google Calenadar Event Source ID # 01
         // Update Existing Event in State
         let googleEventColor = localStorage.getItem("googleEventColor");
-
-        let calendarData = googleEventUpdate;
-        let newData = {
-          id: Number(calendarData.calendarEventID),
-          eventID: Number(calendarData.calendarEventSourceID),
-          title:
-            newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime),
-            ) +
-            " - " +
-            calendarData.model?.summary,
-          allDay: true,
-          start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime),
-          ),
-          end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime),
-          ),
-          border: `2px solid ${googleEventColor}`,
-          backgroundColor: googleEventColor,
-          calendarTypeId: Number(calendarData.calendarEventTypeID),
-          isQuickMeeting: true,
-          statusID: 1,
-          participantRoleID: 0,
-          attendeeRoleID: 0,
-          isPrimaryOrganizer: false,
-          meetingID: 0,
-          videoCallURL: "",
-          isChat: false,
-          isVideoCall: false,
-          talkGroupID: 0,
-        };
+        let newData = buildExternalCalendarEvent(googleEventUpdate, {
+          color: googleEventColor,
+          titleField: "summary",
+        });
         setCalenderDatae((calendarData2) =>
           calendarData2.map((data2, index) => {
             if (data2.id === newData.id) {
@@ -491,9 +446,7 @@ const CalendarPage = () => {
           }),
         );
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [googleEventUpdate]);
 
   useEffect(() => {
@@ -501,17 +454,9 @@ const CalendarPage = () => {
       if (googleEventDelete !== null) {
         // Google Calenadar Event Source ID # 01
         // Remove Existing Event in State
-
-        let calendarData = googleEventDelete;
-        setCalenderDatae((calendarData2) =>
-          calendarData2.filter(
-            (data2, index) => data2.id !== calendarData.calendarEventID,
-          ),
-        );
+        setCalenderDatae(removeEventById(googleEventDelete.calendarEventID));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [googleEventDelete]);
 
   useEffect(() => {
@@ -520,42 +465,13 @@ const CalendarPage = () => {
         // Microsoft Calenadar Event Source ID # 02 & 04
         // Add New Event in State
         let officeEventColor = localStorage.getItem("officeEventColor");
-        let calendarData = microsoftEventCreate;
-        let newData = {
-          id: Number(calendarData.calendarEventID),
-          eventID: Number(calendarData.calendarEventSourceID),
-          title:
-            newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime),
-            ) +
-            " - " +
-            calendarData.model?.subject,
-          allDay: true,
-          start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime),
-          ),
-          end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime),
-          ),
-          border: `2px solid ${officeEventColor}`,
-          backgroundColor: officeEventColor,
-          calendarTypeId: Number(calendarData.calendarEventTypeID),
-          isQuickMeeting: true,
-          statusID: 1,
-          participantRoleID: 0,
-          attendeeRoleID: 0,
-          isPrimaryOrganizer: false,
-          meetingID: 0,
-          videoCallURL: "",
-          isChat: false,
-          isVideoCall: false,
-          talkGroupID: 0,
-        };
+        let newData = buildExternalCalendarEvent(microsoftEventCreate, {
+          color: officeEventColor,
+          titleField: "subject",
+        });
         setCalenderDatae([...calenderData, newData]);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [microsoftEventCreate]);
 
   useEffect(() => {
@@ -564,37 +480,10 @@ const CalendarPage = () => {
         // Microsoft Calenadar Event Source ID # 02 & 04
         // Update Existing Event in State
         let officeEventColor = localStorage.getItem("officeEventColor");
-        let calendarData = microsoftEventUpdate;
-        let newData = {
-          id: Number(calendarData.calendarEventID),
-          eventID: Number(calendarData.calendarEventSourceID),
-          title:
-            newTimeFormaterAsPerUTCTalkTime(
-              formattedString(calendarData.model?.start?.dateTime),
-            ) +
-            " - " +
-            calendarData.model?.subject,
-          allDay: true,
-          start: utcConvertintoGMT(
-            formattedString(calendarData.model?.start?.dateTime),
-          ),
-          end: utcConvertintoGMT(
-            formattedString(calendarData.model?.end?.dateTime),
-          ),
-          border: `2px solid ${officeEventColor}`,
-          backgroundColor: officeEventColor,
-          calendarTypeId: Number(calendarData.calendarEventTypeID),
-          isQuickMeeting: true,
-          statusID: 1,
-          participantRoleID: 0,
-          attendeeRoleID: 0,
-          isPrimaryOrganizer: false,
-          meetingID: 0,
-          videoCallURL: "",
-          isChat: false,
-          isVideoCall: false,
-          talkGroupID: 0,
-        };
+        let newData = buildExternalCalendarEvent(microsoftEventUpdate, {
+          color: officeEventColor,
+          titleField: "subject",
+        });
         setCalenderDatae((calendarData2) =>
           calendarData2.map((data2, index) => {
             if (data2.id === newData.id) {
@@ -605,9 +494,7 @@ const CalendarPage = () => {
           }),
         );
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [microsoftEventUpdate]);
 
   useEffect(() => {
@@ -615,23 +502,14 @@ const CalendarPage = () => {
       if (microsoftEventDelete !== null) {
         // Microsoft Calenadar Event Source ID # 02 & 04
         // Remove Existing Event in State
-
-        let calendarData = microsoftEventDelete;
-        setCalenderDatae((calendarData2) =>
-          calendarData2.filter(
-            (data2, index) => data2.id !== calendarData.calendarEventID,
-          ),
-        );
+        setCalenderDatae(removeEventById(microsoftEventDelete.calendarEventID));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [microsoftEventDelete]);
 
   useEffect(() => {
     try {
       if (MeetingPublishData !== null) {
-        
         let StartingTime = forMainCalendar(
           MeetingPublishData.dateOfMeeting +
             MeetingPublishData.meetingStartTime,
@@ -682,11 +560,9 @@ const CalendarPage = () => {
         setCalenderDatae([...calenderData, MeetingData]);
         dispatch(meetingStatusPublishedMqtt(null));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [MeetingPublishData]);
-  
+
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };
@@ -702,16 +578,6 @@ const CalendarPage = () => {
     setOpen2(true);
     setCalendarView(!calendarView);
   }
-
-  useEffect(() => {
-    if (
-      getEventTypeIds !== null &&
-      getEventTypeIds !== undefined &&
-      getEventTypeIds.length > 0
-    ) {
-      setEventTypes(getEventTypeIds);
-    }
-  }, [getEventTypeIds]);
 
   useEffect(() => {
     if (eventsDetails !== null && eventsDetails !== undefined) {
@@ -783,13 +649,7 @@ const CalendarPage = () => {
           />
         </Row>
       </div>
-      {calendarViewModal && (
-        <MeetingViewModalCalendar
-          viewFlag={calendarViewModal}
-          setViewFlag={setCalendarViewModal}
-          data={meetingData}
-        />
-      )}
+      {isQuickMeetingView && <MeetingViewModalCalendar data={meetingData} />}
 
       {meetingModalShow && (
         <CreateQuickMeeting

@@ -260,6 +260,17 @@ p.todolist-title-col {
   color: var(--status-completed);
 }
 
+/* Pending/In Progress tasks whose deadline has already passed.
+   Owner rows render status via antd <Select>, whose visible text lives in
+   a nested .ant-select-selection-item span (not the element the className
+   prop lands on), so the color must be targeted there too — otherwise it's
+   only ever visible on the plain <p> (non-owner) rows. !important guards
+   against antd's own selection-item color rules. */
+.overdue-status,
+.overdue-status .ant-select-selection-item {
+  color: #e74c3c !important;
+}
+
 /*
  * Legacy colour helpers — kept for backwards compatibility with any
  * non-status uses elsewhere in the codebase. Prefer the status classes above

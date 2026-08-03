@@ -19,7 +19,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { Eye } from "react-bootstrap-icons";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
@@ -96,7 +96,7 @@ const MeetingMaterialPrev = ({
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
         );
       }
     } else if (
@@ -126,7 +126,7 @@ const MeetingMaterialPrev = ({
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
         );
       }
     } else if (
@@ -153,7 +153,7 @@ const MeetingMaterialPrev = ({
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
         );
       }
     } else if (editorRole.role === "Participant" && editorRole.status === "9") {
@@ -178,7 +178,7 @@ const MeetingMaterialPrev = ({
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
         );
       }
     }

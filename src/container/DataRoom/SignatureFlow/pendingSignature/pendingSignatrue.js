@@ -27,6 +27,7 @@ import {
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { useApryseDocument } from "../../../../context/DocumentContext";
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
@@ -78,7 +79,9 @@ const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc, userAnnotations) => {
           const name = d.documentElement.getAttribute("name");
           const type = d.documentElement.getAttribute("type");
           if (name && type === "Sig") sigNames.add(name);
-        } catch { /* ignore */ }
+        } catch {
+          /* ignore */
+        }
       });
     });
     return sigNames;
@@ -109,7 +112,8 @@ const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc, userAnnotations) => {
           const obj = await pdfDoc.getXRefTableEntry(objnum);
 
           // isNull() returns true for free/null XRef entries (missing objects)
-          const missing = !obj || (typeof obj.isNull === "function" && await obj.isNull());
+          const missing =
+            !obj || (typeof obj.isNull === "function" && (await obj.isNull()));
           if (missing) apref.remove();
         } catch {
           // Object doesn't exist or API unavailable — strip to prevent error
@@ -151,7 +155,6 @@ const revertXmlField = (data) =>
             try {
               return JSON.parse(str);
             } catch (err) {
-              
               return null;
             }
           })
@@ -481,7 +484,8 @@ const PendingSignatureViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { pendingSignatureViewer } = useApryseDocument();
 
   const { webViewer } = useSelector((s) => s);
   const {
@@ -671,9 +675,7 @@ const PendingSignatureViewer = () => {
         setUserAnnotations(reverted);
         setUserAnnotationsCopy(reverted);
       }
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   }, [getAllFieldsByWorkflowID]);
 
   // ── getWorkfFlowByFileId ───────────────────────────────────────────────────
@@ -731,9 +733,7 @@ const PendingSignatureViewer = () => {
         creatorID: workFlow.creatorID,
         isCreator: workFlow.isCreator,
       }));
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   }, [getWorkfFlowByFileId, fieldsData]);
 
   // ── getSignatureFileAnnotationResponse ────────────────────────────────────
@@ -792,9 +792,7 @@ const PendingSignatureViewer = () => {
         xfdfData: hideFreetextXmlString,
         attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
       }));
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   }, [getSignatureFileAnnotationResponse]);
 
   // ─── Save / submit handler ────────────────────────────────────────────────
@@ -899,9 +897,7 @@ const PendingSignatureViewer = () => {
             },
           ),
         );
-      } catch (err) {
-        
-      }
+      } catch (err) {}
     },
     [docWorkflowID, dispatch, navigate, t],
   );
@@ -941,6 +937,100 @@ const PendingSignatureViewer = () => {
     };
   }, []);
 
+  // ─── Header buttons (Decline/Submit or Close) ────────────────────────────
+  //
+  // Apryse's CustomButton/GroupedItems are plain JS UI objects created once,
+  // not React — their label/title text is whatever t() returned AT CREATION
+  // TIME and never updates on its own. Extracted into its own function (not
+  // just inline in the WebViewer init effect) so it can also be re-invoked
+  // whenever the language changes, to actually refresh the button text.
+  const renderHeaderButtons = (inst) => {
+    const { UI } = inst;
+    const topHeader = UI.getModularHeader("default-top-header");
+    const existingItems = topHeader
+      .getItems()
+      .filter((item) => item.dataElement !== "pendingSignatureActionButtons");
+    const currentUserID = getCurrentUserID();
+    const isSignatory = signerDataRef.current.some(
+      (u) => Number(u.userID) === currentUserID,
+    );
+
+    let actionGroup;
+
+    if (isSignatory) {
+      const declineButton = new UI.Components.CustomButton({
+        dataElement: "declineButton",
+        label: t("Decline"),
+        title: t("Decline"),
+        onClick: () => setReasonModal(true),
+        style: {
+          background: "#fff",
+          border: "1px solid #e1e1e1",
+          color: "#5a5a5a",
+          padding: "8px 30px",
+          borderRadius: "4px",
+        },
+      });
+
+      const submitButton = new UI.Components.CustomButton({
+        dataElement: "submitButton",
+        label: t("Submit"),
+        title: t("Submit"),
+        onClick: () => handleSave(inst.Core.annotationManager),
+        style: {
+          background: "#6172d6",
+          border: "1px solid #6172d6",
+          color: "#fff",
+          padding: "8px 30px",
+          borderRadius: "4px",
+          marginLeft: "10px",
+        },
+      });
+
+      actionGroup = new UI.Components.GroupedItems({
+        dataElement: "pendingSignatureActionButtons",
+        grow: 0,
+        gap: 8,
+        position: "end",
+        alwaysVisible: true,
+        items: [declineButton, submitButton],
+      });
+    } else {
+      const closeButton = new UI.Components.CustomButton({
+        dataElement: "closeButton",
+        label: t("Close"),
+        title: t("Close"),
+        onClick: () => window.close(),
+        style: {
+          background: "#fff",
+          border: "1px solid #e1e1e1",
+          color: "#5a5a5a",
+          padding: "8px 30px",
+          borderRadius: "4px",
+        },
+      });
+
+      actionGroup = new UI.Components.GroupedItems({
+        dataElement: "pendingSignatureActionButtons",
+        grow: 0,
+        gap: 8,
+        position: "end",
+        alwaysVisible: true,
+        items: [closeButton],
+      });
+    }
+
+    topHeader.setItems([...existingItems, actionGroup]);
+  };
+
+  // Re-render the header buttons whenever the language changes, since
+  // renderHeaderButtons only bakes in the current t() text at call time.
+  useEffect(() => {
+    if (!instance) return;
+    renderHeaderButtons(instance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instance, i18n.language]);
+
   // ─── WebViewer initialisation ─────────────────────────────────────────────
 
   // ✅ WebViewer initialisation with signature tool override
@@ -964,6 +1054,7 @@ const PendingSignatureViewer = () => {
         );
 
         setInstance(inst);
+        pendingSignatureViewer.current = inst;
         webViewerInitialized.current = true;
 
         const { UI, Core } = inst;
@@ -993,7 +1084,8 @@ const PendingSignatureViewer = () => {
           const isOwnSignableWidget = (e) => {
             try {
               const widget = annotationManager.getAnnotationByMouseEvent(e);
-              if (!widget || typeof widget.getField !== "function") return false;
+              if (!widget || typeof widget.getField !== "function")
+                return false;
               const fieldName = widget.getField()?.name;
               return (
                 !!fieldName &&
@@ -1104,92 +1196,24 @@ const PendingSignatureViewer = () => {
                 currentUserID,
                 currentUserFieldNamesRef.current,
               );
-            } catch (err) {
-              
-            }
+            } catch (err) {}
           }
 
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              UI.setToolMode(Core.Tools.ToolNames.EDIT);
+
+              console.log("Current Tool:", UI.getToolMode()?.name);
+            }, 200);
+          });
           documentViewer.refreshAll();
           documentViewer.updateView();
+
         });
 
         // Header buttons
-        const topHeader = UI.getModularHeader("default-top-header");
-        const existingItems = topHeader.getItems();
-        const currentUserID = getCurrentUserID();
-        const isSignatory = signerDataRef.current.some(
-          (u) => Number(u.userID) === currentUserID,
-        );
-
-        let actionGroup;
-
-        if (isSignatory) {
-          const declineButton = new UI.Components.CustomButton({
-            dataElement: "declineButton",
-            label: t("Decline"),
-            title: t("Decline"),
-            onClick: () => setReasonModal(true),
-            style: {
-              background: "#fff",
-              border: "1px solid #e1e1e1",
-              color: "#5a5a5a",
-              padding: "8px 30px",
-              borderRadius: "4px",
-            },
-          });
-
-          const submitButton = new UI.Components.CustomButton({
-            dataElement: "submitButton",
-            label: t("Submit"),
-            title: t("Submit"),
-            onClick: () => handleSave(annotationManager),
-            style: {
-              background: "#6172d6",
-              border: "1px solid #6172d6",
-              color: "#fff",
-              padding: "8px 30px",
-              borderRadius: "4px",
-              marginLeft: "10px",
-            },
-          });
-
-          actionGroup = new UI.Components.GroupedItems({
-            dataElement: "pendingSignatureActionButtons",
-            grow: 0,
-            gap: 8,
-            position: "end",
-            alwaysVisible: true,
-            items: [declineButton, submitButton],
-          });
-        } else {
-          const closeButton = new UI.Components.CustomButton({
-            dataElement: "closeButton",
-            label: t("Close"),
-            title: t("Close"),
-            onClick: () => window.close(),
-            style: {
-              background: "#fff",
-              border: "1px solid #e1e1e1",
-              color: "#5a5a5a",
-              padding: "8px 30px",
-              borderRadius: "4px",
-            },
-          });
-
-          actionGroup = new UI.Components.GroupedItems({
-            dataElement: "pendingSignatureActionButtons",
-            grow: 0,
-            gap: 8,
-            position: "end",
-            alwaysVisible: true,
-            items: [closeButton],
-          });
-        }
-
-        topHeader.setItems([...existingItems, actionGroup]);
-      } catch (err) {
-        
-      }
+        renderHeaderButtons(inst);
+      } catch (err) {}
     };
 
     init();
@@ -1221,9 +1245,7 @@ const PendingSignatureViewer = () => {
         }));
         mergeXFDFIntoAnnotations(xfdfString, selectedUserRef.current, snapshot);
         setUserAnnotations(snapshot);
-      } catch (err) {
-        
-      }
+      } catch (err) {}
 
       // Re-apply locks after changes
       applyAnnotationLocks(
@@ -1276,9 +1298,7 @@ const PendingSignatureViewer = () => {
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
-      } catch (err) {
-        
-      }
+      } catch (err) {}
     };
 
     annotationManager.addEventListener("annotationChanged", annotHandler);
@@ -1355,7 +1375,7 @@ const PendingSignatureViewer = () => {
         />
       )}
 
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };

@@ -4,7 +4,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Button from "../../../components/elements/button/Button";
 import { useNavigate } from "react-router-dom";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import AttachmentViewer from "../../../components/elements/fileAttachment/attachment";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
@@ -18,7 +18,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     let data = {
       FileID: Number(fileID),
     };
-    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
+    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
   };
   const handleLinkClick = (data, ext) => {
     if (fileFormatforSignatureFlow.includes(ext)) {

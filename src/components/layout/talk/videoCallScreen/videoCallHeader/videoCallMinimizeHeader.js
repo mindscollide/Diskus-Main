@@ -1390,7 +1390,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   >
                     <img
                       onClick={
-                        !presenterViewHostFlag && !globallyScreenShare
+                        !presenterViewHostFlag &&
+                        !presenterViewJoinFlag &&
+                        !globallyScreenShare
                           ? handleScreenShareButton
                           : null
                       }
@@ -1949,7 +1951,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                             )}
                           <Button
                             className="leave-meeting-options__btn leave-meeting-gray-button"
-                            text="Cancel"
+                            text={t("Cancel")}
                             onClick={closeVideoPanel}
                           />
                         </div>
@@ -2087,7 +2089,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
                       <Button
                         className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        text={t("Cancel")}
                         onClick={closeVideoPanel}
                       />
                     </>
@@ -2103,7 +2105,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
                       <Button
                         className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        text={t("Cancel")}
                         onClick={closeVideoPanel}
                       />
                     </>

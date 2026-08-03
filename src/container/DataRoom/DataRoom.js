@@ -415,7 +415,6 @@ const DataRoom = () => {
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
 
-
   // ─── Snack-bar notification state ────────────────────────────────────────
   const [show, SnackBar] = useSnackbar();
   /**
@@ -3539,9 +3538,6 @@ const DataRoom = () => {
     };
   }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
-
-
-
   /**
    * Confirms folder deletion — dispatches `deleteFolder` with the pending
    * folder ID stored in `isFolderDeleteId`.
@@ -3806,78 +3802,87 @@ const DataRoom = () => {
                   </BootstrapDropdown.Menu>
                 </BootstrapDropdown>
               </Col>
-
-              <Col sm={12} md={1} lg={1}></Col>
-              {/* ── Search bar ────────────────────────────────────────────── */}
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className='d-flex position-relative Inputfield_for_data_room justify-content-end '>
-                <SearchBarComponent
-                  setSearchDataFields={setSearchDataFields}
-                  searchDataFields={searchDataFields}
-                  setSearchTabOpen={setSearchTabOpen}
-                  searchTabOpen={searchTabOpen}
-                  setSearchbarshow={setSearchbarshow}
-                  searchbarshow={searchbarshow}
-                  setSearchResultFields={setSearchResultFields}
-                  searchResultsFields={searchResultsFields}
-                />
-              </Col>
-              {/* ── Grid / List view toggle (hidden on Send-for-Approval tab) ── */}
-              <Col
-                lg={1}
-                md={1}
-                sm={12}
-                className='d-flex justify-content-center'>
-                {currentView !== 5 && (
-                  <span className={styles["lsit_grid_buttons"]}>
-                    <Button
-                      icon={
-                        <Tooltip placement='bottomLeft' title={t("Grid-view")}>
-                          <img
-                            src={
-                              gridbtnactive ? Grid_Selected : Grid_Not_Selected
-                            }
-                            height='25.27px'
-                            width='25.27px'
-                            alt=''
-                            className={styles["grid_view_Icon"]}
-                          />
-                        </Tooltip>
-                      }
-                      className={
-                        gridbtnactive
-                          ? `${styles["grid_view_btn_active"]}`
-                          : `${styles["grid_view_btn"]}`
-                      }
-                      onClick={handleGridView}
+              {currentView !== 5 && (
+                <>
+                  <Col sm={12} md={1} lg={1}></Col>
+                  {/* ── Search bar ────────────────────────────────────────────── */}
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    className='d-flex position-relative Inputfield_for_data_room justify-content-end '>
+                    <SearchBarComponent
+                      setSearchDataFields={setSearchDataFields}
+                      searchDataFields={searchDataFields}
+                      setSearchTabOpen={setSearchTabOpen}
+                      searchTabOpen={searchTabOpen}
+                      setSearchbarshow={setSearchbarshow}
+                      searchbarshow={searchbarshow}
+                      setSearchResultFields={setSearchResultFields}
+                      searchResultsFields={searchResultsFields}
                     />
-                    <Button
-                      icon={
-                        <Tooltip placement='bottomLeft' title={t("List-view")}>
-                          <img
-                            src={
-                              listviewactive ? List_Selected : List_Not_selected
-                            }
-                            height='25.27px'
-                            width='25.27px'
-                            alt=''
-                            className={styles["list_view_Icon"]}
-                          />
-                        </Tooltip>
-                      }
-                      className={
-                        listviewactive
-                          ? `${styles["List_view_btn_active"]}`
-                          : `${styles["List_view_btn"]}`
-                      }
-                      onClick={handlelistview}
-                    />
-                  </span>
-                )}
-              </Col>
+                  </Col>
+                  {/* ── Grid / List view toggle (hidden on Send-for-Approval tab) ── */}
+                  <Col
+                    lg={1}
+                    md={1}
+                    sm={12}
+                    className='d-flex justify-content-center'>
+                    <span className={styles["lsit_grid_buttons"]}>
+                      <Button
+                        icon={
+                          <Tooltip
+                            placement='bottomLeft'
+                            title={t("Grid-view")}>
+                            <img
+                              src={
+                                gridbtnactive
+                                  ? Grid_Selected
+                                  : Grid_Not_Selected
+                              }
+                              height='25.27px'
+                              width='25.27px'
+                              alt=''
+                              className={styles["grid_view_Icon"]}
+                            />
+                          </Tooltip>
+                        }
+                        className={
+                          gridbtnactive
+                            ? `${styles["grid_view_btn_active"]}`
+                            : `${styles["grid_view_btn"]}`
+                        }
+                        onClick={handleGridView}
+                      />
+                      <Button
+                        icon={
+                          <Tooltip
+                            placement='bottomLeft'
+                            title={t("List-view")}>
+                            <img
+                              src={
+                                listviewactive
+                                  ? List_Selected
+                                  : List_Not_selected
+                              }
+                              height='25.27px'
+                              width='25.27px'
+                              alt=''
+                              className={styles["list_view_Icon"]}
+                            />
+                          </Tooltip>
+                        }
+                        className={
+                          listviewactive
+                            ? `${styles["List_view_btn_active"]}`
+                            : `${styles["List_view_btn"]}`
+                        }
+                        onClick={handlelistview}
+                      />
+                    </span>
+                  </Col>
+                </>
+              )}
             </Row>
             {/* ── View tabs + breadcrumbs + content area ─────────────────────── */}
             <Row>
@@ -4603,8 +4608,8 @@ const DataRoom = () => {
         />
       )}
       {/* Global snackbar notification */}
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

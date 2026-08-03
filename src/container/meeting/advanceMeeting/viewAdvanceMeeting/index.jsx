@@ -175,6 +175,14 @@ const ViewMeetingModal = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
+
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -539,33 +547,38 @@ const ViewMeetingModal = () => {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [dispatch]);
+  }, []);
 
   const handleCloseMeeting = () => {
-    dispatch(toggleViewMeetingModal(false));
-    dispatch(resetCurrentMeetingInfo());
-    setEditorRole({ status: null, role: null });
-    dispatch(resetViewTabs());
-    dispatch(resetViewGroupDetails());
-    dispatch(resetViewCommitteeDetails());
-    dispatch(
-      listOfMeetingsApi(
-        navigate,
-        t,
-        {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings: currentView && Number(currentView) === 1,
-          ProposedMeetings: currentView && Number(currentView) === 2,
-        },
-        "",
-      ),
-    );
+    try {
+      setEditorRole({ status: null, role: null });
+      dispatch(resetViewTabs());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetCurrentMeetingInfo());
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+
+    if (committeeInfo === null && groupInfo === null) {
+      dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+            PublishedMeetings: currentView && Number(currentView) === 1,
+            ProposedMeetings: currentView && Number(currentView) === 2,
+          },
+          "",
+        ),
+      );
+    }
   };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 
@@ -910,7 +923,7 @@ const ViewMeetingModal = () => {
 
                   {checkFeatureIDAvailability(14) && (
                     <Button
-                      text={t("Task")}
+                      text={t("Tasks")}
                       className={
                         actionsPage
                           ? styles["Schedule_meetings_options_active"]

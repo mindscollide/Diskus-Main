@@ -28,7 +28,7 @@ import blackArrowUpper from "@/assets/images/whiteupper.png";
 import ViewVoteModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
 import CastVoteAgendaModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
@@ -148,7 +148,7 @@ const ParentAgenda = ({
       FileID: Number(record.originalAttachmentName),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data,
         t,

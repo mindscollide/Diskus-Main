@@ -1,13 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { Checkbox, Modal, Notification } from "../../../components/elements";
-import DatePicker, { DateObject } from "react-multi-date-picker";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
+import React, { useEffect } from "react";
+import { Checkbox, Modal } from "../../../components/elements";
+import DatePicker from "react-multi-date-picker";
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -34,19 +32,16 @@ import { validateInput } from "../../../commen/functions/regex";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 const CreatePolling = () => {
-  const datePickerRef = useRef();
   const animatedComponents = makeAnimated();
-  let dateFormat = "DD/MM/YYYY";
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const calendRef = useRef();
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   //For Custom language datepicker
   const PollsReducergellAllCommittesandGroups = useSelector(
-    (state) => state.PollsReducer.gellAllCommittesandGroups
+    (state) => state.PollsReducer.gellAllCommittesandGroups,
   );
   const PollsReducercreatePollmodal = useSelector(
-    (state) => state.PollsReducer.createPollmodal
+    (state) => state.PollsReducer.createPollmodal,
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -84,21 +79,10 @@ const CreatePolling = () => {
     },
   ]);
 
-  const handleIconClick = () => {
-    if (datePickerRef.current) {
-      datePickerRef.current.openCalendar();
-    }
-  };
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   useEffect(() => {
-    if (currentLanguage === "ar") {
-      moment.locale(currentLanguage);
-    } else if (currentLanguage === "fr") {
-      moment.locale(currentLanguage);
-    } else {
-      moment.locale(currentLanguage);
-    }
+    moment.locale(currentLanguage);
   }, [currentLanguage]);
 
   useEffect(() => {
@@ -232,6 +216,12 @@ const CreatePolling = () => {
     setSelectedsearch(value);
   };
 
+  const buildMember = (source, displayPicture = "") => ({
+    userName: source.userName,
+    userID: source.userID,
+    displayPicture,
+  });
+
   // for add user for assignes
   const handleAddUsers = () => {
     let pollsData = PollsReducergellAllCommittesandGroups;
@@ -241,22 +231,18 @@ const CreatePolling = () => {
         selectedsearch.forEach((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value,
             );
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
                 groupUsers.forEach((gUser) => {
                   let check2 = members.find(
-                    (data) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID,
                   );
                   if (check2 !== undefined) {
                   } else {
-                    let newUser = {
-                      userName: gUser.userName,
-                      userID: gUser.userID,
-                      displayPicture: "",
-                    };
+                    let newUser = buildMember(gUser);
                     tem.push(newUser);
                   }
                 });
@@ -264,22 +250,18 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = pollsData.committees.find(
-              (data) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value,
             );
             if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
                 committeesUsers.forEach((cUser) => {
                   let check2 = members.find(
-                    (data) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID,
                   );
                   if (check2 !== undefined) {
                   } else {
-                    let newUser = {
-                      userName: cUser.userName,
-                      userID: cUser.userID,
-                      displayPicture: "",
-                    };
+                    let newUser = buildMember(cUser);
                     tem.push(newUser);
                   }
                 });
@@ -287,21 +269,19 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = members.find(
-              (data) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value,
             );
             if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value,
               );
 
               if (check2 !== undefined) {
-                let newUser = {
-                  userName: check2.userName,
-                  userID: check2.userID,
-                  displayPicture:
-                    check2.profilePicture.displayProfilePictureName,
-                };
+                let newUser = buildMember(
+                  check2,
+                  check2.profilePicture.displayProfilePictureName,
+                );
                 tem.push(newUser);
               }
             }
@@ -309,15 +289,11 @@ const CreatePolling = () => {
           }
         });
       } catch {}
-      
 
-      
       const uniqueData = new Set(tem.map(JSON.stringify));
-      
 
       // Convert the Set back to an array of objects
       const result = Array.from(uniqueData).map(JSON.parse);
-      
 
       setMembers(result);
       setSelectedsearch([]);
@@ -337,14 +313,7 @@ const CreatePolling = () => {
         ...createPollData,
         date: DateDate,
       });
-    } catch (error) {
-      
-    }
-  };
-
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
-    return newDate;
+    } catch (error) {}
   };
 
   // for create polls
@@ -428,7 +397,7 @@ const CreatePolling = () => {
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
-      })
+      }),
     );
   };
 
@@ -449,17 +418,18 @@ const CreatePolling = () => {
     }
   };
 
+  const removeAtIndex = (array, index, setter) => {
+    let copy = [...array];
+    copy.splice(index, 1);
+    setter(copy);
+  };
+
   const HandleCancelFunction = (index) => {
-    let optionscross = [...options];
-    optionscross.splice(index, 1);
-    setOptions(optionscross);
+    removeAtIndex(options, index, setOptions);
   };
 
   const cancellAnyUser = (index) => {
-    
-    let removeData = [...members];
-    removeData.splice(index, 1);
-    setMembers(removeData);
+    removeAtIndex(members, index, setMembers);
   };
 
   const HandlecancellButton = () => {
@@ -649,7 +619,7 @@ const CreatePolling = () => {
                                                     height='31.76px'
                                                     onClick={() =>
                                                       HandleCancelFunction(
-                                                        index
+                                                        index,
                                                       )
                                                     }
                                                     className={
@@ -954,8 +924,8 @@ const CreatePolling = () => {
           size={defineUnsaveModal ? "md" : "xl"}
         />
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

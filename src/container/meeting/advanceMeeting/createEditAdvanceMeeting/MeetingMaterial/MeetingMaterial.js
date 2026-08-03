@@ -35,7 +35,7 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import NextModal from "../meetingDetails/NextModal/NextModal";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
@@ -161,7 +161,7 @@ const MeetingMaterial = ({
         FileID: Number(record.originalFileName),
       };
       dispatch(
-        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
       );
     } else if (
       editorRole.status === "9" &&
@@ -172,7 +172,7 @@ const MeetingMaterial = ({
         FileID: Number(record.originalFileName),
       };
       dispatch(
-        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
       );
     }
   };
@@ -209,7 +209,7 @@ const MeetingMaterial = ({
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(
+          DataRoomDownloadFileWithFooterApiFunc(
             navigate,
             data,
             t,
@@ -244,7 +244,7 @@ const MeetingMaterial = ({
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(
+          DataRoomDownloadFileWithFooterApiFunc(
             navigate,
             data,
             t,

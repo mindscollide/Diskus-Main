@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, AttachmentViewer } from "../../../components/elements";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ModalViewNote.module.css";
 import { useSelector } from "react-redux";
@@ -13,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
 
 const ModalViewNote = ({
   ModalTitle,
@@ -104,7 +102,7 @@ const ModalViewNote = ({
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
+      DataRoomDownloadFileWithFooterApiFunc(
         navigate,
         data2,
         t,
