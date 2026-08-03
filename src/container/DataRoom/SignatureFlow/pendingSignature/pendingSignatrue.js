@@ -27,6 +27,7 @@ import {
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { useApryseDocument } from "../../../../context/DocumentContext";
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
@@ -483,7 +484,8 @@ const PendingSignatureViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { pendingSignatureViewer } = useApryseDocument();
 
   const { webViewer } = useSelector((s) => s);
   const {
@@ -935,6 +937,100 @@ const PendingSignatureViewer = () => {
     };
   }, []);
 
+  // ─── Header buttons (Decline/Submit or Close) ────────────────────────────
+  //
+  // Apryse's CustomButton/GroupedItems are plain JS UI objects created once,
+  // not React — their label/title text is whatever t() returned AT CREATION
+  // TIME and never updates on its own. Extracted into its own function (not
+  // just inline in the WebViewer init effect) so it can also be re-invoked
+  // whenever the language changes, to actually refresh the button text.
+  const renderHeaderButtons = (inst) => {
+    const { UI } = inst;
+    const topHeader = UI.getModularHeader("default-top-header");
+    const existingItems = topHeader
+      .getItems()
+      .filter((item) => item.dataElement !== "pendingSignatureActionButtons");
+    const currentUserID = getCurrentUserID();
+    const isSignatory = signerDataRef.current.some(
+      (u) => Number(u.userID) === currentUserID,
+    );
+
+    let actionGroup;
+
+    if (isSignatory) {
+      const declineButton = new UI.Components.CustomButton({
+        dataElement: "declineButton",
+        label: t("Decline"),
+        title: t("Decline"),
+        onClick: () => setReasonModal(true),
+        style: {
+          background: "#fff",
+          border: "1px solid #e1e1e1",
+          color: "#5a5a5a",
+          padding: "8px 30px",
+          borderRadius: "4px",
+        },
+      });
+
+      const submitButton = new UI.Components.CustomButton({
+        dataElement: "submitButton",
+        label: t("Submit"),
+        title: t("Submit"),
+        onClick: () => handleSave(inst.Core.annotationManager),
+        style: {
+          background: "#6172d6",
+          border: "1px solid #6172d6",
+          color: "#fff",
+          padding: "8px 30px",
+          borderRadius: "4px",
+          marginLeft: "10px",
+        },
+      });
+
+      actionGroup = new UI.Components.GroupedItems({
+        dataElement: "pendingSignatureActionButtons",
+        grow: 0,
+        gap: 8,
+        position: "end",
+        alwaysVisible: true,
+        items: [declineButton, submitButton],
+      });
+    } else {
+      const closeButton = new UI.Components.CustomButton({
+        dataElement: "closeButton",
+        label: t("Close"),
+        title: t("Close"),
+        onClick: () => window.close(),
+        style: {
+          background: "#fff",
+          border: "1px solid #e1e1e1",
+          color: "#5a5a5a",
+          padding: "8px 30px",
+          borderRadius: "4px",
+        },
+      });
+
+      actionGroup = new UI.Components.GroupedItems({
+        dataElement: "pendingSignatureActionButtons",
+        grow: 0,
+        gap: 8,
+        position: "end",
+        alwaysVisible: true,
+        items: [closeButton],
+      });
+    }
+
+    topHeader.setItems([...existingItems, actionGroup]);
+  };
+
+  // Re-render the header buttons whenever the language changes, since
+  // renderHeaderButtons only bakes in the current t() text at call time.
+  useEffect(() => {
+    if (!instance) return;
+    renderHeaderButtons(instance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instance, i18n.language]);
+
   // ─── WebViewer initialisation ─────────────────────────────────────────────
 
   // ✅ WebViewer initialisation with signature tool override
@@ -958,6 +1054,7 @@ const PendingSignatureViewer = () => {
         );
 
         setInstance(inst);
+        pendingSignatureViewer.current = inst;
         webViewerInitialized.current = true;
 
         const { UI, Core } = inst;
@@ -1115,79 +1212,7 @@ const PendingSignatureViewer = () => {
         });
 
         // Header buttons
-        const topHeader = UI.getModularHeader("default-top-header");
-        const existingItems = topHeader.getItems();
-        const currentUserID = getCurrentUserID();
-        const isSignatory = signerDataRef.current.some(
-          (u) => Number(u.userID) === currentUserID,
-        );
-
-        let actionGroup;
-
-        if (isSignatory) {
-          const declineButton = new UI.Components.CustomButton({
-            dataElement: "declineButton",
-            label: t("Decline"),
-            title: t("Decline"),
-            onClick: () => setReasonModal(true),
-            style: {
-              background: "#fff",
-              border: "1px solid #e1e1e1",
-              color: "#5a5a5a",
-              padding: "8px 30px",
-              borderRadius: "4px",
-            },
-          });
-
-          const submitButton = new UI.Components.CustomButton({
-            dataElement: "submitButton",
-            label: t("Submit"),
-            title: t("Submit"),
-            onClick: () => handleSave(annotationManager),
-            style: {
-              background: "#6172d6",
-              border: "1px solid #6172d6",
-              color: "#fff",
-              padding: "8px 30px",
-              borderRadius: "4px",
-              marginLeft: "10px",
-            },
-          });
-
-          actionGroup = new UI.Components.GroupedItems({
-            dataElement: "pendingSignatureActionButtons",
-            grow: 0,
-            gap: 8,
-            position: "end",
-            alwaysVisible: true,
-            items: [declineButton, submitButton],
-          });
-        } else {
-          const closeButton = new UI.Components.CustomButton({
-            dataElement: "closeButton",
-            label: t("Close"),
-            title: t("Close"),
-            onClick: () => window.close(),
-            style: {
-              background: "#fff",
-              border: "1px solid #e1e1e1",
-              color: "#5a5a5a",
-              padding: "8px 30px",
-              borderRadius: "4px",
-            },
-          });
-
-          actionGroup = new UI.Components.GroupedItems({
-            dataElement: "pendingSignatureActionButtons",
-            grow: 0,
-            gap: 8,
-            position: "end",
-            alwaysVisible: true,
-            items: [closeButton],
-          });
-        }
-
-        topHeader.setItems([...existingItems, actionGroup]);
+        renderHeaderButtons(inst);
       } catch (err) {}
     };
 
