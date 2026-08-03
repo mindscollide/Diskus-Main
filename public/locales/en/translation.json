@@ -1301,6 +1301,10 @@
   "Push-notification-when-new-todo-assigned": "Notify When a new Task is Assigned",
   "Push-notification-when-new-todo-deleted": "Notify When a Task is Deleted",
   "Push-notification-when-comment-deleted": "Notify When a Comment is Deleted",
+  "Task-deadline-reminder": "Task Deadline Reminder",
+  "1-Day": "1 Day",
+  "7-Days": "7 Days",
+  "15-Days": "15 Days",
   "Push-notification-when-new-comment-added": "Notify When a new Comment is Added",
   "Push-notification-when-new-todo-edited": "Notify When a Task is Edited",
   "Email-when-new-todo-edited": "Email When a Task is Edited",
@@ -2812,6 +2816,9 @@
   "Task-deleted-successfully": "Task Deleted Successfully",
   "Task-Created": "Task Created",
   "Are-you-sure-to-delete-this-task?": "Are you sure to delete this task?",
+  "Received-on": "Received On",
   "Poll-save-successfully": "Poll Save Successfully",
-  "Voted-successfully": "Voted Successfully"
+  "Voted-successfully": "Voted Successfully",
+  "Admit": "Admit",
+  "Deny": "Deny"
 }

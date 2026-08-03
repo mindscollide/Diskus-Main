@@ -2613,6 +2613,10 @@
   "Task-deleted-successfully": "Task Deleted Successfully",
   "Task-Created": "Task Created",
   "Are-you-sure-to-delete-this-task?": "Are you sure to delete this task?",
+  "Received-on": "Received On",
   "Poll-save-successfully": "Poll Save Successfully",
   "Voted-successfully": "Voted Successfully"
+  "Voted-successfully": "Voted Successfully",
+  "Admit": "يعترف",
+  "Deny": "ينكر"
 }

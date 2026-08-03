@@ -597,9 +597,9 @@ body[dir="rtl"] span.participants-counter-For-Host {
 
 body[dir="rtl"] span.participants-counter-For-Host-waiting-counter {
   position: absolute;
-  top: 0;
-  left: -17px;
-  right: auto;
+  top: -40;
+  left: auto;
+  right: 17px;
   background: #55ce5c !important;
   color: #fff;
   width: 16px;

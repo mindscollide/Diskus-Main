@@ -49,6 +49,8 @@ import {
 } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 import { useResolutionContext } from "../../../context/ResolutionContext.js";
+import { useComplianceContext } from "../../../context/ComplianceContext.js";
+import { ViewComplianceDetailsByViewTypeAPI } from "../../../store/actions/ComplainSettingActions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -99,6 +101,19 @@ const WebNotfication = ({
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
+  //Compliance Context — used to deep-link a Task_Reminder_* notification
+  //click straight into that task's Compliance record (see comptask_action
+  //email deep-link, same mechanism reused here without the decrypt step
+  //since the notification payload already carries plain IDs).
+  const {
+    setComplianceViewMode,
+    setMainComplianceTabs,
+    setViewComplianceDetailsTab,
+    setDeepLinkTaskId,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    setShowViewCompliance,
+  } = useComplianceContext();
   const [groupedNotifications, setGroupedNotifications] = useState({
     today: [],
     previous: [],
@@ -1724,6 +1739,43 @@ const WebNotfication = ({
         } else if (NotificationData.notificationActionID === 51) {
           // Deleted Main POll
           navigate("/Diskus/polling");
+        } else if (
+          [69, 70, 71, 72, 73].includes(NotificationData.notificationActionID)
+        ) {
+          // Task deadline reminders — 69:15-day, 70:7-day, 71:1-day,
+          // 72:due-today, 73:overdue. Same click behavior for all five,
+          // branching only on whether the task belongs to a Compliance
+          // checklist (complianceID present) or a plain ToDoList task.
+          if (PayLoadData.complianceID) {
+            setComplianceViewMode("forMe");
+            setMainComplianceTabs(3); // TAB.FOR_ME
+            setViewComplianceDetailsTab(2); // Tasks tab
+            setDeepLinkTaskId(PayLoadData.TaskID);
+            dispatch(
+              ViewComplianceDetailsByViewTypeAPI(
+                navigate,
+                { complianceId: PayLoadData.complianceID, viewType: 2 },
+                t,
+                2,
+                setComplianceAddEditViewState,
+                setCreateEditComplaince,
+                setShowViewCompliance,
+              ),
+            );
+            navigate("/Diskus/compliance");
+          } else {
+            localStorage.setItem("webNotificationTaskId", PayLoadData.TaskID);
+            // Todolist.js only reads this on mount. If the user is already
+            // sitting on /Diskus/todolist, navigate() to the same route
+            // doesn't remount it, so nothing would pick the value up —
+            // this event lets it react live without leaving the page.
+            window.dispatchEvent(
+              new CustomEvent("webNotificationTaskOpen", {
+                detail: PayLoadData.TaskID,
+              }),
+            );
+            navigate("/Diskus/todolist");
+          }
         } else {
         }
       }
@@ -1787,7 +1839,8 @@ const WebNotfication = ({
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
                         NotificationTime={data.sentDateTime}
-                        index={index}
+                        index={data.notificationID || index}
+                        data={data}
                         length={groupedNotifications.today.length}
                         NotificaitonID={data.notificationActionID}
                       />
@@ -1823,6 +1876,7 @@ const WebNotfication = ({
                         index={index}
                         length={groupedNotifications.previous.length}
                         NotificaitonID={data.notificationActionID}
+                        data={data}
                       />
                     </Col>
                   </Row>

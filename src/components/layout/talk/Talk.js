@@ -484,10 +484,26 @@ const Talk = () => {
 
   const videoPanelRef = useRef(null);
 
+  // Ant Design overlays (Select dropdown, Popover, Dropdown, Tooltip, Modal,
+  // ...) render their content via a portal appended to document.body by
+  // default — NOT nested inside the DOM tree where they're written in JSX.
+  // A click inside one of these (e.g. picking "Private-Message" from the
+  // chat-filter <Select> in talkHeader.js) has an event.target that is never
+  // a descendant of videoPanelRef/talkPanelRef even though the dropdown is
+  // logically part of the panel, so without this check that click gets
+  // misread as "clicked outside" and closes the whole panel.
+  const isInsideAntOverlay = (target) =>
+    !!target?.closest?.(
+      ".ant-select-dropdown, .ant-popover, .ant-dropdown, .ant-modal-wrap, .ant-tooltip, .ant-picker-dropdown, .ant-drawer",
+    );
+
   const handleOutsideClick = (event) => {
+    const contains =
+      videoPanelRef.current && videoPanelRef.current.contains(event.target);
     if (
       videoPanelRef.current &&
-      !videoPanelRef.current.contains(event.target) &&
+      !contains &&
+      !isInsideAntOverlay(event.target) &&
       activeVideoIcon &&
       !presenterViewHostFlag &&
       !presenterViewJoinFlag &&
@@ -502,9 +518,16 @@ const Talk = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
+    // mousedown, not click: a "click" listener here can still be running
+    // with the previous render's closure values (activeVideoIcon etc.) on
+    // the SAME click that an onClick handler elsewhere uses to open a panel
+    // (e.g. groupChatInitiation's activeChatBoxGS(true)) — since this
+    // listener would then fire right after and close it again with stale
+    // state. mousedown fires strictly before React's onClick, so any "open"
+    // dispatch always happens after and wins.
+    document.addEventListener("mousedown", handleOutsideClick);
     return () => {
-      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [
     activeVideoIcon,
@@ -524,9 +547,12 @@ const Talk = () => {
   const talkPanelRef = useRef(null);
 
   const handleTalkPanelOutsideClick = (event) => {
+    const contains =
+      talkPanelRef.current && talkPanelRef.current.contains(event.target);
     if (
       talkPanelRef.current &&
-      !talkPanelRef.current.contains(event.target) &&
+      !contains &&
+      !isInsideAntOverlay(event.target) &&
       ActiveChatBoxGS
     ) {
       dispatch(activeChatBoxGS(false));
@@ -534,9 +560,12 @@ const Talk = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleTalkPanelOutsideClick);
+    // mousedown for the same reason as handleOutsideClick above — avoids
+    // racing with same-click "open the chat panel" triggers like
+    // groupChatInitiation (AgendaViewer.js) that live outside talkPanelRef.
+    document.addEventListener("mousedown", handleTalkPanelOutsideClick);
     return () => {
-      document.removeEventListener("click", handleTalkPanelOutsideClick);
+      document.removeEventListener("mousedown", handleTalkPanelOutsideClick);
     };
   }, [ActiveChatBoxGS]);
 

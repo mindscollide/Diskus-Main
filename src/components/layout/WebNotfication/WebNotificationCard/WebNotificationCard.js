@@ -83,6 +83,7 @@ const WebNotificationCard = ({
   index,
   length,
   NotificaitonID,
+  data,
 }) => {
   const { t } = useTranslation();
   //Test work
@@ -298,7 +299,7 @@ const WebNotificationCard = ({
             "Has-deleted-the-poll-main"
           )} ${NotificationMessege.PollTitle}`;
         } else {
-          message = "Default Notification Message";
+          message = data.description;
         }
 
         // Step 2: Apply truncation logic
@@ -427,7 +428,7 @@ const WebNotificationCard = ({
             <img src={HasGivenVoteOnHisPollMeetingPoll} width={46} alt="" />
           ) : NotificaitonID === 48 ? (
             <img src={SendResponseByDatePassed} width={46} alt="" />
-          ) : NotificaitonID === 49 ? (
+          ) : NotificaitonID === 49 || NotificaitonID === 72 || NotificaitonID === 71 || NotificaitonID === 73   ? (
             <img src={TaskAssignedInMeeting} width={46} alt="" />
           ) : NotificaitonID === 50 ? (
             <img src={ChangeResolutionVoter} width={46} alt="" />

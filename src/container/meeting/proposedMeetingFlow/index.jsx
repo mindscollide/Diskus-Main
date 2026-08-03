@@ -44,6 +44,7 @@ import {
 import {
   getMeetingDetailsByMeetingIdApi,
   getUserWiseProposedDatesForOrganizerApi,
+  listOfMeetingsApi,
 } from "../../../store/actions/NewMeeting2.actions";
 import {
   toggleIsOrganizerProposedMeetingDates,
@@ -64,7 +65,11 @@ const ProposedMeeting = () => {
     responseByDate,
   } = useNewMeetingContext();
 
-  console.log(proposedMeetingData,responseByDate, "proposedMeetingDataproposedMeetingData")
+  console.log(
+    proposedMeetingData,
+    responseByDate,
+    "proposedMeetingDataproposedMeetingData",
+  );
   //Current User ID
   //Current Organization
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -114,7 +119,7 @@ const ProposedMeeting = () => {
           t,
           { MeetingID: record.pK_MDID },
           "",
-          {}
+          {},
         ),
       );
 
@@ -228,6 +233,25 @@ const ProposedMeeting = () => {
       );
     }
   };
+
+  const handelChangeProposedMeetingPagination = (page, pageSize) => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: Number(page),
+      Length: Number(pageSize),
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+
+    dispatch(
+      listOfMeetingsApi(navigate, t, searchData, "", {}),
+    );
+    localStorage.setItem("MeetingPageCurrent", page);
+    localStorage.setItem("MeetingPageRows", pageSize);
+  };
   const moreButtons = (record) => {
     const handleEdit = () => {
       if (record.isOrganizer) {
@@ -338,7 +362,7 @@ const ProposedMeeting = () => {
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.responseDeadLine + "185958"
+            record.responseDeadLine + "185958",
           );
           return (
             <span className={styles.columnValue}>{`${moment(meetingDate).format(
@@ -698,7 +722,7 @@ const ProposedMeeting = () => {
                     pageSize={
                       meetingpageRow !== null ? Number(meetingpageRow) : 50
                     }
-                    // onChange={handelChangePagination}
+                    onChange={handelChangeProposedMeetingPagination}
                     total={proposedMeetingDataRecord}
                     showSizer={true}
                     pageSizeOptionsValues={["30", "50", "100", "200"]}

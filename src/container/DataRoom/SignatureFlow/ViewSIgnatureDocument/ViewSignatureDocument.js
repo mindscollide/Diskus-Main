@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
@@ -17,15 +18,71 @@ import {
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
-import useApryseWebViewer, {
-  stripInvalidAppearanceRefs,
-} from "../hooks/useApryseWebViewer";
+import { useApryseDocument } from "../../../../context/DocumentContext";
+
+/**
+ * Async: strip only <apref> elements whose referenced PDF object does NOT exist
+ * in the document's XRef table.
+ *
+ * When <apref> nodes reference PDF objects that have been removed or were never
+ * embedded (e.g. after server-side re-processing), Apryse logs:
+ *   "Error in Promise.all for appearanceReference N on page M"
+ *   {type: 'PDFWorkerError', message: '…Can not find any annotation…'}
+ * followed by a cascade TypeError (reading 'children').
+ *
+ * Valid appearance references are preserved (they resolve successfully against
+ * the XRef table).  In this view-only component all Sig widgets are removed
+ * beforehand by processXmlToHideFields, so no signature visuals are at risk.
+ *
+ * @param {string} xfdfStr - processed XFDF string
+ * @param {object} pdfDoc  - Apryse PDFDoc (requires fullAPI: true)
+ * @returns {Promise<string>}
+ */
+const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc) => {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xfdfStr, "text/xml");
+    const aprefs = Array.from(doc.querySelectorAll("apref"));
+
+    if (!aprefs.length) return xfdfStr;
+
+    if (pdfDoc) {
+      for (const apref of aprefs) {
+        const objnum = parseInt(apref.getAttribute("objnum") ?? "0", 10);
+
+        // PDF object 0 is the null/free object — never a valid appearance stream
+        if (objnum === 0) {
+          apref.remove();
+          continue;
+        }
+
+        try {
+          const obj = await pdfDoc.getXRefTableEntry(objnum);
+          const missing =
+            !obj || (typeof obj.isNull === "function" && (await obj.isNull()));
+          if (missing) apref.remove();
+        } catch {
+          // Object unreachable — strip defensively
+          apref.remove();
+        }
+      }
+    } else {
+      // No pdfDoc available — strip all apref as safe fallback
+      doc.querySelectorAll("apref").forEach((node) => node.remove());
+    }
+
+    return new XMLSerializer().serializeToString(doc);
+  } catch {
+    return xfdfStr; // parsing failed — return original unchanged
+  }
+};
 
 const ViewSignatureDocument = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { SignedDocumentViewer } = useApryseDocument();
+  const { t, i18n } = useTranslation();
   const { webViewer } = useSelector((state) => state);
   const {
     getAllFieldsByWorkflowID,
@@ -43,11 +100,7 @@ const ViewSignatureDocument = () => {
 
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
-  const {
-    viewerRef: viewer,
-    instance: Instance,
-    initWebViewer,
-  } = useApryseWebViewer();
+  const viewer = useRef(null);
   const [signerData, setSignerData] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
   const [reasonModal, setReasonModal] = useState(false);
@@ -75,6 +128,7 @@ const ViewSignatureDocument = () => {
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
+  const [Instance, setInstance] = useState(null);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
 
   const userAnnotationsCopyData = useRef(userAnnotationsCopy);
@@ -83,8 +137,6 @@ const ViewSignatureDocument = () => {
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
-
-  
 
   // ===== this use for current state update get =====//
 
@@ -112,8 +164,34 @@ const ViewSignatureDocument = () => {
 
   // === End === //
 
-  // The Apryse "reading children" crash suppression lives inside
-  // useApryseWebViewer() now — see hooks/useApryseWebViewer.js.
+  // ── Suppress Apryse internal appearance-stream crash ──────────────────────
+  // Apryse's appearance-loading runs in an un-caught internal Promise; when an
+  // <apref> object is missing from the PDF it rejects with a TypeError reading
+  // 'children'.  The rejection is unhandled inside webviewer-core.min.js —
+  // our try/catch around importAnnotations never sees it.  This handler
+  // silences only that specific internal rejection; all other unhandled
+  // rejections are left untouched.
+  useEffect(() => {
+    const suppressApryseChildrenError = (event) => {
+      const reason = event?.reason;
+      if (
+        reason instanceof TypeError &&
+        typeof reason.message === "string" &&
+        reason.message.includes("children") &&
+        typeof reason.stack === "string" &&
+        reason.stack.includes("webviewer-core.min.js")
+      ) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", suppressApryseChildrenError);
+    return () => {
+      window.removeEventListener(
+        "unhandledrejection",
+        suppressApryseChildrenError,
+      );
+    };
+  }, []);
 
   // === Api calling === //
   async function apiCall(Data) {
@@ -181,7 +259,6 @@ const ViewSignatureDocument = () => {
                     try {
                       return JSON.parse(str);
                     } catch (error) {
-                      
                       return null; // or handle the error as needed
                     }
                   })
@@ -378,11 +455,68 @@ const ViewSignatureDocument = () => {
   }, [getSignatureFileAnnotationResponse]);
   // === End === //
 
+  // ── Close button in the header ────────────────────────────────────────────
+  //
+  // Apryse's CustomButton/GroupedItems are plain JS UI objects created once,
+  // not React — label/title text is whatever t() returned AT CREATION TIME
+  // and never updates on its own. Extracted so it can be re-invoked whenever
+  // the language changes, to actually refresh the button text.
+  const renderCloseButton = (inst) => {
+    const { UI } = inst;
+    const closeButton = new UI.Components.CustomButton({
+      dataElement: "closeTabButton",
+      label: t("Close"),
+      title: t("Close"),
+      onClick: () => window.close(),
+      style: {
+        background: "#fff",
+        border: "1px solid #e1e1e1",
+        color: "#5a5a5a",
+        padding: "8px 30px",
+        borderRadius: "4px",
+        outline: "none",
+      },
+    });
+
+    const topHeader = UI.getModularHeader("default-top-header");
+    const existingHeaderItems = topHeader
+      .getItems()
+      .filter(
+        (item) => item.dataElement !== "viewSignatureDocumentActionButtons",
+      );
+    const closeButtonGroup = new UI.Components.GroupedItems({
+      dataElement: "viewSignatureDocumentActionButtons",
+      grow: 0,
+      gap: 8,
+      position: "end",
+      alwaysVisible: true,
+      items: [closeButton],
+    });
+    topHeader.setItems([...existingHeaderItems, closeButtonGroup]);
+  };
+
+  // Re-render the close button whenever the language changes, since
+  // renderCloseButton only bakes in the current t() text at call time.
+  useEffect(() => {
+    if (!Instance) return;
+    renderCloseButton(Instance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Instance, i18n.language]);
+
   // === It's triggered when we update the blob file in our local state ===
   useEffect(() => {
     if (pdfResponceData.attachmentBlob !== "") {
-      initWebViewer({ showLocalFilePicker: true }).then(async (instance) => {
-        if (!instance) return;
+      WebViewer(
+        {
+          path: "/webviewer/lib",
+          showLocalFilePicker: true,
+          fullAPI: true,
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // sign up to get a free trial key at https://dev.apryse.com
+        },
+        viewer.current,
+      ).then(async (instance) => {
+        SignedDocumentViewer.current = instance;
+        setInstance(instance);
         const UI = instance.UI;
 
         UI.loadDocument(handleBlobFiles(pdfResponceData.attachmentBlob), {
@@ -391,22 +525,7 @@ const ViewSignatureDocument = () => {
 
         const { documentViewer, annotationManager } = instance.Core;
 
-        // ── Custom close button (same pattern as signatureviewer.js) ──────
-        const closeButton = new UI.Components.CustomButton({
-          dataElement: "closeTabButton",
-          label: t("Close"),
-          title: t("Close"),
-          onClick: () => window.close(),
-          style: {
-            background: "#dc2626",
-            color: "#ffffff",
-            border: "none",
-            borderRadius: "4px",
-            padding: "8px 30px",
-            cursor: "pointer",
-            fontWeight: "600",
-          },
-        });
+        renderCloseButton(instance);
 
         // ── Hide all toolbar groups and UI panels ─────────────────────────
         UI.disableElements([
@@ -433,6 +552,9 @@ const ViewSignatureDocument = () => {
           "contextMenuPopup",
           "richTextPopup",
           "textPopup",
+          "tools-header",
+          "searchPanelToggle",
+          "notesPanelToggle",
         ]);
 
         // ── Document loaded ───────────────────────────────────────────────
@@ -467,9 +589,7 @@ const ViewSignatureDocument = () => {
               annotationManager.getFieldManager().forEachField((field) => {
                 field.flags.set("ReadOnly", true);
               });
-            } catch (error) {
-              
-            }
+            } catch (error) {}
           }
 
           documentViewer.refreshAll();
@@ -479,107 +599,13 @@ const ViewSignatureDocument = () => {
     }
   }, [pdfResponceData.attachmentBlob]);
 
-  // ==== End ====//
-
-  const disableSignatureActions = (Instance) => {
-    if (!Instance) return;
-
-    const { annotationManager, Annotations } = Instance.Core;
-
-    // Event Listener for annotation changes
-    const handleAnnotationChange = (annotations) => {
-      annotations.forEach((annot) => {
-        
-        if (annot.ToolName === "AnnotationCreateRubberStamp") {
-          annot.NoMove = true; // Prevent dragging
-          annot.NoResize = true; // Prevent resizing
-          annot.NoRotate = true; // Prevent rotation
-          annot.Locked = true; // Fully lock annotation
-          annotationManager.redrawAnnotation(annot);
-        }
-      });
-    };
-
-    annotationManager.addEventListener(
-      "annotationChanged",
-      handleAnnotationChange,
-    );
-
-    // Prevent signature deletion
-    const originalGetPermissions = annotationManager.getPermissions;
-    annotationManager.getPermissions = function (annotation, action) {
-      if (annotation.ToolName === "AnnotationCreateRubberStamp") {
-        if (action === "delete") {
-          return false; // Prevent deletion
-        }
-        if (action === "modify") {
-          return false; // Prevent modifications
-        }
-      }
-      return originalGetPermissions
-        ? originalGetPermissions(annotation, action)
-        : true;
-    };
-  };
-
-  useEffect(() => {
-    disableSignatureActions(Instance);
-  }, [Instance]);
-
-  const handleClickDeclineBtn = () => {
-    if (declineReasonMessage !== "") {
-      let userID = localStorage.getItem("userID");
-
-      let findActorID = userAnnotationsRef.current.find(
-        (data, index) => Number(data.userID) === Number(userID),
-      );
-      if (findActorID !== undefined) {
-        let Data = {
-          FK_WorkFlow_ID: pdfResponceData.workFlowID,
-          Reason: declineReasonMessage,
-          DeclinedById: Number(findActorID.actorID),
-        };
-        dispatch(
-          declineReasonApi(
-            navigate,
-            t,
-            Data,
-            setReasonModal,
-            setDeclineConfirmationModal,
-          ),
-        );
-      }
-
-      // setDeclineConfirmationModal
-    } else {
-      setDeclineErrorMessage(true);
-    }
-  };
   return (
     <>
       <div className="documnetviewer">
         <div className="webviewer" ref={viewer}></div>
       </div>
 
-      {reasonModal && (
-        <DeclineReasonModal
-          show={reasonModal}
-          setShow={setReasonModal}
-          declineReasonMessage={declineReasonMessage}
-          setDeclineReasonMessage={setDeclineReasonMessage}
-          handleClickDecline={handleClickDeclineBtn}
-          declineErrorMessage={declineErrorMessage}
-          setDeclineErrorMessage={setDeclineErrorMessage}
-        />
-      )}
-      {declineConfirmationModal && (
-        <DeclineReasonCloseModal
-          setShow={setDeclineConfirmationModal}
-          show={declineConfirmationModal}
-        />
-      )}
-   
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };

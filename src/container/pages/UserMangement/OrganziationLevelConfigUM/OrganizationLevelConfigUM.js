@@ -150,6 +150,9 @@ const OrganizationLevelConfigUM = () => {
     autoCloseResolutionDays: 0,
     IsOneToOneCallRecordingEnabled: false,
     IsGroupCallRecordingEnabled: false,
+    TaskReminderOneDay: true,
+    TaskReminderSevenDay: true,
+    TaskReminderFifteenDay: true,
   });
 
   useEffect(() => {
@@ -159,16 +162,13 @@ const OrganizationLevelConfigUM = () => {
         const organizationSettings = await dispatch(
           getOrganizationLevelSetting(navigate, t),
         );
-        
 
         // Call the second API function and handle its result
         const timeZones = await dispatch(getTimeZone(navigate, t));
-        
+
         const autoResolutionsOptionsData = autoResolutionsOptionsValues(30);
         setAutoCloseResolutionOptions(autoResolutionsOptionsData);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     fetchData();
@@ -207,7 +207,7 @@ const OrganizationLevelConfigUM = () => {
       ) {
         let organizationSettings =
           settingReducerGetOrganizationLevelSettingResponseData;
-        
+
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
@@ -352,6 +352,14 @@ const OrganizationLevelConfigUM = () => {
             organizationSettings.isOneToOneCallRecordingEnabled,
           IsGroupCallRecordingEnabled:
             organizationSettings.isGroupCallRecordingEnabled,
+          // "?? true" is only a safety net for orgs the backend hasn't
+          // populated these fields for yet (undefined) — real false/true
+          // values from the API always win.
+          TaskReminderOneDay: organizationSettings.taskReminderOneDay ?? true,
+          TaskReminderSevenDay:
+            organizationSettings.taskReminderSevenDay ?? true,
+          TaskReminderFifteenDay:
+            organizationSettings.taskReminderFifteenDay ?? true,
         });
 
         setAutoCloseResolution({
@@ -498,7 +506,6 @@ const OrganizationLevelConfigUM = () => {
   };
 
   const handleChangeAutoCloseResolution = (event) => {
-    
     setAutoCloseResolution(event);
   };
   const onChangeIsTwoFaceEnabled = (e) => {
@@ -893,6 +900,27 @@ const OrganizationLevelConfigUM = () => {
       PushNotificationWhenCommentDeleted: value,
     });
   };
+  const onChangeTaskReminderOneDay = (e) => {
+    let value = e.target.checked;
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      TaskReminderOneDay: value,
+    });
+  };
+  const onChangeTaskReminderSevenDay = (e) => {
+    let value = e.target.checked;
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      TaskReminderSevenDay: value,
+    });
+  };
+  const onChangeTaskReminderFifteenDay = (e) => {
+    let value = e.target.checked;
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      TaskReminderFifteenDay: value,
+    });
+  };
   const onChangePushNotificationWhenNewCommentAdded = (e) => {
     let value = e.target.checked;
     setOrganizationSetting({
@@ -1057,8 +1085,11 @@ const OrganizationLevelConfigUM = () => {
         userOrganizationSetting.IsOneToOneCallRecordingEnabled,
       IsGroupCallRecordingEnabled:
         userOrganizationSetting.IsGroupCallRecordingEnabled,
+      TaskReminderOneDay: userOrganizationSetting.TaskReminderOneDay,
+      TaskReminderSevenDay: userOrganizationSetting.TaskReminderSevenDay,
+      TaskReminderFifteenDay: userOrganizationSetting.TaskReminderFifteenDay,
     };
-    
+
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
 
@@ -1356,7 +1387,7 @@ const OrganizationLevelConfigUM = () => {
                       </Col>
                     </Row>
                   </div>
-                  <hr />  
+                  <hr />
                 </>
               ) : null}
 
@@ -1551,6 +1582,42 @@ const OrganizationLevelConfigUM = () => {
                       >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-comment-deleted")}
+                        </span>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        onChange={onChangeTaskReminderOneDay}
+                        checked={userOrganizationSetting.TaskReminderOneDay}
+                      >
+                        <span className={styles["Class_CheckBox"]}>
+                          {t("1-Day")}
+                        </span>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        onChange={onChangeTaskReminderSevenDay}
+                        checked={userOrganizationSetting.TaskReminderSevenDay}
+                      >
+                        <span className={styles["Class_CheckBox"]}>
+                          {t("7-Days")}
+                        </span>
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12}>
+                      <Checkbox
+                        onChange={onChangeTaskReminderFifteenDay}
+                        checked={userOrganizationSetting.TaskReminderFifteenDay}
+                      >
+                        <span className={styles["Class_CheckBox"]}>
+                          {t("15-Days")}
                         </span>
                       </Checkbox>
                     </Col>

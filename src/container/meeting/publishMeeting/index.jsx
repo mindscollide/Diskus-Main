@@ -11,7 +11,7 @@ import { useMeetingContext } from "../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 
 // Components
-import { Table } from "../../../components/elements";
+import { Table, useSnackbar } from "../../../components/elements";
 import CustomButton from "../../../components/elements/button/Button";
 import EmptyTableComponent from "@/container/meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
@@ -50,6 +50,7 @@ import {
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   GetAllUserChats,
+  activeChat,
 } from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -60,6 +61,7 @@ import {
   footerActionStatus,
   createGroupScreen,
   activeChatBoxGS,
+  chatBoxActiveFlag,
 } from "../../../store/actions/Talk_Feature_actions";
 
 // Icons
@@ -120,6 +122,7 @@ const parseDateTime = (str) =>
 const PublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
 
   // ─── Redux selectors ──────────────────────────────────────────────────────
@@ -135,6 +138,10 @@ const PublishedMeetingList = () => {
   );
   const shareViaDataRoomPathConfirmModal = useSelector(
     (s) => s.NewMeetingreducer.shareViaDataRoomPathConfirmation,
+  );
+
+  const talkStateDataAllUserChats = useSelector(
+    (state) => state.talkStateData.AllUserChats,
   );
 
   // ─── Context ──────────────────────────────────────────────────────────────
@@ -169,7 +176,9 @@ const PublishedMeetingList = () => {
   } = useNewMeetingContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
-
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
@@ -241,38 +250,63 @@ const PublishedMeetingList = () => {
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
-    if (data.talkGroupID === 0) return;
-
-    dispatch(createShoutAllScreen(false));
-    dispatch(addNewChatScreen(false));
-    dispatch(footerActionStatus(false));
-    dispatch(createGroupScreen(false));
-    dispatch(recentChatFlag(true));
-    dispatch(activeChatBoxGS(true));
-    dispatch(headerShowHideStatus(true));
-    dispatch(footerShowHideStatus(true));
-
-    const uid = parseInt(userID);
-    const orgId = parseInt(currentOrganizationId);
-
-    await Promise.all([
-      dispatch(GetAllUserChats(navigate, uid, orgId, t)),
-      dispatch(
-        GetGroupMessages(
-          navigate,
-          {
-            UserID: uid,
-            ChannelID: currentOrganizationId,
-            GroupID: data.talkGroupID,
-            NumberOfMessages: 50,
-            OffsetMessage: 0,
-          },
-          t,
-        ),
-      ),
-      dispatch(GetAllUsers(navigate, uid, orgId, t)),
-      dispatch(GetAllUsersGroupsRoomsList(navigate, uid, orgId, t)),
-    ]);
+    if (data.talkGroupID !== 0) {
+      let allChatMessages =
+        talkStateDataAllUserChats.AllUserChatsData.allMessages;
+      const foundRecord =
+        Array.isArray(allChatMessages) &&
+        allChatMessages.find((item) => item.id === data.talkGroupID);
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+        localStorage.setItem("activeOtoChatID", data.talkGroupID);
+        dispatch(createShoutAllScreen(false));
+        dispatch(addNewChatScreen(false));
+        dispatch(footerActionStatus(false));
+        dispatch(createGroupScreen(false));
+        dispatch(chatBoxActiveFlag(false));
+        dispatch(recentChatFlag(true));
+        dispatch(activeChatBoxGS(true));
+        dispatch(chatBoxActiveFlag(true));
+        dispatch(headerShowHideStatus(true));
+        dispatch(footerShowHideStatus(true));
+        let chatGroupData = {
+          UserID: parseInt(localStorage.getItem("userID")),
+          ChannelID: currentOrganizationId,
+          GroupID: data.talkGroupID,
+          NumberOfMessages: 50,
+          OffsetMessage: 0,
+        };
+        dispatch(GetGroupMessages(navigate, chatGroupData, t));
+        dispatch(
+          GetAllUsers(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        dispatch(
+          GetAllUserChats(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        dispatch(
+          GetAllUsersGroupsRoomsList(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+      } else {
+        show(t("No-talk-group-created"), "error");
+      }
+    } else {
+      show(t("No-talk-group-created"), "error");
+    }
   };
 
   // ─── View Meeting ─────────────────────────────────────────────────────────
@@ -529,7 +563,10 @@ const PublishedMeetingList = () => {
         {canShow.edit && (
           <div
             className={styles.morebtn}
-            onClick={() => handleEditMeeting(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleEditMeeting(record);
+            }}>
             <img src={EditIcon} alt='' width='16' height='16' />
             <span>{t("Edit-meeting")}</span>
           </div>
@@ -538,7 +575,10 @@ const PublishedMeetingList = () => {
         {canShow.talk && (
           <div
             className={styles.morebtn}
-            onClick={() => groupChatInitiation(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              groupChatInitiation(record);
+            }}>
             <img src={ChatIcon} alt='' width='16' height='16' />
             <span>{t("Talk")}</span>
           </div>
@@ -547,7 +587,10 @@ const PublishedMeetingList = () => {
         {canShow.viewAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewAgenda(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewAgenda(record);
+            }}>
             <img src={AgendaIcon} alt='' width='16' height='16' />
             <span>{t("View-agenda")}</span>
           </div>
@@ -556,7 +599,10 @@ const PublishedMeetingList = () => {
         {canShow.attendance && (
           <div
             className={styles.morebtn}
-            onClick={() => onClickDownloadIcon(record.pK_MDID)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              onClickDownloadIcon(record.pK_MDID);
+            }}>
             <img src={ClipboardIcon} alt='' width='16' height='16' />
             <span>{t("Attendance-report")}</span>
           </div>
@@ -565,7 +611,10 @@ const PublishedMeetingList = () => {
         {canShow.recording && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickDownloadBtn(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickDownloadBtn(record);
+            }}>
             <img src={DownloadVideoIcon} alt='' width='16' height='16' />
             <span>{t("Download-video-recording")}</span>
           </div>
@@ -574,7 +623,10 @@ const PublishedMeetingList = () => {
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewMinutes(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewMinutes(record);
+            }}>
             <img src={DownloadVideoIcon} alt='' width='16' height='16' />
             <span>{t("View-minutes")}</span>
           </div>
@@ -583,7 +635,10 @@ const PublishedMeetingList = () => {
         {canShow.contributeAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickContributeAgenda(record)}>
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickContributeAgenda(record);
+            }}>
             <img src={AgendaIcon} alt='' width='16' height='16' />
             <span>{t("Contribute-agenda")}</span>
           </div>
@@ -681,6 +736,9 @@ const PublishedMeetingList = () => {
     }
   };
 
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
   // ─── Table Columns ────────────────────────────────────────────────────────
 
   const columns = useMemo(() => {
@@ -1063,11 +1121,15 @@ const PublishedMeetingList = () => {
             <div className='d-flex justify-content-center align-items-center'>
               <Popover
                 content={moreButtons(record)}
-                trigger='click'
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
-                placement='bottomRight'>
+                trigger={"click"}
+                placement='bottomRight'
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }>
                 <CustomButton
                   className={styles.MoreMeetingButton}
                   text={t("More")}
@@ -1091,6 +1153,7 @@ const PublishedMeetingList = () => {
     selectedValues,
     statusFilters,
     t,
+    openPopoverMeetingID,
   ]);
 
   // ─── Table Sort Handler ───────────────────────────────────────────────────
@@ -1237,6 +1300,7 @@ const PublishedMeetingList = () => {
         />
       )}
       {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
+      {SnackBar}
     </>
   );
 };

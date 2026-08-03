@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,11 +27,117 @@ import {
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
-import useApryseWebViewer, {
-  stripInvalidAppearanceRefs,
-} from "../hooks/useApryseWebViewer";
+import { useApryseDocument } from "../../../../context/DocumentContext";
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
+
+/**
+ * Async: strip only <apref> elements whose referenced PDF object does NOT exist
+ * in the document's XRef table.
+ *
+ * Root cause of the errors
+ * ────────────────────────
+ * After the XFDF processing pipeline (processXmlForReadOnly, processXmlToHideFields,
+ * etc.) some <apref> nodes reference PDF objects that no longer exist in the
+ * current document (stale objnum pointers from a previous PDF revision or from
+ * server-side re-processing).  When Apryse tries to load those appearance streams
+ * inside a Promise.all it logs:
+ *   "Error in Promise.all for appearanceReference N on page M"
+ *   {type: 'PDFWorkerError', message: '…Can not find any annotation…'}
+ * and the cascade TypeError: Cannot read properties of undefined (reading 'children')
+ *
+ * Why we validate instead of stripping everything
+ * ────────────────────────────────────────────────
+ * <apref> on a SIGNED Sig field is the ONLY data Apryse uses to render the
+ * signature visual.  Stripping all <apref> makes every signed field blank.
+ * We instead ask the PDF document (fullAPI: true) whether the objnum exists;
+ * only missing/free/null objects are stripped.  Valid signature appearances
+ * survive intact.
+ *
+ * Fallback
+ * ────────
+ * If pdfDoc is unavailable or the API call throws, every <apref> on a
+ * non-Sig widget is stripped as a safe default (Apryse regenerates text/
+ * checkbox appearances from field values).  Sig-field <apref> are preserved
+ * in all code paths.
+ *
+ * @param {string}  xfdfStr  - XFDF string (already sanitized)
+ * @param {object}  pdfDoc   - Apryse PDFDoc from documentViewer.getDocument().getPDFDoc()
+ * @param {Array}   userAnnotations - userAnnotations state (for fallback Sig detection)
+ * @returns {Promise<string>} cleaned XFDF string
+ */
+const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc, userAnnotations) => {
+  // ── Helper: collect Sig field names from userAnnotations (fallback path) ──
+  const getSigFieldNames = () => {
+    const sigNames = new Set();
+    const parser = new DOMParser();
+    (userAnnotations || []).forEach(({ xml }) => {
+      (xml || []).forEach(({ ffield }) => {
+        if (!ffield) return;
+        try {
+          const d = parser.parseFromString(ffield, "text/xml");
+          const name = d.documentElement.getAttribute("name");
+          const type = d.documentElement.getAttribute("type");
+          if (name && type === "Sig") sigNames.add(name);
+        } catch {
+          /* ignore */
+        }
+      });
+    });
+    return sigNames;
+  };
+
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xfdfStr, "text/xml");
+    const aprefs = Array.from(doc.querySelectorAll("apref"));
+
+    if (!aprefs.length) return xfdfStr;
+
+    // ── Primary path: validate each apref objnum against the PDF XRef table ──
+    if (pdfDoc) {
+      for (const apref of aprefs) {
+        const objnum = parseInt(apref.getAttribute("objnum") ?? "0", 10);
+
+        // PDF object 0 is the null/free object — never a valid appearance stream
+        if (objnum === 0) {
+          apref.remove();
+          continue;
+        }
+
+        try {
+          // getXRefTableEntry(objnum) returns the Obj at that number in the
+          // XRef table (in standard PDFs the entry index equals the object number).
+          // Returns a null-type Obj for free/deleted entries.
+          const obj = await pdfDoc.getXRefTableEntry(objnum);
+
+          // isNull() returns true for free/null XRef entries (missing objects)
+          const missing =
+            !obj || (typeof obj.isNull === "function" && (await obj.isNull()));
+          if (missing) apref.remove();
+        } catch {
+          // Object doesn't exist or API unavailable — strip to prevent error
+          apref.remove();
+        }
+      }
+
+      return new XMLSerializer().serializeToString(doc);
+    }
+
+    // ── Fallback path: no pdfDoc — strip apref from non-Sig fields only ──
+    const sigFieldNames = getSigFieldNames();
+    doc.querySelectorAll("widget").forEach((widget) => {
+      const fieldName = widget.getAttribute("field");
+      if (!sigFieldNames.has(fieldName)) {
+        widget.querySelectorAll("apref").forEach((node) => node.remove());
+      }
+    });
+
+    return new XMLSerializer().serializeToString(doc);
+  } catch {
+    return xfdfStr; // parsing failed — return original unchanged
+  }
+};
 
 const containsNull = (arr) => arr.some((el) => el === null);
 
@@ -167,20 +274,13 @@ const filterAnnotationsAgainstXFDF = (userAnnotations, xfdfString) => {
   return userAnnotations.map((user) => ({
     ...user,
     xml: user.xml.filter((item) => {
-      try {
-        const ffieldName = new DOMParser()
-          .parseFromString(item.ffield, "text/xml")
-          .documentElement.getAttribute("name");
-        const widgetName = new DOMParser()
-          .parseFromString(item.widget, "text/xml")
-          .documentElement.getAttribute("name");
-        return exists(ffieldName, "ffield") && exists(widgetName, "widget");
-      } catch (err) {
-        // Malformed ffield/widget XML — drop this entry instead of throwing
-        // and aborting the whole save flow.
-        console.error("filterAnnotationsAgainstXFDF: failed to parse item", err, item);
-        return false;
-      }
+      const ffieldName = new DOMParser()
+        .parseFromString(item.ffield, "text/xml")
+        .documentElement.getAttribute("name");
+      const widgetName = new DOMParser()
+        .parseFromString(item.widget, "text/xml")
+        .documentElement.getAttribute("name");
+      return exists(ffieldName, "ffield") && exists(widgetName, "widget");
     }),
   }));
 };
@@ -209,14 +309,6 @@ const getAnnotationOwnerIDFromSubject = (annot) => {
  * Widget annotations  → ownership is determined by comparing the widget's
  *                       field name against currentUserFieldNames (a Set).
  * FreeText annotations → ownership is determined via the Subject attribute.
- * Signature appearance annotations (the visible ink/image "stamp" created
- *   when a Sig widget is signed, retrievable via
- *   widget.getAssociatedSignatureAnnotation()) → these are separate
- *   annotation objects from the widget itself and don't have a Subject or
- *   a field, so ownership is inherited from whichever widget they're
- *   associated with. This is what lets a user select + delete (via the
- *   standard delete tool/button) only their own signature to correct it,
- *   while leaving the widget itself intact for re-signing.
  *
  * Non-owner annotations:
  *   • annotation-level  Locked = true, ReadOnly = true
@@ -232,23 +324,6 @@ const applyAnnotationLocks = (
   currentUserID,
   currentUserFieldNames,
 ) => {
-  // ── Pre-pass: find signature "stamp" annotations that belong to widgets
-  // owned by the current user, so they can be treated as owned below. ──
-  const ownedSignatureAnnotIds = new Set();
-  annotations.forEach((a) => {
-    try {
-      if (typeof a.getField === "function" && typeof a.getAssociatedSignatureAnnotation === "function") {
-        const fieldName = a.getField()?.name;
-        if (fieldName && currentUserFieldNames.has(fieldName)) {
-          const assoc = a.getAssociatedSignatureAnnotation();
-          if (assoc?.Id) ownedSignatureAnnotIds.add(assoc.Id);
-        }
-      }
-    } catch {
-      /* ignore — fall through to normal ownership checks below */
-    }
-  });
-
   annotations.forEach((annot) => {
     const isWidget =
       typeof annot.getField === "function" ||
@@ -256,9 +331,7 @@ const applyAnnotationLocks = (
 
     let isOwner = false;
 
-    if (annot.Id && ownedSignatureAnnotIds.has(annot.Id)) {
-      isOwner = true;
-    } else if (isWidget) {
+    if (isWidget) {
       try {
         const field = annot.getField?.();
         const fieldName = field?.name;
@@ -411,19 +484,23 @@ const PendingSignatureViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { pendingSignatureViewer } = useApryseDocument();
 
   const { webViewer } = useSelector((s) => s);
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
+    ResponseMessage,
     getSignatureFileAnnotationResponse,
   } = useSelector((s) => s.SignatureWorkFlowReducer);
 
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
 
   // ── WebViewer ──────────────────────────────────────────────────────────────
-  const { viewerRef, instance, initWebViewer } = useApryseWebViewer();
+  const viewerRef = useRef(null);
+  const webViewerInitialized = useRef(false);
+  const [instance, setInstance] = useState(null);
 
   // ── Data state ─────────────────────────────────────────────────────────────
   const [fieldsData, setFieldsData] = useState([]);
@@ -598,9 +675,7 @@ const PendingSignatureViewer = () => {
         setUserAnnotations(reverted);
         setUserAnnotationsCopy(reverted);
       }
-    } catch (err) {
-      console.error("getAllFieldsByWorkflowID effect failed:", err);
-    }
+    } catch (err) {}
   }, [getAllFieldsByWorkflowID]);
 
   // ── getWorkfFlowByFileId ───────────────────────────────────────────────────
@@ -658,9 +733,7 @@ const PendingSignatureViewer = () => {
         creatorID: workFlow.creatorID,
         isCreator: workFlow.isCreator,
       }));
-    } catch (err) {
-      console.error("getWorkfFlowByFileId effect failed:", err);
-    }
+    } catch (err) {}
   }, [getWorkfFlowByFileId, fieldsData]);
 
   // ── getSignatureFileAnnotationResponse ────────────────────────────────────
@@ -719,9 +792,7 @@ const PendingSignatureViewer = () => {
         xfdfData: hideFreetextXmlString,
         attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
       }));
-    } catch (err) {
-      console.error("getSignatureFileAnnotationResponse effect failed:", err);
-    }
+    } catch (err) {}
   }, [getSignatureFileAnnotationResponse]);
 
   // ─── Save / submit handler ────────────────────────────────────────────────
@@ -826,57 +897,190 @@ const PendingSignatureViewer = () => {
             },
           ),
         );
-      } catch (err) {
-        console.error("handleSave failed:", err);
-      }
+      } catch (err) {}
     },
     [docWorkflowID, dispatch, navigate, t],
   );
 
-  // ─── WebViewer initialisation ─────────────────────────────────────────────
+  // ─── Suppress Apryse internal appearance-stream crash ────────────────────
   //
-  // The Apryse "reading children" crash suppression and the double-init
-  // guard both live inside useApryseWebViewer() now — see that file.
+  // When an <apref> in the XFDF references a PDF appearance object that no
+  // longer resolves (e.g. after server-side PDF reprocessing), Apryse's
+  // internal appearance-loading runs a Promise.all that rejects with:
+  //   TypeError: Cannot read properties of undefined (reading 'children')
+  // That rejection is unhandled inside webviewer-core.min.js — it never
+  // surfaces to our try/catch around importAnnotations.
+  //
+  // We MUST keep <apref> on Sig-type fields so already-signed signature
+  // visuals remain visible; stripping them makes signed fields blank.
+  // This handler silences only the specific Apryse internal crash while
+  // leaving all other unhandled rejections untouched.
+  useEffect(() => {
+    const suppressApryseChildrenError = (event) => {
+      const reason = event?.reason;
+      if (
+        reason instanceof TypeError &&
+        typeof reason.message === "string" &&
+        reason.message.includes("children") &&
+        typeof reason.stack === "string" &&
+        reason.stack.includes("webviewer-core.min.js")
+      ) {
+        event.preventDefault(); // prevent "Uncaught (in promise)" from printing
+      }
+    };
+    window.addEventListener("unhandledrejection", suppressApryseChildrenError);
+    return () => {
+      window.removeEventListener(
+        "unhandledrejection",
+        suppressApryseChildrenError,
+      );
+    };
+  }, []);
+
+  // ─── Header buttons (Decline/Submit or Close) ────────────────────────────
+  //
+  // Apryse's CustomButton/GroupedItems are plain JS UI objects created once,
+  // not React — their label/title text is whatever t() returned AT CREATION
+  // TIME and never updates on its own. Extracted into its own function (not
+  // just inline in the WebViewer init effect) so it can also be re-invoked
+  // whenever the language changes, to actually refresh the button text.
+  const renderHeaderButtons = (inst) => {
+    const { UI } = inst;
+    const topHeader = UI.getModularHeader("default-top-header");
+    const existingItems = topHeader
+      .getItems()
+      .filter((item) => item.dataElement !== "pendingSignatureActionButtons");
+    const currentUserID = getCurrentUserID();
+    const isSignatory = signerDataRef.current.some(
+      (u) => Number(u.userID) === currentUserID,
+    );
+
+    let actionGroup;
+
+    if (isSignatory) {
+      const declineButton = new UI.Components.CustomButton({
+        dataElement: "declineButton",
+        label: t("Decline"),
+        title: t("Decline"),
+        onClick: () => setReasonModal(true),
+        style: {
+          background: "#fff",
+          border: "1px solid #e1e1e1",
+          color: "#5a5a5a",
+          padding: "8px 30px",
+          borderRadius: "4px",
+        },
+      });
+
+      const submitButton = new UI.Components.CustomButton({
+        dataElement: "submitButton",
+        label: t("Submit"),
+        title: t("Submit"),
+        onClick: () => handleSave(inst.Core.annotationManager),
+        style: {
+          background: "#6172d6",
+          border: "1px solid #6172d6",
+          color: "#fff",
+          padding: "8px 30px",
+          borderRadius: "4px",
+          marginLeft: "10px",
+        },
+      });
+
+      actionGroup = new UI.Components.GroupedItems({
+        dataElement: "pendingSignatureActionButtons",
+        grow: 0,
+        gap: 8,
+        position: "end",
+        alwaysVisible: true,
+        items: [declineButton, submitButton],
+      });
+    } else {
+      const closeButton = new UI.Components.CustomButton({
+        dataElement: "closeButton",
+        label: t("Close"),
+        title: t("Close"),
+        onClick: () => window.close(),
+        style: {
+          background: "#fff",
+          border: "1px solid #e1e1e1",
+          color: "#5a5a5a",
+          padding: "8px 30px",
+          borderRadius: "4px",
+        },
+      });
+
+      actionGroup = new UI.Components.GroupedItems({
+        dataElement: "pendingSignatureActionButtons",
+        grow: 0,
+        gap: 8,
+        position: "end",
+        alwaysVisible: true,
+        items: [closeButton],
+      });
+    }
+
+    topHeader.setItems([...existingItems, actionGroup]);
+  };
+
+  // Re-render the header buttons whenever the language changes, since
+  // renderHeaderButtons only bakes in the current t() text at call time.
+  useEffect(() => {
+    if (!instance) return;
+    renderHeaderButtons(instance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instance, i18n.language]);
+
+  // ─── WebViewer initialisation ─────────────────────────────────────────────
 
   // ✅ WebViewer initialisation with signature tool override
   useEffect(() => {
-    if (!pdfData.attachmentBlob) return;
-
-    let documentLoadedHandler = null;
-    let documentViewerForCleanup = null;
+    if (
+      !pdfData.attachmentBlob ||
+      webViewerInitialized.current ||
+      !viewerRef.current
+    )
+      return;
 
     const init = async () => {
       try {
-        const inst = await initWebViewer();
-        if (!inst) return;
+        const inst = await WebViewer(
+          {
+            path: "/webviewer/lib",
+            fullAPI: true,
+            licenseKey: process.env.REACT_APP_APRYSEKEY,
+          },
+          viewerRef.current,
+        );
+
+        setInstance(inst);
+        pendingSignatureViewer.current = inst;
+        webViewerInitialized.current = true;
 
         const { UI, Core } = inst;
         const { documentViewer, annotationManager, Tools } = Core;
-        documentViewerForCleanup = documentViewer;
-
-        console.log({ Tools }, "ToolsToolsToolsToolsToolsToolsToolsTools");
 
         // ── Restrict signature creation to the current user's own field ──────
         //
-        // Once active, Apryse's signature-field tool opens the "Create
-        // Signature" modal on a click. The modal can be triggered from either
-        // the mouse-DOWN or the mouse-UP handler, so we must gate BOTH; gating
-        // only mouseLeftUp (as before) let the mouse-down path open the modal
-        // anywhere on the page. Two tool classes need this: SignatureCreateTool
-        // (the simple annotation-based signer) AND SignatureFormFieldCreateTool
-        // (the Forms-toolbar tool — since fields are placed via the Forms
-        // toolbar in signatureviewer.js, clicking an EXISTING field routes
-        // through this same class, not just SignatureCreateTool).
+        // Apryse's SignatureCreateTool, once active, opens the "Create
+        // Signature" modal on ANY click on the page. The modal can be triggered
+        // from either the mouse-DOWN or the mouse-UP handler, so we must gate
+        // BOTH; gating only mouseLeftUp (as before) let the mouse-down path
+        // open the modal anywhere on the page.
         //
         // We install the patch here — unconditionally and before the document
         // loads — so it is always in place regardless of XFDF timing. The
-        // handler reads currentUserFieldNamesRef lazily at click time, so the
+        // handlers read currentUserFieldNamesRef lazily at click time, so the
         // ref being empty at install time is fine.
-        if (!signatureToolPatchedRef.current) {
+        const SignatureCreateTool = Tools.SignatureCreateTool;
+        if (SignatureCreateTool && !signatureToolPatchedRef.current) {
           signatureToolPatchedRef.current = true;
 
-          // True only when the click lands on a field widget that belongs to
-          // the current user and is still fillable (not signed, not locked).
+          const origMouseDown = SignatureCreateTool.prototype.mouseLeftDown;
+          const origMouseUp = SignatureCreateTool.prototype.mouseLeftUp;
+
+          // True only when the click lands on a signature widget that belongs
+          // to the current user and is still signable (not signed, not locked).
           const isOwnSignableWidget = (e) => {
             try {
               const widget = annotationManager.getAnnotationByMouseEvent(e);
@@ -886,7 +1090,7 @@ const PendingSignatureViewer = () => {
               return (
                 !!fieldName &&
                 currentUserFieldNamesRef.current.has(fieldName) &&
-                !widget.getAssociatedSignatureAnnotation?.() &&
+                !widget.getAssociatedSignatureAnnotation() &&
                 !widget.ReadOnly
               );
             } catch {
@@ -894,127 +1098,24 @@ const PendingSignatureViewer = () => {
             }
           };
 
-          [Tools.SignatureCreateTool, Tools.SignatureFormFieldCreateTool]
-            .filter(Boolean)
-            .forEach((ToolClass) => {
-              const origMouseDown = ToolClass.prototype.mouseLeftDown;
-              const origMouseUp = ToolClass.prototype.mouseLeftUp;
-
-              ToolClass.prototype.mouseLeftDown = function (e) {
-                if (isOwnSignableWidget(e)) return origMouseDown.call(this, e);
-                // click outside an owned field — ignore
-              };
-              ToolClass.prototype.mouseLeftUp = function (e) {
-                if (isOwnSignableWidget(e)) return origMouseUp.call(this, e);
-                // click outside an owned field — ignore
-              };
-            });
+          SignatureCreateTool.prototype.mouseLeftDown = function (e) {
+            if (isOwnSignableWidget(e)) return origMouseDown.call(this, e);
+            // click outside an owned signature field — ignore
+          };
+          SignatureCreateTool.prototype.mouseLeftUp = function (e) {
+            if (isOwnSignableWidget(e)) return origMouseUp.call(this, e);
+            // click outside an owned signature field — ignore
+          };
         }
-
-        // ── Field-interaction tools that must stay ownership-gated ───────────
-        //
-        // The document's fields were placed via Apryse's Forms toolbar in
-        // signatureviewer.js (toolbarGroup-Forms is enabled there), so
-        // clicking an EXISTING field on this page routes through the SAME
-        // *FormFieldCreateTool classes Apryse uses to originally place them —
-        // e.g. SIG_FORM_FIELD ("SignatureFormFieldCreateTool") handles both
-        // "place a brand-new Sig field" AND "fill/sign this existing Sig
-        // field". SIGNATURE ("SignatureCreateTool") is the older/simpler
-        // annotation-based signing tool. A signer legitimately needs ONE of
-        // these active while interacting with their OWN field — so we can't
-        // just always revert away from them (that would block real signing).
-        // What must never happen is one of these tools staying active while
-        // NOTHING owned by the current user is selected — that's what let a
-        // click reach a field that isn't theirs, and what left the tool
-        // "stuck" showing a stray/ghost field box on later pages.
-        const FIELD_INTERACTION_TOOLS = new Set([
-          Tools.ToolNames.SIGNATURE,
-          Tools.ToolNames.SIG_FORM_FIELD,
-          Tools.ToolNames.TEXT_FORM_FIELD,
-          Tools.ToolNames.CHECK_BOX_FIELD,
-          Tools.ToolNames.RADIO_FORM_FIELD,
-          Tools.ToolNames.LIST_BOX_FIELD,
-        ]);
-
-        // True if at least one currently-selected annotation is an
-        // editable field that belongs to the current user.
-        const hasOwnedSelection = () => {
-          const selected = annotationManager.getSelectedAnnotations?.() ?? [];
-          return selected.some((annot) => {
-            try {
-              const field = annot.getField?.();
-              const fieldName = field?.name;
-              return (
-                !!fieldName &&
-                currentUserFieldNamesRef.current.has(fieldName) &&
-                !annot.ReadOnly
-              );
-            } catch {
-              return false;
-            }
-          });
-        };
-
-        // ── Guard 1: block at annotation-selection time ──────────────────────
-        //
-        // Clicking a field widget selects it, and Apryse's own internal
-        // listener reacts to that selection by switching into whichever
-        // FIELD_INTERACTION_TOOLS member matches the field type — independent
-        // of whichever tool was active before the click. We intercept the
-        // selection itself: a non-owned field is deselected immediately, and
-        // if Apryse already switched tool mode as a result, we revert.
-        annotationManager.addEventListener(
-          "annotationSelected",
-          (annotations, action) => {
-            if (action !== "selected") return;
-            annotations.forEach((annot) => {
-              if (typeof annot.getField !== "function") return;
-              const field = annot.getField();
-              const fieldName = field?.name;
-              if (fieldName && currentUserFieldNamesRef.current.has(fieldName))
-                return; // owned — allow the normal flow
-
-              annotationManager.deselectAnnotation(annot);
-              if (FIELD_INTERACTION_TOOLS.has(documentViewer.getToolMode()?.name)) {
-                UI.setToolMode(Tools.ToolNames.EDIT);
-              }
-            });
-          },
-        );
-
-        // ── Guard 2: catch activation that isn't tied to a selection at all ──
-        //
-        // Observed bug: on first load, the active tool sometimes ends up as
-        // SIG_FORM_FIELD with nothing legitimately selected, and it
-        // self-corrected on a second visit — the signature of a race between
-        // Apryse's own post-load logic and our fixed 200ms reset further
-        // below. That stray active tool is also what produced the extra/
-        // ghost field box seen on a later page. Reacting to the tool-mode
-        // change itself (instead of guessing a timeout) catches it the
-        // instant it happens, regardless of timing — but only reverts when
-        // there's no legitimately owned field selected, so a real owner
-        // signing their own field is never interrupted.
-        documentViewer.addEventListener("toolModeUpdated", (newTool) => {
-          if (!newTool?.name || !FIELD_INTERACTION_TOOLS.has(newTool.name)) return;
-          if (!hasOwnedSelection()) {
-            UI.setToolMode(Tools.ToolNames.EDIT);
-          }
-        });
 
         UI.loadDocument(handleBlobFiles(pdfData.attachmentBlob), {
           filename: pdfData.title,
         });
 
-        // NOTE: "annotationDeleteButton" and "annotationPopup" are intentionally
-        // left enabled (not in the list below) so a user can select their own
-        // signature and delete it to re-sign. This is safe because
-        // applyAnnotationLocks() sets Locked = true on every annotation that
-        // doesn't belong to the current user — Apryse's built-in select/delete
-        // tool respects Locked and won't let a user select-for-delete or delete
-        // anything that isn't theirs.
         UI.disableElements([
           "linkButton",
           "annotationStyleEditButton",
+          "annotationDeleteButton",
           "indexPanel",
           "formFieldPanel",
           "groupedLeftHeaderButtons",
@@ -1060,6 +1161,7 @@ const PendingSignatureViewer = () => {
           "viewControlsOverlay",
           "contextMenuPopup",
           "signaturePanelButton",
+          "annotationPopup",
           "richTextPopup",
           "toolbarGroup-Annotate",
           "leftPanelButton",
@@ -1067,39 +1169,36 @@ const PendingSignatureViewer = () => {
           "toolbarGroup-Forms",
         ]);
 
-        documentLoadedHandler = async () => {
+        documentViewer.addEventListener("documentLoaded", async () => {
           await documentViewer.getAnnotationsLoadedPromise();
           UI.setFitMode(UI.FitMode.FitWidth);
 
           if (pdfXfdfRef.current) {
             try {
+              // Validate each <apref> objnum against the PDF XRef table;
+              // strip references to missing objects (they cause the
+              // "Can not find any annotation" PDFWorkerError) while keeping
+              // valid ones so already-signed signature visuals stay visible.
               const pdfDoc = await documentViewer.getDocument().getPDFDoc();
-
               const cleanedXFDF = await stripInvalidAppearanceRefs(
                 sanitizeXFDF(pdfXfdfRef.current, documentViewer),
                 pdfDoc,
                 userAnnotationsRef.current,
               );
-
               await annotationManager.importAnnotations(cleanedXFDF);
 
               const currentUserID = getCurrentUserID();
 
+              // Apply locks to all annotations
               applyAnnotationLocks(
                 annotationManager,
                 annotationManager.getAnnotationsList(),
                 currentUserID,
                 currentUserFieldNamesRef.current,
               );
-            } catch (err) {
-              console.error(err);
-            }
+            } catch (err) {}
           }
 
-          documentViewer.refreshAll();
-          documentViewer.updateView();
-
-          // 👇 Add this block
           requestAnimationFrame(() => {
             setTimeout(() => {
               UI.setToolMode(Core.Tools.ToolNames.EDIT);
@@ -1107,99 +1206,16 @@ const PendingSignatureViewer = () => {
               console.log("Current Tool:", UI.getToolMode()?.name);
             }, 200);
           });
-        };
+          documentViewer.refreshAll();
+          documentViewer.updateView();
+        });
 
-        documentViewer.addEventListener("documentLoaded", documentLoadedHandler);
         // Header buttons
-        const topHeader = UI.getModularHeader("default-top-header");
-        const existingItems = topHeader.getItems();
-        const currentUserID = getCurrentUserID();
-        const isSignatory = signerDataRef.current.some(
-          (u) => Number(u.userID) === currentUserID,
-        );
-
-        let actionGroup;
-
-        if (isSignatory) {
-          const declineButton = new UI.Components.CustomButton({
-            dataElement: "declineButton",
-            label: t("Decline"),
-            title: t("Decline"),
-            text: t("Decline"),
-            onClick: () => setReasonModal(true),
-            style: {
-              background: "#fff",
-              border: "1px solid #e1e1e1",
-              color: "#5a5a5a",
-              padding: "8px 30px",
-              borderRadius: "4px",
-            },
-          });
-
-          const submitButton = new UI.Components.CustomButton({
-            dataElement: "submitButton",
-            label: t("Submit"),
-            title: t("Submit"),
-            onClick: () => handleSave(annotationManager),
-            style: {
-              background: "#6172d6",
-              border: "1px solid #6172d6",
-              color: "#fff",
-              padding: "8px 30px",
-              borderRadius: "4px",
-              marginLeft: "10px",
-            },
-          });
-
-          actionGroup = new UI.Components.GroupedItems({
-            dataElement: "pendingSignatureActionButtons",
-            grow: 0,
-            gap: 8,
-            position: "end",
-            alwaysVisible: true,
-            items: [declineButton, submitButton],
-          });
-        } else {
-          const closeButton = new UI.Components.CustomButton({
-            dataElement: "closeButton",
-            label: t("Close"),
-            title: t("Close"),
-            onClick: () => window.close(),
-            style: {
-              background: "#fff",
-              border: "1px solid #e1e1e1",
-              color: "#5a5a5a",
-              padding: "8px 30px",
-              borderRadius: "4px",
-            },
-          });
-
-          actionGroup = new UI.Components.GroupedItems({
-            dataElement: "pendingSignatureActionButtons",
-            grow: 0,
-            gap: 8,
-            position: "end",
-            alwaysVisible: true,
-            items: [closeButton],
-          });
-        }
-
-        topHeader.setItems([...existingItems, actionGroup]);
-      } catch (err) {
-        console.error("WebViewer init failed:", err);
-      }
+        renderHeaderButtons(inst);
+      } catch (err) {}
     };
 
     init();
-
-    return () => {
-      if (documentViewerForCleanup && documentLoadedHandler) {
-        documentViewerForCleanup.removeEventListener(
-          "documentLoaded",
-          documentLoadedHandler,
-        );
-      }
-    };
   }, [pdfData.attachmentBlob]);
 
   // ── annotationChanged + fieldChanged event listeners ──────────────────────
@@ -1228,9 +1244,7 @@ const PendingSignatureViewer = () => {
         }));
         mergeXFDFIntoAnnotations(xfdfString, selectedUserRef.current, snapshot);
         setUserAnnotations(snapshot);
-      } catch (err) {
-        console.error("annotationChanged handler failed:", err);
-      }
+      } catch (err) {}
 
       // Re-apply locks after changes
       applyAnnotationLocks(
@@ -1283,9 +1297,7 @@ const PendingSignatureViewer = () => {
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
-      } catch (err) {
-        console.error("fieldChanged handler failed:", err);
-      }
+      } catch (err) {}
     };
 
     annotationManager.addEventListener("annotationChanged", annotHandler);

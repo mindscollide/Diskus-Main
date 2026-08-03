@@ -27,6 +27,7 @@ import SearchComplianceReportModal from "./CommonComponents/searchComplianceRepo
 
 import styles from "./mainCompliance.module.css";
 import { validateEncryptedStringViewTaskDetailLinkApi } from "../../store/actions/ToDoList_action";
+import { ViewComplianceDetailsByViewTypeAPI } from "../../store/actions/ComplainSettingActions";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -97,6 +98,7 @@ const MainCompliance = () => {
     setMainComplianceTabs,
     setComplianceAddEditViewState,
     showViewCompliance,
+    setShowViewCompliance,
     setComplianceViewMode,
     setSearchCompliancePayload,
     setsearchbox,
@@ -111,6 +113,8 @@ const MainCompliance = () => {
     endOfQuarterReport,
     accumulativeReport,
     setIsComplianceCreateOrEdit,
+    setViewComplianceDetailsTab,
+    setDeepLinkTaskId,
   } = useComplianceContext();
 
   // ── Fiscal year (driven by MQTT org settings) ─────────────────────────────
@@ -119,10 +123,15 @@ const MainCompliance = () => {
     fiscalStartMonth: MqttOrganizationSettingUpdated?.fiscalStartMonth,
   });
 
+  // Email deep-link: "Diskus/compliance?comptask_action=<token>" — private_routes.js
+  // stashes the token under "comptaskView". Decrypt it, open the specific
+  // Compliance (For-Me side, since this is always the assignee's own task
+  // email), switch to the Tasks tab, and flag the task ID so
+  // ViewComplianceTasks auto-opens its detail modal once mounted.
   useEffect(() => {
     if (comptaskView !== null) {
-      try {
-        const callAPi = async () => {
+      const callApi = async () => {
+        try {
           const parsedView = await dispatch(
             validateEncryptedStringViewTaskDetailLinkApi(
               comptaskView,
@@ -130,16 +139,35 @@ const MainCompliance = () => {
               t,
             ),
           );
-          console.log("parsedView", parsedView);
-          const {responseCode, response} = parsedView
-          if(responseCode === 1) {
-            const { complianceId, taskId, checklistID } = response;
-            
+          const { responseCode, response } = parsedView;
+          if (responseCode === 1) {
+            const { complianceID, taskID } = response;
+
+            setComplianceViewMode("forMe");
+            setMainComplianceTabs(TAB.FOR_ME);
+            setViewComplianceDetailsTab(2);
+            setDeepLinkTaskId(taskID);
+
+            dispatch(
+              ViewComplianceDetailsByViewTypeAPI(
+                navigate,
+                { complianceId: complianceID, viewType: 2 },
+                t,
+                2,
+                setComplianceAddEditViewState,
+                setCreateEditComplaince,
+                setShowViewCompliance,
+              ),
+            );
           }
-        };
-        callAPi();
-      } catch (error) {}
+        } catch (error) {
+        } finally {
+          localStorage.removeItem("comptaskView");
+        }
+      };
+      callApi();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comptaskView]);
 
   // ── Effects ───────────────────────────────────────────────────────────────

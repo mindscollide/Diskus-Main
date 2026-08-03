@@ -16,10 +16,11 @@ import {
 } from "../../../store/actions/Language_actions";
 import moment from "moment";
 import { Popover } from "antd";
+import { useApryseDocument } from "../../../context/DocumentContext";
 
 const LanguageSelector = () => {
   const [open, setOpen] = useState(false);
-
+  const { changeApryseLanguage } = useApryseDocument();
   const AllLanguagesData = useSelector(
     (state) => state.LanguageReducer.AllLanguagesData,
   );
@@ -104,42 +105,33 @@ const LanguageSelector = () => {
     }
   }, [SetLanguageData]);
 
-  const handleChangeLocale = (lang) => {
+  const handleChangeLocale = async (lang) => {
     setLanguageDropdown(false);
-    // setLanguage(lang)
-    let data = {
+
+    const data = {
       UserID: Number(currentUserID),
       SystemSupportedLanguageID: lang,
     };
+
     if (currentUserID !== null) {
       dispatch(changeNewLanguage(data, navigate, t));
     }
-    if (lang === 1) {
-      setSelectedLanguage({
-        languageTitle: "English",
-        systemSupportedLanguageID: 1,
-        code: "en",
-      });
-      localStorage.setItem("i18nextLng", "en");
-      moment.locale("en");
-      setTimeout(() => {
-        // window.location.reload()
-        i18n.changeLanguage("en");
-      }, 100);
-    } else if (lang === 2) {
-      setSelectedLanguage({
-        languageTitle: "Arabic",
-        systemSupportedLanguageID: 2,
-        code: "ar",
-      });
-      localStorage.setItem("i18nextLng", "ar");
-      moment.locale("ar");
-      setTimeout(() => {
-        i18n.changeLanguage("ar");
-      }, 100);
-    }
-  };
 
+    const languageCode = lang === 1 ? "en" : "ar";
+
+    setSelectedLanguage({
+      languageTitle: lang === 1 ? "English" : "Arabic",
+      systemSupportedLanguageID: lang,
+      code: languageCode,
+    });
+
+    localStorage.setItem("i18nextLng", languageCode);
+    moment.locale(languageCode);
+
+    await i18n.changeLanguage(languageCode);
+
+    await changeApryseLanguage(languageCode);
+  };
   const handleOutsideClick = (event) => {
     if (
       languageref.current &&
@@ -180,8 +172,7 @@ const LanguageSelector = () => {
             onClick={() => {
               handleChangeLocale(lang.systemSupportedLanguageID);
               setOpen(false);
-            }}
-          >
+            }}>
             <span>{lang.languageTitle}</span>
           </div>
         );
@@ -193,14 +184,13 @@ const LanguageSelector = () => {
   return (
     <Popover
       content={languageContent}
-      trigger="click"
+      trigger='click'
       open={open}
       showArrow={false}
       // openClassName=""
       zIndex={999999}
       onOpenChange={setOpen}
-      placement="bottomRight"
-    >
+      placement='bottomRight'>
       <span
         className={
           location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
@@ -215,8 +205,7 @@ const LanguageSelector = () => {
           location.pathname.toLowerCase().includes("/Admin".toLowerCase())
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
-        }
-      >
+        }>
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
           ? t("EN")
@@ -245,8 +234,8 @@ const LanguageSelector = () => {
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         ) : (
           <img
@@ -270,8 +259,8 @@ const LanguageSelector = () => {
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         )}
       </span>
