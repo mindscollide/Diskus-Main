@@ -23,3 +23,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 /.claude
+
+# Auto-generated per-folder structure documentation (local-only, not part of the repo)
+**/FOLDER_DOCS.md
+/PROJECT_STRUCTURE.md
+/PROJECT_TREE.md
+**/*.DEEPDIVE.md
+/scripts/gen-folder-docs.js
+/scripts/gen-tree.js
