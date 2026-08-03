@@ -3776,116 +3776,61 @@ const Dashboard = () => {
                 RoomID: data.payload.roomID,
               };
 
+              // Keep a record of who rejected (read elsewhere, e.g. call
+              // status displays) — this is just bookkeeping, not the
+              // "should we end the call" decision.
               existingData.push(newData);
               localStorage.setItem(
                 "callerStatusObject",
                 JSON.stringify(existingData),
               );
-              let RecipentIDsOninitiateVideoCallflag = false;
-              let remainingCount = 0;
-              let existingDataflag = false;
-              let existingDataremainingCount = 0;
-              let existingObjectIndex = [];
+
+              // RecipentIDsOninitiateVideoCall is seeded with every invited
+              // recipient when the group call starts (VideoMain_actions.js)
+              // and is the ONLY reliable count of who hasn't responded yet.
+              // A previous fallback here used to guess from existingData when
+              // this list was empty, but that guess pushed the same reject
+              // entry and immediately searched-and-removed it in the same
+              // pass — netting back to "0 remaining" and closing the caller's
+              // call after just the FIRST reject, even with other invitees
+              // (e.g. User B) still ringing. If this list is empty/unavailable
+              // we no longer guess — we simply don't end the call, since a
+              // wrong guess (ending it early) is worse than not ending it.
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
                   data.payload.recepientID,
                 );
                 if (index !== -1) {
-                  // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
                     JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
-                  RecipentIDsOninitiateVideoCallflag = true;
-                  remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
-                } else {
-                }
-                console.log("mqtt", RecipentIDsOninitiateVideoCall);
-              } else {
-                if (existingData.length > 0) {
-                  existingObjectIndex = existingData.findIndex(
-                    (item) =>
-                      item.RecipientName === newData.RecipientName &&
-                      item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
-                  );
-                  if (existingObjectIndex !== -1) {
-                    existingData.splice(existingObjectIndex, 1);
-                    localStorage.setItem(
-                      "callerStatusObject",
-                      JSON.stringify(existingData),
-                    );
-                    existingDataflag = true;
-                    existingDataremainingCount = existingData.length || 0;
-                  }
-                  if (existingDataflag) {
-                    if (existingDataremainingCount === 0) {
-                      if (RecipentIDsOninitiateVideoCall.length === 0) {
-                        localStorage.setItem("onlyLeaveCall", true);
-
-                        console.log("setLeaveOneToOne");
-                        setLeaveOneToOne(true);
-                        dispatch(videoChatMessagesFlag(false));
-                        dispatch(videoOutgoingCallFlag(false));
-                      }
-                    }
-                  }
-                }
-              }
-              if (RecipentIDsOninitiateVideoCallflag) {
-                if (remainingCount === 0) {
-                  if (existingData.length === 0) {
+                  if (RecipentIDsOninitiateVideoCall.length === 0) {
                     localStorage.setItem("onlyLeaveCall", true);
-
-                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
                   }
                 }
-              } else {
-                if (existingData.length > 0) {
-                  existingObjectIndex = existingData.findIndex(
-                    (item) =>
-                      item.RecipientName === newData.RecipientName &&
-                      item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
-                  );
-                  if (existingObjectIndex !== -1) {
-                    existingData.splice(existingObjectIndex, 1);
-                    localStorage.setItem(
-                      "callerStatusObject",
-                      JSON.stringify(existingData),
-                    );
-                    existingDataflag = true;
-                    existingDataremainingCount = existingData.length || 0;
-                  }
-                  if (existingDataflag) {
-                    if (existingDataremainingCount === 0) {
-                      if (RecipentIDsOninitiateVideoCall.length === 0) {
-                        localStorage.setItem("onlyLeaveCall", true);
-
-                        console.log("setLeaveOneToOne");
-                        setLeaveOneToOne(true);
-                        dispatch(videoChatMessagesFlag(false));
-                        dispatch(videoOutgoingCallFlag(false));
-                      }
-                    }
-                  }
-                }
               }
             }
 
-            if (currentUserName !== data.payload.recepientName) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: `${data.payload.recepientName} has declined the call`,
-              });
-              setNotificationID(id);
+            // Only the caller needs to react to "someone declined" — a
+            // still-ringing recipient (e.g. User B) has nothing to do with
+            // another recipient's (e.g. User C's) decline, and resetting
+            // their incoming-call state here was stopping their ringer.
+            if (isCaller) {
+              if (currentUserName !== data.payload.recepientName) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: `${data.payload.recepientName} has declined the call`,
+                });
+                setNotificationID(id);
+              }
+              dispatch(callRequestReceivedMQTT({}, ""));
             }
-            dispatch(callRequestReceivedMQTT({}, ""));
           }
         } else if (
           data.payload.message.toLowerCase() ===

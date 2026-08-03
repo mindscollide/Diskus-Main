@@ -553,7 +553,7 @@ const Actions = () => {
           return (
             <>
               <Select
-                value={text.status}
+                value={t(text.status)}
                 bordered={false}
                 popupClassName='Status-Todo'
                 className={
@@ -596,7 +596,7 @@ const Actions = () => {
                           ? "Completed   custom-class color-5a5a5a  text-center my-1"
                           : null
               }>
-              {text.status}
+              {t(text.status)}
             </p>
           );
         }
