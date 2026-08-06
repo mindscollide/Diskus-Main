@@ -41,11 +41,16 @@ export const formatDateToYMD = (value) => {
     return "";
   }
 
-  return date.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  let currentLang = localStorage.getItem("i18nextLng");
+
+  return date.toLocaleDateString(
+    currentLang === "ar" ? "ar-SA" : "en-GB",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    },
+  );
 };
 
 export const formatDateToYMDLong = (value) => {
@@ -84,9 +89,7 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
     const day = dateString?.slice(6, 8);
 
     return new Date(year, month, day, 23, 59, 58);
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 // 20260316235958 -> Date object

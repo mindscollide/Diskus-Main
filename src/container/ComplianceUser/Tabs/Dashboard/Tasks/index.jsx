@@ -35,8 +35,8 @@ const ComplianceTasks = () => {
     GetComplianceTasksDashboardData?.taskList?.slice(0, 4) || [];
 
   const filterOptions = [
-    { label: "Overdue", value: 1 },
-    { label: "Upcoming", value: 2 },
+    { label: t("Overdue"), value: 1 },
+    { label: t("Upcoming"), value: 2 },
   ];
 
   const onClickToTask = () => {
@@ -62,7 +62,7 @@ const ComplianceTasks = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-2"
               >
-                <h3 className={styles.cardHeading}>Task</h3>
+                <h3 className={styles.cardHeading}>{t("Tasks")}</h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -96,7 +96,7 @@ const ComplianceTasks = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-4"
               >
-                <h3 className={styles.cardHeading}>Tasks</h3>
+                <h3 className={styles.cardHeading}>{t("Tasks")}</h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -129,7 +129,7 @@ const ComplianceTasks = () => {
           </div>
 
           <CustomButton
-            text={t("View All Tasks")}
+            text={t("View-all-tasks")}
             className={styles.ViewAllTaskButton}
             onClick={onClickToTask}
           />

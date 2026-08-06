@@ -2568,7 +2568,7 @@
 
   "compliance-description": "Compliance Description",
   "Please-select-authority": "Please Select Authority",
-  "Criticalityy": "Criticality",
+  "Criticality": "Criticality",
   "Tags": "Tags",
   "Add-tags": "Add Tags",
   "Add-upto-5-tags": "Add upto 5 tags",
@@ -2820,5 +2820,22 @@
   "Poll-save-successfully": "Poll Save Successfully",
   "Voted-successfully": "Voted Successfully",
   "Admit": "Admit",
-  "Deny": "Deny"
+  "Deny": "Deny",
+  "Quarterly-submitted-compliances": "Quarterly Submitted Compliances",
+  "Quarterly-reopened-compliances": "Quarterly Reopened Compliances",
+  "Compliance-by": "Compliance By",
+  "Compliance-for": "Compliance For",
+  "Your-progress-across-different-compliance-criteria": "Your progress across different compliance criteria",
+  "Compliance-dashboard": "Compliance Dashboard",
+  "Dashboard": "Dashboard",
+  "Due-this-month": "Due This Month",
+  "View-all-tasks": "View All Tasks",
+  "View-all-compliances": "View All Compliances",
+  "View-report": "View Report",
+  "Quarterly-tasks": "Quarterly Tasks",
+  "No-upcoming-quarterly-tasks": "No Upcoming Quarterly Tasks",
+
+  "No-upcoming-deadlines": "No Upcoming Deadlines",
+  "Quarterly-compliances-not-submitted": "Quarterly Compliances Not Submitted",
+  "No-compliance-records-available": "No Compliance Records Available"
 }

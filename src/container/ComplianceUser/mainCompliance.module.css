@@ -60,7 +60,7 @@
   font-weight: 600 !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  margin-left: 30px;
+  margin: 0 20px 0 20px;
 }
 
 .createComplianceButton:is(:hover, :active, :focus, :focus-visible) {
@@ -71,5 +71,5 @@
   font-weight: 600 !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  margin-left: 30px;
+  margin: 0 20px 0 20px;
 }

@@ -5,9 +5,11 @@ import { useSelector } from "react-redux";
 import { Progress } from "antd";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import { useTranslation } from "react-i18next";
 
 const QuarterlySubmittedCompliance = () => {
   const { setMainComplianceTabs } = useComplianceContext();
+  const {t} = useTranslation();
 
   const GetQuarterlySubmittedDashboard = useSelector(
     (state) =>
@@ -26,11 +28,11 @@ const QuarterlySubmittedCompliance = () => {
       {!hasData && (
         <div className={styles.NoDataQuarterlySubmittedCard}>
           <h2 className={styles.NoDataCardHeading}>
-            Quarterly Submitted Compliances
+            {t("Quarterly-submitted-compliances")}
           </h2>
           <ComplianceEmptyState
             type="noQuarterlySubmittedCompliance"
-            title="Quarterly compliances not submitted"
+            title={t("Quarterly-compliances-not-submitted")}
             layout="imageRight"
             imgWidth="100%"
           />
@@ -46,7 +48,7 @@ const QuarterlySubmittedCompliance = () => {
           <Row className={styles.fullHeightRow}>
             <Col xs={8}>
               <h2 className={styles.cardHeading}>
-                Quarterly Submitted Compliances
+                {t("Quarterly-submitted-compliances")}
               </h2>
             </Col>
 
@@ -67,7 +69,7 @@ const QuarterlySubmittedCompliance = () => {
                       {percent}%
                     </div>
                     <div className={styles.quarterlyCompletedClass}>
-                      Completed
+                      {t("Completed")}
                     </div>
                   </>
                 )}

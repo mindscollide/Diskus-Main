@@ -501,14 +501,14 @@ const Reports = () => {
               <div className="d-flex align-item-center justify-content-center">
                 <CustomButton
                   className={styles["actionButtons_complianceList"]}
-                  text={"View Report"}
+                  text={t("View-report")}
                   onClick={() => fetchReport(record, false)}
                 />
               </div>
               <div className="d-flex align-item-center justify-content-center">
                 <CustomButton
                   className={styles["actionButtons_complianceList"]}
-                  text={"Download"}
+                  text={t("Download")}
                   onClick={() => fetchReport(record, true)}
                 />
               </div>
@@ -551,7 +551,7 @@ const Reports = () => {
             <div className="d-flex align-items-center justify-content-center  mt-3">
               <CustomButton
                 className={styles["actionButtons_complianceStatusReport"]}
-                text={"View Report"}
+                text={t("View-report")}
                 onClick={onClickOfViewPort}
               />
             </div>

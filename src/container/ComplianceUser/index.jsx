@@ -290,7 +290,7 @@ const MainCompliance = () => {
     [TAB.FOR_ME]: t("Compliances-for-me"),
     [TAB.REPORTS]: t("Reports"),
   };
-  const heading = headingMap[mainComplianceTabs] ?? "Compliance Dashboard";
+  const heading = headingMap[mainComplianceTabs] ?? t("Compliance-dashboard");
 
   // Tab navigation data – keeps JSX clean; adding a new tab is one object.
   const tabItems = [
@@ -374,8 +374,8 @@ const MainCompliance = () => {
       <Row>
         <Col
           sm={12}
-          md={9}
-          lg={9}
+          md={8}
+          lg={8}
           className='d-flex justify-content-start flex-wrap gap-2 align-items-center'>
           {tabItems.map(({ tab, label, onClick }) => (
             <CustomButton
@@ -393,12 +393,12 @@ const MainCompliance = () => {
 
         <Col
           sm={12}
-          md={3}
-          lg={3}
+          md={4}
+          lg={4}
           className='d-flex justify-content-end gap-2 align-items-center'>
           <img src={FiscalYearCalendar_Icon} alt='Fiscal year calendar' />
           <span className={styles["Fiscalyear_text"]}>
-            {`Fiscal Year: ${fiscalYearRange ?? t("No-fiscal-year")}`}
+            {`${t("Fiscal-year")}: ${fiscalYearRange ?? t("No-fiscal-year")}`}
           </span>
         </Col>
       </Row>

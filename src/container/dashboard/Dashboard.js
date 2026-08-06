@@ -499,7 +499,7 @@ const Dashboard = () => {
           dispatch(leaveMeetingOnlogout(true));
         }
       } else {
-        // dispatch(userLogOutApiFunc(navigate, t));
+        dispatch(userLogOutApiFunc(navigate, t));
       }
     }
   };
