@@ -246,9 +246,7 @@ const ProposedMeeting = () => {
       ProposedMeetings: true,
     };
 
-    dispatch(
-      listOfMeetingsApi(navigate, t, searchData, "", {}),
-    );
+    dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
     localStorage.setItem("MeetingPageCurrent", page);
     localStorage.setItem("MeetingPageRows", pageSize);
   };
@@ -462,7 +460,7 @@ const ProposedMeeting = () => {
                   <div>
                     <CustomButton
                       className={styles.VoteMeetingButton}
-                      text={t("Vote")}
+                      text={record.meetingPoll.isVoted ? t("Voted") : t("Vote")}
                       disableBtn={isViewPollShown ? true : false}
                       onClick={() => handleClickActions(record)}
                     />

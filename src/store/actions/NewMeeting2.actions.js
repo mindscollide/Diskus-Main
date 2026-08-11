@@ -2866,7 +2866,13 @@ export const getMeetingDetailsByMeetingIdApi = (
 
               case "ProposedMeetingViewForParticipant":
                 dispatch(
-                  getUserSelectProposedWiseApi(navigate, t, Data, "ProposedMeetingViewForParticipant", object),
+                  getUserSelectProposedWiseApi(
+                    navigate,
+                    t,
+                    Data,
+                    "ProposedMeetingViewForParticipant",
+                    object,
+                  ),
                 );
 
                 break;
@@ -4244,9 +4250,7 @@ export const SetMeetingResponseApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            SetMeetingResponseApi(navigate, t, Data, routePath, (object = {})),
-          );
+          dispatch(SetMeetingResponseApi(navigate, t, Data, routePath, object));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -4262,57 +4266,56 @@ export const SetMeetingResponseApi = (
                   t("Your-vote-is-submitted-successfully"),
                 ),
               );
-              const { setViewProposeDatePoll } = object;
-              let committeeInfo =
-                store.getState().CommitteeReducer?.committeeInfo;
-              let groupInfo = store.getState().GroupsReducer?.groupInfo;
-              if (committeeInfo !== null) {
+
+              try {
+                let committeeInfo =
+                  store.getState().CommitteeReducer?.viewCommitteeDetails;
+
+                let groupInfo =
+                  store.getState().GroupsReducer?.viewGroupDetails;
+                if (committeeInfo !== null) {
+                  dispatch(toggleIsParticipantProposedMeetingDates(false));
+
+                  return;
+                }
+                if (groupInfo !== null) {
+                  dispatch(toggleIsParticipantProposedMeetingDates(false));
+
+                  return;
+                }
                 dispatch(toggleIsParticipantProposedMeetingDates(false));
+                let userID = localStorage.getItem("userID");
+                let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                let meetingPageCurrent =
+                  localStorage.getItem("MeetingPageCurrent");
+                localStorage.setItem("MeetingCurrentView", 2);
+                // setViewProposeDatePoll(false);
 
-                return;
+                dispatch(
+                  listOfMeetingsApi(
+                    navigate,
+                    t,
+                    {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber:
+                        meetingPageCurrent !== null
+                          ? Number(meetingPageCurrent)
+                          : 1,
+                      Length:
+                        meetingpageRow !== null ? Number(meetingpageRow) : 30,
+                      PublishedMeetings: false,
+                      ProposedMeetings: true,
+                    },
+                    "",
+                    {},
+                  ),
+                );
+              } catch (error) {
+                console.log(error);
               }
-              if (groupInfo !== null) {
-                dispatch(toggleIsParticipantProposedMeetingDates(false));
-
-                return;
-              }
-              let userID = localStorage.getItem("userID");
-              let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent =
-                localStorage.getItem("MeetingPageCurrent");
-              localStorage.setItem("MeetingCurrentView", 2);
-              // setViewProposeDatePoll(false);
-
-              dispatch(
-                listOfMeetingsApi(
-                  navigate,
-                  t,
-                  {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber:
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1,
-                    Length:
-                      meetingpageRow !== null ? Number(meetingpageRow) : 30,
-                    PublishedMeetings:
-                      localStorage.getItem("MeetingCurrentView") &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 1
-                        ? true
-                        : false,
-                    ProposedMeetings:
-                      localStorage.getItem("MeetingCurrentView") &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 2
-                        ? true
-                        : false,
-                  },
-                  "",
-                  {},
-                ),
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

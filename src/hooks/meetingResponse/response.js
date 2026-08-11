@@ -117,11 +117,12 @@ export const getAllUnpublishedMeetingData = async (
             data?.proposedMeetingDetail?.totalNoOfDirectors || 0,
           totalNoOfDirectorsVoted:
             data.proposedMeetingDetail?.totalNoOfDirectorsVoted || 0,
+            isVoted: data.proposedMeetingDetail?.hasVoted
         },
         responseDeadLine:  data?.proposedMeetingDetail?.deadLineDate || "",
         status: data.status,
         title: data.title,
-        key: index,
+        key: data.pK_MDID,
         isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
         userDetails: usersData?.userData,
         isMinutePublished: data?.isMinutePublished || false,
