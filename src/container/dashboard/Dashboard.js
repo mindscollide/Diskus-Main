@@ -8359,7 +8359,9 @@ const Dashboard = () => {
             />
           )}
 
-          {ShowGuestPopup && (
+          {ShowGuestPopup &&
+          location.pathname.includes("/Diskus/Meeting") &&
+          !location.pathname.includes("meetingDocumentViewer") && (
             <div>
               <GuestJoinRequest />
             </div>

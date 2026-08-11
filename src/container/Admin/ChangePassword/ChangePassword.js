@@ -231,6 +231,7 @@ const ChangePassword = () => {
                   invalidColor='#ff0000'
                   validColor='#6172D6'
                   iconSize={"11px"}
+                  onChange={(isValid) => setPasswordStrong(isValid)}
                 />
               </Col>
             </Row>

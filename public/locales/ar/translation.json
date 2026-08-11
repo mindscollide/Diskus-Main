@@ -2615,9 +2615,11 @@
   "Are-you-sure-to-delete-this-task?": "Are you sure to delete this task?",
   "Received-on": "Received On",
   "Poll-save-successfully": "Poll Save Successfully",
+  "Poll-saved-as-draft": "Poll Saved as Draft",
   "Voted-successfully": "Voted Successfully",
   "Admit": "يعترف",
   "Deny": "ينكر",
   "Allow": "يسمح",
-  "Enable-video": "تمكين الفيديو"
+  "Enable-video": "تمكين الفيديو",
+  "GroupName-null-or-empty": "GroupName null or empty"
 }

@@ -2807,6 +2807,19 @@ const CreateShoutAll = (navigate, object, t) => {
                 )
             ) {
               await dispatch(createShoutAllFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertBroadcast_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                createShoutAllSuccess(
+                  response.data.responseResult.talkResponse,
+                  t("GroupName-null-or-empty"),
+                ),
+              );
             }
           } else {
             await dispatch(createShoutAllFail(t("Something-went-wrong")));

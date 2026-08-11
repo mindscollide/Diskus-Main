@@ -2818,8 +2818,10 @@
   "Are-you-sure-to-delete-this-task?": "Are you sure to delete this task?",
   "Received-on": "Received On",
   "Poll-save-successfully": "Poll Save Successfully",
+  "Poll-saved-as-draft": "Poll Saved as Draft",
   "Voted-successfully": "Voted Successfully",
   "Admit": "Admit",
   "Deny": "Deny",
-  "Allow": "Allow"
+  "Allow": "Allow",
+  "GroupName-null-or-empty": "GroupName null or empty"
 }
