@@ -299,7 +299,7 @@ const Dashboard = () => {
     setInCallParticipantsList,
     videoTalk,
     setVideoChatUnreadCount,
-      unSaveChangesModalForMeeting,
+    unSaveChangesModalForMeeting,
     setUnSaveChangesModalForMeeting,
   } = useMeetingContext();
 
@@ -1265,7 +1265,10 @@ const Dashboard = () => {
                   ),
                 });
               }
-            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()) {
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()
+            ) {
               dispatch(committeeProposedMeetingAction(data.payload));
               if (data.viewable) {
                 setNotification({
@@ -1278,7 +1281,10 @@ const Dashboard = () => {
                   ),
                 });
               }
-            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()) {
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()
+            ) {
               dispatch(groupProposedMeetingAction(data.payload));
               if (data.viewable) {
                 setNotification({
@@ -4474,7 +4480,18 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "MISSED_CALLS_COUNT".toLowerCase()
         ) {
-          dispatch(missedCallCount(data.payload, ""));
+          // Only surface a toast when there's an actual missed call — this
+          // MQTT also fires with missedCallCount: 0 (e.g. on every Recent
+          // Calls panel open), so a nonzero check keeps it from showing on
+          // every open. The Redux dispatch itself always happens so the
+          // badge count next to the Video icon (Talk.js) still updates.
+          const missedCount = Number(data.payload.missedCallCount) || 0;
+          dispatch(
+            missedCallCount(
+              data.payload,
+              missedCount > 0 ? t("You-have-missed-calls") : "",
+            ),
+          );
         } else if (
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
@@ -8291,11 +8308,12 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -8303,7 +8321,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className='sidebar_layout' width={60}>
+                <Sider className="sidebar_layout" width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -8314,7 +8332,8 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }>
+                }
+              >
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -8340,7 +8359,7 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className='talk_features_home'>
+                <div className="talk_features_home">
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -8349,7 +8368,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt='' draggable='false' />
+                <img src={IconMetroAttachment} alt="" draggable="false" />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -8360,12 +8379,12 @@ const Dashboard = () => {
           )}
 
           {ShowGuestPopup &&
-          location.pathname.includes("/Diskus/Meeting") &&
-          !location.pathname.includes("meetingDocumentViewer") && (
-            <div>
-              <GuestJoinRequest />
-            </div>
-          )}
+            location.pathname.includes("/Diskus/Meeting") &&
+            !location.pathname.includes("meetingDocumentViewer") && (
+              <div>
+                <GuestJoinRequest />
+              </div>
+            )}
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true &&
           !(
@@ -8383,8 +8402,8 @@ const Dashboard = () => {
             // openMeetingGroupChat, so they still render this instance as
             // before.
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -8411,24 +8430,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
-                  <Row className='mb-1'>
+                  <Row className="mb-1">
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className='d-flex justify-content-center'>
+                        <Col className="d-flex justify-content-center">
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=''
-                            draggable='false'
+                            alt=""
+                            draggable="false"
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className='text-center mt-4'>
+                        <Col className="text-center mt-4">
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -8441,12 +8460,13 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className='mb-3'>
+                <Row className="mb-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}
