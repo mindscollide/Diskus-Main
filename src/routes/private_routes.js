@@ -380,7 +380,6 @@ const PrivateRoutes = () => {
             "documentViewer_action=",
           );
           localStorage.setItem("documentViewer", getValue);
-          navigate("/Diskus/dataroom");
         }
         if (
           currentUrl

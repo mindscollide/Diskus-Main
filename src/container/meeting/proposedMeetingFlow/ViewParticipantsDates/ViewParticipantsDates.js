@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
-  SetMeetingResponseApiFunc,
   clearProposedWiseData,
   getUserProposedWiseApi,
   viewProposeDateMeetingPageFlag,
@@ -24,6 +23,8 @@ import { toggleIsParticipantProposedMeetingDates } from "../../../../store/actio
 import { SetMeetingResponseApi } from "@/store/actions/NewMeeting2.actions";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 import { useSnackbar } from "../../../../components/elements";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 
 const ViewParticipantsDates = () => {
   const { t } = useTranslation();
@@ -33,7 +34,8 @@ const ViewParticipantsDates = () => {
     (state) => state.meetingIdReducer.MeetingStatusSocket,
   );
   const { responseByDate } = useNewMeetingContext();
-
+  const { currentGroupMeetingTabActive } = useGroupsContext();
+  const { currentCommitteeMeetingTabActive } = useCommitteeContext();
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
 
@@ -108,7 +110,6 @@ const ViewParticipantsDates = () => {
       // let Data = {
       //   MeetingID: Number(currentMeetingID),
       // };
-
       // await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
       // await dispatch(
       //   getMeetingDetailsByMeetingIdApi(navigate, t, Data, "", {}),
@@ -343,7 +344,12 @@ const ViewParticipantsDates = () => {
             : meetingDeatils.MeetingID,
         ProposedDates: newarr,
       };
-      dispatch(SetMeetingResponseApi(navigate, t, Data, "", {}));
+      dispatch(
+        SetMeetingResponseApi(navigate, t, Data, "", {
+          currentCommitteeMeetingTabActive,
+          currentGroupMeetingTabActive,
+        }),
+      );
     } else if (!selectAll) {
       show(t("Please-select-any-of-the-given-options"), "error");
     }
@@ -582,8 +588,8 @@ const ViewParticipantsDates = () => {
           </span>
         </Col>
       </Row>
-      
-    {SnackBar}
+
+      {SnackBar}
     </section>
   );
 };

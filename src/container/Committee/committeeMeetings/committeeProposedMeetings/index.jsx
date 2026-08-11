@@ -397,7 +397,7 @@ const CommitteeProposedMeetings = () => {
                   <div>
                     <CustomButton
                       className={styles.VoteMeetingButton}
-                      text={t("Vote")}
+                      text={record.meetingPoll?.isVoted ? t("Voted") : t("Vote")}
                       disableBtn={isViewPollShown ? true : false}
                       onClick={() => handleClickActions(record)}
                     />
