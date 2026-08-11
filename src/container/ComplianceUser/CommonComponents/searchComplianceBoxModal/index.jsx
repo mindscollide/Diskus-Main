@@ -436,7 +436,7 @@ const SearchComplianceBoxModal = () => {
                             className={`Select_Tags_search_ant ${styles["selectBoxStyle"]}`}
                             mode="tags"
                             style={{ width: "100%" }}
-                            placeholder="Tags"
+                            placeholder={t("Tags")}
                             onChange={handleChange}
                             // onSearch={handleSearch}
                             value={

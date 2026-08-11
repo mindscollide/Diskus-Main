@@ -1280,10 +1280,8 @@ const ModalView = ({ ModalTitle }) => {
   const copyToClipboardd = () => {
     let MeetingData = allMeetingDetails?.meetingDetails;
     if (MeetingData.isVideoCall === true) {
-      let meetingId = localStorage.getItem("currentMeetingID");
-
       let data = {
-        MeetingId: Number(meetingId),
+        MeetingId: Number(getMeetID),
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }

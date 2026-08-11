@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalOptions.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Modal } from "../../../components/elements";
+import { Button, CustomRadio2, Modal } from "../../../components/elements";
 import {
   IsFileisExist,
   uploadDocumentsApi,
@@ -25,8 +25,6 @@ const ModalOptions = ({
   const [fileUploadOptions, setFileUploadOptions] = useState(1);
 
   const handleuploadFile = async () => {
-    
-
     dispatch(
       uploadDocumentsApi(
         navigate,
@@ -37,8 +35,8 @@ const ModalOptions = ({
         tasksAttachments,
         fileUploadOptions,
         setShowbarupload,
-        showbarupload
-      )
+        showbarupload,
+      ),
     );
     await dispatch(IsFileisExist(null));
     setUploadOptions(false);
@@ -58,7 +56,7 @@ const ModalOptions = ({
             setUploadOptions(false);
           }}
           setShow={setUploadOptions}
-          modalFooterClassName="d-block"
+          modalFooterClassName='d-block'
           centered
           ModalBody={
             <>
@@ -70,7 +68,7 @@ const ModalOptions = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
                       {t("An-item-named")}{" "}
@@ -86,13 +84,12 @@ const ModalOptions = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={"d-flex justify-content-start gap-3"}
-                  >
-                    <Form.Check
-                      type="radio"
-                      checked={fileUploadOptions === 1 ? true : false}
+                    className={"d-flex justify-content-start gap-3"}>
+                    <CustomRadio2
+                      value={fileUploadOptions}
+                      checked={fileUploadOptions === 1}
                       onChange={() => setFileUploadOptions(1)}
-                      name="dataroomfiles"
+                      name='dataroomfiles'
                     />
                     <span className={styles["Options"]}>
                       {t("Replace-existing-file")}
@@ -104,13 +101,12 @@ const ModalOptions = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start gap-3"
-                  >
-                    <Form.Check
-                      type="radio"
-                      checked={fileUploadOptions === 2 ? true : false}
+                    className='d-flex justify-content-start gap-3'>
+                    <CustomRadio2
+                      checked={fileUploadOptions === 2}
+                      value={fileUploadOptions}
                       onChange={() => setFileUploadOptions(2)}
-                      name="dataroomfiles"
+                      name='dataroomfiles'
                     />
                     <span className={styles["Options"]}>
                       {t("Keep-both-files")}
@@ -122,13 +118,12 @@ const ModalOptions = ({
           }
           ModalFooter={
             <>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-end gap-2"
-                >
+                  className='d-flex justify-content-end gap-2'>
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_UploadFile"]}

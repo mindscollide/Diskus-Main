@@ -41,7 +41,7 @@ const UpcomingComplianceDeadline = () => {
         </h2>
         <ComplianceEmptyState
           type="noUpcomingCompliance"
-          title="No upcoming deadlines"
+          title={t("No-upcoming-deadlines")}
           layout="imageRight"
         />
       </div>

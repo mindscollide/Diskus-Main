@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import styles from "./viewComplianceDetails.module.css";
 import { Tag } from "antd";
-import ViewComplianceChecklistAccordian from "../../ViewComplianceChecklistAccordian/index.jsx.js";
+import ViewComplianceChecklistAccordian from "../../ViewComplianceChecklistAccordian/index.jsx";
 import {
   formatDateToYMD,
   parseYYYYMMDDToEndOfDay,

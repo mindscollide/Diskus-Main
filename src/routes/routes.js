@@ -118,6 +118,7 @@ import { PollsProvider } from "../context/PollsContext.js";
 import { NotesProvider } from "../context/NotesContext.js";
 import { ResolutionProvider } from "../context/ResolutionContext.js";
 import { ComlianceProvider } from "../context/ComplianceContext.js";
+import { DocumentProvider } from "../context/DocumentContext.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -232,25 +233,27 @@ export const router = createBrowserRouter(
                 FallbackComponent={ErrorFallback}
                 onError={logErrors}>
                 <NewMeetingProvider>
-                  <TalkProvider>
-                    <MeetingProvider>
-                      <GroupsProvider>
-                        <CommitteeProvider>
-                          <DataroomProvider>
-                            <PollsProvider>
-                              <NotesProvider>
-                                <ResolutionProvider>
-                                  <ComlianceProvider>
-                                    <Dashboard />
-                                  </ComlianceProvider>
-                                </ResolutionProvider>
-                              </NotesProvider>
-                            </PollsProvider>
-                          </DataroomProvider>
-                        </CommitteeProvider>
-                      </GroupsProvider>
-                    </MeetingProvider>
-                  </TalkProvider>
+                  <DocumentProvider>
+                    <TalkProvider>
+                      <MeetingProvider>
+                        <GroupsProvider>
+                          <CommitteeProvider>
+                            <DataroomProvider>
+                              <PollsProvider>
+                                <NotesProvider>
+                                  <ResolutionProvider>
+                                    <ComlianceProvider>
+                                      <Dashboard />
+                                    </ComlianceProvider>
+                                  </ResolutionProvider>
+                                </NotesProvider>
+                              </PollsProvider>
+                            </DataroomProvider>
+                          </CommitteeProvider>
+                        </GroupsProvider>
+                      </MeetingProvider>
+                    </TalkProvider>
+                  </DocumentProvider>
                 </NewMeetingProvider>
               </ErrorBoundary>
             </RouteWrapperUser>
