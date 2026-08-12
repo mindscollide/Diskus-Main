@@ -56,6 +56,7 @@ import {
   calendarReducer,
   OnBoardModalStates,
   RoleListReducer,
+  NotificationRoutingReducer,
   webViewerReducer,
 } from "./reducers";
 
@@ -173,6 +174,9 @@ const AppReducer = combineReducers({
 
   // Modal States
   ModalStatesReducer,
+
+  // Notification Routing Reducer
+  NotificationRoutingReducer
 });
 
 // All store slice keys that carry ResponseMessage / responseMessage.

@@ -94,7 +94,6 @@ const MainMeeting = () => {
     (state) => state.NewMeetingreducer.CalendarDashboardEventData,
   );
 
-
   const calendRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -261,6 +260,32 @@ const MainMeeting = () => {
 
     handleViewMeetingLink();
   }, [localStorage.getItem("viewMeetingLink")]);
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const { message } = state;
+        if (message === "proposedmeeting") {
+          loadMeetings({
+            PublishedMeetings: false,
+            ProposedMeetings: true,
+            view: MEETING_VIEWS.PROPOSED,
+          });
+          // setCurrentCommitteeMeetingTabActive(2);
+        }
+        // dispatch(
+        // viewCommitteeDetails({
+        //   committeeID: committeeGroupMeetingID,
+        //   committeeTitle: committeeGroupTitle,
+        // }),
+        // );
+        // setCurrentViewCommitteeTabs(4);
+        // localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
+        // setViewCommitteePage(true);
+        // dispatch(viewCommitteePageFlag(true));
+      } catch (error) {}
+    }
+  }, [state]);
 
   useEffect(() => {
     if (state !== null) {
