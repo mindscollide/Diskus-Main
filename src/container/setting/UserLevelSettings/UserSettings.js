@@ -39,14 +39,6 @@ const UserSettings = ({ googleClientIDs }) => {
     (state) => state.settingReducer.microsoftClientID,
   );
 
-  // Add these selectors
-  const userSettingsResponseMessagesData = useSelector(
-    (state) => state.settingReducer.UpdateUserSettingResponseMessage,
-  );
-  const userSettingsResponseSeverity = useSelector(
-    (state) => state.settingReducer.severity,
-  );
-
   const [activeTab, setActiveTab] = useState("security");
   const securitystate = activeTab === "security";
   const todo = activeTab === "todo";
