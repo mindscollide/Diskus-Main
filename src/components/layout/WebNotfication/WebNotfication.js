@@ -863,19 +863,17 @@ const WebNotfication = ({
             }
             if (standardMeetingType === 4) {
               // Group Meeting
-              if (standardMeetingType === 3) {
-                // Committee Meeting
-                navigate("/Diskus/Groups", {
-                  state: {
-                    message: "proposedmeeting",
-                    response: {
-                      ...responseData.responseResult,
-                      MeetingID: PayLoadData.MeetingID,
-                    },
+
+              navigate("/Diskus/Groups", {
+                state: {
+                  message: "proposedmeeting",
+                  response: {
+                    ...responseData.responseResult,
+                    MeetingID: PayLoadData.MeetingID,
                   },
-                });
-                return;
-              }
+                },
+              });
+              return;
             }
             if (standardMeetingType === 2) {
               // Board Meeting
@@ -1065,19 +1063,17 @@ const WebNotfication = ({
             }
             if (standardMeetingType === 4) {
               // Group Meeting
-              if (standardMeetingType === 3) {
-                // Committee Meeting
-                navigate("/Diskus/Groups", {
-                  state: {
-                    message: "proposedmeeting",
-                    response: {
-                      ...responseData.responseResult,
-                      MeetingID: PayLoadData.MeetingID,
-                    },
+
+              navigate("/Diskus/Groups", {
+                state: {
+                  message: "proposedmeeting",
+                  response: {
+                    ...responseData.responseResult,
+                    MeetingID: PayLoadData.MeetingID,
                   },
-                });
-                return;
-              }
+                },
+              });
+              return;
             }
             if (standardMeetingType === 2) {
               // Board Meeting
