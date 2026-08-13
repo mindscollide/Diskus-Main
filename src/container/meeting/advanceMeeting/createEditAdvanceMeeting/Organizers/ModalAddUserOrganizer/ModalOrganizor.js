@@ -261,7 +261,11 @@ const ModalOrganizor = () => {
     dispatch(meetingOrganizers(membersOrganizers));
     dispatch(selectedMeetingOrganizers(organizersSave));
   };
-
+  // ===============================
+  // FILTER FIX (SAFE)
+  // ===============================
+  const customFilter = (option, input) =>
+    option?.data?.name?.toLowerCase?.().includes(input.toLowerCase());
   // -------------------------
   // UI
   // -------------------------
@@ -316,6 +320,7 @@ const ModalOrganizor = () => {
                     isMulti
                     options={dropdowndata}
                     isSearchable
+                    filterOption={customFilter}
                   />
 
                   <Button
