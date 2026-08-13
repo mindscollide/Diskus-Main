@@ -752,14 +752,14 @@ const MainMeeting = () => {
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
                     onClick={handleCreateAdvanceMeeting}>
-                    {t("Advance-meeting")}
+                    {t("Create-board-meeting")}
                   </ReactBootstrapDropdown.Item>
                 )}
                 {checkFeatureIDAvailability(12) && (
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
                     onClick={handleCreateProposedMeeting}>
-                    {t("Propose-new-meeting")}
+                    {t("Proposed-board-meeting")}
                   </ReactBootstrapDropdown.Item>
                 )}
               </ReactBootstrapDropdown.Menu>
