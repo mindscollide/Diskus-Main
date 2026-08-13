@@ -50,6 +50,8 @@ const SceduleProposedmeeting = () => {
       getUserProposedOrganizerData !== undefined &&
       getUserProposedOrganizerData
     ) {
+
+      console.log(getUserProposedOrganizerData, "getUserProposedOrganizerDatagetUserProposedOrganizerData")
       let ProposeDates;
 
       getUserProposedOrganizerData.response.forEach((datesData, index) => {

@@ -114,7 +114,7 @@ const initialState = {
   viewAdvanceMeetingUnpublishPageFlag: false,
   viewProposeOrganizerMeetingPageFlag: false,
   proposeNewMeetingPageFlag: false,
-  getUserProposedOrganizerData: [],
+  getUserProposedOrganizerData:null,
   sideBarMeetingPopupState: false,
   viewMeetingFlag: false,
 
@@ -1613,7 +1613,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: action.loader,
-          getUserProposedOrganizerData: [],
+          getUserProposedOrganizerData: null,
           ResponseMessage: action.message,
           errorSeverity: "error",
         };
@@ -2141,7 +2141,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           unsavedViewPollsModal: false,
           CurrentMeetingURL: "",
           getallDocumentsForAgendaWiseMinutes: [],
-          getUserProposedOrganizerData: [],
+          getUserProposedOrganizerData: null,
           getMeeingUsersRSVPDetails: null,
           cancelAgendaSavedModal: false,
           removeUpcomingEventMeeting: null,

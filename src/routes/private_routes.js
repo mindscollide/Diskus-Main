@@ -204,6 +204,7 @@ const PrivateRoutes = () => {
         ) {
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("UserMeetPropoDatPoll", parts);
+          localStorage.setItem("MeetingCurrentView", 2);
         }
 
         // Action: Poll Expire
@@ -360,7 +361,7 @@ const PrivateRoutes = () => {
         }
 
         // DisKus/compliance?comptask_action
-            if (
+        if (
           currentUrl
             .toLowerCase()
             .includes("Diskus/compliance?comptask_action".toLowerCase())
