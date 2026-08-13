@@ -4616,8 +4616,9 @@ const ChangeTaskStatusAPI = (navigate, Data, complianceId, t) => {
               await dispatch(
                 ChangeTaskStatusSuccess(
                   response.data.responseResult,
-                  // t("Task status changed successfully"),
-                  t("Task-deleted-successfully"),
+                  Data.NewStatusID === 6
+                    ? t("Task-deleted-successfully")
+                    : t("Task-status-changed-successfully"),
                 ),
               );
               const Data_compId = {

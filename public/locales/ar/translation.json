@@ -2709,8 +2709,8 @@
   "Please-select-atleast-a-single-day": "يرجى اختيار يوم واحد على الأقل",
   "Quarterly-tasks": " المهام الفصلية",
   "No-upcoming-quarterly-tasks": " لا توجد مهام فصلية قادمة",
-
   "No-upcoming-deadlines": " لا توجد المواعيد النهائية القائمة",
   "Quarterly-compliances-not-submitted": " الامتثال الفصلي غير المقدم",
-  "No-compliance-records-available": " لا توجد سجلات امتثال متاحة"
+  "No-compliance-records-available": " لا توجد سجلات امتثال متاحة",
+  "Task-status-changed-successfully": "Task Status Changed Successfully"
 }
