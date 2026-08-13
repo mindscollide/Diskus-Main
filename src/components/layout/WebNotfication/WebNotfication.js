@@ -198,6 +198,47 @@ const WebNotfication = ({
     } catch (error) {}
   }, [webNotificationData, todayDate]);
 
+  // Fetches the meeting's current status, records it for the destination
+  // list page to pick up (proposedAction), and routes to the module that
+  // owns this meeting's standardMeetingType (2=Board, 3=Committee,
+  // 4=Group; 1=Quick Meeting needs no redirect).
+  const routeMeetingTypeNotification = async (
+    PayLoadData,
+    proposedAction,
+    message,
+  ) => {
+    let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+    let responseData = await dispatch(
+      GetMeetingStatusDataApi(navigate, t, Data, "", {}),
+    );
+    dispatch(
+      proposedAction({
+        ...responseData,
+        meetingID: PayLoadData.MeetingID,
+      }),
+    );
+    if (responseData.responseCode === 200 && responseData?.responseResult) {
+      const { standardMeetingType } = responseData.responseResult;
+      const routeByMeetingType = {
+        2: "/Diskus/Meeting",
+        3: "/Diskus/Committee",
+        4: "/Diskus/Groups",
+      };
+      const path = routeByMeetingType[standardMeetingType];
+      if (path) {
+        navigate(path, {
+          state: {
+            message,
+            response: {
+              ...responseData.responseResult,
+              MeetingID: PayLoadData.MeetingID,
+            },
+          },
+        });
+      }
+    }
+  };
+
   //Handle Click Notification
   const HandleClickNotfication = async (NotificationData) => {
     //Work For Leave Video Intimination
@@ -831,66 +872,12 @@ const WebNotfication = ({
           //   );
           // }
         } else if (NotificationData.notificationActionID === 13) {
-          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           // this for Particiapnt who needs to submit a proposal date
-          let responseData = await dispatch(
-            GetMeetingStatusDataApi(navigate, t, Data, "", {}),
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForParticipantProposed,
+            "proposedmeeting",
           );
-          dispatch(
-            MeetingProposedForParticipantProposed({
-              ...responseData,
-              meetingID: PayLoadData.MeetingID,
-            }),
-          );
-          if (
-            responseData.responseCode === 200 &&
-            responseData?.responseResult
-          ) {
-            const { standardMeetingType } = responseData?.responseResult;
-
-            if (standardMeetingType === 3) {
-              // Committee Meeting
-              navigate("/Diskus/Committee", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-              return;
-            }
-            if (standardMeetingType === 4) {
-              // Group Meeting
-
-              navigate("/Diskus/Groups", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-              return;
-            }
-            if (standardMeetingType === 2) {
-              // Board Meeting
-              navigate("/Diskus/Meeting", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-            }
-            if (standardMeetingType === 1) {
-              // Quick Meeting
-            }
-          }
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           //   dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -920,66 +907,11 @@ const WebNotfication = ({
           //   );
           // }
         } else if (NotificationData.notificationActionID === 14) {
-          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          let responseData = await dispatch(
-            GetMeetingStatusDataApi(navigate, t, Data, "", {}),
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForParticipantProposed,
+            "proposedmeeting",
           );
-          dispatch(
-            MeetingProposedForParticipantProposed({
-              ...responseData,
-              meetingID: PayLoadData.MeetingID,
-            }),
-          );
-          if (
-            responseData.responseCode === 200 &&
-            responseData?.responseResult
-          ) {
-            const { standardMeetingType } = responseData?.responseResult;
-
-            if (standardMeetingType === 3) {
-              // Committee Meeting
-              navigate("/Diskus/Committee", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-              return;
-            }
-            if (standardMeetingType === 4) {
-              // Group Meeting
-
-              navigate("/Diskus/Groups", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-              return;
-            }
-            if (standardMeetingType === 2) {
-              // Board Meeting
-
-              navigate("/Diskus/Meeting", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-            }
-            if (standardMeetingType === 1) {
-              // Quick Meeting
-            }
-          }
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   localStorage.setItem("ProposedMeetingOperations", true);
           //   localStorage.setItem(
@@ -1032,57 +964,11 @@ const WebNotfication = ({
           //   );
           // }
         } else if (NotificationData.notificationActionID === 15) {
-          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          let responseData = await dispatch(
-            GetMeetingStatusDataApi(navigate, t, Data, "", {}),
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForOrganizerProposed,
+            "proposedmeeting",
           );
-          dispatch(
-            MeetingProposedForOrganizerProposed({
-              ...responseData,
-              meetingID: PayLoadData.MeetingID,
-            }),
-          );
-          if (
-            responseData.responseCode === 200 &&
-            responseData?.responseResult
-          ) {
-            const { standardMeetingType } = responseData?.responseResult;
-
-            if (standardMeetingType === 3) {
-              // Committee Meeting
-              navigate("/Diskus/Committee", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-              return;
-            }
-            if (standardMeetingType === 4) {
-              // Group Meeting
-
-              navigate("/Diskus/Groups", {
-                state: {
-                  message: "proposedmeeting",
-                  response: {
-                    ...responseData.responseResult,
-                    MeetingID: PayLoadData.MeetingID,
-                  },
-                },
-              });
-              return;
-            }
-            if (standardMeetingType === 2) {
-              // Board Meeting
-            }
-            if (standardMeetingType === 1) {
-              // Quick Meeting
-            }
-          }
-          console.log(responseData, "responseDataresponseDataresponseData");
           // //Notification that Proposed Meeting Date Organizer work
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };

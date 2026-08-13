@@ -358,11 +358,12 @@ const UserSettings = ({ googleClientIDs }) => {
   async function redirectToUrl() {
     if (microsoftClientID) {
       const baseUrl = process.env.REACT_APP_MS_LOGIN_URL;
-      const url = baseUrl.replace(
-        /client_id=[^&]+/,
-        `client_id=${microsoftClientID}`,
-      );
-
+      const url = baseUrl
+        .replace(/client_id=[^&]+/, `client_id=${microsoftClientID}`)
+        .replace(
+          /redirect_uri=[^&]+/,
+          `redirect_uri=${process.env.REACT_APP_BASE_URL}`,
+        );
       const windowFeatures = "width=600,height=400,top=100,left=100";
       const popup = window.open(url, "Microsoft Login", windowFeatures);
 
