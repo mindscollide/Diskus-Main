@@ -2926,6 +2926,8 @@ const DataRoom = () => {
    */
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
+
+    console.log(file, "filefilefilefilefile")
     const taskId = Math.floor(Math.random() * 1000000);
     const axiosCancelSource = axios.CancelToken.source();
     let newJsonCreateFile = {

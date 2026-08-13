@@ -12,6 +12,7 @@ import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
+  GetMeetingStatusDataApi,
   GetMeetingStatusDataAPI,
   proposedMeetingDatesGlobalFlag,
   showEndMeetingModal,
@@ -51,6 +52,10 @@ import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/Vi
 import { useResolutionContext } from "../../../context/ResolutionContext.js";
 import { useComplianceContext } from "../../../context/ComplianceContext.js";
 import { ViewComplianceDetailsByViewTypeAPI } from "../../../store/actions/ComplainSettingActions.js";
+import {
+  MeetingProposedForOrganizerProposed,
+  MeetingProposedForParticipantProposed,
+} from "../../../store/actions/NotificationRouting_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -63,11 +68,8 @@ const WebNotfication = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    editorRole,
-    viewAdvanceMeetingModal,
-    advanceMeetingModalID,
-  } = useMeetingContext();
+  const { editorRole, viewAdvanceMeetingModal, advanceMeetingModalID } =
+    useMeetingContext();
   //           dispatch(showEndMeetingModal(false));
 
   //Resolution Context
@@ -195,6 +197,47 @@ const WebNotfication = ({
       }
     } catch (error) {}
   }, [webNotificationData, todayDate]);
+
+  // Fetches the meeting's current status, records it for the destination
+  // list page to pick up (proposedAction), and routes to the module that
+  // owns this meeting's standardMeetingType (2=Board, 3=Committee,
+  // 4=Group; 1=Quick Meeting needs no redirect).
+  const routeMeetingTypeNotification = async (
+    PayLoadData,
+    proposedAction,
+    message,
+  ) => {
+    let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+    let responseData = await dispatch(
+      GetMeetingStatusDataApi(navigate, t, Data, "", {}),
+    );
+    dispatch(
+      proposedAction({
+        ...responseData,
+        meetingID: PayLoadData.MeetingID,
+      }),
+    );
+    if (responseData.responseCode === 200 && responseData?.responseResult) {
+      const { standardMeetingType } = responseData.responseResult;
+      const routeByMeetingType = {
+        2: "/Diskus/Meeting",
+        3: "/Diskus/Committee",
+        4: "/Diskus/Groups",
+      };
+      const path = routeByMeetingType[standardMeetingType];
+      if (path) {
+        navigate(path, {
+          state: {
+            message,
+            response: {
+              ...responseData.responseResult,
+              MeetingID: PayLoadData.MeetingID,
+            },
+          },
+        });
+      }
+    }
+  };
 
   //Handle Click Notification
   const HandleClickNotfication = async (NotificationData) => {
@@ -829,6 +872,12 @@ const WebNotfication = ({
           //   );
           // }
         } else if (NotificationData.notificationActionID === 13) {
+          // this for Particiapnt who needs to submit a proposal date
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForParticipantProposed,
+            "proposedmeeting",
+          );
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           //   dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
@@ -858,6 +907,11 @@ const WebNotfication = ({
           //   );
           // }
         } else if (NotificationData.notificationActionID === 14) {
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForParticipantProposed,
+            "proposedmeeting",
+          );
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   localStorage.setItem("ProposedMeetingOperations", true);
           //   localStorage.setItem(
@@ -877,7 +931,7 @@ const WebNotfication = ({
           //     2,
           //     "0",
           //   )}`;
-          //
+
           //   // Compare stored date with the current date
           //   if (PayLoadData.DeadlineDate <= formattedCurrentDate) {
           //     dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
@@ -910,6 +964,11 @@ const WebNotfication = ({
           //   );
           // }
         } else if (NotificationData.notificationActionID === 15) {
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForOrganizerProposed,
+            "proposedmeeting",
+          );
           // //Notification that Proposed Meeting Date Organizer work
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -1757,7 +1816,7 @@ const WebNotfication = ({
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 

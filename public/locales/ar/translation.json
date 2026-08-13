@@ -2712,5 +2712,8 @@
   "No-upcoming-deadlines": " لا توجد المواعيد النهائية القائمة",
   "Quarterly-compliances-not-submitted": " الامتثال الفصلي غير المقدم",
   "No-compliance-records-available": " لا توجد سجلات امتثال متاحة",
-  "Task-status-changed-successfully": "Task Status Changed Successfully"
+  "Task-status-changed-successfully": "Task Status Changed Successfully",
+  "Create-board-meeting": "Create Board Meeting",
+  "Proposed-board-meeting": "Proposed Board Meeting",
+  "Password-verified": "Password Verified"
 }

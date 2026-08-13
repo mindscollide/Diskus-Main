@@ -129,16 +129,10 @@ const forwardUsersCheckedHandler = (data) => {
                 <Row style={{ alignItems: "center" }}>
                   <Col lg={2} md={2} sm={2} style={{ paddingTop: "5px" }}>
                     <Checkbox
-                      checked={
-                        forwardUsersChecked.includes(dataItem) ? true : false
-                      }
-                      onChange={() =>
-                        forwardUsersCheckedHandler(
-                          dataItem,
-                          dataItem.id,
-                          index,
-                        )
-                      }
+                      checked={forwardUsersChecked.some(
+                        (user) => user.id === dataItem.id,
+                      )}
+                      onChange={() => forwardUsersCheckedHandler(dataItem)}
                       className=""
                     />
                   </Col>

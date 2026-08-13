@@ -94,7 +94,6 @@ const MainMeeting = () => {
     (state) => state.NewMeetingreducer.CalendarDashboardEventData,
   );
 
-
   const calendRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -261,6 +260,32 @@ const MainMeeting = () => {
 
     handleViewMeetingLink();
   }, [localStorage.getItem("viewMeetingLink")]);
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const { message } = state;
+        if (message === "proposedmeeting") {
+          loadMeetings({
+            PublishedMeetings: false,
+            ProposedMeetings: true,
+            view: MEETING_VIEWS.PROPOSED,
+          });
+          // setCurrentCommitteeMeetingTabActive(2);
+        }
+        // dispatch(
+        // viewCommitteeDetails({
+        //   committeeID: committeeGroupMeetingID,
+        //   committeeTitle: committeeGroupTitle,
+        // }),
+        // );
+        // setCurrentViewCommitteeTabs(4);
+        // localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
+        // setViewCommitteePage(true);
+        // dispatch(viewCommitteePageFlag(true));
+      } catch (error) {}
+    }
+  }, [state]);
 
   useEffect(() => {
     if (state !== null) {
@@ -727,14 +752,14 @@ const MainMeeting = () => {
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
                     onClick={handleCreateAdvanceMeeting}>
-                    {t("Advance-meeting")}
+                    {t("Create-board-meeting")}
                   </ReactBootstrapDropdown.Item>
                 )}
                 {checkFeatureIDAvailability(12) && (
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
                     onClick={handleCreateProposedMeeting}>
-                    {t("Propose-new-meeting")}
+                    {t("Proposed-board-meeting")}
                   </ReactBootstrapDropdown.Item>
                 )}
               </ReactBootstrapDropdown.Menu>

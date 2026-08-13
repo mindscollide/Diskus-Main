@@ -356,6 +356,50 @@ const PublishedMeetingList = () => {
     } catch (error) {}
   };
 
+  // ─── View Agenda ─────────────────────────────────────────────────────────
+  const handleViewAgenda = async (record) => {
+    try {
+      const statusNum = Number(record.status);
+
+      if (statusNum === STATUS.ACTIVE) {
+        handleJoinMeeting(record);
+
+        return;
+      }
+
+      if (record.isQuickMeeting) {
+        await dispatch(
+          getViewMeetingByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: record.pK_MDID },
+            "ViewQuickMeetingFromListing",
+            {
+              setIsQuickMeetingView,
+            },
+          ),
+        );
+        return;
+      }
+
+      dispatch(
+        setCurrentMeetingInfo({
+          meetingID: record.pK_MDID,
+        }),
+      );
+      dispatch(toggleViewMeetingModal(true));
+      setEditorRole((prev) => ({
+        ...prev,
+        status: record.status,
+        role: record.isParticipant
+          ? "Participant"
+          : record.isAgendaContributor
+            ? "Agenda Contributor"
+            : "Organizer",
+        isPrimaryOrganizer: record.isPrimaryOrganizer,
+      }));
+    } catch (error) {}
+  };
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
   const handleEditMeeting = async (record) => {
@@ -509,11 +553,11 @@ const PublishedMeetingList = () => {
   };
 
   const handleClickViewAgenda = (record) => {
-    handleViewMeeting(record);
+    handleViewAgenda(record);
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
     dispatch(emailRouteID(3));
-    dispatch(setViewTab("Agenda"));
+    dispatch(setViewTab("agendaViewer"));
     setMeetingLocalStorage(record);
   };
 

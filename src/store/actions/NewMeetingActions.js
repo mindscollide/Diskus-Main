@@ -2937,8 +2937,6 @@ const setProposedMeetingDateApiFunc = (
   };
 };
 
-
-
 //Aun work on meeting Material Init
 const meetingMaterialInit = () => {
   return {
@@ -8759,6 +8757,113 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, routePath, object = {}) => {
   };
 };
 
+const GetMeetingStatusDataApi = (
+  navigate,
+  t,
+  Data,
+  routePath,
+  object = {},
+) => {
+  return async (dispatch) => {
+    await dispatch(GetMeetingStatusDataInit());
+
+    let form = new FormData();
+
+    form.append("RequestMethod", GetMeetingStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    try {
+      const response = await axiosInstance.post(meetingApi, form);
+
+      if (response.data.responseCode === 417) {
+        return await dispatch(
+          GetMeetingStatusDataAPI(
+            navigate,
+            t,
+            Data,
+            routePath,
+            object,
+          ),
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          const responseMessage =
+            response.data.responseResult.responseMessage?.toLowerCase() || "";
+
+          if (
+            responseMessage.includes(
+              "Meeting_MeetingServiceManager_GetMeetingStatusData_01".toLowerCase(),
+            )
+          ) {
+            dispatch(
+              GetMeetingStatusDataSuccess(
+                response.data.responseResult,
+                "",
+              ),
+            );
+
+            // Return complete response
+            return {
+              responseCode: 200,
+              responseResult: response.data.responseResult,
+            };
+          } else if (
+            responseMessage.includes(
+              "Meeting_MeetingServiceManager_GetMeetingStatusData_02".toLowerCase(),
+            )
+          ) {
+            dispatch(GetMeetingStatusDataFail(t("UnSuccessful")));
+
+            return response;
+          } else if (
+            responseMessage.includes(
+              "Meeting_MeetingServiceManager_GetMeetingStatusData_03".toLowerCase(),
+            )
+          ) {
+            dispatch(
+              GetMeetingStatusDataFail(t("Something-went-wrong")),
+            );
+
+            return response;
+          } else {
+            dispatch(
+              GetMeetingStatusDataFail(t("Something-went-wrong")),
+            );
+
+            return response;
+          }
+        } else {
+          dispatch(
+            GetMeetingStatusDataFail(t("Something-went-wrong")),
+          );
+
+          return response;
+        }
+      } else {
+        dispatch(
+          GetMeetingStatusDataFail(t("Something-went-wrong")),
+        );
+
+        return response;
+      }
+    } catch (error) {
+      dispatch(
+        GetMeetingStatusDataFail(t("Something-went-wrong")),
+      );
+
+      // Return complete Axios error response if available
+      if (error.response) {
+        return error.response;
+      }
+
+      // Reject when there is no server response
+      throw error;
+    }
+  };
+};
+
 //Voting Agenda Poll has been Started Modal Action Method
 
 const AgendaPollVotingStartedAction = (response) => {
@@ -9662,4 +9767,5 @@ export {
   requestMeetingRecordingTranscript_clear,
   meetingTranscriptDownloaded,
   clearProposedWiseData,
+  GetMeetingStatusDataApi,
 };

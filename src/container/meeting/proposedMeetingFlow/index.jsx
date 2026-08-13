@@ -20,7 +20,7 @@ import {
 } from "@/store/actions/NewMeetingActions";
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
 import { useEffect } from "react";
 
@@ -50,6 +50,10 @@ import {
   toggleIsOrganizerProposedMeetingDates,
   toggleIsParticipantProposedMeetingDates,
 } from "../../../store/actions/ModalStates_actions";
+import {
+  MeetingProposedForOrganizerProposed,
+  MeetingProposedForParticipantProposed,
+} from "../../../store/actions/NotificationRouting_actions";
 
 const ProposedMeeting = () => {
   const dispatch = useDispatch();
@@ -65,11 +69,7 @@ const ProposedMeeting = () => {
     responseByDate,
   } = useNewMeetingContext();
 
-  console.log(
-    proposedMeetingData,
-    responseByDate,
-    "proposedMeetingDataproposedMeetingData",
-  );
+  const { pathname } = useLocation();
   //Current User ID
   //Current Organization
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -95,6 +95,65 @@ const ProposedMeeting = () => {
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
 
+  const proposedMeetingOrganizer = useSelector(
+    (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
+  );
+  const proposedMeetingParticipant = useSelector(
+    (state) => state.NotificationRoutingReducer.MeetingProposedForParticipant,
+  );
+
+  useEffect(() => {
+    if (proposedMeetingParticipant !== null) {
+      try {
+        const {
+          meetingID,
+          responseResult: { sendResponseByDeadline },
+        } = proposedMeetingParticipant;
+
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: meetingID },
+            "ProposedMeetingViewForParticipant",
+            {
+              responseDeadline: sendResponseByDeadline,
+              meetingId: meetingID,
+              setResponseByDate,
+            },
+          ),
+        );
+        dispatch(MeetingProposedForParticipantProposed(null));
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [proposedMeetingParticipant]);
+
+  useEffect(() => {
+    if (proposedMeetingOrganizer !== null) {
+      try {
+        const { meetingID, responseResult } = proposedMeetingOrganizer;
+
+        dispatch(
+          getUserWiseProposedDatesForOrganizerApi(
+            navigate,
+            t,
+            { MeetingID: meetingID },
+            "",
+            {},
+          ),
+        );
+        dispatch(MeetingProposedForOrganizerProposed(null));
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [proposedMeetingOrganizer]);
   const handleClickActions = (record) => {
     if (record.isParticipant) {
       dispatch(
