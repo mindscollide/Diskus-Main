@@ -154,6 +154,7 @@ const ProposedMeeting = () => {
       } catch (error) {}
     }
   }, [proposedMeetingOrganizer]);
+
   const handleClickActions = (record) => {
     if (record.isParticipant) {
       dispatch(
@@ -730,7 +731,15 @@ const ProposedMeeting = () => {
                 getApiResponse.meetingID,
               );
               localStorage.removeItem("UserMeetPropoDatPoll");
-              dispatch(toggleIsOrganizerProposedMeetingDates(true));
+              dispatch(
+                getUserWiseProposedDatesForOrganizerApi(
+                  navigate,
+                  t,
+                  { MeetingID: getApiResponse.meetingID },
+                  "",
+                  {},
+                ),
+              );
             }
           } catch (error) {
             localStorage.removeItem("UserMeetPropoDatPoll");
