@@ -13,3 +13,10 @@ export const MeetingProposedForParticipantProposed = (payload) => {
     payload,
   };
 };
+
+export const ViewMeetingDetails = (payload) => {
+  return {
+    type: actions.MEETING_VIEW_DETAILS,
+    payload,
+  };
+};

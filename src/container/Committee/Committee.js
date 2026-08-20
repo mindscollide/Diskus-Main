@@ -231,6 +231,7 @@ const Committee = () => {
         } = state;
         if (message === "proposedmeeting") {
           setCurrentCommitteeMeetingTabActive(2);
+        } else {
         }
         dispatch(
           viewCommitteeDetails({
@@ -239,12 +240,16 @@ const Committee = () => {
           }),
         );
         setCurrentViewCommitteeTabs(4);
+
         localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
         setViewCommitteePage(true);
         dispatch(viewCommitteePageFlag(true));
       } catch (error) {}
     }
   }, [state]);
+
+
+
   useEffect(() => {
     if (committeeViewId !== null) {
       const callApi = async () => {

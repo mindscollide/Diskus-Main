@@ -46,17 +46,13 @@ import {
   callRequestReceivedMQTT,
 } from "../../../../../../store/actions/VideoMain_actions";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
-import {
-  resetCloseChatFlags,
-} from "../../../../../../store/actions/Talk_Feature_actions";
+import { resetCloseChatFlags } from "../../../../../../store/actions/Talk_Feature_actions";
 import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
   newTimeFormaterAsPerUTCTalkDateTime,
 } from "../../../../../../commen/functions/date_formater";
-import {
-  DateSendingFormat,
-} from "../../../../../../commen/functions/date_formater";
+import { DateSendingFormat } from "../../../../../../commen/functions/date_formater";
 import {
   TextField,
   Button,
@@ -101,6 +97,7 @@ import GroupEditPanel from "./GroupEditPanel";
 import ShoutEditPanel from "./ShoutEditPanel";
 import ChatActionModals from "./ChatActionModals";
 import useChatMessagesSync from "./useChatMessagesSync";
+import { HIDE_VIDEO } from "../../../../../../commen/featureFlags";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
@@ -280,12 +277,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
-
   useEffect(() => {
-    if(talkStateData.ActiveChatData !== null ) {
-      console.log(talkStateData.ActiveChatData, "ActiveChatDataActiveChatData")
+    if (talkStateData.ActiveChatData !== null) {
+      console.log(talkStateData.ActiveChatData, "ActiveChatDataActiveChatData");
     }
-  },[talkStateData.ActiveChatData])
+  }, [talkStateData.ActiveChatData]);
   useEffect(() => {
     if (talkStateData.ActiveChatData.messageType === "G") {
       let Data = {
@@ -1955,23 +1951,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         {talkStateData.ActiveChatData.fullName}
                       </p>
                     </Col>
-                    {activeCall === true ? (
-                      <Col lg={1} md={1} sm={12}></Col>
-                    ) : null}
-                    <Col lg={1} md={1} sm={12}></Col>
-                    <Col lg={1} md={1} sm={12}>
+                    <Col lg={5} md={5} sm={12} className="d-flex justify-content-end align-items-center">
                       {" "}
-                      <div className='chat-box-icons'>
+                      <span>
                         <img
                           draggable='false'
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
                           alt=''
                         />
-                      </div>
-                    </Col>
-                    <Col lg={1} md={1} sm={12}>
-                      <Dropdown className='chat-box-icons cursor-pointer positionRelative'>
+                      </span>
+                      <Dropdown className=' cursor-pointer positionRelative'>
                         <Dropdown.Toggle
                           // as="div"
                           className='talk-dropdown-toggle'
@@ -2081,10 +2071,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           )}
                         </Dropdown.Menu>
                       </Dropdown>
-                    </Col>
-                    {activeCall === false && checkFeatureIDAvailability(5) ? (
-                      <Col lg={1} md={1} sm={12}>
-                        <div className='chat-box-icons'>
+                      {activeCall === false &&
+                      checkFeatureIDAvailability(5) &&
+                      !HIDE_VIDEO ? (
+                        <span>
                           <img
                             onClick={
                               activeChatType === "O"
@@ -2097,14 +2087,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             src={VideoCallIcon}
                             alt=''
                           />
-                        </div>
-                      </Col>
-                    ) : null}
-                    <Col lg={1} md={1} sm={12}>
-                      {" "}
-                      <div
-                        className='chat-box-icons closechat'
-                        onClick={closeChat}>
+                        </span>
+                      ) : null}{" "}
+                      <span className=' closechat' onClick={closeChat}>
                         <img
                           width={14}
                           draggable='false'
@@ -2112,7 +2097,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           className='cursor-pointer'
                           alt=''
                         />
-                      </div>
+                      </span>
                     </Col>
                   </Row>
                 </div>

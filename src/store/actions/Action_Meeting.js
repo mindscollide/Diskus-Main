@@ -507,7 +507,7 @@ const saveMeetingActionsDocuments = (
                 "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase(),
               )
           ) {
-            const successMessage = value === 7 ? "" : t("Update-successful");
+            const successMessage = value === 7 ? "" :"";
 
             dispatch(
               saveTaskDocuments_success(

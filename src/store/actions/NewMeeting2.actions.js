@@ -1055,7 +1055,9 @@ export const setProposedMeetingDateApi = (
                 dispatch(
                   showPrposedMeetingDateSuccess(
                     response.data.responseResult,
-                    t("Your-slots-has-been-added-successfully"),
+                    routePath === "saveProposedMeeting"
+                      ? t("Proposed-meeting-published")
+                      : t("Proposed-meeting-updated"),
                   ),
                 );
                 const committeeInfo =
@@ -2825,6 +2827,32 @@ export const getMeetingDetailsByMeetingIdApi = (
               }
 
               case "EditMeetingFromMainListing":
+                const { role, callFunc } = object;
+                callFunc?.();
+
+                dispatch(
+                  setCreateEditTab(
+                    role === "Agenda Contributor" ? "agenda" : "meetingDetails",
+                  ),
+                );
+                dispatch(
+                  setCurrentMeetingInfo({
+                    meetingID: details.meetingID,
+                    meetingTitle: details.meetingTitle
+                  }),
+                );
+                dispatch(toggleCreateEditMeetingModal(true));
+                dispatch(setAdvanceMeetingRoute(2));
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedFolderIdApi(
+                    navigate,
+                    t,
+                    mappedFolderPayload,
+                    routePath,
+                    {},
+                  ),
+                );
+                break;
               case "EditMeetingFromScheduleProposed": {
                 const { role, callFunc } = object;
                 callFunc?.();
@@ -4263,7 +4291,7 @@ export const SetMeetingResponseApi = (
               dispatch(
                 showPrposedMeetingReponsneSuccess(
                   response.data.responseResult,
-                  t("Your-vote-is-submitted-successfully"),
+                  t("Vote-submitted-successfully"),
                 ),
               );
 

@@ -6,7 +6,9 @@ const initialState = {
   errorSeverity: null,
   xfdfData: "",
   attachmentBlob: "",
-  isHTML: false
+  isHTML: false,
+  dataroomAnnotation: null,
+  fileTitle: "",
 };
 
 const webViewerReducer = (state = initialState, action) => {
@@ -196,6 +198,7 @@ const webViewerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        dataroomAnnotation: action.payload,
         xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: "",

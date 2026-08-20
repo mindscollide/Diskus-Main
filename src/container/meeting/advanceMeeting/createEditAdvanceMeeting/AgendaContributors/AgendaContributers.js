@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import styles from "./AgendaContributors.module.css";
 import addmore from "../../../../../assets/images/addmore.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
@@ -9,7 +9,6 @@ import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
-import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table, TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -18,47 +17,23 @@ import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { useNavigate } from "react-router-dom";
 import {
-  UpdateMeetingUserForAgendaContributor,
   getAllAgendaContributorApi,
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
+
   uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
-import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
-import NextModal from "../meetingDetails/NextModal/NextModal";
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   UpdateMeetingStatusApi,
   UpdateMeetingUserApi,
 } from "../../../../../store/actions/NewMeeting2.actions";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
-const AgendaContributers = ({
-  setSceduleMeeting,
-  currentMeeting,
-
-  isEditMeeting,
-  setorganizers,
-  setPublishState,
-  setAdvanceMeetingModalID,
-  setCalendarViewModal,
-  setDataroomMapFolderId,
-}) => {
+const AgendaContributers = () => {
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
@@ -75,8 +50,6 @@ const AgendaContributers = ({
   const [isPublishedState, setIsPublishedState] = useState(false);
   const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
-  const [flag, setFlag] = useState(3);
-  const [prevFlag, setprevFlag] = useState(3);
   const { editorRole, setEditorRole, setGoBackCancelModal } =
     useMeetingContext();
 
@@ -628,7 +601,7 @@ const AgendaContributers = ({
       UpdateMeetingStatusApi(
         navigate,
         t,
-        { MeetingID: currentMeeting, StatusID: 1 },
+        { MeetingID: meetingID, StatusID: 1 },
         "publishMeetingFromAgendaContributor",
         {setEditorRole},
       ),
@@ -767,27 +740,7 @@ const AgendaContributers = ({
     <>
       <section className="position-relative">
         <Row className="mt-3">
-          {/* {((Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-            editorRole.role === "Organizer" &&
-            isEditMeeting === true) ||
-          (editorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true) ? (
-            <></>
-          ) : (
-            <Col lg={4} md={4} sm={12}>
-              <Select
-                options={options}
-                value={selectedOption}
-                onChange={handleOptionSelect}
-                isSearchable={false}
-                components={{
-                  Option: CustomOption,
-                }}
-              />
-            </Col>
-          )} */}
+        
 
           <Col
             lg={12}
@@ -931,7 +884,7 @@ const AgendaContributers = ({
                   Number(editorRole.status) === 12 ? (
                     <Button
                       disableBtn={
-                        Number(currentMeeting) === 0 ||
+                        Number(meetingID) === 0 ||
                         isPublishedState === false
                           ? true
                           : false
@@ -970,16 +923,8 @@ const AgendaContributers = ({
         />
       )}
 
-      {NewMeetingreducer.ShowPreviousModal && (
-        <PreviousModal setorganizers={setorganizers} prevFlag={prevFlag} />
-      )}
 
-      {NewMeetingreducer.cancelAgendaContributor && (
-        <CancelAgendaContributor
-          setSceduleMeeting={setSceduleMeeting}
-          setRowsData={setRowsData}
-        />
-      )}
+   
     </>
   );
 };

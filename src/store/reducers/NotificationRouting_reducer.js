@@ -3,6 +3,7 @@ import * as actions from "../action_types";
 const initialState = {
   MeetingProposedForOrganizer: null,
   MeetingProposedForParticipant: null,
+  ViewMeetingDetails: null,
 };
 
 const NotificationReducer = (state = initialState, action) => {
@@ -18,6 +19,13 @@ const NotificationReducer = (state = initialState, action) => {
         ...state,
         MeetingProposedForParticipant: action.payload,
       };
+
+    case actions.MEETING_VIEW_DETAILS: {
+      return {
+        ...state,
+        ViewMeetingDetails: action.payload,
+      };
+    }
     default:
       return { ...state };
   }

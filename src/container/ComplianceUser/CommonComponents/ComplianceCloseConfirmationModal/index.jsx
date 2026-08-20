@@ -54,7 +54,7 @@ const ComplianceCloseConfirmationModal = () => {
                   ? t(
                       "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes",
                     )
-                  : "You have unsaved changes. Do you want to save before leaving, or discard and lose your changes?"}
+                  : t("You-have-unsaved-changes-save-before-leaving")}
               </div>
             </Col>
           </Row>

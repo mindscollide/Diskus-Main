@@ -2395,7 +2395,7 @@ const Dashboard = () => {
           const isComplianceTaskModalOpen = JSON.parse(
             sessionStorage.getItem("complianceTaskViewModalOpen"),
           );
-          if (data.viewable && !isComplianceTaskModalOpen) {
+          if (data.viewable && !isComplianceTaskModalOpen && !data.receiverID.includes(Number(localStorage.getItem("userID")))) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2418,7 +2418,7 @@ const Dashboard = () => {
           const isComplianceTaskModalOpenComment = JSON.parse(
             sessionStorage.getItem("complianceTaskViewModalOpen"),
           );
-          if (data.viewable && !isComplianceTaskModalOpenComment) {
+          if (data.viewable && !isComplianceTaskModalOpenComment && !data.receiverID.includes(Number(localStorage.getItem("userID")))) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(

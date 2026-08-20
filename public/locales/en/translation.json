@@ -1138,7 +1138,7 @@
   "Please-fill-options": "Please fill options",
   "Published": "Published",
   "UnPublished": "UnPublished",
-  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "Are you sure? If you click on close button the data will reset and modal will close.",
+  "You-have-unsaved-changes-save-before-leaving": "You have unsaved changes. Save before leaving?",
   "Options-must-be-more-than-2": "Options must be more than 2",
   "Please-select-due-date": "Please select due date",
   "Select-atleast-one-participants": "Select atleast one participant",
@@ -2219,6 +2219,7 @@
   "Meeting-link-copied": "Meeting link copied",
   "Unable-to-generate-meeting-link": "Unable to generate meeting link",
   "Your-vote-is-submitted-successfully": "Your vote is submitted successfully",
+  "Vote-submitted-successfully": "Vote Submitted Successfully",
   "has-requested-to-join-this-video-call": "has requested to join this video call",
   "Meeting-not-active": "Meeting Not Active",
   "Invalid-meeting": "Invalid Meeting",
@@ -2842,5 +2843,9 @@
   "No-compliance-records-available": "No Compliance Records Available",
   "Create-board-meeting": "Create Board Meeting",
   "Proposed-board-meeting": "Proposed Board Meeting",
-  "Password-verified": "Password Verified"
+  "Password-verified": "Password Verified",
+  "Proposed-meeting-published": "Proposed Meeting Published",
+  "Proposed-meeting-updated": "Proposed Meeting Updated",
+  "Unsaved-changes-will-be-lost-if-you-close-continue": "Unsaved changes will be lost if you close.  Continue?"
+
 }

@@ -2370,9 +2370,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     />
                   </Col>
                   <Col
-                    lg={4}
-                    md={4}
-                    sm={4}
+                    lg={5}
+                    md={5}
+                    sm={5}
                     xs={12}
                     className='UpdateCheckbox mt-2 '>
                     <Checkbox
@@ -2381,7 +2381,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       label={t("Meeting-chat")}
                       checked={createMeeting.IsChat}
                       onChange={onChange}
-                      classNameDiv='checkboxParentClass'></Checkbox>
+                      classNameDiv='checkboxParentClass'
+                    />
                   </Col>
                 </Row>
 

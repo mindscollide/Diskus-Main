@@ -1105,7 +1105,6 @@
   "Published": "نشرت",
   "UnPublished": "لم تنشر",
   "Unpublished": "لم تنشر",
-  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "هل أنت متأكد؟ إذا نقرت على زر الإغلاق، فسيتم إعادة ضبط البيانات وسيتم إغلاق النموذج.",
   "Options-must-be-more-than-2": "يجب أن تكون الخيارات أكثر من ٢",
   "Please-select-due-date": "الرجاء تحديد تاريخ الاستحقاق",
   "Select-atleast-one-participants": "اختر مشاركًا واحدًا على الأقل",
@@ -2167,6 +2166,7 @@
   "Meeting-link-copied": "تم نسخ رابط الاجتماع",
   "Unable-to-generate-meeting-link": "تعذر إنشاء رابط الاجتماع",
   "Your-vote-is-submitted-successfully": "تم تقديم تصويتك بنجاح",
+  "Vote-submitted-successfully": "تم إرسال التصويت بنجاح",
   "has-requested-to-join-this-video-call": "طلب الانضمام إلى مكالمة الفيديو هذه",
   "Meeting-not-active": "الاجتماع غير نشط",
   "Invalid-meeting": "اجتماع غير صالح",
@@ -2715,5 +2715,9 @@
   "No-compliance-records-available": " لا توجد سجلات امتثال متاحة",
   "Create-board-meeting": "Create Board Meeting",
   "Proposed-board-meeting": "Proposed Board Meeting",
-  "Password-verified": "Password Verified"
+  "Password-verified": "Password Verified",
+  "Proposed-meeting-published": "Proposed Meeting Published",
+  "Proposed-meeting-updated": "Proposed Meeting Updated",
+  "You-have-unsaved-changes-save-before-leaving": "You have unsaved changes. Save before leaving?",
+  "Unsaved-changes-will-be-lost-if-you-close-continue": "Unsaved changes will be lost if you close.  Continue?"
 }

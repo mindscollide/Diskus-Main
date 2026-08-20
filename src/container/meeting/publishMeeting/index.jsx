@@ -150,9 +150,6 @@ const PublishedMeetingList = () => {
     editorRole,
     setEditorRole,
     setVideoTalk,
-    setSceduleMeeting,
-    setViewFlag,
-    setEditFlag,
     setDownloadMeeting,
     setDownloadVideoRecordingModal,
     boardDeckMeetingID,
@@ -183,14 +180,11 @@ const PublishedMeetingList = () => {
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
-  const [duplicatedrows] = useState([]);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
-  const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
-  const [selectedMeetingTypes] = useState(
-    isMeetingTypeFilter.map((f) => f.value),
-  );
+  const selectedValues = DEFAULT_STATUS_VALUES;
+
   const [radioValue, setRadioValue] = useState(1);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,

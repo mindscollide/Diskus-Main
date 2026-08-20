@@ -42,7 +42,10 @@ import {
   dashboardCalendarEvent,
   validateEncryptedStringViewMeetingLinkApi,
 } from "../../store/actions/NewMeetingActions";
-import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import {
+  createConvert,
+  getCurrentDateTimeUTC,
+} from "../../commen/functions/date_formater";
 import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
@@ -264,25 +267,70 @@ const MainMeeting = () => {
   useEffect(() => {
     if (state !== null) {
       try {
-        const { message } = state;
+        const { message = "", response = null } = state;
+
+        let obj = {
+          isQuickMeeting: response.isQuickMeeting,
+          pK_MDID: response.MeetingID,
+          isParticipant: response.attendeeRole === "Participant",
+          isAgendaContributor: response.attendeeRole === "AgendaContributor",
+          isOrganizer: response.attendeeRole === "Organizer",
+          isPrimaryOrganizer: false,
+          status: response.meetingStatusID,
+          videoCallURL: response.videoCallUrl,
+          isChat: response.isChat,
+          isVideoCall: response.isVideoCall,
+          talkGroupID: response.talkGroupID,
+        };
+
         if (message === "proposedmeeting") {
           loadMeetings({
             PublishedMeetings: false,
             ProposedMeetings: true,
             view: MEETING_VIEWS.PROPOSED,
           });
+
           // setCurrentCommitteeMeetingTabActive(2);
         }
-        // dispatch(
-        // viewCommitteeDetails({
-        //   committeeID: committeeGroupMeetingID,
-        //   committeeTitle: committeeGroupTitle,
-        // }),
-        // );
-        // setCurrentViewCommitteeTabs(4);
-        // localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
-        // setViewCommitteePage(true);
-        // dispatch(viewCommitteePageFlag(true));
+        if (message === "ViewMeeting") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+
+          handleViewMeeting(obj);
+        }
+        if (message === "JoinMeeting") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+
+          handleJoinMeeting(obj);
+        }
+
+        if (message === "MeetingPollCreated") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+          handleViewMeeting(obj, "polls");
+        }
+
+        if (message === "MeetingListing") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+        }
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
       } catch (error) {}
     }
   }, [state]);
@@ -379,7 +427,7 @@ const MainMeeting = () => {
 
   // ─── Meeting Handlers ──────────────────────────────────────────────────
 
-  const handleViewMeeting = async (record) => {
+  const handleViewMeeting = async (record, tab = "") => {
     try {
       if (record.isQuickMeeting) {
         await dispatch(
@@ -396,7 +444,7 @@ const MainMeeting = () => {
 
       dispatch(setCurrentMeetingInfo({ meetingID: record.pK_MDID }));
       dispatch(toggleViewMeetingModal(true));
-      dispatch(setViewTab("meetingDetails"));
+      dispatch(setViewTab(tab !== "" ? tab : "meetingDetails"));
 
       const role = record.isParticipant
         ? "Participant"
@@ -689,6 +737,62 @@ const MainMeeting = () => {
     });
   };
 
+  const handleClickSearch = async () => {
+    const currentView = Number(localStorage.getItem("MeetingCurrentView"));
+    const filters = getMeetingFilters(currentView);
+
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: createConvert(new Date(searchFields.Date)).slice(0, 8),
+          Title: searchFields.MeetingTitle,
+          HostName: searchFields.OrganizerName,
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: meetingPageCurrent ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow ? Number(meetingpageRow) : 50,
+          ...filters,
+        },
+        "mainListing",
+        {},
+      ),
+    );
+    console.log(searchFields, searchText, "handleClickSearch");
+  };
+
+  const handleClickReset = async () => {
+    const currentView = Number(localStorage.getItem("MeetingCurrentView"));
+    const filters = getMeetingFilters(currentView);
+
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: meetingPageCurrent ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow ? Number(meetingpageRow) : 50,
+          ...filters,
+        },
+        "mainListing",
+        {},
+      ),
+    );
+
+    setSearchText("");
+    setSearchFeilds({
+      MeetingTitle: "",
+      Date: "",
+      OrganizerName: "",
+      DateView: "",
+    });
+    console.log(searchFields, searchText, "handleClickSearch");
+  };
+
   // ─── Create Handlers ──────────────────────────────────────────────────
 
   const handleCreateAdvanceMeeting = () => {
@@ -889,10 +993,12 @@ const MainMeeting = () => {
                       <Button
                         text={t("Reset")}
                         className={styles["ResetButtonMeeting"]}
+                        onClick={handleClickReset}
                       />
                       <Button
                         text={t("Search")}
                         className={styles["SearchButtonMeetings"]}
+                        onClick={handleClickSearch}
                       />
                     </Col>
                   </Row>
