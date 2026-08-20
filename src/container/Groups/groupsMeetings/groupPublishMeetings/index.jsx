@@ -236,6 +236,22 @@ const GroupPublishedMeetingList = () => {
     localStorage.setItem("meetingTitle", record.title);
   };
 
+  const loadGroupMeetings = ({ PublishedMeetings, ProposedMeetings }) => {
+    dispatch(
+      getMeetingbyGroupIdApi(navigate, t, {
+        GroupID: Number(localStorage.getItem("ViewGroupID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 30,
+        PublishedMeetings,
+        ProposedMeetings,
+      }),
+    );
+  };
+
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
@@ -418,9 +434,72 @@ const GroupPublishedMeetingList = () => {
     }
   }, [validatencryptedstringState]);
 
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const meetingNotificationRouting = async () => {
+          const { message = "", response = null } = state;
+
+          let obj = {
+            isQuickMeeting: response.isQuickMeeting,
+            pK_MDID: response.MeetingID,
+            isParticipant: response.attendeeRole === "Participant",
+            isAgendaContributor: response.attendeeRole === "AgendaContributor",
+            isOrganizer: response.attendeeRole === "Organizer",
+            isPrimaryOrganizer: false,
+            status: response.meetingStatusID,
+            videoCallURL: response.videoCallUrl,
+            isChat: response.isChat,
+            isVideoCall: response.isVideoCall,
+            talkGroupID: response.talkGroupID,
+          };
+
+          if (message === "proposedmeeting") {
+            loadGroupMeetings({
+              PublishedMeetings: false,
+              ProposedMeetings: true,
+            });
+          }
+          if (message === "ViewMeeting") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+            handleViewMeeting(obj);
+          }
+          if (message === "JoinMeeting") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+            handleJoinMeeting(obj);
+          }
+          if (message === "MeetingPollCreated") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+            handleViewMeeting(obj, "polls");
+          }
+          if (message === "MeetingListing") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+          }
+          navigate(pathname, {
+            replace: true,
+            state: null,
+          });
+        };
+        meetingNotificationRouting();
+      } catch (error) {}
+    }
+  }, [state]);
+
   // ─── View Meeting ─────────────────────────────────────────────────────────
 
-  const handleViewMeeting = async (record) => {
+  const handleViewMeeting = async (record, viewer = "meetingDetails") => {
     try {
       const statusNum = Number(record.status);
 
@@ -451,7 +530,7 @@ const GroupPublishedMeetingList = () => {
         }),
       );
       dispatch(toggleViewMeetingModal(true));
-      dispatch(setViewTab("meetingDetails"));
+      dispatch(setViewTab(viewer));
       setEditorRole((prev) => ({
         ...prev,
         status: record.status,
@@ -605,8 +684,7 @@ const GroupPublishedMeetingList = () => {
     handleViewMeeting(record);
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
-    dispatch(emailRouteID(3));
-    dispatch(setViewTab("Agenda"));
+    dispatch(setViewTab("agenda"));
     setMeetingLocalStorage(record);
   };
 
