@@ -3046,7 +3046,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                   ? null
                                   : presenterValue
                               }
-                              placeholder='Select Presenter'
+                              placeholder={t("Select-Presenter")}
                               filterOption={filterFunc}
                             />
                           </Col>
@@ -3270,7 +3270,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           )}
                           classNamePrefix={"ModalOrganizerSelect"}
                           filterOption={filterFunc}
-                          placeholder='Please Select'
+                          placeholder={t("Please-select")}
                           onChange={handleChangeAttenddes}
                           isSearchable={true}
                           value={

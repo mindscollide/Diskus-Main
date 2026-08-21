@@ -115,7 +115,7 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
               : groupInfoData[0].name}
           </p>
           <p className="groupinfo-createdon m-0">
-            Created on:{" "}
+            {t("Created-on")}:{" "}
             {groupInfoData === undefined || groupInfoData.length === 0
               ? ""
               : newTimeFormaterAsPerUTCTalkDateTime(groupCreatedDate, lang)}
@@ -133,7 +133,7 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
               searchGroupInfoUser(e.target.value);
             }}
             value={groupInfoSearchValue}
-            placeholder="Search Users"
+            placeholder={t("Search-users")}
             labelclass={"d-none"}
           />
         </Col>
@@ -156,7 +156,7 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
                         {dataItem.userName}
 
                         {dataItem.adminUser === dataItem.userID ? (
-                          <span className="groupinfo-admin">Admin</span>
+                          <span className="groupinfo-admin">{t("Admin")}</span>
                         ) : null}
                       </p>
                     </div>

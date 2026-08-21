@@ -180,7 +180,7 @@ const DowngradeSubscription = () => {
         if (record && record.IsDefaultRow) {
           return (
             <>
-              <span className={styles["TableheadingTotal"]}>Total</span>
+              <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
             </>
           );
         } else {

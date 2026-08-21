@@ -829,7 +829,7 @@ const PublishedMeetingList = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        align: "left",
+        align: localStorage.getItem("i18nextLng") === "ar" ? "right" : "left",
         width: 120,
         ellipsis: true,
         filters: statusFilters,

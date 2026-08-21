@@ -1159,7 +1159,7 @@ const ComplainceDetails = () => {
                           isFormDisabled
                         }
                         maxMenuHeight={150}
-                        placeholder="Type at least 3 characters..."
+                        placeholder={t("Type-at-least-3-characters")}
                         noOptionsMessage={({ inputValue }) =>
                           inputValue.length < 3
                             ? "No Tags"

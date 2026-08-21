@@ -79,7 +79,7 @@ const ComplianceTasks = () => {
           </div>
           <ComplianceEmptyState
             type="noComplianceTaskDashboard"
-            title="No tasks available"
+            title={t("No-tasks-available")}
             layout="imageTop"
             imgMarginTop="105px"
           />

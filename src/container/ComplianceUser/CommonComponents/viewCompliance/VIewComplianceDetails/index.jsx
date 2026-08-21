@@ -568,7 +568,7 @@ const ViewComplianceDetails = () => {
                 onChange={handleChangeComplianceStatus}
                 styles={statusSelectStyles}
                 value={complianceDetailsState.status}
-                placeholder="Select"
+                placeholder={t("Select")}
                 labelInValue={t("Status")}
                 // isSearchable={false}
                 // options={allowedComplianceStatusOptions}

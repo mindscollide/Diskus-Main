@@ -181,7 +181,7 @@ const GroupEditPanel = ({ groupId, channelId, onClose }) => {
               value={groupName}
               className="chat-message-input"
               name="ChatMessage"
-              placeholder={"Group Name"}
+              placeholder={t("Group-Name")}
               maxLength={200}
               change={groupNameHandler}
               autoComplete="off"
@@ -201,7 +201,7 @@ const GroupEditPanel = ({ groupId, channelId, onClose }) => {
               searchGroupEditUser(e.target.value);
             }}
             value={searchValue}
-            placeholder="Search Users"
+            placeholder={t("Search-users")}
             labelclass={"d-none"}
           />
         </Col>
@@ -241,7 +241,7 @@ const GroupEditPanel = ({ groupId, channelId, onClose }) => {
           <div className="edit-group-button">
             <Button
               className=" Ok-btn forward-user"
-              text="Edit Group"
+              text={t("Edit-group")}
               onClick={editGroup}
             />
           </div>

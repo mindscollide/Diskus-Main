@@ -136,7 +136,7 @@ const ComplianceCard = ({
                   <span
                     className={styles.seeMoreClass}
                     onClick={handleIconClick}>
-                    See more
+                    {t("See-more")}
                   </span>
                 </span>
               </span>

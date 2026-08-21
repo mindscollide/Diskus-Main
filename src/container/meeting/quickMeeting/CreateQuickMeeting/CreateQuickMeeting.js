@@ -2459,7 +2459,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           value={
                             presenterValue?.value === 0 ? null : presenterValue
                           }
-                          placeholder='Select Presenter'
+                          placeholder={t("Select-Presenter")}
                           filterOption={filterFunc}
                         />
                       </Col>
@@ -2660,7 +2660,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       )}
                       classNamePrefix={"ModalOrganizerSelect"}
                       filterOption={filterFunc}
-                      placeholder='Please Select'
+                      placeholder={t("Please-select")}
                       onChange={handleChangeAttenddes}
                       isSearchable={true}
                       value={
