@@ -9,6 +9,7 @@ import { Button, TextField } from "@/components/elements";
 import searchIcon from "@/assets/images/searchicon.svg";
 import BlackCrossIcon from "@/assets/images/BlackCrossIconModals.svg";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
+import { useMeetingListActions } from "@/container/meeting/commonComponents/useMeetingListActions";
 import ProposedMeetingList from "@/container/meeting/proposedMeetingFlow";
 import DraftNeetingList from "@/container/meeting/draftMeeting";
 import PublishedMeetingList from "@/container/meeting/publishMeeting";
@@ -111,6 +112,8 @@ const MainMeeting = () => {
   } = useNewMeetingContext();
 
   const { setEditorRole, setVideoTalk } = useMeetingContext();
+
+  const { handleViewMeeting, handleJoinMeeting } = useMeetingListActions();
 
   const [searchText, setSearchText] = useState("");
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -426,99 +429,6 @@ const MainMeeting = () => {
   }, [CalendarDashboardEventData]);
 
   // ─── Meeting Handlers ──────────────────────────────────────────────────
-
-  const handleViewMeeting = async (record, tab = "") => {
-    try {
-      if (record.isQuickMeeting) {
-        await dispatch(
-          getViewMeetingByMeetingIdApi(
-            navigate,
-            t,
-            { MeetingID: record.pK_MDID },
-            "ViewQuickMeetingFromListing",
-            { setIsQuickMeetingView },
-          ),
-        );
-        return;
-      }
-
-      dispatch(setCurrentMeetingInfo({ meetingID: record.pK_MDID }));
-      dispatch(toggleViewMeetingModal(true));
-      dispatch(setViewTab(tab !== "" ? tab : "meetingDetails"));
-
-      const role = record.isParticipant
-        ? "Participant"
-        : record.isAgendaContributor
-          ? "Agenda Contributor"
-          : "Organizer";
-
-      setEditorRole(
-        buildEditorRole(
-          {
-            status: record.status,
-            isPrimaryOrganizer: record.isPrimaryOrganizer,
-          },
-          role,
-        ),
-      );
-    } catch (error) {
-      console.error("View meeting error:", error);
-    }
-  };
-
-  const handleJoinMeeting = async (record) => {
-    const role = record.isAgendaContributor
-      ? "Agenda Contributor"
-      : record.isParticipant
-        ? "Participant"
-        : "Organizer";
-    const meetingId = Number(record.pK_MDID);
-
-    // Handle quick meeting join
-    if (record.isQuickMeeting) {
-      dispatch(
-        joinMeetingApi(
-          navigate,
-          t,
-          {
-            VideoCallURL: record.videoCallURL,
-            FK_MDID: meetingId,
-            DateTime: getCurrentDateTimeUTC(),
-          },
-          "JoinQuickMeetingFromListing",
-          { record, setIsQuickMeetingView },
-        ),
-      );
-      return;
-    }
-
-    // Handle advance meeting join
-    localStorage.setItem("videoCallURL", record.videoCallURL);
-    setVideoTalk(buildVideoTalk(record));
-    setEditorRole(
-      buildEditorRole(
-        {
-          status: record.status,
-          isPrimaryOrganizer: record.isPrimaryOrganizer,
-        },
-        role,
-      ),
-    );
-
-    dispatch(
-      joinMeetingApi(
-        navigate,
-        t,
-        {
-          VideoCallURL: record.videoCallURL,
-          FK_MDID: meetingId,
-          DateTime: getCurrentDateTimeUTC(),
-        },
-        "JoinMeetingFromListing",
-        { role, record, setIsQuickMeetingView },
-      ),
-    );
-  };
 
   const handleStartMeeting = async (record) => {
     const meetingId = Number(record.pK_MDID);
