@@ -1777,11 +1777,8 @@
   "Quarterly": "ربع سنويّ",
   "Yearly": "سنويًّا",
   "Board-meeting": "اجتماع مجلس الإدارة",
-  "Board Meeting": "اجتماع مجلس الإدارة",
   "Group-meeting": "اجتماع المجموعة",
-  "Group Meeting": "اجتماع المجموعة",
   "Committee-meeting": "اجتماع اللَّجنة",
-  "Committee Meeting": "اجتماع اللَّجنة",
   "Billing-details": "تفاصيل الفواتير",
   "Billing-contact": "جهة اتِّصال بشأن الفواتير",
   "Billing-address": "عنوان إرسال الفواتير",
@@ -2715,5 +2712,7 @@
   "Task-status-changed-successfully": "Task Status Changed Successfully",
   "Create-board-meeting": "Create Board Meeting",
   "Proposed-board-meeting": "Proposed Board Meeting",
-  "Password-verified": "Password Verified"
+  "Password-verified": "Password Verified",
+  "RSVP": "تأكيد الحضور",
+  "URL": "الرابط"
 }

@@ -1824,11 +1824,8 @@
   "Quarterly": "Quarterly",
   "Yearly": "Yearly",
   "Board-meeting": "Board Meeting",
-  "Board Meeting": "Board Meeting",
   "Group-meeting": "Group Meeting",
-  "Group Meeting": "Group Meeting",
   "Committee-meeting": "Committee Meeting",
-  "Committee Meeting": "Committee Meeting",
   "Billing-details": "Billing Details",
   "Billing-contact": "Billing Contact",
   "Billing-address": "Billing Address",
@@ -2362,7 +2359,7 @@
   "ScheduleCall-joined-and-is-host": "ScheduleCall Joined and Is host",
   "invalid-video-call-url-provided": "invalid video call url provided",
   "Could-not-join-call": "Could not join call",
-  "There-are-no-Participants": "There are no Participants",
+  "There-are-no-participants": "There are no Participants",
   "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway",
   "In-progress-tasks": "In Progress Tasks",
   "The-meeting-has-ended": "The Meeting Has Ended",
@@ -2843,5 +2840,7 @@
   "No-compliance-records-available": "No Compliance Records Available",
   "Create-board-meeting": "Create Board Meeting",
   "Proposed-board-meeting": "Proposed Board Meeting",
-  "Password-verified": "Password Verified"
+  "Password-verified": "Password Verified",
+  "RSVP": "RSVP",
+  "URL": "URL"
 }
