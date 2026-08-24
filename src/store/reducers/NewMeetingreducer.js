@@ -1766,11 +1766,19 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: true,
-          // Cleared here (not just on success/fail) so a tab switch doesn't
-          // leave the previous tab's response sitting in state while the
-          // new fetch is in flight — CommitteeContext's effect keys off
-          // this field changing, and would otherwise misattribute the
-          // stale response to the newly-active tab.
+        };
+      }
+      case actions.CLEAR_GET_MEETING_BY_COMMITTEE_ID: {
+        // Dispatched explicitly before a tab switch (see
+        // CommitteeContext's loadCommitteeMeetings) — NOT on every fetch,
+        // so same-tab pagination still keeps showing the current page
+        // while the next one loads, same as the Board module's
+        // clearMeetingState()/searchMeetings pattern. CommitteeContext's
+        // effect keys off this field, and would otherwise briefly
+        // misattribute the previous tab's still-cached response to the
+        // newly-active tab.
+        return {
+          ...state,
           getMeetingByCommitteeID: null,
         };
       }
@@ -1855,11 +1863,18 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: true,
-          // Cleared here (not just on success/fail) so a tab switch doesn't
-          // leave the previous tab's response sitting in state while the
-          // new fetch is in flight — GroupsContext's effect keys off this
-          // field changing, and would otherwise misattribute the stale
-          // response to the newly-active tab.
+        };
+      }
+      case actions.CLEAR_GET_MEETING_BY_GROUP_ID: {
+        // Dispatched explicitly before a tab switch (see GroupsContext's
+        // loadGroupMeetings) — NOT on every fetch, so same-tab pagination
+        // still keeps showing the current page while the next one loads,
+        // same as the Board module's clearMeetingState()/searchMeetings
+        // pattern. GroupsContext's effect keys off this field, and would
+        // otherwise briefly misattribute the previous tab's still-cached
+        // response to the newly-active tab.
+        return {
+          ...state,
           getMeetingbyGroupID: null,
         };
       }

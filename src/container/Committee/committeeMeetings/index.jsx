@@ -15,7 +15,10 @@ import { useDispatch } from "react-redux";
 import UpdateQuickMeeting from "../../meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import CreateQuickMeeting from "../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
-import { getMeetingByCommitteeIdApi } from "../../../store/actions/Committee_actions";
+import {
+  getMeetingByCommitteeIdApi,
+  clearGetMeetingByCommitteeID,
+} from "../../../store/actions/Committee_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
   setAdvanceMeetingRoute,
@@ -100,6 +103,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       PublishedMeetings: value === 2 ? false : value === 1 ? true : false,
       ProposedMeetings: value === 2 ? true : false,
     };
+    dispatch(clearGetMeetingByCommitteeID());
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
   };
 

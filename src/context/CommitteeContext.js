@@ -16,6 +16,7 @@ import {
 import {
   committeeProposedMeetingAction,
   getMeetingByCommitteeIdApi,
+  clearGetMeetingByCommitteeID,
 } from "../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -168,6 +169,7 @@ export const CommitteeProvider = ({ children }) => {
     PublishedMeetings,
     ProposedMeetings,
   }) => {
+    dispatch(clearGetMeetingByCommitteeID());
     let searchData = {
       CommitteeID: Number(committeeInfo?.committeeID),
       Date: "",

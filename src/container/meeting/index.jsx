@@ -302,6 +302,8 @@ const MainMeeting = () => {
           talkGroupID: response.talkGroupID,
         };
 
+        console.log("messagemessage", message, response);
+
         if (message === "proposedmeeting") {
           loadMeetings({
             PublishedMeetings: false,
@@ -330,7 +332,7 @@ const MainMeeting = () => {
           handleJoinMeeting(obj);
         }
 
-        if (message === "MeetingPollCreated") {
+        if (message === "Poll_Created_In_Meeting") {
           loadMeetings({
             PublishedMeetings: true,
             ProposedMeetings: false,

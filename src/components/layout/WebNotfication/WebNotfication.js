@@ -427,7 +427,7 @@ const WebNotfication = ({
           await routeMeetingTypeNotification(
             PayLoadData,
             ViewMeetingDetails,
-            "MeetingPollCreated",
+            NotificationData.notificationActionName,
           );
         } else if (NotificationData.notificationActionID === 13) {
           // this for Particiapnt who needs to submit a proposal date

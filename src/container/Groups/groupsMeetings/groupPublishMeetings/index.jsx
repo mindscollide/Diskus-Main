@@ -82,7 +82,10 @@ import {
 import { useGroupsContext } from "../../../../context/GroupsContext";
 import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
-import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import {
+  getMeetingbyGroupIdApi,
+  clearGetMeetingbyGroupID,
+} from "../../../../store/actions/Groups_actions";
 import { validateStringEmail_success, validateStringMeetingEmail_clear } from "../../../../store/actions/NewMeetingActions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
@@ -248,6 +251,7 @@ const GroupPublishedMeetingList = () => {
   };
 
   const loadGroupMeetings = ({ PublishedMeetings, ProposedMeetings }) => {
+    dispatch(clearGetMeetingbyGroupID());
     dispatch(
       getMeetingbyGroupIdApi(navigate, t, {
         GroupID: Number(localStorage.getItem("ViewGroupID")),

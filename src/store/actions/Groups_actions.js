@@ -1827,6 +1827,15 @@ const getMeetingbyGroup_init = () => {
     type: actions.GETMEETINGBYGROUPID_INIT,
   };
 };
+// Dispatched before switching tabs (Published/Proposed/Draft) so the
+// previous tab's still-cached response can't be misattributed to the
+// newly-active tab while the new fetch is in flight. Not called on every
+// fetch (unlike the _init above), so same-tab pagination is unaffected.
+export const clearGetMeetingbyGroupID = () => {
+  return {
+    type: actions.CLEAR_GET_MEETING_BY_GROUP_ID,
+  };
+};
 // get Meeting by Group ID Success
 const getMeetingbyGroup_success = (response, message) => {
   return {
