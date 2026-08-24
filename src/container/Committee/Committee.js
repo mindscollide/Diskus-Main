@@ -62,6 +62,9 @@ import {
   resetViewTabs,
   toggleCreateEditMeetingModal,
   toggleViewMeetingModal,
+  toggleCreateEditProposedMeetingModal,
+  toggleViewProposedMeetingModal,
+  toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { useMeetingContext } from "../../context/MeetingContext";
 import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
@@ -217,6 +220,9 @@ const Committee = () => {
       dispatch(resetCreateEditTabs());
       dispatch(resetCurrentMeetingInfo());
       dispatch(toggleViewMeetingModal(false));
+      dispatch(toggleCreateEditProposedMeetingModal(false));
+      dispatch(toggleViewProposedMeetingModal(false));
+      dispatch(toggleIsParticipantProposedMeetingDates(false));
       dispatch(resetViewTabs());
       setShowModal(false); // Reset modal visibility
       dispatch(viewCommitteePageFlag(false));

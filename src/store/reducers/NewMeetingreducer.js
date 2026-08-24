@@ -1766,6 +1766,12 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: true,
+          // Cleared here (not just on success/fail) so a tab switch doesn't
+          // leave the previous tab's response sitting in state while the
+          // new fetch is in flight — CommitteeContext's effect keys off
+          // this field changing, and would otherwise misattribute the
+          // stale response to the newly-active tab.
+          getMeetingByCommitteeID: null,
         };
       }
       case actions.GETMEETINGBYCOMMITTEEID_SUCCESS: {
@@ -1849,6 +1855,12 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: true,
+          // Cleared here (not just on success/fail) so a tab switch doesn't
+          // leave the previous tab's response sitting in state while the
+          // new fetch is in flight — GroupsContext's effect keys off this
+          // field changing, and would otherwise misattribute the stale
+          // response to the newly-active tab.
+          getMeetingbyGroupID: null,
         };
       }
 

@@ -60,6 +60,9 @@ import {
   resetViewTabs,
   toggleCreateEditMeetingModal,
   toggleViewMeetingModal,
+  toggleCreateEditProposedMeetingModal,
+  toggleViewProposedMeetingModal,
+  toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
@@ -241,6 +244,9 @@ const Groups = () => {
       dispatch(resetCreateEditTabs());
       dispatch(resetCurrentMeetingInfo());
       dispatch(toggleViewMeetingModal(false));
+      dispatch(toggleCreateEditProposedMeetingModal(false));
+      dispatch(toggleViewProposedMeetingModal(false));
+      dispatch(toggleIsParticipantProposedMeetingDates(false));
       dispatch(resetViewTabs());
     };
   }, []);

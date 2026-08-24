@@ -33,6 +33,8 @@ import {
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
   toggleViewMeetingModal,
+  toggleViewProposedMeetingModal,
+  toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { GetAllMeetingTypesNewFunction } from "@/store/actions/NewMeetingActions";
 import { listOfMeetingsApi } from "@/store/actions/NewMeeting2.actions";
@@ -159,6 +161,20 @@ const MainMeeting = () => {
     localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
+  }, []);
+
+  // ─── Reset view/edit modal flags on unmount ──────────────────────────────
+  // These live in the shared ModalStatesReducer (also read by Committee.js
+  // and Groups.js), so leaving them true would make whichever tab renders
+  // next pop the same modal straight back open on arrival.
+  useEffect(() => {
+    return () => {
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(toggleCreateEditProposedMeetingModal(false));
+      dispatch(toggleViewProposedMeetingModal(false));
+      dispatch(toggleIsParticipantProposedMeetingDates(false));
+    };
   }, []);
 
   // ─── View Meeting Link Handler ───────────────────────────────────────────

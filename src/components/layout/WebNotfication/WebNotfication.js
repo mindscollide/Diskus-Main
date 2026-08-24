@@ -218,7 +218,7 @@ const WebNotfication = ({
         proposedAction({
           ...responseData,
           meetingID: PayLoadData.MeetingID,
-          isQuickMeeting: PayLoadData.isQuickMeeting,
+          isQuickMeeting: PayLoadData?.isQuickMeeting,
         }),
       );
       const { standardMeetingType } = responseData.responseResult;
@@ -235,7 +235,7 @@ const WebNotfication = ({
             response: {
               ...responseData.responseResult,
               MeetingID: PayLoadData.MeetingID,
-              isQuickMeeting: PayLoadData.isQuickMeeting,
+              isQuickMeeting: PayLoadData?.isQuickMeeting,
             },
           },
         });
@@ -1109,6 +1109,12 @@ const WebNotfication = ({
         } else if (NotificationData.notificationActionID === 48) {
           //Send Response Date Has been Passed
           //Notification that Proposed Meeting Date Organizer work
+
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            MeetingProposedForOrganizerProposed,
+            "proposedmeeting",
+          );
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   localStorage.setItem("ProposedMeetingOrganizer", true);
           //   localStorage.setItem(
@@ -1140,6 +1146,11 @@ const WebNotfication = ({
           //   dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
           // }
         } else if (NotificationData.notificationActionID === 49) {
+          await routeMeetingTypeNotification(
+            PayLoadData,
+            ViewMeetingDetails,
+            "meetingTask",
+          );
           //Assigned You a Task in the Meeting
           // if (currentURL.includes("/Diskus/Meeting")) {
           //   localStorage.setItem("AdvanceMeetingOperations", true);
