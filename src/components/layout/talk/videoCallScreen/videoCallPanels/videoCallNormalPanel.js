@@ -2191,7 +2191,7 @@ const VideoPanelNormal = () => {
                                 width="100%"
                                 height="100%"
                                 frameBorder="0"
-                                allow="camera; microphone; fullscreen; display-capture"
+                                allow="camera; microphone; fullscreen; display-capture; cross-origin-isolated"
                                 // Add these for better cross-browser support
                                 mozallowfullscreen="true"
                                 webkitallowfullscreen="true"
