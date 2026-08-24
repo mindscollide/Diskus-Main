@@ -58,9 +58,9 @@ const ShareViaDataRoomPathModal = ({ boardDeckMeetingTitle }) => {
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["PathBoxStyles"]}>
                     <span className={styles["PathColor"]}>
-                      <span>Dataroom</span> <span>{">"}</span>{" "}
-                      <span>Meetings</span> <span>{">"}</span>{" "}
-                      <span>Board Deck</span> <span>{">"}</span>{" "}
+                      <span>{t("Dataroom")}</span> <span>{">"}</span>{" "}
+                      <span>{t("Meetings")}</span> <span>{">"}</span>{" "}
+                      <span>{t("Board-deck")}</span> <span>{">"}</span>{" "}
                       <span>Boarddeck - {boardDeckMeetingTitle}</span>
                     </span>
                   </span>

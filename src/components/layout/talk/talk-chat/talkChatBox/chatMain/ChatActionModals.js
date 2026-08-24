@@ -155,7 +155,7 @@ const ChatActionModals = ({
               <Row>
                 <Col lg={6} md={6} sm={12}>
                   <label style={{ marginLeft: "5px" }}>
-                    <b style={{ fontSize: "0.7rem" }}>{t("Date-From")}</b>
+                    <b style={{ fontSize: "0.7rem" }}>{t("Date-from")}</b>
                   </label>{" "}
                   <InputDatePicker
                     name="StartDate"
@@ -167,7 +167,7 @@ const ChatActionModals = ({
                         : null
                     }
                     DateRange
-                    placeholder={t("Select-Date")}
+                    placeholder={t("Select-date")}
                     change={onDateChange}
                   />
                 </Col>
@@ -185,7 +185,7 @@ const ChatActionModals = ({
                         : null
                     }
                     DateRange
-                    placeholder={t("Select-Date")}
+                    placeholder={t("Select-date")}
                     change={onDateChange}
                     disable={endDatedisable}
                   />
@@ -230,14 +230,14 @@ const ChatActionModals = ({
                 {t("All")}
               </Checkbox>
               <Checkbox checked={customCheckState} onChange={onCheckCustom}>
-                Custom
+                {t("Custom")}
               </Checkbox>
             </div>
             {customCheckState === true ? (
               <Row>
                 <Col lg={6} md={6} sm={12}>
                   <label style={{ marginLeft: "5px" }}>
-                    <b style={{ fontSize: "0.7rem" }}>Date From</b>
+                    <b style={{ fontSize: "0.7rem" }}>{t("Date-from")}</b>
                   </label>{" "}
                   <InputDatePicker
                     name="StartDate"
@@ -249,13 +249,13 @@ const ChatActionModals = ({
                         : null
                     }
                     DateRange
-                    placeholder={"Select Date"}
+                    placeholder={t("Select-date")}
                     change={onDateChange}
                   />
                 </Col>
                 <Col lg={6} md={6} sm={12}>
                   <label style={{ marginLeft: "5px" }}>
-                    <b style={{ fontSize: "0.7rem" }}>Date To</b>
+                    <b style={{ fontSize: "0.7rem" }}>{t("Date-to")}</b>
                   </label>
                   <InputDatePicker
                     name="EndDate"
@@ -267,7 +267,7 @@ const ChatActionModals = ({
                         : null
                     }
                     DateRange
-                    placeholder={"Select Date"}
+                    placeholder={t("Select-date")}
                     change={onDateChange}
                     disable={endDatedisable}
                   />
@@ -278,7 +278,7 @@ const ChatActionModals = ({
         </Row>
         <Row>
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-center gap-2">
-            <Button className=" Ok-btn" text="Okay" onClick={onConfirm} />
+            <Button className=" Ok-btn" text={t("Okay")} onClick={onConfirm} />
           </Col>
         </Row>
       </div>
@@ -291,17 +291,17 @@ const ChatActionModals = ({
         <Row>
           <Col lg={12} md={12} sm={12}>
             <div className="chat-modal-Heading">
-              <h1>Delete Messages</h1>
+              <h1>{t("Delete-messages")}</h1>
             </div>
           </Col>
         </Row>
         <Row>
           <Col lg={2} md={2} sm={12}></Col>
           <Col lg={4} md={4} sm={12}>
-            <Button className=" Ok-btn" text="Delete" onClick={onConfirm} />
+            <Button className=" Ok-btn" text={t("Delete")} onClick={onConfirm} />
           </Col>
           <Col lg={4} md={4} sm={12}>
-            <Button className=" White-btn" text="Cancel" onClick={onCancel} />
+            <Button className=" White-btn" text={t("Cancel")} onClick={onCancel} />
           </Col>
           <Col lg={2} md={2} sm={12}></Col>
         </Row>

@@ -81,7 +81,7 @@ const ImportPrevious = () => {
       key: "meetingID",
       width: "100px",
       render: (text, record) => {
-        return <label className="column-boldness">Ended</label>;
+        return <label className="column-boldness">{t("Ended")}</label>;
       },
     },
     {

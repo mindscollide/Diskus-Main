@@ -605,7 +605,7 @@ const SubAgendaMappingDragging = ({
                                                             ]
                                                           }
                                                         >
-                                                          No Files Attached
+                                                          {t("No-files-attached")}
                                                         </span>
                                                       ) : null}
 

@@ -86,7 +86,8 @@ const ModalOptions = ({
                     sm={12}
                     className={"d-flex justify-content-start gap-3"}>
                     <CustomRadio2
-                      value={fileUploadOptions}
+                      value={String(fileUploadOptions)}
+                      Optios='1'
                       checked={fileUploadOptions === 1}
                       onChange={() => setFileUploadOptions(1)}
                       name='dataroomfiles'
@@ -104,7 +105,8 @@ const ModalOptions = ({
                     className='d-flex justify-content-start gap-3'>
                     <CustomRadio2
                       checked={fileUploadOptions === 2}
-                      value={fileUploadOptions}
+                      value={String(fileUploadOptions)}
+                      Optios='2'
                       onChange={() => setFileUploadOptions(2)}
                       name='dataroomfiles'
                     />

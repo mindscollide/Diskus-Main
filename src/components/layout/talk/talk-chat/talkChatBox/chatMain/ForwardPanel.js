@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Row, Col } from "react-bootstrap";
 import { Checkbox } from "antd";
 import { TextField, Button } from "../../../../../elements";
@@ -14,6 +15,7 @@ const ForwardPanel = ({
   onSubmit,
   onCancel,
 }) => {
+  const { t } = useTranslation();
   const { talkStateData } = useSelector((state) => state);
 
   const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
@@ -92,7 +94,7 @@ const forwardUsersCheckedHandler = (data) => {
     <>
       <Row className="mt-1">
         <Col lg={6} md={6} sm={12}>
-          <p className="fw-bold">Forward to:</p>
+          <p className="fw-bold">{t("Forward-to")}</p>
         </Col>
         <Col lg={6} md={6} sm={12} className="text-end">
           <img
@@ -115,7 +117,7 @@ const forwardUsersCheckedHandler = (data) => {
               searchUsers(e.target.value);
             }}
             value={searchUserValue}
-            placeholder="Search Users"
+            placeholder={t("Search-users")}
             labelclass={"d-none"}
           />
         </Col>
@@ -187,7 +189,7 @@ const forwardUsersCheckedHandler = (data) => {
         <Col className="text-center">
           <Button
             className=" Ok-btn forward-user"
-            text="Forward"
+            text={t("Forward")}
             onClick={onSubmit}
             disableBtn={forwardUsersChecked.length > 0 ? false : true}
           />

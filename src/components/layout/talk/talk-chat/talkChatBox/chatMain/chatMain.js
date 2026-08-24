@@ -3758,7 +3758,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
                       {replyFeature === true ? (
                         <div className='chat-feature-action'>
-                          <p className='feature-name'>Replying to</p>
+                          <p className='feature-name'>{t("Replying-to")}</p>
                           <div className='chat-feature'>
                             <div className='chat-feature-option'>
                               <p className='chat-feature-text'>
@@ -4016,12 +4016,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <>
                           <Button
                             className=' White-btn'
-                            text='Cancel'
+                            text={t("Cancel")}
                             onClick={cancelMessagesCheck}
                           />
                           <Button
                             className=' Ok-btn'
-                            text='Forward'
+                            text={t("Forward")}
                             onClick={
                               activePanel === "forward"
                                 ? submitForwardMessages
@@ -4036,12 +4036,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <>
                           <Button
                             className=' White-btn'
-                            text='Cancel'
+                            text={t("Cancel")}
                             onClick={cancelMessagesCheck}
                           />
                           <Button
                             className=' Ok-btn'
-                            text='Delete'
+                            text={t("Delete")}
                             onClick={deleteMultipleMessagesButton}
                             disableBtn={
                               messagesChecked.length > 0 ? false : true

@@ -594,12 +594,12 @@ const ComplianceByMe = () => {
           <div className="d-flex align-items-center justify-content-center gap-2">
             <CustomButton
               className={styles["actionButtons_complianceList"]}
-              text="Edit"
+              text={t("Edit")}
               onClick={() => handleEditCompliance(record)}
             />
             <CustomButton
               className={styles["actionButtons_complianceList"]}
-              text="View Details"
+              text={t("View-details")}
               onClick={() => handleViewCompliance(record)}
             />
           </div>

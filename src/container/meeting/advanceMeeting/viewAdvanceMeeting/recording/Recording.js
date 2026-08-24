@@ -202,7 +202,7 @@ const Recording = () => {
                 lg={12}
                 className='d-flex justify-content-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
-                  Transcibing....
+                  {t("Transcribing")}
                 </span>
               </Col>
             </Row>

@@ -1039,8 +1039,14 @@ const MeetingDetails = () => {
                     <span className={styles["steric"]}>*</span>
                   </span>
                   <div className={styles["meetingType_Value"]}>
-                    {" "}
-                    {meetingDetails.MeetingType.Type}
+                    {meetingDetails.MeetingType.Type === "Board Meetings"
+                      ? t("Board-meeting")
+                      : meetingDetails.MeetingType.Type === "Group Meeting"
+                        ? t("Group-meeting")
+                        : meetingDetails.MeetingType.Type ===
+                            "Committee Meeting"
+                          ? t("Committee-meeting")
+                          : null}
                   </div>
                 </Col>
                 {committeeInfo !== null ? (
