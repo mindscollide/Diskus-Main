@@ -3456,6 +3456,17 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo"),
           );
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+          // Fast-accept race fix: if the callee accepts before our own
+          // InitiateVideoCall API response has come back (which is what
+          // normally writes initiateCallRoomID — see VideoMain_reducer.js
+          // INITIATE_VIDEO_CALL_SUCCESS), initiateCallRoomID is still empty
+          // here. Falling back to the accepted event's own roomID lets this
+          // tab recognize its own outgoing call instead of silently getting
+          // stuck on "Calling..." with the ringer still active.
+          if (isCaller && !initiateCallRoomID && data.payload.roomID) {
+            initiateCallRoomID = data.payload.roomID;
+            localStorage.setItem("initiateCallRoomID", data.payload.roomID);
+          }
 
           let CallType = Number(localStorage.getItem("CallType"));
 
@@ -3509,6 +3520,18 @@ const Dashboard = () => {
 
           if (data.payload.callTypeID === 2) {
             console.log("mqtt");
+            // Group-call ringer safety net: stop OUR OWN outgoing ringer the
+            // moment ANY invited participant accepts, independent of the
+            // roomID-match race below (falgCheck2/initiateCallRoomID). That
+            // race is already mitigated above, but if every participant's
+            // accept happens to race ahead of our own InitiateVideoCall
+            // response, falgCheck2 can still miss — leaving the ringer
+            // playing forever even though the call is clearly live (we're
+            // already updating the roster for it right here). This dispatch
+            // is idempotent (no-op once the flag is already false).
+            if (isCaller) {
+              dispatch(videoOutgoingCallFlag(false));
+            }
             // Authoritative refresh: re-pull the group-call roster from the
             // backend on EVERY client so the in-call list (accepted users) stays
             // identical across caller and participants. `inCallParticipants`

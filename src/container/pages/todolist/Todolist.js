@@ -40,18 +40,14 @@ import {
 } from "react-bootstrap-icons";
 import { Checkbox, Dropdown, Menu, Select } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 
-import {
-  Button,
-  TableToDo,
-  TextField,
-} from "../../../components/elements";
+import { Button, TableToDo, TextField } from "../../../components/elements";
 import {
   ViewToDoList,
   SearchTodoListApi,
@@ -126,6 +122,7 @@ const getStoredSize = () =>
 const TodoList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const datePickerRef = useRef(null);
 
@@ -304,20 +301,25 @@ const TodoList = () => {
   // doesn't remount it). WebNotfication.js fires this event in addition to
   // setting localStorage, specifically to cover that already-here case.
   useEffect(() => {
-    const openFromNotification = (e) => {
-      const taskId = e?.detail ?? localStorage.getItem("webNotificationTaskId");
-      if (taskId) {
-        dispatch(
-          ViewToDoList(navigate, { ToDoListID: Number(taskId) }, t, setViewFlagToDo),
-        );
-        localStorage.removeItem("webNotificationTaskId");
-      }
-    };
-    window.addEventListener("webNotificationTaskOpen", openFromNotification);
-    return () =>
-      window.removeEventListener("webNotificationTaskOpen", openFromNotification);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const taskId = location.state?.taskId;
+
+    if (taskId) {
+      dispatch(
+        ViewToDoList(
+          navigate,
+          { ToDoListID: Number(taskId) },
+          t,
+          setViewFlagToDo,
+        ),
+      );
+
+      // Clear the state so the same task isn't processed again
+      navigate(location.pathname, {
+        replace: true,
+        state: null,
+      });
+    }
+  }, [location.state]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Sync table rows when API data arrives
@@ -422,7 +424,6 @@ const TodoList = () => {
       setPendingUpdate(false);
     }
   }, [ToDoDetails, pendingUpdate]);
-
 
   // ─────────────────────────────────────────────────────────────────────────
   // HANDLERS
@@ -1114,8 +1115,6 @@ const TodoList = () => {
           setModalsflag={setPendingUpdate}
         />
       )}
-
-      
     </>
   );
 };

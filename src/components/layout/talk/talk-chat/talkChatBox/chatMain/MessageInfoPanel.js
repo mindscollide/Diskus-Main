@@ -44,7 +44,8 @@ const MessageInfoPanel = ({ messageInfoData, lang, onClose }) => {
             <img draggable="false" src={DoubleTickDeliveredIcon} alt="" />
           </div>
           <div className="time-info">
-            {messageInfoData.receivedDate === undefined ? (
+            {messageInfoData.receivedDate === undefined ||
+            messageInfoData.receivedDate === "" ? (
               <p className="m-0">-</p>
             ) : (
               newTimeFormaterMIAsPerUTCTalkDateTime(
@@ -60,7 +61,8 @@ const MessageInfoPanel = ({ messageInfoData, lang, onClose }) => {
             <img draggable="false" src={DoubleTickIcon} alt="" />
           </div>
           <div className="time-info">
-            {messageInfoData.seenDate === undefined ? (
+            {messageInfoData.seenDate === undefined ||
+            messageInfoData.seenDate === "" ? (
               <p className="m-0">-</p>
             ) : (
               newTimeFormaterMIAsPerUTCTalkDateTime(
