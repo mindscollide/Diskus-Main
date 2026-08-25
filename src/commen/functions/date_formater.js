@@ -1055,8 +1055,8 @@ export const LoginHistoryReport = (dateTime) => {
     ":" +
     dateTime?.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("MMM dd, yyyy HH:mm");
+  let _dateTime = new Date(fullDateyear);
+  return moment(_dateTime).format("MMM DD, yyyy HH:mm");
 };
 
 //Converting to GMT Having Date Plus StartTime And End Time

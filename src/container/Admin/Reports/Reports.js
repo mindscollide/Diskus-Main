@@ -25,7 +25,10 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import { validateEmailEnglishAndArabicFormat } from "../../../commen/functions/validations";
-import { LoginHistoryReport } from "../../../commen/functions/date_formater";
+import {
+  createConvert,
+  LoginHistoryReport,
+} from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
 import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
@@ -37,7 +40,7 @@ const Reports = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const UserLoginHistoryData = useSelector(
-    (state) => state.UserReportReducer.userLoginHistoryData
+    (state) => state.UserReportReducer.userLoginHistoryData,
   );
   const [loginHistoyRows, setLoginHistoryRows] = useState([]);
   const [showsearchText, setShowSearchText] = useState(false);
@@ -132,11 +135,12 @@ const Reports = () => {
             UserLoginHistoryData.userLoginHistoryModel.forEach(
               (data, index) => {
                 copyData.push(data);
-              }
+              },
             );
             setLoginHistoryRows(copyData);
             setSRowsData(
-              (prev) => prev + UserLoginHistoryData.userLoginHistoryModel.length
+              (prev) =>
+                prev + UserLoginHistoryData.userLoginHistoryModel.length,
             );
             setTotalRecords(UserLoginHistoryData.totalCount);
           } else {
@@ -149,6 +153,10 @@ const Reports = () => {
           setTotalRecords(0);
           setSRowsData(0);
         }
+      } else {
+        setLoginHistoryRows([]);
+        setTotalRecords(0);
+        setSRowsData(0);
       }
     } catch {}
   }, [UserLoginHistoryData]);
@@ -205,8 +213,6 @@ const Reports = () => {
       key: "dateLogOut",
       align: "center",
       render: (text, record) => {
-        
-
         return (
           <>
             <span className={styles["DesignationStyles"]}>
@@ -227,7 +233,7 @@ const Reports = () => {
             <span className={styles["DesignationStyles"]}>
               {convertToArabicNumerals(
                 getTimeDifference(record.dateLogin, record.dateLogOut),
-                currentLanguage
+                currentLanguage,
               )}
             </span>
           </>
@@ -258,9 +264,6 @@ const Reports = () => {
       align: "center",
       key: "loggedInFromIP",
       render: (text, record) => {
-        
-        
-
         return (
           <>
             <span className={styles["DesignationStyles"]}>
@@ -298,7 +301,6 @@ const Reports = () => {
   const handleChangeSearchBoxValues = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    
 
     // For userName or Title, ensure only letters and whitespace are allowed
     if (name === "userName" || name === "Title") {
@@ -351,22 +353,101 @@ const Reports = () => {
     return ipRegex.test(value);
   };
 
+  // Helper function to convert date string to Date object for min/max props
+  const getDateFromString = (dateStr) => {
+    if (!dateStr) return null;
+    try {
+      const year = parseInt(dateStr.substring(0, 4));
+      const month = parseInt(dateStr.substring(4, 6)) - 1;
+      const day = parseInt(dateStr.substring(6, 8));
+      return new Date(year, month, day);
+    } catch {
+      return null;
+    }
+  };
+
+  // CRITICAL FIX: Get adjusted date for min/max props
+  const getAdjustedDate = (dateStr, type) => {
+    if (!dateStr) return null;
+
+    const date = getDateFromString(dateStr);
+    if (!date) return null;
+
+    // For maxDate (Date From), we want to allow the selected DateTo date
+    // So we add 1 day to include the selected date
+    if (type === "max") {
+      date.setDate(date.getDate() - 1);
+    }
+    // For minDate (Date To), we want to allow the selected DateFrom date
+    // So we subtract 1 day to include the selected date
+    else if (type === "min") {
+      date.setDate(date.getDate() + 1);
+    }
+
+    return date;
+  };
+
+  // Handle Date From change
   const handleChangeFromDate = (date) => {
-    let getDate = new Date(date);
-    let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+    if (!date) {
+      setUserLoginHistorySearch({
+        ...userLoginHistorySearch,
+        DateFrom: "",
+        DateForView: "",
+      });
+      return;
+    }
+
+    const getDate = new Date(date);
+    const updateDate = new Date(getDate);
+    updateDate.setHours(0, 0, 0, 0);
+
+    // // Validate: DateFrom should be less than DateTo
+    // if (
+    //   userLoginHistorySearch.DateTo &&
+    //   getDate > userLoginHistorySearch.DateTo
+    // ) {
+    //   show(t("Date-from-cannot-be-greater-than-date-to"), "error");
+    //   return;
+    // }
+
     setUserLoginHistorySearch({
       ...userLoginHistorySearch,
-      DateFrom: utcDate,
+      DateFrom: createConvert(getDate),
       DateForView: getDate,
     });
   };
 
+  // Handle Date To change
   const handleChangeToDate = (date) => {
-    let getDate = new Date(date);
-    let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+    if (!date) {
+      setUserLoginHistorySearch({
+        ...userLoginHistorySearch,
+        DateTo: "",
+        DateToView: "",
+      });
+      return;
+    }
+
+    const getDate = new Date(date);
+    const updateDate = new Date(getDate);
+    updateDate.setHours(23, 59, 59, 999);
+
+    console.log("getDate", getDate, date, updateDate);
+    // const utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+
+    // Validate: DateTo should be greater than DateFrom
+    // if (
+    //   userLoginHistorySearch.DateFrom &&
+    //   getDate < userLoginHistorySearch.DateFrom
+    // ) {
+    //   show(t("Date-to-cannot-be-less-than-date-from"), "error");
+    //   return;
+    // }
+
     setUserLoginHistorySearch({
       ...userLoginHistorySearch,
-      DateTo: utcDate,
+      DateTo: createConvert(getDate),
       DateToView: getDate,
     });
   };
@@ -401,7 +482,7 @@ const Reports = () => {
           DeviceID:
             userLoginHistorySearch.InterFaceType.value === 0
               ? ""
-              : userLoginHistorySearch.InterFaceType.value,
+              : String(userLoginHistorySearch.InterFaceType.value),
           DateLogin: userLoginHistorySearch.DateFrom,
           DateLogOut: userLoginHistorySearch.DateTo,
           sRow: 0,
@@ -414,6 +495,7 @@ const Reports = () => {
       }
     } catch {}
   };
+
   const handleReset = () => {
     try {
       let Data = {
@@ -444,9 +526,7 @@ const Reports = () => {
         },
         Title: "",
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleKeyDown = (e) => {
@@ -489,7 +569,6 @@ const Reports = () => {
   };
 
   const handleSearches = (data, fieldName) => {
-    
     setUserLoginHistorySearch({
       ...userLoginHistorySearch,
       [fieldName]: "",
@@ -509,7 +588,7 @@ const Reports = () => {
       sRow: 0,
       Length: 10,
     };
-    
+
     dispatch(userLoginHistory_Api(navigate, t, Data, true));
   };
 
@@ -532,7 +611,7 @@ const Reports = () => {
   return (
     <Fragment>
       <Container>
-        <Row className='my-3 d-flex align-items-center'>
+        <Row className="my-3 d-flex align-items-center">
           <Col sm={12} md={4} lg={4}>
             <h2 className={styles["user-login-history-heading"]}>
               {t("User-login-history")}
@@ -544,11 +623,13 @@ const Reports = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className='d-flex justify-content-end align-items-center gap-4'>
+                className="d-flex justify-content-end align-items-center gap-4"
+              >
                 <span
                   className={styles["export-to-excel-btn"]}
-                  onClick={handleClickExportExcel}>
-                  <img src={XLSIcon} width={17} height={17} alt='' />{" "}
+                  onClick={handleClickExportExcel}
+                >
+                  <img src={XLSIcon} width={17} height={17} alt="" />{" "}
                   {t("Export-to-excel")}
                 </span>
               </Col>
@@ -566,9 +647,9 @@ const Reports = () => {
                     value={userLoginHistorySearch.Title}
                     inputicon={
                       <img
-                        draggable='false'
+                        draggable="false"
                         src={searchicon}
-                        alt=''
+                        alt=""
                         className={styles["searchbox_icon_userhistoryLogin"]}
                         onClick={handleIputSearchIcon}
                       />
@@ -581,20 +662,21 @@ const Reports = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex gap-2 flex-wrap'>
+                        className="d-flex gap-2 flex-wrap"
+                      >
                         <div className={styles["SearchablesItems"]}>
                           <span className={styles["Searches"]}>
                             {userLoginHistorySearch.userName}
                           </span>
                           <img
                             src={Crossicon}
-                            alt=''
-                            className='cursor-pointer'
+                            alt=""
+                            className="cursor-pointer"
                             width={13}
                             onClick={() =>
                               handleSearches(
                                 userLoginHistorySearch.userName,
-                                "userName"
+                                "userName",
                               )
                             }
                           />
@@ -610,8 +692,8 @@ const Reports = () => {
                       </span>
                       <img
                         src={Crossicon}
-                        alt=''
-                        className='cursor-pointer'
+                        alt=""
+                        className="cursor-pointer"
                         width={13}
                         onClick={() =>
                           handleSearches(userLoginHistorySearch.Title, "Title")
@@ -627,13 +709,13 @@ const Reports = () => {
                       </span>
                       <img
                         src={Crossicon}
-                        alt=''
-                        className='cursor-pointer'
+                        alt=""
+                        className="cursor-pointer"
                         width={13}
                         onClick={() =>
                           handleSearches(
                             userLoginHistorySearch.userEmail,
-                            "userEmail"
+                            "userEmail",
                           )
                         }
                       />
@@ -647,13 +729,13 @@ const Reports = () => {
                       </span>
                       <img
                         src={Crossicon}
-                        alt=''
-                        className='cursor-pointer'
+                        alt=""
+                        className="cursor-pointer"
                         width={13}
                         onClick={() =>
                           handleSearches(
                             userLoginHistorySearch.IpAddress,
-                            "IpAddress"
+                            "IpAddress",
                           )
                         }
                       />
@@ -669,13 +751,13 @@ const Reports = () => {
                       </span>
                       <img
                         src={Crossicon}
-                        alt=''
-                        className='cursor-pointer'
+                        alt=""
+                        className="cursor-pointer"
                         width={13}
                         onClick={() =>
                           handleSearches(
                             userLoginHistorySearch.DateFrom,
-                            "DateFrom"
+                            "DateFrom",
                           )
                         }
                       />
@@ -691,13 +773,13 @@ const Reports = () => {
                       </span>
                       <img
                         src={Crossicon}
-                        alt=''
-                        className='cursor-pointer'
+                        alt=""
+                        className="cursor-pointer"
                         width={13}
                         onClick={() =>
                           handleSearches(
                             userLoginHistorySearch.DateTo,
-                            "DateTo"
+                            "DateTo",
                           )
                         }
                       />
@@ -711,13 +793,14 @@ const Reports = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className='d-flex justify-content-end'>
+                          className="d-flex justify-content-end"
+                        >
                           <img
                             src={CrossIcon}
                             width={14}
                             height={14}
-                            alt=''
-                            className='cursor-pointer'
+                            alt=""
+                            className="cursor-pointer"
                             onClick={handleCloseSearcbBox}
                           />
                         </Col>
@@ -727,7 +810,7 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-name")}
                             name={"userName"}
-                            type='text'
+                            type="text"
                             value={userLoginHistorySearch.userName}
                             change={handleChangeSearchBoxValues}
                           />
@@ -736,16 +819,15 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-email")}
                             name={"userEmail"}
-                            type='email'
+                            type="email"
                             onBlur={() => handleValidateEmail()}
                             change={handleChangeSearchBoxValues}
                             value={userLoginHistorySearch.userEmail}
                           />
                         </Col>
                       </Row>
-                      <Row className='my-3'>
+                      <Row className="my-3">
                         <Col sm={12} md={6} lg={6}>
-                          {/* <TextField /> */}
                           <DatePicker
                             format={"DD/MM/YYYY"}
                             placeholder={t("Date-From")}
@@ -759,17 +841,26 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className='datePickerTodoCreate2'
+                            className="datePickerTodoCreate2"
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=''
+                            inputMode=""
                             calendar={calendarValue}
                             locale={localValue}
-                            onFocusedDateChange={handleChangeFromDate}
+                            onChange={handleChangeFromDate}
+                            // FIX: Date From - Disable dates AFTER DateTo (including DateTo)
+                            // We add 1 day to DateTo so that DateTo date is also disabled
+                            maxDate={
+                              userLoginHistorySearch.DateTo
+                                ? getAdjustedDate(
+                                    userLoginHistorySearch.DateTo,
+                                    "max",
+                                  )
+                                : undefined
+                            }
                           />
                         </Col>
                         <Col sm={12} md={6} lg={6}>
-                          {/* <TextField /> */}
                           <DatePicker
                             format={"DD/MM/YYYY"}
                             placeholder={t("Date-to")}
@@ -783,13 +874,23 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className='datePickerTodoCreate2'
+                            className="datePickerTodoCreate2"
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=''
+                            inputMode=""
                             calendar={calendarValue}
                             locale={localValue}
-                            onFocusedDateChange={handleChangeToDate}
+                            onChange={handleChangeToDate}
+                            // FIX: Date To - Disable dates BEFORE DateFrom (including DateFrom)
+                            // We subtract 1 day from DateFrom so that DateFrom date is also disabled
+                            minDate={
+                              userLoginHistorySearch.DateFrom
+                                ? getAdjustedDate(
+                                    userLoginHistorySearch.DateFrom,
+                                    "min",
+                                  )
+                                : undefined
+                            }
                           />
                         </Col>
                       </Row>
@@ -811,12 +912,13 @@ const Reports = () => {
                           />
                         </Col>
                       </Row>
-                      <Row className='mt-3'>
+                      <Row className="mt-3">
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className='d-flex justify-content-end gap-2'>
+                          className="d-flex justify-content-end gap-2"
+                        >
                           <Button
                             className={styles["ResetBtn"]}
                             text={t("Reset")}
@@ -841,7 +943,7 @@ const Reports = () => {
             <InfiniteScroll
               dataLength={loginHistoyRows.length}
               next={handleScroll}
-              height={"60vh"}
+              height={"55vh"}
               hasMore={loginHistoyRows.length === totalRecords ? false : true}
               loader={
                 isRowsData <= totalRecords && isScroll ? (
@@ -851,14 +953,16 @@ const Reports = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className='d-flex justify-content-center mt-2'>
+                        className="d-flex justify-content-center mt-2"
+                      >
                         <Spin />
                       </Col>
                     </Row>
                   </>
                 ) : null
               }
-              scrollableTarget='scrollableDiv'>
+              scrollableTarget="scrollableDiv"
+            >
               <Table
                 column={userloginColumns}
                 rows={loginHistoyRows}
@@ -875,8 +979,8 @@ const Reports = () => {
           </span>
         </Row>
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </Fragment>
   );
 };
