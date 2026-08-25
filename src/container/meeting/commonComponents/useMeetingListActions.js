@@ -9,6 +9,7 @@ import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
   setCurrentMeetingInfo,
+  UpdateMeetingStatusApi,
 } from "../../../store/actions/NewMeeting2.actions";
 import {
   setViewTab,
@@ -19,7 +20,12 @@ import {
   getMeetingRecordingFilesApi,
 } from "../../../store/actions/NewMeetingActions";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
-import { buildEditorRole, buildVideoTalk } from "./helpers";
+import {
+  buildEditorRole,
+  buildVideoTalk,
+  setMeetingLocalStorage,
+} from "./helpers";
+import { MEETING_STATUS } from "./meeting.constants";
 
 const STATUS_ACTIVE = 10;
 
@@ -50,7 +56,7 @@ export const useMeetingListActions = ({
   const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
     useNewMeetingContext();
 
-  const handleJoinMeeting = async (record) => {
+  const handleJoinMeeting = async (record, activeTab = "agendaViewer") => {
     const role = getAttendeeRole(record);
     const meetingId = Number(record.pK_MDID);
 
@@ -90,15 +96,16 @@ export const useMeetingListActions = ({
           DateTime: getCurrentDateTimeUTC(),
         },
         "JoinMeetingFromListing",
-        { role, record, setIsQuickMeetingView },
+        { role, record, setIsQuickMeetingView, activeTab },
       ),
     );
   };
 
   const handleViewMeeting = async (record, viewer = "meetingDetails") => {
     try {
+      let tabActive = viewer === "polls" ? "polls" : "agendaViewer";
       if (Number(record.status) === STATUS_ACTIVE) {
-        handleJoinMeeting(record);
+        handleJoinMeeting(record, tabActive);
         return;
       }
 
@@ -125,6 +132,45 @@ export const useMeetingListActions = ({
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
     } catch (error) {}
+  };
+
+  const handleStartMeeting = async (record) => {
+    const meetingId = Number(record.pK_MDID);
+    const startRequest = {
+      MeetingID: meetingId,
+      StatusID: MEETING_STATUS.ACTIVE,
+    };
+
+    if (!record.isQuickMeeting) {
+      dispatch(
+        UpdateMeetingStatusApi(
+          navigate,
+          t,
+          startRequest,
+          "startMeetingFromMainListing",
+          { record },
+        ),
+      );
+
+      setVideoTalk(buildVideoTalk(record));
+      setMeetingLocalStorage(record);
+      setEditorRole({
+        status: String(MEETING_STATUS.ACTIVE),
+        role: "Organizer",
+        isPrimaryOrganizer: record.isPrimaryOrganizer,
+      });
+      return;
+    }
+
+    dispatch(
+      UpdateMeetingStatusApi(
+        navigate,
+        t,
+        startRequest,
+        "startQuickMeetingFromMainListing",
+        { record, setIsQuickMeetingView },
+      ),
+    );
   };
 
   const onClickDownloadIcon = (meetingID) => {
@@ -156,7 +202,9 @@ export const useMeetingListActions = ({
   };
 
   const handleEditMeeting = async (record) => {
-    const role = record.isAgendaContributor ? "Agenda Contributor" : "Organizer";
+    const role = record.isAgendaContributor
+      ? "Agenda Contributor"
+      : "Organizer";
     const meetingId = Number(record.pK_MDID);
     const context = "EditMeetingFromMainListing";
 
@@ -222,6 +270,7 @@ export const useMeetingListActions = ({
   return {
     handleViewMeeting,
     handleJoinMeeting,
+    handleStartMeeting,
     handleEditMeeting,
     onClickDownloadIcon,
     handleClickDownloadBtn,

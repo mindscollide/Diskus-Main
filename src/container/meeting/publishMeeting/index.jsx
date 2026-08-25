@@ -400,7 +400,8 @@ const PublishedMeetingList = () => {
         (status === STATUS.ENDED ||
           status === STATUS.UPCOMING ||
           status === STATUS.ACTIVE) &&
-        (isOrganizer || isAgendaContributor || isParticipant),
+        (isOrganizer || isAgendaContributor || isParticipant) &&
+        !record.isQuickMeeting,
       attendance: status === STATUS.ENDED && isOrganizer,
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,

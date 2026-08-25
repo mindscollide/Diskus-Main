@@ -11,7 +11,7 @@ import { useMeetingContext } from "@/context/MeetingContext";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 
 // Components
-import { Table } from "@/components/elements";
+import { Table, useSnackbar } from "@/components/elements";
 import CustomButton from "@/components/elements/button/Button";
 import EmptyTableComponent from "@/container/meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
@@ -39,6 +39,7 @@ import {
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   GetAllUserChats,
+  activeChat,
 } from "@/store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -49,6 +50,7 @@ import {
   footerActionStatus,
   createGroupScreen,
   activeChatBoxGS,
+  chatBoxActiveFlag,
 } from "@/store/actions/Talk_Feature_actions";
 
 // Icons
@@ -114,6 +116,7 @@ const parseDateTime = (str) =>
 const GroupPublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
   const { state, pathname } = useLocation();
 
@@ -133,6 +136,9 @@ const GroupPublishedMeetingList = () => {
   );
   const validatencryptedstringState = useSelector(
     (state) => state.NewMeetingreducer.validatencryptedstring,
+  );
+  const talkStateDataAllUserChats = useSelector(
+    (state) => state.talkStateData.AllUserChats,
   );
   const DetailsWebNotificationViewMeeting = useSelector(
     (state) => state.NotificationRoutingReducer.ViewMeetingDetails,
@@ -169,6 +175,9 @@ const GroupPublishedMeetingList = () => {
   );
 
   // ─── Local state ──────────────────────────────────────────────────────────
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -270,14 +279,30 @@ const GroupPublishedMeetingList = () => {
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
-    if (data.talkGroupID === 0) return;
+    if (data.talkGroupID === 0) {
+      show(t("No-talk-group-created"), "error");
+      return;
+    }
 
+    const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
+    const foundRecord =
+      Array.isArray(allChatMessages) &&
+      allChatMessages.find((item) => item.id === data.talkGroupID);
+    if (!foundRecord) {
+      show(t("No-talk-group-created"), "error");
+      return;
+    }
+
+    dispatch(activeChat(foundRecord));
+    localStorage.setItem("activeOtoChatID", data.talkGroupID);
     dispatch(createShoutAllScreen(false));
     dispatch(addNewChatScreen(false));
     dispatch(footerActionStatus(false));
     dispatch(createGroupScreen(false));
+    dispatch(chatBoxActiveFlag(false));
     dispatch(recentChatFlag(true));
     dispatch(activeChatBoxGS(true));
+    dispatch(chatBoxActiveFlag(true));
     dispatch(headerShowHideStatus(true));
     dispatch(footerShowHideStatus(true));
 
@@ -572,7 +597,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.edit && (
           <div
             className={styles.morebtn}
-            onClick={() => handleEditMeeting(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleEditMeeting(record);
+            }}
           >
             <img src={EditIcon} alt="" width="16" height="16" />
             <span>{t("Edit-meeting")}</span>
@@ -582,7 +610,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.talk && (
           <div
             className={styles.morebtn}
-            onClick={() => groupChatInitiation(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              groupChatInitiation(record);
+            }}
           >
             <img src={ChatIcon} alt="" width="16" height="16" />
             <span>{t("Talk")}</span>
@@ -592,7 +623,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.viewAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewAgenda(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewAgenda(record);
+            }}
           >
             <img src={AgendaIcon} alt="" width="16" height="16" />
             <span>{t("View-agenda")}</span>
@@ -602,7 +636,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.attendance && (
           <div
             className={styles.morebtn}
-            onClick={() => onClickDownloadIcon(record.pK_MDID)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              onClickDownloadIcon(record.pK_MDID);
+            }}
           >
             <img src={ClipboardIcon} alt="" width="16" height="16" />
             <span>{t("Attendance-report")}</span>
@@ -612,7 +649,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.recording && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickDownloadBtn(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickDownloadBtn(record);
+            }}
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("Download-video-recording")}</span>
@@ -622,7 +662,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewMinutes(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewMinutes(record);
+            }}
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("View-minutes")}</span>
@@ -632,7 +675,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.contributeAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickContributeAgenda(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickContributeAgenda(record);
+            }}
           >
             <img src={AgendaIcon} alt="" width="16" height="16" />
             <span>{t("Contribute-agenda")}</span>
@@ -640,6 +686,10 @@ const GroupPublishedMeetingList = () => {
         )}
       </div>
     );
+  };
+
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
 
   // ─── Meeting Action Handler ───────────────────────────────────────────────
@@ -1093,6 +1143,10 @@ const GroupPublishedMeetingList = () => {
                 className="moreOptionsPopover"
                 showArrow={false}
                 placement="bottomRight"
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }
               >
                 <CustomButton
                   className={styles.MoreMeetingButton}
@@ -1117,6 +1171,7 @@ const GroupPublishedMeetingList = () => {
     selectedValues,
     statusFilters,
     t,
+    openPopoverMeetingID,
   ]);
 
   // ─── Pagination Handler ───────────────────────────────────────────────────
@@ -1221,6 +1276,7 @@ const GroupPublishedMeetingList = () => {
         />
       )}
       {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
+      {SnackBar}
     </>
   );
 };

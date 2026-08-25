@@ -21,17 +21,3 @@
     localStorage.setItem("isMinutePublished", record.isMinutePublished);
     localStorage.setItem("meetingTitle", record.title);
   };
-
-  export const handleJoinMeeting = (record) => {}
-
-  export const handleEditMeeting = () => {}
-
-  export const handleViewMeeting = () => {}
-
-  export const handleAgendaContribute = () => {}
-
-  export const handleViewAgenda = () => {}
-
-  export const handleAttendanceReport = () => {}
-
-  

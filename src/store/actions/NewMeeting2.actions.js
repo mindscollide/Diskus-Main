@@ -2838,7 +2838,7 @@ export const getMeetingDetailsByMeetingIdApi = (
                 dispatch(
                   setCurrentMeetingInfo({
                     meetingID: details.meetingID,
-                    meetingTitle: details.meetingTitle
+                    meetingTitle: details.meetingTitle,
                   }),
                 );
                 dispatch(toggleCreateEditMeetingModal(true));
@@ -3290,7 +3290,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 // Route-specific extras (runs AFTER the normal _01 flow)
                 switch (routePath) {
                   case "JoinMeetingFromListing": {
-                    const { record, setIsQuickMeetingView } = object;
+                    const { record, setIsQuickMeetingView, activeTab } = object;
                     if (record.isQuickMeeting) {
                       await dispatch(
                         getViewMeetingByMeetingIdApi(
@@ -3303,7 +3303,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                       );
                       return;
                     }
-                    dispatch(setViewTab("agendaViewer"));
+                    dispatch(setViewTab(activeTab));
                     dispatch(toggleViewMeetingModal(true));
                     localStorage.setItem("meetingTitle", record.title);
                     dispatch(

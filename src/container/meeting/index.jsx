@@ -53,21 +53,19 @@ import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
   setCurrentMeetingInfo,
-  UpdateMeetingStatusApi,
 } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
-  MEETING_STATUS,
   PARTICIPANT_ROLE,
   MEETING_VIEWS,
 } from "./commonComponents/meeting.constants";
 import {
   isMeetingActive,
-  isMeetingPublished,
   getParticipantRole,
   buildVideoTalk,
   buildEditorRole,
   getMeetingFilters,
+  isMeetingPublished,
 } from "./commonComponents/meeting.utils";
 
 const MainMeeting = () => {
@@ -96,6 +94,7 @@ const MainMeeting = () => {
   const isParticiapntRespondProposedMeeting = useSelector(
     (state) => state.ModalStatesReducer.isParticiapntRespondProposedMeeting,
   );
+
   const CalendarDashboardEventData = useSelector(
     (state) => state.NewMeetingreducer.CalendarDashboardEventData,
   );
@@ -115,7 +114,8 @@ const MainMeeting = () => {
 
   const { setEditorRole, setVideoTalk } = useMeetingContext();
 
-  const { handleViewMeeting, handleJoinMeeting } = useMeetingListActions();
+  const { handleViewMeeting, handleJoinMeeting, handleStartMeeting } =
+    useMeetingListActions();
 
   const [searchText, setSearchText] = useState("");
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -288,6 +288,10 @@ const MainMeeting = () => {
       try {
         const { message = "", response = null } = state;
 
+        if (message === "throughUpcomingEvents") {
+          return;
+        }
+
         let obj = {
           isQuickMeeting: response.isQuickMeeting,
           pK_MDID: response.MeetingID,
@@ -411,7 +415,6 @@ const MainMeeting = () => {
     }
   }, [state]);
 
-  // ─── Calendar Dashboard Event Handler ──────────────────────────────────
   useEffect(() => {
     if (!CalendarDashboardEventData) {
       dispatch(dashboardCalendarEvent(null));
@@ -447,50 +450,6 @@ const MainMeeting = () => {
   }, [CalendarDashboardEventData]);
 
   // ─── Meeting Handlers ──────────────────────────────────────────────────
-
-  const handleStartMeeting = async (record) => {
-    const meetingId = Number(record.pK_MDID);
-    const startRequest = {
-      MeetingID: meetingId,
-      StatusID: MEETING_STATUS.ACTIVE,
-    };
-
-    // Handle advance meeting start
-    if (!record.isQuickMeeting) {
-      dispatch(
-        UpdateMeetingStatusApi(
-          navigate,
-          t,
-          startRequest,
-          "startMeetingFromMainListing",
-          { record },
-        ),
-      );
-
-      setVideoTalk(buildVideoTalk(record));
-      localStorage.setItem("videoCallURL", record.videoCallURL);
-      localStorage.setItem("isMinutePublished", record.isMinutePublished);
-      localStorage.setItem("meetingTitle", record.title);
-
-      setEditorRole({
-        status: String(MEETING_STATUS.ACTIVE),
-        role: "Organizer",
-        isPrimaryOrganizer: record.isPrimaryOrganizer,
-      });
-      return;
-    }
-
-    // Handle quick meeting start
-    dispatch(
-      UpdateMeetingStatusApi(
-        navigate,
-        t,
-        startRequest,
-        "startQuickMeetingFromMainListing",
-        { record, setIsQuickMeetingView },
-      ),
-    );
-  };
 
   // ─── Tab Handlers ──────────────────────────────────────────────────
 
