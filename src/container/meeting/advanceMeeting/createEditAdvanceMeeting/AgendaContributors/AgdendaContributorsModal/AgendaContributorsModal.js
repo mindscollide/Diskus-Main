@@ -327,6 +327,7 @@ const AgendaContributorsModal = ({
       setMembersOrganizers(tem);
       setSelectedsearch([]);
     } catch (error) {
+      console.log(error);
       
     }
   };

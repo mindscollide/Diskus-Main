@@ -1376,20 +1376,18 @@ const AgendaWise = ({
                                     className='position-relative'>
                                     <div className={styles["uploaded-details"]}>
                                       {(
-                                        (parentMinutedata.isEditable === true &&
+                                        (
                                           Number(editorRole.status) === 1) ||
-                                        (parentMinutedata.isEditable === true &&
+                                        (
                                           Number(editorRole.status) === 11) ||
-                                        (parentMinutedata.isEditable === true &&
+                                        (
                                           Number(editorRole.status) === 12)
                                           ? null
-                                          : (parentMinutedata.isEditable ===
-                                              true &&
+                                          : (
                                               editorRole.role === "Organizer" &&
                                               Number(editorRole.status) ===
                                                 9) ||
-                                            (parentMinutedata.isEditable ===
-                                              true &&
+                                            (
                                               Number(editorRole.status) ===
                                                 10 &&
                                               editorRole.role === "Organizer")
@@ -1503,31 +1501,26 @@ const AgendaWise = ({
                                               className='d-grid justify-content-end p-0'>
                                               <div className='d-flex justify-content-center align-items-center'>
                                                 {(
-                                                  (parentMinutedata.isEditable ===
-                                                    true &&
+                                                  (
                                                     Number(
                                                       editorRole.status,
                                                     ) === 1) ||
-                                                  (parentMinutedata.isEditable ===
-                                                    true &&
+                                                  (
                                                     Number(
                                                       editorRole.status,
                                                     ) === 11) ||
-                                                  (parentMinutedata.isEditable ===
-                                                    true &&
+                                                  (
                                                     Number(
                                                       editorRole.status,
                                                     ) === 12)
                                                     ? null
-                                                    : (parentMinutedata.isEditable ===
-                                                        true &&
+                                                    : (
                                                         editorRole.role ===
                                                           "Organizer" &&
                                                         Number(
                                                           editorRole.status,
                                                         ) === 9) ||
-                                                      (parentMinutedata.isEditable ===
-                                                        true &&
+                                                      (
                                                         Number(
                                                           editorRole.status,
                                                         ) === 10 &&
@@ -1972,31 +1965,26 @@ const AgendaWise = ({
                                                   className='d-grid justify-content-end p-0'>
                                                   <div className='d-flex justify-content-center align-items-center'>
                                                     {(
-                                                      (minuteDataSubminute.isEditable ===
-                                                        true &&
+                                                      (
                                                         Number(
                                                           editorRole.status,
                                                         ) === 1) ||
-                                                      (minuteDataSubminute.isEditable ===
-                                                        true &&
+                                                      (
                                                         Number(
                                                           editorRole.status,
                                                         ) === 11) ||
-                                                      (minuteDataSubminute.isEditable ===
-                                                        true &&
+                                                      (
                                                         Number(
                                                           editorRole.status,
                                                         ) === 12)
                                                         ? null
-                                                        : (minuteDataSubminute.isEditable ===
-                                                            true &&
+                                                        : (
                                                             editorRole.role ===
                                                               "Organizer" &&
                                                             Number(
                                                               editorRole.status,
                                                             ) === 9) ||
-                                                          (minuteDataSubminute.isEditable ===
-                                                            true &&
+                                                          (
                                                             Number(
                                                               editorRole.status,
                                                             ) === 10 &&
@@ -2096,14 +2084,14 @@ const AgendaWise = ({
                                             </Col>
                                           </Row>
                                         </div>
-                                        {(minuteDataSubminute.isEditable &&
+                                        {(
                                           Number(editorRole.status) === 1) ||
                                         Number(editorRole.status) === 11 ||
                                         Number(editorRole.status) ===
-                                          12 ? null : (minuteDataSubminute.isEditable &&
+                                          12 ? null : (
                                             editorRole.role === "Organizer" &&
                                             Number(editorRole.status) === 9) ||
-                                          (minuteDataSubminute.isEditable &&
+                                          (
                                             Number(editorRole.status) === 10 &&
                                             editorRole.role === "Organizer") ? (
                                           <img

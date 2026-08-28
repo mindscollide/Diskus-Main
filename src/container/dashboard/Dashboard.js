@@ -144,6 +144,7 @@ import {
   removeUpComingEvent,
   meetingTranscriptDownloaded,
   meetingMinutesDownloaded,
+  deleteMeetingMQtt,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -1225,6 +1226,20 @@ const Dashboard = () => {
               }
 
               dispatch(getMeetingStatusfromSocket(data.payload));
+            } else if(data.payload.message.toLowerCase().includes("MEETING_STATUS_EDITED_DELETED".toLowerCase())) {
+      if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_DELETED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+                setNotificationID(id);
+              }
+                dispatch(deleteMeetingMQtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_STATUS_EDITED_ADMIN".toLowerCase()

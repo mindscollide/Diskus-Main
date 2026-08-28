@@ -5,9 +5,7 @@ import {
   Button,
   Notification,
 } from "../../../../../../components/elements";
-import {
-  showAddParticipantsModal,
-} from "../../../../../../store/actions/NewMeetingActions";
+import { showAddParticipantsModal } from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "../../../../../../assets/images/GroupSetting.svg";
@@ -27,45 +25,48 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
   const navigate = useNavigate();
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const committeeInfo = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteeDetails
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
 
   const groupInfo = useSelector(
-    (state) => state.GroupsReducer.viewGroupDetails
+    (state) => state.GroupsReducer.viewGroupDetails,
   );
 
   const { meetingID = 0 } = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
 
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [membersParticipants, setMembersParticipants] = useState([]);
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
-  const [open, setOpen] = useState({ open: false, message: "", severity: "error" });
-
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
   useEffect(() => {
     let Data = {
       MeetingID: meetingID,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
-  },[])
+  }, []);
   // ===============================
   // LABEL HELPER (REMOVE DUPLICATION)
   // ===============================
   const renderLabel = (img, name, isBase64 = false) => (
     <Row>
-      <Col className="d-flex gap-2 align-items-center">
+      <Col className='d-flex gap-2 align-items-center'>
         <img
           src={isBase64 ? `data:image/jpeg;base64,${img}` : img}
-          alt=""
+          alt=''
           className={styles["UserProfilepic"]}
-          width="18"
-          height="18"
+          width='18'
+          height='18'
         />
         <span className={styles["NameDropDown"]}>{name}</span>
       </Col>
@@ -76,63 +77,103 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
   // ADD PARTICIPANTS (FIXED + SAFE)
   // ===============================
   const handleAddUsers = () => {
-    
-  
     const data = MeetingOrganizersReducer.AllUserCommitteesGroupsData;
-  
-    const safeSelected = Array.isArray(selectedsearch)
-      ? selectedsearch
-      : [];
-  
-    
-    
-  
-    if (!safeSelected.length) {
-      
+
+    if (!selectedsearch?.length) {
+      // TODO: show notification
       return;
     }
-  
-    if (!data) {
-      
-      return;
-    }
-  
+
     let tem = [...membersParticipants];
-  
-    safeSelected.forEach((item) => {
-      
-  
-      if (item.type === 3) {
-        const user = data.organizationUsers?.find(
-          (u) => u.userID === item.value
-        );
-  
-        
-  
-        if (user) {
-          tem.push({
-            userName: user.userName,
-            userID: user.userID,
-            displayPicture:
-              user?.profilePicture?.displayProfilePictureName,
-            email: user.emailAddress,
-            isRSVP: false,
-            participantRole: {
-              participantRole: "Participant",
-              participantRoleID: 2,
-            },
-            isComingApi: false,
-            attendeeAvailability: 1,
-            Title: "",
+
+    const existingUserIds = new Set(tem.map((u) => u.userID));
+
+    const createUserObject = (user) => ({
+      userName: user.userName,
+      userID: user.userID,
+      displayPicture: user?.profilePicture?.displayProfilePictureName,
+      email: user.emailAddress,
+      isRSVP: false,
+      participantRole: {
+        participantRole: "Participant",
+        participantRoleID: 2,
+      },
+      isComingApi: false,
+      attendeeAvailability: 1,
+      Title: "",
+    });
+
+    // safeSelected.forEach((item) => {
+    //   if (item.type === 3) {
+    //     const user = data.organizationUsers?.find(
+    //       (u) => u.userID === item.value,
+    //     );
+
+    //     if (user) {
+    //       tem.push({
+    //         userName: user.userName,
+    //         userID: user.userID,
+    //         displayPicture: user?.profilePicture?.displayProfilePictureName,
+    //         email: user.emailAddress,
+    //         isRSVP: false,
+    //         participantRole: {
+    //           participantRole: "Participant",
+    //           participantRoleID: 2,
+    //         },
+    //         isComingApi: false,
+    //         attendeeAvailability: 1,
+    //         Title: "",
+    //       });
+    //     }
+    //   }
+    // });
+
+    try {
+      selectedsearch.forEach((selected) => {
+        // 🔹 GROUP
+        if (selected.type === 1) {
+          const group = data.groups?.find((g) => g.groupID === selected.value);
+
+          group?.groupUsers?.forEach((user) => {
+            if (!existingUserIds.has(user.userID)) {
+              tem.push(createUserObject(user));
+              existingUserIds.add(user.userID);
+            }
           });
         }
-      }
-    });
-  
-    
-  
-    setMembersParticipants([...tem]);
-    setSelectedsearch([]);
+
+        // 🔹 COMMITTEE
+        else if (selected.type === 2) {
+          const committee = data.committees?.find(
+            (c) => c.committeeID === selected.value,
+          );
+
+          committee?.committeeUsers?.forEach((user) => {
+            if (!existingUserIds.has(user.userID)) {
+              tem.push(createUserObject(user));
+              existingUserIds.add(user.userID);
+            }
+          });
+        }
+
+        // 🔹 SINGLE USER
+        else if (selected.type === 3) {
+          const user = data.organizationUsers?.find(
+            (u) => u.userID === selected.value,
+          );
+
+          if (user && !existingUserIds.has(user.userID)) {
+            tem.push(createUserObject(user));
+            existingUserIds.add(user.userID);
+          }
+        }
+      });
+
+      setMembersParticipants([...tem]);
+      setSelectedsearch([]);
+    } catch (error) {
+      console.log(error);
+    }
   };
   // ===============================
   // LOAD DROPDOWN (FIXED FLOW)
@@ -145,9 +186,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
 
     // GROUP MODE
     if (groupInfo) {
-      const group = data.groups?.find(
-        (g) => g.groupID === groupInfo.groupID
-      );
+      const group = data.groups?.find((g) => g.groupID === groupInfo.groupID);
 
       if (group?.groupUsers?.length) {
         temp = group.groupUsers.map((u) => ({
@@ -156,7 +195,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           label: renderLabel(
             u?.profilePicture?.displayProfilePictureName,
             u.userName,
-            true
+            true,
           ),
           type: 3,
         }));
@@ -166,7 +205,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
     // COMMITTEE MODE
     else if (committeeInfo) {
       const committee = data.committees?.find(
-        (c) => c.committeeID === committeeInfo.committeeID
+        (c) => c.committeeID === committeeInfo.committeeID,
       );
 
       if (committee?.committeeUsers?.length) {
@@ -176,7 +215,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           label: renderLabel(
             u?.profilePicture?.displayProfilePictureName,
             u.userName,
-            true
+            true,
           ),
           type: 3,
         }));
@@ -191,7 +230,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           name: g.groupName,
           label: renderLabel(GroupIcon, g.groupName),
           type: 1,
-        })
+        }),
       );
 
       data.committees?.forEach((c) =>
@@ -200,7 +239,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           name: c.committeeName,
           label: renderLabel(committeeicon, c.committeeName),
           type: 2,
-        })
+        }),
       );
 
       data.organizationUsers?.forEach((u) =>
@@ -210,15 +249,19 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           label: renderLabel(
             u?.profilePicture?.displayProfilePictureName,
             u.userName,
-            true
+            true,
           ),
           type: 3,
-        })
+        }),
       );
     }
 
     setAddParticipantDropdown(temp);
-  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData, committeeInfo, groupInfo]);
+  }, [
+    MeetingOrganizersReducer.AllUserCommitteesGroupsData,
+    committeeInfo,
+    groupInfo,
+  ]);
 
   // ===============================
   // FILTER FIX (SAFE)
@@ -243,7 +286,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
       showMessage(
         t("Atleast-one-participant-should-be-selected"),
         "error",
-        setOpen
+        setOpen,
       );
       return;
     }
@@ -266,7 +309,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
       <Modal
         show={NewMeetingreducer.participantModal}
         setShow={dispatch(showAddParticipantsModal)}
-        size="md"
+        size='md'
         onHide={() => dispatch(showAddParticipantsModal(false))}
         ModalBody={
           <>
@@ -278,26 +321,26 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       {t("Add-participants")}
                     </span>
                   </Col>
-                  <Col className="text-end">
+                  <Col className='text-end'>
                     <img
                       src={BlackCrossIcon}
                       onClick={() => dispatch(showAddParticipantsModal(false))}
-                      className="cursor-pointer"
-                      width="16"
-                      height="16"
+                      className='cursor-pointer'
+                      width='16'
+                      height='16'
                     />
                   </Col>
                 </Row>
 
-                <Row className="mt-4">
-                  <Col className="d-flex gap-2">
+                <Row className='mt-4'>
+                  <Col className='d-flex gap-2'>
                     <Select
                       isMulti
                       options={addParticipantDropdown}
                       value={selectedsearch}
                       onChange={setSelectedsearch}
-                      className="w-100"
-                      classNamePrefix="selectMember"
+                      className='w-100'
+                      classNamePrefix='selectMember'
                       components={animatedComponents}
                       filterOption={customFilter}
                       closeMenuOnSelect={false}
@@ -316,24 +359,24 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                   {membersParticipants.map((data, index) => (
                     <Col lg={6} key={data.userID}>
                       <Row className={styles["Card_border2"]}>
-                        <Col className="d-flex align-items-center">
+                        <Col className='d-flex align-items-center'>
                           <img
                             src={`data:image/jpeg;base64,${data.displayPicture}`}
-                            width="33"
-                            height="33"
+                            width='33'
+                            height='33'
                           />
                           <span className={styles["Name_cards"]}>
                             {data.userName}
                           </span>
                         </Col>
 
-                        <Col className="text-end">
+                        <Col className='text-end'>
                           <img
                             src={CrossIcon}
                             onClick={() => RemovedParticipant(index)}
-                            width="14"
-                            height="14"
-                            className="cursor-pointer"
+                            width='14'
+                            height='14'
+                            className='cursor-pointer'
                           />
                         </Col>
                       </Row>

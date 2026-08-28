@@ -100,8 +100,8 @@ const ResendMinuteReviewModal = ({
       dispatch(
         UpdateAgendaWiseMinutesApiFunc(
           navigate,
-          t,
           updateMinuteData,
+          t,
           true,
           resendReviewData,
           setEditMinute,

@@ -132,6 +132,11 @@ const MainMeeting = () => {
   // ─── Initial Load ─────────────────────────────────────────────────────────
   useEffect(() => {
     const userID = Number(localStorage.getItem("userID"));
+    const currentView =
+      localStorage.getItem("MeetingCurrentView") !== null
+        ? Number(localStorage.getItem("MeetingCurrentView"))
+        : 1;
+    const filters = getMeetingFilters(currentView);
     dispatch(
       listOfMeetingsApi(
         navigate,
@@ -143,8 +148,7 @@ const MainMeeting = () => {
           UserID: userID,
           PageNumber: 1,
           Length: 30,
-          PublishedMeetings: true,
-          ProposedMeetings: false,
+          ...filters,
         },
         "mainListing",
         {},

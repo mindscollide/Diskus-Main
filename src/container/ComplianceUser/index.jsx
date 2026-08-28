@@ -115,6 +115,12 @@ const MainCompliance = () => {
     setIsComplianceCreateOrEdit,
     setViewComplianceDetailsTab,
     setDeepLinkTaskId,
+    emptyComplianceState,
+    setViewComplianceTasksContextData,
+    setComplianceStandingReport,
+    setEndOfComplianceReport,
+    setEndOfQuarterReport,
+    setAccumulativeReport,
   } = useComplianceContext();
 
   // ── Fiscal year (driven by MQTT org settings) ─────────────────────────────
@@ -193,6 +199,29 @@ const MainCompliance = () => {
   useEffect(() => {
     localStorage.setItem("viewType", viewTypeDashboard);
   }, [viewTypeDashboard]);
+
+  /**
+   * Reset every full-page sub-view flag when the Compliance module unmounts
+   * (e.g. sidebar navigation to another route). Without this, ComplianceContext
+   * — which lives above this route and survives navigation — keeps whatever
+   * sub-view (View Details + its active tab, Create/Edit form, a report page)
+   * was open, so returning to Compliance reopens it instead of the tab list.
+   */
+  useEffect(() => {
+    return () => {
+      setMainComplianceTabs(TAB.DASHBOARD);
+      setShowViewCompliance(false);
+      setViewComplianceDetailsTab(1);
+      setCreateEditComplaince(false);
+      setViewComplianceTasksContextData([]);
+      setComplianceStandingReport(false);
+      setEndOfComplianceReport(false);
+      setEndOfQuarterReport(false);
+      setAccumulativeReport(false);
+      emptyComplianceState();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Populate filter option arrays once status data arrives from the API.

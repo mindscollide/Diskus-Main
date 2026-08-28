@@ -252,7 +252,7 @@ const GroupProposedMeetings = () => {
     const handleDelete = () => {
       let Data = {
         MeetingID: record.pK_MDID,
-        StatusID: 4,
+        StatusID: 7,
       };
 
       setDeleteMeetingRecord(Data);

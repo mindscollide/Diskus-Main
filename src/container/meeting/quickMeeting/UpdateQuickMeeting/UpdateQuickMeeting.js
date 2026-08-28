@@ -70,7 +70,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
   const [show, SnackBar] = useSnackbar();
-  const {dataroomMapFolderId} = useMeetingContext()
+  const { dataroomMapFolderId } = useMeetingContext();
 
   const getStartTime = getStartTimeWithCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
@@ -623,7 +623,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
           OriginalAttachmentName: "",
-       isNew: true,
+          isNew: true,
         };
         setAttachments((prev) => [...prev, fileData]);
         setFileForSend((prev) => [...prev, uploadedFile]); // Append new file to the existing ones
@@ -653,10 +653,19 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           ),
         ),
       );
-      console.log(dataroomMapFolderId, "dataroomMapFolderIddataroomMapFolderId")
+      console.log(
+        dataroomMapFolderId,
+        "dataroomMapFolderIddataroomMapFolderId",
+      );
       let savedFiles = [];
       const saveResponse = await dispatch(
-        saveFilesQuickMeetingApi(navigate, t, filesToUpload, dataroomMapFolderId, savedFiles),
+        saveFilesQuickMeetingApi(
+          navigate,
+          t,
+          filesToUpload,
+          dataroomMapFolderId,
+          savedFiles,
+        ),
       );
 
       if (saveResponse.isExecuted && saveResponse.responseCode === 1) {
@@ -1913,7 +1922,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         MeetingStartTime: finalDateTime.slice(8, 14),
         MeetingEndTime: finalDateTime.slice(8, 14),
         MeetingLocation: createMeeting.MeetingLocation,
-        IsVideoCall: createMeeting.IsVideoCall,
+        IsVideoCall: HIDE_VIDEO === true ? false : createMeeting.IsVideoCall,
         IsChat: createMeeting.IsChat,
         MeetingReminderID: createMeeting.MeetingReminderID,
         MeetingAgendas:
@@ -1923,7 +1932,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         MeetingAttendees: createMeeting.MeetingAttendees,
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
-      console.log(newData, "UpdateMeetingUpdateMeetingUpdateMeeting")
+      console.log(newData, "UpdateMeetingUpdateMeetingUpdateMeeting");
       await dispatch(
         UpdateMeeting(
           navigate,
@@ -2605,7 +2614,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   </Row>
 
                   <Row className='updatemeetingvideoiconbtrrow'>
-                    {HIDE_VIDEO && (
+                    {!HIDE_VIDEO && (
                       <Col
                         lg={1}
                         md={1}
@@ -2645,9 +2654,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       />
                     </Col>
                     <Col
-                      lg={4}
-                      md={4}
-                      sm={4}
+                      lg={HIDE_VIDEO ? 5 : 4}
+                      md={HIDE_VIDEO ? 5 : 4}
+                      sm={HIDE_VIDEO ? 5 : 4}
                       xs={12}
                       className='UpdateCheckbox mt-2'>
                       <Checkbox

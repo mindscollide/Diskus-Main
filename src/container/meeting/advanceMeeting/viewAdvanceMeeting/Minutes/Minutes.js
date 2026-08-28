@@ -501,7 +501,12 @@ const Minutes = () => {
       FileID: record.pK_FileID,
     };
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileWithFooterApiFunc(
+        navigate,
+        data,
+        t,
+        record.displayFileName,
+      ),
     );
   };
 
@@ -2161,18 +2166,13 @@ const Minutes = () => {
                                 className='position-relative'>
                                 <div className={styles["uploaded-details"]}>
                                   {(
-                                    (data.isEditable === true &&
-                                      Number(editorRole.status) === 1) ||
-                                    (data.isEditable === true &&
-                                      Number(editorRole.status) === 11) ||
-                                    (data.isEditable === true &&
-                                      Number(editorRole.status) === 12)
+                                    Number(editorRole.status) === 1 ||
+                                    Number(editorRole.status) === 11 ||
+                                    Number(editorRole.status) === 12
                                       ? null
-                                      : (data.isEditable === true &&
-                                          editorRole.role === "Organizer" &&
+                                      : (editorRole.role === "Organizer" &&
                                           Number(editorRole.status) === 9) ||
-                                        (data.isEditable === true &&
-                                          Number(editorRole.status) === 10 &&
+                                        (Number(editorRole.status) === 10 &&
                                           editorRole.role === "Organizer")
                                   ) ? (
                                     <img
@@ -2273,26 +2273,18 @@ const Minutes = () => {
                                           className='d-grid justify-content-end p-0'>
                                           <div>
                                             {(
-                                              (data.isEditable === true &&
-                                                Number(editorRole.status) ===
-                                                  1) ||
-                                              (data.isEditable === true &&
-                                                Number(editorRole.status) ===
-                                                  11) ||
-                                              (data.isEditable === true &&
-                                                Number(editorRole.status) ===
-                                                  12)
+                                              Number(editorRole.status) === 1 ||
+                                              Number(editorRole.status) ===
+                                                11 ||
+                                              Number(editorRole.status) === 12
                                                 ? null
-                                                : (data.isEditable === true &&
-                                                    editorRole.role ===
-                                                      "Organizer" &&
+                                                : (editorRole.role ===
+                                                    "Organizer" &&
                                                     Number(
                                                       editorRole.status,
                                                     ) === 9) ||
-                                                  (data.isEditable === true &&
-                                                    Number(
-                                                      editorRole.status,
-                                                    ) === 10 &&
+                                                  (Number(editorRole.status) ===
+                                                    10 &&
                                                     editorRole.role ===
                                                       "Organizer")
                                             ) ? (

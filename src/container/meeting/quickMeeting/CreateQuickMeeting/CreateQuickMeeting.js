@@ -1894,18 +1894,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    console.log(
-      "Checking",
-      createMeeting,
-      addedParticipantNameList,
-      objMeetingAgenda,
-    );
+
 
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
       notify(t("Please-add-atleast-one-participant"), "error");
       return;
     }
-    console.log("Checking");
 
     if (objMeetingAgenda.Title !== "") {
       console.log("Checking");
@@ -1950,7 +1944,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       MeetingStartTime: finalDateTime.slice(8, 14),
       MeetingEndTime: finalDateTime.slice(8, 14),
       MeetingLocation: createMeeting.MeetingLocation,
-      IsVideoCall: createMeeting.IsVideoCall,
+      IsVideoCall: HIDE_VIDEO === true ? false : createMeeting.IsVideoCall,
       IsChat: createMeeting.IsChat,
       MeetingReminderID: createMeeting.MeetingReminderID,
       MeetingAgendas:

@@ -8757,13 +8757,7 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, routePath, object = {}) => {
   };
 };
 
-const GetMeetingStatusDataApi = (
-  navigate,
-  t,
-  Data,
-  routePath,
-  object = {},
-) => {
+const GetMeetingStatusDataApi = (navigate, t, Data, routePath, object = {}) => {
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
 
@@ -8777,13 +8771,7 @@ const GetMeetingStatusDataApi = (
 
       if (response.data.responseCode === 417) {
         return await dispatch(
-          GetMeetingStatusDataAPI(
-            navigate,
-            t,
-            Data,
-            routePath,
-            object,
-          ),
+          GetMeetingStatusDataAPI(navigate, t, Data, routePath, object),
         );
       }
 
@@ -8798,10 +8786,7 @@ const GetMeetingStatusDataApi = (
             )
           ) {
             dispatch(
-              GetMeetingStatusDataSuccess(
-                response.data.responseResult,
-                "",
-              ),
+              GetMeetingStatusDataSuccess(response.data.responseResult, ""),
             );
 
             // Return complete response
@@ -8822,36 +8807,26 @@ const GetMeetingStatusDataApi = (
               "Meeting_MeetingServiceManager_GetMeetingStatusData_03".toLowerCase(),
             )
           ) {
-            dispatch(
-              GetMeetingStatusDataFail(t("Something-went-wrong")),
-            );
+            dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
 
             return response;
           } else {
-            dispatch(
-              GetMeetingStatusDataFail(t("Something-went-wrong")),
-            );
+            dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
 
             return response;
           }
         } else {
-          dispatch(
-            GetMeetingStatusDataFail(t("Something-went-wrong")),
-          );
+          dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
 
           return response;
         }
       } else {
-        dispatch(
-          GetMeetingStatusDataFail(t("Something-went-wrong")),
-        );
+        dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
 
         return response;
       }
     } catch (error) {
-      dispatch(
-        GetMeetingStatusDataFail(t("Something-went-wrong")),
-      );
+      dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
 
       // Return complete Axios error response if available
       if (error.response) {
@@ -9582,7 +9557,15 @@ const meetingMinutesDownloaded = (response) => {
   };
 };
 
+const deleteMeetingMQtt = (response) => {
+  return {
+    type: actions.DELETE_MEETING_MQTT,
+    response,
+  };
+};
+
 export {
+  deleteMeetingMQtt,
   meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,

@@ -55,6 +55,10 @@ export const CommitteeProvider = ({ children }) => {
     (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
   );
 
+  const mqttMeetingDeleted = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingDeleted,
+  );
+
   const committeeProposedMeetingStatusProposedMqttData = useSelector(
     (state) => state.CommitteeReducer.committeeProposedMeeting,
   );
@@ -286,6 +290,14 @@ export const CommitteeProvider = ({ children }) => {
       }
     } catch (error) {}
   }, [MeetingStatusEnded]);
+
+  useEffect(() => {
+    if (mqttMeetingDeleted !== null) {
+      const { meetingID } = mqttMeetingDeleted;
+
+      removeMeetingFromAllLists(meetingID);
+    }
+  }, [mqttMeetingDeleted]);
 
   // useEffect(() => {
   //   if (!allMeetingsSocketData) return;

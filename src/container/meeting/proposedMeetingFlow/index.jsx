@@ -42,6 +42,7 @@ import {
 } from "@/commen/functions/date_formater";
 
 import {
+  GetAllProposedMeetingDateApi,
   getMeetingDetailsByMeetingIdApi,
   getUserWiseProposedDatesForOrganizerApi,
   listOfMeetingsApi,
@@ -101,6 +102,9 @@ const ProposedMeeting = () => {
   const proposedMeetingParticipant = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForParticipant,
   );
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState("descend");
 
   useEffect(() => {
     if (proposedMeetingParticipant !== null) {
@@ -187,79 +191,6 @@ const ProposedMeeting = () => {
     }
   };
 
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState("descend");
-  const [duplicatedRows, setDuplicatedRows] = useState([]);
-
-  // Meeting Type Filter State
-  const [meetingTypeFilterVisible, setMeetingTypeFilterVisible] =
-    useState(false);
-  const [selectedMeetingTypeValues, setSelectedMeetingTypeValues] = useState([
-    "1",
-    "2",
-    "3",
-  ]);
-  // Meeting Type Filter Handlers
-  const handleMeetingTypeMenuClick = (filterValue) => {
-    setSelectedMeetingTypeValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
-    );
-  };
-
-  const handleApplyMeetingTypeFilter = () => {
-    const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
-    );
-    setProposedMeetingData(filteredData);
-    setMeetingTypeFilterVisible(false);
-  };
-
-  const resetMeetingTypeFilter = () => {
-    setSelectedMeetingTypeValues(["1", "2", "3"]);
-    setProposedMeetingData(duplicatedRows);
-    setMeetingTypeFilterVisible(false);
-  };
-
-  const handleClickMeetingTypeChevron = () => {
-    setMeetingTypeFilterVisible((prevVisible) => !prevVisible);
-  };
-  // Meeting Type Filter Options
-  const meetingTypeFilters = [
-    { value: "1", text: "Board Meeting" },
-    { value: "2", text: "Committee Meeting" },
-    { value: "3", text: "Group Meeting" },
-  ];
-  // Meeting Type Filter Menu
-  const meetingTypeMenu = (
-    <Menu>
-      {meetingTypeFilters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
-          <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className='d-flex align-items-center justify-content-between p-1'>
-        <Button
-          text={"Reset"}
-          className={"FilterResetBtn"}
-          onClick={resetMeetingTypeFilter}
-        />
-        <Button
-          text={"Ok"}
-          disableBtn={selectedMeetingTypeValues.length === 0}
-          className={"ResetOkBtn"}
-          onClick={handleApplyMeetingTypeFilter}
-        />
-      </div>
-    </Menu>
-  );
-
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
     // Reset all sort states first
@@ -328,7 +259,7 @@ const ProposedMeeting = () => {
     const handleDelete = () => {
       let Data = {
         MeetingID: record.pK_MDID,
-        StatusID: 4,
+        StatusID: 7,
       };
 
       setDeleteMeetingRecord(Data);
@@ -635,12 +566,7 @@ const ProposedMeeting = () => {
         },
       },
     ];
-  }, [
-    meetingTitleSort,
-    meetingDateSort,
-    selectedMeetingTypeValues,
-    isMeetingTypeFilter,
-  ]);
+  }, [meetingTitleSort, meetingDateSort, isMeetingTypeFilter]);
 
   //
 
@@ -694,14 +620,36 @@ const ProposedMeeting = () => {
             MeetingProp,
             navigate,
             t,
-          )(dispatch); // Ensure you're passing dispatch here
+          )(dispatch); // Ensure you're passing dispatch
           if (getApiResponse) {
-            localStorage.setItem(
-              "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID,
+            dispatch(
+              getMeetingDetailsByMeetingIdApi(
+                navigate,
+                t,
+                { MeetingID: getApiResponse.meetingID },
+                "ProposedMeetingViewForParticipant",
+                {
+                  responseDeadline: getApiResponse.deadline,
+                  meetingId: getApiResponse.meetingID,
+                  setResponseByDate,
+                },
+              ),
             );
+            // localStorage.setItem(
+            //   "viewProposeDatePollMeetingID",
+            //   getApiResponse.meetingID,
+            // );
             localStorage.removeItem("meetingprop");
-            setResponseByDate(getApiResponse.deadline);
+            // setResponseByDate(getApiResponse.deadline);
+            // dispatch(
+            //   GetAllProposedMeetingDateApi(
+            //     navigate,
+            //     t,
+            //     { MeetingID: getApiResponse.meetingID },
+            //     "",
+            //     {},
+            //   ),
+            // );
             dispatch(toggleIsParticipantProposedMeetingDates(true));
           }
         } catch (error) {

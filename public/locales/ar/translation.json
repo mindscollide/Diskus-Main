@@ -1336,6 +1336,7 @@
   "POLL_DELETED_RECENT_ACTIVITY": "تم حذف الاستطلاع",
   "MEETING_STATUS_EDITED_ADMIN": "تم تغيير اجتماع [Meeting Title] بواسطة المشرف. راجع قائمة الاجتماعات للحصول على التفاصيل",
   "MEETING_STATUS_EDITED_CANCELLED": "تم إلغاء اجتماع [Meeting Title]. راجع قائمة الاجتماعات للحصول على التفاصيل",
+  "MEETING_STATUS_EDITED_DELETED": "تم حذف الاجتماع [Meeting Title]. يرجى الرجوع إلى قائمة الاجتماعات للحصول على التفاصيل",
   "MEETING_STATUS_EDITED_END": "تم إنهاء اجتماع  [Meeting Title]. راجع قائمة الاجتماعات للحصول على التفاصيل",
   "MEETING_STATUS_EDITED_STARTED": "تم بدء اجتماع [Meeting Title]. راجع قائمة الاجتماعات للحصول على التفاصيل",
   "MEETING_EDITED_HOST": "تم تحديث اجتماع [Meeting Title]. راجع قائمة الاجتماعات للحصول على التفاصيل",

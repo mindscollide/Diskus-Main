@@ -395,9 +395,7 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (
             ) {
               let data = [];
               dispatch(
-                getMinuteReviewStatsForOrganizerByMeetingId_Fail(
-                  t("", data),
-                ),
+                getMinuteReviewStatsForOrganizerByMeetingId_Fail(t("", data)),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1387,7 +1385,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
                   "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_02".toLowerCase(),
                 )
             ) {
-              dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_fail(""));
+              dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_fail(t("Someting-went-wrong")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2065,7 +2063,7 @@ const GetDataForResendMinuteReview = (
               dispatch(
                 getDataForResendMinuteReview_Success(
                   response.data.responseResult,
-                  t("Record-found"),
+                  "",
                 ),
               );
               isFunction(setEditMinute) && setEditMinute(true);
@@ -2206,15 +2204,7 @@ const ResendUpdatedMinuteForReview = (
                   MeetingID: Data.MeetingID,
                 };
                 dispatch(
-                  GetAllAgendaWiseMinutesApiFunc(
-                    navigate,
-                    newData,
-                    t,
-                    Data.MeetingID,
-                    false,
-                    false,
-                    false,
-                  ),
+                  GetAllAgendaWiseMinutesApiFunc(navigate, t, newData, "", {}),
                 );
               } else {
                 let newData = {
@@ -2226,6 +2216,8 @@ const ResendUpdatedMinuteForReview = (
                     navigate,
                     t,
                     newData,
+                    "",
+                    {},
                     Data.MeetingID,
                   ),
                 );

@@ -136,6 +136,7 @@ const initialState = {
   mqttMeetingAcRemoved: null,
   mqttMeetingOrgAdded: null,
   mqttMeetingOrgRemoved: null,
+  mqttMeetingDeleted:null,
   joinMeetingResponse: null,
   leaveMeetingResponse: null,
   leaveMeetingVideoResponse: null,
@@ -2951,7 +2952,12 @@ const NewMeetingreducer = (state = initialState, action) => {
           activeViewMeetingTab: action.payload,
         };
       }
-
+      case actions.DELETE_MEETING_MQTT: {
+        return {
+          ...state,
+          mqttMeetingDeleted: action.response,
+        }
+      }
       default:
         return {
           ...state,
