@@ -687,7 +687,6 @@ const MainMeeting = () => {
       OrganizerName: "",
       DateView: "",
     });
-    console.log(searchFields, searchText, "handleClickSearch");
   };
 
   // ─── Create Handlers ──────────────────────────────────────────────────
