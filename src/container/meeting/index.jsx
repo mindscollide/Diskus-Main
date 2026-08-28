@@ -164,7 +164,13 @@ const MainMeeting = () => {
 
     localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
     localStorage.setItem("MeetingPageRows", 30);
-    localStorage.setItem("MeetingPageCurrent", 1);
+    localStorage.setItem("MeetingPageCurrent", currentView);
+
+    return () => {
+      localStorage.removeItem("MeetingCurrentView");
+      localStorage.removeItem("MeetingPageRows");
+      localStorage.removeItem("MeetingPageCurrent");
+    };
   }, []);
 
   // ─── Reset view/edit modal flags on unmount ──────────────────────────────
