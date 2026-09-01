@@ -301,7 +301,14 @@ const mergeXFDFIntoAnnotations = (
 
     userAnnotations.forEach((user) => {
       user.xml.forEach((xml) => {
-        if (xml.widget?.includes(widgetName)) {
+        // Match the widget's name ATTRIBUTE, not any substring of the
+        // serialised widget XML. A bare `includes(widgetName)` also matched
+        // longer names that merely start with it — so "Radio1" matched the
+        // stored XML for "Radio10". Radio groups are where this actually
+        // bites, since their widgets are usually named with a shared prefix
+        // and a trailing index, and a mismatch silently attributes an option
+        // to the wrong entry.
+        if (xml.widget?.includes(`name="${widgetName}"`)) {
           const ffieldEl = xmlDoc.querySelector(`ffield[name="${fieldName}"]`);
           if (ffieldEl) {
             xml.ffield = ffieldEl.outerHTML;
@@ -487,7 +494,15 @@ const applyAnnotationLocks = (
       if (isWidget) {
         try {
           const field = annot.getField?.();
-          if (field) field.flags.set("ReadOnly", false);
+          if (field) {
+            field.flags.set("ReadOnly", false);
+            // Mirror the non-owner branch, which sets NoToggleToOff. Leaving
+            // it set on an owned field makes a radio group behave oddly — the
+            // selected option can no longer be toggled off. Radio widgets in a
+            // group share ONE field object, so a single pass that locked this
+            // field would otherwise leave the flag stuck on for every option.
+            field.flags.set("NoToggleToOff", false);
+          }
         } catch {}
       }
     }
