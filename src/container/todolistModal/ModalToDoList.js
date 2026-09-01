@@ -599,7 +599,7 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
                     className={"Confirmationmodal_body_text"}
                   >
                     {t(
-                      "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
+                      "Unsaved-changes-will-be-lost-if-you-close-continue"
                     )}
                   </Col>
                 </Row>

@@ -64,11 +64,13 @@ import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 import { useSnackbar } from "@/components/elements";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
+import { useMeetingContext } from "../../../../context/MeetingContext";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
   const [show, SnackBar] = useSnackbar();
+  const { dataroomMapFolderId } = useMeetingContext();
 
   const getStartTime = getStartTimeWithCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
@@ -86,10 +88,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   const assigneesRemindersData = useSelector(
     (state) => state.assignees.RemindersData,
-  );
-
-  const uploadReduceruploadDocumentsList = useSelector(
-    (state) => state.uploadReducer.uploadDocumentsList,
   );
 
   const CommitteeReducergetCommitteeByCommitteeID = useSelector(
@@ -140,9 +138,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   });
 
   // for upload documents
-  const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
-    MeetingAgendaAttachments: [],
-  });
 
   // for meatings  Attendees
   const [meetingAttendees, setMeetingAttendees] = useState({
@@ -163,8 +158,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const [attendeesParticipant, setAttendeesParticipant] = useState([]);
 
   //Reminder Stats
-  const [reminderValue, setReminderValue] = useState("");
-  const [reminder, setReminder] = useState("");
 
   // Minutes of the meeting
   const [recordsMinutesOfTheMeeting, setRecordMinutesOfTheMeeting] = useState({
@@ -184,7 +177,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     name: "",
   });
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
   // const [isValid, setValid] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   // for main json for create meating
@@ -219,7 +211,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const [attachments, setAttachments] = useState([]);
   const generateRandomAgendaID = generateRandomNegativeAuto();
 
-  const [fileSize, setFileSize] = useState(0);
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
   const [reminderOptValue, setReminderOptValue] = useState({
@@ -228,10 +219,10 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     duration: 0,
   });
 
-  const [participantRoles, setParticipantsRoles] = useState([
+  const participantRoles = [
     { label: t("Organizer"), value: 1 },
     { label: t("Participant"), value: 2 },
-  ]);
+  ];
   const [participantRoleValue, setParticipantRoleValue] = useState({
     label: t("Participant"),
     value: 2,
@@ -438,9 +429,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       URLs: "",
       FK_MDID: 0,
     });
-    await setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
+
     setParticipantRoleValue({
       label: t("Participant"),
       value: 2,
@@ -479,18 +468,8 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       FK_MDID: 0,
     });
 
-    setReminder("");
     setTaskAssignedToInput("");
   };
-
-  // for Participant id's
-  const participantOptionsWithIDs = [
-    { label: t("Organizer"), id: 1 },
-    { label: t("Participant"), id: 2 },
-  ];
-
-  // for Participant options
-  const participantOptions = [t("Organizer"), t("Participant")];
 
   // Reminder handler
   const ReminderNameHandler = (event) => {
@@ -608,254 +587,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     }
   };
 
-  //   // for add another agenda main inputs handler
-  //   const uploadFilesAgenda = (data) => {
-  //     let filesArray = Object.values(data.target.files);
-  //     let currentFiles = meetingAgendaAttachments.MeetingAgendaAttachments;
-  //     let fileSizeArr = fileSize;
-
-  //     // Check if adding the new files exceeds the limit
-  //     if (currentFiles.length + filesArray.length > 10) {
-  //       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
-  //       return;
-  //     }
-
-  //     filesArray.forEach((uploadedFile) => {
-  //       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
-  //       let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
-  //       let ext = uploadedFile.name.split(".").pop().toLowerCase();
-
-  //       // Check total size after adding each file
-  //       if (mergeFileSizes + fileSizeinMB > 15) {
-  //         showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
-  //         return;
-  //       }
-
-  //       if (
-  //         [
-  //           "doc",
-  //           "docx",
-  //           "xls",
-  //           "xlsx",
-  //           "pdf",
-  //           "png",
-  //           "txt",
-  //           "jpg",
-  //           "jpeg",
-  //           "gif",
-  //           "csv",
-  //         ].includes(ext)
-  //       ) {
-  //         let fileExists = currentFiles.some(
-  //           (filename) => filename.DisplayAttachmentName === uploadedFile.name
-  //         );
-
-  //         if (fileExists) {
-  //           showMessage(t("File-already-exists"), "error", setOpen);
-  //         } else if (fileSizeinMB > maxFileSize) {
-  //           showMessage(
-  //             t("File-size-should-not-be-greater-than-1-5GB"),
-  //             "error",
-  //             setOpen
-  //           );
-  //         } else if (fileSizeinMB === 0) {
-  //           showMessage(t("File-size-is-0mb"), "error", setOpen);
-  //         } else {
-  //           dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
-  //           fileSizeArr += uploadedFile.size;
-  //           currentFiles.push({
-  //             PK_MAAID: 0,
-  //             DisplayAttachmentName: uploadedFile.name,
-  //             OriginalAttachmentName: uploadedFile.name,
-  //             CreationDateTime: "111111",
-  //             FK_MAID: 0,
-  //           });
-  //           setFileSize(fileSizeArr);
-  //         }
-  //       }
-  //     });
-
-  //     setMeetingAgendaAttachments({
-  //       ...meetingAgendaAttachments,
-  //       MeetingAgendaAttachments: currentFiles,
-  //     });
-  //   };
-
-  //   useEffect(() => {
-  //     let newData = uploadReduceruploadDocumentsList;
-
-  //     let MeetingAgendaAttachment =
-  //       meetingAgendaAttachments.MeetingAgendaAttachments;
-  //     if (newData !== undefined && newData?.length !== 0 && newData !== null) {
-  //       MeetingAgendaAttachment.push({
-  //         PK_MAAID: 0,
-  //         DisplayAttachmentName: newData.displayFileName,
-  //         OriginalAttachmentName: newData.originalFileName,
-  //         CreationDateTime: "111111",
-  //         FK_MAID: objMeetingAgenda.PK_MAID,
-  //       });
-  //       setMeetingAgendaAttachments({
-  //         ...meetingAgendaAttachments,
-  //         MeetingAgendaAttachments: MeetingAgendaAttachment,
-  //       });
-  //       dispatch(ResetAllFilesUpload());
-  //     }
-  //   }, [uploadReduceruploadDocumentsList]);
-
-  function urlPatternValidation(URL) {
-    const regex = new RegExp(
-      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?",
-    );
-    return regex.test(URL);
-  }
-
-  //   // for add another agenda main inputs handler
-  //   const addAnOtherAgenda = (e) => {
-  //     e.preventDefault();
-  //     let previousAdendas = createMeeting.MeetingAgendas;
-  //     if (editRecordFlag != null && editRecordFlag === true) {
-  //       if (objMeetingAgenda.Title !== "") {
-  //         if (objMeetingAgenda.URLs !== "") {
-  //           if (urlPatternValidation(objMeetingAgenda.URLs)) {
-  //             let newData = {
-  //               ObjMeetingAgenda: objMeetingAgenda,
-  //               MeetingAgendaAttachments:
-  //                 meetingAgendaAttachments.MeetingAgendaAttachments,
-  //             };
-  //             previousAdendas[editRecordIndex] = newData;
-  //             setCreateMeeting({
-  //               ...createMeeting,
-  //               MeetingAgendas: previousAdendas,
-  //             });
-  //             seteditRecordIndex(null);
-  //             seteditRecordFlag(false);
-  //             setObjMeetingAgenda(defaultMeetingAgenda);
-  //             setPresenterValue(defaultPresenter);
-
-  //             setMeetingAgendaAttachments({
-  //               MeetingAgendaAttachments: [],
-  //             });
-  //           } else {
-  //             setModalField(false);
-  //             showMessage(t("Enter-valid-url"), "error", setOpen);
-  //           }
-  //         } else {
-  //           let newData = {
-  //             ObjMeetingAgenda: objMeetingAgenda,
-  //             MeetingAgendaAttachments:
-  //               meetingAgendaAttachments.MeetingAgendaAttachments,
-  //           };
-  //           previousAdendas[editRecordIndex] = newData;
-  //           setCreateMeeting({
-  //             ...createMeeting,
-  //             MeetingAgendas: previousAdendas,
-  //           });
-  //           seteditRecordIndex(null);
-  //           seteditRecordFlag(false);
-  //           setPresenterValue(defaultPresenter);
-  //           setObjMeetingAgenda(defaultMeetingAgenda);
-  //           setMeetingAgendaAttachments({
-  //             MeetingAgendaAttachments: [],
-  //           });
-  //           setFileSize(0);
-  //         }
-  //       } else {
-  //         setModalField(true);
-  //       }
-  //     } else {
-  //       if (objMeetingAgenda.Title !== "") {
-  //         if (objMeetingAgenda.URLs !== "") {
-  //           if (urlPatternValidation(objMeetingAgenda.URLs)) {
-  //             setModalField(false);
-  //             let previousAdendas = createMeeting.MeetingAgendas;
-  //             let newData = {
-  //               ObjMeetingAgenda: objMeetingAgenda,
-  //               MeetingAgendaAttachments:
-  //                 meetingAgendaAttachments.MeetingAgendaAttachments,
-  //             };
-  //             previousAdendas.push(newData);
-  //             setCreateMeeting({
-  //               ...createMeeting,
-  //               MeetingAgendas: previousAdendas,
-  //             });
-  //             setObjMeetingAgenda(defaultMeetingAgenda);
-  //             setMeetingAgendaAttachments({
-  //               MeetingAgendaAttachments: [],
-  //             });
-  //             setPresenterValue(defaultPresenter);
-  //             setFileSize(0);
-  //           } else {
-  //             setModalField(false);
-  //             showMessage(t("Enter-valid-url"), "error", setOpen);
-  //           }
-  //         } else {
-  //           setModalField(false);
-  //           let previousAdendas = createMeeting.MeetingAgendas;
-  //           let newData = {
-  //             ObjMeetingAgenda: objMeetingAgenda,
-  //             MeetingAgendaAttachments:
-  //               meetingAgendaAttachments.MeetingAgendaAttachments,
-  //           };
-  //           previousAdendas.push(newData);
-  //           setCreateMeeting({
-  //             ...createMeeting,
-  //             MeetingAgendas: previousAdendas,
-  //           });
-  //           setObjMeetingAgenda(defaultMeetingAgenda);
-  //           setPresenterValue(defaultPresenter);
-  //           setMeetingAgendaAttachments({
-  //             MeetingAgendaAttachments: [],
-  //           });
-  //           setFileSize(0);
-  //         }
-  //       } else {
-  //         if (previousAdendas) {
-  //           // Get the current count of agendas (starting from 1)
-  //           const agendaCount = createMeeting.MeetingAgendas.length + 1;
-
-  //           // Modify the existing agendas to replace "No Agenda Available" with "Agenda X"
-  //           let previousAdendas = [...createMeeting.MeetingAgendas].map(
-  //             (agenda, index) => {
-  //               if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
-  //                 return {
-  //                   ...agenda,
-  //                   ObjMeetingAgenda: {
-  //                     ...agenda.ObjMeetingAgenda,
-  //                     Title: `Agenda ${index + 1}`, // Replace "No Agenda Available" with numbered agenda
-  //                   },
-  //                 };
-  //               }
-  //               return agenda;
-  //             }
-  //           );
-
-  //           // Create a new agenda object with the next available title
-  //           const newObjMeetingAgenda = {
-  //             ...objMeetingAgenda,
-  //             Title: `Agenda ${agendaCount}`, // Increment the title for the new agenda
-  //           };
-
-  //           let newData = {
-  //             ObjMeetingAgenda: newObjMeetingAgenda,
-  //             MeetingAgendaAttachments: [],
-  //           };
-
-  //           // Add the new agenda object to the list
-  //           previousAdendas.push(newData);
-
-  //           // Update the state with the modified list of agendas
-  //           setCreateMeeting({
-  //             ...createMeeting,
-  //             MeetingAgendas: previousAdendas,
-  //           });
-
-  //           // Open the modal field
-  //           setModalField(true);
-  //         }
-  //       }
-  //     }
-  //   };
-
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
     let filesArray = Object.values(data.target.files);
@@ -892,6 +623,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         let fileData = {
           DisplayAttachmentName: uploadedFile.name,
           OriginalAttachmentName: "",
+          isNew: true,
         };
         setAttachments((prev) => [...prev, fileData]);
         setFileForSend((prev) => [...prev, uploadedFile]); // Append new file to the existing ones
@@ -912,7 +644,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     if (fileForSend.length > 0) {
       setModalField(false);
 
-      let uploadedFiles = [];
       let filesToUpload = [];
 
       await Promise.all(
@@ -922,10 +653,19 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           ),
         ),
       );
-
+      console.log(
+        dataroomMapFolderId,
+        "dataroomMapFolderIddataroomMapFolderId",
+      );
       let savedFiles = [];
       const saveResponse = await dispatch(
-        saveFilesQuickMeetingApi(navigate, t, filesToUpload, 0, savedFiles),
+        saveFilesQuickMeetingApi(
+          navigate,
+          t,
+          filesToUpload,
+          dataroomMapFolderId,
+          savedFiles,
+        ),
       );
 
       if (saveResponse.isExecuted && saveResponse.responseCode === 1) {
@@ -1124,9 +864,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         URLs: "",
         FK_MDID: 0,
       });
-      setMeetingAgendaAttachments({
-        MeetingAgendaAttachments: [],
-      });
+
       setParticipantRoleValue({
         label: t("Participant"),
         value: 2,
@@ -1165,7 +903,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         },
       });
       setAddedParticipantNameList([]);
-      setReminder("");
       setTaskAssignedToInput("");
     };
   }, []);
@@ -2020,10 +1757,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       FK_MDID: datarecord.ObjMeetingAgenda.FK_MDID,
     });
     setAttachments(datarecord.MeetingAgendaAttachments);
-    // setMeetingAgendaAttachments({
-    //   ...meetingAgendaAttachments,
-    //   MeetingAgendaAttachments: datarecord.MeetingAgendaAttachments,
-    // });
   };
 
   // for add Attendees handler
@@ -2037,7 +1770,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       if (found !== undefined) {
         show(t("User-already-exists"), "error");
         setTaskAssignedTo(0);
-        setTaskAssignedName("");
         setParticipantRoleValue({
           label: t("Participant"),
           value: 2,
@@ -2097,7 +1829,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         };
         setMeetingAttendees(newData);
         setTaskAssignedTo(0);
-        setTaskAssignedName("");
         setParticipantRoleValue({
           label: t("Participant"),
           value: 2,
@@ -2108,7 +1839,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       if (found === undefined) {
         show(t("Please-add-valid-user"), "error");
         setTaskAssignedTo(0);
-        setTaskAssignedName("");
         setParticipantRoleValue({
           label: t("Participant"),
           value: 2,
@@ -2192,7 +1922,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         MeetingStartTime: finalDateTime.slice(8, 14),
         MeetingEndTime: finalDateTime.slice(8, 14),
         MeetingLocation: createMeeting.MeetingLocation,
-        IsVideoCall: createMeeting.IsVideoCall,
+        IsVideoCall: HIDE_VIDEO === true ? false : createMeeting.IsVideoCall,
         IsChat: createMeeting.IsChat,
         MeetingReminderID: createMeeting.MeetingReminderID,
         MeetingAgendas:
@@ -2202,7 +1932,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         MeetingAttendees: createMeeting.MeetingAttendees,
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
-
+      console.log(newData, "UpdateMeetingUpdateMeetingUpdateMeeting");
       await dispatch(
         UpdateMeeting(
           navigate,
@@ -2239,9 +1969,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       URLs: "",
       FK_MDID: 0,
     });
-    setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
+
     setParticipantRoleValue({
       label: t("Participant"),
       value: 2,
@@ -2279,8 +2007,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         PK_AAID: 1,
       },
     });
-    setReminder("");
-    setReminderValue("");
     setTaskAssignedToInput("");
   };
   const goBack = () => {
@@ -2313,9 +2039,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       URLs: "",
       FK_MDID: 0,
     });
-    setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
+
     setParticipantRoleValue({
       label: t("Participant"),
       value: 2,
@@ -2353,8 +2077,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         PK_AAID: 1,
       },
     });
-    setReminder("");
-    setReminderValue("");
     setTaskAssignedToInput("");
   };
 
@@ -2378,9 +2100,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           URLs: "",
           FK_MDID: 0,
         });
-        await setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
+
         setParticipantRoleValue({
           label: t("Participant"),
           value: 2,
@@ -2418,9 +2138,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-
-        setReminder("");
-        setReminderValue("");
       } else {
         await setModalField(false);
         await setIsPublishMeeting(false);
@@ -2439,9 +2156,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           URLs: "",
           FK_MDID: 0,
         });
-        await setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
+
         setParticipantRoleValue({
           label: t("Participant"),
           value: 2,
@@ -2480,8 +2195,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           FK_MDID: 0,
         });
 
-        setReminder("");
-        setReminderValue("");
         setTaskAssignedToInput("");
       }
     } else {
@@ -2901,7 +2614,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   </Row>
 
                   <Row className='updatemeetingvideoiconbtrrow'>
-                    {HIDE_VIDEO && (
+                    {!HIDE_VIDEO && (
                       <Col
                         lg={1}
                         md={1}
@@ -2941,9 +2654,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       />
                     </Col>
                     <Col
-                      lg={4}
-                      md={4}
-                      sm={4}
+                      lg={HIDE_VIDEO ? 5 : 4}
+                      md={HIDE_VIDEO ? 5 : 4}
+                      sm={HIDE_VIDEO ? 5 : 4}
                       xs={12}
                       className='UpdateCheckbox mt-2'>
                       <Checkbox
@@ -3046,7 +2759,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                                   ? null
                                   : presenterValue
                               }
-                              placeholder='Select Presenter'
+                              placeholder={t("Select-Presenter")}
                               filterOption={filterFunc}
                             />
                           </Col>
@@ -3270,7 +2983,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           )}
                           classNamePrefix={"ModalOrganizerSelect"}
                           filterOption={filterFunc}
-                          placeholder='Please Select'
+                          placeholder={t("Please-select")}
                           onChange={handleChangeAttenddes}
                           isSearchable={true}
                           value={

@@ -15,7 +15,7 @@ import { newDateFormatForMinutes } from "../../../../../../../commen/functions/d
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetDataForResendMinuteReview } from "../../../../../../../store/actions/Minutes_action";
-
+import CrossIcon from "@/assets/images/Cross_Icon.png";
 const RevisionHistory = ({
   showRevisionHistory,
   setShowRevisionHistory,
@@ -185,6 +185,20 @@ const RevisionHistory = ({
           <>
             <Row>
               <Col lg={12} md={12} sm={12}>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex justify-content-end align-items-center'>
+                    <img
+                      src={CrossIcon}
+                      onClick={() => setShowRevisionHistory(false)}
+                      className='cursor-pointer'
+                      alt='cross_icon'
+                    />
+                  </Col>
+                </Row>
                 <div className={styles["gap-subcomments"]}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
@@ -308,8 +322,7 @@ const RevisionHistory = ({
                                     <p
                                       className={`${styles["text-wrapper-review"]}`}>
                                       <span
-                                        className={styles["Review-declined"]}
-                                      >
+                                        className={styles["Review-declined"]}>
                                         {t("Reviewed")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
@@ -663,8 +676,7 @@ const RevisionHistory = ({
                                             <span
                                               className={
                                                 styles["Review-declined"]
-                                              }
-                                            >
+                                              }>
                                               {t("Reviewed")}:
                                             </span>{" "}
                                             {reviewData.reviewStats

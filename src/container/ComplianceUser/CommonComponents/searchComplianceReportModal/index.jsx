@@ -101,8 +101,8 @@ const SearchComplianceReportModal = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      setEnterpressed(true);
       hitSearchApi();
+      setEnterpressed(true);
       setReportTypeFilter([1, 2, 3]);
     }
   };

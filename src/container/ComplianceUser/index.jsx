@@ -115,6 +115,12 @@ const MainCompliance = () => {
     setIsComplianceCreateOrEdit,
     setViewComplianceDetailsTab,
     setDeepLinkTaskId,
+    emptyComplianceState,
+    setViewComplianceTasksContextData,
+    setComplianceStandingReport,
+    setEndOfComplianceReport,
+    setEndOfQuarterReport,
+    setAccumulativeReport,
   } = useComplianceContext();
 
   // ── Fiscal year (driven by MQTT org settings) ─────────────────────────────
@@ -193,6 +199,29 @@ const MainCompliance = () => {
   useEffect(() => {
     localStorage.setItem("viewType", viewTypeDashboard);
   }, [viewTypeDashboard]);
+
+  /**
+   * Reset every full-page sub-view flag when the Compliance module unmounts
+   * (e.g. sidebar navigation to another route). Without this, ComplianceContext
+   * — which lives above this route and survives navigation — keeps whatever
+   * sub-view (View Details + its active tab, Create/Edit form, a report page)
+   * was open, so returning to Compliance reopens it instead of the tab list.
+   */
+  useEffect(() => {
+    return () => {
+      setMainComplianceTabs(TAB.DASHBOARD);
+      setShowViewCompliance(false);
+      setViewComplianceDetailsTab(1);
+      setCreateEditComplaince(false);
+      setViewComplianceTasksContextData([]);
+      setComplianceStandingReport(false);
+      setEndOfComplianceReport(false);
+      setEndOfQuarterReport(false);
+      setAccumulativeReport(false);
+      emptyComplianceState();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Populate filter option arrays once status data arrives from the API.
@@ -290,7 +319,7 @@ const MainCompliance = () => {
     [TAB.FOR_ME]: t("Compliances-for-me"),
     [TAB.REPORTS]: t("Reports"),
   };
-  const heading = headingMap[mainComplianceTabs] ?? "Compliance Dashboard";
+  const heading = headingMap[mainComplianceTabs] ?? t("Compliance-dashboard");
 
   // Tab navigation data – keeps JSX clean; adding a new tab is one object.
   const tabItems = [
@@ -374,8 +403,8 @@ const MainCompliance = () => {
       <Row>
         <Col
           sm={12}
-          md={9}
-          lg={9}
+          md={8}
+          lg={8}
           className='d-flex justify-content-start flex-wrap gap-2 align-items-center'>
           {tabItems.map(({ tab, label, onClick }) => (
             <CustomButton
@@ -393,12 +422,12 @@ const MainCompliance = () => {
 
         <Col
           sm={12}
-          md={3}
-          lg={3}
+          md={4}
+          lg={4}
           className='d-flex justify-content-end gap-2 align-items-center'>
           <img src={FiscalYearCalendar_Icon} alt='Fiscal year calendar' />
           <span className={styles["Fiscalyear_text"]}>
-            {`Fiscal Year: ${fiscalYearRange ?? t("No-fiscal-year")}`}
+            {`${t("Fiscal-year")}: ${fiscalYearRange ?? t("No-fiscal-year")}`}
           </span>
         </Col>
       </Row>

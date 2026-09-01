@@ -26,6 +26,7 @@ import {
 import {
   getMeetingbyGroupIdApi,
   resetViewGroupDetails,
+  clearGetMeetingbyGroupID,
 } from "../../../store/actions/Groups_actions";
 import { useGroupsContext } from "../../../context/GroupsContext";
 import GroupProposedMeetings from "./groupProposedMeetings";
@@ -97,6 +98,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
       PublishedMeetings: value === 1 ? true : false,
       ProposedMeetings: value === 2 ? true : false,
     };
+    dispatch(clearGetMeetingbyGroupID());
     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
   };
 

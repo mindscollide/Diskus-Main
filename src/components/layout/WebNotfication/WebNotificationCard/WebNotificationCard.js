@@ -298,6 +298,8 @@ const WebNotificationCard = ({
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-deleted-the-poll-main"
           )} ${NotificationMessege.PollTitle}`;
+        } else if(NotificaitonID === 74) {
+          message = data.description;
         } else {
           message = data.description;
         }
@@ -434,6 +436,8 @@ const WebNotificationCard = ({
             <img src={ChangeResolutionVoter} width={46} alt="" />
           ) : NotificaitonID === 51 ? (
             <img src={PollDelted} width={46} alt="" />
+          ) :  NotificaitonID === 74 ? (
+            <img src={RemovedFromMeetingIcon} width={46} alt="" />
           ) : null}
 
           <span className={styles["NotificationMessegeUnmarked"]}>

@@ -246,10 +246,10 @@ const DraftMeetingList = () => {
       }
     };
 
-    const handleCancel = () => {
+    const handleDeleteMeeting = () => {
       let Data = {
         MeetingID: record.pK_MDID,
-        StatusID: 4,
+        StatusID: 7,
       };
 
       setDeleteMeetingRecord(Data);
@@ -274,7 +274,7 @@ const DraftMeetingList = () => {
           <img src={EditIcon} alt="" width="16" height="16" />
           <span>{t("Edit-meeting")}</span>
         </div>
-        <div className={styles.morebtn} onClick={handleCancel}>
+        <div className={styles.morebtn} onClick={handleDeleteMeeting}>
           <img src={CancelMeetingIcon} alt="" width="16" height="16" />
           <span>{t("Delete-meeting")}</span>
         </div>

@@ -36,16 +36,14 @@ const DocumentViewer = () => {
 
   // State Variables
 
-  const [pdfResponseData, setPdfResponseData] = useState({
-    xfdfData: "",
-    attachmentBlob: "",
-  });
-
   // Redux Selectors
   const FileRemoveMQTT = useSelector(
     (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
-  const { attachmentBlob, xfdfData } = useSelector((state) => state.webViewer);
+
+  const dataroomAnnotation = useSelector(
+    (state) => state.webViewer.dataroomAnnotation,
+  );
 
   // Memoized PDF Data
   const pdfData = useMemo(() => {
@@ -53,7 +51,7 @@ const DocumentViewer = () => {
     return JSON.parse(params || "{}");
   }, [location.search]);
 
-  const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
+  const { taskId, attachmentID, commingFrom, isPermission } = pdfData;
 
   // Utility: Clear Local Storage
   const clearLocalStorage = () => {
@@ -100,12 +98,12 @@ const DocumentViewer = () => {
     }
   }, [FileRemoveMQTT, attachmentID]);
 
-  // Update PDF Data
-  useEffect(() => {
-    if (attachmentBlob) {
-      setPdfResponseData({ xfdfData, attachmentBlob });
-    }
-  }, [attachmentBlob, xfdfData]);
+  // // Update PDF Data
+  // useEffect(() => {
+  //   if (attachmentBlob) {
+  //     setPdfResponseData({ xfdfData, attachmentBlob, fileTitle: fileName });
+  //   }
+  // }, [attachmentBlob, xfdfData]);
 
   const getMimeTypeFromFileName = (fileName) => {
     const mimeTypes = {
@@ -213,102 +211,114 @@ const DocumentViewer = () => {
 
   // Initialize WebViewer
   useEffect(() => {
-    if (pdfResponseData.attachmentBlob) {
-      WebViewer(
-        {
-          path: "/webviewer/lib",
-          licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
-          fullAPI: true,
-          officeEditor: true, // Enables Office file support
-          officeWorker: true, // Enables Office file conversion
-        },
-        documentApryseViewer.current,
-      )
-        .then(async (instance) => {
-          setInstance(instance);
-          documentApryseViewer.current = instance;
+    if (dataroomAnnotation !== null && dataroomAnnotation !== undefined) {
+      try {
+        WebViewer(
+          {
+            path: "/webviewer/lib",
+            licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
+            fullAPI: true,
+            officeEditor: true, // Enables Office file support
+            officeWorker: true, // Enables Office file conversion
+          },
+          documentApryseViewer.current,
+        )
+          .then(async (instance) => {
+            setInstance(instance);
+            documentApryseViewer.current = instance;
 
-          const { FitMode, setFitMode } = instance.UI;
-          const {
-            documentViewer,
-            annotationManager,
-            officeToPDFBuffer,
-            SupportedFileFormats,
-            Tools,
-          } = instance.Core;
-          instance.UI.disableTools([Tools.disableTextSelection]);
-          instance.UI.disableElements(["saveAsButton", "toolbarGroup-Forms"]);
-          const { CLIENT } = SupportedFileFormats;
-          // Example usage:
-          const extension = getFileExtension(fileName);
+            const { FitMode, setFitMode } = instance.UI;
+            const {
+              documentViewer,
+              annotationManager,
+              officeToPDFBuffer,
+              SupportedFileFormats,
+              Tools,
+            } = instance.Core;
+            instance.UI.disableTools([Tools.disableTextSelection]);
+            instance.UI.disableElements(["saveAsButton", "toolbarGroup-Forms"]);
+            const { CLIENT } = SupportedFileFormats;
+            // Example usage:
+            const extension = getFileExtension(dataroomAnnotation.fileName);
 
-          const mimeType = getMimeTypeFromFileName(fileName);
+            const mimeType = getMimeTypeFromFileName(
+              dataroomAnnotation.fileName,
+            );
 
-          let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
+            let blob = base64ToBlob(
+              dataroomAnnotation.attachmentBlob,
+              mimeType,
+            ); // Convert Base64 to Blob
 
-          // Check if the extension exists in the array (case-insensitive)
-          if (CLIENT.includes(extension.toLowerCase())) {
-            instance.UI.loadDocument(blob, {
-              filename: fileName,
-            });
-          } else {
-            show(t("file_format_not_supported_for_preview"), "error");
-            return;
-          }
-
-          // Handle annotations
-          // documentViewer.addEventListener("documentLoaded", () => {
-          //   annotationManager.setCurrentUser(localStorage.getItem("name"));
-          //   if (pdfResponseData.xfdfData) {
-          //     documentViewer.setFitMode(FitMode.FitWidth);
-          //     annotationManager.importAnnotations(pdfResponseData.xfdfData);
-          //   }
-          // });
-          documentViewer.addEventListener("documentLoaded", () => {
-            annotationManager.setCurrentUser(localStorage.getItem("name"));
-
-            // ✅ Always fit to width on load
-            setFitMode(FitMode.FitWidth);
-
-            // ✅ Import annotations if XFDF exists
-            if (pdfResponseData.xfdfData) {
-              annotationManager.importAnnotations(pdfResponseData.xfdfData);
+            // Check if the extension exists in the array (case-insensitive)
+            if (CLIENT.includes(extension.toLowerCase())) {
+              instance.UI.loadDocument(blob, {
+                filename: dataroomAnnotation.fileName,
+              });
+            } else {
+              show(t("file_format_not_supported_for_preview"), "error");
+              return;
             }
+
+            // Handle annotations
+            // documentViewer.addEventListener("documentLoaded", () => {
+            //   annotationManager.setCurrentUser(localStorage.getItem("name"));
+            //   if (pdfResponseData.xfdfData) {
+            //     documentViewer.setFitMode(FitMode.FitWidth);
+            //     annotationManager.importAnnotations(pdfResponseData.xfdfData);
+            //   }
+            // });
+            documentViewer.addEventListener("documentLoaded", () => {
+              annotationManager.setCurrentUser(localStorage.getItem("name"));
+
+              // ✅ Always fit to width on load
+              setFitMode(FitMode.FitWidth);
+
+              // ✅ Import annotations if XFDF exists
+              if (dataroomAnnotation.annotationString !== "") {
+                annotationManager.importAnnotations(
+                  dataroomAnnotation.annotationString,
+                );
+              }
+            });
+
+            // Set permissions if needed
+            if (Number(isPermission) === 1 || Number(isPermission) === 3) {
+              setPermissions(instance);
+            }
+            const header = instance.UI.getModularHeader("default-top-header");
+
+            // Capture existing items ONCE
+            const existingItems = header.getItems();
+
+            const saveAnnotationsButton =
+              new instance.UI.Components.CustomButton({
+                dataElement: "saveAnnotations",
+                label: "",
+                title: "",
+                img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+                onClick: () => saveAnnotations(annotationManager),
+              });
+
+            const updatedItems = [...existingItems, saveAnnotationsButton];
+            header.setItems(updatedItems);
+            // Add custom save button
+            // instance.UI.setHeaderItems((header) => {
+            //   header.push({
+            //     type: "actionButton",
+            //     img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+            //     onClick: async () => saveAnnotations(annotationManager),
+            //   });
+            // });
+          })
+          .catch((error) => {
+            console.log(error);
           });
-
-          // Set permissions if needed
-          if (Number(isPermission) === 1 || Number(isPermission) === 3) {
-            setPermissions(instance);
-          }
-          const header = instance.UI.getModularHeader("default-top-header");
-
-          // Capture existing items ONCE
-          const existingItems = header.getItems();
-
-          const saveAnnotationsButton = new instance.UI.Components.CustomButton(
-            {
-              dataElement: "saveAnnotations",
-              label: "",
-              title: "",
-              img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-              onClick: () => saveAnnotations(annotationManager),
-            },
-          );
-
-          const updatedItems = [...existingItems, saveAnnotationsButton];
-          header.setItems(updatedItems);
-          // Add custom save button
-          // instance.UI.setHeaderItems((header) => {
-          //   header.push({
-          //     type: "actionButton",
-          //     img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-          //     onClick: async () => saveAnnotations(annotationManager),
-          //   });
-          // });
-        })
-        .catch((error) => {});
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, [pdfResponseData.attachmentBlob]);
+  }, [dataroomAnnotation]);
 
   // Save Annotations
   const saveAnnotations = async (annotationManager) => {

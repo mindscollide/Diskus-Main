@@ -60,6 +60,9 @@ import {
   resetViewTabs,
   toggleCreateEditMeetingModal,
   toggleViewMeetingModal,
+  toggleCreateEditProposedMeetingModal,
+  toggleViewProposedMeetingModal,
+  toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
@@ -67,6 +70,7 @@ import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
 
 const Groups = () => {
   const { t } = useTranslation();
+  const { state } = useLocation();
   const { setEditorRole } = useMeetingContext();
 
   const groupsMeetingView = localStorage.getItem("groups_viewMeeting_action");
@@ -83,6 +87,7 @@ const Groups = () => {
     setShowModal,
     setCurrentViewGroupTabs,
     currentViewGroupTabs,
+    setCurrentGroupMeetingTabActive,
   } = useGroupsContext();
   const [show, SnackBar] = useSnackbar();
   const GroupsReducerrealtimeGroupStatus = useSelector(
@@ -239,6 +244,9 @@ const Groups = () => {
       dispatch(resetCreateEditTabs());
       dispatch(resetCurrentMeetingInfo());
       dispatch(toggleViewMeetingModal(false));
+      dispatch(toggleCreateEditProposedMeetingModal(false));
+      dispatch(toggleViewProposedMeetingModal(false));
+      dispatch(toggleIsParticipantProposedMeetingDates(false));
       dispatch(resetViewTabs());
     };
   }, []);
@@ -361,6 +369,32 @@ const Groups = () => {
       }
     }
   }, [groupsMeetingView, groupsMeetingUpd, groupsMeetingstr]);
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const {
+          message,
+          response: { committeeGroupMeetingID, committeeGroupTitle },
+        } = state;
+        if (message === "proposedmeeting") {
+          setCurrentGroupMeetingTabActive(2);
+        }
+        dispatch(
+          viewGroupDetails({
+            groupID: committeeGroupMeetingID,
+            groupTitle: committeeGroupTitle,
+          }),
+        );
+        localStorage.setItem("ViewGroupID", committeeGroupMeetingID);
+        setCurrentViewGroupTabs(4);
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [state]);
 
   const handleClickMeetingTab = (data) => {
     dispatch(

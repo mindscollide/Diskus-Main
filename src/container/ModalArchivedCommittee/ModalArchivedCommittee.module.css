@@ -230,3 +230,12 @@ button .btn-close {
 body[dir="rtl"] .ArrowIcon_modal_archived_comiitee {
   transform: rotate(180deg) !important;
 }
+.ArchivedCommitteesNotfound {
+  font-size: 24px !important;
+  color: #5a5a5a;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(10px, 80px);
+}

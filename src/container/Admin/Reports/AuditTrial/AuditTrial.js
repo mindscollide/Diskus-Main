@@ -19,29 +19,35 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
+import {
+  AuditTrialDateTimeFunction,
+  createConvert,
+} from "../../../../commen/functions/date_formater";
 import { useScrollerAuditBottom } from "../../../../commen/functions/useScrollerAuditBottom";
+import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const locale = localStorage.getItem("i18nextLng");
+  const [show, SnackBar] = useSnackbar();
+
   //View Action Modal Globla State
   const ViewActionModalGlobalState = useSelector(
-    (state) => state.adminReducer.auditTrialViewActionModal
+    (state) => state.adminReducer.auditTrialViewActionModal,
   );
 
   //View Action Modal Globla State
 
   //Calling Get Audit Listing
   const GetAuditListingReducerGlobalState = useSelector(
-    (state) => state.adminReducer.getAuditListingData
+    (state) => state.adminReducer.getAuditListingData,
   );
 
   // Local States
   const [auditTrialListingTableData, setAuditTrialListingTableData] = useState(
-    []
+    [],
   );
   const [totalRecords, setTotalRecords] = useState(0);
   const [isScroll, setIsScroll] = useState(false);
@@ -85,9 +91,7 @@ const AuditTrial = () => {
         Length: 10,
       };
       dispatch(GetAuditListingAPI(navigate, Data, t));
-    } catch (error) {
-      
-    }
+    } catch (error) {}
     return () => {
       setAuditTrialSearch({
         userName: "",
@@ -121,7 +125,7 @@ const AuditTrial = () => {
       const newData = result.userAuditListingModel;
 
       setAuditTrialListingTableData((prev) =>
-        isScroll ? [...prev, ...newData] : newData
+        isScroll ? [...prev, ...newData] : newData,
       );
 
       const newTotalRows =
@@ -175,7 +179,6 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        
         return (
           <>
             <span className={styles["NameStylesTable"]}>{record.userName}</span>
@@ -191,7 +194,6 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -213,8 +215,8 @@ const AuditTrial = () => {
           record.deviceID === "1"
             ? "Web"
             : record.deviceID === "2"
-            ? "Mobile"
-            : "Tablet";
+              ? "Mobile"
+              : "Tablet";
         return <span className={styles["NameStylesTable"]}>{deviceType}</span>;
       },
     },
@@ -226,7 +228,6 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -244,7 +245,6 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -262,7 +262,6 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        
         return (
           <>
             <span className={styles["NameStylesTable"]}>
@@ -319,18 +318,50 @@ const AuditTrial = () => {
     },
   ];
 
+  // Helper function to convert date string to Date object for min/max props
+  const getDateFromString = (dateStr) => {
+    if (!dateStr) return null;
+    try {
+      const year = parseInt(dateStr.substring(0, 4));
+      const month = parseInt(dateStr.substring(4, 6)) - 1;
+      const day = parseInt(dateStr.substring(6, 8));
+      return new Date(year, month, day);
+    } catch {
+      return null;
+    }
+  };
+
+  // CRITICAL FIX: Get adjusted date for min/max props
+  const getAdjustedDate = (dateStr, type) => {
+    if (!dateStr) return null;
+
+    const date = getDateFromString(dateStr);
+    if (!date) return null;
+
+    // For maxDate (Login Date), we want to allow the selected Logout date
+    // So we add 1 day to include the selected date
+    if (type === "max") {
+      date.setDate(date.getDate() - 1);
+    }
+    // For minDate (Logout Date), we want to allow the selected Login date
+    // So we subtract 1 day to include the selected date
+    else if (type === "min") {
+      date.setDate(date.getDate() + 1);
+    }
+
+    return date;
+  };
+
   //Handle Search Box entities
   const handeSearchBoxTextField = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    
 
     // Normalize the key to match state
     const key = name.charAt(0).toLowerCase() + name.slice(1);
 
     if (name === "UserName" || name === "Title") {
       if (value !== "") {
-        
         let valueCheck = /^[A-Za-z\s]*$/i.test(value);
         if (valueCheck) {
           setAuditTrialSearch((prevState) => ({
@@ -345,7 +376,6 @@ const AuditTrial = () => {
           }));
         }
       } else {
-        
         setAuditTrialSearch((prevState) => ({
           ...prevState,
           userName: "",
@@ -382,30 +412,72 @@ const AuditTrial = () => {
     });
   };
 
-  //handle Login Date Change
+  //handle Login Date Change with validation
   const handleChangeLoginDate = (date) => {
-    let getDate = new Date(date);
-    let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+    if (!date) {
+      setAuditTrialSearch({
+        ...auditTrialSearch,
+        LoginDate: "",
+        LoginDateView: "",
+      });
+      return;
+    }
+
+    const getDate = new Date(date);
+    const updateDate = new Date(getDate);
+    updateDate.setHours(0, 0, 0, 0);
+
+    // Validate: LoginDate should be less than LogoutDate
+    // if (auditTrialSearch.LogoutDate && utcDate > auditTrialSearch.LogoutDate) {
+    //   show(t("Login-date-cannot-be-greater-than-logout-date"), "error");
+    //   return;
+    // }
+
     setAuditTrialSearch({
       ...auditTrialSearch,
-      LoginDate: utcDate,
+      LoginDate: createConvert(getDate),
       LoginDateView: getDate,
     });
   };
 
-  //Handle Logout Date Change
+  //Handle Logout Date Change with validation
   const handleChangeLogoutDate = (date) => {
-    let getDate = new Date(date);
-    let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+    if (!date) {
+      setAuditTrialSearch({
+        ...auditTrialSearch,
+        LogoutDate: "",
+        LogoutDateView: "",
+      });
+      return;
+    }
+
+    const getDate = new Date(date);
+    const updateDate = new Date(getDate);
+    updateDate.setHours(23, 59, 59, 999);
+
+    // Validate: LogoutDate should be greater than LoginDate
+    // if (auditTrialSearch.LoginDate && utcDate < auditTrialSearch.LoginDate) {
+    //   show(t("Logout-date-cannot-be-less-than-login-date"), "error");
+    //   return;
+    // }
+
     setAuditTrialSearch({
       ...auditTrialSearch,
-      LogoutDate: utcDate,
+      LogoutDate: createConvert(getDate),
       LogoutDateView: getDate,
     });
   };
 
   //Handle Search Popup Button
   const handleSearchAuditTrialListing = () => {
+    // Validate date range before searching
+    if (auditTrialSearch.LoginDate && auditTrialSearch.LogoutDate) {
+      if (auditTrialSearch.LoginDate > auditTrialSearch.LogoutDate) {
+        show(t("Login-date-cannot-be-greater-than-logout-date"), "error");
+        return;
+      }
+    }
+
     let Data2 = {
       Username: auditTrialSearch.userName || "",
       IpAddress: auditTrialSearch.IpAddress || "",
@@ -455,9 +527,7 @@ const AuditTrial = () => {
           label: "",
         },
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   //handle Cross Icon Pressed Enter
@@ -494,14 +564,20 @@ const AuditTrial = () => {
           label: "",
         },
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   //handle  Pressed Enter TextField
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      // Validate date range before searching
+      if (auditTrialSearch.LoginDate && auditTrialSearch.LogoutDate) {
+        if (auditTrialSearch.LoginDate > auditTrialSearch.LogoutDate) {
+          show(t("Login-date-cannot-be-greater-than-logout-date"), "error");
+          return;
+        }
+      }
+
       let Data = {
         Username: auditTrialSearch.title,
         IpAddress: auditTrialSearch.IpAddress,
@@ -552,9 +628,7 @@ const AuditTrial = () => {
           label: "",
         },
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   //Handle Scroll Function
@@ -693,7 +767,17 @@ const AuditTrial = () => {
                           inputMode=""
                           calendar={calendarValue}
                           locale={localValue}
-                          onFocusedDateChange={handleChangeLoginDate}
+                          onChange={handleChangeLoginDate}
+                          // FIX: Login Date - Disable dates AFTER Logout Date (including Logout Date)
+                          // We add 1 day to Logout Date so that Logout Date is also disabled
+                          maxDate={
+                            auditTrialSearch.LogoutDate
+                              ? getAdjustedDate(
+                                  auditTrialSearch.LogoutDate,
+                                  "max",
+                                )
+                              : undefined
+                          }
                         />
                       </div>
                     </Col>
@@ -720,7 +804,17 @@ const AuditTrial = () => {
                           inputMode=""
                           calendar={calendarValue}
                           locale={localValue}
-                          onFocusedDateChange={handleChangeLogoutDate}
+                          onChange={handleChangeLogoutDate}
+                          // FIX: Logout Date - Disable dates BEFORE Login Date (including Login Date)
+                          // We subtract 1 day from Login Date so that Login Date is also disabled
+                          minDate={
+                            auditTrialSearch.LoginDate
+                              ? getAdjustedDate(
+                                  auditTrialSearch.LoginDate,
+                                  "min",
+                                )
+                              : undefined
+                          }
                         />
                       </div>
                     </Col>
@@ -790,6 +884,7 @@ const AuditTrial = () => {
       {ViewActionModalGlobalState && (
         <ViewActionModal viewActionModalDataState={viewActionModalDataState} />
       )}
+      {SnackBar}
     </section>
   );
 };

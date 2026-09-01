@@ -307,7 +307,7 @@ const EndOfComplianceReport = () => {
                       <span>
                         {t("This-compliance-was-Re-opened", { count })}
                         <CustomButton
-                          text="Reopen Details"
+                          text={t("Reopen-details")}
                           className={styles.reportDetailButton}
                           onClick={handleOpenReopenModal}
                         />
@@ -319,7 +319,7 @@ const EndOfComplianceReport = () => {
                 {/* Download Button */}
                 <Col lg={1} xs="auto">
                   <CustomButton
-                    text="Download"
+                    text={t("Download")}
                     loading={isGenerating}
                     onClick={handleDownloadPDF}
                     className={styles.complianceDownloadBtn}

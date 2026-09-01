@@ -72,6 +72,10 @@ export const GroupsProvider = ({ children }) => {
     (state) => state.NewMeetingreducer.getMeetingbyGroupID,
   );
 
+  const mqttMeetingDeleted = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingDeleted,
+  );
+
   // ─── Tab State ───
   const [currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive] =
     useState(1);
@@ -268,6 +272,14 @@ export const GroupsProvider = ({ children }) => {
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
+
+  useEffect(() => {
+    if (mqttMeetingDeleted !== null) {
+      const { meetingID } = mqttMeetingDeleted;
+
+      removeMeetingFromAllLists(meetingID);
+    }
+  }, [mqttMeetingDeleted]);
 
   // =========================
   // EFFECT: allMeetingsSocketData — update meeting in any list

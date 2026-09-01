@@ -144,6 +144,7 @@ import {
   removeUpComingEvent,
   meetingTranscriptDownloaded,
   meetingMinutesDownloaded,
+  deleteMeetingMQtt,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -299,7 +300,7 @@ const Dashboard = () => {
     setInCallParticipantsList,
     videoTalk,
     setVideoChatUnreadCount,
-      unSaveChangesModalForMeeting,
+    unSaveChangesModalForMeeting,
     setUnSaveChangesModalForMeeting,
   } = useMeetingContext();
 
@@ -499,7 +500,7 @@ const Dashboard = () => {
           dispatch(leaveMeetingOnlogout(true));
         }
       } else {
-        // dispatch(userLogOutApiFunc(navigate, t));
+        dispatch(userLogOutApiFunc(navigate, t));
       }
     }
   };
@@ -1225,6 +1226,20 @@ const Dashboard = () => {
               }
 
               dispatch(getMeetingStatusfromSocket(data.payload));
+            } else if(data.payload.message.toLowerCase().includes("MEETING_STATUS_EDITED_DELETED".toLowerCase())) {
+      if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_DELETED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100),
+                  ),
+                });
+                setNotificationID(id);
+              }
+                dispatch(deleteMeetingMQtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_STATUS_EDITED_ADMIN".toLowerCase()
@@ -1265,7 +1280,10 @@ const Dashboard = () => {
                   ),
                 });
               }
-            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()) {
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PROPOSED_COMMITTEE".toLowerCase()
+            ) {
               dispatch(committeeProposedMeetingAction(data.payload));
               if (data.viewable) {
                 setNotification({
@@ -1278,7 +1296,10 @@ const Dashboard = () => {
                   ),
                 });
               }
-            } else if(data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()) {
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_PROPOSED_GROUP".toLowerCase()
+            ) {
               dispatch(groupProposedMeetingAction(data.payload));
               if (data.viewable) {
                 setNotification({
@@ -2389,7 +2410,7 @@ const Dashboard = () => {
           const isComplianceTaskModalOpen = JSON.parse(
             sessionStorage.getItem("complianceTaskViewModalOpen"),
           );
-          if (data.viewable && !isComplianceTaskModalOpen) {
+          if (data.viewable && !isComplianceTaskModalOpen && !data.receiverID.includes(Number(localStorage.getItem("userID")))) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2412,7 +2433,7 @@ const Dashboard = () => {
           const isComplianceTaskModalOpenComment = JSON.parse(
             sessionStorage.getItem("complianceTaskViewModalOpen"),
           );
-          if (data.viewable && !isComplianceTaskModalOpenComment) {
+          if (data.viewable && !isComplianceTaskModalOpenComment && !data.receiverID.includes(Number(localStorage.getItem("userID")))) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -3450,6 +3471,17 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo"),
           );
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+          // Fast-accept race fix: if the callee accepts before our own
+          // InitiateVideoCall API response has come back (which is what
+          // normally writes initiateCallRoomID — see VideoMain_reducer.js
+          // INITIATE_VIDEO_CALL_SUCCESS), initiateCallRoomID is still empty
+          // here. Falling back to the accepted event's own roomID lets this
+          // tab recognize its own outgoing call instead of silently getting
+          // stuck on "Calling..." with the ringer still active.
+          if (isCaller && !initiateCallRoomID && data.payload.roomID) {
+            initiateCallRoomID = data.payload.roomID;
+            localStorage.setItem("initiateCallRoomID", data.payload.roomID);
+          }
 
           let CallType = Number(localStorage.getItem("CallType"));
 
@@ -3503,6 +3535,18 @@ const Dashboard = () => {
 
           if (data.payload.callTypeID === 2) {
             console.log("mqtt");
+            // Group-call ringer safety net: stop OUR OWN outgoing ringer the
+            // moment ANY invited participant accepts, independent of the
+            // roomID-match race below (falgCheck2/initiateCallRoomID). That
+            // race is already mitigated above, but if every participant's
+            // accept happens to race ahead of our own InitiateVideoCall
+            // response, falgCheck2 can still miss — leaving the ringer
+            // playing forever even though the call is clearly live (we're
+            // already updating the roster for it right here). This dispatch
+            // is idempotent (no-op once the flag is already false).
+            if (isCaller) {
+              dispatch(videoOutgoingCallFlag(false));
+            }
             // Authoritative refresh: re-pull the group-call roster from the
             // backend on EVERY client so the in-call list (accepted users) stays
             // identical across caller and participants. `inCallParticipants`
@@ -3776,116 +3820,61 @@ const Dashboard = () => {
                 RoomID: data.payload.roomID,
               };
 
+              // Keep a record of who rejected (read elsewhere, e.g. call
+              // status displays) — this is just bookkeeping, not the
+              // "should we end the call" decision.
               existingData.push(newData);
               localStorage.setItem(
                 "callerStatusObject",
                 JSON.stringify(existingData),
               );
-              let RecipentIDsOninitiateVideoCallflag = false;
-              let remainingCount = 0;
-              let existingDataflag = false;
-              let existingDataremainingCount = 0;
-              let existingObjectIndex = [];
+
+              // RecipentIDsOninitiateVideoCall is seeded with every invited
+              // recipient when the group call starts (VideoMain_actions.js)
+              // and is the ONLY reliable count of who hasn't responded yet.
+              // A previous fallback here used to guess from existingData when
+              // this list was empty, but that guess pushed the same reject
+              // entry and immediately searched-and-removed it in the same
+              // pass — netting back to "0 remaining" and closing the caller's
+              // call after just the FIRST reject, even with other invitees
+              // (e.g. User B) still ringing. If this list is empty/unavailable
+              // we no longer guess — we simply don't end the call, since a
+              // wrong guess (ending it early) is worse than not ending it.
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
                   data.payload.recepientID,
                 );
                 if (index !== -1) {
-                  // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
                     JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
-                  RecipentIDsOninitiateVideoCallflag = true;
-                  remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
-                } else {
-                }
-                console.log("mqtt", RecipentIDsOninitiateVideoCall);
-              } else {
-                if (existingData.length > 0) {
-                  existingObjectIndex = existingData.findIndex(
-                    (item) =>
-                      item.RecipientName === newData.RecipientName &&
-                      item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
-                  );
-                  if (existingObjectIndex !== -1) {
-                    existingData.splice(existingObjectIndex, 1);
-                    localStorage.setItem(
-                      "callerStatusObject",
-                      JSON.stringify(existingData),
-                    );
-                    existingDataflag = true;
-                    existingDataremainingCount = existingData.length || 0;
-                  }
-                  if (existingDataflag) {
-                    if (existingDataremainingCount === 0) {
-                      if (RecipentIDsOninitiateVideoCall.length === 0) {
-                        localStorage.setItem("onlyLeaveCall", true);
-
-                        console.log("setLeaveOneToOne");
-                        setLeaveOneToOne(true);
-                        dispatch(videoChatMessagesFlag(false));
-                        dispatch(videoOutgoingCallFlag(false));
-                      }
-                    }
-                  }
-                }
-              }
-              if (RecipentIDsOninitiateVideoCallflag) {
-                if (remainingCount === 0) {
-                  if (existingData.length === 0) {
+                  if (RecipentIDsOninitiateVideoCall.length === 0) {
                     localStorage.setItem("onlyLeaveCall", true);
-
-                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
                   }
                 }
-              } else {
-                if (existingData.length > 0) {
-                  existingObjectIndex = existingData.findIndex(
-                    (item) =>
-                      item.RecipientName === newData.RecipientName &&
-                      item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
-                  );
-                  if (existingObjectIndex !== -1) {
-                    existingData.splice(existingObjectIndex, 1);
-                    localStorage.setItem(
-                      "callerStatusObject",
-                      JSON.stringify(existingData),
-                    );
-                    existingDataflag = true;
-                    existingDataremainingCount = existingData.length || 0;
-                  }
-                  if (existingDataflag) {
-                    if (existingDataremainingCount === 0) {
-                      if (RecipentIDsOninitiateVideoCall.length === 0) {
-                        localStorage.setItem("onlyLeaveCall", true);
-
-                        console.log("setLeaveOneToOne");
-                        setLeaveOneToOne(true);
-                        dispatch(videoChatMessagesFlag(false));
-                        dispatch(videoOutgoingCallFlag(false));
-                      }
-                    }
-                  }
-                }
               }
             }
 
-            if (currentUserName !== data.payload.recepientName) {
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: `${data.payload.recepientName} has declined the call`,
-              });
-              setNotificationID(id);
+            // Only the caller needs to react to "someone declined" — a
+            // still-ringing recipient (e.g. User B) has nothing to do with
+            // another recipient's (e.g. User C's) decline, and resetting
+            // their incoming-call state here was stopping their ringer.
+            if (isCaller) {
+              if (currentUserName !== data.payload.recepientName) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: `${data.payload.recepientName} has declined the call`,
+                });
+                setNotificationID(id);
+              }
+              dispatch(callRequestReceivedMQTT({}, ""));
             }
-            dispatch(callRequestReceivedMQTT({}, ""));
           }
         } else if (
           data.payload.message.toLowerCase() ===
@@ -4529,7 +4518,18 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "MISSED_CALLS_COUNT".toLowerCase()
         ) {
-          dispatch(missedCallCount(data.payload, ""));
+          // Only surface a toast when there's an actual missed call — this
+          // MQTT also fires with missedCallCount: 0 (e.g. on every Recent
+          // Calls panel open), so a nonzero check keeps it from showing on
+          // every open. The Redux dispatch itself always happens so the
+          // badge count next to the Video icon (Talk.js) still updates.
+          const missedCount = Number(data.payload.missedCallCount) || 0;
+          dispatch(
+            missedCallCount(
+              data.payload,
+              missedCount > 0 ? t("You-have-missed-calls") : "",
+            ),
+          );
         } else if (
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
@@ -8346,11 +8346,12 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -8358,7 +8359,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className='sidebar_layout' width={60}>
+                <Sider className="sidebar_layout" width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -8369,7 +8370,8 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }>
+                }
+              >
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -8395,7 +8397,7 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className='talk_features_home'>
+                <div className="talk_features_home">
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -8404,7 +8406,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt='' draggable='false' />
+                <img src={IconMetroAttachment} alt="" draggable="false" />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -8414,11 +8416,13 @@ const Dashboard = () => {
             />
           )}
 
-          {ShowGuestPopup && (
-            <div>
-              <GuestJoinRequest />
-            </div>
-          )}
+          {ShowGuestPopup &&
+            location.pathname.includes("/Diskus/Meeting") &&
+            !location.pathname.includes("meetingDocumentViewer") && (
+              <div>
+                <GuestJoinRequest />
+              </div>
+            )}
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true &&
           !(
@@ -8436,8 +8440,8 @@ const Dashboard = () => {
             // openMeetingGroupChat, so they still render this instance as
             // before.
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -8464,24 +8468,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
-                  <Row className='mb-1'>
+                  <Row className="mb-1">
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className='d-flex justify-content-center'>
+                        <Col className="d-flex justify-content-center">
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=''
-                            draggable='false'
+                            alt=""
+                            draggable="false"
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className='text-center mt-4'>
+                        <Col className="text-center mt-4">
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -8494,12 +8498,13 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className='mb-3'>
+                <Row className="mb-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

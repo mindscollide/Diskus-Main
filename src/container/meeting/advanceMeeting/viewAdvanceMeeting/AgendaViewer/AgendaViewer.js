@@ -362,9 +362,43 @@ const AgendaViewer = () => {
       GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
       GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
     ) {
-      setViewMeetingAgendaViewerRowData(
-        GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList,
-      );
+      setViewMeetingAgendaViewerRowData((prevState) => {
+        const freshList =
+          GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList;
+
+        // A vote can never be "un-cast", so once the local state has
+        // hasAlreadyVoted:true for an item (set optimistically by
+        // CasteVoteForAgenda on success), a fresh fetch here must never
+        // regress it back to false. Without this, an agenda-updated MQTT
+        // refetch landing before the backend's own vote write has fully
+        // committed/replicated would silently flip "Voted" back to
+        // "Cast Your Vote" even though the vote succeeded.
+        const votedIds = new Set(
+          (prevState || [])
+            .filter((item) => item.hasAlreadyVoted)
+            .map((item) => String(item.id)),
+        );
+        const votedSubIds = new Set(
+          (prevState || [])
+            .flatMap((item) => item.subAgenda || [])
+            .filter((sub) => sub.hasAlreadyVoted)
+            .map((sub) => String(sub.subAgendaID)),
+        );
+
+        return freshList.map((item) => ({
+          ...item,
+          hasAlreadyVoted:
+            item.hasAlreadyVoted || votedIds.has(String(item.id)),
+          subAgenda: item.subAgenda
+            ? item.subAgenda.map((sub) => ({
+                ...sub,
+                hasAlreadyVoted:
+                  sub.hasAlreadyVoted ||
+                  votedSubIds.has(String(sub.subAgendaID)),
+              }))
+            : item.subAgenda,
+        }));
+      });
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
 

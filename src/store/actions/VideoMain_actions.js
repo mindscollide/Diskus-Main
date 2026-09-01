@@ -62,17 +62,17 @@ const GetAllVideoCallUsers = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetAllUsers_01".toLowerCase()
+                  "Video_VideoServiceManager_GetAllUsers_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getAllVideoCallUsersSuccess(response.data.responseResult, "")
+                getAllVideoCallUsersSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetAllUsers_02".toLowerCase()
+                  "Video_VideoServiceManager_GetAllUsers_02".toLowerCase(),
                 )
             ) {
               await dispatch(getAllVideoCallUsersFail(t("No-records-found")));
@@ -80,11 +80,11 @@ const GetAllVideoCallUsers = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetAllUsers_03".toLowerCase()
+                  "Video_VideoServiceManager_GetAllUsers_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getAllVideoCallUsersFail(t("Something-went-wrong"))
+                getAllVideoCallUsersFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -122,7 +122,6 @@ const initiateVideoCallFail = (message) => {
 };
 
 const InitiateVideoCall = (Data, navigate, t) => {
-
   return async (dispatch) => {
     dispatch(initiateVideoCallInitial());
     let form = new FormData();
@@ -141,14 +140,14 @@ const InitiateVideoCall = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_InitiateVideoCall_01".toLowerCase()
+                  "Video_VideoServiceManager_InitiateVideoCall_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 initiateVideoCallSuccess(
                   response.data.responseResult,
-                  t("Call-initiated-successfully")
-                )
+                  t("Call-initiated-successfully"),
+                ),
               );
               await dispatch(videoOutgoingCallFlag(true));
               const meetingHost = {
@@ -158,7 +157,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               localStorage.setItem("initiateVideoCall", true);
               sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
@@ -166,18 +165,22 @@ const InitiateVideoCall = (Data, navigate, t) => {
               if (Data.CallTypeID === 2) {
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(Data.RecipentIDs)
+                  JSON.stringify(Data.RecipentIDs),
+                );
+                localStorage.setItem(
+                  "callerGuid",
+                  response.data.responseResult.guid,
                 );
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_InitiateVideoCall_02".toLowerCase()
+                  "Video_VideoServiceManager_InitiateVideoCall_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                initiateVideoCallFail(t("Call-not-initiated-successfully"))
+                initiateVideoCallFail(t("Call-not-initiated-successfully")),
               );
               await dispatch(videoOutgoingCallFlag(false));
               await dispatch(normalizeVideoPanelFlag(false));
@@ -185,10 +188,9 @@ const InitiateVideoCall = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_InitiateVideoCall_03".toLowerCase()
+                  "Video_VideoServiceManager_InitiateVideoCall_03".toLowerCase(),
                 )
             ) {
-              
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.removeItem("CallType");
               localStorage.removeItem("callTypeID");
@@ -202,7 +204,6 @@ const InitiateVideoCall = (Data, navigate, t) => {
               await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
             }
           } else {
-            
             sessionStorage.setItem("NonMeetingVideoCall", false);
             localStorage.removeItem("CallType");
             localStorage.removeItem("callTypeID");
@@ -280,11 +281,14 @@ const VideoCallResponse = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_VideoCallResponse_01".toLowerCase()
+                  "Video_VideoServiceManager_VideoCallResponse_01".toLowerCase(),
                 )
             ) {
-              
               let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+              localStorage.setItem(
+                "receipentGuid",
+                response.data.responseResult.guid,
+              );
               if (activeCall === false) {
                 sessionStorage.setItem("NonMeetingVideoCall", false);
                 // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
@@ -298,16 +302,15 @@ const VideoCallResponse = (Data, navigate, t) => {
                 };
                 localStorage.setItem(
                   "meetinHostInfo",
-                  JSON.stringify(meetingHost)
+                  JSON.stringify(meetingHost),
                 );
                 await dispatch(
                   videoCallResponseSuccess(
                     response.data.responseResult,
-                    t("Video-Call-Status-Updated")
-                  )
+                    t("Video-Call-Status-Updated"),
+                  ),
                 );
               } else if (Data.CallStatusID === 3) {
-                
                 localStorage.removeItem("incommingCallType");
                 localStorage.removeItem("incommingCallTypeID");
                 localStorage.removeItem("incommingNewCallerID");
@@ -317,17 +320,17 @@ const VideoCallResponse = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_VideoCallResponse_02".toLowerCase()
+                  "Video_VideoServiceManager_VideoCallResponse_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                videoCallResponseFail(t("Call-not-initiated-successfully"))
+                videoCallResponseFail(t("Call-not-initiated-successfully")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_VideoCallResponse_03".toLowerCase()
+                  "Video_VideoServiceManager_VideoCallResponse_03".toLowerCase(),
                 )
             ) {
               await dispatch(videoCallResponseFail(t("Something-went-wrong")));
@@ -374,7 +377,6 @@ const getUserRecentCallsFail = (message) => {
 };
 
 const GetUserRecentCalls = (Data, navigate, t) => {
-
   return async (dispatch) => {
     dispatch(getUserRecentCallsInitial());
     let form = new FormData();
@@ -393,17 +395,17 @@ const GetUserRecentCalls = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserRecetCalls_01".toLowerCase()
+                  "Video_VideoServiceManager_GetUserRecetCalls_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getUserRecentCallsSuccess(response.data.responseResult, "")
+                getUserRecentCallsSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserRecetCalls_02".toLowerCase()
+                  "Video_VideoServiceManager_GetUserRecetCalls_02".toLowerCase(),
                 )
             ) {
               await dispatch(getUserRecentCallsFail(t("No-records-found")));
@@ -411,7 +413,7 @@ const GetUserRecentCalls = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserRecetCalls_03".toLowerCase()
+                  "Video_VideoServiceManager_GetUserRecetCalls_03".toLowerCase(),
                 )
             ) {
               await dispatch(getUserRecentCallsFail(t("Something-went-wrong")));
@@ -437,7 +439,6 @@ const ScrollRecentCalls = (response) => {
 };
 
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
-
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", getUserRecentCalls.RequestMethod);
@@ -456,17 +457,17 @@ const GetUserRecentCallsScroll = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserRecetCalls_01".toLowerCase()
+                  "Video_VideoServiceManager_GetUserRecetCalls_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getUserRecentCallsSuccess(response.data.responseResult, "")
+                getUserRecentCallsSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserRecetCalls_02".toLowerCase()
+                  "Video_VideoServiceManager_GetUserRecetCalls_02".toLowerCase(),
                 )
             ) {
               await dispatch(getUserRecentCallsFail(t("No-records-found")));
@@ -474,7 +475,7 @@ const GetUserRecentCallsScroll = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserRecetCalls_03".toLowerCase()
+                  "Video_VideoServiceManager_GetUserRecetCalls_03".toLowerCase(),
                 )
             ) {
               await dispatch(getUserRecentCallsFail(t("Something-went-wrong")));
@@ -532,20 +533,20 @@ const CallRequestReceived = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_CallRequestReceived_01".toLowerCase()
+                  "Video_VideoServiceManager_CallRequestReceived_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 callRequestReceivedSuccess(
                   response.data.responseResult,
-                  t("Record-updated")
-                )
+                  t("Record-updated"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_CallRequestReceived_02".toLowerCase()
+                  "Video_VideoServiceManager_CallRequestReceived_02".toLowerCase(),
                 )
             ) {
               await dispatch(callRequestReceivedFail(t("No-record-updated")));
@@ -553,11 +554,11 @@ const CallRequestReceived = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_CallRequestReceived_03".toLowerCase()
+                  "Video_VideoServiceManager_CallRequestReceived_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                callRequestReceivedFail(t("Something-went-wrong"))
+                callRequestReceivedFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -603,7 +604,6 @@ const getUserMissedCallCountFail = (message) => {
 };
 
 const GetUserMissedCallCount = (navigate, t) => {
-
   return async (dispatch) => {
     dispatch(getUserMissedCallCountInitial());
     let form = new FormData();
@@ -621,39 +621,39 @@ const GetUserMissedCallCount = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserMissedCallCount_01".toLowerCase()
+                  "Video_VideoServiceManager_GetUserMissedCallCount_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getUserMissedCallCountSuccess(response.data.responseResult, "")
+                getUserMissedCallCountSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserMissedCallCount_02".toLowerCase()
+                  "Video_VideoServiceManager_GetUserMissedCallCount_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getUserMissedCallCountSuccess(
                   response.data.responseResult,
-                  t("No-records-found")
-                )
+                  t("No-records-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetUserMissedCallCount_03".toLowerCase()
+                  "Video_VideoServiceManager_GetUserMissedCallCount_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getUserMissedCallCountFail(t("Something-went-wrong"))
+                getUserMissedCallCountFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              getUserMissedCallCountFail(t("Something-went-wrong"))
+              getUserMissedCallCountFail(t("Something-went-wrong")),
             );
           }
         } else {
@@ -684,7 +684,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          
+
           dispatch(LeaveCall(Data, navigate, t, flag, setIsTimerRunning));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -692,10 +692,9 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_LeaveCall_01".toLowerCase()
+                  "Video_VideoServiceManager_LeaveCall_01".toLowerCase(),
                 )
             ) {
-              
               localStorage.setItem("callTypeID", 0);
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("initiateVideoCall", false);
@@ -711,17 +710,17 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                 let NewRoomID = localStorage.getItem("NewRoomID");
                 let userID = localStorage.getItem("userID");
                 let incommingCallTypeID = localStorage.getItem(
-                  "incommingCallTypeID"
+                  "incommingCallTypeID",
                 );
                 let incommingCallType =
                   localStorage.getItem("incommingCallType");
                 let incommingNewCallerID = localStorage.getItem(
-                  "incommingNewCallerID"
+                  "incommingNewCallerID",
                 );
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
 
                 localStorage.setItem("isMeetingVideo", false);
@@ -758,33 +757,31 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
+                  "Video_VideoServiceManager_LeaveCall_02".toLowerCase(),
                 )
             ) {
-              
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("callTypeID", 0);
 
               if (flag === 1) {
-                
                 await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
                 let NewRoomID = localStorage.getItem("NewRoomID");
                 let userID = localStorage.getItem("userID");
                 let incommingCallTypeID = localStorage.getItem(
-                  "incommingCallTypeID"
+                  "incommingCallTypeID",
                 );
                 let incommingCallType =
                   localStorage.getItem("incommingCallType");
                 let incommingNewCallerID = localStorage.getItem(
-                  "incommingNewCallerID"
+                  "incommingNewCallerID",
                 );
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
 
                 localStorage.setItem("isMeetingVideo", false);
@@ -818,13 +815,13 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                 setIsTimerRunning(false);
               }
               await dispatch(
-                leaveCallAction(t("Call-disconnected-by-recipient"))
+                leaveCallAction(t("Call-disconnected-by-recipient")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_LeaveCall_03".toLowerCase()
+                  "Video_VideoServiceManager_LeaveCall_03".toLowerCase(),
                 )
             ) {
               await dispatch(leaveCallAction(t("Something-went-wrong")));
@@ -832,7 +829,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_LeaveCall_04".toLowerCase()
+                  "Video_VideoServiceManager_LeaveCall_04".toLowerCase(),
                 )
             ) {
               await dispatch(leaveCallAction(t("Something-went-wrong")));

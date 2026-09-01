@@ -71,6 +71,14 @@ const assigneesReducer = (state = initialState, action) => {
 
     case actions.SCHEDULE_NEW_MEETING_INIT:
       return { ...state, Loading: true };
+    case actions.SCHEDULE_NEW_MEETING_SUCCESS: {
+      return {
+        ...state,
+        ResponseMessage: action.message,
+        errorSeverity: "success",
+        Loading: false,
+      };
+    }
 
     case actions.SCHEDULE_NEW_MEETING_FAIL:
       return {

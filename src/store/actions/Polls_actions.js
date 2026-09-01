@@ -347,7 +347,7 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
                 savePolls_success(
                   response.data.responseResult,
                   Data?.PollDetails?.PollStatusID === 1
-                    ? t("Poll-save-successfully")
+                    ? t("Poll-saved-as-draft")
                     : t("Poll-published-successfully"),
                 ),
               );

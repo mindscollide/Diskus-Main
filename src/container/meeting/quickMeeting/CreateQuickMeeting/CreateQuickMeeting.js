@@ -1894,18 +1894,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    console.log(
-      "Checking",
-      createMeeting,
-      addedParticipantNameList,
-      objMeetingAgenda,
-    );
+
 
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
       notify(t("Please-add-atleast-one-participant"), "error");
       return;
     }
-    console.log("Checking");
 
     if (objMeetingAgenda.Title !== "") {
       console.log("Checking");
@@ -1950,7 +1944,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       MeetingStartTime: finalDateTime.slice(8, 14),
       MeetingEndTime: finalDateTime.slice(8, 14),
       MeetingLocation: createMeeting.MeetingLocation,
-      IsVideoCall: createMeeting.IsVideoCall,
+      IsVideoCall: HIDE_VIDEO === true ? false : createMeeting.IsVideoCall,
       IsChat: createMeeting.IsChat,
       MeetingReminderID: createMeeting.MeetingReminderID,
       MeetingAgendas:
@@ -2370,9 +2364,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     />
                   </Col>
                   <Col
-                    lg={4}
-                    md={4}
-                    sm={4}
+                    lg={5}
+                    md={5}
+                    sm={5}
                     xs={12}
                     className='UpdateCheckbox mt-2 '>
                     <Checkbox
@@ -2381,7 +2375,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       label={t("Meeting-chat")}
                       checked={createMeeting.IsChat}
                       onChange={onChange}
-                      classNameDiv='checkboxParentClass'></Checkbox>
+                      classNameDiv='checkboxParentClass'
+                    />
                   </Col>
                 </Row>
 
@@ -2459,7 +2454,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           value={
                             presenterValue?.value === 0 ? null : presenterValue
                           }
-                          placeholder='Select Presenter'
+                          placeholder={t("Select-Presenter")}
                           filterOption={filterFunc}
                         />
                       </Col>
@@ -2660,7 +2655,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       )}
                       classNamePrefix={"ModalOrganizerSelect"}
                       filterOption={filterFunc}
-                      placeholder='Please Select'
+                      placeholder={t("Please-select")}
                       onChange={handleChangeAttenddes}
                       isSearchable={true}
                       value={

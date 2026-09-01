@@ -93,6 +93,10 @@
   font-weight: 600;
   color: #6b7280;
 }
+body[dir="rtl"] .progressLabel {
+  right: auto;
+  left: 0;
+}
 
 .boldLabel {
   font-size: 12px;
@@ -110,18 +114,22 @@
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
+  padding: 4px 0;
 }
 
 .iconContainer {
   cursor: pointer;
-  padding: 4px;
-  margin-left: 8px;
+  /* padding: 4px;
+  margin-left: 8px; */
   transition: transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   /* Prevent icon from shrinking when title text is long */
   flex-shrink: 0;
+}
+body[dir="rtl"] .iconContainer img {
+  transform: rotate(180deg);
 }
 
 .iconContainer:hover {
@@ -131,6 +139,7 @@
 .hoverIcon {
   object-fit: contain;
 }
+
 
 .seeMoreClass {
   color: #6172d6;

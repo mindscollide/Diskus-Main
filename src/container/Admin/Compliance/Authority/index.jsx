@@ -397,7 +397,7 @@ const ManageAuthority = () => {
           <div style={{ display: "flex", gap: 8, marginTop: "10px" }}>
             {/* Reset Button */}
             <CustomButton
-              text='Reset'
+              text={t("Reset")}
               onClick={() => {
                 const allValues = statusOptions.map((s) => s.value);
                 setSelectedKeys(allValues); // select all checkboxes
@@ -903,7 +903,7 @@ const ManageAuthority = () => {
                             }
                             options={countryNames}
                             onChange={handleChangeCountry}
-                            placeholder='Country'
+                            placeholder={t("Country")}
                           />
                         </Col>
                         <Col lg={6} md={6} sm={12} xs={12}>

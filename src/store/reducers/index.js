@@ -62,3 +62,5 @@ export { default as UserReportReducer } from "./UserReport_Reducer";
 export { default as SignatureWorkFlowReducer } from "./WorkFlow_reducer";
 
 export { default as GuestVideoReducer } from "./GuestVideo_Reducer";
+
+export {default as NotificationRoutingReducer} from './NotificationRouting_reducer'

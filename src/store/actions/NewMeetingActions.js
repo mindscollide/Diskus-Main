@@ -2937,133 +2937,6 @@ const setProposedMeetingDateApiFunc = (
   };
 };
 
-//set Proposed Meeting Response Api
-
-const showPrposedMeetingReponsneInit = () => {
-  return {
-    type: actions.SET_MEETING_RESPONSE_INIT,
-  };
-};
-
-const showPrposedMeetingReponsneSuccess = (response, message) => {
-  return {
-    type: actions.SET_MEETING_RESPONSE_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const showPrposedMeetingReponsneFailed = (message) => {
-  return {
-    type: actions.SET_MEETING_RESPONSE_FAILED,
-    message: message,
-  };
-};
-
-const SetMeetingResponseApiFunc = (
-  Data,
-  navigate,
-  t,
-  setViewProposeDatePoll,
-) => {
-  return (dispatch) => {
-    dispatch(showPrposedMeetingReponsneInit());
-    let form = new FormData();
-    form.append("RequestMethod", setMeetingProposedDatesResponse.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axiosInstance
-      .post(meetingApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            SetMeetingResponseApiFunc(
-              Data,
-              navigate,
-              t,
-              setViewProposeDatePoll,
-            ),
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_01".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                showPrposedMeetingReponsneSuccess(
-                  response.data.responseResult,
-                  t("Your-vote-is-submitted-successfully"),
-                ),
-              );
-              let userID = localStorage.getItem("userID");
-              let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent =
-                localStorage.getItem("MeetingPageCurrent");
-              localStorage.setItem("MeetingCurrentView", 2);
-              setViewProposeDatePoll(false);
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber:
-                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-                PublishedMeetings:
-                  localStorage.getItem("MeetingCurrentView") &&
-                  Number(localStorage.getItem("MeetingCurrentView")) === 1
-                    ? true
-                    : false,
-                ProposedMeetings:
-                  localStorage.getItem("MeetingCurrentView") &&
-                  Number(localStorage.getItem("MeetingCurrentView")) === 2
-                    ? true
-                    : false,
-              };
-
-              dispatch(searchNewUserMeeting(navigate, searchData, t));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_02".toLowerCase(),
-                )
-            ) {
-              dispatch(showPrposedMeetingReponsneFailed(t("No-record-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_03".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                showPrposedMeetingReponsneFailed(t("Something-went-wrong")),
-              );
-            } else {
-              dispatch(
-                showPrposedMeetingReponsneFailed(t("Something-went-wrong")),
-              );
-            }
-          } else {
-            dispatch(
-              showPrposedMeetingReponsneFailed(t("Something-went-wrong")),
-            );
-          }
-        } else {
-          dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
-      });
-  };
-};
-
 //Aun work on meeting Material Init
 const meetingMaterialInit = () => {
   return {
@@ -8884,6 +8757,88 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, routePath, object = {}) => {
   };
 };
 
+const GetMeetingStatusDataApi = (navigate, t, Data, routePath, object = {}) => {
+  return async (dispatch) => {
+    await dispatch(GetMeetingStatusDataInit());
+
+    let form = new FormData();
+
+    form.append("RequestMethod", GetMeetingStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    try {
+      const response = await axiosInstance.post(meetingApi, form);
+
+      if (response.data.responseCode === 417) {
+        return await dispatch(
+          GetMeetingStatusDataAPI(navigate, t, Data, routePath, object),
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          const responseMessage =
+            response.data.responseResult.responseMessage?.toLowerCase() || "";
+
+          if (
+            responseMessage.includes(
+              "Meeting_MeetingServiceManager_GetMeetingStatusData_01".toLowerCase(),
+            )
+          ) {
+            dispatch(
+              GetMeetingStatusDataSuccess(response.data.responseResult, ""),
+            );
+
+            // Return complete response
+            return {
+              responseCode: 200,
+              responseResult: response.data.responseResult,
+            };
+          } else if (
+            responseMessage.includes(
+              "Meeting_MeetingServiceManager_GetMeetingStatusData_02".toLowerCase(),
+            )
+          ) {
+            dispatch(GetMeetingStatusDataFail(t("UnSuccessful")));
+
+            return response;
+          } else if (
+            responseMessage.includes(
+              "Meeting_MeetingServiceManager_GetMeetingStatusData_03".toLowerCase(),
+            )
+          ) {
+            dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+
+            return response;
+          } else {
+            dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+
+            return response;
+          }
+        } else {
+          dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+
+          return response;
+        }
+      } else {
+        dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+
+        return response;
+      }
+    } catch (error) {
+      dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+
+      // Return complete Axios error response if available
+      if (error.response) {
+        return error.response;
+      }
+
+      // Reject when there is no server response
+      throw error;
+    }
+  };
+};
+
 //Voting Agenda Poll has been Started Modal Action Method
 
 const AgendaPollVotingStartedAction = (response) => {
@@ -9602,7 +9557,15 @@ const meetingMinutesDownloaded = (response) => {
   };
 };
 
+const deleteMeetingMQtt = (response) => {
+  return {
+    type: actions.DELETE_MEETING_MQTT,
+    response,
+  };
+};
+
 export {
+  deleteMeetingMQtt,
   meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,
@@ -9680,7 +9643,6 @@ export {
   SetMeetingPollsApiFunc,
   setProposedMeetingDateApiFunc,
   GetAllProposedMeetingDateApiFunc,
-  SetMeetingResponseApiFunc,
   getMeetingMaterialAPI,
   GetAllUserAgendaRightsApiFunc,
   SaveUserAttachmentsPermissionApiFunc,
@@ -9788,4 +9750,5 @@ export {
   requestMeetingRecordingTranscript_clear,
   meetingTranscriptDownloaded,
   clearProposedWiseData,
+  GetMeetingStatusDataApi,
 };

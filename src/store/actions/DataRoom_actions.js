@@ -46,7 +46,46 @@ import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import axios from "axios";
-import diskusLogo from "../../assets/images/diskus-logo.png";
+import montserratBlackFont from "../../assets/fonts/Montserrat-Black.ttf";
+
+// Formats a Date as "6TH MAY 2026, 12:05 PM" for the watermark's date line.
+const formatWatermarkDateTime = (date) => {
+  const day = date.getDate();
+  const suffix =
+    day % 10 === 1 && day !== 11
+      ? "ST"
+      : day % 10 === 2 && day !== 12
+        ? "ND"
+        : day % 10 === 3 && day !== 13
+          ? "RD"
+          : "TH";
+  const monthNames = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMBER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER",
+  ];
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+  return `${day}${suffix} ${monthNames[date.getMonth()]} ${date.getFullYear()} | ${hours}:${minutes}:${seconds} ${ampm}`;
+};
+
+// Builds an SVG path for a rounded rectangle. pdf-lib's drawRectangle has no
+// corner-radius option, so the watermark's rounded border is drawn as a path
+// instead.
+const roundedRectPath = (w, h, r) =>
+  `M ${r} 0 L ${w - r} 0 Q ${w} 0 ${w} ${r} L ${w} ${h - r} Q ${w} ${h} ${w - r} ${h} L ${r} ${h} Q 0 ${h} 0 ${h - r} L 0 ${r} Q 0 0 ${r} 0 Z`;
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -130,10 +169,7 @@ const saveFilesApi = (
                   )
               ) {
                 await dispatch(
-                  saveFiles_success(
-                    response.data.responseMessage,
-                    "",
-                  ),
+                  saveFiles_success(response.data.responseMessage, ""),
                 );
                 if (viewFolderID !== null) {
                   dispatch(
@@ -3162,115 +3198,53 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
             "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase(),
           )
       ) {
-        const attachmentBlob = response.data.responseResult.attachmentBlob;
-        // annotationString may be null/empty if no annotations were saved yet
-        const annotationString =
-          response.data.responseResult.annotationString || "";
-        const ext = Name.split(".").pop().toLowerCase();
-        const userName = localStorage.getItem("name") || "";
-        const userEmail = localStorage.getItem("userEmail") || "";
-        const dateTimeStr = new Date().toLocaleString();
-        const footerText = `Downloaded by: ${userName}  |  ${dateTimeStr}`;
+        try {
+          const attachmentBlob = response.data.responseResult.attachmentBlob;
+          // annotationString may be null/empty if no annotations were saved yet
+          const annotationString =
+            response.data.responseResult.annotationString || "";
+          const ext = Name.split(".").pop().toLowerCase();
+          const userName = localStorage.getItem("name") || "";
+          const userEmail = localStorage.getItem("userEmail") || "";
+          const dateTimeStr = formatWatermarkDateTime(new Date());
 
-        let finalBlob;
+          let finalBlob;
 
-        if (ext === "pdf") {
-          const { PDFDocument, rgb, StandardFonts, degrees } =
-            await import("pdf-lib");
+          if (ext === "pdf") {
+            const { PDFDocument, rgb, degrees } = await import("pdf-lib");
+            const fontkitModule = await import("@pdf-lib/fontkit");
 
-          let pdfBytes;
+            let pdfBytes;
 
-          if (annotationString) {
-            // Step 1: flatten annotations (XFDF) into the PDF using Apryse
-            pdfBytes = await flattenAnnotationsIntoPdf(
-              attachmentBlob,
-              annotationString,
-            );
-          } else {
-            // No annotations — decode base64 directly
-            pdfBytes = Uint8Array.from(atob(attachmentBlob), (c) =>
-              c.charCodeAt(0),
-            );
-          }
-
-          // Step 2: stamp footer (logo + text) on every page using pdf-lib
-          const pdfDoc = await PDFDocument.load(pdfBytes);
-          const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
-          // ── Embed logo ──────────────────────────────────────────────────────
-          // Fetch the PNG bytes from the webpack-resolved asset URL, embed
-          // once into the document, then reuse the same embedded image on
-          // every page (pdf-lib does not re-encode it for each page).
-          let embeddedLogo = null;
-          let logoPdfWidth = 0;
-          const logoPdfHeight = 18; // points — fits neatly in a 24pt footer bar
-
-          try {
-            const logoResponse = await fetch(diskusLogo);
-            const logoArrayBuffer = await logoResponse.arrayBuffer();
-            embeddedLogo = await pdfDoc.embedPng(
-              new Uint8Array(logoArrayBuffer),
-            );
-            // Scale proportionally to the target height
-            const scaled = embeddedLogo.scaleToFit(9999, logoPdfHeight);
-            logoPdfWidth = scaled.width;
-          } catch (_) {
-            // Logo is not critical — footer still renders with text only
-          }
-
-          // Footer strip height in PDF points.
-          // This defines the area we fully own — anything that existed here
-          // (same footer from a previous download, document's own page-number
-          // footer, or any other content) is erased before we draw ours.
-          const FOOTER_HEIGHT = 38;
-
-          for (const page of pdfDoc.getPages()) {
-            const { width, height } = page.getSize();
-
-            // =========================================================
-            // FOOTER EXISTING CODE
-            // =========================================================
-
-            page.drawRectangle({
-              x: 0,
-              y: 0,
-              width,
-              height: FOOTER_HEIGHT,
-              color: rgb(1, 1, 1),
-              opacity: 1,
-            });
-
-            page.drawLine({
-              start: { x: 10, y: FOOTER_HEIGHT - 4 },
-              end: { x: width - 10, y: FOOTER_HEIGHT - 4 },
-              thickness: 0.5,
-              color: rgb(0.85, 0.85, 0.85),
-            });
-
-            if (embeddedLogo) {
-              page.drawImage(embeddedLogo, {
-                x: 10,
-                y: 8,
-                width: logoPdfWidth,
-                height: logoPdfHeight,
-              });
+            if (annotationString) {
+              // Step 1: flatten annotations (XFDF) into the PDF using Apryse
+              pdfBytes = await flattenAnnotationsIntoPdf(
+                attachmentBlob,
+                annotationString,
+              );
+            } else {
+              // No annotations — decode base64 directly
+              pdfBytes = Uint8Array.from(atob(attachmentBlob), (c) =>
+                c.charCodeAt(0),
+              );
             }
 
-            const textWidth = font.widthOfTextAtSize(footerText, 8);
+            // Step 2: stamp the watermark on every page using pdf-lib
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            pdfDoc.registerFontkit(fontkitModule.default ?? fontkitModule);
 
-            page.drawText(footerText, {
-              x: (width - textWidth) / 2,
-              y: 14,
-              size: 8,
-              font,
-              color: rgb(0.4, 0.4, 0.4),
-            });
+            // Montserrat Black (weight 900) — pdf-lib's built-in StandardFonts
+            // don't include Montserrat, so the actual font file already
+            // bundled for the app's own UI is embedded here directly.
+            const montserratResponse = await fetch(montserratBlackFont);
+            const montserratBytes = await montserratResponse.arrayBuffer();
+            const font = await pdfDoc.embedFont(
+              new Uint8Array(montserratBytes),
+            );
 
-            // =========================================================
-            // WATERMARK START (FIXED CENTERED VERSION)
-            // =========================================================
-
-            const watermarkFontSize = 27;
+            const WATERMARK_COLOR = rgb(96 / 255, 96 / 255, 96 / 255); // #606060
+            const WATERMARK_FONT_SIZE = 27.36;
+            const rotationAngle = degrees(5);
 
             const watermarkText = [
               (userName || "").toUpperCase(),
@@ -3278,90 +3252,150 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
               dateTimeStr.toUpperCase(),
             ];
 
-            const rotationAngle = degrees(5);
-
-            // Box size
             const boxWidth = 420;
-            const boxHeight = 180;
+            const boxHeight = 150;
+            const boxPadding = 24;
+            const maxTextWidth = boxWidth - boxPadding * 2;
+            const cornerRadius = 14;
 
-            // Page center
-            const centerX = width / 2;
-            const centerY = height / 2;
-
-            // Box center position
-            const boxX = centerX - boxWidth / 2;
-            const boxY = centerY - boxHeight / 2;
-
-            // Draw watermark container
-            page.drawRectangle({
-              x: boxX,
-              y: boxY,
-              width: boxWidth,
-              height: boxHeight,
-              borderWidth: 2,
-              borderColor: rgb(0.38, 0.38, 0.38),
-              color: rgb(1, 1, 1),
-              opacity: 0.02,
-              borderOpacity: 0.45,
-              rotate: rotationAngle,
+            // All three lines share ONE font size — the largest that still
+            // fits the widest line (e.g. a long email) inside the box — so
+            // they read as one consistent block instead of visibly different
+            // sizes per line.
+            let sharedFontSize = WATERMARK_FONT_SIZE;
+            watermarkText.forEach((line) => {
+              while (
+                sharedFontSize > 8 &&
+                font.widthOfTextAtSize(line, sharedFontSize) > maxTextWidth
+              ) {
+                sharedFontSize -= 0.5;
+              }
             });
 
-            // helper → TRUE CENTER INSIDE BOX (not page)
-            const drawCenteredLine = (text, offsetY) => {
-              const textWidth = font.widthOfTextAtSize(text, watermarkFontSize);
+            const angleRad = (5 * Math.PI) / 180;
+            const cos = Math.cos(angleRad);
+            const sin = Math.sin(angleRad);
 
-              // position relative to BOX center (not page center)
+            for (const page of pdfDoc.getPages()) {
+              const { width, height } = page.getSize();
+
+              const centerX = width / 2;
+              const centerY = height / 2;
+              const boxX = centerX - boxWidth / 2;
+              const boxY = centerY - boxHeight / 2;
               const boxCenterX = boxX + boxWidth / 2;
               const boxCenterY = boxY + boxHeight / 2;
 
-              page.drawText(text, {
-                x: boxCenterX - textWidth / 2,
-                y: boxCenterY + offsetY,
+              // drawSvgPath's anchor is the path's top-left corner, and — like
+              // drawText — pdf-lib rotates around whatever anchor point you
+              // give it, not around the box's center. Left as (boxX, boxY +
+              // boxHeight), the border would rotate around its own top-left
+              // corner while the text below rotates around boxCenter — two
+              // different pivots, so the two drift apart once rotated (this is
+              // exactly why the text looked off-center inside the border).
+              // Fix: rotate the anchor's offset from boxCenter ourselves first,
+              // the same way the text lines are handled below, so the border
+              // pivots around the SAME point as the text.
+              const anchorOffsetX = -boxWidth / 2;
+              const anchorOffsetY = boxHeight / 2;
+              const rotatedAnchorX = anchorOffsetX * cos - anchorOffsetY * sin;
+              const rotatedAnchorY = anchorOffsetX * sin + anchorOffsetY * cos;
 
-                size: watermarkFontSize,
-                font,
-                fontWeight: 900,
+              // Rounded-corner watermark container (pdf-lib's drawRectangle has
+              // no corner-radius option, so the border is an SVG path instead)
+              page.drawSvgPath(
+                roundedRectPath(boxWidth, boxHeight, cornerRadius),
+                {
+                  x: boxCenterX + rotatedAnchorX,
+                  y: boxCenterY + rotatedAnchorY,
+                  borderWidth: 1.5,
+                  borderColor: WATERMARK_COLOR,
+                  borderOpacity: 0.55,
+                  color: rgb(1, 1, 1),
+                  opacity: 0.02,
+                  rotate: rotationAngle,
+                },
+              );
 
-                rotate: rotationAngle,
+              // Scales with the (possibly shrunk) font size so the gap never
+              // collapses when a long email shrinks sharedFontSize a lot.
+              const lineGap = Math.max(14, sharedFontSize * 0.45);
 
-                color: rgb(0.38, 0.38, 0.38),
-                opacity: 0.45,
+              // All watermark text is uppercase, so there are no descenders —
+              // the font's real cap-height (no descender) is the correct
+              // "visual height" of each line. Using pdf-lib's actual font
+              // metrics here (instead of a guessed 0.8/0.2 split of the
+              // nominal font size) is what makes the block center correctly:
+              // a guessed split that doesn't match the embedded font's real
+              // ascent leaves more empty space on one side of the box than
+              // the other.
+              const capHeight = font.heightAtSize(sharedFontSize, {
+                descender: false,
               });
-            };
+              const totalTextHeight =
+                capHeight * watermarkText.length +
+                lineGap * (watermarkText.length - 1);
+              // Top edge of the whole text block, relative to boxCenterY.
+              let lineTop = totalTextHeight / 2;
 
-            // Vertical spacing inside box (perfect centering)
-            drawCenteredLine(watermarkText[0], 50);
-            drawCenteredLine(watermarkText[1], 0);
-            drawCenteredLine(watermarkText[2], -35);
+              // pdf-lib's `rotate` on drawText spins each line around ITS OWN
+              // (x, y) point — and that point sits at the text's LEFT edge.
+              // A wide line (e.g. a long email) rotated around its own left
+              // edge swings its far-right end up/down by textWidth*sin(angle),
+              // which for a ~340pt-wide line at 5° is ~30pt — enough to eat
+              // an entire line-gap on one side. Rotating each line's offset
+              // from the box center OURSELVES (below) before drawing makes
+              // every line pivot around its own CENTER instead, so that swing
+              // is symmetric (half above, half below) rather than one-sided.
+              watermarkText.forEach((text) => {
+                const textWidth = font.widthOfTextAtSize(text, sharedFontSize);
+                const baselineY = lineTop - capHeight;
 
-            // =========================================================
-            // WATERMARK END
-            // =========================================================
+                const offsetX = -textWidth / 2;
+                const offsetY = baselineY;
+                const rotatedOffsetX = offsetX * cos - offsetY * sin;
+                const rotatedOffsetY = offsetX * sin + offsetY * cos;
+
+                page.drawText(text, {
+                  x: boxCenterX + rotatedOffsetX,
+                  y: boxCenterY + rotatedOffsetY,
+                  size: sharedFontSize,
+                  font,
+                  rotate: rotationAngle,
+                  color: WATERMARK_COLOR,
+                  opacity: 0.45,
+                });
+
+                lineTop -= capHeight + lineGap;
+              });
+            }
+
+            const modifiedBytes = await pdfDoc.save();
+            finalBlob = new Blob([modifiedBytes], { type: "application/pdf" });
+          } else {
+            // Non-PDF: decode base64 and download as-is (no annotation merging)
+            const binary = atob(attachmentBlob);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+              bytes[i] = binary.charCodeAt(i);
+            }
+            finalBlob = new Blob([bytes]);
           }
 
-          const modifiedBytes = await pdfDoc.save();
-          finalBlob = new Blob([modifiedBytes], { type: "application/pdf" });
-        } else {
-          // Non-PDF: decode base64 and download as-is (no annotation merging)
-          const binary = atob(attachmentBlob);
-          const bytes = new Uint8Array(binary.length);
-          for (let i = 0; i < binary.length; i++) {
-            bytes[i] = binary.charCodeAt(i);
-          }
-          finalBlob = new Blob([bytes]);
+          const url = window.URL.createObjectURL(finalBlob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", Name);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+
+          dispatch(DownloadFileForDataRoomEnded(false));
+          dispatch(DownloadMessage(0));
+        } catch (error) {
+          console.log(error);
         }
-
-        const url = window.URL.createObjectURL(finalBlob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", Name);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-
-        dispatch(DownloadFileForDataRoomEnded(false));
-        dispatch(DownloadMessage(0));
       } else {
         // Blob not available — fall back to direct download
         dispatch(DownloadMessage(0));
@@ -3377,7 +3411,6 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
     }
   };
 };
-
 // const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
 //
 

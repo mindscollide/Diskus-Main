@@ -145,6 +145,14 @@ const ScheculeMeetingInit = () => {
     type: actions.SCHEDULE_NEW_MEETING_INIT,
   };
 };
+// SCHEDULE_NEW_MEETING_SUCCESS
+const ScheculeMeetingSuccess = (response, message) => {
+  return {
+    type: actions.SCHEDULE_NEW_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
 
 const ScheduleMeetingFail = (message) => {
   return {
@@ -235,6 +243,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                 dispatch(meetingLoaderDashboard(false));
                 // throw new Error(error);
               }
+              dispatch(ScheculeMeetingSuccess(response.data.responseResult, t("Meeting-published-successfully")))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

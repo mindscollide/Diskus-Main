@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styles from "./complianceby.module.css";
 import {
   ComplianceCard,
@@ -80,7 +80,7 @@ const ComplianceBy = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-2"
               >
-                <h3 className={styles.cardHeading}>Compliance By</h3>
+                <h3 className={styles.cardHeading}>{t("Compliance-by")}</h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -96,11 +96,11 @@ const ComplianceBy = () => {
             </Row>
           </div>
           <p className={styles.subText}>
-            Your progress across different compliance criteria
+            {t("Your-progress-across-different-compliance-creteria")}
           </p>
           <ComplianceEmptyState
             type="noComplianceByDashboard"
-            title="No compliance records available"
+            title={t("No-compliance-records-available")}
             layout="imageTop"
             imgMarginTop="60px"
           />
@@ -119,7 +119,7 @@ const ComplianceBy = () => {
                   sm={12}
                   className="d-flex align-items-center justify-content-start gap-4"
                 >
-                  <h3 className={styles.cardHeading}>Compliance By</h3>
+                  <h3 className={styles.cardHeading}>{t("Compliance-by")}</h3>
                   <Select
                     classNamePrefix="DashbaordSelectDropdown"
                     isSearchable={false}
@@ -135,7 +135,7 @@ const ComplianceBy = () => {
               </Row>
             </div>
             <p className={styles.subText}>
-              Your progress across different compliance criteria
+              {t("Your-progress-across-different-compliance-criteria")}
             </p>
 
             {/* Dynamic Rendering */}
@@ -154,7 +154,7 @@ const ComplianceBy = () => {
               ))}
             </div>
             <CustomButton
-              text={t("View All Compliances")}
+              text={t("View-all-compliances")}
               className={styles.ViewAllCompliancesButton}
               onClick={() => setMainComplianceTabs(2)}
             />

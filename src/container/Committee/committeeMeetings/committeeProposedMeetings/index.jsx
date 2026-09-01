@@ -18,7 +18,7 @@ import {
 } from "@/store/actions/NewMeetingActions";
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import moment from "moment";
@@ -50,10 +50,19 @@ import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/de
 import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
 import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
+import { MeetingProposedForOrganizerProposed, MeetingProposedForParticipantProposed } from "../../../../store/actions/NotificationRouting_actions";
 const CommitteeProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const proposedMeetingOrganizer = useSelector(
+    (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
+  );
+  const proposedMeetingParticipant = useSelector(
+    (state) => state.NotificationRoutingReducer.MeetingProposedForParticipant,
+  );
+
   const {
     isMeetingTypeFilter,
     setProposedMeetingData,
@@ -69,8 +78,7 @@ const CommitteeProposedMeetings = () => {
     currentLengthProposedCommitteeMeeting,
     setCurrentLengthProposedCommitteeMeeting,
   } = useCommitteeContext();
-  let MeetingProp = localStorage.getItem("meetingprop");
-  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
+
   const currentLanguage = localStorage.getItem("i18nextLng");
   const {
     deleteMeetingConfirmationModal,
@@ -84,10 +92,6 @@ const CommitteeProposedMeetings = () => {
 
   const deleteMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.deleteMeetingModal,
-  );
-
-  const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
 
   const handleClickActions = (record) => {
@@ -122,6 +126,59 @@ const CommitteeProposedMeetings = () => {
       return;
     }
   };
+  // proposedMeetingParticipant
+  useEffect(() => {
+    if (proposedMeetingParticipant !== null) {
+      try {
+        const {
+          meetingID,
+          responseResult: { sendResponseByDeadline },
+        } = proposedMeetingParticipant;
+
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: meetingID },
+            "ProposedMeetingViewForParticipant",
+            {
+              responseDeadline: sendResponseByDeadline,
+              meetingId: meetingID,
+              setResponseByDate,
+            },
+          ),
+        );
+        dispatch(MeetingProposedForParticipantProposed(null));
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [proposedMeetingParticipant]);
+
+  useEffect(() => {
+    if (proposedMeetingOrganizer !== null) {
+      try {
+        const { meetingID, responseResult } = proposedMeetingOrganizer;
+
+        dispatch(
+          getUserWiseProposedDatesForOrganizerApi(
+            navigate,
+            t,
+            { MeetingID: meetingID },
+            "",
+            {},
+          ),
+        );
+        dispatch(MeetingProposedForOrganizerProposed(null));
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [proposedMeetingOrganizer]);
 
   const handelChangePagination = async (current, PageSize) => {
     setCurrentPageProposedCommitteeMeeting(current);
@@ -143,76 +200,6 @@ const CommitteeProposedMeetings = () => {
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState("descend");
-  const [duplicatedRows, setDuplicatedRows] = useState([]);
-
-  // Meeting Type Filter State
-  const [meetingTypeFilterVisible, setMeetingTypeFilterVisible] =
-    useState(false);
-  const [selectedMeetingTypeValues, setSelectedMeetingTypeValues] = useState([
-    "1",
-    "2",
-    "3",
-  ]);
-  // Meeting Type Filter Handlers
-  const handleMeetingTypeMenuClick = (filterValue) => {
-    setSelectedMeetingTypeValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
-    );
-  };
-
-  const handleApplyMeetingTypeFilter = () => {
-    const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
-    );
-    setProposedMeetingData(filteredData);
-    setMeetingTypeFilterVisible(false);
-  };
-
-  const resetMeetingTypeFilter = () => {
-    setSelectedMeetingTypeValues(["1", "2", "3"]);
-    setProposedMeetingData(duplicatedRows);
-    setMeetingTypeFilterVisible(false);
-  };
-
-  const handleClickMeetingTypeChevron = () => {
-    setMeetingTypeFilterVisible((prevVisible) => !prevVisible);
-  };
-  // Meeting Type Filter Options
-  const meetingTypeFilters = [
-    { value: "1", text: "Board Meeting" },
-    { value: "2", text: "Committee Meeting" },
-    { value: "3", text: "Group Meeting" },
-  ];
-  // Meeting Type Filter Menu
-  const meetingTypeMenu = (
-    <Menu>
-      {meetingTypeFilters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
-          <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className='d-flex align-items-center justify-content-between p-1'>
-        <Button
-          text={"Reset"}
-          className={"FilterResetBtn"}
-          onClick={resetMeetingTypeFilter}
-        />
-        <Button
-          text={"Ok"}
-          disableBtn={selectedMeetingTypeValues.length === 0}
-          className={"ResetOkBtn"}
-          onClick={handleApplyMeetingTypeFilter}
-        />
-      </div>
-    </Menu>
-  );
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -265,7 +252,7 @@ const CommitteeProposedMeetings = () => {
     const handleDelete = () => {
       let Data = {
         MeetingID: record.pK_MDID,
-        StatusID: 4,
+        StatusID: 7,
       };
 
       setDeleteMeetingRecord(Data);
@@ -397,7 +384,9 @@ const CommitteeProposedMeetings = () => {
                   <div>
                     <CustomButton
                       className={styles.VoteMeetingButton}
-                      text={t("Vote")}
+                      text={
+                        record.meetingPoll?.isVoted ? t("Voted") : t("Vote")
+                      }
                       disableBtn={isViewPollShown ? true : false}
                       onClick={() => handleClickActions(record)}
                     />
@@ -512,12 +501,7 @@ const CommitteeProposedMeetings = () => {
         },
       },
     ];
-  }, [
-    meetingTitleSort,
-    meetingDateSort,
-    selectedMeetingTypeValues,
-    isMeetingTypeFilter,
-  ]);
+  }, [meetingTitleSort, meetingDateSort, isMeetingTypeFilter]);
 
   //
 

@@ -16,7 +16,7 @@
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
-  margin: 15px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 .itemSpacing {
@@ -62,6 +62,10 @@
   font-size: 12px;
   font-weight: 600;
   color: #6b7280;
+}
+body[dir="rtl"] .progressLabel {
+  right: auto;
+  left: 0;
 }
 
 /* Text sitting ON the bar */

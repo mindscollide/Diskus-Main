@@ -1,636 +1,919 @@
-import React, { useEffect, useState } from "react";
-import styles from "./ManageUsers.module.css";
-import searchicon from "../../../../../assets/images/searchicon.svg";
-import EditIcon2 from "../../../../../assets/images/Edit-Icon-blck.png";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+
 import { Col, Container, Row } from "react-bootstrap";
 import { Plus, Trash } from "react-bootstrap-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Select from "react-select";
+
+import styles from "./ManageUsers.module.css";
+
+import searchicon from "../../../../../assets/images/searchicon.svg";
+import EditIcon2 from "../../../../../assets/images/Edit-Icon-blck.png";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import whiteCrossIcon from "../../../../../assets/images/WhiteCrossIcon.svg";
+import greenCheck from "../../../../../assets/images/greenCheck.svg";
+
 import {
   Button,
   Checkbox,
   Table,
   TextField,
-  Notification,
 } from "../../../../../components/elements";
-import greenCheck from "../../../../../assets/images/greenCheck.svg";
-import { useTranslation } from "react-i18next";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
+
 import {
   showDeleteUsersModal,
   showEditUserModal,
 } from "../../../../../store/actions/UserMangementModalActions";
-import { useDispatch } from "react-redux";
-import DeleteUserModal from "../../ModalsUserManagement/DeleteUserModal/DeleteUserModal";
-import { useSelector } from "react-redux";
-import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
-import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
+
 import {
   AllOrganizationsUsersApi,
-  clearMessegesUserManagement,
   getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
+
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
+
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
+
+import DeleteUserModal from "../../ModalsUserManagement/DeleteUserModal/DeleteUserModal";
+
+import EditUserModal from "../../ModalsUserManagement/EditUserModal/EditUserModal";
+
+import SuccessfullyUpdateModal from "../../ModalsUserManagement/SuccessFullyUpdatedModal/SuccessfullyUpdateModal";
+
+const INITIAL_SEARCH_DETAILS = {
+  Name: "",
+  Email: "",
+  searchIsAdmin: false,
+  Status: {
+    value: "",
+    label: "",
+  },
+};
+
+const INITIAL_MANAGE_USER_SEARCH = {
+  searchValue: "",
+};
+
 const ManageUsers = () => {
+  // ============================================================
+  // Hooks
+  // ============================================================
+
   const { t } = useTranslation();
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
+  const [, SnackBar] = useSnackbar();
 
-  let organizationID = localStorage.getItem("organizationID");
+  // ============================================================
+  // Local Storage Values
+  // ============================================================
 
-  let userID = localStorage.getItem("userID");
+  const currentLanguage = localStorage.getItem("i18nextLng");
 
-  const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
+  const organizationID = Number(localStorage.getItem("organizationID"));
+
+  const userID = Number(localStorage.getItem("userID"));
+
+  const isTrial = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("isTrial")) || false;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // ============================================================
+  // Redux Selectors
+  // ============================================================
+
+  const organizationUserStats = useSelector(
     (state) => state.UserMangementReducer.getOrganizationUserStatsGraph,
   );
 
-  const UserMangementReducerallOrganizationUsersData = useSelector(
+  const allOrganizationUsersData = useSelector(
     (state) => state.UserMangementReducer.allOrganizationUsersData,
   );
 
-  
-
-  const UserMangementReducerResponseMessage = useSelector(
-    (state) => state.UserMangementReducer.ResponseMessage,
-  );
-
-  const UserManagementModalsdeleteUsersModal = useSelector(
+  const deleteUsersModal = useSelector(
     (state) => state.UserManagementModals.deleteUsersModal,
   );
 
-  const UserManagementModalseditUserModal = useSelector(
+  const editUserModal = useSelector(
     (state) => state.UserManagementModals.editUserModal,
   );
 
-  const UserManagementModalssuccessfullyUpdated = useSelector(
+  const successfullyUpdated = useSelector(
     (state) => state.UserManagementModals.successfullyUpdated,
   );
 
-  //States
-  const [searchbox, setsearchbox] = useState(false);
+  // ============================================================
+  // Local State
+  // ============================================================
+
+  const [searchbox, setSearchbox] = useState(false);
 
   const [userTrialAlert, setUserTrialAlert] = useState(true);
 
-  const [showSearches, setshowSearches] = useState(false);
-
-  const [manageUserGrid, setManageUserGrid] = useState([]);
+  const [showSearches, setShowSearches] = useState(false);
 
   const [editModalData, setEditModalData] = useState(null);
 
   const [deleteModalData, setDeleteModalData] = useState(null);
 
-  const [totalUserCount, setTotalUserCount] = useState(0);
+  const [enterPressed, setEnterPressed] = useState(false);
 
-  const [enterpressed, setEnterpressed] = useState(false);
+  const [manageUserSearch, setManageUserSearch] = useState(
+    INITIAL_MANAGE_USER_SEARCH,
+  );
 
-  const [flagForStopRerendring, setFlagForStopRerendring] = useState(false);
-
-  const [headCount, setHeadCount] = useState(0);
-
-  const [manangeUserSearch, setManangeUserSearch] = useState({
-    searchValue: "",
-  });
-
-  const [searchDetails, setsearchDetails] = useState({
-    Name: "",
-    Email: "",
-    searchIsAdmin: false,
-    Status: {
-      value: "",
-      label: "",
-    },
-  });
+  const [searchDetails, setSearchDetails] = useState(INITIAL_SEARCH_DETAILS);
 
   const [emailError, setEmailError] = useState("");
 
-  const [show, SnackBar] = useSnackbar();
+  /*
+   * We keep displayedUsers separately because your existing
+   * UI supports two search methods:
+   *
+   * 1. Search field + Enter
+   * 2. Advanced search popup
+   *
+   * This keeps the existing behavior predictable while
+   * removing unnecessary API refetches.
+   */
+  const [displayedUsers, setDisplayedUsers] = useState([]);
 
-  //AllOrganizationsUsers Api
+  // ============================================================
+  // Derived Redux Data
+  // ============================================================
+
+  const organizationUsers = useMemo(() => {
+    const users = allOrganizationUsersData?.organizationUsers;
+
+    return Array.isArray(users) ? users : [];
+  }, [allOrganizationUsersData]);
+
+  const selectedPackageDetails = useMemo(() => {
+    const details = organizationUserStats?.selectedPackageDetails;
+
+    return Array.isArray(details) ? details : [];
+  }, [organizationUserStats]);
+
+  const selectedUserPackageDetails = useMemo(() => {
+    const details = allOrganizationUsersData?.selectedPackageDetails;
+
+    return Array.isArray(details) ? details : [];
+  }, [allOrganizationUsersData]);
+
+  // ============================================================
+  // Derived Counts
+  // ============================================================
+
+  const totalUserCount = useMemo(() => {
+    return selectedPackageDetails.reduce((total, item) => {
+      const headCount = Number(item?.headCount ?? 0);
+
+      const packageAllotedUsers = Number(item?.packageAllotedUsers ?? 0);
+
+      return total + (headCount - packageAllotedUsers);
+    }, 0);
+  }, [selectedPackageDetails]);
+
+  const headCount = useMemo(() => {
+    if (selectedUserPackageDetails.length === 0) {
+      return 0;
+    }
+
+    /*
+     * Your old code used forEach + setHeadCount(),
+     * so effectively the last package value was used.
+     *
+     * We retain that exact result without triggering
+     * additional renders.
+     */
+    return Number(
+      selectedUserPackageDetails[selectedUserPackageDetails.length - 1]
+        ?.headCount ?? 0,
+    );
+  }, [selectedUserPackageDetails]);
+
+  // ============================================================
+  // API Loading
+  // ============================================================
+
+  const fetchOrganizationUsers = useCallback(() => {
+    const data = {
+      OrganizationID: organizationID,
+      RequestingUserID: userID,
+    };
+
+    dispatch(AllOrganizationsUsersApi(navigate, t, data));
+  }, [dispatch, navigate, organizationID, userID, t]);
+
   useEffect(() => {
-    if (!flagForStopRerendring) {
-      try {
-        let data = {
-          OrganizationID: Number(organizationID),
-          RequestingUserID: Number(userID),
-        };
-        dispatch(AllOrganizationsUsersApi(navigate, t, data));
-        dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
-      } catch {}
-      setFlagForStopRerendring(true);
+    try {
+      fetchOrganizationUsers();
+
+      dispatch(getOrganizationPackageUserStatsAPI(navigate, t));
+    } catch (error) {
+      console.error("Error loading organization users:", error);
     }
 
     return () => {
       setUserTrialAlert(true);
-      setshowSearches(false);
-      setsearchDetails({
-        Name: "",
-        Email: "",
-        Status: {
-          value: 0,
-          label: "",
-        },
-      });
+      setShowSearches(false);
     };
-  }, [flagForStopRerendring]);
+
+    /*
+     * Intentional mount-only behavior.
+     *
+     * The previous component used
+     * flagForStopRerendring state only to achieve
+     * the same thing.
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ============================================================
+  // Sync Redux Users With Table
+  // ============================================================
 
   useEffect(() => {
-    if (
-      UserMangementReducergetOrganizationUserStatsGraph !== null &&
-      UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails
-        .length > 0
-    ) {
-      let UserCount = 0;
-      UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails.forEach(
-        (data) => {
-          UserCount += data.headCount - data.packageAllotedUsers;
-        },
-      );
-      setTotalUserCount(UserCount);
+    setDisplayedUsers(organizationUsers);
+  }, [organizationUsers]);
+
+  // ============================================================
+  // Navigation
+  // ============================================================
+
+  const handleAddusers = useCallback(() => {
+    if (isTrial) {
+      navigate("/Admin/AddUsers");
+      return;
     }
-  }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
-  //AllOrganizationsUsers Api Data
-  useEffect(() => {
-    try {
-      const Users = UserMangementReducerallOrganizationUsersData;
-      Users.selectedPackageDetails.forEach((data) => {
-        setHeadCount(data.headCount);
+    navigate("/Admin/AddUsersUsermanagement");
+  }, [isTrial, navigate]);
+
+  // ============================================================
+  // Edit/Delete Modals
+  // ============================================================
+
+  const handleDeleteModal = useCallback(
+    (record) => {
+      setDeleteModalData(record);
+
+      dispatch(showDeleteUsersModal(true));
+    },
+    [dispatch],
+  );
+
+  const handleClickEditIcon = useCallback(
+    (record) => {
+      setEditModalData(record);
+
+      dispatch(showEditUserModal(true));
+    },
+    [dispatch],
+  );
+
+  // ============================================================
+  // Search Popup
+  // ============================================================
+
+  const handleSearchBoxOpen = useCallback(() => {
+    setSearchbox((previous) => !previous);
+
+    setManageUserSearch((previous) => ({
+      ...previous,
+      searchValue: "",
+    }));
+  }, []);
+
+  const handleCrossSearchBox = useCallback(() => {
+    setSearchbox(false);
+  }, []);
+
+  // ============================================================
+  // Trial Alert
+  // ============================================================
+
+  const handleTrialAlertRemove = useCallback(() => {
+    setUserTrialAlert(false);
+  }, []);
+
+  // ============================================================
+  // Advanced Search Inputs
+  // ============================================================
+
+  const resetGridIfSearchEmpty = useCallback(
+    (updatedSearchDetails) => {
+      const hasAnyFilter =
+        Boolean(updatedSearchDetails.Name?.trim()) ||
+        Boolean(updatedSearchDetails.Email?.trim()) ||
+        Boolean(updatedSearchDetails.Status?.value) ||
+        updatedSearchDetails.searchIsAdmin;
+
+      if (!hasAnyFilter) {
+        setDisplayedUsers(organizationUsers);
+        setShowSearches(false);
+        setEnterPressed(false);
+        setEmailError("");
+      }
+    },
+    [organizationUsers],
+  );
+
+  const handleSearchBox = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+
+      // NAME
+      if (name === "Name") {
+        // Allow only alphabets and spaces
+        const isValidName = /^[A-Za-z\s]*$/.test(value);
+
+        if (!isValidName) return;
+
+        setSearchDetails((previous) => {
+          const updated = {
+            ...previous,
+            Name: value, // Don't trim, otherwise user can't type spaces
+          };
+
+          resetGridIfSearchEmpty(updated);
+
+          return updated;
+        });
+
+        return;
+      }
+
+      // EMAIL
+      if (name === "Email") {
+        // ❌ Don't allow spaces anywhere in email
+        if (/\s/.test(value)) return;
+
+        setSearchDetails((previous) => {
+          const updated = {
+            ...previous,
+            Email: value,
+          };
+
+          resetGridIfSearchEmpty(updated);
+
+          return updated;
+        });
+      }
+    },
+    [resetGridIfSearchEmpty],
+  );
+  // ============================================================
+  // Status Options
+  // ============================================================
+
+  const statusOptions = useMemo(
+    () => [
+      {
+        value: "Enabled",
+        label: t("Enabled"),
+      },
+      {
+        value: "Disabled",
+        label: t("Disabled"),
+      },
+      {
+        value: "Locked",
+        label: t("Locked"),
+      },
+      {
+        value: "Closed",
+        label: t("Closed"),
+      },
+      {
+        value: "Dormant",
+        label: t("Dormant"),
+      },
+
+      /*
+       * Kept because it exists in your original code.
+       * Remove this option if "Delete" is not a real
+       * backend userStatus.
+       */
+      {
+        value: "Delete",
+        label: t("Delete"),
+      },
+    ],
+    [t],
+  );
+
+  const handleStatusChange = useCallback(
+    (selectedOption) => {
+      setSearchDetails((previous) => {
+        const updated = {
+          ...previous,
+          Status: selectedOption || {
+            value: "",
+            label: "",
+          },
+        };
+
+        resetGridIfSearchEmpty(updated);
+
+        return updated;
+      });
+    },
+    [resetGridIfSearchEmpty],
+  );
+
+  // ============================================================
+  // Admin Checkbox
+  // ============================================================
+
+  const handleSearchIsAdmin = useCallback(() => {
+    setSearchDetails((previous) => {
+      const updated = {
+        ...previous,
+        searchIsAdmin: !previous.searchIsAdmin,
+      };
+
+      resetGridIfSearchEmpty(updated);
+
+      return updated;
+    });
+  }, [resetGridIfSearchEmpty]);
+
+  // ============================================================
+  // Advanced Search
+  // ============================================================
+
+  const handleSearch = useCallback(() => {
+    const emailInput = searchDetails.Email?.trim() || "";
+
+    if (emailInput && !validateEmailEnglishAndArabicFormat(emailInput)) {
+      setEmailError(t("Enter-valid-email-address"));
+
+      return;
+    }
+
+    setEmailError("");
+
+    const nameInput = searchDetails.Name?.trim().toLowerCase() || "";
+
+    const normalizedEmail = emailInput.toLowerCase();
+
+    /*
+     * IMPORTANT:
+     * Use Status.value instead of Status.label.
+     *
+     * label is translated UI text while value
+     * corresponds to backend data.
+     */
+    const statusInput = searchDetails.Status?.value?.trim().toLowerCase() || "";
+
+    const filteredData = organizationUsers.filter((user) => {
+      const userName = user?.userName?.toLowerCase() || "";
+
+      const userEmail = user?.email?.toLowerCase() || "";
+
+      const userStatus = user?.userStatus?.toLowerCase() || "";
+
+      const matchesName = !nameInput || userName.includes(nameInput);
+
+      const matchesEmail =
+        !normalizedEmail || userEmail.includes(normalizedEmail);
+
+      const matchesStatus = !statusInput || userStatus === statusInput;
+
+      const matchesAdmin =
+        !searchDetails.searchIsAdmin || user?.userRole === "AdminUser";
+
+      /*
+       * Advanced filters normally represent:
+       *
+       * Name AND Email AND Status AND Admin
+       *
+       * The old implementation used .some(), meaning
+       * Name OR Email OR Status OR Admin.
+       */
+      return matchesName && matchesEmail && matchesStatus && matchesAdmin;
+    });
+
+    setDisplayedUsers(filteredData);
+
+    const hasAnyFilter =
+      Boolean(searchDetails.Name) ||
+      Boolean(searchDetails.Email) ||
+      Boolean(searchDetails.Status?.value) ||
+      searchDetails.searchIsAdmin;
+
+    setShowSearches(hasAnyFilter);
+
+    setSearchbox(false);
+
+    /*
+     * Advanced search is different from the simple
+     * Enter search, so reset the simple-search state.
+     */
+    setEnterPressed(false);
+  }, [organizationUsers, searchDetails, t]);
+
+  // ============================================================
+  // Reset Advanced Search
+  // ============================================================
+
+  const handleResetButton = useCallback(() => {
+    setSearchDetails({
+      ...INITIAL_SEARCH_DETAILS,
+    });
+
+    setManageUserSearch({
+      ...INITIAL_MANAGE_USER_SEARCH,
+    });
+
+    setDisplayedUsers(organizationUsers);
+
+    setShowSearches(false);
+    setEnterPressed(false);
+    setEmailError("");
+  }, [organizationUsers]);
+
+  // ============================================================
+  // Simple Search Input
+  // ============================================================
+
+  const handleSeachFieldManageUsers = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+
+      if (name !== "SearchVal") {
+        return;
+      }
+
+      setManageUserSearch({
+        searchValue: value,
       });
 
-      if (
-        Users &&
-        Users.organizationUsers &&
-        Users.organizationUsers.length > 0
-      ) {
-        
-        setManageUserGrid(
-          UserMangementReducerallOrganizationUsersData.organizationUsers,
-        );
-      } else {
-        setManageUserGrid([]);
-      }
-    } catch (error) {
-      
-    }
-  }, [UserMangementReducerallOrganizationUsersData]);
+      setSearchDetails((previous) => ({
+        ...previous,
+        Name: value.trimStart(),
+      }));
 
-  //Table Columns All Users
-  const ManageUsersColumn = [
-    {
-      title: t("Name"),
-      dataIndex: "userName",
-      key: "userName",
-      align: CurrentLanguage === "en" ? "left" : " right",
-      ellipsis: true,
-      sorter: (a, b) => {
-        if (a.userName && b.userName) {
-          return a.userName.localeCompare(b.userName);
-        } else {
-          return 0;
+      setEnterPressed(false);
+
+      // ✅ When input becomes empty, show all users
+      if (value.trim() === "") {
+        setDisplayedUsers(organizationUsers);
+        setShowSearches(false);
+      }
+    },
+    [organizationUsers],
+  );
+
+  // ============================================================
+  // Simple Search - Enter Key
+  // ============================================================
+
+  const handleKeyDownSearchManageUsers = useCallback(
+    (e) => {
+      if (e.key !== "Enter") {
+        return;
+      }
+
+      const searchValue =
+        manageUserSearch.searchValue?.trim().toLowerCase() || "";
+
+      const filteredData = organizationUsers.filter((user) => {
+        if (!searchValue) {
+          return true;
         }
-      },
-      render: (text, record) => {
-        return (
-          <>
-            <span className={styles["NameStylesTable"]}>{record.userName}</span>
-          </>
-        );
-      },
+
+        return user?.userName?.toLowerCase().includes(searchValue) || false;
+      });
+
+      setEnterPressed(true);
+      setShowSearches(Boolean(searchValue));
+
+      setDisplayedUsers(filteredData);
+
+      setSearchbox(false);
     },
-    {
-      title: t("Designation"),
-      dataIndex: "designation",
-      key: "designation",
-      align: CurrentLanguage === "en" ? "left" : " right",
-      ellipsis: true,
-      sorter: (a, b) => {
-        if (a.designation && b.designation) {
-          return a.designation.localeCompare(b.designation);
-        } else {
+    [manageUserSearch.searchValue, organizationUsers],
+  );
+
+  // ============================================================
+  // Reset Main Username Search
+  // ============================================================
+
+  const handleResettingPage = useCallback(() => {
+    setManageUserSearch({
+      ...INITIAL_MANAGE_USER_SEARCH,
+    });
+
+    setSearchDetails((previous) => ({
+      ...previous,
+      Name: "",
+    }));
+
+    setDisplayedUsers(organizationUsers);
+
+    setShowSearches(false);
+    setEnterPressed(false);
+    setEmailError("");
+  }, [organizationUsers]);
+
+  // ============================================================
+  // Remove Search Chip
+  // ============================================================
+
+  const handleRemoveSearchSnippet = useCallback(
+    (identifier) => {
+      const nextSearchDetails = {
+        ...searchDetails,
+        [identifier]: "",
+      };
+
+      setSearchDetails(nextSearchDetails);
+
+      if (identifier === "Name") {
+        setManageUserSearch({
+          searchValue: "",
+        });
+
+        setEnterPressed(false);
+      }
+
+      const nameInput = nextSearchDetails.Name?.trim().toLowerCase() || "";
+
+      const emailInput = nextSearchDetails.Email?.trim().toLowerCase() || "";
+
+      const statusInput =
+        nextSearchDetails.Status?.value?.trim().toLowerCase() || "";
+
+      const filteredData = organizationUsers.filter((user) => {
+        const userName = user?.userName?.toLowerCase() || "";
+
+        const userEmail = user?.email?.toLowerCase() || "";
+
+        const userStatus = user?.userStatus?.toLowerCase() || "";
+
+        const matchesName = !nameInput || userName.includes(nameInput);
+
+        const matchesEmail = !emailInput || userEmail.includes(emailInput);
+
+        const matchesStatus = !statusInput || userStatus === statusInput;
+
+        const matchesAdmin =
+          !nextSearchDetails.searchIsAdmin || user?.userRole === "AdminUser";
+
+        return matchesName && matchesEmail && matchesStatus && matchesAdmin;
+      });
+
+      setDisplayedUsers(filteredData);
+
+      const hasAnyFilter =
+        Boolean(nextSearchDetails.Name) ||
+        Boolean(nextSearchDetails.Email) ||
+        Boolean(nextSearchDetails.Status?.value) ||
+        nextSearchDetails.searchIsAdmin;
+
+      setShowSearches(hasAnyFilter);
+    },
+    [searchDetails, organizationUsers],
+  );
+
+  // ============================================================
+  // User Status Renderer
+  // ============================================================
+
+  const renderUserStatus = useCallback(
+    (status) => {
+      switch (status) {
+        case "Enabled":
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-enabled' />
+
+              <p className='m-0 userName FontArabicRegular'>{t("Enabled")}</p>
+            </div>
+          );
+
+        case "Disabled":
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-disabled' />
+
+              <p className='m-0 userName FontArabicRegular'>{t("Disabled")}</p>
+            </div>
+          );
+
+        case "Dormant":
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-dormant' />
+
+              <p className='m-0 userName FontArabicRegular'>{t("Dormant")}</p>
+            </div>
+          );
+
+        case "Locked":
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-locked' />
+
+              <p className='m-0 userName FontArabicRegular'>{t("Locked")}</p>
+            </div>
+          );
+
+        case "Closed":
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-closed' />
+
+              <p className='m-0 Disabled-Close userName FontArabicRegular'>
+                {t("Closed")}
+              </p>
+            </div>
+          );
+
+        default:
+          return null;
+      }
+    },
+    [t],
+  );
+
+  // ============================================================
+  // Table Columns
+  // ============================================================
+
+  const ManageUsersColumn = useMemo(
+    () => [
+      {
+        title: t("Name"),
+        dataIndex: "userName",
+        key: "userName",
+
+        align: currentLanguage === "en" ? "left" : "right",
+
+        ellipsis: true,
+
+        sorter: (a, b) => {
+          if (a?.userName && b?.userName) {
+            return a.userName.localeCompare(b.userName);
+          }
+
           return 0;
-        }
+        },
+
+        render: (_, record) => (
+          <span className={styles["NameStylesTable"]}>{record?.userName}</span>
+        ),
       },
-      render: (text, record) => {
-        return (
-          <>
-            <span className={styles["DesignationStyles"]}>
-              {record.designation}
-            </span>
-          </>
-        );
-      },
-    },
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      align: CurrentLanguage === "en" ? "left" : " right",
-      ellipsis: true,
-      render: (text, record) => {
-        return (
-          <>
-            <span className={styles["DesignationStyles"]}>{record.email}</span>
-          </>
-        );
-      },
-    },
-    {
-      title: t("Is-admin-also"),
-      dataIndex: "userRole",
-      key: "userRole",
-      align: CurrentLanguage === "en" ? "center" : " right",
-      ellipsis: true,
-      sorter: (a, b) => {
-        if (a.userRole && b.userRole) {
-          return a.userRole.localeCompare(b.userRole);
-        } else {
+
+      {
+        title: t("Designation"),
+        dataIndex: "designation",
+        key: "designation",
+
+        align: currentLanguage === "en" ? "left" : "right",
+
+        ellipsis: true,
+
+        sorter: (a, b) => {
+          if (a?.designation && b?.designation) {
+            return a.designation.localeCompare(b.designation);
+          }
+
           return 0;
-        }
+        },
+
+        render: (_, record) => (
+          <span className={styles["DesignationStyles"]}>
+            {record?.designation}
+          </span>
+        ),
       },
-      render: (text, record) => {
-        return (
-          <>
-            {(() => {
-              if (record.userRole === "AdminUser") {
-                return <img src={greenCheck} alt="" />;
-              } else {
-                return;
-              }
-            })()}
-          </>
-        );
+
+      {
+        title: t("Email"),
+        dataIndex: "email",
+        key: "email",
+
+        align: currentLanguage === "en" ? "left" : "right",
+
+        ellipsis: true,
+
+        render: (_, record) => (
+          <span className={styles["DesignationStyles"]}>{record?.email}</span>
+        ),
       },
-    },
-    {
-      title: t("User-status"),
-      dataIndex: "userStatus",
-      key: "userStatus",
-      align: CurrentLanguage === "en" ? "left" : " right",
-      ellipsis: true,
-      render: (text, record) => {
-        return (
-          <>
-            {(() => {
-              if (record.userStatus === "Enabled") {
-                return (
-                  <div className="d-flex">
-                    <span className="userstatus-signal-enabled"></span>
-                    <p className="m-0 userName FontArabicRegular">
-                      {t("Enabled")}
-                    </p>
-                  </div>
-                );
-              } else if (record.userStatus === "Disabled") {
-                return (
-                  <div className="d-flex">
-                    <span className="userstatus-signal-disabled"></span>
-                    <p className="m-0 userName FontArabicRegular">
-                      {t("Disabled")}
-                    </p>
-                  </div>
-                );
-              } else if (record.userStatus === "Dormant") {
-                return (
-                  <div className="d-flex">
-                    <span className="userstatus-signal-dormant"></span>
-                    <p className="m-0 userName FontArabicRegular">
-                      {t("Dormant")}
-                    </p>
-                  </div>
-                );
-              } else if (record.userStatus === "Locked") {
-                return (
-                  <div className="d-flex">
-                    <span className="userstatus-signal-locked"></span>
-                    <p className="m-0 userName FontArabicRegular">
-                      {t("Locked")}
-                    </p>
-                  </div>
-                );
-              } else if (record.userStatus === "Closed") {
-                return (
-                  <div className="d-flex">
-                    <span className="userstatus-signal-closed"></span>
-                    <p className="m-0 Disabled-Close userName FontArabicRegular">
-                      {t("Closed")}
-                    </p>
-                  </div>
-                );
-              } else {
-              }
-            })()}
-          </>
-        );
+
+      {
+        title: t("Is-admin-also"),
+        dataIndex: "userRole",
+        key: "userRole",
+
+        align: currentLanguage === "en" ? "center" : "right",
+
+        ellipsis: true,
+
+        sorter: (a, b) => {
+          if (a?.userRole && b?.userRole) {
+            return a.userRole.localeCompare(b.userRole);
+          }
+
+          return 0;
+        },
+
+        render: (_, record) =>
+          record?.userRole === "AdminUser" ? (
+            <img src={greenCheck} alt='' />
+          ) : null,
       },
-    },
-    {
-      title: t(""),
-      dataIndex: "Delete",
-      key: "Delete",
-      align: CurrentLanguage === "en" ? "center" : " right",
-      render: (text, record) => {
-        return (
+
+      {
+        title: t("User-status"),
+        dataIndex: "userStatus",
+        key: "userStatus",
+
+        align: currentLanguage === "en" ? "left" : "right",
+
+        ellipsis: true,
+
+        render: (_, record) => renderUserStatus(record?.userStatus),
+      },
+
+      {
+        title: t(""),
+        dataIndex: "Delete",
+        key: "Delete",
+
+        align: currentLanguage === "en" ? "center" : "right",
+
+        render: (_, record) => (
           <>
             {checkFeatureIDAvailability(27) ? (
-              <div className="edit-icon-edituser icon-edit-list icon-size-one beachGreen">
+              <div className='edit-icon-edituser icon-edit-list icon-size-one beachGreen'>
                 <i>
                   <img
-                    draggable="false"
-                    alt=""
+                    draggable='false'
+                    alt=''
                     src={EditIcon2}
                     onClick={() => handleClickEditIcon(record)}
                   />
                 </i>
               </div>
             ) : null}
+
             {checkFeatureIDAvailability(31) ? (
-              <i style={{ cursor: "pointer", color: "#000" }}>
+              <i
+                style={{
+                  cursor: "pointer",
+                  color: "#000",
+                }}>
                 <Trash size={22} onClick={() => handleDeleteModal(record)} />
               </i>
             ) : null}
           </>
-        );
+        ),
       },
-    },
-  ];
+    ],
+    [
+      currentLanguage,
+      handleClickEditIcon,
+      handleDeleteModal,
+      renderUserStatus,
+      t,
+    ],
+  );
 
-  //navigating to Add user Page
-  const handleAddusers = () => {
-    if (JSON.parse(localStorage.getItem("isTrial"))) {
-      navigate("/Admin/AddUsers");
-    } else {
-      navigate("/Admin/AddUsersUsermanagement");
-    }
-  };
-
-  // opening of the search box
-  const handleSearchBoxOpen = () => {
-    setsearchbox(!searchbox);
-    setManangeUserSearch({
-      ...manangeUserSearch,
-      searchValue: "",
-    });
-  };
-
-  //Closing  the search Box
-  const handleCrossSearchBox = () => {
-    setsearchbox(false);
-  };
-
-  //Red Strip Trial removed
-  const handleTrialAlertRemove = () => {
-    setUserTrialAlert(false);
-  };
-
-  //onChnage  of the Search Box Fields
-  const handleSearchBox = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-
-    if (name === "Name") {
-      if (value !== "") {
-        let valueCheck = /^[A-Za-z\s]*$/i.test(value);
-        if (valueCheck) {
-          setsearchDetails((prevState) => ({
-            ...prevState,
-            [name]: value.trim(),
-          }));
-        }
-      } else {
-        setsearchDetails((prevState) => ({
-          ...prevState,
-          Name: "",
-        }));
-      }
-    } else if (name === "Email") {
-      setsearchDetails((prevState) => ({
-        ...prevState,
-        Email: value.trim(),
-      }));
-    }
-  };
-
-  //manual filteration performed on the GRID
-  const handleSearch = () => {
-    let adminFound = false;
-    const emailInput = searchDetails.Email || "";
-
-    // Validate the email before proceeding
-    if (emailInput && !validateEmailEnglishAndArabicFormat(emailInput)) {
-      setEmailError(t("Enter-valid-email-address"));
-      return;
-    } else {
-      setEmailError("");
-    }
-
-    const filteredData =
-      UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
-        (user) => {
-          
-          const nameInput = searchDetails.Name || "";
-          const emailInput = searchDetails.Email || "";
-          const statusInput =
-            (searchDetails.Status && searchDetails.Status.label) || "";
-
-          const matchesName =
-            nameInput === "" ||
-            user.userName.toLowerCase().includes(nameInput.toLowerCase());
-          const matchesEmail =
-            emailInput === "" ||
-            user.email.toLowerCase().includes(emailInput.toLowerCase());
-          const matchesStatus =
-            statusInput === "" ||
-            user.userStatus.toLowerCase() === statusInput.toLowerCase();
-
-          const matchesAdmin =
-            !searchDetails.searchIsAdmin || user.userRole === "AdminUser";
-
-          if (matchesAdmin && searchDetails.searchIsAdmin) {
-            adminFound = true;
-          }
-
-          let conditionsToCheck = [];
-          if (nameInput !== "") conditionsToCheck.push(matchesName);
-          if (searchDetails.searchIsAdmin) conditionsToCheck.push(matchesAdmin);
-          if (emailInput !== "") conditionsToCheck.push(matchesEmail);
-          if (statusInput !== "") conditionsToCheck.push(matchesStatus);
-
-          if (conditionsToCheck.length === 0) return true;
-
-          return conditionsToCheck.some((condition) => condition);
-        },
-      );
-
-    // Set the showSearches to false if any admin user is found and searchIsAdmin is true
-    if (adminFound) {
-      setshowSearches(false);
-    } else {
-      setshowSearches(true);
-    }
-
-    setManageUserGrid(filteredData);
-    setsearchbox(false);
-  };
-
-  //handle removing the searched snippets
-  const handleRemoveSearchSnippet = (identifier) => {
-    const updatedSearchDetails = { ...searchDetails, [identifier]: "" };
-    setsearchDetails(updatedSearchDetails);
-
-    if (!updatedSearchDetails.Name && !updatedSearchDetails.Email) {
-      setshowSearches(false);
-      let data = {
-        OrganizationID: Number(organizationID),
-        RequestingUserID: Number(userID),
-      };
-      dispatch(AllOrganizationsUsersApi(navigate, t, data));
-    }
-  };
-
-  //Handle Reset Button
-  const handleResetButton = () => {
-    let data = {
-      OrganizationID: Number(organizationID),
-      RequestingUserID: Number(userID),
-    };
-    dispatch(AllOrganizationsUsersApi(navigate, t, data));
-    setshowSearches(false);
-    setsearchDetails({
-      Name: "",
-      Email: "",
-      Status: {
-        value: 0,
-        label: "",
-      },
-    });
-    setEmailError("");
-  };
-
-  //Handle Delele user Modal
-  const handleDeleteModal = (record) => {
-    setDeleteModalData(record);
-    dispatch(showDeleteUsersModal(true));
-  };
-
-  // handle Edit User Modal
-  const handleClickEditIcon = (record) => {
-    setEditModalData(record);
-    dispatch(showEditUserModal(true));
-  };
-
-  //Options For Search
-  const options = [
-    { value: "Enabled", label: t("Enabled") },
-    { value: "Disabled", label: t("Disabled") },
-    { value: "Locked", label: t("Locked") },
-    { value: "Closed", label: t("Closed") },
-    { value: "Dormant", label: t("Dormant") },
-    { value: "Delete", label: t("Delete") },
-  ];
-
-  //Status onChange Search
-  const handleStatusChange = (selectedOption) => {
-    setsearchDetails((prevDetails) => ({
-      ...prevDetails,
-      Status: selectedOption,
-    }));
-  };
-
-  //Search Field onChnage ManageUsers
-  const handleSeachFieldManageUsers = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "SearchVal") {
-      if (value !== "") {
-        setManangeUserSearch({
-          ...manangeUserSearch,
-          searchValue: value,
-        });
-        setsearchDetails((prevState) => ({
-          ...prevState,
-          Name: value.trim(),
-        }));
-      } else {
-        setManangeUserSearch({
-          ...manangeUserSearch,
-          searchValue: "",
-        });
-        setsearchDetails((prevState) => ({
-          ...prevState,
-          Name: "",
-        }));
-      }
-    }
-  };
-
-  //OnKeyDown Search ManageUsers
-  const handleKeyDownSearchManageUsers = (e) => {
-    if (e.key === "Enter") {
-      setEnterpressed(true);
-      const filteredData =
-        UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
-          (user) => {
-            const matchesName =
-              manangeUserSearch.searchValue === "" ||
-              user.userName
-                .toLowerCase()
-                .includes(manangeUserSearch.searchValue.toLowerCase());
-
-            return matchesName;
-          },
-        );
-      setshowSearches(true);
-      setManageUserGrid(filteredData);
-      setsearchbox(false);
-    }
-  };
-
-  //OnClick Search Cross Icon
-  const handleResettingPage = () => {
-    setManangeUserSearch({
-      ...manangeUserSearch,
-      searchValue: "",
-    });
-    setsearchDetails((prevState) => ({
-      ...prevState,
-      Name: "",
-    }));
-    let data = {
-      OrganizationID: Number(organizationID),
-      RequestingUserID: Number(userID),
-    };
-    dispatch(AllOrganizationsUsersApi(navigate, t, data));
-  };
-
-  //CheckBox IsAdmin Search
-  const handleSearchIsAdmin = () => {
-    setsearchDetails({
-      searchIsAdmin: !searchDetails.searchIsAdmin,
-    });
-  };
-
-  //Response Messege
+  // ============================================================
+  // JSX
+  // ============================================================
 
   return (
     <Container>
-      <Row className={"mt-3 row"}>
+      {/* ======================================================
+          Header
+      ====================================================== */}
+
+      <Row className='mt-3 row'>
         <Col
           lg={6}
           md={6}
           sm={6}
           xs={12}
-          className="d-flex gap-4 align-items-center"
-        >
+          className='d-flex gap-4 align-items-center'>
           <label className={styles["Edit-Main-Heading"]}>
             {t("Manage-user")}
           </label>
+
           {checkFeatureIDAvailability(26) && totalUserCount > 0 ? (
             <Button
               text={t("Add-users")}
@@ -640,22 +923,27 @@ const ManageUsers = () => {
             />
           ) : null}
         </Col>
-        <Col lg={1} md={1} sm={1} xs={12}></Col>
+
+        <Col lg={1} md={1} sm={1} xs={12} />
+
+        {/* ====================================================
+            Search Section
+        ==================================================== */}
+
         <Col
           lg={5}
           md={5}
           sm={5}
           xs={12}
-          className="justify-content-end d-block align-items-center m-0 p-0"
-        >
-          <span className="position-relative">
+          className='justify-content-end d-block align-items-center m-0 p-0'>
+          <span className='position-relative'>
             <TextField
               placeholder={t("Search-on-user-name")}
-              name={"SearchVal"}
-              value={manangeUserSearch.searchValue}
+              name='SearchVal'
+              value={manageUserSearch.searchValue}
               onKeyDown={handleKeyDownSearchManageUsers}
-              applyClass={"PollingSearchInput"}
-              labelclass="d-none"
+              applyClass='PollingSearchInput'
+              labelclass='d-none'
               change={handleSeachFieldManageUsers}
               inputicon={
                 <>
@@ -664,24 +952,22 @@ const ManageUsers = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      {manangeUserSearch.searchValue && enterpressed ? (
-                        <>
-                          <img
-                            src={BlackCrossIcon}
-                            className="cursor-pointer"
-                            draggable="false"
-                            alt=""
-                            onClick={handleResettingPage}
-                          />
-                        </>
+                      className='d-flex gap-2 align-items-center'>
+                      {manageUserSearch.searchValue && enterPressed ? (
+                        <img
+                          src={BlackCrossIcon}
+                          className='cursor-pointer'
+                          draggable='false'
+                          alt=''
+                          onClick={handleResettingPage}
+                        />
                       ) : null}
+
                       <img
                         src={searchicon}
-                        alt=""
+                        alt=''
                         className={styles["Search_Bar_icon_class"]}
-                        draggable="false"
+                        draggable='false'
                         onClick={handleSearchBoxOpen}
                       />
                     </Col>
@@ -691,6 +977,10 @@ const ManageUsers = () => {
               iconclassname={styles["SearchIconClass"]}
             />
 
+            {/* ================================================
+                Advanced Search Popup
+            ================================================ */}
+
             {searchbox ? (
               <>
                 <Row>
@@ -699,57 +989,63 @@ const ManageUsers = () => {
                     md={12}
                     sm={12}
                     xs={12}
-                    className={styles["SearchBoxManageUsers"]}
-                  >
-                    <Row className="mt-2">
+                    className={styles["SearchBoxManageUsers"]}>
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
                         xs={12}
-                        className="d-flex justify-content-end align-items-center"
-                      >
+                        className='d-flex justify-content-end align-items-center'>
                         <img
                           src={BlackCrossIcon}
-                          alt="Cross Icon"
-                          className="cursor-pointer"
+                          alt='Cross Icon'
+                          className='cursor-pointer'
                           onClick={handleCrossSearchBox}
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+
+                    {/* Name */}
+
+                    <Row className='mt-4'>
                       <Col lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                          labelclass={"d-none"}
+                          labelclass='d-none'
                           placeholder={t("Name")}
-                          name={"Name"}
+                          name='Name'
                           value={searchDetails.Name}
-                          type="text"
-                          applyClass={"usermanagementTextField"}
+                          type='text'
+                          applyClass='usermanagementTextField'
                           change={handleSearchBox}
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-4">
+
+                    {/* Email + Status */}
+
+                    <Row className='mt-4'>
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <TextField
-                          labelclass={"d-none"}
+                          labelclass='d-none'
                           placeholder={t("Email")}
-                          name={"Email"}
-                          applyClass={"usermanagementTextField"}
-                          type="email"
+                          name='Email'
+                          applyClass='usermanagementTextField'
+                          type='email'
                           value={searchDetails.Email}
                           change={handleSearchBox}
                         />
                       </Col>
+
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <Select
                           placeholder={t("Status")}
-                          options={options}
+                          options={statusOptions}
                           value={searchDetails.Status}
                           onChange={handleStatusChange}
                         />
                       </Col>
+
                       <Row>
                         <Col>
                           {emailError && (
@@ -760,48 +1056,52 @@ const ManageUsers = () => {
                         </Col>
                       </Row>
                     </Row>
-                    <Row className="mt-4">
+
+                    {/* Admin + Buttons */}
+
+                    <Row className='mt-4'>
                       <Col
                         lg={5}
                         md={5}
                         sm={12}
                         xs={12}
-                        className="flex-column flex-wrap"
-                      >
+                        className='flex-column flex-wrap'>
                         <span className={styles["NameCreateAddtional"]}>
                           {t("Organization-role")}
                         </span>
+
                         <Row>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
                             xs={12}
-                            className="d-flex gap-2"
-                          >
+                            className='d-flex gap-2'>
                             <Checkbox
-                              classNameCheckBoxP="m-0 p-0"
+                              classNameCheckBoxP='m-0 p-0'
                               checked={searchDetails.searchIsAdmin}
                               onChange={handleSearchIsAdmin}
                             />
+
                             <span className={styles["AdminAlsoClass"]}>
                               {t("Is-admin-also")}
                             </span>
                           </Col>
                         </Row>
                       </Col>
+
                       <Col
                         lg={7}
                         md={7}
                         sm={12}
                         xs={12}
-                        className="d-flex justify-content-end gap-2 align-items-center"
-                      >
+                        className='d-flex justify-content-end gap-2 align-items-center'>
                         <Button
                           text={t("Reset")}
                           className={styles["ResetButtonSearchBox"]}
                           onClick={handleResetButton}
                         />
+
                         <Button
                           text={t("Search")}
                           className={styles["SearchButtonSearchBox"]}
@@ -813,30 +1113,38 @@ const ManageUsers = () => {
                 </Row>
               </>
             ) : null}
-            <Row className="mt-1">
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+
+            {/* ================================================
+                Search Chips
+            ================================================ */}
+
+            <Row className='mt-1'>
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                 {showSearches && searchDetails.Name !== "" ? (
                   <div className={styles["SearchablesItems"]}>
                     <span className={styles["Searches"]}>
                       {searchDetails.Name}
                     </span>
+
                     <img
                       src={whiteCrossIcon}
-                      alt="White Cross"
+                      alt='White Cross'
                       className={styles["CrossIcon_Class"]}
                       width={13}
                       onClick={() => handleRemoveSearchSnippet("Name")}
                     />
                   </div>
                 ) : null}
+
                 {showSearches && searchDetails.Email !== "" ? (
                   <div className={styles["SearchablesItems"]}>
                     <span className={styles["Searches"]}>
                       {searchDetails.Email}
                     </span>
+
                     <img
                       src={whiteCrossIcon}
-                      alt="White Cross"
+                      alt='White Cross'
                       className={styles["CrossIcon_Class"]}
                       width={13}
                       onClick={() => handleRemoveSearchSnippet("Email")}
@@ -848,33 +1156,39 @@ const ManageUsers = () => {
           </span>
         </Col>
       </Row>
-      {JSON.parse(localStorage.getItem("isTrial")) && (
+
+      {/* ======================================================
+          Trial Alert
+      ====================================================== */}
+
+      {isTrial && (
         <>
           <Row
             className={`mt-3 ${
               userTrialAlert ? styles["fadeIn"] : styles["fadeOut"]
-            }`}
-          >
+            }`}>
             <Col lg={12} md={12} sm={12} className={styles["RedSrtip"]}>
               <Row>
                 <Col lg={11} md={11} sm={12} xs={12}>
                   <span className={styles["RedStripContent"]}>
-                    {t("Maximum")}&nbsp;
-                    <span>{headCount}</span>&nbsp;
+                    {t("Maximum")}
+                    &nbsp;
+                    <span>{headCount}</span>
+                    &nbsp;
                     <span>{t("Users-can-be-created-in-trial-version")}</span>
                   </span>
                 </Col>
+
                 <Col
                   lg={1}
                   md={1}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <img
                     src={BlackCrossIcon}
-                    alt="Black Cross"
-                    className="cursor-pointer"
+                    alt='Black Cross'
+                    className='cursor-pointer'
                     width={13}
                     onClick={handleTrialAlertRemove}
                   />
@@ -884,28 +1198,38 @@ const ManageUsers = () => {
           </Row>
         </>
       )}
+
+      {/* ======================================================
+          Users Table
+      ====================================================== */}
+
       <Row className={styles["tablecolumnrow"]}>
         <Col lg={12} md={12} sm={12} xs={12}>
           <Table
-            rows={manageUserGrid}
+            rows={displayedUsers}
             column={ManageUsersColumn}
             scroll={{ y: 400 }}
             pagination={false}
-            className={"EditUserModal"}
+            className='EditUserModal'
           />
         </Col>
       </Row>
-      {UserManagementModalsdeleteUsersModal && (
+
+      {/* ======================================================
+          Modals
+      ====================================================== */}
+
+      {deleteUsersModal && (
         <DeleteUserModal deleteModalData={deleteModalData} />
       )}
-      {UserManagementModalseditUserModal && (
-        <EditUserModal editModalData={editModalData} />
-      )}
-      {UserManagementModalssuccessfullyUpdated && (
+
+      {editUserModal && <EditUserModal editModalData={editModalData} />}
+
+      {successfullyUpdated && (
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
-      
-    {SnackBar}
+
+      {SnackBar}
     </Container>
   );
 };

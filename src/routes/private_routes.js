@@ -94,7 +94,11 @@ const PrivateRoutes = () => {
         ) {
           // Add action-specific logic here if needed
           const parts = currentUrl.split("action=")[1];
+
           localStorage.setItem("meetingprop", parts);
+          localStorage.setItem("MeetingCurrentView", 2);
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
         }
 
         if (
@@ -204,6 +208,9 @@ const PrivateRoutes = () => {
         ) {
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("UserMeetPropoDatPoll", parts);
+          localStorage.setItem("MeetingCurrentView", 2);
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
         }
 
         // Action: Poll Expire
@@ -360,7 +367,7 @@ const PrivateRoutes = () => {
         }
 
         // DisKus/compliance?comptask_action
-            if (
+        if (
           currentUrl
             .toLowerCase()
             .includes("Diskus/compliance?comptask_action".toLowerCase())
@@ -380,7 +387,6 @@ const PrivateRoutes = () => {
             "documentViewer_action=",
           );
           localStorage.setItem("documentViewer", getValue);
-          navigate("/Diskus/dataroom");
         }
         if (
           currentUrl
