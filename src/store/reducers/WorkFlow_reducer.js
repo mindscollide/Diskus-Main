@@ -557,6 +557,15 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         errorSeverity: null,
       };
     }
+    case actions.CLEAR_SIGNATURE_VIEWER_DATA: {
+      return {
+        ...state,
+        getWorkfFlowByFileId: null,
+        getAllFieldsByWorkflowID: null,
+        getSignatureFileAnnotationResponse: null,
+        getDataroomAnnotation: null,
+      };
+    }
     case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_INIT: {
       return {
         ...state,

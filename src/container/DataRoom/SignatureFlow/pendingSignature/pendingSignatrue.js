@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +15,7 @@ import {
   addUpdateFieldValueApi,
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
+  clearSignatureViewerData,
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
@@ -28,6 +35,60 @@ import {
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { useApryseDocument } from "../../../../context/DocumentContext";
+
+// ─── Apryse tool patching (module scope, restorable) ─────────────────────────
+//
+// Apryse tool classes are shared prototypes, so patching them is a GLOBAL
+// mutation, not a per-component one. Guarding it with a per-component ref
+// meant a second mount re-wrapped the prototype, chaining the new wrapper onto
+// the previous mount's closure — which still captured a dead annotationManager
+// and a stale ownership Set, permanently swallowing clicks until a full reload.
+//
+// Here the prototype is wrapped at most once per page load, and the wrapper
+// delegates to `activeOwnershipCheck`, which the currently mounted screen
+// re-points at itself. Unmount restores the untouched originals.
+let toolsPatched = false;
+const originalToolHandlers = new Map();
+let activeOwnershipCheck = null;
+
+const patchSignatureTools = (Tools, ownershipCheck) => {
+  // Always re-point at the live component, even when already patched.
+  activeOwnershipCheck = ownershipCheck;
+  if (toolsPatched) return;
+  toolsPatched = true;
+
+  [Tools?.SignatureCreateTool, Tools?.SignatureFormFieldCreateTool]
+    .filter(Boolean)
+    .forEach((ToolClass) => {
+      const down = ToolClass.prototype.mouseLeftDown;
+      const up = ToolClass.prototype.mouseLeftUp;
+      originalToolHandlers.set(ToolClass, { down, up });
+
+      // Fail OPEN: with no check registered the original handler runs.
+      // Fields belonging to other users are still protected by the
+      // annotation-level Locked/ReadOnly flags applyAnnotationLocks() sets,
+      // which Apryse honours on its own — so a missing check costs a
+      // redundant guard instead of making the whole document inert.
+      ToolClass.prototype.mouseLeftDown = function (e) {
+        if (!activeOwnershipCheck || activeOwnershipCheck(e))
+          return down.call(this, e);
+      };
+      ToolClass.prototype.mouseLeftUp = function (e) {
+        if (!activeOwnershipCheck || activeOwnershipCheck(e))
+          return up.call(this, e);
+      };
+    });
+};
+
+const unpatchSignatureTools = () => {
+  activeOwnershipCheck = null;
+  originalToolHandlers.forEach(({ down, up }, ToolClass) => {
+    ToolClass.prototype.mouseLeftDown = down;
+    ToolClass.prototype.mouseLeftUp = up;
+  });
+  originalToolHandlers.clear();
+  toolsPatched = false;
+};
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
@@ -561,8 +622,9 @@ const PendingSignatureViewer = () => {
    */
   const currentUserFieldNamesRef = useRef(new Set());
 
-  // Guard so the SignatureCreateTool mouse handlers are patched only once.
-  const signatureToolPatchedRef = useRef(false);
+  // NOTE: the signature tool patch guard now lives at module scope
+  // (patchSignatureTools / unpatchSignatureTools) because it mutates shared
+  // Apryse prototypes, which a per-component ref cannot correctly guard.
 
   /**
    * Set of field names that the current user has already filled / signed during
@@ -581,14 +643,47 @@ const PendingSignatureViewer = () => {
     signerDataRef.current = signerData;
   }, [signerData]);
 
-  useEffect(() => {
-    userAnnotationsRef.current = userAnnotations;
-    // Recompute the current user's field names whenever annotations update
-    currentUserFieldNamesRef.current = getUserFieldNames(
-      userAnnotations,
-      getCurrentUserID(),
-    );
-  }, [userAnnotations]);
+  // Ownership is derived during render and mirrored into refs immediately,
+  // NOT inside a useEffect. A ref-sync effect runs after render and in
+  // declaration order, so anything reading currentUserFieldNamesRef earlier in
+  // the same commit (the viewer bootstrap, documentLoaded, Apryse click
+  // callbacks) could observe an empty Set — i.e. "I own nothing" — and treat
+  // every field, including the user's own, as not theirs. Deriving it here
+  // guarantees the value is correct before any effect in this component runs.
+  const currentUserID = useMemo(() => getCurrentUserID(), []);
+
+  const currentUserFieldNames = useMemo(
+    () => getUserFieldNames(userAnnotations, currentUserID),
+    [userAnnotations, currentUserID],
+  );
+
+  userAnnotationsRef.current = userAnnotations;
+  currentUserFieldNamesRef.current = currentUserFieldNames;
+
+  // ─── First-render readiness gate ───────────────────────────────────────────
+  //
+  // The viewer must not bootstrap until every input it depends on has arrived.
+  // Keying initialisation on attachmentBlob alone could start the viewer while
+  // signerData was still empty (so the header rendered a bare "Close" button
+  // instead of Decline/Submit) and while ownership was still unresolved (so
+  // every field, including the user's own, was treated as someone else's).
+  //
+  // getAllFieldsByWorkflowID is deliberately NOT required: it is dispatched as
+  // a failure (null) in the "no fields" branch of the API, so requiring it
+  // would hang this screen forever for documents that legitimately have none.
+  // A document with no actors at all has no signers to wait for; requiring
+  // signerData unconditionally would leave such a document on a blank screen
+  // forever instead of showing the read-only "Close" header.
+  const hasActors = Boolean(
+    getWorkfFlowByFileId?.workFlow?.bundleModels?.length,
+  );
+
+  const isViewerDataReady = Boolean(
+    pdfData.attachmentBlob &&
+      getWorkfFlowByFileId &&
+      getSignatureFileAnnotationResponse &&
+      (!hasActors || signerData.length > 0),
+  );
 
   useEffect(() => {
     userAnnotationsCopyRef.current = userAnnotationsCopy;
@@ -1035,11 +1130,7 @@ const PendingSignatureViewer = () => {
 
   // ✅ WebViewer initialisation with signature tool override
   useEffect(() => {
-    if (
-      !pdfData.attachmentBlob ||
-      webViewerInitialized.current ||
-      !viewerRef.current
-    )
+    if (!isViewerDataReady || webViewerInitialized.current || !viewerRef.current)
       return;
 
     const init = async () => {
@@ -1072,41 +1163,33 @@ const PendingSignatureViewer = () => {
         // loads — so it is always in place regardless of XFDF timing. The
         // handlers read currentUserFieldNamesRef lazily at click time, so the
         // ref being empty at install time is fine.
-        const SignatureCreateTool = Tools.SignatureCreateTool;
-        if (SignatureCreateTool && !signatureToolPatchedRef.current) {
-          signatureToolPatchedRef.current = true;
+        // True only when the click lands on a signature widget that belongs
+        // to the current user and is still signable (not signed, not locked).
+        const isOwnSignableWidget = (e) => {
+          try {
+            // Fail OPEN while ownership is unresolved. Returning false here
+            // used to mean "not yours", so any hiccup in the ownership data
+            // silently swallowed every click and the signature modal never
+            // opened until a reload. Non-owned fields remain protected by the
+            // Locked/ReadOnly flags applyAnnotationLocks() applies.
+            if (!currentUserFieldNamesRef.current.size) return true;
 
-          const origMouseDown = SignatureCreateTool.prototype.mouseLeftDown;
-          const origMouseUp = SignatureCreateTool.prototype.mouseLeftUp;
+            const widget = annotationManager.getAnnotationByMouseEvent(e);
+            if (!widget || typeof widget.getField !== "function") return false;
+            const fieldName = widget.getField()?.name;
+            return (
+              !!fieldName &&
+              currentUserFieldNamesRef.current.has(fieldName) &&
+              !widget.getAssociatedSignatureAnnotation() &&
+              !widget.ReadOnly
+            );
+          } catch {
+            // Errors must not make the document inert either.
+            return true;
+          }
+        };
 
-          // True only when the click lands on a signature widget that belongs
-          // to the current user and is still signable (not signed, not locked).
-          const isOwnSignableWidget = (e) => {
-            try {
-              const widget = annotationManager.getAnnotationByMouseEvent(e);
-              if (!widget || typeof widget.getField !== "function")
-                return false;
-              const fieldName = widget.getField()?.name;
-              return (
-                !!fieldName &&
-                currentUserFieldNamesRef.current.has(fieldName) &&
-                !widget.getAssociatedSignatureAnnotation() &&
-                !widget.ReadOnly
-              );
-            } catch {
-              return false;
-            }
-          };
-
-          SignatureCreateTool.prototype.mouseLeftDown = function (e) {
-            if (isOwnSignableWidget(e)) return origMouseDown.call(this, e);
-            // click outside an owned signature field — ignore
-          };
-          SignatureCreateTool.prototype.mouseLeftUp = function (e) {
-            if (isOwnSignableWidget(e)) return origMouseUp.call(this, e);
-            // click outside an owned signature field — ignore
-          };
-        }
+        patchSignatureTools(Tools, isOwnSignableWidget);
 
         UI.loadDocument(handleBlobFiles(pdfData.attachmentBlob), {
           filename: pdfData.title,
@@ -1199,13 +1282,12 @@ const PendingSignatureViewer = () => {
             } catch (err) {}
           }
 
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              UI.setToolMode(Core.Tools.ToolNames.EDIT);
+          // Start in EDIT mode deterministically, right after annotations and
+          // locks are in place. This previously ran inside a
+          // requestAnimationFrame + 200ms setTimeout, which fired unconditionally
+          // and could reset the tool out from under a click already in flight.
+          UI.setToolMode(Core.Tools.ToolNames.EDIT);
 
-              console.log("Current Tool:", UI.getToolMode()?.name);
-            }, 200);
-          });
           documentViewer.refreshAll();
           documentViewer.updateView();
         });
@@ -1216,7 +1298,33 @@ const PendingSignatureViewer = () => {
     };
 
     init();
-  }, [pdfData.attachmentBlob]);
+  }, [isViewerDataReady]);
+
+  // ─── Unmount teardown ──────────────────────────────────────────────────────
+  //
+  // Runs once, on unmount only. Without this the screen left behind:
+  //   • patched Apryse tool prototypes (global, and re-wrapped on every mount)
+  //   • an undisposed WebViewer instance (a large WASM heap plus workers)
+  //   • the previous document's Redux state, which the next viewer's
+  //     `if (!x) return;` guards accept immediately as if it were its own
+  useEffect(() => {
+    return () => {
+      unpatchSignatureTools();
+
+      try {
+        pendingSignatureViewer.current?.UI?.dispose?.();
+      } catch {
+        /* disposal is best-effort */
+      }
+      pendingSignatureViewer.current = null;
+
+      // Allow a remount to bootstrap a fresh viewer.
+      webViewerInitialized.current = false;
+
+      dispatch(clearSignatureViewerData());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── annotationChanged + fieldChanged event listeners ──────────────────────
   //
