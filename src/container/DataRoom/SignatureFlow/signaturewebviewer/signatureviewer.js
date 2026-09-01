@@ -28,6 +28,7 @@ import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 import {
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
+  clearSignatureViewerData,
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
@@ -1046,6 +1047,29 @@ const SignatureViewer = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfData.attachmentBlob]); // init once — guard ref prevents double run
+
+  // ─── Unmount teardown ──────────────────────────────────────────────────────
+  //
+  // Without this the screen left behind an undisposed WebViewer instance (a
+  // large WASM heap plus its workers) and the previous document's Redux state,
+  // which the next signature screen's `if (!x) return;` guards would accept
+  // immediately as though it were its own data.
+  useEffect(() => {
+    return () => {
+      try {
+        signatureDocumentViewer.current?.UI?.dispose?.();
+      } catch {
+        /* disposal is best-effort */
+      }
+      signatureDocumentViewer.current = null;
+
+      // Allow a remount to bootstrap a fresh viewer.
+      viewerInitialized.current = false;
+
+      dispatch(clearSignatureViewerData());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ─── Modal helpers ────────────────────────────────────────────────────────
 

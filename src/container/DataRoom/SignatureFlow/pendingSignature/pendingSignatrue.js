@@ -423,12 +423,18 @@ const applyAnnotationLocks = (
         } catch {}
       }
     } else {
-      // Owner: Unlock the field
+      // Owner: fillable, but NOT repositionable.
+      //
+      // This screen lets a signer FILL their own fields — it is not a layout
+      // editor. Only the creator (signatureviewer.js) may place or move a
+      // field. Clearing Locked/ReadOnly is what makes the field clickable and
+      // fillable; NoResize/NoMove/NoRotate stay ON so the widget cannot be
+      // dragged out of position or resized while signing.
       annot.Locked = false;
       annot.ReadOnly = false;
-      annot.NoResize = false;
-      annot.NoMove = false;
-      annot.NoRotate = false;
+      annot.NoResize = true;
+      annot.NoMove = true;
+      annot.NoRotate = true;
 
       if (isWidget) {
         try {
@@ -1396,12 +1402,14 @@ const PendingSignatureViewer = () => {
         // Clear ReadOnly flag for re-sign support
         field.flags.set("ReadOnly", false);
 
+        // Re-signable, but still not repositionable — mirrors the owner
+        // branch of applyAnnotationLocks (fill yes, move/resize no).
         field.widgets?.forEach((annot) => {
           annot.Locked = false;
           annot.ReadOnly = false;
-          annot.NoResize = false;
-          annot.NoMove = false;
-          annot.NoRotate = false;
+          annot.NoResize = true;
+          annot.NoMove = true;
+          annot.NoRotate = true;
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
