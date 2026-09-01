@@ -384,7 +384,47 @@ const applyAnnotationLocks = (
   annotations,
   currentUserID,
   currentUserFieldNames,
+  // Ids of annotations this user created interactively in this session.
+  // Authoritative and timing-independent: unlike
+  // getAssociatedSignatureAnnotation(), which may not be wired up yet at the
+  // moment the "add" event fires, this is known the instant the annotation
+  // is created — so a freshly drawn signature is never mistaken for someone
+  // else's and locked.
+  sessionOwnedAnnotIds,
 ) => {
+  // ── Pre-pass: identify signature "stamps" owned by the current user ────────
+  //
+  // The visible signature Apryse creates when a Sig field is signed is a
+  // SEPARATE annotation from the widget it fills. It has no field (so the
+  // widget test below misses it) and no "<label>-<userID>" Subject (so the
+  // Subject test misses it too) — so it was classified as someone else's and
+  // Locked the instant the user created it. That is why the delete icon
+  // appeared but did nothing, and why the field could not be signed again.
+  //
+  // Resolve ownership through the widget the stamp is associated with, and
+  // scan the FULL annotation list — annotationChanged calls this with only the
+  // changed annotations, which would never include the owning widget.
+  const ownedSignatureAnnotIds = new Set();
+  try {
+    annotationManager.getAnnotationsList().forEach((a) => {
+      try {
+        if (
+          typeof a.getField !== "function" ||
+          typeof a.getAssociatedSignatureAnnotation !== "function"
+        )
+          return;
+        const fieldName = a.getField()?.name;
+        if (!fieldName || !currentUserFieldNames.has(fieldName)) return;
+        const assoc = a.getAssociatedSignatureAnnotation();
+        if (assoc?.Id) ownedSignatureAnnotIds.add(assoc.Id);
+      } catch {
+        /* ignore individual annotation failures */
+      }
+    });
+  } catch {
+    /* ignore — fall through to the per-annotation tests below */
+  }
+
   annotations.forEach((annot) => {
     const isWidget =
       typeof annot.getField === "function" ||
@@ -392,7 +432,15 @@ const applyAnnotationLocks = (
 
     let isOwner = false;
 
-    if (isWidget) {
+    if (
+      annot.Id &&
+      (ownedSignatureAnnotIds.has(annot.Id) ||
+        sessionOwnedAnnotIds?.has(annot.Id))
+    ) {
+      // The current user's own signature stamp — must stay deletable so it
+      // can be removed and the field re-signed.
+      isOwner = true;
+    } else if (isWidget) {
       try {
         const field = annot.getField?.();
         const fieldName = field?.name;
@@ -640,6 +688,15 @@ const PendingSignatureViewer = () => {
    * XFDF parsing always returns empty for signature fields even after signing).
    */
   const filledFieldsRef = useRef(new Set());
+
+  /**
+   * Ids of annotations this user created interactively in this session
+   * (signature stamps, above all). annotationChanged only reaches the locking
+   * code for non-imported changes, i.e. things this user just did — so these
+   * are unambiguously theirs and must never be locked, otherwise the signature
+   * they just drew becomes undeletable and the field cannot be re-signed.
+   */
+  const sessionOwnedAnnotIdsRef = useRef(new Set());
 
   // ── Sync state → refs ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -1181,12 +1238,42 @@ const PendingSignatureViewer = () => {
             if (!currentUserFieldNamesRef.current.size) return true;
 
             const widget = annotationManager.getAnnotationByMouseEvent(e);
-            if (!widget || typeof widget.getField !== "function") return false;
+            if (!widget) return false;
+
+            // A signed field is covered by its signature stamp, which sits on
+            // top and has no field of its own — so the click lands on the stamp
+            // rather than the widget. Treat a stamp belonging to one of the
+            // current user's own fields as clickable, otherwise re-signing is
+            // impossible once a signature is present.
+            if (typeof widget.getField !== "function") {
+              return annotationManager.getAnnotationsList().some((a) => {
+                try {
+                  if (
+                    typeof a.getField !== "function" ||
+                    typeof a.getAssociatedSignatureAnnotation !== "function"
+                  )
+                    return false;
+                  const fn = a.getField()?.name;
+                  if (!fn || !currentUserFieldNamesRef.current.has(fn))
+                    return false;
+                  return a.getAssociatedSignatureAnnotation()?.Id === widget.Id;
+                } catch {
+                  return false;
+                }
+              });
+            }
+
             const fieldName = widget.getField()?.name;
+
+            // An already-signed field is intentionally still clickable so the
+            // signer can re-sign it. Previously this also required
+            // `!widget.getAssociatedSignatureAnnotation()`, which meant that
+            // once a field was signed the click was swallowed and the modal
+            // could never reopen — combined with the delete button being
+            // disabled, a signature became permanent.
             return (
               !!fieldName &&
               currentUserFieldNamesRef.current.has(fieldName) &&
-              !widget.getAssociatedSignatureAnnotation() &&
               !widget.ReadOnly
             );
           } catch {
@@ -1201,10 +1288,17 @@ const PendingSignatureViewer = () => {
           filename: pdfData.title,
         });
 
+        // NOTE: "annotationDeleteButton" and "annotationPopup" are deliberately
+        // NOT disabled — they are the only way a signer can select their own
+        // signature and delete it in order to re-sign. Disabling them made a
+        // signature permanent: it could not be removed, and the field could not
+        // be signed again. This is safe because applyAnnotationLocks() sets
+        // Locked = true on every annotation that is not the current user's, and
+        // Apryse's select/delete honours Locked — so a signer can only ever
+        // delete their own signature.
         UI.disableElements([
           "linkButton",
           "annotationStyleEditButton",
-          "annotationDeleteButton",
           "indexPanel",
           "formFieldPanel",
           "groupedLeftHeaderButtons",
@@ -1250,7 +1344,6 @@ const PendingSignatureViewer = () => {
           "viewControlsOverlay",
           "contextMenuPopup",
           "signaturePanelButton",
-          "annotationPopup",
           "richTextPopup",
           "toolbarGroup-Annotate",
           "leftPanelButton",
@@ -1284,6 +1377,7 @@ const PendingSignatureViewer = () => {
                 annotationManager.getAnnotationsList(),
                 currentUserID,
                 currentUserFieldNamesRef.current,
+                sessionOwnedAnnotIdsRef.current,
               );
             } catch (err) {}
           }
@@ -1350,6 +1444,21 @@ const PendingSignatureViewer = () => {
     const annotHandler = async (annotations, action, { imported }) => {
       if (imported) return;
 
+      // Anything reaching here is a change this user just made interactively,
+      // so record additions as theirs before any locking runs. Without this a
+      // freshly drawn signature stamp — which has no field and no
+      // "<label>-<userID>" Subject — fails every ownership test and is locked
+      // the moment it is created, making it impossible to clear or re-sign.
+      if (action === "add") {
+        annotations.forEach((a) => {
+          if (a?.Id) sessionOwnedAnnotIdsRef.current.add(a.Id);
+        });
+      } else if (action === "delete") {
+        annotations.forEach((a) => {
+          if (a?.Id) sessionOwnedAnnotIdsRef.current.delete(a.Id);
+        });
+      }
+
       try {
         const xfdfString = await annotationManager.exportAnnotations();
         const snapshot = userAnnotationsRef.current.map((u) => ({
@@ -1366,6 +1475,7 @@ const PendingSignatureViewer = () => {
         annotations,
         currentUserID,
         currentUserFieldNamesRef.current,
+        sessionOwnedAnnotIdsRef.current,
       );
     };
 
