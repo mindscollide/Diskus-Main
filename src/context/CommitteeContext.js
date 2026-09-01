@@ -13,7 +13,13 @@ import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
 } from "../hooks/meetingResponse/response";
-import { committeeProposedMeetingAction } from "../store/actions/Committee_actions";
+import {
+  committeeProposedMeetingAction,
+  getMeetingByCommitteeIdApi,
+  clearGetMeetingByCommitteeID,
+} from "../store/actions/Committee_actions";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const CommitteeContext = createContext();
 
@@ -21,6 +27,8 @@ export const CommitteeProvider = ({ children }) => {
   const [ViewCommitteePage, setViewCommitteePage] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   // =========================
   // REDUX
   // =========================
@@ -45,6 +53,10 @@ export const CommitteeProvider = ({ children }) => {
   );
   const mqttMeetingOrgRemoved = useSelector(
     (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
+  );
+
+  const mqttMeetingDeleted = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingDeleted,
   );
 
   const committeeProposedMeetingStatusProposedMqttData = useSelector(
@@ -157,6 +169,25 @@ export const CommitteeProvider = ({ children }) => {
     setCommitteeDraftMeetingData((prev) => prev.filter(filterFn));
   };
 
+  const loadCommitteeMeetings = async ({
+    PublishedMeetings,
+    ProposedMeetings,
+  }) => {
+    dispatch(clearGetMeetingByCommitteeID());
+    let searchData = {
+      CommitteeID: Number(committeeInfo?.committeeID),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings,
+      ProposedMeetings,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+  };
+
   // =========================
   // EFFECT (MAIN DATA SYNC)
   // =========================
@@ -259,6 +290,14 @@ export const CommitteeProvider = ({ children }) => {
       }
     } catch (error) {}
   }, [MeetingStatusEnded]);
+
+  useEffect(() => {
+    if (mqttMeetingDeleted !== null) {
+      const { meetingID } = mqttMeetingDeleted;
+
+      removeMeetingFromAllLists(meetingID);
+    }
+  }, [mqttMeetingDeleted]);
 
   // useEffect(() => {
   //   if (!allMeetingsSocketData) return;
@@ -618,6 +657,8 @@ export const CommitteeProvider = ({ children }) => {
         setCurrentPageDraftCommitteeMeeting,
         currentLengthDraftCommitteeMeeting,
         setCurrentLengthDraftCommitteeMeeting,
+
+        loadCommitteeMeetings,
       }}>
       {children}
     </CommitteeContext.Provider>

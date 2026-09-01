@@ -146,6 +146,13 @@ const WATCH_CONFIGS = [
     selector: (s) => s.settingReducer.ResponseMessage,
     severitySelector: (s) => s.settingReducer.errorSeverity,
   },
+  // User Level Configurations (Calendar/Tasks/Meetings/etc "Update" button) —
+  // its own message field, UDPATEUSERSETTING_SUCCESS writes here instead of
+  // the generic ResponseMessage above, so it needs its own watch entry.
+  {
+    selector: (s) => s.settingReducer.UpdateUserSettingResponseMessage,
+    severitySelector: (s) => s.settingReducer.errorSeverity,
+  },
 
   // ── User Management ───────────────────────────────────────────────────────
   {

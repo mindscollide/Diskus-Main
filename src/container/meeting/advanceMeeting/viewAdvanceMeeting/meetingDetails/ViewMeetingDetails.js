@@ -1036,7 +1036,7 @@ const ViewMeetingDetails = () => {
             <Container>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <p> Disconnect current call? </p>
+                  <p> {t("Disconnect-current-call")} </p>
                 </Col>
               </Row>
               <Row className='mt-3 mb-4'>

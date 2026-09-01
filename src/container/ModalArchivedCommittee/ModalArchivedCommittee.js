@@ -25,7 +25,7 @@ const ModalArchivedCommittee = ({
   const navigate = useNavigate();
   const { CommitteeReducer } = useSelector((state) => state);
   const CommitteeReducerrealtimeCommitteeStatus = useSelector(
-    (state) => state.CommitteeReducer.realtimeCommitteeStatus
+    (state) => state.CommitteeReducer.realtimeCommitteeStatus,
   );
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [totalLength, setTotalLength] = useState(0);
@@ -87,7 +87,7 @@ const ModalArchivedCommittee = ({
 
         setGetCommitteeData((prevData) => {
           const exists = prevData.some(
-            (item) => item.committeeID === committeeID
+            (item) => item.committeeID === committeeID,
           );
 
           if (committeeStatusID === 2) {
@@ -103,9 +103,7 @@ const ModalArchivedCommittee = ({
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {
@@ -124,6 +122,9 @@ const ModalArchivedCommittee = ({
       }));
 
       setGetCommitteeData(updatedCommittees); // Update the state with the new array
+    } else {
+      setGetCommitteeData([]);
+      setTotalLength(0);
     }
   }, [CommitteeReducer.ArcheivedCommittees]);
 
@@ -231,13 +232,13 @@ const ModalArchivedCommittee = ({
                               onClickFunction={() =>
                                 viewCommitteeModal(
                                   data.committeeID,
-                                  data.committeeStatusID
+                                  data.committeeStatusID,
                                 )
                               }
                               titleOnCLick={() =>
                                 viewCommitteeModal(
                                   data.committeeID,
-                                  data.committeeStatusID
+                                  data.committeeStatusID,
                                 )
                               }
                               changeHandleStatus={handleChangeCommitteeStatus}
@@ -262,7 +263,13 @@ const ModalArchivedCommittee = ({
                       })
                     ) : (
                       <Row>
-                        <Col>{t("No-archived-record-founds")}</Col>
+                        <Col className="h-100">
+                          <span
+                            className={styles["ArchivedCommitteesNotfound"]}>
+                            {" "}
+                            {t("No-archived-record-founds")}
+                          </span>
+                        </Col>
                       </Row>
                     )}
                   </Row>

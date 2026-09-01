@@ -145,7 +145,7 @@ const Organizers = () => {
         ),
       },
       {
-        title: "RSVP",
+        title: t("RSVP"),
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         align: "left",

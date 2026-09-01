@@ -79,10 +79,16 @@ const App = () => {
     const PUBLIC_PATHS = ["/", "/login", "/signup", "/forgot-password"];
 
     const isPublicPath = (pathname) => {
-      return PUBLIC_PATHS.some(
-        (path) =>
-          pathname.toLowerCase() === path ||
-          pathname.toLowerCase().startsWith(path),
+      const lowerPathname = pathname.toLowerCase();
+      // "/" must only match the exact root path — startsWith("/") is true
+      // for every path in the app, which previously made isPublicPath
+      // always return true and wrongly redirected authenticated users
+      // (and guests with a stale token) away from routes like
+      // /GuestVideoCall to the dashboard.
+      return PUBLIC_PATHS.some((path) =>
+        path === "/"
+          ? lowerPathname === "/"
+          : lowerPathname === path || lowerPathname.startsWith(path),
       );
     };
 

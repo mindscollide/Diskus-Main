@@ -11,7 +11,7 @@ import { useMeetingContext } from "@/context/MeetingContext";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 
 // Components
-import { Table } from "@/components/elements";
+import { Table, useSnackbar } from "@/components/elements";
 import CustomButton from "@/components/elements/button/Button";
 import EmptyTableComponent from "@/container/meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
@@ -26,12 +26,7 @@ import {
 } from "@/commen/functions/date_formater";
 
 // Redux actions
-import {
-  emailRouteID,
-  boardDeckModal,
-  getMeetingRecordingFilesApi,
-} from "@/store/actions/NewMeetingActions";
-import { downloadAttendanceReportApi } from "@/store/actions/Download_action";
+import { boardDeckModal } from "@/store/actions/NewMeetingActions";
 
 import {
   setViewTab,
@@ -44,6 +39,7 @@ import {
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   GetAllUserChats,
+  activeChat,
 } from "@/store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -54,6 +50,7 @@ import {
   footerActionStatus,
   createGroupScreen,
   activeChatBoxGS,
+  chatBoxActiveFlag,
 } from "@/store/actions/Talk_Feature_actions";
 
 // Icons
@@ -79,15 +76,18 @@ import DownloadOptionsModal from "@/container/meeting/commonComponents/DownloadM
 import ShareViaDataRoomPathModal from "@/container/meeting/commonComponents/BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
 import MeetingRecording from "@/container/meeting/commonComponents/MeetingRecording/MeetingRecording";
 import {
-  getMeetingDetailsByMeetingIdApi,
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
   setCurrentMeetingInfo,
   UpdateMeetingStatusApi,
 } from "@/store/actions/NewMeeting2.actions";
 import { useGroupsContext } from "../../../../context/GroupsContext";
+import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
-import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import {
+  getMeetingbyGroupIdApi,
+  clearGetMeetingbyGroupID,
+} from "../../../../store/actions/Groups_actions";
 import { validateStringEmail_success, validateStringMeetingEmail_clear } from "../../../../store/actions/NewMeetingActions";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
@@ -116,6 +116,7 @@ const parseDateTime = (str) =>
 const GroupPublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
   const { state, pathname } = useLocation();
 
@@ -136,7 +137,12 @@ const GroupPublishedMeetingList = () => {
   const validatencryptedstringState = useSelector(
     (state) => state.NewMeetingreducer.validatencryptedstring,
   );
-
+  const talkStateDataAllUserChats = useSelector(
+    (state) => state.talkStateData.AllUserChats,
+  );
+  const DetailsWebNotificationViewMeeting = useSelector(
+    (state) => state.NotificationRoutingReducer.ViewMeetingDetails,
+  );
   // ─── Context ──────────────────────────────────────────────────────────────
 
   const {
@@ -144,15 +150,13 @@ const GroupPublishedMeetingList = () => {
     setEditorRole,
     setVideoTalk,
     setDownloadMeeting,
-    setDownloadVideoRecordingModal,
     boardDeckMeetingID,
     setBoardDeckMeetingID,
     boardDeckMeetingTitle,
     setBoardDeckMeetingTitle,
     downloadVideoRecordingModal,
   } = useMeetingContext();
-  const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
-    useNewMeetingContext();
+  const { setIsQuickMeetingView } = useNewMeetingContext();
   const {
     isMeetingTypeFilter,
     minutesAgo,
@@ -171,6 +175,9 @@ const GroupPublishedMeetingList = () => {
   );
 
   // ─── Local state ──────────────────────────────────────────────────────────
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -181,6 +188,22 @@ const GroupPublishedMeetingList = () => {
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
   const [meetingTypeSort, setMeetingTypeSort] = useState(null);
+
+  const {
+    handleViewMeeting,
+    handleJoinMeeting,
+    handleEditMeeting,
+    onClickDownloadIcon,
+    handleClickDownloadBtn,
+    handleClickViewMinutes,
+    handleTableChange,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  });
 
   const [radioValue, setRadioValue] = useState(1);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
@@ -236,17 +259,50 @@ const GroupPublishedMeetingList = () => {
     localStorage.setItem("meetingTitle", record.title);
   };
 
+  const loadGroupMeetings = ({ PublishedMeetings, ProposedMeetings }) => {
+    dispatch(clearGetMeetingbyGroupID());
+    dispatch(
+      getMeetingbyGroupIdApi(navigate, t, {
+        GroupID: Number(localStorage.getItem("ViewGroupID")),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 30,
+        PublishedMeetings,
+        ProposedMeetings,
+      }),
+    );
+  };
+
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
-    if (data.talkGroupID === 0) return;
+    if (data.talkGroupID === 0) {
+      show(t("No-talk-group-created"), "error");
+      return;
+    }
 
+    const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
+    const foundRecord =
+      Array.isArray(allChatMessages) &&
+      allChatMessages.find((item) => item.id === data.talkGroupID);
+    if (!foundRecord) {
+      show(t("No-talk-group-created"), "error");
+      return;
+    }
+
+    dispatch(activeChat(foundRecord));
+    localStorage.setItem("activeOtoChatID", data.talkGroupID);
     dispatch(createShoutAllScreen(false));
     dispatch(addNewChatScreen(false));
     dispatch(footerActionStatus(false));
     dispatch(createGroupScreen(false));
+    dispatch(chatBoxActiveFlag(false));
     dispatch(recentChatFlag(true));
     dispatch(activeChatBoxGS(true));
+    dispatch(chatBoxActiveFlag(true));
     dispatch(headerShowHideStatus(true));
     dispatch(footerShowHideStatus(true));
 
@@ -418,195 +474,79 @@ const GroupPublishedMeetingList = () => {
     }
   }, [validatencryptedstringState]);
 
-  // ─── View Meeting ─────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (state !== null && DetailsWebNotificationViewMeeting !== null) {
+      try {
+        const meetingNotificationRouting = async () => {
+          const { message = ""} = state;
 
-  const handleViewMeeting = async (record) => {
-    try {
-      const statusNum = Number(record.status);
+          let obj = {
+            isQuickMeeting: DetailsWebNotificationViewMeeting.isQuickMeeting,
+            pK_MDID: DetailsWebNotificationViewMeeting.MeetingID,
+            isParticipant: DetailsWebNotificationViewMeeting.attendeeRole === "Participant",
+            isAgendaContributor: DetailsWebNotificationViewMeeting.attendeeRole === "AgendaContributor",
+            isOrganizer: DetailsWebNotificationViewMeeting.attendeeRole === "Organizer",
+            isPrimaryOrganizer: false,
+            status: DetailsWebNotificationViewMeeting.meetingStatusID,
+            videoCallURL: DetailsWebNotificationViewMeeting.videoCallUrl,
+            isChat: DetailsWebNotificationViewMeeting.isChat,
+            isVideoCall: DetailsWebNotificationViewMeeting.isVideoCall,
+            talkGroupID: DetailsWebNotificationViewMeeting.talkGroupID,
+          };
 
-      if (statusNum === STATUS.ACTIVE) {
-        handleJoinMeeting(record);
-
-        return;
-      }
-
-      if (record.isQuickMeeting) {
-        await dispatch(
-          getViewMeetingByMeetingIdApi(
-            navigate,
-            t,
-            { MeetingID: record.pK_MDID },
-            "ViewQuickMeetingFromListing",
-            {
-              setIsQuickMeetingView,
-            },
-          ),
-        );
-        return;
-      }
-
-      dispatch(
-        setCurrentMeetingInfo({
-          meetingID: record.pK_MDID,
-        }),
-      );
-      dispatch(toggleViewMeetingModal(true));
-      dispatch(setViewTab("meetingDetails"));
-      setEditorRole((prev) => ({
-        ...prev,
-        status: record.status,
-        role: record.isParticipant
-          ? "Participant"
-          : record.isAgendaContributor
-            ? "Agenda Contributor"
-            : "Organizer",
-        isPrimaryOrganizer: record.isPrimaryOrganizer,
-      }));
-    } catch (error) {}
-  };
+          if (message === "proposedmeeting") {
+            loadGroupMeetings({
+              PublishedMeetings: false,
+              ProposedMeetings: true,
+            });
+          }
+          if (message === "ViewMeeting") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+            handleViewMeeting(obj);
+          }
+          if (message === "JoinMeeting") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+            handleJoinMeeting(obj);
+          }
+          if (message === "MeetingPollCreated") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+            handleViewMeeting(obj, "polls");
+          }
+          if (message === "MeetingListing") {
+            loadGroupMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+            });
+          }
+          navigate(pathname, {
+            replace: true,
+            state: null,
+          });
+        };
+        meetingNotificationRouting();
+      } catch (error) {}
+    }
+  }, [state,DetailsWebNotificationViewMeeting]);
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
-  const handleEditMeeting = async (record) => {
-    const role = record.isAgendaContributor
-      ? "Agenda Contributor"
-      : "Organizer";
-    const meetingId = Number(record.pK_MDID);
-    const context = "EditMeetingFromMainListing";
-
-    if (record.isQuickMeeting) {
-      await dispatch(
-        getViewMeetingByMeetingIdApi(
-          navigate,
-          t,
-          { MeetingID: meetingId },
-          "EditQuickMeetingFromMainListing",
-          { setIsQuickMeetingUpdate },
-        ),
-      );
-      return;
-    }
-
-    // Set state synchronously BEFORE dispatch — no stale closure issue
-    localStorage.setItem("videoCallURL", record.videoCallURL);
-    setVideoTalk(buildVideoTalk(record));
-    setEditorRole({
-      status: record.status,
-      role,
-      isPrimaryOrganizer: record.isPrimaryOrganizer,
-    });
-
-    // callFunc now a no-op (or pass empty function if API requires it)
-    await dispatch(
-      getMeetingDetailsByMeetingIdApi(
-        navigate,
-        t,
-        { MeetingID: meetingId },
-        context,
-        { role, callFunc: () => {} },
-      ),
-    );
-  };
-
-  // ─── Join Meeting ─────────────────────────────────────────────────────────
-
-  const handleJoinMeeting = async (record) => {
-    const role = record.isAgendaContributor
-      ? "Agenda Contributor"
-      : record.isParticipant
-        ? "Participant"
-        : "Organizer";
-    const meetingId = Number(record.pK_MDID);
-
-    if (record.isQuickMeeting) {
-      dispatch(
-        joinMeetingApi(
-          navigate,
-          t,
-          {
-            VideoCallURL: record.videoCallURL,
-            FK_MDID: Number(meetingId),
-            DateTime: getCurrentDateTimeUTC(),
-          },
-          "JoinQuickMeetingFromListing",
-          {
-            record,
-            setIsQuickMeetingView,
-          },
-        ),
-      );
-      return;
-    }
-
-    // Set state synchronously BEFORE dispatch — no stale closure issue
-    localStorage.setItem("videoCallURL", record.videoCallURL);
-    setVideoTalk(buildVideoTalk(record));
-    setEditorRole({
-      status: record.status,
-      role,
-      isPrimaryOrganizer: record.isPrimaryOrganizer,
-    });
-
-    dispatch(
-      joinMeetingApi(
-        navigate,
-        t,
-        {
-          VideoCallURL: record.videoCallURL,
-          FK_MDID: Number(meetingId),
-          DateTime: getCurrentDateTimeUTC(),
-        },
-        "JoinMeetingFromListing",
-        {
-          role,
-          isQuickMeeting: record.isQuickMeeting,
-          record,
-        },
-      ),
-    );
-  };
 
   // ─── Other actions ────────────────────────────────────────────────────────
-
-  const onClickDownloadIcon = (meetingID) => {
-    dispatch(
-      downloadAttendanceReportApi(navigate, t, {
-        MeetingID: Number(meetingID),
-      }),
-    );
-  };
-
-  const handleClickDownloadBtn = (record) => {
-    setMeetingTitle(record.meetingTitle);
-    dispatch(
-      getMeetingRecordingFilesApi(
-        navigate,
-        t,
-        { MeetingID: record?.pK_MDID },
-        setDownloadVideoRecordingModal,
-      ),
-    );
-  };
-
-  const handleClickViewMinutes = (record) => {
-    setEditorRole(buildEditorRole(record));
-    setVideoTalk(buildVideoTalk(record));
-    dispatch(emailRouteID(5));
-    dispatch(setViewTab("minutes"));
-    // setAdvanceMeetingModalID(record.pK_MDID);
-    // setViewAdvanceMeetingModal(true);
-    // dispatch(viewAdvanceMeetingPublishPageFlag(true));
-    // dispatch(scheduleMeetingPageFlag(false));
-    // localStorage.setItem("currentMeetingID", record.pK_MDID);
-    localStorage.setItem("isMinutePublished", record.isMinutePublished);
-  };
 
   const handleClickViewAgenda = (record) => {
     handleViewMeeting(record);
     setVideoTalk(buildVideoTalk(record));
     setEditorRole(buildEditorRole(record));
-    dispatch(emailRouteID(3));
-    dispatch(setViewTab("Agenda"));
+    dispatch(setViewTab("agenda"));
     setMeetingLocalStorage(record);
   };
 
@@ -657,7 +597,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.edit && (
           <div
             className={styles.morebtn}
-            onClick={() => handleEditMeeting(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleEditMeeting(record);
+            }}
           >
             <img src={EditIcon} alt="" width="16" height="16" />
             <span>{t("Edit-meeting")}</span>
@@ -667,7 +610,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.talk && (
           <div
             className={styles.morebtn}
-            onClick={() => groupChatInitiation(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              groupChatInitiation(record);
+            }}
           >
             <img src={ChatIcon} alt="" width="16" height="16" />
             <span>{t("Talk")}</span>
@@ -677,7 +623,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.viewAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewAgenda(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewAgenda(record);
+            }}
           >
             <img src={AgendaIcon} alt="" width="16" height="16" />
             <span>{t("View-agenda")}</span>
@@ -687,7 +636,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.attendance && (
           <div
             className={styles.morebtn}
-            onClick={() => onClickDownloadIcon(record.pK_MDID)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              onClickDownloadIcon(record.pK_MDID);
+            }}
           >
             <img src={ClipboardIcon} alt="" width="16" height="16" />
             <span>{t("Attendance-report")}</span>
@@ -697,7 +649,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.recording && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickDownloadBtn(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickDownloadBtn(record);
+            }}
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("Download-video-recording")}</span>
@@ -707,7 +662,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickViewMinutes(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickViewMinutes(record);
+            }}
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("View-minutes")}</span>
@@ -717,7 +675,10 @@ const GroupPublishedMeetingList = () => {
         {canShow.contributeAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickContributeAgenda(record)}
+            onClick={() => {
+              setOpenPopoverMeetingID(null);
+              handleClickContributeAgenda(record);
+            }}
           >
             <img src={AgendaIcon} alt="" width="16" height="16" />
             <span>{t("Contribute-agenda")}</span>
@@ -725,6 +686,10 @@ const GroupPublishedMeetingList = () => {
         )}
       </div>
     );
+  };
+
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
 
   // ─── Meeting Action Handler ───────────────────────────────────────────────
@@ -1178,6 +1143,10 @@ const GroupPublishedMeetingList = () => {
                 className="moreOptionsPopover"
                 showArrow={false}
                 placement="bottomRight"
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }
               >
                 <CustomButton
                   className={styles.MoreMeetingButton}
@@ -1202,6 +1171,7 @@ const GroupPublishedMeetingList = () => {
     selectedValues,
     statusFilters,
     t,
+    openPopoverMeetingID,
   ]);
 
   // ─── Pagination Handler ───────────────────────────────────────────────────
@@ -1224,33 +1194,6 @@ const GroupPublishedMeetingList = () => {
     );
   };
 
-  // ─── Table Sort Handler ───────────────────────────────────────────────────
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    setMeetingTitleSort(null);
-    setOrganizerNameSort(null);
-    setMeetingTimeSort(null);
-    setMeetingDateSort(null);
-
-    if (!sorter.order) return;
-
-    switch (sorter.columnKey) {
-      case "title":
-        setMeetingTitleSort(sorter.order);
-        break;
-      case "host":
-        setOrganizerNameSort(sorter.order);
-        break;
-      case "time":
-        setMeetingTimeSort(sorter.order);
-        break;
-      case "date":
-        setMeetingDateSort(sorter.order);
-        break;
-      default:
-        break;
-    }
-  };
 
   // ─── Render ───────────────────────────────────────────────────────────────
   return (
@@ -1333,6 +1276,7 @@ const GroupPublishedMeetingList = () => {
         />
       )}
       {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
+      {SnackBar}
     </>
   );
 };

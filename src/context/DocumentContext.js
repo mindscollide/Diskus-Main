@@ -36,12 +36,20 @@ export const DocumentProvider = ({ children }) => {
   );
 };
 
+// Fallback used outside a DocumentProvider (e.g. auth/2FA/public screens,
+// where LanguageSelector is also rendered but there's no document viewer to
+// update) — refs stay null forever and changeApryseLanguage is a no-op,
+// instead of throwing and crashing those screens.
+const noopApryseDocument = {
+  SignedDocumentViewer: { current: null },
+  pendingSignatureViewer: { current: null },
+  signatureDocumentViewer: { current: null },
+  documentApryseViewer: { current: null },
+  changeApryseLanguage: async () => {},
+};
+
 export const useApryseDocument = () => {
   const context = useContext(DocumentContext);
 
-  if (!context) {
-    throw new Error("useApryseDocument must be used within a DocumentProvider");
-  }
-
-  return context;
+  return context ?? noopApryseDocument;
 };

@@ -83,7 +83,6 @@ export const getAllUnpublishedMeetingData = async (
   let newMeetingData = [];
   if (Array.isArray(meetingData) && meetingData?.length > 0) {
     meetingData.forEach(async (data, index) => {
-   
       const meetingAgendas =
         data.meetingAgenda !== null &&
         data.meetingAgenda !== undefined &&
@@ -117,11 +116,12 @@ export const getAllUnpublishedMeetingData = async (
             data?.proposedMeetingDetail?.totalNoOfDirectors || 0,
           totalNoOfDirectorsVoted:
             data.proposedMeetingDetail?.totalNoOfDirectorsVoted || 0,
+          isVoted: data.proposedMeetingDetail?.hasVoted,
         },
-        responseDeadLine:  data?.proposedMeetingDetail?.deadLineDate || "",
+        responseDeadLine: data?.proposedMeetingDetail?.deadLineDate || "",
         status: data.status,
         title: data.title,
-        key: index,
+        key: data.pK_MDID,
         isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
         userDetails: usersData?.userData,
         isMinutePublished: data?.isMinutePublished || false,
@@ -134,58 +134,65 @@ export const getAllUnpublishedMeetingData = async (
 };
 
 export const mqttMeetingData = async (meetingData, currentSourceID) => {
-  let currentUserId = Number(localStorage.getItem("userID"));
-  let usersData = await getUserInfo(
-    meetingData,
-    currentUserId,
-    currentSourceID,
-  );
+  try {
+    let currentUserId = Number(localStorage.getItem("userID"));
+    let usersData = await getUserInfo(
+      meetingData,
+      currentUserId,
+      currentSourceID,
+    );
 
-  const meetingAgendas =
-    Array.isArray(meetingData.meetingAgenda) &&
-    meetingData.meetingAgenda.length > 0
-      ? meetingData.meetingAgenda
-      : [];
+    const meetingAgendas =
+      Array.isArray(meetingData.meetingAgenda) &&
+      meetingData.meetingAgenda.length > 0
+        ? meetingData.meetingAgenda
+        : [];
 
-  let meetingTypeID = meetingData.meetingTypeID ?? meetingData.meetingType ?? 0;
-  if (meetingTypeID === 1 && meetingData.isQuickMeeting === true) {
-    meetingTypeID = 0;
+    let meetingTypeID =
+      meetingData.meetingTypeID ?? meetingData.meetingType ?? 0;
+    if (meetingTypeID === 1 && meetingData.isQuickMeeting === true) {
+      meetingTypeID = 0;
+    }
+
+    let Data = {
+      dateOfMeeting: meetingData?.dateOfMeeting,
+      host: meetingData?.host,
+      isAttachment: meetingData.isAttachment ?? false,
+      isChat: meetingData.isChat ?? false,
+      isVideoCall: meetingData.isVideoCall ?? false,
+      videoCallURL: meetingData.videoCallURL,
+      isQuickMeeting: meetingData.isQuickMeeting ?? false,
+      meetingAgenda: meetingAgendas,
+      isOrganizer: usersData?.isOrganiser,
+      isAgendaContributor: usersData?.isAgendaContributor,
+      isParticipant: usersData?.isParticipant,
+      talkGroupID: meetingData.talkGroupID ?? false,
+      meetingType: meetingTypeID,
+      meetingEndTime: meetingData.meetingEndTime ?? false,
+      meetingStartTime: meetingData.meetingStartTime ?? false,
+      pK_MDID: meetingData?.pK_MDID,
+      meetingPoll: {
+        totalNoOfDirectors:
+          meetingData?.proposedMeetingDetail?.totalNoOfDirectors,
+        totalNoOfDirectorsVoted:
+          meetingData?.proposedMeetingDetail?.totalNoOfDirectorsVoted,
+      },
+      responseDeadLine: meetingData?.responseDeadLine
+        ? meetingData?.responseDeadLine
+        : "",
+      status: String(meetingData?.status),
+      title: meetingData?.title,
+      isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
+      userDetails: usersData?.userData,
+      isRecordingAvailable:
+        meetingData.isRecordingAvailable !== undefined &&
+        meetingData.isRecordingAvailable !== null
+          ? meetingData.isRecordingAvailable
+          : false,
+    };
+
+    return Data;
+  } catch (error) {
+    console.log(error);
   }
-
-  let Data = {
-    dateOfMeeting: meetingData?.dateOfMeeting,
-    host: meetingData?.host,
-    isAttachment: meetingData.isAttachment ?? false,
-    isChat: meetingData.isChat ?? false,
-    isVideoCall: meetingData.isVideoCall ?? false,
-    videoCallURL: meetingData.videoCallURL,
-    isQuickMeeting: meetingData.isQuickMeeting ?? false,
-    meetingAgenda: meetingAgendas,
-    isOrganizer: usersData?.isOrganiser,
-    isAgendaContributor: usersData?.isAgendaContributor,
-    isParticipant: usersData?.isParticipant,
-    talkGroupID: meetingData.talkGroupID ?? false,
-    meetingType: meetingTypeID,
-    meetingEndTime: meetingData.meetingEndTime ?? false,
-    meetingStartTime: meetingData.meetingStartTime ?? false,
-    pK_MDID: meetingData?.pK_MDID,
-    meetingPoll: {
-      totalNoOfDirectors:
-        meetingData?.proposedMeetingDetail?.totalNoOfDirectors,
-      totalNoOfDirectorsVoted:
-        meetingData?.proposedMeetingDetail?.totalNoOfDirectorsVoted,
-    },
-    responseDeadLine: meetingData?.responseDeadLine,
-    status: String(meetingData?.status),
-    title: meetingData?.title,
-    isPrimaryOrganizer: usersData?.isPrimaryOrganizer,
-    userDetails: usersData?.userData,
-    isRecordingAvailable:
-      meetingData.isRecordingAvailable !== undefined &&
-      meetingData.isRecordingAvailable !== null
-        ? meetingData.isRecordingAvailable
-        : false,
-  };
-
-  return Data;
 };

@@ -202,6 +202,16 @@
   font-weight: 600;
   color: #5a5a5a;
 }
+body[dir="rtl"] .ant-table-wrapper.Compliance_Table .ant-table .ant-table-tbody > tr > td {
+  padding: 12px 5px !important;
+  border: 1px solid #e1e1e1;
+  /* border-radius: 4px !important; */
+  border-right: none;
+  border-left: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
 .ant-table-wrapper.Compliance_Table
   .ant-table
   .ant-table-tbody
@@ -210,6 +220,16 @@
   border: 1px solid #e1e1e1;
   border-right: none;
   padding-left: 15px !important;
+}
+body[dir="rtl"]
+  .ant-table-wrapper.Compliance_Table
+  .ant-table
+  .ant-table-tbody
+  > tr
+  > td:nth-child(1) {
+  border: 1px solid #e1e1e1;
+  border-left: none;
+  padding-right: 15px !important;
 }
 .ant-table-wrapper.Compliance_Table
   .ant-table

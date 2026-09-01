@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import styles from "./AgendaContributors.module.css";
 import addmore from "../../../../../assets/images/addmore.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
@@ -9,7 +9,6 @@ import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
-import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table, TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -18,47 +17,23 @@ import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { useNavigate } from "react-router-dom";
 import {
-  UpdateMeetingUserForAgendaContributor,
   getAllAgendaContributorApi,
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
+
   uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
-import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
-import NextModal from "../meetingDetails/NextModal/NextModal";
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   UpdateMeetingStatusApi,
   UpdateMeetingUserApi,
 } from "../../../../../store/actions/NewMeeting2.actions";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
-const AgendaContributers = ({
-  setSceduleMeeting,
-  currentMeeting,
-
-  isEditMeeting,
-  setorganizers,
-  setPublishState,
-  setAdvanceMeetingModalID,
-  setCalendarViewModal,
-  setDataroomMapFolderId,
-}) => {
+const AgendaContributers = () => {
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
@@ -75,8 +50,6 @@ const AgendaContributers = ({
   const [isPublishedState, setIsPublishedState] = useState(false);
   const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
-  const [flag, setFlag] = useState(3);
-  const [prevFlag, setprevFlag] = useState(3);
   const { editorRole, setEditorRole, setGoBackCancelModal } =
     useMeetingContext();
 
@@ -230,8 +203,7 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={
@@ -240,9 +212,9 @@ const AgendaContributers = ({
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -254,8 +226,7 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={
@@ -264,9 +235,9 @@ const AgendaContributers = ({
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                     onClick={() => shownotifyAgendaContrubutors(record.userID)}
                   />
                 </Col>
@@ -279,8 +250,7 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={
@@ -289,9 +259,9 @@ const AgendaContributers = ({
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
-                    height="30px"
-                    alt=""
-                    width="30px"
+                    height='30px'
+                    alt=''
+                    width='30px'
                     onClick={() => shownotifyAgendaContrubutors(record.userID)}
                   />
                 </Col>
@@ -301,10 +271,11 @@ const AgendaContributers = ({
         },
       },
       {
-        title: "RSVP",
+        title: t("RSVP"),
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         ellipsis: true,
+        align: "center",
 
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
@@ -312,9 +283,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -322,9 +293,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={thumbsup}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -332,9 +303,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={thumbsdown}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -342,9 +313,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -363,16 +334,15 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   {!record.isEdit && (
                     <img
                       draggable={false}
                       src={redcrossIcon}
-                      width="21.79px"
-                      alt=""
-                      className="cursor-pointer"
-                      height="21.79px"
+                      width='21.79px'
+                      alt=''
+                      className='cursor-pointer'
+                      height='21.79px'
                       onClick={() => handleRemoveContributor(record)}
                     />
                   )}
@@ -466,8 +436,7 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={
@@ -476,9 +445,9 @@ const AgendaContributers = ({
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -490,8 +459,7 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={
@@ -500,9 +468,9 @@ const AgendaContributers = ({
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                     onClick={() => shownotifyAgendaContrubutors(record.userID)}
                   />
                 </Col>
@@ -515,8 +483,7 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={
@@ -525,9 +492,9 @@ const AgendaContributers = ({
                     className={
                       record.isEdit === true ? "cursor-pointer" : "pe-none"
                     }
-                    height="30px"
-                    alt=""
-                    width="30px"
+                    height='30px'
+                    alt=''
+                    width='30px'
                     onClick={() => shownotifyAgendaContrubutors(record.userID)}
                   />
                 </Col>
@@ -548,16 +515,15 @@ const AgendaContributers = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   {!record.isEdit && (
                     <img
                       draggable={false}
                       src={redcrossIcon}
-                      width="21.79px"
-                      alt=""
-                      className="cursor-pointer"
-                      height="21.79px"
+                      width='21.79px'
+                      alt=''
+                      className='cursor-pointer'
+                      height='21.79px'
                       onClick={() => handleRemoveContributor(record)}
                     />
                   )}
@@ -579,12 +545,12 @@ const AgendaContributers = ({
     <div {...innerProps} className={styles["option"]}>
       <Row>
         <Col lg={12} md={12} sm={12} className={styles["OverAll_padding"]}>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col lg={11} md={11} sm={11}>
               <span className={styles["label_Styles"]}>{label}</span>
             </Col>
             <Col lg={1} md={1} sm={1}>
-              {isSelected && <img alt="" draggable={false} src={tick} />}
+              {isSelected && <img alt='' draggable={false} src={tick} />}
             </Col>
           </Row>
         </Col>
@@ -628,13 +594,11 @@ const AgendaContributers = ({
       UpdateMeetingStatusApi(
         navigate,
         t,
-        { MeetingID: currentMeeting, StatusID: 1 },
+        { MeetingID: meetingID, StatusID: 1 },
         "publishMeetingFromAgendaContributor",
-        {setEditorRole},
+        { setEditorRole },
       ),
     );
-    
-
   };
 
   const openAddAgendaModal = () => {
@@ -765,8 +729,8 @@ const AgendaContributers = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="mt-3">
+      <section className='position-relative'>
+        <Row className='mt-3'>
           {/* {((Number(editorRole.status) === 9 ||
             Number(editorRole.status) === 8 ||
             Number(editorRole.status) === 10) &&
@@ -793,8 +757,7 @@ const AgendaContributers = ({
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-3"
-          >
+            className='d-flex justify-content-end gap-3'>
             {((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
@@ -827,9 +790,9 @@ const AgendaContributers = ({
                         <img
                           draggable={false}
                           src={EditIcon}
-                          width="11.75px"
-                          height="11.75px"
-                          alt=""
+                          width='11.75px'
+                          height='11.75px'
+                          alt=''
                         />
                       }
                       onClick={handleEditBtn}
@@ -839,7 +802,7 @@ const AgendaContributers = ({
 
                 <Button
                   text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} alt="" />}
+                  icon={<img draggable={false} src={addmore} alt='' />}
                   className={styles["AddMoreBtn"]}
                   onClick={openAddAgendaModal}
                 />
@@ -862,8 +825,7 @@ const AgendaContributers = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <img
                             draggable={false}
                             src={emptyContributorState}
@@ -872,9 +834,9 @@ const AgendaContributers = ({
                                 ? ""
                                 : "cursor-pointer"
                             }
-                            width="274.05px"
-                            alt=""
-                            height="230.96px"
+                            width='274.05px'
+                            alt=''
+                            height='230.96px'
                             onClick={handleInitiatewithEmptyState}
                           />
                         </Col>
@@ -884,8 +846,7 @@ const AgendaContributers = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span className={styles["Empty_state_heading"]}>
                             {t("No-agenda-contributor")}
                           </span>
@@ -896,8 +857,7 @@ const AgendaContributers = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span className={styles["Empty_state_Subheading"]}>
                             {t("There-are-no-agenda-contributors")}
                           </span>
@@ -906,7 +866,7 @@ const AgendaContributers = ({
                     </>
                   ),
                 }}
-                className="Polling_table"
+                className='Polling_table'
                 rows={rowsData}
               />
             </Col>
@@ -931,7 +891,7 @@ const AgendaContributers = ({
                   Number(editorRole.status) === 12 ? (
                     <Button
                       disableBtn={
-                        Number(currentMeeting) === 0 ||
+                        Number(meetingID) === 0 ||
                         isPublishedState === false
                           ? true
                           : false
@@ -970,16 +930,8 @@ const AgendaContributers = ({
         />
       )}
 
-      {NewMeetingreducer.ShowPreviousModal && (
-        <PreviousModal setorganizers={setorganizers} prevFlag={prevFlag} />
-      )}
 
-      {NewMeetingreducer.cancelAgendaContributor && (
-        <CancelAgendaContributor
-          setSceduleMeeting={setSceduleMeeting}
-          setRowsData={setRowsData}
-        />
-      )}
+   
     </>
   );
 };

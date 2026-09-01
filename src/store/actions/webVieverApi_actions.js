@@ -27,7 +27,7 @@ const GetAnnotationsOfToDoAttachementinit = () => {
 const GetAnnotationsOfToDoAttachementSuccess = (
   message,
   xfdfData,
-  attachmentBlob
+  attachmentBlob,
 ) => {
   return {
     type: actions.GETANNOTATIONSOFTODOATTACHEMENT_SUCCESS,
@@ -63,7 +63,7 @@ const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_01".toLowerCase(),
                 )
             ) {
               let xfdfData = response.data.responseResult.annotationString;
@@ -73,48 +73,48 @@ const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
                 GetAnnotationsOfToDoAttachementSuccess(
                   "",
                   xfdfData,
-                  attachmentBlob
-                )
+                  attachmentBlob,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                GetAnnotationsOfToDoAttachementFail(t("No-record-found"))
+                GetAnnotationsOfToDoAttachementFail(t("No-record-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong"))
+                GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong"))
+                GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong"))
+              GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong"))
+            GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong"))
+          GetAnnotationsOfToDoAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -160,61 +160,61 @@ const addAnnotationsOnToDoAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnToDoAttachementSuccess(t("Annotation-added"))
+                AddAnnotationsOnToDoAttachementSuccess(t("Annotation-added")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnToDoAttachementFail(t("Annotation-updated"))
+                AddAnnotationsOnToDoAttachementFail(t("Annotation-updated")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnToDoAttachementFail(t("No-record-inserted"))
+                AddAnnotationsOnToDoAttachementFail(t("No-record-inserted")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_04".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnToDoAttachementFail(t("No-record-updated"))
+                AddAnnotationsOnToDoAttachementFail(t("No-record-updated")),
               );
             } else {
               dispatch(
-                AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong"))
+                AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong"))
+              AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong"))
+            AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong"))
+          AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -240,7 +240,7 @@ const GetAnnotationsOfNotesAttachementinit = () => {
 const GetAnnotationsOfNotesAttachementSuccess = (
   message,
   xfdfData,
-  attachmentBlob
+  attachmentBlob,
 ) => {
   return {
     type: actions.GETANNOTATIONSOFNOTESATTACHEMENT_SUCCESS,
@@ -276,7 +276,7 @@ const getAnnotationsOfNotesAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_01".toLowerCase()
+                  "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_01".toLowerCase(),
                 )
             ) {
               let xfdfData = response.data.responseResult.annotationString;
@@ -286,50 +286,50 @@ const getAnnotationsOfNotesAttachement = (navigate, t, data) => {
                 GetAnnotationsOfNotesAttachementSuccess(
                   t("Annotation-available"),
                   xfdfData,
-                  attachmentBlob
-                )
+                  attachmentBlob,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_02".toLowerCase()
+                  "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetAnnotationsOfNotesAttachementFail(
-                  t("No-annotation-available")
-                )
+                  t("No-annotation-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_03".toLowerCase()
+                  "Notes_NotesServiceManager_GetAnnotationOfNotesAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong"))
+                GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong"))
+                GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong"))
+              GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong"))
+            GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong"))
+          GetAnnotationsOfNotesAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -358,7 +358,6 @@ const AddAnnotationsOnNotesAttachementFail = (message) => {
 };
 
 const addAnnotationsOnNotesAttachement = (navigate, t, data) => {
-
   return async (dispatch) => {
     dispatch(AddAnnotationsOnNotesAttachementinit());
     let form = new FormData();
@@ -376,71 +375,71 @@ const addAnnotationsOnNotesAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_01".toLowerCase()
+                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnNotesAttachementSuccess(t("Record-inserted"))
+                AddAnnotationsOnNotesAttachementSuccess(t("Record-inserted")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_02".toLowerCase()
+                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnNotesAttachementSuccess(t("Record-updated"))
+                AddAnnotationsOnNotesAttachementSuccess(t("Record-updated")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_03".toLowerCase()
+                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnNotesAttachementFail(t("No-record-inserted"))
+                AddAnnotationsOnNotesAttachementFail(t("No-record-inserted")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_04".toLowerCase()
+                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnNotesAttachementFail(t("No-record-updated"))
+                AddAnnotationsOnNotesAttachementFail(t("No-record-updated")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_05".toLowerCase()
+                  "Notes_NotesServiceManager_AddAnnotationOnNotesAttachement_05".toLowerCase(),
                 )
             ) {
               dispatch(
-                AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong"))
+                AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong"))
+                AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong"))
+              AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong"))
+            AddAnnotationsOnNotesAttachementFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong"))
+          AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -457,7 +456,7 @@ const GetAnnotationsOfResolutionAttachementinit = () => {
 const GetAnnotationsOfResolutionAttachementSuccess = (
   message,
   xfdfData,
-  attachmentBlob
+  attachmentBlob,
 ) => {
   return {
     type: actions.GETANNOTATIONSOFRESOLUTIONATTACHEMENT_SUCCESS,
@@ -475,13 +474,12 @@ const GetAnnotationsOfResolutionAttachementFail = (message) => {
 };
 
 const getAnnotationsOfResolutionAttachement = (navigate, t, data) => {
-
   return async (dispatch) => {
     dispatch(GetAnnotationsOfResolutionAttachementinit());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getAnnotationOfResolutionAttachment.RequestMethod
+      getAnnotationOfResolutionAttachment.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     await axiosInstance
@@ -497,7 +495,7 @@ const getAnnotationsOfResolutionAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_01".toLowerCase()
+                  "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_01".toLowerCase(),
                 )
             ) {
               let xfdfData = response.data.responseResult.annotationString;
@@ -507,56 +505,58 @@ const getAnnotationsOfResolutionAttachement = (navigate, t, data) => {
                 GetAnnotationsOfResolutionAttachementSuccess(
                   t("Annotation-available"),
                   xfdfData,
-                  attachmentBlob
-                )
+                  attachmentBlob,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_02".toLowerCase()
+                  "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetAnnotationsOfResolutionAttachementFail(
-                  t("No-annotation-available")
-                )
+                  t("No-annotation-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_03".toLowerCase()
+                  "Resolution_ResolutionServiceManager_GetAnnotationOfResolutionAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetAnnotationsOfResolutionAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 GetAnnotationsOfResolutionAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               GetAnnotationsOfResolutionAttachementFail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
-            GetAnnotationsOfResolutionAttachementFail(t("Something-went-wrong"))
+            GetAnnotationsOfResolutionAttachementFail(
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          GetAnnotationsOfResolutionAttachementFail(t("Something-went-wrong"))
+          GetAnnotationsOfResolutionAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -585,13 +585,12 @@ const AddAnnotationsOnResolutionAttachementFail = (message) => {
 };
 
 const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
-
   return async (dispatch) => {
     dispatch(AddAnnotationsOnResolutionAttachementinit());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      addAnnotationOnResolutionAttachment.RequestMethod
+      addAnnotationOnResolutionAttachment.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
 
@@ -608,7 +607,7 @@ const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_01".toLowerCase()
+                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_01".toLowerCase(),
                 )
             ) {
               dispatch(AddAnnotationsOnResolutionAttachementSuccess(""));
@@ -616,7 +615,7 @@ const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_02".toLowerCase()
+                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(AddAnnotationsOnResolutionAttachementSuccess(""));
@@ -624,61 +623,63 @@ const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_03".toLowerCase()
+                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnResolutionAttachementFail(
-                  t("No-record-inserted")
-                )
+                  t("No-record-inserted"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_04".toLowerCase()
+                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnResolutionAttachementFail(
-                  t("No-record-updated")
-                )
+                  t("No-record-updated"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_05".toLowerCase()
+                  "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnResolutionAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 AddAnnotationsOnResolutionAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               AddAnnotationsOnResolutionAttachementFail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
-            AddAnnotationsOnResolutionAttachementFail(t("Something-went-wrong"))
+            AddAnnotationsOnResolutionAttachementFail(
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          AddAnnotationsOnResolutionAttachementFail(t("Something-went-wrong"))
+          AddAnnotationsOnResolutionAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -696,7 +697,8 @@ const GetAnnotationsOfDataroomAttachementSuccess = (
   message,
   xfdfData,
   attachmentBlob,
-  html
+  html,
+  response,
 ) => {
   return {
     type: actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_SUCCESS,
@@ -704,6 +706,7 @@ const GetAnnotationsOfDataroomAttachementSuccess = (
     attachmentBlob: attachmentBlob,
     message: message,
     checking: html,
+    payload: response,
   };
 };
 
@@ -718,15 +721,14 @@ const getAnnotationsOfDataroomAttachement = (
   navigate,
   t,
   data,
-  html = false
+  html = false,
 ) => {
-
   return async (dispatch) => {
     dispatch(GetAnnotationsOfDataroomAttachementinit());
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getAnnotationOfDataroomAttachment.RequestMethod
+      getAnnotationOfDataroomAttachment.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     await axiosInstance
@@ -736,7 +738,7 @@ const getAnnotationsOfDataroomAttachement = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            getAnnotationsOfDataroomAttachement(navigate, t, data, html)
+            getAnnotationsOfDataroomAttachement(navigate, t, data, html),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -744,7 +746,7 @@ const getAnnotationsOfDataroomAttachement = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase()
+                  "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_01".toLowerCase(),
                 )
             ) {
               let xfdfData = response.data.responseResult.annotationString;
@@ -755,54 +757,57 @@ const getAnnotationsOfDataroomAttachement = (
                   t("Annotation-available"),
                   xfdfData,
                   attachmentBlob,
-                  html
-                )
+                  html,
+                  response.data.responseResult,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_02".toLowerCase()
+                  "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetAnnotationsOfDataroomAttachementFail(
-                  t("No-annotation-available")
-                )
+                  t("No-annotation-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_03".toLowerCase()
+                  "DataRoom_DataRoomManager_GetAnnotationOfFilesAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 GetAnnotationsOfDataroomAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 GetAnnotationsOfDataroomAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              GetAnnotationsOfDataroomAttachementFail(t("Something-went-wrong"))
+              GetAnnotationsOfDataroomAttachementFail(
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
-            GetAnnotationsOfDataroomAttachementFail(t("Something-went-wrong"))
+            GetAnnotationsOfDataroomAttachementFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          GetAnnotationsOfDataroomAttachementFail(t("Something-went-wrong"))
+          GetAnnotationsOfDataroomAttachementFail(t("Something-went-wrong")),
         );
       });
   };
@@ -836,11 +841,11 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      addAnnotationOnDataroomAttachment.RequestMethod
+      addAnnotationOnDataroomAttachment.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     await axiosInstance
-    .post(dataRoomApi, form)
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -851,83 +856,85 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_01".toLowerCase()
+                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnDataroomAttachementSuccess(
-                  t("Annotations-saved-successfully")
-                )
+                  t("Annotations-saved-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_02".toLowerCase()
+                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnDataroomAttachementSuccess(
-                  t("Annotations-saved-successfully")
-                )
+                  t("Annotations-saved-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_03".toLowerCase()
+                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnDataroomAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_04".toLowerCase()
+                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnDataroomAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_05".toLowerCase()
+                  "DataRoom_DataRoomManager_AddAnnotationOnFilesAttachement_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 AddAnnotationsOnDataroomAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 AddAnnotationsOnDataroomAttachementFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
+              AddAnnotationsOnDataroomAttachementFail(
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
-            AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
+            AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
+          AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong")),
         );
       });
   };

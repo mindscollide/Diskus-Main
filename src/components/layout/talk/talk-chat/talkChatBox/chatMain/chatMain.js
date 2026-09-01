@@ -9,10 +9,6 @@ import { Checkbox, Tooltip, Spin } from "antd";
 import {
   oneToOneMessages,
   groupMessages,
-  unreadMessageCountFunction,
-  groupCreationFunction,
-  markStarUnstarFunction,
-  groupUpdationFunction,
 } from "../../functions/oneToOneMessage";
 import {
   InsertOTOMessages,
@@ -35,7 +31,6 @@ import {
   pushChatData,
   downloadChatEmptyObject,
   DeleteMultipleMessages,
-  activeChat,
   getImageData,
   DownloadTalkFile,
 } from "../../../../../../store/actions/Talk_action";
@@ -51,23 +46,15 @@ import {
   callRequestReceivedMQTT,
 } from "../../../../../../store/actions/VideoMain_actions";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
-import {
-  resetCloseChatFlags,
-  retryFlagState,
-} from "../../../../../../store/actions/Talk_Feature_actions";
+import { resetCloseChatFlags } from "../../../../../../store/actions/Talk_Feature_actions";
 import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
   newTimeFormaterAsPerUTCTalkDateTime,
-  newTimeFormaterMIAsPerUTCTalkDateTime,
 } from "../../../../../../commen/functions/date_formater";
-import {
-  DateDisplayFormat,
-  DateSendingFormat,
-} from "../../../../../../commen/functions/date_formater";
+import { DateSendingFormat } from "../../../../../../commen/functions/date_formater";
 import {
   TextField,
-  InputDatePicker,
   Button,
   NotificationBar,
   Modal,
@@ -102,8 +89,15 @@ import StarredMessageIcon from "../../../../../../assets/images/Starred-Message-
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
-import enUS from "antd/es/date-picker/locale/en_US";
 import useSnackbar from "../../../../../elements/snack_bar/useSnackbar";
+import MessageInfoPanel from "./MessageInfoPanel";
+import ForwardPanel from "./ForwardPanel";
+import GroupInfoPanel from "./GroupInfoPanel";
+import GroupEditPanel from "./GroupEditPanel";
+import ShoutEditPanel from "./ShoutEditPanel";
+import ChatActionModals from "./ChatActionModals";
+import useChatMessagesSync from "./useChatMessagesSync";
+import { HIDE_VIDEO } from "../../../../../../commen/featureFlags";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
@@ -118,10 +112,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   let activeChatType = localStorage.getItem("ActiveChatType");
 
-  let currentConnection = JSON.parse(
-    localStorage.getItem("MqttConnectionState"),
-  );
-
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -129,7 +119,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
+  const { talkStateData } = useSelector((state) => state);
   var currentDateToday = moment().format("YYYYMMDD");
 
   let currentDateTime = new Date();
@@ -169,9 +159,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const inputRef = useRef(null);
 
-  const [searchUserValue, setSearchUserValue] = useState("");
-  const [allChatData, setAllChatData] = useState([]);
-
   const [file, setFile] = useState("");
 
   const [inputChat, setInputChat] = useState(true);
@@ -184,22 +171,27 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [emojiActive, setEmojiActive] = useState(false);
   const emojiMenuRef = useRef();
 
-  const [chatMenuActive, setChatMenuActive] = useState(false);
+  // Which side panel is showing (mutually exclusive):
+  // null | "messageInfo" | "forward" | "groupInfo" | "groupEdit" | "shoutEdit"
+  const [activePanel, setActivePanel] = useState(null);
+  const closeAllPanels = () => setActivePanel(null);
+  const openPanel = (name) => setActivePanel(name);
 
-  const [save, setSave] = useState(false);
-  const [print, setPrint] = useState(false);
-  const [email, setEmail] = useState(false);
-  const [leave, setLeave] = useState(false);
-  const [deleteMessage, setDeleteMessage] = useState(false);
-  const [messageInfo, setMessageInfo] = useState(false);
-  const [showGroupInfo, setShowGroupInfo] = useState(false);
-  const [showGroupEdit, setShowGroupEdit] = useState(false);
+  // Which export/confirm modal is showing (mutually exclusive; only ever
+  // rendered while activePanel === null):
+  // null | "save" | "print" | "email" | "deleteSingle" | "leave"
+  const [activeModal, setActiveModal] = useState(null);
+  const closeModal = () => setActiveModal(null);
+  const openModal = (name) => setActiveModal(name);
 
   const [todayCheckState, setTodayCheckState] = useState(false);
   const [allCheckState, setAllCheckState] = useState(false);
   const [customCheckState, setCustomCheckState] = useState(false);
 
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  // Bulk message-select mode (checkboxes on messages + composer-footer
+  // buttons): null | "forward" | "delete". Derive showCheckboxes from it.
+  const [bulkSelectMode, setBulkSelectMode] = useState(null);
+  const showCheckboxes = bulkSelectMode !== null;
 
   const [endDatedisable, setEndDatedisable] = useState(true);
   const [chatDateState, setChatDateState] = useState({
@@ -213,20 +205,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [replyFeature, setReplyFeature] = useState(false);
 
-  const [allMessages, setAllMessages] = useState([]);
-  console.log(allMessages, "allMessagesallMessagesallMessages");
-
-  // Scroll to the bottom-of-list anchor (<div ref={chatMessages} /> at the
-  // end of the message list) whenever the message list changes — covers
-  // both sending/receiving a new message and switching to a different chat.
-  useEffect(() => {
-    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
-  }, [allMessages]);
-
-  const [allUsers, setAllUsers] = useState([]);
-
-  const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
-
   const [replyData, setReplyData] = useState({
     messageID: 0,
     senderName: "",
@@ -237,17 +215,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [messagesChecked, setMessagesChecked] = useState([]);
 
   const [forwardUsersChecked, setForwardUsersChecked] = useState([]);
-
-  const [forwardMessageUsersSection, setForwardMessageUsersSection] =
-    useState(false);
-
-  const [editGroupUsersChecked, setEditGroupUsersChecked] = useState([]);
-
-  const [editShoutUsersChecked, setEditShoutUsersChecked] = useState([]);
-
-  const [forwardFlag, setForwardFlag] = useState(false);
-
-  const [deleteFlag, setDeleteFlag] = useState(false);
 
   const [messageInfoData, setMessageInfoData] = useState({
     sentDate: "",
@@ -270,22 +237,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     UID: "",
     MessageID: 0,
   });
-
-  const [groupInfoData, setGroupInfoData] = useState([]);
-
-  const [shoutAllUsersData, setShoutAllUsersData] = useState([]);
-
-  const [groupName, setGroupName] = useState("");
-
-  const [shoutName, setShoutName] = useState("");
-
-  const [searchGroupUserInfoValue, setSearchGroupUserInfoValue] = useState("");
-
-  const [searchUserShoutValue, setSearchUserShoutValue] = useState("");
-
-  const [showEditGroupField, setShowEditGroupField] = useState(false);
-
-  const [showEditShoutField, setShowEditShoutField] = useState(false);
 
   const [showChatSearch, setShowChatSearch] = useState(false);
 
@@ -326,12 +277,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
-
   useEffect(() => {
-    if(talkStateData.ActiveChatData !== null ) {
-      console.log(talkStateData.ActiveChatData, "ActiveChatDataActiveChatData")
+    if (talkStateData.ActiveChatData !== null) {
+      console.log(talkStateData.ActiveChatData, "ActiveChatDataActiveChatData");
     }
-  },[talkStateData.ActiveChatData])
+  }, [talkStateData.ActiveChatData]);
   useEffect(() => {
     if (talkStateData.ActiveChatData.messageType === "G") {
       let Data = {
@@ -351,157 +301,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     } catch {}
   }, [talkStateData.ActiveChatData]);
 
-  useEffect(() => {
-    if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      setAllChatData(
-        talkStateData?.AllUserChats?.AllUserChatsData?.allMessages,
-      );
-    }
-  }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
-
-  useEffect(() => {
-    if (
-      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        undefined &&
-      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        null &&
-      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
-        .length !== 0
-    ) {
-      setGroupInfoData(
-        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
-          ?.groupUsers,
-      );
-      const firstGroupUser =
-        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
-          ?.groupUsers[0];
-
-      if (firstGroupUser && firstGroupUser.name) {
-        setGroupName(firstGroupUser.name);
-      }
-    }
-  }, [
-    talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
-      ?.groupUsers,
-  ]);
-
-  //Mutation
-  useEffect(() => {
-    if (
-      talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
-        undefined &&
-      talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
-        null &&
-      talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
-        .length !== 0
-    ) {
-      setShoutAllUsersData([
-        ...talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
-          ?.broadcastUsers,
-      ]);
-      const firstShoutUser =
-        talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
-          ?.broadcastUsers[0];
-
-      if (firstShoutUser && firstShoutUser.name) {
-        setShoutName(firstShoutUser.name);
-      }
-    }
-  }, [
-    talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
-      ?.broadcastUsers,
-  ]);
-
-  const groupNameHandler = (e) => {
-    setGroupName(e.target.value);
-  };
-
-  const shoutNameHandler = (e) => {
-    setShoutName(e.target.value);
-  };
-
-  useEffect(() => {
-    if (
-      talkStateData.AllUsers.AllUsersData !== undefined &&
-      talkStateData.AllUsers.AllUsersData !== null &&
-      talkStateData.AllUsers.AllUsersData.length !== 0
-    ) {
-      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-    }
-  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
-
-  useEffect(() => {
-    let privateGroupMembers =
-      talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
-        .groupUsers;
-    let allUsers = talkStateData.AllUsers.AllUsersData.allUsers;
-    if (
-      privateGroupMembers !== undefined &&
-      privateGroupMembers !== null &&
-      allUsers !== undefined &&
-      allUsers !== null
-    ) {
-      let groupMembersArray = privateGroupMembers
-        .filter((item) => {
-          return allUsers.some((user) => user.id === item.userID);
-        })
-        .map((item) => item.userID);
-
-      setEditGroupUsersChecked(groupMembersArray);
-    }
-  }, [
-    talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
-      .groupUsers,
-  ]);
-
-  //Mutation
-  useEffect(() => {
-    let shoutMembersData =
-      talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
-        .broadcastUsers;
-    let allUsers = talkStateData.AllUsers.AllUsersData.allUsers;
-    if (
-      shoutMembersData !== undefined &&
-      shoutMembersData !== null &&
-      allUsers !== undefined &&
-      allUsers !== null
-    ) {
-      let groupMembersArray = shoutMembersData
-        .filter((item) => {
-          return allUsers.some((user) => user.id === item.userID);
-        })
-        .map((item) => item.userID);
-
-      setEditShoutUsersChecked([...groupMembersArray]);
-    }
-  }, [
-    talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
-      .broadcastUsers,
-  ]);
-
-  useEffect(() => {
-    if (
-      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
-        undefined &&
-      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
-        null &&
-      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-        .length !== 0
-    ) {
-      setAllUsersGroupsRooms(
-        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-          .userInformation,
-      );
-    }
-  }, [
-    talkStateData?.AllUsersGroupsRoomsList?.AllUsersGroupsRoomsListData
-      ?.userInformation,
-  ]);
-
   const emojiClick = () => {
     if (emojiActive === false) {
       setEmojiActive(true);
@@ -511,6 +310,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const [uploadFileTalk, setUploadFileTalk] = useState({});
+
+  const { allMessages, setAllMessages, allChatData, setAllChatData } =
+    useChatMessagesSync({ uploadFileTalk });
+
+  // Scroll to the bottom-of-list anchor (<div ref={chatMessages} /> at the
+  // end of the message list) whenever the message list changes — covers
+  // both sending/receiving a new message and switching to a different chat.
+  useEffect(() => {
+    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
+  }, [allMessages]);
 
   const ALLOWED_ATTACHMENT_EXTENSIONS = [
     "doc",
@@ -589,13 +398,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const closeChat = () => {
     dispatch(videoChatMessagesFlag(false));
     dispatch(resetCloseChatFlags());
-    setSave(false);
-    setPrint(false);
-    setEmail(false);
-    setLeave(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
+    closeAllPanels();
+    closeModal();
+    setBulkSelectMode(null);
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -604,22 +409,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       StartDate: "",
       EndDate: "",
     });
-    setEndDatedisable(true);
-    setShowGroupEdit(false);
-    setShowEditGroupField(false);
-    setShowEditShoutField(false);
     setEmojiActive(false);
-    setChatMenuActive(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setShowGroupEdit(false);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    setCustomCheckState(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
-    setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
     // setChatFeatureActive(0);
@@ -634,52 +424,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     localStorage.setItem("activeOtoChatID", 0);
   };
 
-  const searchUsers = (e) => {
-    setSearchUserValue(e);
-    try {
-      if (
-        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
-          undefined &&
-        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
-          null &&
-        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-          .length !== 0
-      ) {
-        if (e !== "") {
-          let filteredData =
-            talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData.userInformation.filter(
-              (value) => {
-                return value.name.toLowerCase().includes(e.toLowerCase());
-              },
-            );
-          if (filteredData.length === 0) {
-            setAllUsersGroupsRooms(
-              talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-                .userInformation,
-            );
-          } else {
-            setAllUsersGroupsRooms(filteredData);
-          }
-        } else if (e === "" || e === null) {
-          let data =
-            talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-              .userInformation;
-          setSearchUserValue("");
-          setAllUsersGroupsRooms(data);
-        }
-      }
-    } catch {}
-  };
-
   const modalHandlerSave = async (data) => {
-    setSave(true);
-    setPrint(false);
-    setLeave(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setChatMenuActive(false);
+    openModal("save");
+    closeAllPanels();
     setChatDateState({
       ...chatDateState,
       StartDate: "",
@@ -688,14 +435,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const modalHandlerPrint = async (e) => {
-    setSave(false);
-    setPrint(true);
-    setLeave(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setChatMenuActive(false);
+    openModal("print");
+    closeAllPanels();
     setChatDateState({
       ...chatDateState,
       StartDate: "",
@@ -704,14 +445,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const modalHandlerEmail = async (e) => {
-    setSave(false);
-    setLeave(false);
-    setPrint(false);
-    setEmail(true);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setChatMenuActive(false);
+    openModal("email");
+    closeAllPanels();
     setChatDateState({
       ...chatDateState,
       StartDate: "",
@@ -778,17 +513,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(DownloadChat(Data, t, navigate));
-    setSave(false);
+    closeModal();
     setTodayCheckState(false);
-    setLeave(false);
     setAllCheckState(false);
     setCustomCheckState(false);
   };
 
   const cancelButtonHandler = () => {
-    setSave(false);
+    closeModal();
     setTodayCheckState(false);
-    setLeave(false);
     setAllCheckState(false);
     setCustomCheckState(false);
   };
@@ -834,14 +567,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(PrintChat(Data, t, navigate));
-    setPrint(false);
+    closeModal();
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
   };
 
   const cancelPrintHandler = () => {
-    setPrint(false);
+    closeModal();
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -893,26 +626,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
       message: t("Email-initiated"),
     });
     setNotificationID(id);
-    setEmail(false);
+    closeModal();
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
   };
   const cancelPrintemailChatHandler = () => {
-    setEmail(false);
+    closeModal();
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
   };
 
   const handleCancel = () => {
-    setSave(false);
-    setPrint(false);
-    setLeave(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
+    closeAllPanels();
+    closeModal();
+    setBulkSelectMode(null);
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -921,22 +650,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       StartDate: "",
       EndDate: "",
     });
-    setEndDatedisable(true);
-    setShowGroupEdit(false);
-    setShowEditGroupField(false);
-    setShowEditShoutField(false);
     setEmojiActive(false);
-    setChatMenuActive(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setShowGroupEdit(false);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    setCustomCheckState(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
-    setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
     // setChatFeatureActive(0);
@@ -948,20 +662,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const cancelForwardSection = () => {
-    setForwardMessageUsersSection(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
-    setForwardFlag(false);
+    closeAllPanels();
+    setBulkSelectMode(null);
     setForwardUsersChecked([]);
     setMessagesChecked([]);
-  };
-
-  const editGroupTitle = () => {
-    setShowEditGroupField(true);
-  };
-
-  const editShoutTitle = () => {
-    setShowEditShoutField(true);
   };
 
   const onChangeDate = (e) => {
@@ -1069,35 +773,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [deleteMessageData, setDeleteMessageData] = useState([]);
 
   const deleteFeatureHandler = (record) => {
-    if (deleteMessage === false) {
-      setDeleteMessage(true);
+    if (activeModal !== "deleteSingle") {
+      openModal("deleteSingle");
       setDeleteMessageData(record);
     } else {
-      setDeleteMessage(false);
+      closeModal();
     }
   };
 
   const forwardFeatureHandler = () => {
-    if (showCheckboxes === false) {
-      setShowCheckboxes(true);
-      setForwardFlag(true);
+    if (bulkSelectMode === null) {
+      setBulkSelectMode("forward");
     } else {
-      setShowCheckboxes(false);
-      setForwardFlag(false);
+      setBulkSelectMode(null);
     }
   };
 
   const messageInfoHandler = (record) => {
-    if (messageInfo === false) {
+    if (activePanel !== "messageInfo") {
       setMessageInfoData({
         ...messageInfoData,
         sentDate: record.sentDate,
         receivedDate: record.receivedDate,
         seenDate: record.seenDate,
       });
-      setMessageInfo(true);
+      openPanel("messageInfo");
     } else {
-      setMessageInfo(false);
+      closeAllPanels();
       setMessageInfoData({
         ...messageInfoData,
         sentDate: "",
@@ -1132,71 +834,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
-  const forwardUsersCheckedHandler = (data, id, index) => {
-    if (forwardUsersChecked.includes(data)) {
-      let forwardUserIndex = forwardUsersChecked.findIndex(
-        (data2, index) => data === data2,
-      );
-      if (forwardUserIndex !== -1) {
-        forwardUsersChecked.splice(forwardUserIndex, 1);
-        setForwardUsersChecked([...forwardUsersChecked]);
-      }
-    } else {
-      forwardUsersChecked.push(data);
-      setForwardUsersChecked([...forwardUsersChecked]);
-    }
-  };
-
-  const editGroupUsersCheckedHandler = (data, id, index) => {
-    if (editGroupUsersChecked.includes(id)) {
-      let editGroupUserIndex = editGroupUsersChecked.findIndex(
-        (data2) => data2 === id,
-      );
-      let findIndexgroupInfoData = groupInfoData.findIndex(
-        (data3, index) => data3.userID === id,
-      );
-      if (findIndexgroupInfoData !== -1) {
-        groupInfoData.splice(findIndexgroupInfoData, 1);
-        setGroupInfoData([...groupInfoData]);
-      }
-      if (editGroupUserIndex !== -1) {
-        editGroupUsersChecked.splice(editGroupUserIndex, 1);
-        setEditGroupUsersChecked([...editGroupUsersChecked]);
-      }
-    } else {
-      setEditGroupUsersChecked([...editGroupUsersChecked, id]);
-    }
-  };
-
-  const editShoutUsersCheckedHandler = (data, id, index) => {
-    // Check if only one user is left checked
-    if (
-      editShoutUsersChecked.length === 1 &&
-      editShoutUsersChecked.includes(id)
-    ) {
-      show(t("At least one user must be selected."), "error");
-      return; // Prevent unchecking the last user
-    }
-    if (editShoutUsersChecked.includes(id)) {
-      let editGroupUserIndex = editShoutUsersChecked.findIndex(
-        (data2) => data2 === id,
-      );
-      let findIndexShoutInfoData = shoutAllUsersData.findIndex(
-        (data3, index) => data3.userID === id,
-      );
-      if (findIndexShoutInfoData !== -1) {
-        shoutAllUsersData.splice(findIndexShoutInfoData, 1);
-        setGroupInfoData([...shoutAllUsersData]);
-      }
-      if (editGroupUserIndex !== -1) {
-        editShoutUsersChecked.splice(editGroupUserIndex, 1);
-        setEditShoutUsersChecked([...editShoutUsersChecked]);
-      }
-    } else {
-      setEditShoutUsersChecked([...editShoutUsersChecked, id]);
-    }
-  };
-
   const deleteSingleMessage = (record) => {
     let Data = {
       UserID: parseInt(currentUserId),
@@ -1204,7 +841,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       MessageIds: record.messageID,
     };
     dispatch(DeleteSingleMessage(navigate, Data, t));
-    setDeleteMessage(false);
+    closeModal();
   };
 
   const prepareMessageBody = (channelId, senderId, receiverId, messageBody) => {
@@ -1228,12 +865,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const submitForwardMessages = () => {
-    setForwardMessageUsersSection(false);
-    setShowCheckboxes(false);
-    setForwardFlag(false);
-    forwardUsersChecked?.map((user) => {
+    closeAllPanels();
+    setBulkSelectMode(null);
+    forwardUsersChecked?.forEach((user) => {
       let { id, messageType } = user;
-      if (messageType == "O") {
+      if (messageType === "O") {
         messagesChecked?.map((message) =>
           dispatch(
             InsertOTOMessages(
@@ -1249,7 +885,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ),
           ),
         );
-      } else if (messageType == "B") {
+      } else if (messageType === "B") {
         messagesChecked?.map((message) =>
           dispatch(
             InsertBroadcastMessages(
@@ -1264,7 +900,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ),
           ),
         );
-      } else if (messageType == "G") {
+      } else if (messageType === "G") {
         messagesChecked?.map((message) =>
           dispatch(
             InsertPrivateGroupMessages(
@@ -1285,22 +921,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const cancelMessagesCheck = () => {
-    setForwardFlag(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
+    setBulkSelectMode(null);
   };
 
   const modalHandlerGroupInfo = () => {
-    setShowGroupInfo(true);
-    setMessageInfo(false);
-    setShowGroupEdit(false);
-    setChatMenuActive(false);
+    openPanel("groupInfo");
   };
 
   const deleteMultipleMessages = () => {
-    setShowCheckboxes(true);
-    setDeleteFlag(true);
-    setChatMenuActive(false);
+    setBulkSelectMode("delete");
   };
 
   const deleteMultipleMessagesButton = () => {
@@ -1349,116 +978,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
     setNotificationID(id);
 
-    setDeleteFlag(false);
-    setShowCheckboxes(false);
+    setBulkSelectMode(null);
 
     // ✅ Reset selection
     setMessagesChecked([]);
   };
 
   const modalHandlerGroupEdit = () => {
-    let Data = {
-      GroupID: talkStateData.ActiveChatData.id,
-      ChannelID: currentOrganizationId,
-    };
-    dispatch(GetAllPrivateGroupMembers(navigate, Data, t));
-    setShowGroupEdit(true);
-    setShowGroupInfo(false);
-    setMessageInfo(false);
-    setChatMenuActive(false);
-  };
-
-  const searchGroupEditUser = (e) => {
-    setSearchGroupUserInfoValue(e);
-    try {
-      if (
-        talkStateData.AllUsers.AllUsersData !== undefined &&
-        (talkStateData.AllUsers.AllUsersData !== null) &
-          (talkStateData.AllUsers.AllUsersData.length !== 0)
-      ) {
-        if (e !== "") {
-          let filteredData =
-            talkStateData.AllUsers.AllUsersData.allUsers.filter((value) => {
-              return value.fullName.toLowerCase().includes(e.toLowerCase());
-            });
-          if (filteredData.length === 0) {
-            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-          } else {
-            setAllUsers(filteredData);
-          }
-        } else if (e === "" || e === null) {
-          let data = talkStateData.AllUsers.AllUsersData.allUsers;
-          setSearchGroupUserInfoValue("");
-          setAllUsers(data);
-        }
-      }
-    } catch {}
-  };
-
-  const searchShoutEditUser = (e) => {
-    setSearchUserShoutValue(e);
-    try {
-      if (
-        talkStateData.AllUsers.AllUsersData !== undefined &&
-        (talkStateData.AllUsers.AllUsersData !== null) &
-          (talkStateData.AllUsers.AllUsersData.length !== 0)
-      ) {
-        if (e !== "") {
-          let filteredData =
-            talkStateData.AllUsers.AllUsersData.allUsers.filter((value) => {
-              return value.fullName.toLowerCase().includes(e.toLowerCase());
-            });
-          if (filteredData.length === 0) {
-            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-          } else {
-            setAllUsers(filteredData);
-          }
-        } else if (e === "" || e === null) {
-          let data = talkStateData.AllUsers.AllUsersData.allUsers;
-          setSearchUserShoutValue("");
-          setAllUsers(data);
-        }
-      }
-    } catch {}
-  };
-
-  const searchGroupInfoUser = (e) => {
-    setSearchGroupUserInfoValue(e);
-    try {
-      if (
-        talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse !==
-          undefined &&
-        talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse !==
-          null &&
-        talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
-          .length !== 0
-      ) {
-        if (e !== "") {
-          let filteredData =
-            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse.groupUsers.filter(
-              (value) => {
-                return value.userName
-                  .toLowerCase()
-                  .includes(searchGroupUserInfoValue.toLowerCase());
-              },
-            );
-          if (filteredData.length === 0) {
-            setGroupInfoData(
-              talkStateData.GetPrivateGroupMembers
-                .GetPrivateGroupMembersResponse.groupUsers,
-            );
-          } else {
-            setGroupInfoData(filteredData);
-          }
-        } else if (e === "" || e === null) {
-          let data =
-            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
-              .groupUsers;
-          setSearchGroupUserInfoValue("");
-          setGroupInfoData(data);
-        }
-      }
-    } catch {}
+    openPanel("groupEdit");
   };
 
   const deleteShoutFunction = () => {
@@ -1472,24 +999,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(DeleteShout(navigate, Data, t));
-    setChatMenuActive(false);
   };
 
   const editShoutFunction = () => {
-    console.log("Click");
-    let Data = {
-      TalkRequest: {
-        BroadcastID: talkStateData.ActiveChatData.id,
-        ChannelID: parseInt(currentOrganizationId),
-      },
-    };
-    dispatch(GetActiveUsersByBroadcastID(navigate, Data, t));
-    setShowEditShoutField(true);
-    setMessageInfo(false);
-    setChatMenuActive(false);
-    setForwardMessageUsersSection(false);
-    setShowGroupEdit(false);
-    setShowGroupInfo(false);
+    openPanel("shoutEdit");
   };
 
   const showChatSearchHandler = () => {
@@ -1501,66 +1014,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setSearchChatWord("");
     }
   };
-
-  useEffect(() => {
-    let allChatMessages = talkStateData.AllMessagesData;
-    console.log(allChatMessages, "allChatMessages");
-
-    if (
-      allChatMessages !== undefined &&
-      allChatMessages !== null &&
-      talkStateData.ActiveChatData.messageType === "O"
-    ) {
-      oneToOneMessages(setAllMessages, allChatMessages.oneToOneMessages);
-    } else if (
-      allChatMessages !== undefined &&
-      allChatMessages !== null &&
-      talkStateData.ActiveChatData.messageType === "G"
-    ) {
-      console.log(allChatMessages, "allChatMessages");
-      groupMessages(allChatMessages.groupMessages, setAllMessages);
-    } else if (
-      allChatMessages !== undefined &&
-      allChatMessages !== null &&
-      talkStateData.ActiveChatData.messageType === "B"
-    ) {
-      let allBroadcastMessagesArr = [];
-      if (
-        allChatMessages.broadcastMessages !== undefined &&
-        allChatMessages.broadcastMessages !== null &&
-        allChatMessages.broadcastMessages.length !== 0
-      ) {
-        allChatMessages.broadcastMessages.map((messagesData) => {
-          if (messagesData.frMessages !== "Direct Message") {
-            messagesData.frMessages = messagesData.frMessages.split("|");
-          }
-          allBroadcastMessagesArr.push({
-            messageID: messagesData.messageID,
-            senderID: messagesData.senderID,
-            receiverID: messagesData.receiverID,
-            messageBody: messagesData.messageBody,
-            senderName: messagesData.senderName,
-            isFlag: messagesData.isFlag,
-            sentDate: messagesData.sentDate,
-            currDate: messagesData.currDate,
-            fileGeneratedName: messagesData.fileGeneratedName,
-            fileName: messagesData.fileName,
-            frMessages: messagesData.frMessages,
-            broadcastName: messagesData.broadcastName,
-            messageCount: messagesData.messageCount,
-            attachmentLocation: messagesData.attachmentLocation,
-            base64Image: messagesData.base64Image,
-            attachmentId: messagesData.attachmentId,
-            sourceMessageBody: messagesData.sourceMessageBody,
-            sourceMessageId: messagesData.sourceMessageId,
-          });
-        });
-      } else {
-        allBroadcastMessagesArr = [];
-      }
-      setAllMessages([...allBroadcastMessagesArr]);
-    }
-  }, [talkStateData.AllMessagesData]);
 
   const chatSearchChange = (e) => {
     const searchedKeyword = e.target.value.toLowerCase();
@@ -1664,217 +1117,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setShowChatSearch(false);
     setSearchChatWord("");
   };
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !== null &&
-      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !==
-        undefined &&
-      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.length !== 0
-    ) {
-      let mqttBlockedUserData =
-        talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.data[0];
-      let activeChatData = {
-        id: talkStateData.ActiveChatData.id,
-        fullName: talkStateData.ActiveChatData.fullName,
-        imgURL: talkStateData.ActiveChatData.imgURL,
-        messageBody: talkStateData.ActiveChatData.messageBody,
-        messageDate: talkStateData.ActiveChatData.messageDate,
-        notiCount: talkStateData.ActiveChatData.notiCount,
-        messageType: talkStateData.ActiveChatData.messageType,
-        isOnline: talkStateData.ActiveChatData.isOnline,
-        companyName: talkStateData.ActiveChatData.companyName,
-        sentDate: talkStateData.ActiveChatData.sentDate,
-        receivedDate: talkStateData.ActiveChatData.receivedDate,
-        seenDate: talkStateData.ActiveChatData.seenDate,
-        attachmentLocation: talkStateData.ActiveChatData.attachmentLocation,
-        senderID: talkStateData.ActiveChatData.senderID,
-        admin: talkStateData.ActiveChatData.admin,
-        isBlock: 1,
-      };
-      if (talkStateData.ActiveChatData.id === mqttBlockedUserData.blockUserID) {
-        dispatch(activeChat(activeChatData));
-      }
-    }
-  }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser]);
-
-  // useEffect(() => {}, [talkStateData.ActiveChatData]);
-
-  
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !== null &&
-      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !==
-        undefined &&
-      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.length !==
-        0
-    ) {
-      let mqttUnblockedUserData =
-        talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0];
-      let activeChatData = {
-        id: talkStateData.ActiveChatData.id,
-        fullName: talkStateData.ActiveChatData.fullName,
-        imgURL: talkStateData.ActiveChatData.imgURL,
-        messageBody: talkStateData.ActiveChatData.messageBody,
-        messageDate: talkStateData.ActiveChatData.messageDate,
-        notiCount: talkStateData.ActiveChatData.notiCount,
-        messageType: talkStateData.ActiveChatData.messageType,
-        isOnline: talkStateData.ActiveChatData.isOnline,
-        companyName: talkStateData.ActiveChatData.companyName,
-        sentDate: talkStateData.ActiveChatData.sentDate,
-        receivedDate: talkStateData.ActiveChatData.receivedDate,
-        seenDate: talkStateData.ActiveChatData.seenDate,
-        attachmentLocation: talkStateData.ActiveChatData.attachmentLocation,
-        senderID: talkStateData.ActiveChatData.senderID,
-        admin: talkStateData.ActiveChatData.admin,
-        isBlock: 0,
-      };
-      if (
-        talkStateData.ActiveChatData.id === mqttUnblockedUserData.blockUserID
-      ) {
-        dispatch(activeChat(activeChatData));
-      }
-    }
-  }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketDataStarUnstar.socketStarMessage !== null &&
-      talkStateData.talkSocketDataStarUnstar.socketStarMessage !== undefined &&
-      talkStateData.talkSocketDataStarUnstar.socketStarMessage.length !== 0
-    ) {
-      let mqttStarMessageData =
-        talkStateData.talkSocketDataStarUnstar.socketStarMessage;
-      if (Object.keys(mqttStarMessageData) !== null) {
-        if (mqttStarMessageData.messageType === "O") {
-          let messageOtoStarred = allMessages.find(
-            (item) => item.messageID === mqttStarMessageData.messageID,
-          );
-          if (messageOtoStarred !== undefined) {
-            if (messageOtoStarred.isFlag === 1) {
-              messageOtoStarred.isFlag = 0;
-            } else if (messageOtoStarred.isFlag === 0) {
-              messageOtoStarred.isFlag = 1;
-            }
-            setAllMessages(
-              allMessages.map((data) =>
-                data.messageID === messageOtoStarred.messageID
-                  ? messageOtoStarred
-                  : data,
-              ),
-            );
-          }
-        } else if (mqttStarMessageData.messageType === "G") {
-          let messageGroupStarred = allMessages.find(
-            (item) => item.messageID === mqttStarMessageData.messageID,
-          );
-          if (messageGroupStarred !== undefined) {
-            if (messageGroupStarred.isFlag === 1) {
-              messageGroupStarred.isFlag = 0;
-            } else if (messageGroupStarred.isFlag === 0) {
-              messageGroupStarred.isFlag = 1;
-            }
-            setAllMessages(
-              allMessages.map((data) =>
-                data.messageID === messageGroupStarred.messageID
-                  ? messageGroupStarred
-                  : data,
-              ),
-            );
-          }
-        }
-      }
-    }
-  }, [talkStateData?.talkSocketDataStarUnstar?.socketStarMessage]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !== null &&
-      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !==
-        undefined &&
-      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage.length !== 0
-    ) {
-      markStarUnstarFunction(
-        talkStateData,
-        allChatData,
-        setAllMessages,
-        allMessages,
-        allMessages,
-        setAllMessages,
-      );
-    }
-  }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketGroupCreation.groupCreatedData !== null &&
-      talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
-      talkStateData.talkSocketGroupCreation.groupCreatedData.length !== 0
-    ) {
-      groupCreationFunction(talkStateData, setAllChatData, allChatData);
-    }
-  }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketGroupUpdation.groupUpdatedData !== null &&
-      talkStateData.talkSocketGroupUpdation.groupUpdatedData !== undefined &&
-      talkStateData.talkSocketGroupUpdation.groupUpdatedData.length !== 0
-    ) {
-      groupUpdationFunction(talkStateData, setAllChatData, allChatData);
-    }
-  }, [talkStateData?.talkSocketGroupUpdation?.groupUpdatedData]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
-      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !==
-        undefined &&
-      talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
-    ) {
-      unreadMessageCountFunction(talkStateData, allChatData, setAllChatData);
-    }
-  }, [
-    talkStateData?.talkSocketData?.socketInsertOTOMessageData,
-    talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData,
-  ]);
-
-  useEffect(() => {
-    if (
-      talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse !==
-        null &&
-      talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse !==
-        undefined &&
-      talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse
-        .length !== 0
-    ) {
-      const acknowledgedMessages =
-        talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse.data;
-
-      if (Array.isArray(acknowledgedMessages)) {
-        const updatedAllOtoMessages = allMessages.map((message) => {
-          const matchingAcknowledgedMessage = acknowledgedMessages.find(
-            (acknowledgedMessage) =>
-              acknowledgedMessage.messageID === message.messageID,
-          );
-
-          if (matchingAcknowledgedMessage) {
-            return {
-              ...message,
-              messageStatus: matchingAcknowledgedMessage.messageStatus,
-              sentDate: matchingAcknowledgedMessage.sentDate,
-              receivedDate: matchingAcknowledgedMessage.receivedDate,
-              seenDate: matchingAcknowledgedMessage.seenDate,
-              currDate: matchingAcknowledgedMessage.currDate,
-            };
-          }
-          return message;
-        });
-        setAllMessages(updatedAllOtoMessages);
-      }
-    }
-  }, [talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse]);
 
   const uniqueId = generateGUID();
 
@@ -2209,276 +1451,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketData.socketInsertOTOMessageData !== null &&
-      talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
-      talkStateData.talkSocketData.socketInsertOTOMessageData.length !== 0
-    ) {
-      let mqttResponseSingleMessage =
-        talkStateData.talkSocketData.socketInsertOTOMessageData.data[0];
-
-      const uidToMatch = mqttResponseSingleMessage.uid;
-
-      const existingMessages =
-        JSON.parse(localStorage.getItem("singleMessageObject")) || [];
-
-      const existingChatMessages =
-        JSON.parse(localStorage.getItem("chatMessagesLocal")) || [];
-
-      const updatedMessages = existingMessages.filter((message) => {
-        return message.TalkRequest.Message.UID !== uidToMatch;
-      });
-
-      const updatedChatMessages = existingChatMessages.filter((message) => {
-        return message.uid !== uidToMatch;
-      });
-
-      localStorage.setItem(
-        "singleMessageObject",
-        JSON.stringify(updatedMessages),
-      );
-
-      localStorage.setItem(
-        "chatMessagesLocal",
-        JSON.stringify(updatedChatMessages),
-      );
-
-      if (
-        talkStateData.ActiveChatData.id ===
-        talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-          .receiverID
-      ) {
-        let frMessages = mqttResponseSingleMessage.frMessages;
-
-        if (
-          frMessages !== "Direct Message" &&
-          frMessages.length > 0 &&
-          frMessages !== undefined &&
-          typeof frMessages !== "object"
-        ) {
-          frMessages = frMessages.split("|");
-        }
-        let insertMqttOtoMessageData = {
-          attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
-          base64Image: mqttResponseSingleMessage.base64Image,
-          attachmentId: mqttResponseSingleMessage.attachmentId,
-          blockCount: 0,
-          broadcastName: mqttResponseSingleMessage.broadcastName,
-          currDate: mqttResponseSingleMessage.currDate,
-          fileGeneratedName: mqttResponseSingleMessage.fileGeneratedName,
-          fileName: mqttResponseSingleMessage.fileName,
-          frMessages: frMessages,
-          isFlag: 0,
-          messageBody: mqttResponseSingleMessage.messageBody,
-          messageCount: 0,
-          messageID: mqttResponseSingleMessage.messageID,
-          messageStatus: mqttResponseSingleMessage.messageStatus,
-          receivedDate: mqttResponseSingleMessage.receivedDate,
-          receiverID: mqttResponseSingleMessage.receiverID,
-          receiverName: mqttResponseSingleMessage.receiverName,
-          seenDate: mqttResponseSingleMessage.seenDate,
-          senderID: mqttResponseSingleMessage.senderID,
-          senderName: mqttResponseSingleMessage.senderName,
-          sentDate: mqttResponseSingleMessage.sentDate,
-          shoutAll: mqttResponseSingleMessage.shoutAll,
-          uid: mqttResponseSingleMessage.uid,
-          sourceMessageBody: mqttResponseSingleMessage.sourceMessageBody,
-          isRetry: false,
-        };
-
-        setAllMessages((prevAllMessages) => {
-          const updatedMessages = prevAllMessages.map((message) => {
-            if (message.uid === insertMqttOtoMessageData.uid) {
-              return {
-                ...message,
-                ...insertMqttOtoMessageData,
-              };
-            }
-            return message;
-          });
-
-          const isUIDInArray = updatedMessages.some(
-            (message) => message.uid === insertMqttOtoMessageData.uid,
-          );
-          if (!isUIDInArray) {
-            updatedMessages.push(insertMqttOtoMessageData);
-          }
-
-          return updatedMessages;
-        });
-      } else if (
-        parseInt(currentUserId) ===
-          talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-            .receiverID &&
-        talkStateData.ActiveChatData.id ===
-          talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-            .senderID
-      ) {
-        let frMessages = mqttResponseSingleMessage.frMessages;
-
-        if (
-          frMessages !== "Direct Message" &&
-          frMessages.length > 0 &&
-          frMessages !== undefined &&
-          typeof frMessages !== "object"
-        ) {
-          frMessages = frMessages.split("|");
-        }
-        let insertMqttOtoMessageData = {
-          attachmentLocation: mqttResponseSingleMessage.attachmentLocation,
-          base64Image: mqttResponseSingleMessage.base64Image,
-          attachmentId: mqttResponseSingleMessage.attachmentId,
-          blockCount: 0,
-          broadcastName: mqttResponseSingleMessage.broadcastName,
-          currDate: mqttResponseSingleMessage.currDate,
-          fileGeneratedName: mqttResponseSingleMessage.fileGeneratedName,
-          fileName: mqttResponseSingleMessage.fileName,
-          frMessages: frMessages,
-          isFlag: 0,
-          messageBody: mqttResponseSingleMessage.messageBody,
-          messageCount: 0,
-          messageID: mqttResponseSingleMessage.messageID,
-          messageStatus: mqttResponseSingleMessage.messageStatus,
-          receivedDate: mqttResponseSingleMessage.receivedDate,
-          receiverID: mqttResponseSingleMessage.receiverID,
-          receiverName: mqttResponseSingleMessage.receiverName,
-          seenDate: mqttResponseSingleMessage.seenDate,
-          senderID: mqttResponseSingleMessage.senderID,
-          senderName: mqttResponseSingleMessage.senderName,
-          sentDate: mqttResponseSingleMessage.sentDate,
-          shoutAll: mqttResponseSingleMessage.shoutAll,
-          uid: mqttResponseSingleMessage.uid,
-          isRetry: false,
-          sourceMessageBody: mqttResponseSingleMessage.sourceMessageBody,
-        };
-        setAllMessages((prevAllMessages) => {
-          const updatedMessages = prevAllMessages.map((message) => {
-            if (message.uid === insertMqttOtoMessageData.uid) {
-              return {
-                ...message,
-                ...insertMqttOtoMessageData,
-              };
-            }
-            return message;
-          });
-
-          const isUIDInArray = updatedMessages.some(
-            (message) => message.uid === insertMqttOtoMessageData.uid,
-          );
-          if (!isUIDInArray) {
-            updatedMessages.push(insertMqttOtoMessageData);
-          }
-
-          return updatedMessages;
-        });
-      }
-    }
-  }, [talkStateData.talkSocketData.socketInsertOTOMessageData]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketData.socketInsertGroupMessageData !== null &&
-      talkStateData.talkSocketData.socketInsertGroupMessageData !== undefined &&
-      talkStateData.talkSocketData.socketInsertGroupMessageData.length !== 0
-    ) {
-      let mqttInsertGroupMessageData =
-        talkStateData.talkSocketData.socketInsertGroupMessageData.data[0];
-      let frMessages = mqttInsertGroupMessageData.frMessages;
-      console.log(
-        "mqttInsertGroupMessageDatamqttInsertGroupMessageData",
-        mqttInsertGroupMessageData,
-      );
-      if (
-        frMessages !== "Direct Message" &&
-        frMessages.length > 0 &&
-        frMessages !== undefined &&
-        typeof frMessages !== "object"
-      ) {
-        frMessages = frMessages.split("|");
-      }
-      if (talkStateData.ActiveChatData.messageType === "G") {
-        if (
-          mqttInsertGroupMessageData.senderID !== undefined &&
-          mqttInsertGroupMessageData.senderID !== null &&
-          mqttInsertGroupMessageData.senderID !== 0 &&
-          mqttInsertGroupMessageData.senderID !== "" &&
-          mqttInsertGroupMessageData.senderID !== "0" &&
-          talkStateData.ActiveChatData.id ===
-            mqttInsertGroupMessageData.receiverID
-        ) {
-          let insertMqttGroupMessageData = {
-            messageID: mqttInsertGroupMessageData.messageID,
-            senderID: mqttInsertGroupMessageData.senderID,
-            receiverID: mqttInsertGroupMessageData.receiverID,
-            messageBody: mqttInsertGroupMessageData.messageBody,
-            senderName: mqttInsertGroupMessageData.senderName,
-            isFlag: 0,
-            sentDate: mqttInsertGroupMessageData.sentDate,
-            currDate: mqttInsertGroupMessageData.currDate,
-            fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
-            fileName: mqttInsertGroupMessageData.fileName,
-            shoutAll: mqttInsertGroupMessageData.shoutAll,
-            frMessages: frMessages,
-            messageCount: 0,
-            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-            base64Image: mqttInsertGroupMessageData.base64Image,
-            attachmentId: mqttInsertGroupMessageData.attachmentId,
-            uid: mqttInsertGroupMessageData.uid,
-            isRetry: false,
-            sourceMessageBody: mqttInsertGroupMessageData.sourceMessageBody,
-          };
-          setAllMessages((prevAllMessages) => {
-            const updatedMessages = prevAllMessages.map((message) => {
-              if (message.uid === insertMqttGroupMessageData.uid) {
-                return {
-                  ...message,
-                  ...insertMqttGroupMessageData,
-                };
-              }
-              return message;
-            });
-
-            const isUIDInArray = updatedMessages.some(
-              (message) => message.uid === insertMqttGroupMessageData.uid,
-            );
-            if (!isUIDInArray) {
-              updatedMessages.push(insertMqttGroupMessageData);
-            }
-
-            return updatedMessages;
-          });
-        }
-        // NOTE: a message whose receiverID doesn't match the currently open
-        // group (the branch above) must NOT be appended here — this state
-        // (allMessages) belongs only to the active chat window. Previously,
-        // an unguarded `else if` branch appended it anyway, leaking messages
-        // from other groups into whichever group happened to be open. Any
-        // other group's unread badge/preview is owned by the sidebar list
-        // (recentChats.js), which has its own MQTT listener.
-      }
-    }
-  }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
-
-  useEffect(() => {
-    if (
-      talkStateData.talkSocketInsertBroadcastMessage
-        .MessageSendBroadcastResponseData !== null &&
-      talkStateData.talkSocketInsertBroadcastMessage
-        .MessageSendBroadcastResponseData !== undefined &&
-      talkStateData.talkSocketInsertBroadcastMessage
-        .MessageSendBroadcastResponseData.length !== 0
-    ) {
-      try {
-        if (talkStateData.ActiveChatData.messageType === "B") {
-        }
-      } catch {}
-    }
-  }, [
-    talkStateData.talkSocketInsertBroadcastMessage
-      .MessageSendBroadcastResponseData,
-  ]);
-
   const handleOutsideClick = (event) => {
     if (
       emojiMenuRef.current &&
@@ -2516,45 +1488,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [emojiSelected]);
 
-  const editGroup = () => {
-    let editGroupUsersHashCheck = editGroupUsersChecked.map((value, index) => {
-      return value + "#" + 0;
-    });
-    setEditGroupUsersChecked(editGroupUsersHashCheck);
-    let data = {
-      TalkRequest: {
-        UserID: parseInt(currentUserId),
-        Group: {
-          GroupID: talkStateData.ActiveChatData.id,
-          GroupName: groupName,
-          Users: editGroupUsersHashCheck.join(","),
-        },
-      },
-    };
-    dispatch(UpdatePrivateGroup(data, t, navigate));
-    setShowGroupEdit(false);
-  };
-
-  const editShoutAll = () => {
-    let Data = {
-      TalkRequest: {
-        UserID: parseInt(currentUserId),
-        ChannelID: parseInt(currentOrganizationId),
-        Group: {
-          GroupID: talkStateData.ActiveChatData.id,
-          GroupName: shoutName,
-          Users: editShoutUsersChecked.join(","),
-        },
-      },
-    };
-    dispatch(UpdateShoutAll(Data, t, navigate));
-    setShowEditShoutField(false);
-  };
-
   useEffect(() => {
     if (
       talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage ===
-      "Group-modified"
+      t("Group-modified")
     ) {
       setNotification({
         notificationShow: true,
@@ -2562,9 +1499,24 @@ const ChatMainBody = ({ chatMessageClass }) => {
           talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage,
       });
       setNotificationID(id);
+      // Refresh the group's member list so Group Info reflects newly
+      // added/removed members immediately, instead of only updating after
+      // the chat is fully closed and reopened (which re-fetches on mount).
+      if (talkStateData.ActiveChatData.messageType === "G") {
+        dispatch(
+          GetAllPrivateGroupMembers(
+            navigate,
+            {
+              GroupID: talkStateData.ActiveChatData.id,
+              ChannelID: parseInt(currentOrganizationId),
+            },
+            t,
+          ),
+        );
+      }
+      dispatch(ResetGroupModify());
     }
-    dispatch(ResetGroupModify());
-  }, []);
+  }, [talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage]);
 
   const leaveGroupHandlerChat = (record) => {
     let data = {
@@ -2572,16 +1524,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
       GroupID: record.id,
     };
     dispatch(LeaveGroup(navigate, data, t));
-    setChatMenuActive(false);
     dispatch(videoChatMessagesFlag(false));
     dispatch(resetCloseChatFlags());
-    setLeave(false);
-    setSave(false);
-    setPrint(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
+    closeAllPanels();
+    closeModal();
+    setBulkSelectMode(null);
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -2590,22 +1537,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       StartDate: "",
       EndDate: "",
     });
-    setEndDatedisable(true);
-    setShowGroupEdit(false);
-    setShowEditGroupField(false);
-    setShowEditShoutField(false);
     setEmojiActive(false);
-    setChatMenuActive(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setShowGroupEdit(false);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    setCustomCheckState(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
-    setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
     // setChatFeatureActive(0);
@@ -2618,6 +1550,26 @@ const ChatMainBody = ({ chatMessageClass }) => {
     });
     localStorage.setItem("activeChatID", null);
     localStorage.setItem("activeOtoChatID", 0);
+  };
+
+  // Routes ChatActionModals' generic onConfirm/onCancel to the right
+  // kind-specific handler based on which modal is currently active.
+  const handleModalConfirm = () => {
+    if (activeModal === "save") downloadChat();
+    else if (activeModal === "print") printChat();
+    else if (activeModal === "email") emailChat();
+    else if (activeModal === "deleteSingle")
+      deleteSingleMessage(deleteMessageData);
+    else if (activeModal === "leave")
+      leaveGroupHandlerChat(talkStateData.ActiveChatData);
+  };
+
+  const handleModalCancel = () => {
+    if (activeModal === "save") cancelButtonHandler();
+    else if (activeModal === "print") cancelPrintHandler();
+    else if (activeModal === "email") cancelPrintemailChatHandler();
+    else if (activeModal === "deleteSingle") handleCancel();
+    else closeModal();
   };
 
   useEffect(() => {
@@ -2670,41 +1622,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
 
-  useEffect(() => {
-    if (
-      talkStateData.MqttMessageDeleteData !== null &&
-      talkStateData.MqttMessageDeleteData !== undefined &&
-      talkStateData.MqttMessageDeleteData.length !== 0
-    ) {
-      if (talkStateData.MqttMessageDeleteData.data[0].messageType === "O") {
-        const updatedMessages = allMessages.filter(
-          (message) =>
-            message.messageID !==
-            talkStateData.MqttMessageDeleteData.data[0].messageID,
-        );
-        setAllMessages(updatedMessages);
-      }
-      if (talkStateData.MqttMessageDeleteData.data[0].messageType === "G") {
-        const updatedMessages = allMessages.filter(
-          (message) =>
-            message.messageID !==
-            talkStateData.MqttMessageDeleteData.data[0].messageID,
-        );
-        setAllMessages(updatedMessages);
-      }
-      if (talkStateData.MqttMessageDeleteData.data[0].messageType === "B") {
-        const updatedMessages = allMessages.filter(
-          (message) =>
-            message.messageID !==
-            talkStateData.MqttMessageDeleteData.data[0].messageID,
-        );
-        setAllMessages(updatedMessages);
-      }
-    }
-  }, [talkStateData?.MqttMessageDeleteData]);
-
-  useEffect(() => {}, [activeCall]);
-
   const initiateOtoCall = () => {
     let recipientData = {
       userID: talkStateData.ActiveChatData.id,
@@ -2746,13 +1663,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(normalizeVideoPanelFlag(true));
     dispatch(videoChatPanel(false));
     dispatch(resetCloseChatFlags());
-    setSave(false);
-    setPrint(false);
-    setLeave(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
+    closeAllPanels();
+    closeModal();
+    setBulkSelectMode(null);
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -2761,22 +1674,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       StartDate: "",
       EndDate: "",
     });
-    setEndDatedisable(true);
-    setShowGroupEdit(false);
-    setShowEditGroupField(false);
-    setShowEditShoutField(false);
     setEmojiActive(false);
-    setChatMenuActive(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setShowGroupEdit(false);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    setCustomCheckState(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
-    setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
     // setChatFeatureActive(0);
@@ -2853,13 +1751,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(normalizeVideoPanelFlag(true));
     dispatch(videoChatPanel(false));
     dispatch(resetCloseChatFlags());
-    setSave(false);
-    setPrint(false);
-    setLeave(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
+    closeAllPanels();
+    closeModal();
+    setBulkSelectMode(null);
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -2868,22 +1762,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       StartDate: "",
       EndDate: "",
     });
-    setEndDatedisable(true);
-    setShowGroupEdit(false);
-    setShowEditGroupField(false);
-    setShowEditShoutField(false);
     setEmojiActive(false);
-    setChatMenuActive(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setShowGroupInfo(false);
-    setShowGroupEdit(false);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    setCustomCheckState(false);
-    setShowCheckboxes(false);
-    setDeleteFlag(false);
-    setForwardFlag(false);
     setEndDatedisable(false);
     setUploadOptions(false);
     // setChatFeatureActive(0);
@@ -2986,83 +1865,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
-  useEffect(() => {
-    if (talkFeatureStates.RetryFlagState === true) {
-      const storedSingleMessageObject =
-        JSON.parse(localStorage.getItem("singleMessageObject")) || [];
-      const uidSet = new Set(
-        storedSingleMessageObject.map((item) => item.TalkRequest.Message.UID),
-      );
-      const updatedAllMessages = allMessages.map((message) => {
-        if (uidSet.has(message.uid)) {
-          return {
-            ...message,
-            isRetry: true,
-          };
-        }
-        return message;
-      });
-      setAllMessages(updatedAllMessages);
-    }
-  }, [talkFeatureStates.RetryFlagState]);
-
-  useEffect(() => {
-    let singleMessageObject = JSON.parse(
-      localStorage.getItem("singleMessageObject"),
-    );
-
-    let interval;
-
-    if (currentConnection === false) {
-      interval = setInterval(() => {
-        if (singleMessageObject.length !== 0) {
-          let otoMessageLocal = JSON.parse(
-            localStorage.getItem("singleMessageObject"),
-          );
-
-          if (Array.isArray(otoMessageLocal)) {
-            for (let i = 0; i < otoMessageLocal.length; i++) {
-              // Dispatch each object separately
-              dispatch(
-                InsertOTOMessages(
-                  navigate,
-                  otoMessageLocal[i],
-                  uploadFileTalk,
-                  t,
-                ),
-              );
-            }
-          }
-        }
-      }, 5000);
-
-      setTimeout(() => {
-        dispatch(retryFlagState(true));
-        clearInterval(interval);
-      }, 20000);
-    } else {
-      clearInterval(interval);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [currentConnection, allMessages]);
-
-  useEffect(() => {
-    // Check if all objects have isRetry: false
-    const allObjectsHaveIsRetryFalse = allMessages.every(
-      (message) => !message.isRetry,
-    );
-
-    if (allObjectsHaveIsRetryFalse) {
-      dispatch(retryFlagState(false));
-    } else {
-      // Do something else when at least one object has isRetry: true
-      // Your code here...
-    }
-  }, [allMessages.length]);
-
   const handlePaste = (event) => {
     const clipboardItems = event.clipboardData && event.clipboardData.items;
 
@@ -3113,11 +1915,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
               <Col lg={12} md={12} sm={12}>
                 <div
                   className={
-                    save === true ||
-                    print === true ||
-                    email === true ||
-                    deleteMessage === true ||
-                    leave === true
+                    activeModal !== null
                       ? "chat-header applyBlur"
                       : "chat-header"
                   }>
@@ -3153,23 +1951,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         {talkStateData.ActiveChatData.fullName}
                       </p>
                     </Col>
-                    {activeCall === true ? (
-                      <Col lg={1} md={1} sm={12}></Col>
-                    ) : null}
-                    <Col lg={1} md={1} sm={12}></Col>
-                    <Col lg={1} md={1} sm={12}>
+                    <Col lg={5} md={5} sm={12} className="d-flex justify-content-end align-items-center">
                       {" "}
-                      <div className='chat-box-icons'>
+                      <span>
                         <img
                           draggable='false'
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
                           alt=''
                         />
-                      </div>
-                    </Col>
-                    <Col lg={1} md={1} sm={12}>
-                      <Dropdown className='chat-box-icons cursor-pointer positionRelative'>
+                      </span>
+                      <Dropdown className=' cursor-pointer positionRelative'>
                         <Dropdown.Toggle
                           // as="div"
                           className='talk-dropdown-toggle'
@@ -3235,7 +2027,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <Dropdown.Item onClick={deleteMultipleMessages}>
                                 {t("Delete-messages")}
                               </Dropdown.Item>
-                              <Dropdown.Item onClick={() => setLeave(true)}>
+                              <Dropdown.Item onClick={() => openModal("leave")}>
                                 {t("Leave-Group")}
                               </Dropdown.Item>
                               <Dropdown.Item
@@ -3279,10 +2071,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           )}
                         </Dropdown.Menu>
                       </Dropdown>
-                    </Col>
-                    {activeCall === false && checkFeatureIDAvailability(5) ? (
-                      <Col lg={1} md={1} sm={12}>
-                        <div className='chat-box-icons'>
+                      {activeCall === false &&
+                      checkFeatureIDAvailability(5) &&
+                      !HIDE_VIDEO ? (
+                        <span>
                           <img
                             onClick={
                               activeChatType === "O"
@@ -3295,14 +2087,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             src={VideoCallIcon}
                             alt=''
                           />
-                        </div>
-                      </Col>
-                    ) : null}
-                    <Col lg={1} md={1} sm={12}>
-                      {" "}
-                      <div
-                        className='chat-box-icons closechat'
-                        onClick={closeChat}>
+                        </span>
+                      ) : null}{" "}
+                      <span className=' closechat' onClick={closeChat}>
                         <img
                           width={14}
                           draggable='false'
@@ -3310,7 +2097,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           className='cursor-pointer'
                           alt=''
                         />
-                      </div>
+                      </span>
                     </Col>
                   </Row>
                 </div>
@@ -3370,21 +2157,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
               </>
             ) : null}
             {/* Starting point  */}
-            {messageInfo === false &&
-            forwardMessageUsersSection === false &&
-            showGroupInfo === false &&
-            showEditShoutField === false &&
-            showGroupEdit === false ? (
+            {activePanel === null ? (
               <>
                 <Row>
                   <Col className='p-0'>
                     <div
                       className={
-                        save === true ||
-                        print === true ||
-                        email === true ||
-                        deleteMessage === true ||
-                        leave === true
+                        activeModal !== null
                           ? "chat-section applyBlur"
                           : showChatSearch === true
                             ? "chat-section searchField"
@@ -4979,7 +3758,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
                       {replyFeature === true ? (
                         <div className='chat-feature-action'>
-                          <p className='feature-name'>Replying to</p>
+                          <p className='feature-name'>{t("Replying-to")}</p>
                           <div className='chat-feature'>
                             <div className='chat-feature-option'>
                               <p className='chat-feature-text'>
@@ -5014,399 +3793,21 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 <Row>
                   <Col className='p-0'>
                     <>
-                      {save === true ? (
-                        <>
-                          <div className='chat-menu-popups'>
-                            <Row className='mt-3'>
-                              <Col className='d-flex justify-content-end crossIcon-class'>
-                                <img
-                                  src={CrossIcon}
-                                  width={10}
-                                  height={10}
-                                  onClick={cancelButtonHandler}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                {" "}
-                                <div className='chat-modal-Heading'>
-                                  <h1>{t("Save-Messages")}</h1>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <div className='chat-options'>
-                                  <Checkbox
-                                    checked={todayCheckState}
-                                    onChange={onChangeToday}>
-                                    {t("Today")}
-                                  </Checkbox>
-                                  <Checkbox
-                                    checked={allCheckState}
-                                    onChange={onChangeAll}>
-                                    {t("All")}
-                                  </Checkbox>
-                                  <Checkbox
-                                    checked={customCheckState}
-                                    onChange={onChangeCustom}>
-                                    {t("Custom")}
-                                  </Checkbox>
-                                </div>
-                                {customCheckState === true ? (
-                                  <Row>
-                                    <Col lg={1} md={1} sm={12}></Col>
-                                    <Col lg={5} md={5} sm={12}>
-                                      <label style={{ marginLeft: "5px" }}>
-                                        <b style={{ fontSize: "0.7rem" }}>
-                                          {t("Date-from")}
-                                        </b>
-                                      </label>{" "}
-                                      <InputDatePicker
-                                        name='StartDate'
-                                        size='large'
-                                        width='100%'
-                                        value={
-                                          chatDateState.StartDate
-                                            ? DateDisplayFormat(
-                                                chatDateState.StartDate,
-                                              )
-                                            : null
-                                        }
-                                        DateRange
-                                        placeholder={t("Select-date")}
-                                        change={onChangeDate}
-                                        locale={enUS}
-                                      />
-                                    </Col>
-                                    <Col lg={5} md={5} sm={12}>
-                                      <label style={{ marginLeft: "5px" }}>
-                                        <b style={{ fontSize: "0.7rem" }}>
-                                          {t("Date-to")}
-                                        </b>
-                                      </label>
-                                      <InputDatePicker
-                                        name='EndDate'
-                                        size='large'
-                                        width='100%'
-                                        value={
-                                          chatDateState.EndDate
-                                            ? DateDisplayFormat(
-                                                chatDateState.EndDate,
-                                              )
-                                            : null
-                                        }
-                                        DateRange
-                                        placeholder={t("Select Date")}
-                                        change={onChangeDate}
-                                        disable={endDatedisable}
-                                        locale={enUS}
-                                      />
-                                    </Col>
-                                    <Col lg={1} md={1} sm={12}></Col>
-                                  </Row>
-                                ) : null}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className='d-flex justify-content-center gap-2'>
-                                <Button
-                                  className='Ok-btn'
-                                  text={t("Okay")}
-                                  onClick={downloadChat}
-                                />
-                              </Col>
-                            </Row>
-                          </div>
-                        </>
-                      ) : print === true ? (
-                        <>
-                          <div className='chat-menu-popups'>
-                            <Row className='mt-3'>
-                              <Col className='d-flex justify-content-end crossIcon-class'>
-                                <img
-                                  src={CrossIcon}
-                                  width={10}
-                                  height={10}
-                                  onClick={cancelPrintHandler}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                {" "}
-                                <div className='chat-modal-Heading'>
-                                  <h1>{t("Print-Messages")}</h1>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                {" "}
-                                <div className='chat-options'>
-                                  <Checkbox
-                                    checked={todayCheckState}
-                                    onChange={onChangeToday}>
-                                    {t("Today")}
-                                  </Checkbox>
-                                  <Checkbox
-                                    checked={allCheckState}
-                                    onChange={onChangeAll}>
-                                    {t("All")}
-                                  </Checkbox>
-                                  <Checkbox
-                                    checked={customCheckState}
-                                    onChange={onChangeCustom}>
-                                    {t("Custom")}
-                                  </Checkbox>
-                                </div>
-                                {customCheckState === true ? (
-                                  <Row>
-                                    <Col lg={6} md={6} sm={12}>
-                                      <label style={{ marginLeft: "5px" }}>
-                                        <b style={{ fontSize: "0.7rem" }}>
-                                          {t("Date-From")}
-                                        </b>
-                                      </label>{" "}
-                                      <InputDatePicker
-                                        name='StartDate'
-                                        size='large'
-                                        width='100%'
-                                        value={
-                                          chatDateState.StartDate
-                                            ? DateDisplayFormat(
-                                                chatDateState.StartDate,
-                                              )
-                                            : null
-                                        }
-                                        DateRange
-                                        placeholder={t("Select-Date")}
-                                        change={onChangeDate}
-                                      />
-                                    </Col>
-                                    <Col lg={6} md={6} sm={12}>
-                                      <label style={{ marginLeft: "5px" }}>
-                                        <b style={{ fontSize: "0.7rem" }}>
-                                          {t("Date-to")}
-                                        </b>
-                                      </label>
-                                      <InputDatePicker
-                                        name='EndDate'
-                                        size='large'
-                                        width='100%'
-                                        value={
-                                          chatDateState.EndDate
-                                            ? DateDisplayFormat(
-                                                chatDateState.EndDate,
-                                              )
-                                            : null
-                                        }
-                                        DateRange
-                                        placeholder={t("Select-Date")}
-                                        change={onChangeDate}
-                                        disable={endDatedisable}
-                                      />
-                                    </Col>
-                                  </Row>
-                                ) : null}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className='d-flex justify-content-center gap-2'>
-                                <Button
-                                  className=' Ok-btn'
-                                  text={t("Okay")}
-                                  onClick={printChat}
-                                />
-                              </Col>
-                            </Row>
-                          </div>
-                        </>
-                      ) : email === true ? (
-                        <>
-                          <div className='chat-menu-popups'>
-                            <Row className='mt-3'>
-                              <Col className='d-flex justify-content-end crossIcon-class'>
-                                <img
-                                  src={CrossIcon}
-                                  width={10}
-                                  height={10}
-                                  onClick={cancelPrintemailChatHandler}
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                {" "}
-                                <div className='chat-modal-Heading'>
-                                  <h1>{t("Email-Messages")}</h1>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                {" "}
-                                <div className='chat-options'>
-                                  <Checkbox
-                                    checked={todayCheckState}
-                                    onChange={onChangeToday}>
-                                    {t("Today")}
-                                  </Checkbox>
-                                  <Checkbox
-                                    checked={allCheckState}
-                                    onChange={onChangeAll}>
-                                    {t("All")}
-                                  </Checkbox>
-                                  <Checkbox
-                                    checked={customCheckState}
-                                    onChange={onChangeCustom}>
-                                    Custom
-                                  </Checkbox>
-                                </div>
-                                {customCheckState === true ? (
-                                  <Row>
-                                    <Col lg={6} md={6} sm={12}>
-                                      <label style={{ marginLeft: "5px" }}>
-                                        <b style={{ fontSize: "0.7rem" }}>
-                                          Date From
-                                        </b>
-                                      </label>{" "}
-                                      <InputDatePicker
-                                        name='StartDate'
-                                        size='large'
-                                        width='100%'
-                                        value={
-                                          chatDateState.StartDate
-                                            ? DateDisplayFormat(
-                                                chatDateState.StartDate,
-                                              )
-                                            : null
-                                        }
-                                        DateRange
-                                        placeholder={"Select Date"}
-                                        change={onChangeDate}
-                                      />
-                                    </Col>
-                                    <Col lg={6} md={6} sm={12}>
-                                      <label style={{ marginLeft: "5px" }}>
-                                        <b style={{ fontSize: "0.7rem" }}>
-                                          Date To
-                                        </b>
-                                      </label>
-                                      <InputDatePicker
-                                        name='EndDate'
-                                        size='large'
-                                        width='100%'
-                                        value={
-                                          chatDateState.EndDate
-                                            ? DateDisplayFormat(
-                                                chatDateState.EndDate,
-                                              )
-                                            : null
-                                        }
-                                        DateRange
-                                        placeholder={"Select Date"}
-                                        change={onChangeDate}
-                                        disable={endDatedisable}
-                                      />
-                                    </Col>
-                                  </Row>
-                                ) : null}
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className='d-flex justify-content-center gap-2'>
-                                <Button
-                                  className=' Ok-btn'
-                                  text='Okay'
-                                  onClick={emailChat}
-                                />
-                              </Col>
-                            </Row>
-                          </div>
-                        </>
-                      ) : deleteMessage === true ? (
-                        <>
-                          <div className='chat-menu-popups'>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <div className='chat-modal-Heading'>
-                                  <h1>Delete Messages</h1>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={2} md={2} sm={12}></Col>
-                              <Col lg={4} md={4} sm={12}>
-                                <Button
-                                  className=' Ok-btn'
-                                  text='Delete'
-                                  onClick={() =>
-                                    deleteSingleMessage(deleteMessageData)
-                                  }
-                                />
-                              </Col>
-                              <Col lg={4} md={4} sm={12}>
-                                <Button
-                                  className=' White-btn'
-                                  text='Cancel'
-                                  onClick={handleCancel}
-                                />
-                              </Col>
-                              <Col lg={2} md={2} sm={12}></Col>
-                            </Row>
-                          </div>
-                        </>
-                      ) : leave === true ? (
-                        <>
-                          <div className='chat-menu-popups'>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                {" "}
-                                <div className='chat-modal-Heading'>
-                                  <h1>
-                                    {t("Are-you-sure-you-want-to-leave-group")}
-                                  </h1>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className='text-center'>
-                                <Button
-                                  className=' Ok-btn mx-2'
-                                  text={t("Yes")}
-                                  onClick={() =>
-                                    leaveGroupHandlerChat(
-                                      talkStateData.ActiveChatData,
-                                    )
-                                  }
-                                />
-                                <Button
-                                  className=' White-btn'
-                                  text={t("Cancel")}
-                                  onClick={() => setLeave(false)}
-                                />
-                              </Col>
-                            </Row>
-                          </div>
-                        </>
+                      {activeModal !== null ? (
+                        <ChatActionModals
+                          kind={activeModal}
+                          todayCheckState={todayCheckState}
+                          allCheckState={allCheckState}
+                          customCheckState={customCheckState}
+                          onCheckToday={onChangeToday}
+                          onCheckAll={onChangeAll}
+                          onCheckCustom={onChangeCustom}
+                          chatDateState={chatDateState}
+                          endDatedisable={endDatedisable}
+                          onDateChange={onChangeDate}
+                          onConfirm={handleModalConfirm}
+                          onCancel={handleModalCancel}
+                        />
                       ) : null}
                     </>
                   </Col>
@@ -5416,10 +3817,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   <Col className='positionRelative p-0'>
                     <div
                       className={
-                        save === true ||
-                        print === true ||
-                        email === true ||
-                        deleteMessage === true
+                        activeModal !== null && activeModal !== "leave"
                           ? "chat-input-section applyBlur"
                           : "chat-input-section"
                       }>
@@ -5614,36 +4012,36 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             />
                           </div>
                         </>
-                      ) : forwardFlag === true ? (
+                      ) : bulkSelectMode === "forward" ? (
                         <>
                           <Button
                             className=' White-btn'
-                            text='Cancel'
+                            text={t("Cancel")}
                             onClick={cancelMessagesCheck}
                           />
                           <Button
                             className=' Ok-btn'
-                            text='Forward'
+                            text={t("Forward")}
                             onClick={
-                              forwardMessageUsersSection === true
+                              activePanel === "forward"
                                 ? submitForwardMessages
-                                : () => setForwardMessageUsersSection(true)
+                                : () => openPanel("forward")
                             }
                             disableBtn={
                               messagesChecked.length > 0 ? false : true
                             }
                           />
                         </>
-                      ) : deleteFlag === true ? (
+                      ) : bulkSelectMode === "delete" ? (
                         <>
                           <Button
                             className=' White-btn'
-                            text='Cancel'
+                            text={t("Cancel")}
                             onClick={cancelMessagesCheck}
                           />
                           <Button
                             className=' Ok-btn'
-                            text='Delete'
+                            text={t("Delete")}
                             onClick={deleteMultipleMessagesButton}
                             disableBtn={
                               messagesChecked.length > 0 ? false : true
@@ -5655,620 +4053,44 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   </Col>
                 </Row>
               </>
-            ) : messageInfo === true &&
-              forwardMessageUsersSection === false &&
-              showGroupInfo === false &&
-              showEditShoutField === false &&
-              showGroupEdit === false ? (
-              <div className='talk-screen-innerwrapper'>
-                <div className='message-body talk-screen-content'>
-                  <div className='message-heading d-flex mb-2'>
-                    <span className='text-left heading-info'>Message info</span>
-                    <span className='text-right ml-auto'>
-                      <img
-                        draggable='false'
-                        onClick={handleCancel}
-                        src={CloseChatIcon}
-                        alt=''
-                        width={10}
-                        className='cursor-pointer'
-                      />
-                    </span>
-                  </div>
-                  <div className='message-info-item'>
-                    <div className='Sent-with-icon'>
-                      <div className='heading-info status'>Sent</div>
-                      <img draggable='false' src={SingleTickIcon} alt='' />
-                    </div>
-                    <div className='time-info'>
-                      {messageInfoData.sentDate === undefined ? (
-                        <p className='m-0'>-</p>
-                      ) : (
-                        newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.sentDate,
-                          lang,
-                        )
-                      )}
-                    </div>
-                  </div>
-                  <div className='message-info-item'>
-                    <div className='Sent-with-icon'>
-                      <div className='heading-info status'>Delivered</div>
-                      <img
-                        draggable='false'
-                        src={DoubleTickDeliveredIcon}
-                        alt=''
-                      />
-                    </div>
-                    <div className='time-info'>
-                      {messageInfoData.receivedDate === undefined ? (
-                        <p className='m-0'>-</p>
-                      ) : (
-                        newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.receivedDate,
-                          lang,
-                        )
-                      )}
-                    </div>
-                  </div>
-                  <div className='message-info-item'>
-                    <div className='Sent-with-icon'>
-                      <div className='heading-info status'>Read</div>
-                      <img draggable='false' src={DoubleTickIcon} alt='' />
-                    </div>
-                    <div className='time-info'>
-                      {messageInfoData.seenDate === undefined ? (
-                        <p className='m-0'>-</p>
-                      ) : (
-                        newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.seenDate,
-                          lang,
-                        )
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : messageInfo === false &&
-              forwardMessageUsersSection === true &&
-              showGroupInfo === false &&
-              showEditShoutField === false &&
-              showGroupEdit === false ? (
-              <>
-                <Row className='mt-1'>
-                  <Col lg={6} md={6} sm={12}>
-                    <p className='fw-bold'>Forward to:</p>
-                  </Col>
-                  <Col lg={6} md={6} sm={12} className='text-end'>
-                    <img
-                      draggable='false'
-                      onClick={cancelForwardSection}
-                      src={CloseChatIcon}
-                      alt=''
-                      width={10}
-                      className='cursor-pointer'
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12} style={{ marginBottom: "10px" }}>
-                    <TextField
-                      maxLength={200}
-                      applyClass='form-control2'
-                      name='Name'
-                      change={(e) => {
-                        searchUsers(e.target.value);
-                      }}
-                      value={searchUserValue}
-                      placeholder='Search Users'
-                      labelclass={"d-none"}
-                    />
-                  </Col>
-                </Row>
-                <div className='users-list-forward'>
-                  {allUsersGroupsRooms !== undefined &&
-                  allUsersGroupsRooms !== null &&
-                  allUsersGroupsRooms.length > 0
-                    ? allUsersGroupsRooms.map((dataItem, index) => {
-                        return (
-                          <Row style={{ alignItems: "center" }}>
-                            <Col
-                              lg={2}
-                              md={2}
-                              sm={2}
-                              style={{ paddingTop: "5px" }}>
-                              <Checkbox
-                                checked={
-                                  forwardUsersChecked.includes(dataItem)
-                                    ? true
-                                    : false
-                                }
-                                onChange={() =>
-                                  forwardUsersCheckedHandler(
-                                    dataItem,
-                                    dataItem.id,
-                                    index,
-                                  )
-                                }
-                                className=''
-                              />
-                            </Col>
-                            <Col lg={10} md={10} sm={10}>
-                              <div className='users-forward'>
-                                <div className='chat-profile-icon forward'>
-                                  {dataItem.messageType === "O" ? (
-                                    <>
-                                      <img
-                                        draggable='false'
-                                        src={SingleIcon}
-                                        width={15}
-                                        alt=''
-                                      />
-                                    </>
-                                  ) : dataItem.messageType === "G" ? (
-                                    <>
-                                      <img
-                                        draggable='false'
-                                        src={GroupIcon}
-                                        width={15}
-                                        alt=''
-                                      />
-                                    </>
-                                  ) : dataItem.messageType === "B" ? (
-                                    <>
-                                      <img
-                                        draggable='false'
-                                        src={ShoutIcon}
-                                        width={15}
-                                        alt=''
-                                      />
-                                    </>
-                                  ) : (
-                                    <img
-                                      draggable='false'
-                                      src={SingleIcon}
-                                      width={15}
-                                      alt=''
-                                    />
-                                  )}
-                                </div>
-                                <p className=' m-0'>{dataItem.name}</p>
-                              </div>
-                            </Col>
-                          </Row>
-                        );
-                      })
-                    : null}
-                </div>
-                <Row>
-                  <Col className='text-center'>
-                    <Button
-                      className=' Ok-btn forward-user'
-                      text='Forward'
-                      onClick={submitForwardMessages}
-                      disableBtn={forwardUsersChecked.length > 0 ? false : true}
-                    />
-                  </Col>
-                </Row>
-              </>
-            ) : messageInfo === false &&
-              forwardMessageUsersSection === false &&
-              showGroupInfo === true &&
-              showEditShoutField === false &&
-              showGroupEdit === false ? (
-              <>
-                <Row className='mt-1'>
-                  <Col lg={4} md={4} sm={12}></Col>
-                  <Col
-                    lg={4}
-                    md={4}
-                    sm={12}
-                    className='d-flex justify-content-center'>
-                    <div className='chat-groupinfo-icon'>
-                      <img
-                        draggable='false'
-                        src={GroupIcon}
-                        width={28}
-                        alt=''
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={4} md={4} sm={12} className='text-end'>
-                    <img
-                      className='cursor-pointer'
-                      draggable='false'
-                      onClick={handleCancel}
-                      src={CloseChatIcon}
-                      width={10}
-                      alt=''
-                    />
-                  </Col>
-                </Row>
-                <Row className=''>
-                  <Col lg={2} md={2} sm={12}></Col>
-                  <Col lg={8} md={8} sm={12} className='text-center'>
-                    <p className='groupinfo-groupname m-0'>
-                      {groupInfoData === undefined || groupInfoData.length === 0
-                        ? ""
-                        : groupInfoData[0].name}
-                    </p>
-                    <p className='groupinfo-createdon m-0'>
-                      Created on:{" "}
-                      {groupInfoData === undefined || groupInfoData.length === 0
-                        ? ""
-                        : newTimeFormaterAsPerUTCTalkDateTime(
-                            messageInfoData.seenDate,
-                            lang,
-                          )}
-                    </p>
-                  </Col>
-                  <Col lg={2} md={2} sm={12} className='text-end'></Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
-                    <TextField
-                      maxLength={200}
-                      applyClass='form-control2'
-                      name='Name'
-                      change={(e) => {
-                        searchGroupInfoUser(e.target.value);
-                      }}
-                      value={searchGroupUserInfoValue}
-                      placeholder='Search Users'
-                      labelclass={"d-none"}
-                    />
-                  </Col>
-                </Row>
-                <div className='users-list-groupinfo'>
-                  {groupInfoData !== undefined &&
-                  groupInfoData !== null &&
-                  groupInfoData.length > 0
-                    ? [
-                        ...new Map(
-                          groupInfoData.map((item) => [item.userID, item]),
-                        ).values(),
-                      ].map((dataItem, index) => {
-                        return (
-                          <Row style={{ alignItems: "center" }}>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              style={{ paddingRight: "20px" }}>
-                              <div className='users-groupinfo'>
-                                <div className='chat-profile-icon groupinfo'>
-                                  <img
-                                    draggable='false'
-                                    src={SingleIcon}
-                                    width={15}
-                                    alt=''
-                                  />
-                                </div>
-                                <p className='groupinfo-groupusersname m-0'>
-                                  {dataItem.userName}
-
-                                  {dataItem.adminUser === dataItem.userID ? (
-                                    <span className='groupinfo-admin'>
-                                      Admin
-                                    </span>
-                                  ) : null}
-                                </p>
-                              </div>
-                            </Col>
-                          </Row>
-                        );
-                      })
-                    : null}
-                </div>
-              </>
-            ) : messageInfo === false &&
-              forwardMessageUsersSection === false &&
-              showGroupInfo === false &&
-              showEditShoutField === false &&
-              showGroupEdit === true ? (
-              <>
-                <Row className='mt-1'>
-                  <Col lg={4} md={4} sm={12}></Col>
-                  <Col
-                    lg={4}
-                    md={4}
-                    sm={12}
-                    className='d-flex justify-content-center'>
-                    <div className='chat-groupinfo-icon'>
-                      <img
-                        draggable='false'
-                        src={GroupIcon}
-                        width={28}
-                        alt=''
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={4} md={4} sm={12} className='text-end'>
-                    <img
-                      className='cursor-pointer'
-                      draggable='false'
-                      onClick={handleCancel}
-                      src={CloseChatIcon}
-                      width={10}
-                      alt=''
-                    />
-                  </Col>
-                </Row>
-                <Row className=''>
-                  <Col lg={2} md={2} sm={12}></Col>
-                  {showEditGroupField === false ? (
-                    <Col
-                      lg={8}
-                      md={8}
-                      sm={12}
-                      className='text-center d-flex align-items-center justify-content-center'>
-                      <p className='groupinfo-groupname m-0'>
-                        {groupName !== undefined && groupName !== null
-                          ? groupName
-                          : null}
-                      </p>
-                      <img
-                        draggable='false'
-                        onClick={editGroupTitle}
-                        className='Edit-Group-Title-Icon cursor-pointer'
-                        src={EditIcon}
-                        alt=''
-                      />
-                    </Col>
-                  ) : (
-                    <Col
-                      lg={8}
-                      md={8}
-                      sm={12}
-                      className='text-center d-flex align-items-center justify-content-center'>
-                      <TextField
-                        value={groupName}
-                        className='chat-message-input'
-                        name='ChatMessage'
-                        placeholder={"Group Name"}
-                        maxLength={200}
-                        change={groupNameHandler}
-                        autoComplete='off'
-                        labelclass={"d-none"}
-                      />
-                    </Col>
-                  )}
-                  <Col lg={2} md={2} sm={12} className='text-end'></Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
-                    <TextField
-                      maxLength={200}
-                      applyClass='form-control2'
-                      name='Name'
-                      change={(e) => {
-                        searchGroupEditUser(e.target.value);
-                      }}
-                      value={searchGroupUserInfoValue}
-                      placeholder='Search Users'
-                      labelclass={"d-none"}
-                    />
-                  </Col>
-                </Row>
-                <div className='users-list-groupinfo'>
-                  {allUsers !== undefined &&
-                  allUsers !== null &&
-                  allUsers.length > 0
-                    ? allUsers.map((dataItem, index) => {
-                        return (
-                          <Row style={{ alignItems: "center" }}>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              style={{ paddingRight: "20px" }}>
-                              <div className='users-groupinfo'>
-                                <Checkbox
-                                  checked={
-                                    Array.isArray(editGroupUsersChecked) &&
-                                    (editGroupUsersChecked.some(
-                                      (item) => item === dataItem.id,
-                                    ) ||
-                                      (Array.isArray(groupInfoData) &&
-                                        groupInfoData.some(
-                                          (item) => item.userID === dataItem.id,
-                                        )))
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={() =>
-                                    editGroupUsersCheckedHandler(
-                                      dataItem,
-                                      dataItem.id,
-                                      index,
-                                    )
-                                  }
-                                  className='group-edit-users-add'
-                                />
-                                <div className='chat-profile-icon groupinfo'>
-                                  <img
-                                    draggable='false'
-                                    src={SingleIcon}
-                                    width={15}
-                                    alt=''
-                                  />
-                                </div>
-                                <p className='groupinfo-groupusersname m-0'>
-                                  {dataItem.fullName}
-                                </p>
-                              </div>
-                            </Col>
-                          </Row>
-                        );
-                      })
-                    : null}
-                </div>
-                <Row>
-                  <Col>
-                    <div className='edit-group-button'>
-                      <Button
-                        className=' Ok-btn forward-user'
-                        text='Edit Group'
-                        onClick={editGroup}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </>
-            ) : messageInfo === false &&
-              forwardMessageUsersSection === false &&
-              showGroupInfo === false &&
-              showGroupEdit === false &&
-              showEditShoutField === true ? (
-              <>
-                <Row className='mt-1'>
-                  <Col lg={4} md={4} sm={12}></Col>
-                  <Col
-                    lg={4}
-                    md={4}
-                    sm={12}
-                    className='d-flex justify-content-center'>
-                    <div className='chat-groupinfo-icon'>
-                      <img
-                        draggable='false'
-                        src={ShoutIcon}
-                        width={20}
-                        alt=''
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={4} md={4} sm={12} className='text-end'>
-                    <img
-                      draggable='false'
-                      onClick={handleCancel}
-                      src={CloseChatIcon}
-                      width={10}
-                      alt=''
-                      className='cursor-pointer'
-                    />
-                  </Col>
-                </Row>
-                <Row className=''>
-                  <Col lg={2} md={2} sm={12}></Col>
-                  {showEditShoutField === false ? (
-                    <Col
-                      lg={8}
-                      md={8}
-                      sm={12}
-                      className='text-center d-flex align-items-center justify-content-center'>
-                      <p className='groupinfo-groupname m-0'>
-                        {shoutName !== undefined && shoutName !== null
-                          ? shoutName
-                          : null}
-                      </p>
-                      <img
-                        draggable='false'
-                        onClick={editShoutTitle}
-                        className='Edit-Group-Title-Icon cursor-pointer'
-                        src={EditIcon}
-                        alt=''
-                      />
-                    </Col>
-                  ) : (
-                    <Col
-                      lg={8}
-                      md={8}
-                      sm={12}
-                      className='text-center d-flex align-items-center justify-content-center'>
-                      <TextField
-                        value={shoutName}
-                        className='chat-message-input'
-                        name='ChatMessage'
-                        placeholder={"Shout Name"}
-                        maxLength={200}
-                        change={shoutNameHandler}
-                        autoComplete='off'
-                        labelclass={"d-none"}
-                      />
-                    </Col>
-                  )}
-                  <Col lg={2} md={2} sm={12} className='text-end'></Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
-                    <TextField
-                      maxLength={200}
-                      applyClass='form-control2'
-                      name='Name'
-                      change={(e) => {
-                        searchShoutEditUser(e.target.value);
-                      }}
-                      value={searchUserShoutValue}
-                      placeholder='Search Users'
-                      labelclass={"d-none"}
-                    />
-                  </Col>
-                </Row>
-                <div className='users-list-groupinfo'>
-                  {allUsers !== undefined &&
-                  allUsers !== null &&
-                  allUsers.length > 0
-                    ? allUsers.map((dataItem, index) => {
-                        return (
-                          <Row style={{ alignItems: "center" }}>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              style={{ paddingRight: "20px" }}>
-                              <div className='users-groupinfo'>
-                                <Checkbox
-                                  checked={
-                                    Array.isArray(editShoutUsersChecked) &&
-                                    (editShoutUsersChecked.some(
-                                      (item) => item === dataItem.id,
-                                    ) ||
-                                      (Array.isArray(shoutAllUsersData) &&
-                                        shoutAllUsersData.some(
-                                          (item) => item.userID === dataItem.id,
-                                        )))
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={() =>
-                                    editShoutUsersCheckedHandler(
-                                      dataItem,
-                                      dataItem.id,
-                                      index,
-                                    )
-                                  }
-                                  className='group-edit-users-add'
-                                />
-                                <div className='chat-profile-icon groupinfo'>
-                                  <img
-                                    draggable='false'
-                                    src={SingleIcon}
-                                    alt=''
-                                    width={15}
-                                  />
-                                </div>
-                                <p className='groupinfo-groupusersname m-0'>
-                                  {dataItem.fullName}
-                                </p>
-                              </div>
-                            </Col>
-                          </Row>
-                        );
-                      })
-                    : null}
-                </div>
-                <Row>
-                  <Col>
-                    <div className='edit-group-button'>
-                      <Button
-                        className=' Ok-btn forward-user'
-                        text={t("Edit-shout")}
-                        onClick={editShoutAll}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </>
+            ) : activePanel === "messageInfo" ? (
+              <MessageInfoPanel
+                messageInfoData={messageInfoData}
+                lang={lang}
+                onClose={handleCancel}
+              />
+            ) : activePanel === "forward" ? (
+              <ForwardPanel
+                forwardUsersChecked={forwardUsersChecked}
+                setForwardUsersChecked={setForwardUsersChecked}
+                onSubmit={submitForwardMessages}
+                onCancel={cancelForwardSection}
+              />
+            ) : activePanel === "groupInfo" ? (
+              <GroupInfoPanel
+                groupId={talkStateData.ActiveChatData.id}
+                channelId={parseInt(currentOrganizationId)}
+                // NOTE: preserved as-is from before this extraction — this
+                // reads the last-viewed MESSAGE's seen-date, not an actual
+                // group creation date. Looks like a pre-existing bug (wrong
+                // data source), left unfixed here since the correct field
+                // isn't visible from this file; flagging rather than guessing.
+                groupCreatedDate={messageInfoData.seenDate}
+                lang={lang}
+                onClose={handleCancel}
+              />
+            ) : activePanel === "groupEdit" ? (
+              <GroupEditPanel
+                groupId={talkStateData.ActiveChatData.id}
+                channelId={parseInt(currentOrganizationId)}
+                onClose={handleCancel}
+              />
+            ) : activePanel === "shoutEdit" ? (
+              <ShoutEditPanel
+                broadcastId={talkStateData.ActiveChatData.id}
+                channelId={parseInt(currentOrganizationId)}
+                onClose={handleCancel}
+              />
             ) : null}
           </Container>
         </div>

@@ -72,6 +72,7 @@ import {
 import NewEndMeetingModal from "../../commonComponents/NewEndMeetingModal/NewEndMeetingModal";
 import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
 import { resetViewCommitteeDetails } from "../../../../store/actions/Committee_actions";
+import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 
 const ViewMeetingModal = () => {
   const { t } = useTranslation();
@@ -992,7 +993,8 @@ const ViewMeetingModal = () => {
 
                   {editorRole.role === "Organizer" &&
                     Number(editorRole.status) === 9 &&
-                    editorRole?.isPrimaryOrganizer === true && (
+                    editorRole?.isPrimaryOrganizer === true &&
+                    !HIDE_VIDEO && (
                       <Button
                         text={t("Recording")}
                         className={

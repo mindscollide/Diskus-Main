@@ -9,6 +9,7 @@ import { Button, TextField } from "@/components/elements";
 import searchIcon from "@/assets/images/searchicon.svg";
 import BlackCrossIcon from "@/assets/images/BlackCrossIconModals.svg";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
+import { useMeetingListActions } from "@/container/meeting/commonComponents/useMeetingListActions";
 import ProposedMeetingList from "@/container/meeting/proposedMeetingFlow";
 import DraftNeetingList from "@/container/meeting/draftMeeting";
 import PublishedMeetingList from "@/container/meeting/publishMeeting";
@@ -32,6 +33,8 @@ import {
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
   toggleViewMeetingModal,
+  toggleViewProposedMeetingModal,
+  toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { GetAllMeetingTypesNewFunction } from "@/store/actions/NewMeetingActions";
 import { listOfMeetingsApi } from "@/store/actions/NewMeeting2.actions";
@@ -42,26 +45,27 @@ import {
   dashboardCalendarEvent,
   validateEncryptedStringViewMeetingLinkApi,
 } from "../../store/actions/NewMeetingActions";
-import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import {
+  createConvert,
+  getCurrentDateTimeUTC,
+} from "../../commen/functions/date_formater";
 import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
   setCurrentMeetingInfo,
-  UpdateMeetingStatusApi,
 } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
-  MEETING_STATUS,
   PARTICIPANT_ROLE,
   MEETING_VIEWS,
 } from "./commonComponents/meeting.constants";
 import {
   isMeetingActive,
-  isMeetingPublished,
   getParticipantRole,
   buildVideoTalk,
   buildEditorRole,
   getMeetingFilters,
+  isMeetingPublished,
 } from "./commonComponents/meeting.utils";
 
 const MainMeeting = () => {
@@ -90,10 +94,10 @@ const MainMeeting = () => {
   const isParticiapntRespondProposedMeeting = useSelector(
     (state) => state.ModalStatesReducer.isParticiapntRespondProposedMeeting,
   );
+
   const CalendarDashboardEventData = useSelector(
     (state) => state.NewMeetingreducer.CalendarDashboardEventData,
   );
-
 
   const calendRef = useRef();
   const navigate = useNavigate();
@@ -110,6 +114,9 @@ const MainMeeting = () => {
 
   const { setEditorRole, setVideoTalk } = useMeetingContext();
 
+  const { handleViewMeeting, handleJoinMeeting, handleStartMeeting } =
+    useMeetingListActions();
+
   const [searchText, setSearchText] = useState("");
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -125,6 +132,11 @@ const MainMeeting = () => {
   // ─── Initial Load ─────────────────────────────────────────────────────────
   useEffect(() => {
     const userID = Number(localStorage.getItem("userID"));
+    const currentView =
+      localStorage.getItem("MeetingCurrentView") !== null
+        ? Number(localStorage.getItem("MeetingCurrentView"))
+        : 1;
+    const filters = getMeetingFilters(currentView);
     dispatch(
       listOfMeetingsApi(
         navigate,
@@ -136,8 +148,7 @@ const MainMeeting = () => {
           UserID: userID,
           PageNumber: 1,
           Length: 30,
-          PublishedMeetings: true,
-          ProposedMeetings: false,
+          ...filters,
         },
         "mainListing",
         {},
@@ -153,7 +164,27 @@ const MainMeeting = () => {
 
     localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
     localStorage.setItem("MeetingPageRows", 30);
-    localStorage.setItem("MeetingPageCurrent", 1);
+    localStorage.setItem("MeetingPageCurrent", currentView);
+
+    return () => {
+      localStorage.removeItem("MeetingCurrentView");
+      localStorage.removeItem("MeetingPageRows");
+      localStorage.removeItem("MeetingPageCurrent");
+    };
+  }, []);
+
+  // ─── Reset view/edit modal flags on unmount ──────────────────────────────
+  // These live in the shared ModalStatesReducer (also read by Committee.js
+  // and Groups.js), so leaving them true would make whichever tab renders
+  // next pop the same modal straight back open on arrival.
+  useEffect(() => {
+    return () => {
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(toggleCreateEditProposedMeetingModal(false));
+      dispatch(toggleViewProposedMeetingModal(false));
+      dispatch(toggleIsParticipantProposedMeetingDates(false));
+    };
   }, []);
 
   // ─── View Meeting Link Handler ───────────────────────────────────────────
@@ -265,6 +296,83 @@ const MainMeeting = () => {
   useEffect(() => {
     if (state !== null) {
       try {
+        const { message = "", response = null } = state;
+
+        if (message === "throughUpcomingEvents") {
+          return;
+        }
+
+        let obj = {
+          isQuickMeeting: response.isQuickMeeting,
+          pK_MDID: response.MeetingID,
+          isParticipant: response.attendeeRole === "Participant",
+          isAgendaContributor: response.attendeeRole === "AgendaContributor",
+          isOrganizer: response.attendeeRole === "Organizer",
+          isPrimaryOrganizer: false,
+          status: response.meetingStatusID,
+          videoCallURL: response.videoCallUrl,
+          isChat: response.isChat,
+          isVideoCall: response.isVideoCall,
+          talkGroupID: response.talkGroupID,
+        };
+
+        console.log("messagemessage", message, response);
+
+        if (message === "proposedmeeting") {
+          loadMeetings({
+            PublishedMeetings: false,
+            ProposedMeetings: true,
+            view: MEETING_VIEWS.PROPOSED,
+          });
+
+          // setCurrentCommitteeMeetingTabActive(2);
+        }
+        if (message === "ViewMeeting") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+
+          handleViewMeeting(obj);
+        }
+        if (message === "JoinMeeting") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+
+          handleJoinMeeting(obj);
+        }
+
+        if (message === "Poll_Created_In_Meeting") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+          handleViewMeeting(obj, "polls");
+        }
+
+        if (message === "MeetingListing") {
+          loadMeetings({
+            PublishedMeetings: true,
+            ProposedMeetings: false,
+            view: MEETING_VIEWS.PUBLISHED,
+          });
+        }
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (state !== null) {
+      try {
         const {
           key,
           value: { meetingStatusId, isQuickMeeting, meetingID, attendeeId },
@@ -317,7 +425,6 @@ const MainMeeting = () => {
     }
   }, [state]);
 
-  // ─── Calendar Dashboard Event Handler ──────────────────────────────────
   useEffect(() => {
     if (!CalendarDashboardEventData) {
       dispatch(dashboardCalendarEvent(null));
@@ -353,143 +460,6 @@ const MainMeeting = () => {
   }, [CalendarDashboardEventData]);
 
   // ─── Meeting Handlers ──────────────────────────────────────────────────
-
-  const handleViewMeeting = async (record) => {
-    try {
-      if (record.isQuickMeeting) {
-        await dispatch(
-          getViewMeetingByMeetingIdApi(
-            navigate,
-            t,
-            { MeetingID: record.pK_MDID },
-            "ViewQuickMeetingFromListing",
-            { setIsQuickMeetingView },
-          ),
-        );
-        return;
-      }
-
-      dispatch(setCurrentMeetingInfo({ meetingID: record.pK_MDID }));
-      dispatch(toggleViewMeetingModal(true));
-      dispatch(setViewTab("meetingDetails"));
-
-      const role = record.isParticipant
-        ? "Participant"
-        : record.isAgendaContributor
-          ? "Agenda Contributor"
-          : "Organizer";
-
-      setEditorRole(
-        buildEditorRole(
-          {
-            status: record.status,
-            isPrimaryOrganizer: record.isPrimaryOrganizer,
-          },
-          role,
-        ),
-      );
-    } catch (error) {
-      console.error("View meeting error:", error);
-    }
-  };
-
-  const handleJoinMeeting = async (record) => {
-    const role = record.isAgendaContributor
-      ? "Agenda Contributor"
-      : record.isParticipant
-        ? "Participant"
-        : "Organizer";
-    const meetingId = Number(record.pK_MDID);
-
-    // Handle quick meeting join
-    if (record.isQuickMeeting) {
-      dispatch(
-        joinMeetingApi(
-          navigate,
-          t,
-          {
-            VideoCallURL: record.videoCallURL,
-            FK_MDID: meetingId,
-            DateTime: getCurrentDateTimeUTC(),
-          },
-          "JoinQuickMeetingFromListing",
-          { record, setIsQuickMeetingView },
-        ),
-      );
-      return;
-    }
-
-    // Handle advance meeting join
-    localStorage.setItem("videoCallURL", record.videoCallURL);
-    setVideoTalk(buildVideoTalk(record));
-    setEditorRole(
-      buildEditorRole(
-        {
-          status: record.status,
-          isPrimaryOrganizer: record.isPrimaryOrganizer,
-        },
-        role,
-      ),
-    );
-
-    dispatch(
-      joinMeetingApi(
-        navigate,
-        t,
-        {
-          VideoCallURL: record.videoCallURL,
-          FK_MDID: meetingId,
-          DateTime: getCurrentDateTimeUTC(),
-        },
-        "JoinMeetingFromListing",
-        { role, record, setIsQuickMeetingView },
-      ),
-    );
-  };
-
-  const handleStartMeeting = async (record) => {
-    const meetingId = Number(record.pK_MDID);
-    const startRequest = {
-      MeetingID: meetingId,
-      StatusID: MEETING_STATUS.ACTIVE,
-    };
-
-    // Handle advance meeting start
-    if (!record.isQuickMeeting) {
-      dispatch(
-        UpdateMeetingStatusApi(
-          navigate,
-          t,
-          startRequest,
-          "startMeetingFromMainListing",
-          { record },
-        ),
-      );
-
-      setVideoTalk(buildVideoTalk(record));
-      localStorage.setItem("videoCallURL", record.videoCallURL);
-      localStorage.setItem("isMinutePublished", record.isMinutePublished);
-      localStorage.setItem("meetingTitle", record.title);
-
-      setEditorRole({
-        status: String(MEETING_STATUS.ACTIVE),
-        role: "Organizer",
-        isPrimaryOrganizer: record.isPrimaryOrganizer,
-      });
-      return;
-    }
-
-    // Handle quick meeting start
-    dispatch(
-      UpdateMeetingStatusApi(
-        navigate,
-        t,
-        startRequest,
-        "startQuickMeetingFromMainListing",
-        { record, setIsQuickMeetingView },
-      ),
-    );
-  };
 
   // ─── Tab Handlers ──────────────────────────────────────────────────
 
@@ -664,6 +634,61 @@ const MainMeeting = () => {
     });
   };
 
+  const handleClickSearch = async () => {
+    const currentView = Number(localStorage.getItem("MeetingCurrentView"));
+    const filters = getMeetingFilters(currentView);
+
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: createConvert(new Date(searchFields.Date)).slice(0, 8),
+          Title: searchFields.MeetingTitle,
+          HostName: searchFields.OrganizerName,
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: meetingPageCurrent ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow ? Number(meetingpageRow) : 50,
+          ...filters,
+        },
+        "mainListing",
+        {},
+      ),
+    );
+    console.log(searchFields, searchText, "handleClickSearch");
+  };
+
+  const handleClickReset = async () => {
+    const currentView = Number(localStorage.getItem("MeetingCurrentView"));
+    const filters = getMeetingFilters(currentView);
+
+    await dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: meetingPageCurrent ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow ? Number(meetingpageRow) : 50,
+          ...filters,
+        },
+        "mainListing",
+        {},
+      ),
+    );
+
+    setSearchText("");
+    setSearchFeilds({
+      MeetingTitle: "",
+      Date: "",
+      OrganizerName: "",
+      DateView: "",
+    });
+  };
+
   // ─── Create Handlers ──────────────────────────────────────────────────
 
   const handleCreateAdvanceMeeting = () => {
@@ -727,14 +752,14 @@ const MainMeeting = () => {
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
                     onClick={handleCreateAdvanceMeeting}>
-                    {t("Advance-meeting")}
+                    {t("Create-board-meeting")}
                   </ReactBootstrapDropdown.Item>
                 )}
                 {checkFeatureIDAvailability(12) && (
                   <ReactBootstrapDropdown.Item
                     className={styles["dropdown-item"]}
                     onClick={handleCreateProposedMeeting}>
-                    {t("Propose-new-meeting")}
+                    {t("Proposed-board-meeting")}
                   </ReactBootstrapDropdown.Item>
                 )}
               </ReactBootstrapDropdown.Menu>
@@ -864,10 +889,12 @@ const MainMeeting = () => {
                       <Button
                         text={t("Reset")}
                         className={styles["ResetButtonMeeting"]}
+                        onClick={handleClickReset}
                       />
                       <Button
                         text={t("Search")}
                         className={styles["SearchButtonMeetings"]}
+                        onClick={handleClickSearch}
                       />
                     </Col>
                   </Row>

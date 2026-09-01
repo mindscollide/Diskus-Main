@@ -134,6 +134,9 @@ export const NewMeetingProvider = ({ children }) => {
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes,
   );
+  const mqttMeetingDeleted = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingDeleted,
+  );
 
   // ============================================================
   // ---------------------- HELPERS -------------------------------
@@ -283,6 +286,10 @@ export const NewMeetingProvider = ({ children }) => {
         "meeting_status_edited_cancelled",
       );
 
+      const isDeleted = messageLower
+        .toLowerCase()
+        .includes("MEETING_STATUS_EDITED_DELETED".toLowerCase());
+
       if (!isStartedEdit && !isCancelledEdit) return;
 
       // Resolve status + ID — schema differs by event variant
@@ -312,6 +319,14 @@ export const NewMeetingProvider = ({ children }) => {
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
+
+  useEffect(() => {
+    if (mqttMeetingDeleted !== null) {
+      const { meetingID } = mqttMeetingDeleted;
+
+      removeMeetingFromAllLists(meetingID);
+    }
+  }, [mqttMeetingDeleted]);
 
   /**
    * Handles "meeting ended" MQTT events. Replaces the meeting in all lists
@@ -490,18 +505,11 @@ export const NewMeetingProvider = ({ children }) => {
           setPublishedMeetingDataRecord(searchMeetings.totalRecords || 0);
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
 
-          if (meetings.length > 0) {
-            // Keep only agendas the current user is allowed to view
-            const filtered = meetings.map((meeting) => ({
-              ...meeting,
-              meetingAgenda: (meeting.meetingAgenda || []).filter(
-                (agenda) => agenda.objMeetingAgenda?.canView === true,
-              ),
-            }));
-            setPublishedMeetingData(filtered);
-          } else {
-            setPublishedMeetingData([]);
-          }
+          setPublishedMeetingData(meetings);
+          setDraftMeetingDataRecord(0);
+          setDraftMeetingData([]);
+          setProposedMeetingDataRecord(0);
+          setProposedMeetingData([]);
           break;
         }
 
@@ -510,6 +518,10 @@ export const NewMeetingProvider = ({ children }) => {
           setProposedMeetingDataRecord(searchMeetings.totalRecords || 0);
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
           setProposedMeetingData(meetings);
+          setPublishedMeetingData([]);
+          setPublishedMeetingDataRecord(0);
+          setDraftMeetingDataRecord(0);
+          setDraftMeetingData([]);
           break;
         }
 
@@ -518,6 +530,10 @@ export const NewMeetingProvider = ({ children }) => {
           setDraftMeetingDataRecord(searchMeetings.totalRecords || 0);
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
           setDraftMeetingData(meetings);
+          setPublishedMeetingData([]);
+          setPublishedMeetingDataRecord(0);
+          setProposedMeetingDataRecord(0);
+          setProposedMeetingData([]);
           break;
         }
 

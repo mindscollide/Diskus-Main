@@ -276,41 +276,36 @@ const CreateEditAdvanceMeeting = () => {
 
                 {meetingID !== 0 && (
                   <>
-                    {editorRole.role !== "Agenda Contributor" && (
-                      <Button
-                        text={t("Organizers")}
-                        className={
-                          createEditOrganizersTab
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showOrganizers}
-                      />
-                    )}
+                    {/* {editorRole.role !== "Agenda Contributor" && ( */}
+                    <Button
+                      text={t("Organizers")}
+                      className={
+                        createEditOrganizersTab
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showOrganizers}
+                    />
 
-                    {editorRole.role !== "Agenda Contributor" && (
-                      <Button
-                        text={t("Agenda-contributors")}
-                        className={
-                          createEditAgendaContributorsTab
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showAgendaContributers}
-                      />
-                    )}
+                    <Button
+                      text={t("Agenda-contributors")}
+                      className={
+                        createEditAgendaContributorsTab
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showAgendaContributers}
+                    />
 
-                    {editorRole.role !== "Agenda Contributor" && (
-                      <Button
-                        text={t("Participants")}
-                        className={
-                          createEditParticipantsTab
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showParticipants}
-                      />
-                    )}
+                    <Button
+                      text={t("Participants")}
+                      className={
+                        createEditParticipantsTab
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showParticipants}
+                    />
 
                     <Button
                       text={t("Agenda-builder")}
@@ -332,23 +327,21 @@ const CreateEditAdvanceMeeting = () => {
                       onClick={showMeetingMaterial}
                     />
 
-                    {editorRole.role !== "Agenda Contributor" && (
-                      <Button
-                        text={t("Minutes")}
-                        className={
-                          createEditMinutesTab
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showMinutes}
-                        disableBtn={
-                          Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
-                            ? false
-                            : true
-                        }
-                      />
-                    )}
+                    <Button
+                      text={t("Minutes")}
+                      className={
+                        createEditMinutesTab
+                          ? styles["Schedule_meetings_options_active"]
+                          : styles["Schedule_meetings_options"]
+                      }
+                      onClick={showMinutes}
+                      disableBtn={
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
+                          ? false
+                          : true
+                      }
+                    />
 
                     {checkFeatureIDAvailability(14) && (
                       <Button

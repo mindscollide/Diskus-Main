@@ -18,7 +18,7 @@ import {
 } from "@/store/actions/NewMeetingActions";
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import moment from "moment";
@@ -50,6 +50,10 @@ import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableCom
 import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
 import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
 import { useGroupsContext } from "../../../../context/GroupsContext";
+import {
+  MeetingProposedForOrganizerProposed,
+  MeetingProposedForParticipantProposed,
+} from "../../../../store/actions/NotificationRouting_actions";
 const GroupProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -63,6 +67,14 @@ const GroupProposedMeetings = () => {
     currentLengthProposedGroupMeeting,
     setCurrentLengthProposedGroupMeeting,
   } = useGroupsContext();
+
+  const { pathname } = useLocation();
+  const proposedMeetingOrganizer = useSelector(
+    (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
+  );
+  const proposedMeetingParticipant = useSelector(
+    (state) => state.NotificationRoutingReducer.MeetingProposedForParticipant,
+  );
   let MeetingProp = localStorage.getItem("groups_meetingprop_action");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -114,6 +126,58 @@ const GroupProposedMeetings = () => {
       return;
     }
   };
+  useEffect(() => {
+    if (proposedMeetingOrganizer !== null) {
+      try {
+        const { meetingID, responseResult } = proposedMeetingOrganizer;
+
+        dispatch(
+          getUserWiseProposedDatesForOrganizerApi(
+            navigate,
+            t,
+            { MeetingID: meetingID },
+            "",
+            {},
+          ),
+        );
+        dispatch(MeetingProposedForOrganizerProposed(null));
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [proposedMeetingOrganizer]);
+
+  useEffect(() => {
+    if (proposedMeetingParticipant !== null) {
+      try {
+        const {
+          meetingID,
+          responseResult: { sendResponseByDeadline },
+        } = proposedMeetingParticipant;
+
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: meetingID },
+            "ProposedMeetingViewForParticipant",
+            {
+              responseDeadline: sendResponseByDeadline,
+              meetingId: meetingID,
+              setResponseByDate,
+            },
+          ),
+        );
+        dispatch(MeetingProposedForParticipantProposed(null));
+        navigate(pathname, {
+          replace: true,
+          state: null,
+        });
+      } catch (error) {}
+    }
+  }, [proposedMeetingParticipant]);
 
   const handelChangePagination = async (current, PageSize) => {
     setCurrentPageProposedGroupMeeting(current);
@@ -169,6 +233,7 @@ const GroupProposedMeetings = () => {
       );
     }
   };
+
   const moreButtons = (record) => {
     const handleEdit = () => {
       if (record.isOrganizer) {
@@ -187,7 +252,7 @@ const GroupProposedMeetings = () => {
     const handleDelete = () => {
       let Data = {
         MeetingID: record.pK_MDID,
-        StatusID: 4,
+        StatusID: 7,
       };
 
       setDeleteMeetingRecord(Data);
@@ -319,7 +384,9 @@ const GroupProposedMeetings = () => {
                   <div>
                     <CustomButton
                       className={styles.VoteMeetingButton}
-                      text={t("Vote")}
+                      text={
+                        record.meetingPoll?.isVoted ? t("Voted") : t("Vote")
+                      }
                       disableBtn={isViewPollShown ? true : false}
                       onClick={() => handleClickActions(record)}
                     />

@@ -186,7 +186,7 @@ const ViewProposedMeetingModal = () => {
                     );
                   })
                 ) : (
-                  <p>No meeting proposed dates available</p>
+                  <p>{t("No-meeting-proposed-dates-available")}</p>
                 )}
               </Row>
             </div>

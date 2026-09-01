@@ -62,6 +62,9 @@ import {
   resetViewTabs,
   toggleCreateEditMeetingModal,
   toggleViewMeetingModal,
+  toggleCreateEditProposedMeetingModal,
+  toggleViewProposedMeetingModal,
+  toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { useMeetingContext } from "../../context/MeetingContext";
 import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
@@ -70,7 +73,7 @@ const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { state } = useLocation();
   const { setEditorRole } = useMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
@@ -80,6 +83,7 @@ const Committee = () => {
     setShowModal,
     setCurrentViewCommitteeTabs,
     currentViewCommitteeTabs,
+    setCurrentCommitteeMeetingTabActive,
   } = useCommitteeContext();
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -163,7 +167,10 @@ const Committee = () => {
   const committee_meetingupd = localStorage.getItem(
     "committee_meetingUpd_action",
   );
-  const committee_meetingprop = localStorage.getItem("committee_meetingprop_action")
+  const committee_meetingprop = localStorage.getItem(
+    "committee_meetingprop_action",
+  );
+
   useEffect(() => {
     try {
       // Handle the current page logic
@@ -213,11 +220,41 @@ const Committee = () => {
       dispatch(resetCreateEditTabs());
       dispatch(resetCurrentMeetingInfo());
       dispatch(toggleViewMeetingModal(false));
+      dispatch(toggleCreateEditProposedMeetingModal(false));
+      dispatch(toggleViewProposedMeetingModal(false));
+      dispatch(toggleIsParticipantProposedMeetingDates(false));
       dispatch(resetViewTabs());
       setShowModal(false); // Reset modal visibility
       dispatch(viewCommitteePageFlag(false));
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
+  useEffect(() => {
+    if (state !== null) {
+      try {
+        const {
+          message,
+          response: { committeeGroupMeetingID, committeeGroupTitle },
+        } = state;
+        if (message === "proposedmeeting") {
+          setCurrentCommitteeMeetingTabActive(2);
+        } else {
+        }
+        dispatch(
+          viewCommitteeDetails({
+            committeeID: committeeGroupMeetingID,
+            committeeTitle: committeeGroupTitle,
+          }),
+        );
+        setCurrentViewCommitteeTabs(4);
+
+        localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
+        setViewCommitteePage(true);
+        dispatch(viewCommitteePageFlag(true));
+      } catch (error) {}
+    }
+  }, [state]);
+
+
 
   useEffect(() => {
     if (committeeViewId !== null) {
@@ -358,16 +395,11 @@ const Committee = () => {
   }, [committeeMeetingView, committee_meetingStr, committee_meetingupd]);
 
   useEffect(() => {
-    if(committee_meetingprop !== null) {
+    if (committee_meetingprop !== null) {
       try {
-        
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
-  }, [
-    committee_meetingprop
-  ])
+  }, [committee_meetingprop]);
 
   // useEffect(() => {
   //   try {

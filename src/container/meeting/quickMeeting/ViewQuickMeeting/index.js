@@ -75,6 +75,7 @@ import { meetingApi } from "../../../../commen/apis/Api_ends_points";
 import { isSharedScreenCall } from "../../../../commen/apis/Api_config";
 import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 
 const ModalView = ({ ModalTitle }) => {
   //For Localization
@@ -1280,10 +1281,8 @@ const ModalView = ({ ModalTitle }) => {
   const copyToClipboardd = () => {
     let MeetingData = allMeetingDetails?.meetingDetails;
     if (MeetingData.isVideoCall === true) {
-      let meetingId = localStorage.getItem("currentMeetingID");
-
       let data = {
-        MeetingId: Number(meetingId),
+        MeetingId: Number(getMeetID),
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
@@ -1484,53 +1483,57 @@ const ModalView = ({ ModalTitle }) => {
                         {createMeeting.MeetingDate}
                       </span>
                     </Col>
-                    <Col
-                      lg={6}
-                      md={6}
-                      xs={6}
-                      className='MontserratRegular d-flex gap-2 align-items-start'>
-                      <Button
-                        disableBtn={
-                          isVideo && (meetStatus === 10 || meetStatus === 1)
-                            ? false
-                            : true
-                        }
-                        text={t("Copy-link")}
-                        className={"CopyLinkButton"}
-                        onClick={() => copyToClipboardd()}
-                      />
-                      <Button
-                        // disableBtn={
-                        //   isVideo && meetStatus === 10
-                        //     ? false
-                        //     : true || enableDisableVideoState
-                        // }
-                        disableBtn={
-                          !isVideo ||
-                          meetStatus !== 10 ||
-                          enableDisableVideoState ||
-                          participantEnableVideoState
-                        }
-                        text={t("Join-video-call")}
-                        className={"JoinMeetingButton"}
-                        onClick={joinMeetingCall}
-                      />
+                    {!HIDE_VIDEO && (
+                      <Col
+                        lg={6}
+                        md={6}
+                        xs={6}
+                        className='MontserratRegular d-flex gap-2 align-items-start'>
+                        <Button
+                          disableBtn={
+                            isVideo && (meetStatus === 10 || meetStatus === 1)
+                              ? false
+                              : true
+                          }
+                          text={t("Copy-link")}
+                          className={"CopyLinkButton"}
+                          onClick={() => copyToClipboardd()}
+                        />
+                        <Button
+                          // disableBtn={
+                          //   isVideo && meetStatus === 10
+                          //     ? false
+                          //     : true || enableDisableVideoState
+                          // }
+                          disableBtn={
+                            !isVideo ||
+                            meetStatus !== 10 ||
+                            enableDisableVideoState ||
+                            participantEnableVideoState
+                          }
+                          text={t("Join-video-call")}
+                          className={"JoinMeetingButton"}
+                          onClick={joinMeetingCall}
+                        />
 
-                      {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
-                      {NormalHostVideoFlag && <NormalHostVideoCallComponent />}
-                      {maximizeParticipantVideoFlag && (
-                        <ParticipantVideoCallComponent />
-                      )}
-                      {normalParticipantVideoFlag && (
-                        <NormalParticipantVideoComponent />
-                      )}
-                      {maxParticipantVideoDeniedFlag && (
-                        <MaxParticipantVideoDeniedComponent />
-                      )}
-                      {maxParticipantVideoRemovedFlag && (
-                        <MaxParticipantVideoRemovedComponent />
-                      )}
-                    </Col>
+                        {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
+                        {NormalHostVideoFlag && (
+                          <NormalHostVideoCallComponent />
+                        )}
+                        {maximizeParticipantVideoFlag && (
+                          <ParticipantVideoCallComponent />
+                        )}
+                        {normalParticipantVideoFlag && (
+                          <NormalParticipantVideoComponent />
+                        )}
+                        {maxParticipantVideoDeniedFlag && (
+                          <MaxParticipantVideoDeniedComponent />
+                        )}
+                        {maxParticipantVideoRemovedFlag && (
+                          <MaxParticipantVideoRemovedComponent />
+                        )}
+                      </Col>
+                    )}
                   </Row>
                   <Row>
                     <Col sm={12} md={12} lg={12}>

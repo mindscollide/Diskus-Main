@@ -114,7 +114,7 @@ const initialState = {
   viewAdvanceMeetingUnpublishPageFlag: false,
   viewProposeOrganizerMeetingPageFlag: false,
   proposeNewMeetingPageFlag: false,
-  getUserProposedOrganizerData: [],
+  getUserProposedOrganizerData:null,
   sideBarMeetingPopupState: false,
   viewMeetingFlag: false,
 
@@ -136,6 +136,7 @@ const initialState = {
   mqttMeetingAcRemoved: null,
   mqttMeetingOrgAdded: null,
   mqttMeetingOrgRemoved: null,
+  mqttMeetingDeleted:null,
   joinMeetingResponse: null,
   leaveMeetingResponse: null,
   leaveMeetingVideoResponse: null,
@@ -1613,7 +1614,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: action.loader,
-          getUserProposedOrganizerData: [],
+          getUserProposedOrganizerData: null,
           ResponseMessage: action.message,
           errorSeverity: "error",
         };
@@ -1768,6 +1769,20 @@ const NewMeetingreducer = (state = initialState, action) => {
           Loading: true,
         };
       }
+      case actions.CLEAR_GET_MEETING_BY_COMMITTEE_ID: {
+        // Dispatched explicitly before a tab switch (see
+        // CommitteeContext's loadCommitteeMeetings) — NOT on every fetch,
+        // so same-tab pagination still keeps showing the current page
+        // while the next one loads, same as the Board module's
+        // clearMeetingState()/searchMeetings pattern. CommitteeContext's
+        // effect keys off this field, and would otherwise briefly
+        // misattribute the previous tab's still-cached response to the
+        // newly-active tab.
+        return {
+          ...state,
+          getMeetingByCommitteeID: null,
+        };
+      }
       case actions.GETMEETINGBYCOMMITTEEID_SUCCESS: {
         return {
           ...state,
@@ -1849,6 +1864,19 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           Loading: true,
+        };
+      }
+      case actions.CLEAR_GET_MEETING_BY_GROUP_ID: {
+        // Dispatched explicitly before a tab switch (see GroupsContext's
+        // loadGroupMeetings) — NOT on every fetch, so same-tab pagination
+        // still keeps showing the current page while the next one loads,
+        // same as the Board module's clearMeetingState()/searchMeetings
+        // pattern. GroupsContext's effect keys off this field, and would
+        // otherwise briefly misattribute the previous tab's still-cached
+        // response to the newly-active tab.
+        return {
+          ...state,
+          getMeetingbyGroupID: null,
         };
       }
 
@@ -2141,7 +2169,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           unsavedViewPollsModal: false,
           CurrentMeetingURL: "",
           getallDocumentsForAgendaWiseMinutes: [],
-          getUserProposedOrganizerData: [],
+          getUserProposedOrganizerData: null,
           getMeeingUsersRSVPDetails: null,
           cancelAgendaSavedModal: false,
           removeUpcomingEventMeeting: null,
@@ -2924,7 +2952,12 @@ const NewMeetingreducer = (state = initialState, action) => {
           activeViewMeetingTab: action.payload,
         };
       }
-
+      case actions.DELETE_MEETING_MQTT: {
+        return {
+          ...state,
+          mqttMeetingDeleted: action.response,
+        }
+      }
       default:
         return {
           ...state,

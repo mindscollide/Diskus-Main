@@ -111,14 +111,14 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
 
                     <Row className="mt-4">
                       <Col lg={4} md={4} sm={12} xs={12}>
-                        <label className="date-range">Invoice Date Range</label>
+                        <label className="date-range">{t("Invoice-date-range")}</label>
                         <Select
                           ref={InvoiceStart}
                           onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
                           name="InvoiceStart"
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder="Start Date"
+                          placeholder={t("Starts-dates")}
                           onChange={EditUserHandler}
                           value={paymentInvoiceSection.InvoiceStart}
                         />
@@ -142,7 +142,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                           name="InvoiceEnd"
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder="End Date"
+                          placeholder={t("End-dates")}
                           value={paymentInvoiceSection.InvoiceEnd}
                         />
                       </Col>
@@ -151,14 +151,14 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                     <Row className="mt-5">
                       <Col lg={4} md={4} sm={12} xs={12}>
                         <Col></Col>
-                        <label className="date-range">Payment Date Range</label>
+                        <label className="date-range">{t("Payment-date-range")}</label>
                         <Select
                           name="PaymentStart"
                           ref={PaymentStart}
                           onKeyDown={(event) => enterHandler(event, PaymentEnd)}
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder="Start Date"
+                          placeholder={t("Starts-dates")}
                           value={paymentInvoiceSection.PaymentStart}
                         />
                       </Col>
@@ -179,7 +179,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                           onKeyDown={(event) => enterHandler(event, Invoice)}
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder="End Date"
+                          placeholder={t("End-dates")}
                           value={paymentInvoiceSection.PaymentEnd}
                         />
                       </Col>
@@ -190,7 +190,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                         <Select
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder="Payment By"
+                          placeholder={t("Payment-by")}
                           value={paymentInvoiceSection.PaymentBy}
                         />
                       </Col>
@@ -203,7 +203,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                         className="mt-1 d-flex justify-content-end"
                       >
                         <label className="surcharge">
-                          With Late Surcharge{" "}
+                          {t("With-late-surcharge")}{" "}
                         </label>
                       </Col>
 
@@ -220,16 +220,16 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12} xs={12}>
                           <label>
-                            Are you sure you want to delete this account?
+                            {t("Are-you-sure-you-want-to-delete-this-account")}
                           </label>
                         </Col>
                       </Row>
                       <Row>
                         <Col lg={6} md={6} sm={12} xs={12}>
-                          <Button text="Delete" />
+                          <Button text={t("Delete")} />
                         </Col>
                         <Col lg={6} md={6} sm={12} xs={12}>
-                          <Button text="Cancel" />
+                          <Button text={t("Cancel")} />
                         </Col>
                       </Row>
                     </>
@@ -250,7 +250,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                     className="d-flex justify-content-end"
                   >
                     <Button
-                      text="Reset"
+                      text={t("Reset")}
                       className="icon-PaymentHistory-ResetBtn"
                     />
                   </Col>
@@ -263,7 +263,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                     className="d-flex justify-content-start"
                   >
                     <Button
-                      text="Search"
+                      text={t("Search")}
                       onClick={openDeleteModal}
                       className="icon-PaymentHistory-SearchBtn"
                     />

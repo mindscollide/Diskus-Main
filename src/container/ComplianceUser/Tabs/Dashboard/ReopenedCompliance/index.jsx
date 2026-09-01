@@ -115,7 +115,7 @@ const ReopenedCompliance = () => {
           </div>
           <ComplianceEmptyState
             type="noComplianceReopenDashboard"
-            title="No compliances have been reopened"
+            title={t("No-compliances-have-been-reopened")}
             layout="imageTop"
             imgMarginTop="125px"
           />

@@ -2,11 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
-import {} from "../../../../../store/actions/NewMeetingActions";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearAgendaReducerState,
@@ -15,8 +13,6 @@ import {
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
-import VoteModal from "./VoteModal/VoteModal";
-import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
 import { onDragEnd } from "./drageFunction";
@@ -422,10 +418,7 @@ const Agenda = () => {
         />
       )}
       {advancePermissionConfirmation && <PermissionConfirmation />}
-      {voteAgendaModal && (
-        <VoteModal setenableVotingPage={setenableVotingPage} />
-      )}
-      {voteConfirmationModal && <VoteModalConfirm />}
+ 
       {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
       {NewMeetingreducer.viewVotesAgenda && (
         <ViewVoteModal advanceMeetingModalID={advanceMeetingModalID} />

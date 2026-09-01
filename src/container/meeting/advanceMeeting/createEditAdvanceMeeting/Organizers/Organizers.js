@@ -259,11 +259,11 @@ const Organizers = () => {
       },
 
       {
-        title: "RSVP",
+        title: t("RSVP"),
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         ellipsis: true,
-        align: "left",
+        align: "center",
 
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
@@ -315,67 +315,55 @@ const Organizers = () => {
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
         ellipsis: true,
-        align: "left",
+        align: "center",
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
             return (
-              <Row>
-                <Col
-                  lg={7}
-                  md={7}
-                  sm={7}
-                  className='d-flex justify-content-center'>
-                  {record.disabledNotification === true ? (
-                    <img
-                      draggable={false}
-                      src={greenMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
-                    />
-                  ) : (
-                    <img
-                      draggable={false}
-                      src={greenMailIcon}
-                      height='30px'
-                      width='30px'
-                      onClick={() => sendRecentNotification(record)}
-                      className='cursor-pointer'
-                      alt=''
-                    />
-                  )}
-                </Col>
-              </Row>
+              <>
+                {record.disabledNotification === true ? (
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height='30px'
+                    width='30px'
+                    alt=''
+                  />
+                ) : (
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height='30px'
+                    width='30px'
+                    onClick={() => sendRecentNotification(record)}
+                    className='cursor-pointer'
+                    alt=''
+                  />
+                )}
+              </>
             );
           } else if (record.isOrganizerNotified === false) {
             return (
-              <Row>
-                <Col
-                  lg={7}
-                  md={7}
-                  sm={7}
-                  className='d-flex justify-content-center'>
-                  {record.disabledNotification === true ? (
-                    <img
-                      draggable={false}
-                      src={redMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
-                    />
-                  ) : (
-                    <img
-                      draggable={false}
-                      src={redMailIcon}
-                      height='30px'
-                      width='30px'
-                      onClick={() => sendRecentNotification(record)}
-                      className='cursor-pointer'
-                      alt=''
-                    />
-                  )}
-                </Col>
-              </Row>
+              <>
+                {record.disabledNotification === true ? (
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height='30px'
+                    width='30px'
+                    alt=''
+                  />
+                ) : (
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height='30px'
+                    width='30px'
+                    onClick={() => sendRecentNotification(record)}
+                    className='cursor-pointer'
+                    alt=''
+                  />
+                )}
+              </>
             );
           }
         },
@@ -512,7 +500,7 @@ const Organizers = () => {
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
         ellipsis: true,
-        align: "left",
+        align: "center",
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
             return (
@@ -581,7 +569,7 @@ const Organizers = () => {
         dataIndex: "isDeletable",
         key: "isDeletable",
         ellipsis: true,
-        align: "left",
+        align: "center",
         render: (text, record) => {
           if (
             record.isPrimaryOrganizer ||
