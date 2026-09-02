@@ -2364,9 +2364,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     />
                   </Col>
                   <Col
-                    lg={5}
-                    md={5}
-                    sm={5}
+                    lg={4}
+                    md={4}
+                    sm={4}
                     xs={12}
                     className='UpdateCheckbox mt-2 '>
                     <Checkbox
