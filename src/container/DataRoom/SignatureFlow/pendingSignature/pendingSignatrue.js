@@ -386,6 +386,15 @@ const getAnnotationOwnerIDFromSubject = (annot) => {
  *   • annotation-level flags left unlocked
  */
 // ✅ UPDATED: Stronger locks for non-owner fields
+/**
+ * Key used with Apryse's annotation custom-data API to stamp a signature with
+ * the user who created it. Unlike the in-memory session set (empty on a fresh
+ * load) and getAssociatedSignatureAnnotation() (not reliably wired up right
+ * after import), custom data is serialised into the XFDF — so ownership still
+ * resolves after the document is saved and the page reloaded.
+ */
+const SIGNER_CUSTOM_DATA_KEY = "diskusSignerUserId";
+
 const applyAnnotationLocks = (
   annotationManager,
   annotations,
@@ -432,6 +441,24 @@ const applyAnnotationLocks = (
     /* ignore — fall through to the per-annotation tests below */
   }
 
+  // ── Fail OPEN when ownership is unresolved ─────────────────────────────────
+  //
+  // getUserFieldNames() returns an EMPTY set when the current user has no
+  // entry in userAnnotations yet, or an entry whose xml is still empty. That
+  // is exactly the state on the first load right after a document is sent,
+  // before the backend has materialised this signer's field records.
+  //
+  // Locking on that basis marks EVERY field Locked/ReadOnly — including the
+  // user's own — so nothing can be signed until a refresh happens to fetch
+  // complete data. That is the "cannot sign until I reload" symptom.
+  //
+  // Skipping here is safe: other signers' fields are already protected
+  // independently of these annotation-level flags. The XFDF pipeline marks
+  // them ReadOnly (processXmlForReadOnly) and strips hidden users' fields
+  // entirely (processXmlToHideFields) BEFORE the document is imported, so
+  // those protections are already baked into what Apryse loaded.
+  if (!currentUserFieldNames || currentUserFieldNames.size === 0) return;
+
   annotations.forEach((annot) => {
     const isWidget =
       typeof annot.getField === "function" ||
@@ -439,7 +466,24 @@ const applyAnnotationLocks = (
 
     let isOwner = false;
 
-    if (
+    // Ownership stamped onto the annotation when it was created. This is the
+    // only signal that survives save + reload, so it is what keeps a signature
+    // deletable/re-signable after a refresh. Used only to GRANT ownership,
+    // never to revoke it, so it cannot regress the checks below.
+    let stampedOwnerID = null;
+    try {
+      const raw = annot.getCustomData?.(SIGNER_CUSTOM_DATA_KEY);
+      if (raw !== undefined && raw !== null && raw !== "") {
+        const parsed = Number(raw);
+        if (Number.isFinite(parsed)) stampedOwnerID = parsed;
+      }
+    } catch {
+      /* custom data unsupported — fall through to the tests below */
+    }
+
+    if (stampedOwnerID !== null && stampedOwnerID === currentUserID) {
+      isOwner = true;
+    } else if (
       annot.Id &&
       (ownedSignatureAnnotIds.has(annot.Id) ||
         sessionOwnedAnnotIds?.has(annot.Id))
@@ -756,8 +800,23 @@ const PendingSignatureViewer = () => {
     getWorkfFlowByFileId?.workFlow?.bundleModels?.length,
   );
 
+  // Step 2 of the bootstrap: the viewer is created only once EVERY response
+  // has landed AND the state derived from each has settled.
+  //
+  //   getWorkfFlowByFileId              → workflow + actors   → signerData
+  //   getSignatureFileAnnotationResponse→ XFDF + PDF bytes    → pdfData.*
+  //   signerData                        → drives the header (Decline/Submit
+  //                                       vs a bare Close button)
+  //   pdfData.documentID                → proves the pdfData above belongs to
+  //                                       THIS document and is not left over
+  //                                       from a previous one
+  //
+  // getAllFieldsByWorkflowID is intentionally excluded: it is dispatched as a
+  // failure (null) in the API's "no fields" branch, so requiring it would hang
+  // this screen forever on documents that legitimately have none.
   const isViewerDataReady = Boolean(
     pdfData.attachmentBlob &&
+      Number(pdfData.documentID) === Number(docWorkflowID) &&
       getWorkfFlowByFileId &&
       getSignatureFileAnnotationResponse &&
       (!hasActors || signerData.length > 0),
@@ -788,9 +847,53 @@ const PendingSignatureViewer = () => {
     pdfDataRef.current = pdfData;
   }, [pdfData]);
 
-  // ── Initial API calls ──────────────────────────────────────────────────────
+  // ── Bootstrap: clean → fetch → settle → (viewer starts once ready) ─────────
+  //
+  // Step 1 of an explicit sequence. Everything from any previously opened
+  // document is wiped BEFORE the first request goes out, so none of the
+  // `if (!x) return;` guards below can ever act on the previous document's
+  // Redux data while this document's responses are still in flight. The
+  // viewer itself is not created here — it waits on the readiness gate.
   useEffect(() => {
     if (!docWorkflowID) return;
+
+    // 1a. Clear shared Redux state for the signature viewers.
+    dispatch(clearSignatureViewerData());
+
+    // 1b. Reset every piece of local state this screen derives from it.
+    setFieldsData([]);
+    setSignerData([]);
+    setParticipants([]);
+    setLastParticipants([]);
+    setSelectedUser("");
+    setUserAnnotations([]);
+    setUserAnnotationsCopy([]);
+    setHiddenUsers([]);
+    setRemoveXmlAfterHideData("");
+    setRemoveXmlAfterFreetextHideData([]);
+    setPdfData({
+      xfdfData: "",
+      attachmentBlob: "",
+      workFlowID: 0,
+      documentID: 0,
+      title: "",
+      description: "",
+      creationDateTime: "",
+      isDeadline: "",
+      deadlineDatetime: "",
+      creatorID: "",
+      isCreator: 0,
+    });
+
+    // 1c. Reset per-document viewer bookkeeping so a re-open bootstraps clean.
+    webViewerInitialized.current = false;
+    sessionOwnedAnnotIdsRef.current = new Set();
+    filledFieldsRef.current = new Set();
+    currentUserFieldNamesRef.current = new Set();
+
+    // 1d. Only now start fetching. getWorkFlowByWorkFlowIdwApi chains
+    //     GetAllFieldsByWorkFlowID and then GetSignatureFileAnnotation
+    //     internally, so this one dispatch drives the whole load.
     dispatch(
       getWorkFlowByWorkFlowIdwApi(
         { FileID: Number(docWorkflowID) },
@@ -1370,6 +1473,32 @@ const PendingSignatureViewer = () => {
           await documentViewer.getAnnotationsLoadedPromise();
           UI.setFitMode(UI.FitMode.FitWidth);
 
+          // ── Leave form-field CREATION mode, before anything else ──────────
+          //
+          // While Apryse is in form-field creation mode, widgets behave as
+          // editable ANNOTATIONS: clicking one selects it and shows the
+          // edit/delete popup. Only once creation mode has ended do they
+          // behave as FILLABLE fields — text boxes accept typing, checkboxes
+          // and radios toggle, and a signature field opens the signing modal.
+          //
+          // This screen only ever fills fields; authoring happens in
+          // signatureviewer.js, which is what turns creation mode on. Nothing
+          // in this flow ever turned it back off, which is exactly the
+          // reported symptom: clicking a field showed edit/delete instead of
+          // letting the user sign, type or toggle it.
+          //
+          // Done first so the annotation locks applied below are not undone by
+          // the mode change, and unconditionally rather than behind an
+          // isInFormFieldCreationMode() check, since ending it is a no-op when
+          // it was never started.
+          try {
+            const formFieldCreationManager =
+              annotationManager.getFormFieldCreationManager?.();
+            formFieldCreationManager?.endFormFieldCreationMode?.();
+          } catch {
+            /* older Apryse builds may not expose the manager */
+          }
+
           if (pdfXfdfRef.current) {
             try {
               // Validate each <apref> objnum against the PDF XRef table;
@@ -1467,6 +1596,17 @@ const PendingSignatureViewer = () => {
       if (action === "add") {
         annotations.forEach((a) => {
           if (a?.Id) sessionOwnedAnnotIdsRef.current.add(a.Id);
+          // Also stamp it onto the annotation itself. The session set above
+          // is empty after a reload; this is what makes the signature still
+          // resolve as the current user's once it comes back from the server.
+          try {
+            const existing = a.getCustomData?.(SIGNER_CUSTOM_DATA_KEY);
+            if (!existing) {
+              a.setCustomData?.(SIGNER_CUSTOM_DATA_KEY, String(currentUserID));
+            }
+          } catch {
+            /* custom data unsupported — session set still covers this load */
+          }
         });
       } else if (action === "delete") {
         annotations.forEach((a) => {
@@ -1499,15 +1639,17 @@ const PendingSignatureViewer = () => {
       try {
         const fieldName = field.name;
 
-        // 🔥 CRITICAL: Block non-owner fields immediately
-        if (!currentUserFieldNamesRef.current.has(fieldName)) {
-          console.warn(
-            `🚫 Blocked: Field "${fieldName}" doesn't belong to current user`,
-          );
+        // Block non-owner fields — but only once ownership is actually known.
+        // An empty set means ownership has not resolved yet (see the matching
+        // fail-open guard in applyAnnotationLocks); blocking on that basis
+        // would stop the user filling their own field and never clear the
+        // post-signature ReadOnly flag, so re-signing would break too.
+        if (
+          currentUserFieldNamesRef.current.size > 0 &&
+          !currentUserFieldNamesRef.current.has(fieldName)
+        ) {
           return;
         }
-
-        console.log(`✅ Field changed allowed for: ${fieldName}`);
 
         const fieldType = field.type || "";
 
