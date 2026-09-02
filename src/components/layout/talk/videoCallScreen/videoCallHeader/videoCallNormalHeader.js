@@ -103,6 +103,7 @@ import {
 } from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
 import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
+import { useCallTypeContext } from "../../../../../hooks/videoCall/useCallTypeContext";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -154,7 +155,10 @@ const VideoCallNormalHeader = ({
     setVideoChatUnreadCount,
   } = useContext(MeetingContext);
 
-  console.log(groupCallParticipantList, "groupCallParticipantListgroupCallParticipantList")
+  console.log(
+    groupCallParticipantList,
+    "groupCallParticipantListgroupCallParticipantList",
+  );
 
   // Meeting group chat (presenter / meeting-video) — mirrors AgendaViewer group chat
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -348,28 +352,18 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck"),
   );
-  let callerGuid = localStorage.getItem("callerGuid")
+  let callerGuid = localStorage.getItem("callerGuid");
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
-  let recepientGuid = localStorage.getItem("receipentGuid")
-
-  let RoomID =
-    callTypeID === 2
-      ? roomID
-      : presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
-        ? roomID
-        : isMeetingVideoHostCheck
-          ? newRoomID
-          : participantRoomId;
-  let UID =
-    callTypeID === 2 &&  callerID !== 0
-      ? callerGuid
-      : callTypeID === 2 && recipentCalledID !== 0 
-        ? recepientGuid
-        : presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
-          ? participantUID
-          : isMeetingVideoHostCheck
-            ? isGuid
-            : participantUID;
+  let recepientGuid = localStorage.getItem("receipentGuid");
+  let groupCallRoomId =
+    localStorage.getItem("groupCallRoomId") !== null
+      ? localStorage.getItem("groupCallRoomId")
+      : null;
+  // RoomID/UID resolution moved to useCallTypeContext() — this used to be
+  // re-derived here independently from videoCallNormalPanel.js's copy of the
+  // same logic, and the two had drifted. Kept as local `RoomID`/`UID` names
+  // so every existing call site below is unchanged.
+  const { roomId: RoomID, uid: UID } = useCallTypeContext();
 
   const {
     leaveOneToOne,
@@ -595,6 +589,16 @@ const VideoCallNormalHeader = ({
         name: localStorage.getItem("name"),
         callStatus: "In Call",
         isHost: true,
+        isGuest: false,
+        guid: "",
+        videoCallParticipantsID: 0,
+        email: localStorage.getItem("email"),
+        roomID: "",
+        raiseHand: false,
+        mute: false,
+        hideCamera: false,
+        requestStatusID: 2,
+        shareScreen: false,
       });
     }
 
@@ -1764,6 +1768,37 @@ const VideoCallNormalHeader = ({
 
   const raiseUnRaiseForParticipant = (flag) => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      let RoomID =
+        callTypeID === 2
+          ? localStorage.getItem("groupCallRoomId")
+          : presenterViewFlag &&
+              (presenterViewHostFlag || presenterViewJoinFlag)
+            ? roomID
+            : isMeetingVideoHostCheck
+              ? newRoomID
+              : participantRoomId;
+      let UID =
+        callTypeID === 2
+          ? isCaller
+            ? localStorage.getItem("callerGuid")
+            : localStorage.getItem("receipentGuid")
+          : presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
+            ? participantUID
+            : isMeetingVideoHostCheck
+              ? isGuid
+              : participantUID;
+
+      console.log(
+        {
+          UID,
+          callerID,
+          callTypeID,
+          groupCallRoomId,
+          callerGuid: localStorage.getItem("callerGuid"),
+          recepientGuid: localStorage.getItem("receipentGuid"),
+        },
+        "raiseUnRaiseForParticipantraiseUnRaiseForParticipant",
+      );
       let data = {
         RoomID: String(RoomID),
         UID: String(UID),
@@ -1860,8 +1895,8 @@ const VideoCallNormalHeader = ({
     <>
       <Row className='mb-4'>
         <Col
-          lg={8}
-          md={8}
+          lg={6}
+          md={6}
           sm={12}
           className='mt-1 d-flex justify-content-start align-items-center gap-2'>
           <p
@@ -1889,7 +1924,7 @@ const VideoCallNormalHeader = ({
             )}
         </Col>
 
-        <Col lg={4} md={4} sm={12} className='normal-screen-top-icons'>
+        <Col lg={6} md={6} sm={12} className='normal-screen-top-icons'>
           <div
             className={
               LeaveCallModalFlag === true ||
@@ -2417,11 +2452,7 @@ const VideoCallNormalHeader = ({
                                           lg={4}
                                           md={4}
                                           sm={12}>
-                                          {isMatchingParticipant ? (
-                                            <p className='participant-state'>
-                                              {t("Accepted")}
-                                            </p>
-                                          ) : isMatchingParticipantUnanswered ? (
+                                          {isMatchingParticipantUnanswered ? (
                                             <p className='participant-state'>
                                               {t("Unanswered")}
                                             </p>

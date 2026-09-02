@@ -92,6 +92,12 @@ const initialState = {
   isVideoGlobalStream: false,
   allNavigatorVideoStream: 0,
   getAllParticipantMain: [],
+  // guid -> boolean, maintained purely from the PARTICIPANT_RAISE_UNRAISE_HAND
+  // MQTT payload (see PARTICIPANT_RAISEDUNRAISEDHAND_VIDEO below) — independent
+  // of getAllParticipantMain, which for a plain group call only ever contains
+  // the current user's own record (confirmed via live debug logging), so
+  // matching against it can never find another participant's raised hand.
+  raisedHandGuids: {},
   participantsVisible: false,
   leaveMeetingOnLogoutResponse: false,
   leaveMeetingVideoOnLogoutResponse: false,
@@ -646,6 +652,10 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         getAllParticipantMain: updatedRaisedParticipant,
+        raisedHandGuids: {
+          ...state.raisedHandGuids,
+          [payload.participantGuid]: payload.isHandRaised,
+        },
         presentationParticipantsList: {
           ...(typeof state.presentationParticipantsList === "object" &&
           !Array.isArray(state.presentationParticipantsList)

@@ -159,6 +159,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 "meetinHostInfo",
                 JSON.stringify(meetingHost),
               );
+
               localStorage.setItem("initiateVideoCall", true);
               sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
               // localStorage.setItem("meetingTitle", "");
@@ -170,6 +171,24 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 localStorage.setItem(
                   "callerGuid",
                   response.data.responseResult.guid,
+                );
+                localStorage.setItem(
+                  "groupCallRoomId",
+                  response.data.responseResult.roomID,
+                );
+              }
+              if (Data.CallTypeID === 1) {
+                localStorage.setItem(
+                  "RecipentIDsOninitiateVideoCall",
+                  JSON.stringify(Data.RecipentIDs),
+                );
+                localStorage.setItem(
+                  "callerGuid",
+                  response.data.responseResult.guid,
+                );
+                localStorage.setItem(
+                  "oneToOneRoomId",
+                  response.data.responseResult.roomID,
                 );
               }
             } else if (
@@ -285,13 +304,21 @@ const VideoCallResponse = (Data, navigate, t) => {
                 )
             ) {
               let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-              localStorage.setItem(
-                "receipentGuid",
-                response.data.responseResult.guid,
-              );
+
               if (activeCall === false) {
                 sessionStorage.setItem("NonMeetingVideoCall", false);
                 // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
+              }
+
+              if (Data.CallTypeID === 2) {
+                localStorage.setItem(
+                  "receipentGuid",
+                  response.data.responseResult.guid,
+                );
+                localStorage.setItem(
+                  "groupCallRoomId",
+                  response.data.responseResult.roomID,
+                );
               }
 
               if (Data.CallStatusID === 1) {

@@ -7,6 +7,9 @@ import VideoPanelMaximize from "./videoCallPanels/videoCallMaximizePanel";
 import VideoCallMinimizeHeader from "./videoCallHeader/videoCallMinimizeHeader";
 import { leaveCallModal } from "../../../../store/actions/VideoFeature_actions";
 import LeaveVideoIntimationModal from "./LeaveVideoIntimationModal/LeaveVideoIntimationModal";
+import OneToOneCallPanel from "./callTypes/oneToOne/OneToOneCallPanel";
+import GroupCallPanel from "./callTypes/group/GroupCallPanel";
+import { useCallTypeContext } from "../../../../hooks/videoCall/useCallTypeContext";
 
 const VideoMain = () => {
   const {
@@ -47,7 +50,7 @@ const VideoMain = () => {
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
   } = useSelector((state) => state);
-  console.log("hell");
+  const { isOneToOne, isGroup } = useCallTypeContext();
   return (
     <>
       <div
@@ -100,7 +103,13 @@ const VideoMain = () => {
             : "d-none"
         }
       >
-        <VideoPanelNormal />
+        {isOneToOne ? (
+          <OneToOneCallPanel />
+        ) : isGroup ? (
+          <GroupCallPanel />
+        ) : (
+          <VideoPanelNormal />
+        )}
       </div>
       {videoFeatureReducer.MinimizeVideoFlag && (
         <div

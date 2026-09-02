@@ -108,6 +108,10 @@ const VideoPanelNormal = () => {
     setJoiningOneToOneAfterLeavingPresenterView,
     setLeaveMeetingVideoForOneToOneOrGroup,
     stopApiCalledRef,
+    mic,
+    setMic,
+    camera,
+    setCamera,
   } = useMeetingContext();
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -382,8 +386,19 @@ const VideoPanelNormal = () => {
 
   let urlFormeetingapi = localStorage.getItem("hostUrl");
 
-  const [isMicActive, setIsMicActive] = useState(micStatus);
-  const [isVideoActive, setIsVideoActive] = useState(vidStatus);
+  // Mic/camera mute state is owned by MeetingContext (mic/camera) rather than
+  // local component state — localStorage MicOff/VidOff stays as a mirror for
+  // the other call-start/preview screens that still read it directly.
+  const isMicActive = mic;
+  const isVideoActive = camera;
+  const setIsMicActive = setMic;
+  const setIsVideoActive = setCamera;
+
+  useEffect(() => {
+    setMic(micStatus);
+    setCamera(vidStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 

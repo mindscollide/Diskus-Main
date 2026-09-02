@@ -17,6 +17,7 @@ import {
   GetUserRecentCallsScroll,
   callRequestReceivedMQTT,
   LeaveCall,
+  VideoCallResponse,
 } from "../../../../../../store/actions/VideoMain_actions";
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -40,6 +41,8 @@ import {
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
 import IncomingIcon from "../../../../../../assets/images/Incoming-Icon.png";
+import UnansweredIcon from "../../../../../../assets/images/Unanswered_call.png";
+
 import OutgoingIcon from "../../../../../../assets/images/Outgoing-Icon.png";
 import VideoDownload from "../../../../../../assets/images/Download-Video.png";
 import MeetingVideoCallIcon from "../../../../../../assets/images/VideoCall/MeetingVideoCallIcon.png";
@@ -51,7 +54,7 @@ import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const VideoPanelBodyRecent = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const dispatch = useDispatch();
@@ -90,7 +93,7 @@ const VideoPanelBodyRecent = () => {
   let changeDateFormatCurrent = moment(currentDateTime).utc();
 
   let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
-    "YYYYMMDDHHmmss"
+    "YYYYMMDDHHmmss",
   );
 
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
@@ -118,11 +121,11 @@ const VideoPanelBodyRecent = () => {
   const [recentCallRecipientData, setRecentCallRecipientData] = useState([]);
 
   const videRecording = useSelector(
-    (state) => state.DataRoomReducer.videRecording
+    (state) => state.DataRoomReducer.videRecording,
   );
   console.log(
     VideoMainReducer.RecentCallsData,
-    "VideoMainReducerRecentCallsData"
+    "VideoMainReducerRecentCallsData",
   );
 
   const searchChat = (e) => {
@@ -143,13 +146,13 @@ const VideoPanelBodyRecent = () => {
                     .includes(e.toLowerCase()) ||
                   value.callerName.toLowerCase().includes(e.toLowerCase())
                 );
-              }
+              },
             );
           setRecentVideoCalls(filteredData.length > 0 ? filteredData : []);
         } else {
           // When search input is empty, reset to original data
           setRecentVideoCalls(
-            VideoMainReducer.RecentCallsData.videoCallHistory
+            VideoMainReducer.RecentCallsData.videoCallHistory,
           );
         }
       }
@@ -157,8 +160,6 @@ const VideoPanelBodyRecent = () => {
       console.error("Error in searchChat:", error);
     }
   };
-  console.log({ recentVideoCalls }, "recentVideoCallsrecentVideoCalls");
-  console.log("Video Call User Data", VideoMainReducer);
   useEffect(() => {
     let Data = {
       OrganizationID: currentOrganization,
@@ -182,23 +183,21 @@ const VideoPanelBodyRecent = () => {
         dispatch(ScrollRecentCalls(false));
         setSRowsData(
           (prev) =>
-            prev + VideoMainReducer?.RecentCallsData?.videoCallHistory.length
+            prev + VideoMainReducer?.RecentCallsData?.videoCallHistory.length,
         );
         setTotalRecords(VideoMainReducer?.RecentCallsData?.recentCallCount);
-        let copyData = [...recentVideoCalls];
-        VideoMainReducer?.RecentCallsData?.videoCallHistory.map(
-          (data, index) => {
-            copyData.push(data);
-          }
-        );
-        setRecentVideoCalls(copyData);
+
+        setRecentVideoCalls([
+          ...recentVideoCalls,
+          ...VideoMainReducer?.RecentCallsData?.videoCallHistory,
+        ]);
       } else {
         setSRowsData(
-          VideoMainReducer?.RecentCallsData?.videoCallHistory.length
+          VideoMainReducer?.RecentCallsData?.videoCallHistory.length,
         );
         setTotalRecords(VideoMainReducer?.RecentCallsData?.recentCallCount);
         setRecentVideoCalls(
-          VideoMainReducer?.RecentCallsData?.videoCallHistory
+          VideoMainReducer?.RecentCallsData?.videoCallHistory,
         );
       }
     }
@@ -226,6 +225,7 @@ const VideoPanelBodyRecent = () => {
       dispatch(videoRecording(null));
     }
   }, [videRecording]);
+
   const fetchMoreData = async () => {
     if (sRowsData <= totalRecords) {
       await dispatch(ScrollRecentCalls(true));
@@ -243,7 +243,6 @@ const VideoPanelBodyRecent = () => {
       dispatch(disableZoomBeforeJoinSession(true));
     }
     setRecentCallRecipientData(data);
-    console.log(data, "datadatadatadata");
     if (
       activeCall === false ||
       activeCall === undefined ||
@@ -273,7 +272,7 @@ const VideoPanelBodyRecent = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("activeCall", true);
-    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
 
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(getVideoRecipentData(data));
@@ -314,7 +313,7 @@ const VideoPanelBodyRecent = () => {
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
-    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
 
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(normalizeVideoPanelFlag(true));
@@ -378,8 +377,8 @@ const VideoPanelBodyRecent = () => {
       isDashboardVideo: false,
     };
     await dispatch(makeHostNow(meetingHost));
-          localStorage.setItem("isMeeting", true);
-  sessionStorage.setItem("isMeeting", true);
+    localStorage.setItem("isMeeting", true);
+    sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -490,8 +489,8 @@ const VideoPanelBodyRecent = () => {
       isDashboardVideo: false,
     };
     await dispatch(makeHostNow(meetingHost));
-          localStorage.setItem("isMeeting", true);
-  sessionStorage.setItem("isMeeting", true);
+    localStorage.setItem("isMeeting", true);
+    sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -655,16 +654,331 @@ const VideoPanelBodyRecent = () => {
     }
   };
 
+  const shownIncomingOutgoingUnansweredIconForGroup = (recentCallData) => {
+    if (!recentCallData) return null;
+
+    // callTypeID This is type like is one to one call or group call or meeting call
+    const callTypeID = recentCallData?.callType?.callTypeID;
+    const callStatusID = recentCallData?.callStatus?.callStatusID;
+    const isIncoming = recentCallData?.isIncoming;
+    console.log(
+      { recentCallData, callTypeID, callStatusID },
+      "shownIncomingOutgoingUnansweredIconForGroup",
+    );
+    // Unanswered outgoing call
+    if (callTypeID === 2 && callStatusID === 3) {
+      return (
+        <img src={UnansweredIcon} width={20} height={20} alt='unanswered' />
+      );
+    }
+
+    // Outgoing call
+    if (isIncoming === false && callStatusID !== 3) {
+      return <img src={OutgoingIcon} alt='outgoing' />;
+    }
+
+    // Incoming call
+    if (isIncoming === true && callStatusID !== 3) {
+      return <img src={IncomingIcon} alt='incoming' />;
+    }
+
+    return null;
+  };
+
+  const handleClickReJoin = (data) => {
+    dispatch(VideoCallResponse({},navigate,t))
+  }
+
+    // const handleClickReJoin = async () => {
+    //   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    //   if (isZoomEnabled) {
+    //     dispatch(disableZoomBeforeJoinSession(true));
+    //   }
+    //   console.log("busyCall");
+    //   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    //   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+    //   console.log("busyCall", activeCallState);
+    //   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    //   if (isMeeting) {
+    //     console.log("busyCall");
+    //     if (isMeetingVideo) {
+    //       console.log("busyCall");
+    //       if (isZoomEnabled) {
+    //         console.log("busyCall");
+    //         // await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
+    //         // setIsTimerRunning(false);
+    //         if (pauseRecordingState || resumeRecordingState) {
+    //           console.log("busyCall");
+    //           await onHandleClickForStopRecording();
+    //           await new Promise((resolve) => setTimeout(resolve, 100));
+    //         }
+    //         if (
+    //           presenterViewFlag &&
+    //           (presenterViewHostFlag || presenterViewJoinFlag)
+    //         ) {
+    //           console.log("busyCall");
+    //           dispatch(nonMeetingVideoGlobalModal(true));
+    //           dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
+    //         } else {
+    //           console.log("busyCall");
+    //           let meetinHostInfo = JSON.parse(
+    //             localStorage.getItem("meetinHostInfo"),
+    //           );
+    //           let currentMeetingID = JSON.parse(
+    //             localStorage.getItem("currentMeetingID"),
+    //           );
+  
+    //           let newUserGUID = meetinHostInfo?.isHost
+    //             ? localStorage.getItem("isGuid")
+    //             : localStorage.getItem("participantUID");
+    //           let newName = localStorage.getItem("name");
+    //           let Data = {
+    //             RoomID: String(RoomID),
+    //             UserGUID: String(newUserGUID),
+    //             Name: String(newName),
+    //             IsHost: meetinHostInfo?.isHost ? true : false,
+    //             MeetingID: Number(currentMeetingID),
+    //           };
+    //           dispatch(setRaisedUnRaisedParticiant(false));
+    //           await dispatch(
+    //             LeaveMeetingVideo(
+    //               Data,
+    //               navigate,
+    //               t,
+    //               3,
+    //               null,
+    //               setJoiningOneToOneAfterLeavingPresenterView,
+    //               setLeaveMeetingVideoForOneToOneOrGroup,
+    //             ),
+    //           );
+  
+    //           const emptyArray = [];
+    //           localStorage.setItem(
+    //             "callerStatusObject",
+    //             JSON.stringify(emptyArray),
+    //           );
+    //           await dispatch(setAudioControlHost(false));
+    //           console.log("videoHideUnHideForHost");
+    //           await dispatch(setVideoControlHost(false));
+    //           dispatch(normalizeVideoPanelFlag(false));
+    //           dispatch(maximizeVideoPanelFlag(false));
+    //           dispatch(minimizeVideoPanelFlag(false));
+    //           dispatch(leaveCallModal(false));
+    //           dispatch(participantPopup(false));
+    //           localStorage.setItem("activeCall", false);
+    //           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+  
+    //           localStorage.setItem("acceptedRoomID", 0);
+    //           localStorage.setItem("activeRoomID", 0);
+    //           localStorage.setItem("isCaller", false);
+    //           localStorage.setItem("isMeetingVideo", false);
+    //           localStorage.setItem("MicOff", true);
+    //           localStorage.setItem("VidOff", true);
+    //           localStorage.setItem("isMicEnabled", false);
+    //           localStorage.setItem("isWebCamEnabled", false);
+    //           localStorage.setItem("activeOtoChatID", 0);
+    //           localStorage.setItem("initiateVideoCall", false);
+    //           localStorage.setItem("meetingVideoID", 0);
+    //           localStorage.setItem("newCallerID", 0);
+    //           localStorage.setItem("callerStatusObject", JSON.stringify([]));
+    //           localStorage.removeItem("newRoomId");
+    //           localStorage.removeItem("isHost");
+    //           localStorage.removeItem("isGuid");
+    //           localStorage.removeItem("hostUrl");
+    //           localStorage.removeItem("VideoView");
+    //           localStorage.removeItem("videoIframe");
+    //           localStorage.removeItem("CallType");
+    //         }
+    //       } else {
+    //         console.log("busyCall");
+    //         if (
+    //           presenterViewFlag &&
+    //           (presenterViewHostFlag || presenterViewJoinFlag)
+    //         ) {
+    //           console.log("busyCall");
+    //           dispatch(nonMeetingVideoGlobalModal(true));
+    //           dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
+    //         } else {
+    //           console.log("busyCall");
+    //           let meetinHostInfo = JSON.parse(
+    //             localStorage.getItem("meetinHostInfo"),
+    //           );
+    //           let currentMeetingID = JSON.parse(
+    //             localStorage.getItem("currentMeetingID"),
+    //           );
+  
+    //           let newUserGUID = meetinHostInfo?.isHost
+    //             ? localStorage.getItem("isGuid")
+    //             : localStorage.getItem("participantUID");
+    //           let newName = localStorage.getItem("name");
+    //           let Data = {
+    //             RoomID: String(RoomID),
+    //             UserGUID: String(newUserGUID),
+    //             Name: String(newName),
+    //             IsHost: meetinHostInfo?.isHost ? true : false,
+    //             MeetingID: Number(currentMeetingID),
+    //           };
+    //           dispatch(setRaisedUnRaisedParticiant(false));
+    //           await dispatch(
+    //             LeaveMeetingVideo(
+    //               Data,
+    //               navigate,
+    //               t,
+    //               3,
+    //               null,
+    //               setJoiningOneToOneAfterLeavingPresenterView,
+    //               setLeaveMeetingVideoForOneToOneOrGroup,
+    //             ),
+    //           );
+  
+    //           const emptyArray = [];
+    //           localStorage.setItem(
+    //             "callerStatusObject",
+    //             JSON.stringify(emptyArray),
+    //           );
+    //           await dispatch(setAudioControlHost(false));
+    //           console.log("videoHideUnHideForHost");
+    //           await dispatch(setVideoControlHost(false));
+    //           dispatch(normalizeVideoPanelFlag(false));
+    //           dispatch(maximizeVideoPanelFlag(false));
+    //           dispatch(minimizeVideoPanelFlag(false));
+    //           dispatch(leaveCallModal(false));
+    //           dispatch(participantPopup(false));
+    //           localStorage.setItem("activeCall", false);
+    //           localStorage.setItem("acceptedRoomID", 0);
+    //           localStorage.setItem("activeRoomID", 0);
+    //           localStorage.setItem("isCaller", false);
+    //           localStorage.setItem("isMeetingVideo", false);
+    //           localStorage.setItem("MicOff", true);
+    //           localStorage.setItem("VidOff", true);
+    //           localStorage.setItem("isMicEnabled", false);
+    //           localStorage.setItem("isWebCamEnabled", false);
+    //           localStorage.setItem("activeOtoChatID", 0);
+    //           localStorage.setItem("initiateVideoCall", false);
+    //           localStorage.setItem("meetingVideoID", 0);
+    //           localStorage.setItem("newCallerID", 0);
+    //           localStorage.setItem("callerStatusObject", JSON.stringify([]));
+    //           localStorage.removeItem("newRoomId");
+    //           localStorage.removeItem("isHost");
+    //           localStorage.removeItem("isGuid");
+    //           localStorage.removeItem("hostUrl");
+    //           localStorage.removeItem("VideoView");
+    //           localStorage.removeItem("videoIframe");
+    //           localStorage.removeItem("CallType");
+    //         }
+    //       }
+    //     } else {
+    //       console.log("busyCall", activeCallState);
+    //       if (
+    //         presenterViewFlag &&
+    //         (presenterViewHostFlag || presenterViewJoinFlag)
+    //       ) {
+    //         console.log("busyCall");
+    //         dispatch(nonMeetingVideoGlobalModal(true));
+    //         dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
+    //       } else if (activeCallState) {
+    //         console.log("busyCall");
+    //         let Data = {
+    //           OrganizationID: currentOrganization,
+    //           RoomID: RoomID,
+    //           IsCaller: callerID === currentUserId ? true : false,
+    //           CallTypeID: callTypeID,
+    //         };
+    //         await dispatch(LeaveCall(Data, navigate, t, 1, setIsTimerRunning));
+    //       } else {
+    //         console.log("busyCall");
+    //         const meetingHost = {
+    //           isHost: false,
+    //           isHostId: 0,
+    //           isDashboardVideo: false,
+    //         };
+    //         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+    //         let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
+    //         let incommingCallType = localStorage.getItem("incommingCallType");
+    //         let incommingNewCallerID = localStorage.getItem(
+    //           "incommingNewCallerID",
+    //         );
+  
+    //         localStorage.setItem("callTypeID", incommingCallTypeID);
+    //         localStorage.setItem("callType", incommingCallType);
+    //         localStorage.setItem("newCallerID", incommingNewCallerID);
+    //         let NewRoomID = localStorage.getItem("NewRoomID");
+    //         localStorage.setItem("activeRoomID", NewRoomID);
+  
+    //         let Data = {
+    //           ReciepentID: currentUserId,
+    //           RoomID: NewRoomID,
+    //           CallStatusID: 1,
+    //           CallTypeID: Number(incommingCallTypeID),
+    //         };
+    //         console.log("busyCall");
+    //         await dispatch(VideoCallResponse(Data, navigate, t));
+    //         localStorage.removeItem("NewRoomID");
+    //         localStorage.removeItem("incommingCallTypeID");
+    //         localStorage.removeItem("incommingCallType");
+    //         localStorage.removeItem("incommingNewCallerID");
+    //         dispatch(incomingVideoCallFlag(false));
+    //         dispatch(normalizeVideoPanelFlag(true));
+    //         localStorage.setItem("activeCall", true);
+    //         setIsTimerRunning(false);
+    //       }
+    //     }
+    //   } else if (activeCallState) {
+    //     console.log("busyCall");
+    //     let Data = {
+    //       OrganizationID: currentOrganization,
+    //       RoomID: RoomID,
+    //       IsCaller: callerID === currentUserId ? true : false,
+    //       CallTypeID: callTypeID,
+    //     };
+    //     await dispatch(LeaveCall(Data, navigate, t, 1, setIsTimerRunning));
+    //   } else {
+    //     console.log("busyCall");
+    //     let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
+    //     let incommingCallType = localStorage.getItem("incommingCallType");
+    //     let incommingNewCallerID = localStorage.getItem("incommingNewCallerID");
+  
+    //     localStorage.setItem("callTypeID", incommingCallTypeID);
+    //     localStorage.setItem("callType", incommingCallType);
+    //     localStorage.setItem("newCallerID", incommingNewCallerID);
+  
+    //     const meetingHost = {
+    //       isHost: false,
+    //       isHostId: 0,
+    //       isDashboardVideo: false,
+    //     };
+    //     localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+    //     let NewRoomID = localStorage.getItem("NewRoomID");
+    //     localStorage.setItem("activeRoomID", NewRoomID);
+    //     let Data = {
+    //       ReciepentID: currentUserId,
+    //       RoomID: NewRoomID,
+    //       CallStatusID: 1,
+    //       CallTypeID: Number(incommingCallTypeID),
+    //     };
+    //     console.log("busyCall");
+    //     await dispatch(VideoCallResponse(Data, navigate, t));
+    //     localStorage.removeItem("NewRoomID");
+    //     localStorage.removeItem("incommingCallTypeID");
+    //     localStorage.removeItem("incommingCallType");
+    //     localStorage.removeItem("incommingNewCallerID");
+    //     dispatch(incomingVideoCallFlag(false));
+    //     dispatch(normalizeVideoPanelFlag(true));
+    //     localStorage.setItem("activeCall", true);
+    //     setIsTimerRunning(false);
+    //   }
+    // };
+
   return (
     <>
       <Container>
         {videoFeatureReducer.VideoChatSearchFlag === true ? (
           <Row>
-            <Col lg={12} md={12} sm={12} className="mt-2">
+            <Col lg={12} md={12} sm={12} className='mt-2'>
               <TextField
                 maxLength={200}
-                applyClass="form-control2"
-                name="Name"
+                applyClass='form-control2'
+                name='Name'
                 change={(e) => {
                   searchChat(e.target.value);
                 }}
@@ -690,28 +1004,28 @@ const VideoPanelBodyRecent = () => {
                   display: "flex",
                   justifyContent: "center",
                   marginTop: "10px",
-                }}
-              >
+                }}>
                 {" "}
                 <Spin />
               </span>
-            }
-          >
+            }>
             {recentVideoCalls.map((recentCallData, index) => {
               let recentCallDateTime =
                 recentCallData.callDate + recentCallData.callTime;
 
               let whenIsInComingFalse = recentCallData.isIncoming === false;
+              const callTypeID = recentCallData?.callType?.callTypeID;
+              const callStatusID = recentCallData?.callStatus?.callStatusID;
               console.log("recentCallDatarecentCallData", recentCallData);
               console.log("isIncomingrecipients", whenIsInComingFalse);
 
               return (
                 <>
-                  <Row className="single-chat" key={index}>
-                    <Col lg={2} md={2} sm={12} className="bottom-border">
+                  <Row className='single-chat' key={index}>
+                    <Col lg={2} md={2} sm={12} className='bottom-border'>
                       {recentCallData.callType.callTypeID === 1 ? (
                         // One to One And Group Call
-                        <div className="one-to-one-and-group-call-profile">
+                        <div className='one-to-one-and-group-call-profile'>
                           <img
                             src={`data:image/jpeg;base64,${
                               recentCallData.isIncoming === false
@@ -719,11 +1033,12 @@ const VideoPanelBodyRecent = () => {
                                     .recipientDisplayProfilePicture
                                 : recentCallData.callerDisplayProfilePicture
                             }`}
+                            alt=''
                           />
                         </div>
                       ) : recentCallData.callType.callTypeID === 2 ? (
                         // One to One And Group Call
-                        <div className="one-to-one-and-group-call-profile">
+                        <div className='one-to-one-and-group-call-profile'>
                           <img
                             src={`data:image/jpeg;base64,${
                               recentCallData.isIncoming === false
@@ -731,11 +1046,12 @@ const VideoPanelBodyRecent = () => {
                                     .recipientDisplayProfilePicture
                                 : recentCallData.callerDisplayProfilePicture
                             }`}
+                            alt=''
                           />
                         </div>
                       ) : recentCallData.callType.callTypeID === 3 ? (
                         // Meeting
-                        <div className="video-profile-icon">
+                        <div className='video-profile-icon'>
                           <img src={MeetingVideoCallIcon} />
                         </div>
                       ) : null}
@@ -756,27 +1072,26 @@ const VideoPanelBodyRecent = () => {
                         />
                       )} */}
                     </Col>
-                    <Col lg={8} md={8} sm={12} className="bottom-border">
+                    <Col lg={8} md={8} sm={12} className='bottom-border'>
                       <div className={"video-block"}>
                         {(recentCallData.callStatus.status === "Unanswered" ||
                           recentCallData.callStatus.status === "Busy") &&
                         recentCallData.callType.callTypeID === 1 ? (
                           <>
-                            <p className="Video-chat-username m-0">
+                            <p className='Video-chat-username m-0'>
                               <Tooltip
-                                placement="top"
+                                placement='top'
                                 title={`${
                                   recentCallData.callerName === currentUserName
                                     ? recentCallData.recipients[0].userName
                                     : recentCallData.callerName
-                                }}`}
-                              >
+                                }}`}>
                                 {recentCallData.callerName === currentUserName
                                   ? recentCallData.recipients[0].userName
                                   : recentCallData.callerName}
                               </Tooltip>
-                              <span className="call-status-icon">
-                                <img src={MissedCallIcon} alt="" />
+                              <span className='call-status-icon'>
+                                <img src={MissedCallIcon} alt='' />
                               </span>
                             </p>
                           </>
@@ -785,26 +1100,34 @@ const VideoPanelBodyRecent = () => {
                             recentCallData.callStatus.status === "Busy") &&
                           recentCallData.callType.callTypeID === 2 ? (
                           <Tooltip
-                            placement="top"
+                            placement='top'
                             title={`${formatUserNames(
-                              recentCallData.recipients
-                            )}`}
-                          >
-                            <p className="Video-chat-username m-0">
+                              recentCallData.recipients,
+                            )}`}>
+                            <p className='Video-chat-username m-0'>
                               {formatUserNames(recentCallData.recipients)}
-                              <span className="call-status-icon">
-                                <img src={MissedCallIcon} alt="" />
+                              <span className='call-status-icon'>
+                                {callTypeID === 2 && callStatusID === 3 ? (
+                                  <img
+                                    src={UnansweredIcon}
+                                    width={20}
+                                    height={20}
+                                    alt='unanswered'
+                                    onClick={handleClickReJoin}
+                                  />
+                                ) : (
+                                  <img src={MissedCallIcon} alt='' />
+                                )}
                               </span>
                             </p>
                           </Tooltip>
                         ) : recentCallData.callType.callTypeID === 3 ? (
                           <Tooltip
                             title={recentCallData.meetingTitle}
-                            className="tooltip-videopanel-meetingtitle"
+                            className='tooltip-videopanel-meetingtitle'
                             showArrow={false}
-                            placement="top"
-                          >
-                            <p className="Video-chat-username m-0">
+                            placement='top'>
+                            <p className='Video-chat-username m-0'>
                               {recentCallData.meetingTitle}
                             </p>
                           </Tooltip>
@@ -815,45 +1138,61 @@ const VideoPanelBodyRecent = () => {
                               recentCallData.callType.callTypeID === 1
                                 ? recentCallData.recipients[0].userName
                                 : recentCallData.callerName !==
-                                    currentUserName &&
-                                  recentCallData.callType.callTypeID === 1
-                                ? recentCallData.callerName
-                                : recentCallData.callType.callTypeID === 2
-                                ? formatUserNames(recentCallData.recipients)
-                                : null
+                                      currentUserName &&
+                                    recentCallData.callType.callTypeID === 1
+                                  ? recentCallData.callerName
+                                  : recentCallData.callType.callTypeID === 2
+                                    ? formatUserNames(recentCallData.recipients)
+                                    : null
                             }`}
-                            showArrow={false}
-                          >
-                            <p className="Video-chat-username m-0">
+                            showArrow={false}>
+                            <p className='Video-chat-username m-0'>
                               {recentCallData.callerName === currentUserName &&
                               recentCallData.callType.callTypeID === 1
                                 ? recentCallData.recipients[0].userName
                                 : recentCallData.callerName !==
-                                    currentUserName &&
-                                  recentCallData.callType.callTypeID === 1
-                                ? recentCallData.callerName
-                                : recentCallData.callType.callTypeID === 2
-                                ? formatUserNames(recentCallData.recipients)
-                                : null}
-                              <span className="call-status-icon">
-                                {recentCallData.isIncoming === false ? (
-                                  <img src={OutgoingIcon} alt="" />
+                                      currentUserName &&
+                                    recentCallData.callType.callTypeID === 1
+                                  ? recentCallData.callerName
+                                  : recentCallData.callType.callTypeID === 2
+                                    ? formatUserNames(recentCallData.recipients)
+                                    : null}
+                              <span className='call-status-icon'>
+                                {}
+                                {/* {recentCallData.callType.callTypeID === 2 &&
+                                recentCallData.callStatus.callStatusID === 3 &&
+                                recentCallData.isIncoming === false ? (
+                                  <img
+                                    src={UnansweredIcon}
+                                    width={20}
+                                    alt='unanswered'
+                                  />
+                                ) : recentCallData.isIncoming === false ? (
+                                  <img src={OutgoingIcon} alt='' />
                                 ) : (
-                                  <img src={IncomingIcon} alt="" />
+                                  <img src={IncomingIcon} alt='' />
+                                )} */}
+                                {shownIncomingOutgoingUnansweredIconForGroup(
+                                  recentCallData,
                                 )}
+                                {/* <img
+                                  src={UnansweredIcon}
+                                  width={20}
+                                  alt='unanswered'
+                                /> */}
                               </span>
                             </p>
                           </Tooltip>
                         )}
 
-                        <p className="video-chat-date m-0">
+                        <p className='video-chat-date m-0'>
                           {recentCallData.callDate === currentUtcDate &&
                           recentCallData.callDate !== "" &&
                           recentCallData.callDate !== undefined ? (
                             <>
                               {newTimeFormaterAsPerUTCTalkTime(
                                 recentCallDateTime,
-                                lang
+                                lang,
                               )}
                             </>
                           ) : recentCallData.callDate === yesterdayDateUtc &&
@@ -862,7 +1201,7 @@ const VideoPanelBodyRecent = () => {
                             <>
                               {newTimeFormaterAsPerUTCTalkDate(
                                 recentCallDateTime,
-                                lang
+                                lang,
                               ) + " "}
                               | {t("Yesterday")}
                             </>
@@ -872,7 +1211,7 @@ const VideoPanelBodyRecent = () => {
                               recentCallData.callDate !== undefined
                                 ? newTimeFormaterAsPerUTCTalkDate(
                                     recentCallDateTime,
-                                    lang
+                                    lang,
                                   )
                                 : ""}
                             </>
@@ -880,24 +1219,23 @@ const VideoPanelBodyRecent = () => {
                         </p>
                       </div>
                     </Col>
-                    <Col lg={2} md={2} sm={12} className="video_call_icon">
+                    <Col lg={2} md={2} sm={12} className='video_call_icon'>
                       {recentCallData.isRecordingAvailable ? (
-                        <Tooltip placement="bottomLeft" title={t("Download")}>
+                        <Tooltip placement='bottomLeft' title={t("Download")}>
                           <img
-                            className="cursor-pointer me-2"
+                            className='cursor-pointer me-2'
                             src={VideoDownload}
-                            alt=""
+                            alt=''
                             onClick={() => downloadVideoCall(recentCallData)}
                           />
                         </Tooltip>
                       ) : null}
                       <Tooltip
-                        placement="bottomLeft"
-                        title={t("Start-video-call")}
-                      >
+                        placement='bottomLeft'
+                        title={t("Start-video-call")}>
                         <img
-                          alt=""
-                          className="cursor-pointer"
+                          alt=''
+                          className='cursor-pointer'
                           src={VideoCallIcon}
                           onClick={() => otoVideoCall(recentCallData)}
                         />
@@ -923,27 +1261,26 @@ const VideoPanelBodyRecent = () => {
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"md"}
         ModalBody={
           <>
             <Container>
               <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
-                  <p className="disconnection-text">
+                <Col lg={12} md={12} sm={12} className='text-center'>
+                  <p className='disconnection-text'>
                     {" "}
                     {t("Are-you-sure-you-want-to-disconnect-this-call")}{" "}
                   </p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     // text={
                     //   callerID === currentUserID || callerID === 0
@@ -953,21 +1290,21 @@ const VideoPanelBodyRecent = () => {
                     //     : null
                     // }
                     text={"Confirm"}
-                    className="confirmation-disconnection-button"
+                    className='confirmation-disconnection-button'
                     onClick={
                       isMeetingVideo
                         ? leavecallMeetingVideo
                         : callerID === currentUserID || callerID === 0
-                        ? leaveCallHostOto
-                        : callerID !== currentUserID
-                        ? leaveCallParticipantOto
-                        : null
+                          ? leaveCallHostOto
+                          : callerID !== currentUserID
+                            ? leaveCallParticipantOto
+                            : null
                     }
                   />
 
                   <Button
                     text={t("Cancel")}
-                    className="cancellation-disconnection-button"
+                    className='cancellation-disconnection-button'
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>
@@ -983,7 +1320,7 @@ const VideoPanelBodyRecent = () => {
           setInitiateVideoModalGroup(false);
         }}
         setShow={setInitiateVideoModalGroup}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"sm"}
         ModalBody={
@@ -994,34 +1331,33 @@ const VideoPanelBodyRecent = () => {
                   <p> {t("Group-call-disconnection")}</p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
                         ? t("End Host")
                         : callerID !== currentUserID
-                        ? t("End Participant")
-                        : null
+                          ? t("End Participant")
+                          : null
                     }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    className='leave-meeting-options__btn leave-meeting-red-button'
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHostGroup
                         : callerID !== currentUserID
-                        ? leaveCallParticipantGroup
-                        : null
+                          ? leaveCallParticipantGroup
+                          : null
                     }
                   />
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className='leave-meeting-options__btn leave-meeting-gray-button'
                     onClick={() => setInitiateVideoModalGroup(false)}
                   />
                 </Col>
