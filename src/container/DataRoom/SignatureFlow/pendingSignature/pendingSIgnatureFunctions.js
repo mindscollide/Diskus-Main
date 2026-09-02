@@ -1,30 +1,3 @@
-const xmljs = require("xml-js");
-const { Buffer } = require("buffer");
-
-// Polyfill Buffer for browser environment
-window.Buffer = Buffer;
-// Function to convert XML to JSON
-const xmlToJson = (xmlString) => {
-  try {
-    const options = { compact: true, ignoreComment: true, spaces: 4 };
-    const result = xmljs.xml2json(xmlString, options);
-    return JSON.parse(result);
-  } catch (error) {
-    
-  }
-};
-
-// Function to convert JSON to XML
-const jsonToXml = (jsonObject) => {
-  try {
-    const options = { compact: true, ignoreComment: true, spaces: 4 };
-    const xmlString = xmljs.json2xml(JSON.stringify(jsonObject), options);
-    return xmlString;
-  } catch (error) {
-    
-  }
-};
-
 // === used for read only Form Fields=== //
 
 export const processXmlForReadOnly = (xmlString, nameValues) => {
@@ -95,94 +68,91 @@ export const revertProcessXmlForReadOnly = (xmlString, nameValues) => {
 
 // === used for Hide Form Fields === //
 
+/**
+ * The three (parent selector, child tag, identifying attribute) triples that
+ * make up one form field in an XFDF, in the order they are removed/restored.
+ * `bucket` is the key its removals are recorded under in `removedItems`.
+ */
+const HIDEABLE_PARTS = [
+  { parent: "fields", tag: "field", attr: "name", bucket: "fields" },
+  { parent: "pdf-info", tag: "ffield", attr: "name", bucket: "ffields" },
+  { parent: "pdf-info", tag: "widget", attr: "field", bucket: "widgets" },
+];
+
+/** Same-tag children of `parent`, in document order. */
+const childrenByTag = (parent, tag) =>
+  Array.from(parent.children).filter((el) => el.localName === tag);
+
+/**
+ * Remove the <field> / <ffield> / <widget> elements belonging to the given
+ * field names, remembering each one and its index among its same-tag siblings
+ * so revertProcessXmlToHideFields can splice it back exactly where it was.
+ *
+ * Implemented with DOMParser/XMLSerializer rather than the xml-js JSON round
+ * trip this used to use. xml-js was configured with `spaces: 4`, so
+ * re-serialising PRETTY-PRINTED the whole document — every element got newlines
+ * and indentation inserted around it, whether or not it had anything to do with
+ * the fields being hidden. The XFDF root carries xml:space="preserve", so that
+ * inserted whitespace is significant, and it lands inside <field> elements:
+ *
+ *   before:  <field name="CheckBoxFormField 3"><value>Yes</value></field>
+ *   after:   <field name="CheckBoxFormField 3">\n    <value>Yes</value>\n  </field>
+ *
+ * (Measured on a real response: the base64 <appearance> blob carrying a
+ * signature does survive the round trip byte-for-byte — the risk here is the
+ * value whitespace, not the signature.)
+ *
+ * Editing the DOM in place changes nothing except the elements actually
+ * removed, so there is no whitespace question to reason about at all.
+ *
+ * @param {string} xmlString  - XFDF string
+ * @param {string[]} nameValues - field names to strip out entirely
+ * @returns {{updatedXmlString: string, removedItems: object}}
+ */
 export const processXmlToHideFields = (xmlString, nameValues) => {
-  // Nothing to hide → return the XFDF untouched.
-  //
-  // The XML → JSON → XML round trip below is LOSSY: xml-js is configured with
-  // `spaces: 4`, so re-serialising pretty-prints the document and reflows text
-  // nodes. A short <value>sa</value> survives that; the huge base64
-  // <appearance> blob that carries a signature does not — it comes back
-  // corrupted and the signature silently fails to render for the next signer,
-  // while text/checkbox/radio values still appear.
-  //
-  // In an unordered workflow (no hidden users) this ran with an empty
-  // nameValues list on every load, destroying the signature for no reason at
-  // all. Skipping it entirely in that case is both correct and free.
+  const removedItems = { fields: [], ffields: [], widgets: [] };
+
   if (!Array.isArray(nameValues) || nameValues.length === 0) {
+    return { updatedXmlString: xmlString, removedItems };
+  }
+
+  try {
+    const doc = new DOMParser().parseFromString(xmlString, "text/xml");
+    const serializer = new XMLSerializer();
+
+    HIDEABLE_PARTS.forEach(({ parent, tag, attr, bucket }) => {
+      const parentEl = doc.querySelector(parent);
+      if (!parentEl) return;
+
+      // Indices are taken against the ORIGINAL sibling list, so they stay
+      // meaningful no matter how many later siblings are also removed.
+      childrenByTag(parentEl, tag).forEach((el, index) => {
+        if (!nameValues.includes(el.getAttribute(attr))) return;
+        removedItems[bucket].push({ index, xml: serializer.serializeToString(el) });
+        el.parentNode.removeChild(el);
+      });
+    });
+
+    return { updatedXmlString: serializer.serializeToString(doc), removedItems };
+  } catch {
+    // Parsing failed — hide nothing rather than hand back a broken XFDF.
     return {
       updatedXmlString: xmlString,
       removedItems: { fields: [], ffields: [], widgets: [] },
     };
   }
-
-  let convertXmlToJson = xmlToJson(xmlString);
-  const removedItems = {
-    fields: [],
-    ffields: [],
-    widgets: [],
-  };
-
-  // Helper function to remove matched items from an array and add to removedItems
-  function removeMatchedItems(array, attrName, location) {
-    const removed = [];
-    if (!Array.isArray(array)) {
-      array = [array];
-    }
-    const filteredArray = array.filter((item, index) => {
-      const match = nameValues.includes(item._attributes[attrName]);
-      if (match) {
-        removed.push({ index, item });
-      }
-      return !match;
-    });
-    removedItems[location] = removedItems[location].concat(removed);
-    return filteredArray;
-  }
-
-  // Process xfdf.field
-  if (convertXmlToJson.xfdf.fields && convertXmlToJson.xfdf.fields.field) {
-    convertXmlToJson.xfdf.fields.field = removeMatchedItems(
-      convertXmlToJson.xfdf.fields.field,
-      "name",
-      "fields"
-    );
-  }
-
-  // Process xfdf.pdf-info.ffield
-  if (
-    convertXmlToJson.xfdf["pdf-info"] &&
-    convertXmlToJson.xfdf["pdf-info"].ffield
-  ) {
-    convertXmlToJson.xfdf["pdf-info"].ffield = removeMatchedItems(
-      convertXmlToJson.xfdf["pdf-info"].ffield,
-      "name",
-      "ffields"
-    );
-  }
-
-  // Process xfdf.pdf-info.widget
-  if (
-    convertXmlToJson.xfdf["pdf-info"] &&
-    convertXmlToJson.xfdf["pdf-info"].widget
-  ) {
-    convertXmlToJson.xfdf["pdf-info"].widget = removeMatchedItems(
-      convertXmlToJson.xfdf["pdf-info"].widget,
-      "field",
-      "widgets"
-    );
-  }
-  const updatedXmlString = new XMLSerializer().serializeToString(
-    new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
-  );
-  return {
-    updatedXmlString,
-    removedItems,
-  };
 };
 
+/**
+ * Put back everything processXmlToHideFields took out, at its original index
+ * among its same-tag siblings, so the server always receives the complete XFDF.
+ *
+ * Runs against the XFDF freshly exported from the viewer, not the one the
+ * removals were taken from, so elements are re-parsed and imported into that
+ * document. Ascending index order matters: restoring low indices first keeps
+ * the later ones valid.
+ */
 export const revertProcessXmlToHideFields = (xml, removedItems) => {
-  // Nothing was removed → nothing to reinsert. Skip the lossy round trip
-  // (see processXmlToHideFields for why it corrupts signature appearances).
   const hasRemovals =
     removedItems &&
     ((removedItems.fields?.length ?? 0) > 0 ||
@@ -190,53 +160,64 @@ export const revertProcessXmlToHideFields = (xml, removedItems) => {
       (removedItems.widgets?.length ?? 0) > 0);
   if (!hasRemovals) return xml;
 
-  // Convert the updated XML string back to JSON
-  let convertXmlToJson = xmlToJson(xml);
-  // Helper function to reinsert removed items back to their original positions
-  function reinsertRemovedItems(array, removedArray) {
-    if (!Array.isArray(array)) {
-      array = [array];
-    }
-    removedArray.forEach(({ index, item }) => {
-      array.splice(index, 0, item);
+  try {
+    const parser = new DOMParser();
+    const serializer = new XMLSerializer();
+    const doc = parser.parseFromString(xml, "text/xml");
+
+    HIDEABLE_PARTS.forEach(({ parent, tag, attr, bucket }) => {
+      const removed = removedItems[bucket] ?? [];
+      if (!removed.length) return;
+
+      const parentEl = doc.querySelector(parent);
+      if (!parentEl) return;
+
+      [...removed]
+        .sort((a, b) => a.index - b.index)
+        .forEach(({ index, xml: elementXml }) => {
+          const parsed = parser.parseFromString(elementXml, "text/xml");
+          const node = parsed.documentElement;
+          // A parse failure yields a <parsererror> root — never insert that.
+          if (!node || node.localName !== tag) return;
+
+          // Restore REPLACES rather than adds. Hiding a field only removes it
+          // from the XFDF; the widget itself lives in the PDF, so the viewer
+          // still holds it and exports it again. Blindly re-inserting the saved
+          // copy would then leave two entries for the same field in what gets
+          // sent to the server. Dropping any element that already claims this
+          // name also means the pristine pre-hide snapshot wins over whatever
+          // the viewer round-tripped, so display-only flags applied while it was
+          // hidden cannot leak into the saved document.
+          const key = node.getAttribute(attr);
+          if (key !== null) {
+            childrenByTag(parentEl, tag)
+              .filter((el) => el.getAttribute(attr) === key)
+              .forEach((el) => el.parentNode.removeChild(el));
+          }
+
+          const siblings = childrenByTag(parentEl, tag);
+          const before = siblings[index];
+          const imported = doc.importNode(node, true);
+
+          if (before) {
+            parentEl.insertBefore(imported, before);
+          } else if (siblings.length) {
+            // Index ran past the end — append after the last same-tag sibling
+            // so the element stays inside its own run of siblings.
+            parentEl.insertBefore(
+              imported,
+              siblings[siblings.length - 1].nextSibling,
+            );
+          } else {
+            parentEl.appendChild(imported);
+          }
+        });
     });
-    return array;
-  }
 
-  // Reinsert removed items for xfdf.field
-  if (convertXmlToJson.xfdf.fields && convertXmlToJson.xfdf.fields.field) {
-    convertXmlToJson.xfdf.fields.field = reinsertRemovedItems(
-      convertXmlToJson.xfdf.fields.field,
-      removedItems.fields
-    );
+    return serializer.serializeToString(doc);
+  } catch {
+    return xml;
   }
-
-  // Reinsert removed items for xfdf.pdf-info.ffield
-  if (
-    convertXmlToJson.xfdf["pdf-info"] &&
-    convertXmlToJson.xfdf["pdf-info"].ffield
-  ) {
-    convertXmlToJson.xfdf["pdf-info"].ffield = reinsertRemovedItems(
-      convertXmlToJson.xfdf["pdf-info"].ffield,
-      removedItems.ffields || []
-    );
-  }
-
-  // Reinsert removed items for xfdf.pdf-info.widget
-  if (
-    convertXmlToJson.xfdf["pdf-info"] &&
-    convertXmlToJson.xfdf["pdf-info"].widget
-  ) {
-    convertXmlToJson.xfdf["pdf-info"].widget = reinsertRemovedItems(
-      convertXmlToJson.xfdf["pdf-info"].widget,
-      removedItems.widgets || []
-    );
-  }
-  let newConvertXmlToJson = jsonToXml(convertXmlToJson);
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(newConvertXmlToJson, "text/xml");
-  const updatedXmlString = new XMLSerializer().serializeToString(xmlDoc);
-  return updatedXmlString;
 };
 // === End === //
 
@@ -293,9 +274,28 @@ export const revertReadOnlyFreetextElements = (xmlString, userDataRead) => {
 
 // === used for hide Freetext Fields === //
 
+/**
+ * Parse the owner user id out of a freetext annotation's `subject`
+ * ("<label>-<userID>", e.g. "Title-1566"). Returns null when absent.
+ */
+const freetextOwnerID = (el) => {
+  const subject = el.getAttribute("subject") ?? "";
+  const dash = subject.lastIndexOf("-");
+  if (dash === -1) return null;
+  const parsed = Number(subject.substring(dash + 1));
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+/**
+ * Remove the <freetext> label annotations belonging to hidden users,
+ * remembering each one and its index among its <freetext> siblings.
+ *
+ * DOM-based for the same reason as processXmlToHideFields: the xml-js JSON
+ * round trip this replaced pretty-printed the WHOLE document — reflowing form
+ * field values it had no business touching — even though this function only
+ * cares about <freetext>.
+ */
 export const hideFreetextElements = (xmlString, userDataRead) => {
-  // No hidden users → nothing to strip. Skip the lossy round trip (see
-  // processXmlToHideFields) so signature appearances survive intact.
   if (!Array.isArray(userDataRead) || userDataRead.length === 0) {
     return {
       hideFreetextXmlString: xmlString,
@@ -304,71 +304,43 @@ export const hideFreetextElements = (xmlString, userDataRead) => {
   }
 
   try {
-    // Convert the XML string to JSON
-    let convertXmlToJson = xmlToJson(xmlString);
+    const doc = new DOMParser().parseFromString(xmlString, "text/xml");
+    const serializer = new XMLSerializer();
+    const annots = doc.querySelector("annots");
     const removedHideFreetextElements = [];
-    // Helper function to remove matched items from an array and add to removedItems
-    function removeMatchedItems(array, attrName) {
-      const removed = [];
-      const filteredArray = array.filter((item, index) => {
-        const subject = item._attributes[attrName];
-        const userIdIndex = subject.lastIndexOf("-");
-        if (userIdIndex !== -1) {
-          const userId = subject.substring(userIdIndex + 1);
-          const match = userDataRead.includes(Number(userId));
-          if (match) {
-            // User ID matches, add the annotation to removedItems
-            removed.push({ index, item });
-            return false; // Remove the item from the array
-          }
-        }
-        return true;
+
+    if (annots) {
+      childrenByTag(annots, "freetext").forEach((el, index) => {
+        const ownerID = freetextOwnerID(el);
+        if (ownerID === null || !userDataRead.includes(ownerID)) return;
+        removedHideFreetextElements.push({
+          index,
+          xml: serializer.serializeToString(el),
+        });
+        el.parentNode.removeChild(el);
       });
-      removedHideFreetextElements.push(...removed);
-      return filteredArray;
     }
 
-    // Process xfdf.annots.freetext
-    if (
-      convertXmlToJson.xfdf &&
-      convertXmlToJson.xfdf.annots &&
-      convertXmlToJson.xfdf.annots.freetext
-    ) {
-      const freetext = convertXmlToJson.xfdf.annots.freetext;
-      if (!Array.isArray(freetext)) {
-        // If freetext is not an array, convert it to an array
-        convertXmlToJson.xfdf.annots.freetext = [freetext];
-      }
-      convertXmlToJson.xfdf.annots.freetext = removeMatchedItems(
-        convertXmlToJson.xfdf.annots.freetext,
-        "subject"
-      );
-    }
-
-    // Convert the updated JSON back to an XML string
-    const hideFreetextXmlString = new XMLSerializer().serializeToString(
-      new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
-    );
     return {
-      hideFreetextXmlString,
+      hideFreetextXmlString: serializer.serializeToString(doc),
       removedHideFreetextElements,
     };
-  } catch (error) {
-    
-    // Ensure to return a consistent structure even in case of error
+  } catch {
     return {
-      hideFreetextXmlString: xmlString, // or null, depending on how you handle errors
+      hideFreetextXmlString: xmlString,
       removedHideFreetextElements: [],
     };
   }
 };
 
+/**
+ * Put back the <freetext> annotations hideFreetextElements removed, at their
+ * original index among their <freetext> siblings.
+ */
 export const revertHideFreetextElements = (
   originalXmlString,
   removedItemsToRestore
 ) => {
-  // Nothing was removed → nothing to restore. Skip the lossy round trip
-  // (see processXmlToHideFields) so signature appearances survive intact.
   if (
     !Array.isArray(removedItemsToRestore) ||
     removedItemsToRestore.length === 0
@@ -377,39 +349,51 @@ export const revertHideFreetextElements = (
   }
 
   try {
-    // Convert the original XML string to JSON
-    let convertXmlToJson = xmlToJson(originalXmlString);
+    const parser = new DOMParser();
+    const serializer = new XMLSerializer();
+    const doc = parser.parseFromString(originalXmlString, "text/xml");
 
-    // Helper function to restore removed items back into the array
-    function restoreRemovedItems(array, removedItems) {
-      removedItems.forEach(({ index, item }) => {
-        array.splice(index, 0, item); // Insert item back at original index
+    let annots = doc.querySelector("annots");
+    if (!annots) {
+      // The viewer exports an <annots> element even when empty, but if the
+      // freetext annotations were the only ones in it and it came back absent,
+      // recreate it rather than silently dropping the restored labels.
+      annots = doc.createElement("annots");
+      doc.documentElement.appendChild(annots);
+    }
+
+    [...removedItemsToRestore]
+      .sort((a, b) => a.index - b.index)
+      .forEach(({ index, xml: elementXml }) => {
+        const parsed = parser.parseFromString(elementXml, "text/xml");
+        const node = parsed.documentElement;
+        if (!node || node.localName !== "freetext") return;
+
+        // Replace, don't duplicate — see revertProcessXmlToHideFields. A
+        // freetext annotation baked into the saved PDF comes back on export
+        // even though it was stripped from the imported XFDF.
+        const key = node.getAttribute("name");
+        if (key !== null) {
+          childrenByTag(annots, "freetext")
+            .filter((el) => el.getAttribute("name") === key)
+            .forEach((el) => el.parentNode.removeChild(el));
+        }
+
+        const siblings = childrenByTag(annots, "freetext");
+        const before = siblings[index];
+        const imported = doc.importNode(node, true);
+
+        if (before) {
+          annots.insertBefore(imported, before);
+        } else if (siblings.length) {
+          annots.insertBefore(imported, siblings[siblings.length - 1].nextSibling);
+        } else {
+          annots.appendChild(imported);
+        }
       });
-      return array;
-    }
 
-    // Restore removed items to xfdf.annots.freetext
-    // Ensure xfdf.annots.freetext is an array
-    if (convertXmlToJson.xfdf.annots && convertXmlToJson.xfdf.annots.freetext) {
-      if (!Array.isArray(convertXmlToJson.xfdf.annots.freetext)) {
-        convertXmlToJson.xfdf.annots.freetext = [
-          convertXmlToJson.xfdf.annots.freetext,
-        ];
-      }
-      convertXmlToJson.xfdf.annots.freetext = restoreRemovedItems(
-        convertXmlToJson.xfdf.annots.freetext,
-        removedItemsToRestore
-      );
-    }
-
-    // Convert the updated JSON back to an XML string
-    const restoredXmlString = new XMLSerializer().serializeToString(
-      new DOMParser().parseFromString(jsonToXml(convertXmlToJson), "text/xml")
-    );
-    return restoredXmlString;
-  } catch (error) {
-    
-    // Handle errors gracefully, return original XML string if revert fails
+    return serializer.serializeToString(doc);
+  } catch {
     return originalXmlString;
   }
 };

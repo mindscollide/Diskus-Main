@@ -252,6 +252,84 @@ const getUserFieldNames = (userAnnotations, userID) => {
 };
 
 /**
+ * Work out which signers' turn has NOT arrived yet, from the bundle dependency
+ * graph on GetWorkFlowByFileID.
+ *
+ * This used to be read straight off the API as
+ * `getAllFieldsByWorkflowID.hiddenUsers`, but that key does not exist on that
+ * response — everything real on it sits one level down under
+ * `signatureWorkFlowFieldDetails`. So it was always undefined, `?? []` swallowed
+ * it, and nothing was ever hidden: in an ordered workflow signer 2 could see
+ * signer 3's fields (locked, but visible), which is exactly what ordering is
+ * supposed to prevent.
+ *
+ * The bundles carry the ordering explicitly, e.g. for a 3-signer chain:
+ *   { pK_WorkFlowActionableBundle_ID: 3021, actors:[1567], dependencies: [] }
+ *   { pK_WorkFlowActionableBundle_ID: 3022, actors:[1566],
+ *     dependencies: [{ bundleID: 3022, dependenceID: 3021 }] }
+ *   { pK_WorkFlowActionableBundle_ID: 3023, actors:[1568],
+ *     dependencies: [{ bundleID: 3023, dependenceID: 3022 }] }
+ * `dependenceID` is the bundle that must finish first, so walking dependants
+ * forward from the current user's bundle yields everyone downstream of them.
+ *
+ * Deliberately derived from the dependency edges alone, not from bundle status
+ * codes: the edges are unambiguous, whereas the status enum's meaning would
+ * have to be assumed — and hiding the wrong bundle would take a signer's own
+ * fields away and wedge the workflow.
+ *
+ * Fails OPEN (returns []) for an unordered workflow, an unknown current user,
+ * or missing data — showing a field that could have been hidden is a privacy
+ * nit; hiding one that shouldn't be is a signer who cannot sign.
+ */
+const deriveHiddenUsers = (bundleModels, currentUserID) => {
+  if (!Array.isArray(bundleModels) || !bundleModels.length) return [];
+
+  // No edges at all → unordered workflow → everyone acts in parallel.
+  const hasOrdering = bundleModels.some((b) => b.dependencies?.length > 0);
+  if (!hasOrdering) return [];
+
+  const usersOf = (b) =>
+    (b.actors ?? []).map((a) => a.pK_UID).filter((id) => id != null);
+
+  const currentBundle = bundleModels.find((b) =>
+    usersOf(b).includes(currentUserID),
+  );
+  if (!currentBundle) return [];
+
+  // dependenceID → the bundles waiting on it.
+  const dependants = new Map();
+  bundleModels.forEach((b) => {
+    (b.dependencies ?? []).forEach((d) => {
+      if (d?.dependenceID == null) return;
+      const list = dependants.get(d.dependenceID) ?? [];
+      list.push(b);
+      dependants.set(d.dependenceID, list);
+    });
+  });
+
+  // Breadth-first over everything downstream of the current user's bundle.
+  // `seen` also makes a malformed cyclic graph terminate instead of hanging.
+  const hidden = new Set();
+  const seen = new Set([currentBundle.pK_WorkFlowActionableBundle_ID]);
+  const queue = [currentBundle.pK_WorkFlowActionableBundle_ID];
+
+  while (queue.length) {
+    const bundleID = queue.shift();
+    (dependants.get(bundleID) ?? []).forEach((b) => {
+      const id = b.pK_WorkFlowActionableBundle_ID;
+      if (seen.has(id)) return;
+      seen.add(id);
+      queue.push(id);
+      usersOf(b).forEach((uid) => hidden.add(uid));
+    });
+  }
+
+  // A user assigned to more than one bundle must never hide themselves.
+  hidden.delete(currentUserID);
+  return [...hidden];
+};
+
+/**
  * Build HideArray / ReadArray from userAnnotations.
  *
  * HideArray — field names whose owner is in hiddenUsers
@@ -465,7 +543,25 @@ const applyAnnotationLocks = (
   // is created — so a freshly drawn signature is never mistaken for someone
   // else's and locked.
   sessionOwnedAnnotIds,
+  // Field names owned by signers whose turn has not come (HideArray), and the
+  // ids of those signers. Both are needed because widgets are matched by field
+  // name and freetext labels by the userID in their Subject.
+  //
+  // Why hiding has to happen HERE and not only in the XFDF: the pipeline that
+  // strips <field>/<ffield>/<widget> out of the XFDF can only hide a field that
+  // exists solely in the XFDF. Every one of these fields is also baked into the
+  // stored PDF (the submit path saves the document with getFileData({xfdfString}),
+  // and the creator's Send does the same), and Apryse's XFDF import only deletes
+  // document widgets that the imported XFDF also contains — a widget absent from
+  // the XFDF is never looked up, so it survives import and renders from the PDF.
+  // That is why a later signer's fields stayed visible however thoroughly the
+  // XFDF was pruned.
+  hiddenFieldNames,
+  hiddenUserIDs,
 ) => {
+  const hiddenFields = hiddenFieldNames ?? new Set();
+  const hiddenUsers = hiddenUserIDs ?? new Set();
+
   // ── Pre-pass: identify signature "stamps" owned by the current user ────────
   //
   // The visible signature Apryse creates when a Sig field is signed is a
@@ -510,11 +606,49 @@ const applyAnnotationLocks = (
   // user's own — so nothing can be signed until a refresh happens to fetch
   // complete data. That is the "cannot sign until I reload" symptom.
   //
-  // Skipping here is safe: other signers' fields are already protected
-  // independently of these annotation-level flags. The XFDF pipeline marks
-  // them ReadOnly (processXmlForReadOnly) and strips hidden users' fields
-  // entirely (processXmlToHideFields) BEFORE the document is imported, so
-  // those protections are already baked into what Apryse loaded.
+  // Skipping here is safe: other signers' fields are still marked ReadOnly in
+  // the XFDF by processXmlForReadOnly before the document is imported, so that
+  // protection is already baked into what Apryse loaded.
+  //
+  // The hide pass runs FIRST, above this return, because it must not be skipped
+  // on the same condition — see below.
+  //
+  // ── Hide pass: signers whose turn has not come ─────────────────────────────
+  //
+  // Deliberately ahead of the fail-open return: whether a signer is hidden comes
+  // from the bundle dependency graph, not from field ownership, so it is still
+  // trustworthy when ownership has not resolved yet. It is a no-op when there is
+  // nothing to hide, and it can never hide a field the current user owns.
+  if (hiddenFields.size || hiddenUsers.size) {
+    annotations.forEach((annot) => {
+      try {
+        const field = annot.getField?.();
+        const fieldName = field?.name;
+
+        if (fieldName) {
+          if (!hiddenFields.has(fieldName)) return;
+          if (currentUserFieldNames?.has(fieldName)) return; // never my own
+          // Field.hide() is Apryse's own "disable visibility of all child
+          // widgets" — it covers a radio group's several widgets in one call,
+          // which per-annotation flags would not. Display only: the pristine
+          // pre-hide XFDF is what gets restored on submit, so this cannot reach
+          // the saved document.
+          field.hide?.();
+          return;
+        }
+
+        // Freetext label — ownership comes from its "<label>-<userID>" Subject.
+        const ownerID = getAnnotationOwnerIDFromSubject(annot);
+        if (ownerID === null || ownerID === currentUserID) return;
+        if (!hiddenUsers.has(ownerID)) return;
+        setAnnotationFlags(annot, { Hidden: true, NoView: true });
+        annotationManager.updateAnnotation(annot);
+      } catch {
+        /* a single annotation failing must not stop the rest being hidden */
+      }
+    });
+  }
+
   if (!currentUserFieldNames || currentUserFieldNames.size === 0) return;
 
   annotations.forEach((annot) => {
@@ -786,6 +920,13 @@ const PendingSignatureViewer = () => {
   const participantsRef = useRef(participants);
   const hiddenUsersRef = useRef(hiddenUsers);
   const removeXmlAfterHideDataRef = useRef(removeXmlAfterHideData);
+  /**
+   * Field names belonging to signers whose turn has not come (the same
+   * HideArray used to prune the XFDF). Read by the WebViewer callbacks that run
+   * after import, which need it to hide the widgets the PDF supplies regardless
+   * of what the XFDF said.
+   */
+  const hiddenFieldNamesRef = useRef(new Set());
   const removeXmlAfterFreetextHideRef = useRef(removeXmlAfterFreetextHideData);
   const fieldsDataRef = useRef(fieldsData);
   const pdfDataRef = useRef(pdfData);
@@ -993,8 +1134,18 @@ const PendingSignatureViewer = () => {
         })),
       );
 
-      // hiddenUsers come from the API (future signers in ordered workflows)
-      setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers ?? []);
+      // Future signers in an ordered workflow — derived from the bundle
+      // dependency graph, since the API sends no hiddenUsers key. If a future
+      // backend version starts sending one, it wins. See deriveHiddenUsers.
+      const apiHiddenUsers = getAllFieldsByWorkflowID.hiddenUsers;
+      setHiddenUsers(
+        Array.isArray(apiHiddenUsers) && apiHiddenUsers.length
+          ? apiHiddenUsers
+          : deriveHiddenUsers(
+              getWorkfFlowByFileId?.workFlow?.bundleModels ?? [],
+              getCurrentUserID(),
+            ),
+      );
 
       if (containsNull(listOfFields)) {
         const bundles = getWorkfFlowByFileId?.workFlow?.bundleModels ?? [];
@@ -1098,12 +1249,17 @@ const PendingSignatureViewer = () => {
         ReadArray,
       );
 
-      // 2. Strip widget / ffield entries for hidden users (ordered workflow)
+      // 2. Strip widget / ffield entries for hidden users (ordered workflow).
+      //    This alone does NOT hide them: the same widgets are baked into the
+      //    stored PDF, and Apryse's import only deletes document widgets that
+      //    the imported XFDF also contains. applyAnnotationLocks finishes the
+      //    job against the live annotations, using the names recorded here.
       const { updatedXmlString, removedItems } = processXmlToHideFields(
         withReadOnly,
         HideArray,
       );
       setRemoveXmlAfterHideData(removedItems);
+      hiddenFieldNamesRef.current = new Set(HideArray);
 
       // All non-current, non-hidden users → their freetext labels are read-only
       const readOnlyUserIDs = userAnnotationsRef.current
@@ -1153,6 +1309,26 @@ const PendingSignatureViewer = () => {
           })),
         );
         console.log("1. hiddenUsers:", hiddenUsersRef.current);
+
+        // ── Un-hide before exporting ─────────────────────────────────────────
+        //
+        // Hiding a later signer's fields is a display concession to THIS user,
+        // never a change to the document. Field.hide() sets the field's Hidden
+        // flag, and the pdf-info writer serialises field flags onto the <ffield>
+        // — so leaving it on would write Hidden into the XFDF and into the PDF
+        // saved by getFileData(), and the next signer would inherit fields they
+        // can never see. revertProcessXmlToHideFields already replaces those
+        // elements with the pristine pre-hide snapshot, so this is belt and
+        // braces; it also keeps the exported document bytes clean, which the
+        // revert cannot reach.
+        try {
+          const fieldManager = annotationManager.getFieldManager?.();
+          hiddenFieldNamesRef.current.forEach((name) => {
+            fieldManager?.getField?.(name)?.show?.();
+          });
+        } catch (err) {
+          console.warn("Could not un-hide fields before export:", err);
+        }
 
         // Export XFDF once — used for both validation and API payload.
         //
@@ -1688,6 +1864,8 @@ const PendingSignatureViewer = () => {
                 currentUserID,
                 currentUserFieldNamesRef.current,
                 sessionOwnedAnnotIdsRef.current,
+                hiddenFieldNamesRef.current,
+                new Set(hiddenUsersRef.current),
               );
             } catch (err) {}
           }
@@ -1797,6 +1975,8 @@ const PendingSignatureViewer = () => {
         currentUserID,
         currentUserFieldNamesRef.current,
         sessionOwnedAnnotIdsRef.current,
+        hiddenFieldNamesRef.current,
+        new Set(hiddenUsersRef.current),
       );
     };
 
