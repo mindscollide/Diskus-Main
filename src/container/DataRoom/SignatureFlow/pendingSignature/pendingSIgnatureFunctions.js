@@ -96,6 +96,25 @@ export const revertProcessXmlForReadOnly = (xmlString, nameValues) => {
 // === used for Hide Form Fields === //
 
 export const processXmlToHideFields = (xmlString, nameValues) => {
+  // Nothing to hide → return the XFDF untouched.
+  //
+  // The XML → JSON → XML round trip below is LOSSY: xml-js is configured with
+  // `spaces: 4`, so re-serialising pretty-prints the document and reflows text
+  // nodes. A short <value>sa</value> survives that; the huge base64
+  // <appearance> blob that carries a signature does not — it comes back
+  // corrupted and the signature silently fails to render for the next signer,
+  // while text/checkbox/radio values still appear.
+  //
+  // In an unordered workflow (no hidden users) this ran with an empty
+  // nameValues list on every load, destroying the signature for no reason at
+  // all. Skipping it entirely in that case is both correct and free.
+  if (!Array.isArray(nameValues) || nameValues.length === 0) {
+    return {
+      updatedXmlString: xmlString,
+      removedItems: { fields: [], ffields: [], widgets: [] },
+    };
+  }
+
   let convertXmlToJson = xmlToJson(xmlString);
   const removedItems = {
     fields: [],
@@ -162,6 +181,15 @@ export const processXmlToHideFields = (xmlString, nameValues) => {
 };
 
 export const revertProcessXmlToHideFields = (xml, removedItems) => {
+  // Nothing was removed → nothing to reinsert. Skip the lossy round trip
+  // (see processXmlToHideFields for why it corrupts signature appearances).
+  const hasRemovals =
+    removedItems &&
+    ((removedItems.fields?.length ?? 0) > 0 ||
+      (removedItems.ffields?.length ?? 0) > 0 ||
+      (removedItems.widgets?.length ?? 0) > 0);
+  if (!hasRemovals) return xml;
+
   // Convert the updated XML string back to JSON
   let convertXmlToJson = xmlToJson(xml);
   // Helper function to reinsert removed items back to their original positions
@@ -266,6 +294,15 @@ export const revertReadOnlyFreetextElements = (xmlString, userDataRead) => {
 // === used for hide Freetext Fields === //
 
 export const hideFreetextElements = (xmlString, userDataRead) => {
+  // No hidden users → nothing to strip. Skip the lossy round trip (see
+  // processXmlToHideFields) so signature appearances survive intact.
+  if (!Array.isArray(userDataRead) || userDataRead.length === 0) {
+    return {
+      hideFreetextXmlString: xmlString,
+      removedHideFreetextElements: [],
+    };
+  }
+
   try {
     // Convert the XML string to JSON
     let convertXmlToJson = xmlToJson(xmlString);
@@ -330,6 +367,15 @@ export const revertHideFreetextElements = (
   originalXmlString,
   removedItemsToRestore
 ) => {
+  // Nothing was removed → nothing to restore. Skip the lossy round trip
+  // (see processXmlToHideFields) so signature appearances survive intact.
+  if (
+    !Array.isArray(removedItemsToRestore) ||
+    removedItemsToRestore.length === 0
+  ) {
+    return originalXmlString;
+  }
+
   try {
     // Convert the original XML string to JSON
     let convertXmlToJson = xmlToJson(originalXmlString);

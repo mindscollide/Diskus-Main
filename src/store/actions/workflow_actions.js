@@ -518,8 +518,10 @@ const addUpdateFieldValueApi = (
                     navigate,
                     t,
                     addAnnoatationofFilesAttachment,
-
                     UpdateActorBundle,
+                    // Signed PDF bytes, so the signature's appearance object is
+                    // persisted and its <apref> still resolves for the next signer.
+                    saveSignatureDocument,
                   ),
                 );
               } else {
@@ -2191,10 +2193,66 @@ const addUpdateSignatureFileAnnotationApi = (
   t,
   Data,
   UpdateActorBundle,
+  // Optional { FileID, base64File } — the signed PDF bytes. See
+  // persistSignedPdfThenFinish below for why this matters.
+  saveSignatureDocument,
 ) => {
 
   return async (dispatch) => {
     dispatch(addUpdateSignatureFileAnnotation_init());
+
+    /**
+     * Persist the signed PDF, then mark this signer's bundle complete.
+     *
+     * A signature is stored as a PDF appearance stream that the XFDF only
+     * REFERENCES, via <apref objnum="N">. Text/checkbox/radio values are
+     * self-contained in the XFDF, which is why they always survived — but the
+     * appearance object lives in the PDF. Previously the signee's submit saved
+     * only the annotation string and never the PDF, so object N was never
+     * persisted. The next signer then loaded the original PDF plus this XFDF,
+     * the reference dangled, and stripInvalidAppearanceRefs correctly removed
+     * it — so the signature silently vanished for everyone else.
+     *
+     * Awaited (not fired in parallel) because UpdateActorBundleStatus closes
+     * the tab on success, which would abort an in-flight save. Failures are
+     * swallowed so the submit still completes exactly as it did before.
+     */
+    const persistSignedPdfThenFinish = async () => {
+      if (saveSignatureDocument?.base64File) {
+        // SIGDIAG — remove after root-causing. Errors here were previously
+        // swallowed with no visible trace, so a failed/rejected save looked
+        // identical to a successful one from the outside.
+        console.log("[SIGDIAG] SaveSignatureDocument: sending", {
+          FileID: saveSignatureDocument.FileID,
+          base64Length: saveSignatureDocument.base64File.length,
+        });
+        try {
+          const saveForm = new FormData();
+          saveForm.append(
+            "RequestMethod",
+            saveSignatureDocumentRM.RequestMethod,
+          );
+          saveForm.append("RequestData", JSON.stringify(saveSignatureDocument));
+          const saveResp = await axiosInstance.post(dataRoomApi, saveForm);
+          console.log("[SIGDIAG] SaveSignatureDocument: response", {
+            responseCode: saveResp?.data?.responseCode,
+            isExecuted: saveResp?.data?.responseResult?.isExecuted,
+            responseMessage: saveResp?.data?.responseResult?.responseMessage,
+            fullResponse: saveResp?.data,
+          });
+        } catch (err) {
+          // SIGDIAG — remove after root-causing.
+          console.error("[SIGDIAG] SaveSignatureDocument: FAILED", {
+            message: err?.message,
+            status: err?.response?.status,
+            responseData: err?.response?.data,
+            isTimeout: err?.code === "ECONNABORTED",
+          });
+          // Non-fatal — never block the signer's submit on this.
+        }
+      }
+      dispatch(UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle));
+    };
     let form = new FormData();
     form.append(
       "RequestMethod",
@@ -2223,9 +2281,7 @@ const addUpdateSignatureFileAnnotationApi = (
                   "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_01".toLowerCase(),
                 )
             ) {
-              dispatch(
-                UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle),
-              );
+              await persistSignedPdfThenFinish();
               dispatch(
                 addUpdateSignatureFileAnnotation_success(
                   response.data.responseResult,
@@ -2239,9 +2295,7 @@ const addUpdateSignatureFileAnnotationApi = (
                   "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_02".toLowerCase(),
                 )
             ) {
-              dispatch(
-                UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle),
-              );
+              await persistSignedPdfThenFinish();
               dispatch(
                 addUpdateSignatureFileAnnotation_success(
                   response.data.responseResult,

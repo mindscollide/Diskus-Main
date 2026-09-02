@@ -15,7 +15,6 @@ import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/
 import {
   handleBlobFiles,
   processXmlForReadOnly,
-  processXmlToHideFields,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
@@ -32,8 +31,9 @@ import { useApryseDocument } from "../../../../context/DocumentContext";
  * followed by a cascade TypeError (reading 'children').
  *
  * Valid appearance references are preserved (they resolve successfully against
- * the XRef table).  In this view-only component all Sig widgets are removed
- * beforehand by processXmlToHideFields, so no signature visuals are at risk.
+ * the XRef table). That matters here: this screen now renders every signer's
+ * filled fields, and an <apref> is the only thing a signed Sig widget has to
+ * draw itself with — so stripping one blanks a signature.
  *
  * @param {string} xfdfStr - processed XFDF string
  * @param {object} pdfDoc  - Apryse PDFDoc (requires fullAPI: true)
@@ -68,8 +68,22 @@ const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc) => {
         }
       }
     } else {
-      // No pdfDoc available — strip all apref as safe fallback
-      doc.querySelectorAll("apref").forEach((node) => node.remove());
+      // No pdfDoc available — strip <apref> from non-Sig widgets only.
+      // Stripping all of them (the previous fallback) was safe while Sig
+      // widgets were being removed from the XFDF entirely; now that they are
+      // shown, it would blank every signature on this screen. Apryse can
+      // regenerate text/checkbox/radio appearances from their field values,
+      // so dropping theirs costs nothing.
+      const sigFieldNames = new Set(
+        Array.from(doc.querySelectorAll('ffield[type="Sig"]'))
+          .map((f) => f.getAttribute("name"))
+          .filter(Boolean),
+      );
+      doc.querySelectorAll("widget").forEach((widget) => {
+        if (!sigFieldNames.has(widget.getAttribute("field"))) {
+          widget.querySelectorAll("apref").forEach((node) => node.remove());
+        }
+      });
     }
 
     return new XMLSerializer().serializeToString(doc);
@@ -392,55 +406,49 @@ const ViewSignatureDocument = () => {
 
   // === Get  the file details by Id from API and Set it === //
 
-  //  CRITICAL: Get file details and process XFDF - Hide ALL signature fields completely
+  // Process the XFDF for VIEW ONLY: show everything, edit nothing.
+  //
+  // This screen used to run processXmlToHideFields over EVERY field name, which
+  // physically removes the <field>, <ffield> and <widget> elements from the
+  // XFDF. That is why nothing showed up here: with no widgets left in the
+  // imported XFDF, the signatures, typed text, checkboxes and radios that other
+  // signers had actually filled in were never rendered — the screen showed a
+  // bare PDF. The intent behind it was only to stop "Sign Here" placeholders
+  // being clickable, which read-only flags achieve without deleting the data.
+  //
+  // Instead every ffield is flagged ReadOnly in the XFDF itself, so the widgets
+  // are built read-only at import time rather than being retro-fitted after.
+  // The runtime pass in documentLoaded still locks each annotation and field as
+  // a second layer.
   useEffect(() => {
     try {
       if (
         getSignatureFileAnnotationResponse !== null &&
         getSignatureFileAnnotationResponse !== undefined
       ) {
-        const currentUserID =
-          localStorage.getItem("userID") !== null
-            ? Number(localStorage.getItem("userID"))
-            : 0;
-
-        console.log("=== Processing XFDF for View Only ===");
-        console.log("Current User ID:", currentUserID);
-        console.log("All Users with fields:", userAnnotationsRef.current);
-
-        // 🔥 CRITICAL: HIDE ALL SIGNATURE FIELDS - No one should see "Sign Here"
-        // Because this is a VIEW ONLY document viewer
+        // Every field name in the document, whoever it belongs to — on a
+        // view-only screen there is no "own" field, so all of them are locked.
         const allFieldNames = [];
-
         userAnnotationsRef.current.forEach((obj) => {
           obj.xml.forEach((item) => {
-            let ffield = item.ffield;
-            let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-            if (matches) {
-              matches.forEach((match) => {
-                let name = match.match(/name="([^"]+)"/)[1];
-                allFieldNames.push(name);
-                console.log(
-                  `Field to hide: "${name}" (belongs to user ${obj.userID})`,
-                );
-              });
-            }
+            const matches =
+              item.ffield?.match(/<ffield[^>]*\sname="([^"]+)"/g) ?? [];
+            matches.forEach((match) => {
+              const name = match.match(/name="([^"]+)"/)?.[1];
+              if (name) allFieldNames.push(name);
+            });
           });
         });
 
-        // 🔥 STEP 1: Completely hide ALL signature form fields
-        const { updatedXmlString, removedItems } = processXmlToHideFields(
+        // STEP 1: flag every form field ReadOnly (kept visible and filled).
+        const readonlyXmlString = processXmlForReadOnly(
           getSignatureFileAnnotationResponse.annotationString,
-          allFieldNames, // All fields - sab hide
+          allFieldNames,
         );
 
-        console.log(`Hidden ${removedItems?.fields?.length || 0} fields`);
-        console.log(`Hidden ${removedItems?.ffields?.length || 0} ffields`);
-        console.log(`Hidden ${removedItems?.widgets?.length || 0} widgets`);
-
-        // 🔥 STEP 2: Make freetext annotations read-only (but keep them visible)
+        // STEP 2: make freetext label annotations read-only (also kept visible).
         const readonlyFreetextXmlString = readOnlyFreetextElements(
-          updatedXmlString,
+          readonlyXmlString,
           readOnlyUsersRef.current,
         );
 
@@ -450,12 +458,7 @@ const ViewSignatureDocument = () => {
           attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
         }));
       }
-    } catch (error) {
-      console.log(
-        "Error in getSignatureFileAnnotationResponse handler:",
-        error,
-      );
-    }
+    } catch (error) {}
   }, [getSignatureFileAnnotationResponse]);
   // === End === //
 
@@ -580,13 +583,27 @@ const ViewSignatureDocument = () => {
               );
               await annotationManager.importAnnotations(cleanedXFDF);
 
-              // Lock every annotation object
+              // Lock every annotation object.
+              //
+              // NoRotate is deliberately NOT set, and the rest are set under
+              // `isImporting`. NoRotate's setter calls Apryse's invalidate hook
+              // in its destructive form (`delete this.appearances; delete
+              // this.ye`), and `ye` is the only place a signature imported from
+              // XFDF lives — so setting it here, right after importAnnotations,
+              // blanked every signature on this read-only screen while text and
+              // checkbox values (which render from <fields><value>) survived.
+              // Locked + NoResize + NoMove already make the document inert.
               annotationManager.getAnnotationsList().forEach((annot) => {
-                annot.Locked = true;
-                annot.ReadOnly = true;
-                annot.NoResize = true;
-                annot.NoMove = true;
-                annot.NoRotate = true;
+                const wasImporting = !!annot.isImporting;
+                annot.isImporting = true;
+                try {
+                  annot.Locked = true;
+                  annot.ReadOnly = true;
+                  annot.NoResize = true;
+                  annot.NoMove = true;
+                } finally {
+                  annot.isImporting = wasImporting;
+                }
                 annotationManager.updateAnnotation(annot);
               });
 

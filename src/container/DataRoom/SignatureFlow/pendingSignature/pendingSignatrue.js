@@ -34,6 +34,7 @@ import {
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import { useApryseDocument } from "../../../../context/DocumentContext";
 
 // ─── Apryse tool patching (module scope, restorable) ─────────────────────────
@@ -395,6 +396,63 @@ const getAnnotationOwnerIDFromSubject = (annot) => {
  */
 const SIGNER_CUSTOM_DATA_KEY = "diskusSignerUserId";
 
+/**
+ * Summarise every marker a signature could be carried by, so the XFDF can be
+ * tracked through the revert pipeline and the exact step that drops it is
+ * visible. A signature may be represented as an <apref> on the widget, as an
+ * <appearance> block, or as an ink/stamp annotation inside <annots> — checking
+ * only one of those can miss where it actually went.
+ */
+const summariseXfdfSignature = (xfdf) => {
+  const count = (re) => (xfdf?.match(re) || []).length;
+  return {
+    length: xfdf?.length ?? 0,
+    apref: count(/<apref/g),
+    appearance: count(/<appearance/g),
+    ink: count(/<ink[\s>]/g),
+    stamp: count(/<stamp[\s>]/g),
+    freetext: count(/<freetext[\s>]/g),
+    sigFields: count(/type="Sig"/g),
+    hasAnnotsBlock: !!xfdf?.includes("<annots"),
+  };
+};
+
+/**
+ * Set annotation flags WITHOUT destroying an imported appearance.
+ *
+ * Assigning these flags one by one is not safe on a freshly imported
+ * annotation, for two reasons:
+ *
+ *  • `NoRotate`'s setter calls Apryse's internal invalidate hook with no
+ *    arguments, and that form runs `delete this.appearances; delete this.ye`.
+ *    `ye` is the ONLY place a signature imported from XFDF lives — Apryse
+ *    parses the widget's <appearance> block into `appearanceString` and stashes
+ *    it there. Setting NoRotate straight after importAnnotations() therefore
+ *    erased every signature already applied by a PREVIOUS signer: the field
+ *    repainted as an empty box with just its border, while text / checkbox /
+ *    radio survived because they render from <fields><value> instead. The
+ *    setter also has no equality guard, so re-setting the value it already
+ *    holds still wipes the appearance. Nothing here needs it: Locked +
+ *    NoResize + NoMove already block every manipulation this screen allows,
+ *    and a widget exposes no rotation handle once NoResize is set. So it is
+ *    simply not set any more — see the call sites below.
+ *
+ *  • The flags that remain are individually safe (Locked/ReadOnly invalidate in
+ *    appearance-preserving mode; NoResize/NoMove route through custom data), but
+ *    `isImporting` short-circuits the invalidate hook outright, so the whole
+ *    block is wrapped in it as a standing guard against the same class of bug.
+ *    It also stops DateModified being bumped on annotations nobody touched.
+ */
+const setAnnotationFlags = (annot, flags) => {
+  const wasImporting = !!annot.isImporting;
+  annot.isImporting = true;
+  try {
+    Object.assign(annot, flags);
+  } finally {
+    annot.isImporting = wasImporting;
+  }
+};
+
 const applyAnnotationLocks = (
   annotationManager,
   annotations,
@@ -505,12 +563,14 @@ const applyAnnotationLocks = (
     }
 
     if (!isOwner) {
-      // Non-owner: Completely disable the field
-      annot.Locked = true;
-      annot.ReadOnly = true;
-      annot.NoResize = true;
-      annot.NoMove = true;
-      annot.NoRotate = true;
+      // Non-owner: Completely disable the field.
+      // NoRotate is deliberately NOT set — see setAnnotationFlags.
+      setAnnotationFlags(annot, {
+        Locked: true,
+        ReadOnly: true,
+        NoResize: true,
+        NoMove: true,
+      });
 
       if (isWidget) {
         try {
@@ -527,13 +587,15 @@ const applyAnnotationLocks = (
       // This screen lets a signer FILL their own fields — it is not a layout
       // editor. Only the creator (signatureviewer.js) may place or move a
       // field. Clearing Locked/ReadOnly is what makes the field clickable and
-      // fillable; NoResize/NoMove/NoRotate stay ON so the widget cannot be
-      // dragged out of position or resized while signing.
-      annot.Locked = false;
-      annot.ReadOnly = false;
-      annot.NoResize = true;
-      annot.NoMove = true;
-      annot.NoRotate = true;
+      // fillable; NoResize/NoMove stay ON so the widget cannot be dragged out
+      // of position or resized while signing. (NoRotate used to be set here
+      // too — it is not, and must not be: see setAnnotationFlags.)
+      setAnnotationFlags(annot, {
+        Locked: false,
+        ReadOnly: false,
+        NoResize: true,
+        NoMove: true,
+      });
 
       if (isWidget) {
         try {
@@ -1079,19 +1141,36 @@ const PendingSignatureViewer = () => {
         const currentUserID = getCurrentUserID();
         const currentUserFieldNames = currentUserFieldNamesRef.current;
 
+        console.group("[SUBMIT] handleSave");
+        console.log("1. currentUserID:", currentUserID);
+        console.log("1. ownedFieldNames:", [...currentUserFieldNames]);
         console.log(
-          currentUserID,
-          currentUserFieldNames,
-          "handleSavehandleSavehandle",
+          "1. userAnnotations:",
+          userAnnotationsRef.current.map((u) => ({
+            userID: u.userID,
+            actorID: u.actorID,
+            xmlCount: u.xml?.length,
+          })),
         );
+        console.log("1. hiddenUsers:", hiddenUsersRef.current);
 
-        // Export XFDF once — used for both validation and API payload
-        const xfdfString = await annotationManager.exportAnnotations();
-        console.log(xfdfString, "exported XFDF");
+        // Export XFDF once — used for both validation and API payload.
+        //
+        // Options are explicit rather than relying on defaults: this XFDF is
+        // the record the NEXT signer loads, so it has to carry the widget
+        // annotations and form-field data, not just the free annotations.
+        // A bare exportAnnotations() leaves that to Apryse's defaults, which
+        // is where a signature's appearance data can quietly be left out.
+        const xfdfString = await annotationManager.exportAnnotations({
+          widgets: true,
+          fields: true,
+          links: true,
+        });
+        console.log("2. exported XFDF (raw from viewer):", xfdfString);
+        console.log("2. SIGNATURE MARKERS:", summariseXfdfSignature(xfdfString));
 
-        // Usage with your data
         const isSigned = isUserSigned(xfdfString);
-        console.log("User signed:", isSigned);
+        console.log("3. isUserSigned:", isSigned);
 
         // ── Validation: every assigned field must be filled ──────────────────
         // validateViaXFDF inspects the exported XFDF synchronously:
@@ -1105,9 +1184,11 @@ const PendingSignatureViewer = () => {
           currentUserID,
         );
 
-        console.log(valid, "handleSavehandleSavehandle");
+        console.log("3. validateViaXFDF valid:", valid);
 
         if (!valid || !isSigned) {
+          console.warn("ABORTED: validation failed", { valid, isSigned });
+          console.groupEnd();
           show(t("Signature-is-required"), "warning");
           return;
         }
@@ -1127,30 +1208,115 @@ const PendingSignatureViewer = () => {
           )
           .map((u) => u.userID);
 
+        console.log("4. HideArray:", HideArray);
+        console.log("4. ReadArray:", ReadArray);
+        console.log("4. readOnlyUserIDs:", readOnlyUserIDs);
+
         let reverted = await revertProcessXmlForReadOnly(xfdfString, ReadArray);
+        console.log("5a. after revertProcessXmlForReadOnly:", summariseXfdfSignature(reverted));
+
         reverted = await revertProcessXmlToHideFields(
           reverted,
           removeXmlAfterHideDataRef.current,
         );
+        console.log("5b. after revertProcessXmlToHideFields:", summariseXfdfSignature(reverted));
         reverted = await revertReadOnlyFreetextElements(
           reverted,
           readOnlyUserIDs,
         );
+        console.log("5c. after revertReadOnlyFreetextElements:", summariseXfdfSignature(reverted));
+
         reverted = await revertHideFreetextElements(
           reverted,
           removeXmlAfterFreetextHideRef.current,
         );
+        console.log("5d. FINAL reverted XFDF:", summariseXfdfSignature(reverted));
+        console.log("5d. FINAL reverted XFDF (full):", reverted);
 
         // ── Build API payload ────────────────────────────────────────────────
         const filtered = filterAnnotationsAgainstXFDF(
           userAnnotationsRef.current,
           reverted,
         );
+        console.log(
+          "6. filterAnnotationsAgainstXFDF result:",
+          filtered.map((u) => ({ userID: u.userID, xmlCount: u.xml?.length })),
+        );
+
         const convertData = convertAnnotationsForApi(filtered);
+        console.log("6. ActorsFieldValuesList:", convertData);
         const userID = getCurrentUserID();
         const findActionBundleID = fieldsDataRef.current.find(
           (d) => Number(d.userID) === userID,
         );
+
+        // ── Signed PDF bytes ─────────────────────────────────────────────────
+        //
+        // A signature is a PDF appearance stream that the XFDF only REFERENCES
+        // (<apref objnum="N">); unlike text/checkbox values it is not
+        // self-contained. Saving only the annotation string left that object
+        // unpersisted, so for the next signer the reference dangled and the
+        // signature disappeared. Sending the document bytes keeps object N
+        // alive so the reference still resolves.
+        //
+        // Best-effort: if this fails the submit still goes through exactly as
+        // it did before, just without the appearance persisted.
+        let signedPdfPayload = "";
+        try {
+          const documentViewer =
+            pendingSignatureViewer.current?.Core?.documentViewer;
+          const doc = documentViewer?.getDocument?.();
+          if (doc) {
+            // Pass the XFDF so the annotations are MERGED INTO the saved PDF.
+            // getFileData({}) with no options returns the original document
+            // bytes without the annotation layer — so the signature, which
+            // exists only as an appearance stream in the XFDF, was never
+            // actually baked into the file being saved.
+            const fileData = await doc.getFileData({ xfdfString: reverted });
+            const base64File = await generateBase64FromBlob(
+              new Blob([new Uint8Array(fileData)], {
+                type: "application/pdf",
+              }),
+            );
+            if (base64File) {
+              signedPdfPayload = {
+                FileID: Number(docWorkflowID),
+                base64File,
+              };
+            }
+          }
+        } catch (err) {
+          console.error("Failed to serialise signed PDF:", err);
+        }
+
+        console.log("7. signedPdfPayload:", {
+          present: !!signedPdfPayload,
+          FileID: signedPdfPayload?.FileID,
+          base64Length: signedPdfPayload?.base64File?.length,
+          base64Preview: signedPdfPayload?.base64File?.slice(0, 80),
+        });
+
+        // ── Exactly what would be sent to AddUpdateFieldValue ────────────────
+        const apiArgs = {
+          "arg1 Data (ActorsFieldValuesList)": {
+            ActorsFieldValuesList: convertData,
+          },
+          "arg4 addAnnoatationofFilesAttachment": {
+            FileID: Number(docWorkflowID),
+            AnnotationString: reverted,
+            CreatorID: pdfDataRef.current.creatorID,
+          },
+          "arg5 saveSignatureDocument": signedPdfPayload,
+          "arg6 status": 3,
+          "arg8 UpdateActorBundle": {
+            WorkFlowID: pdfDataRef.current.workFlowID,
+            UserID: userID,
+            WorkFlowActionableBundleID:
+              findActionBundleID?.pK_WorkFlowActionableBundle_ID ?? 0,
+          },
+        };
+        console.log("8. FULL API ARGS →", apiArgs);
+        console.groupEnd();
 
         dispatch(
           addUpdateFieldValueApi(
@@ -1162,7 +1328,7 @@ const PendingSignatureViewer = () => {
               AnnotationString: reverted,
               CreatorID: pdfDataRef.current.creatorID,
             },
-            "",
+            signedPdfPayload,
             3,
             "",
             {
@@ -1670,13 +1836,17 @@ const PendingSignatureViewer = () => {
         field.flags.set("ReadOnly", false);
 
         // Re-signable, but still not repositionable — mirrors the owner
-        // branch of applyAnnotationLocks (fill yes, move/resize no).
+        // branch of applyAnnotationLocks (fill yes, move/resize no), including
+        // its appearance-safe flag handling: this runs the instant a field
+        // commits, so setting NoRotate here wiped the appearance of the
+        // signature the user had just drawn.
         field.widgets?.forEach((annot) => {
-          annot.Locked = false;
-          annot.ReadOnly = false;
-          annot.NoResize = true;
-          annot.NoMove = true;
-          annot.NoRotate = true;
+          setAnnotationFlags(annot, {
+            Locked: false,
+            ReadOnly: false,
+            NoResize: true,
+            NoMove: true,
+          });
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
