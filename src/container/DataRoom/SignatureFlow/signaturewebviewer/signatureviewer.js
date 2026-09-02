@@ -28,6 +28,7 @@ import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 import {
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
+  clearSignatureViewerData,
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { getActorColorByUserID } from "../../../../commen/functions/converthextorgb";
@@ -419,9 +420,7 @@ const SignatureViewer = () => {
       } else {
         setUserAnnotations(revertXmlField(listOfFields));
       }
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   }, [getAllFieldsByWorkflowID, getWorkfFlowByFileId]);
 
   // ─── getWorkfFlowByFileId ────────────────────────────────────────────────
@@ -484,9 +483,7 @@ const SignatureViewer = () => {
         creatorID: workFlow.creatorID,
         isCreator: workFlow.isCreator,
       }));
-    } catch (err) {
-      
-    }
+    } catch (err) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getWorkfFlowByFileId]);
 
@@ -543,9 +540,7 @@ const SignatureViewer = () => {
       setParticipants(listOfUsers);
       setSelectedUser(listOfUsers[0]?.pk_UID ?? null);
       setUserAnnotations(selectedList);
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   }, [saveWorkFlowResponse]);
 
   // ─── Assignees → Select options ──────────────────────────────────────────
@@ -628,9 +623,7 @@ const SignatureViewer = () => {
       try {
         await annotationManager.importAnnotations(modified);
         annotationManager.redrawAnnotation();
-      } catch (err) {
-        
-      }
+      } catch (err) {}
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
@@ -690,9 +683,7 @@ const SignatureViewer = () => {
   // ─── Action handlers ─────────────────────────────────────────────────────
 
   const handleSave = useCallback(async () => {
-    
     const payload = await collectPayload();
-    
 
     if (!payload) return;
     dispatch(
@@ -712,7 +703,10 @@ const SignatureViewer = () => {
 
   const handleSendClick = useCallback(() => {
     if (!validateBeforeSend()) {
-      show(t("All-participants-must-have-at-least-one-field-assigned"), "error");
+      show(
+        t("All-participants-must-have-at-least-one-field-assigned"),
+        "error",
+      );
       return;
     }
     setSendModal(true);
@@ -743,9 +737,15 @@ const SignatureViewer = () => {
   }, [collectPayload, dispatch, navigate, sendMessage, t]);
 
   // ─── Keep handler refs in sync with latest useCallback references ─────────
-  useEffect(() => { handleSaveRef.current = handleSave; }, [handleSave]);
-  useEffect(() => { handleSendClickRef.current = handleSendClick; }, [handleSendClick]);
-  useEffect(() => { handlePublishRef.current = handlePublish; }, [handlePublish]);
+  useEffect(() => {
+    handleSaveRef.current = handleSave;
+  }, [handleSave]);
+  useEffect(() => {
+    handleSendClickRef.current = handleSendClick;
+  }, [handleSendClick]);
+  useEffect(() => {
+    handlePublishRef.current = handlePublish;
+  }, [handlePublish]);
 
   // ─── Header buttons (Cancel/Save/Send) ────────────────────────────────────
   //
@@ -995,9 +995,7 @@ const SignatureViewer = () => {
         if (pdfXfdfRef.current) {
           try {
             await annotationManager.importAnnotations(pdfXfdfRef.current);
-          } catch (err) {
-            
-          }
+          } catch (err) {}
         }
       });
 
@@ -1031,9 +1029,7 @@ const SignatureViewer = () => {
                 applyActorColour(ann, r, g, b);
               }
             });
-          } catch (err) {
-            
-          }
+          } catch (err) {}
 
           const xfdfString = await annotationManager.exportAnnotations();
           const snapshot = userAnnotationsRef.current.map((u) => ({
@@ -1051,6 +1047,29 @@ const SignatureViewer = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfData.attachmentBlob]); // init once — guard ref prevents double run
+
+  // ─── Unmount teardown ──────────────────────────────────────────────────────
+  //
+  // Without this the screen left behind an undisposed WebViewer instance (a
+  // large WASM heap plus its workers) and the previous document's Redux state,
+  // which the next signature screen's `if (!x) return;` guards would accept
+  // immediately as though it were its own data.
+  useEffect(() => {
+    return () => {
+      try {
+        signatureDocumentViewer.current?.UI?.dispose?.();
+      } catch {
+        /* disposal is best-effort */
+      }
+      signatureDocumentViewer.current = null;
+
+      // Allow a remount to bootstrap a fresh viewer.
+      viewerInitialized.current = false;
+
+      dispatch(clearSignatureViewerData());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ─── Modal helpers ────────────────────────────────────────────────────────
 
@@ -1340,7 +1359,7 @@ const SignatureViewer = () => {
           setPdfResponceData={setPdfData}
         />
       )}
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
