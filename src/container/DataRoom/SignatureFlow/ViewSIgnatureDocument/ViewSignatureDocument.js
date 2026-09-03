@@ -8,6 +8,7 @@ import { Notification } from "../../../../components/elements/index";
 import {
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
+  clearSignatureViewerData,
 } from "../../../../store/actions/workflow_actions";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
@@ -101,6 +102,9 @@ const ViewSignatureDocument = () => {
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const viewer = useRef(null);
+  // Guards against a second WebViewer instance being created if
+  // attachmentBlob changes again after the first bootstrap.
+  const viewerInitialized = useRef(false);
   const [signerData, setSignerData] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
   const [reasonModal, setReasonModal] = useState(false);
@@ -505,7 +509,8 @@ const ViewSignatureDocument = () => {
 
   // === It's triggered when we update the blob file in our local state ===
   useEffect(() => {
-    if (pdfResponceData.attachmentBlob !== "") {
+    if (pdfResponceData.attachmentBlob !== "" && !viewerInitialized.current) {
+      viewerInitialized.current = true;
       WebViewer(
         {
           path: "/webviewer/lib",
@@ -599,10 +604,33 @@ const ViewSignatureDocument = () => {
     }
   }, [pdfResponceData.attachmentBlob]);
 
+  // ─── Unmount teardown ──────────────────────────────────────────────────────
+  //
+  // Without this the screen left behind an undisposed WebViewer instance (a
+  // large WASM heap plus its workers) and the previous document's Redux state,
+  // which the next signature screen's `if (!x) return;` guards would accept
+  // immediately as though it were its own data.
+  useEffect(() => {
+    return () => {
+      try {
+        SignedDocumentViewer.current?.UI?.dispose?.();
+      } catch {
+        /* disposal is best-effort */
+      }
+      SignedDocumentViewer.current = null;
+
+      // Allow a remount to bootstrap a fresh viewer.
+      viewerInitialized.current = false;
+
+      dispatch(clearSignatureViewerData());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
 
       {SnackBar}

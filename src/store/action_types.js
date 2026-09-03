@@ -3629,6 +3629,11 @@ export const WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED_BY_ME =
   "WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED_BY_ME";
 export const WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED =
   "WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED";
+
+// Clears the per-document state the signature viewer screens depend on, so a
+// freshly mounted viewer never reads the previous document's data before its
+// own API calls resolve.
+export const CLEAR_SIGNATURE_VIEWER_DATA = "CLEAR_SIGNATURE_VIEWER_DATA";
 export const SIGNATURE_DOCUMENT_ACTION_BY_ME =
   "SIGNATURE_DOCUMENT_ACTION_BY_ME";
 export const SIGNATURE_DOCUMENT_STATUS_CHANGE =
