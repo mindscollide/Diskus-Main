@@ -390,6 +390,7 @@ const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
         errorSeverity: "success",
       };
     }

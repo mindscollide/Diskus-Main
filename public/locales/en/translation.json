@@ -2868,5 +2868,8 @@
   "Invoice-date-range": "Invoice Date Range",
   "Payment-date-range": "Payment Date Range",
   "Compliance": "Compliance",
-  "Notes": "Notes"
+  "Notes": "Notes",
+  "Voting-started": "Voting started",
+  "Voting-ended": "Voting ended",
+  "Please-select-package": "Please select package"
 }
