@@ -39,7 +39,7 @@ const EditUserModal = ({ editModalData }) => {
 
   let organizationID = localStorage.getItem("organizationID");
 
-  const [packageAssignedValue, setPackageAssignedValue] = useState([]);
+  const [packageAssignedValue, setPackageAssignedValue] = useState(null);
   const [packageAssignedOption, setPackageAssignedOption] = useState([]);
   const findCountryCodeByMobileCode = (mobileCode) => {
     for (const countryCode in countryNameforPhoneNumber) {
@@ -53,30 +53,31 @@ const EditUserModal = ({ editModalData }) => {
   console.log("editModalData", editModalData, packageAssignedOption);
   // Initialize selected country using the find function
   const initialCountryCode = findCountryCodeByMobileCode(
-    editModalData.mobileCode,
+    editModalData?.mobileCode,
   );
   const [selected, setSelected] = useState(initialCountryCode);
   const [editPakageID, setEditPakageID] = useState(0);
+  const [selectPacakgeError, setSelectPackageError] = useState("");
 
   const [editUserModalValues, setEditUserModalValues] = useState({
     Name: {
-      value: editModalData.userName,
+      value: editModalData?.userName,
       errorMessage: "",
       errorStatus: false,
     },
 
     Desgiantion: {
-      value: editModalData.designation,
+      value: editModalData?.designation,
       errorMessage: "",
       errorStatus: false,
     },
     MobileNumber: {
-      value: editModalData.mobileNumber,
+      value: editModalData?.mobileNumber,
       errorMessage: "",
       errorStatus: false,
     },
-    Email: editModalData.email,
-    isAdminUser: editModalData.userRoleID === 4 ? 4 : 3,
+    Email: editModalData?.email,
+    isAdminUser: editModalData?.userRoleID === 4 ? 4 : 3,
   });
 
   //ByDefault Pakage Selected
@@ -87,7 +88,9 @@ const EditUserModal = ({ editModalData }) => {
         (option) => option.value === editModalData?.userAllotedPackageID,
       );
       setEditPakageID(editModalData?.userAllotedPackageID);
-      setPackageAssignedValue(defaultOption);
+      if (defaultOption !== undefined) {
+        setPackageAssignedValue(defaultOption);
+      }
     }
   }, [editModalData, packageAssignedOption]);
 
@@ -102,7 +105,7 @@ const EditUserModal = ({ editModalData }) => {
   ];
 
   const findOptionByValue = (value) => {
-    switch (value.toString()) {
+    switch (value?.toString()) {
       case "Enabled":
         return options[0];
       case "Disabled":
@@ -122,10 +125,10 @@ const EditUserModal = ({ editModalData }) => {
 
   // Initialize state with default value from editModalData
   const [userStatus, setUserStatus] = useState(() =>
-    findOptionByValue(editModalData.userStatus),
+    findOptionByValue(editModalData?.userStatus),
   );
 
-  const [userStatusID, setUserStatusID] = useState(userStatus.value);
+  const [userStatusID, setUserStatusID] = useState(userStatus?.value);
 
   //For Now I set static data in this getOrganizationPackageUserStatsAPI Api
   useEffect(() => {
@@ -133,11 +136,13 @@ const EditUserModal = ({ editModalData }) => {
   }, []);
 
   useEffect(() => {
-    if (editModalData.mobileCode) {
-      const countryCode = findCountryCodeByMobileCode(editModalData.mobileCode);
+    if (editModalData?.mobileCode) {
+      const countryCode = findCountryCodeByMobileCode(
+        editModalData?.mobileCode,
+      );
       setSelected(countryCode);
     }
-  }, [editModalData.mobileCode]);
+  }, [editModalData?.mobileCode]);
 
   useEffect(() => {
     if (
@@ -252,6 +257,10 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handleUpdateButton = () => {
+    if (editPakageID === 0) {
+      setSelectPackageError(t("Please-select-package"));
+      return;
+    }
     if (
       editUserModalValues.Name.value !== "" &&
       editUserModalValues.Desgiantion.value !== "" &&
@@ -327,7 +336,7 @@ const EditUserModal = ({ editModalData }) => {
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mt-4">
+                  <Row className='mt-4'>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <TextField
                         placeholder={t("Full-name")}
@@ -355,8 +364,7 @@ const EditUserModal = ({ editModalData }) => {
                           editUserModalValues.Name.value === ""
                             ? ` ${styles["errorMessage"]}`
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {editUserModalValues.Name.errorMessage}
                       </p>
                     </Col>
@@ -389,8 +397,7 @@ const EditUserModal = ({ editModalData }) => {
                           editUserModalValues.Desgiantion.value === ""
                             ? ` ${styles["errorMessage"]}`
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {editUserModalValues.Desgiantion.errorMessage}
                       </p>
                     </Col>
@@ -405,14 +412,13 @@ const EditUserModal = ({ editModalData }) => {
                       md={3}
                       sm={3}
                       xs={12}
-                      className={styles["react-flag"]}
-                    >
+                      className={styles["react-flag"]}>
                       <ReactFlagsSelect
-                        name="reactFlag"
+                        name='reactFlag'
                         fullWidth={false}
                         selected={selected} // Set the selected value from state
                         selectedSize={8}
-                        className="menu-flags"
+                        className='menu-flags'
                         onSelect={handleSelect}
                         searchable={true}
                         placeholder={"Select Co...."}
@@ -423,12 +429,12 @@ const EditUserModal = ({ editModalData }) => {
                       <Form.Control
                         placeholder={t("Enter-phone-number")}
                         className={styles["formcontrol-Phone-Input-Textfield"]}
-                        applyClass="form-control2"
+                        applyClass='form-control2'
                         maxLength={15}
                         minLength={4}
                         onChange={handleUpdateModal}
                         value={editUserModalValues.MobileNumber.value}
-                        name="MobileNumber"
+                        name='MobileNumber'
                       />
                       <Col>
                         <p
@@ -436,8 +442,7 @@ const EditUserModal = ({ editModalData }) => {
                             editUserModalValues.MobileNumber.value === ""
                               ? ` ${styles["errorMessage"]}`
                               : `${styles["errorMessage_hidden"]}`
-                          }
-                        >
+                          }>
                           {editUserModalValues.MobileNumber.errorMessage}
                         </p>
                       </Col>
@@ -448,8 +453,7 @@ const EditUserModal = ({ editModalData }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="flex-column flex-wrap"
-                    >
+                      className='flex-column flex-wrap'>
                       <span className={styles["NameCreateAddtional"]}>
                         {t("Role")}
                       </span>
@@ -459,13 +463,12 @@ const EditUserModal = ({ editModalData }) => {
                           md={12}
                           sm={12}
                           xs={12}
-                          className="d-flex gap-2"
-                        >
+                          className='d-flex gap-2'>
                           <Checkbox
-                            classNameCheckBoxP="m-0 p-0"
+                            classNameCheckBoxP='m-0 p-0'
                             checked={editUserModalValues.isAdminUser === 4}
                             onChange={handleIsAdminCheckbox}
-                            classNameDiv=""
+                            classNameDiv=''
                           />
                           <span className={styles["AdminAlsoClass"]}>
                             {t("Is-admin-also")}
@@ -487,17 +490,25 @@ const EditUserModal = ({ editModalData }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Select
-                            name="PackageAssigned"
+                            name='PackageAssigned'
                             value={packageAssignedValue}
                             options={packageAssignedOption}
                             onChange={handlePackageAssigned}
                             placeholder={t("Please-select-one-option")}
                           />
+                          <p
+                            className={
+                              packageAssignedValue === null
+                                ? ` ${styles["errorMessage"]}`
+                                : `${styles["errorMessage_hidden"]}`
+                            }>
+                            {selectPacakgeError}
+                          </p>
                         </Col>
                       </Row>
                     </>
                   )}
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["NameCreateAddtional"]}>
                         {t("Status")}
@@ -513,13 +524,12 @@ const EditUserModal = ({ editModalData }) => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-3">
+                  <Row className='mt-3'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex flex-column flex-wrap"
-                    >
+                      className='d-flex flex-column flex-wrap'>
                       <span className={styles["NameCreateAddtional"]}>
                         {t("Organization")}
                       </span>
@@ -542,8 +552,7 @@ const EditUserModal = ({ editModalData }) => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <Button
                     text={t("Update")}
                     className={styles["EdituserModalUpdateButton"]}
