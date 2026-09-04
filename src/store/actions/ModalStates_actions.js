@@ -1,4 +1,27 @@
-// Modal action creators — import and dispatch these from your components
+/**
+ * Action creators for the meeting modals and their tab state.
+ *
+ * Reduced by `store/reducers/ModalState_reducer.js` (note the singular "State"
+ * there against the plural "States" here — the mismatch is historical).
+ *
+ * Every creator in this file is a PLAIN action creator, not a thunk: it returns
+ * an object and touches no API. That makes them cheap and synchronous, so they
+ * are safe to dispatch during render-adjacent code where a thunk would not be.
+ *
+ * ── Payload conventions ──────────────────────────────────────────────────────
+ *   toggle*Modal(value)     boolean — open/closed. They are SETTERS despite the
+ *                           "toggle" name; pass the state you want, not the
+ *                           opposite of the current one.
+ *   set*Route(value)        1 = Create, 2 = Edit
+ *   setCreateEditTab(name)  tab name string
+ *   setViewTab(name)        tab name string
+ *   reset*Tabs()            no payload — returns the group to its default tab
+ *
+ * The two `toggleIs*ProposedMeetingDates` creators are the odd pair: they carry
+ * the participant/organiser response to proposed meeting dates rather than a
+ * modal's visibility, and their action types are named
+ * PARTICIPANT_RESPOND_/ORGANIZER_RESPONSE_ accordingly.
+ */
 import * as actions from "../action_types";
 
 export const toggleCreateEditMeetingModal = (value) => ({
