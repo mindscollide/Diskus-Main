@@ -1,3 +1,81 @@
+/**
+ * Work out which signers' turn has NOT arrived yet, from the bundle dependency
+ * graph on GetWorkFlowByFileID.
+ *
+ * This used to be read straight off the API as
+ * `getAllFieldsByWorkflowID.hiddenUsers`, but that key does not exist on that
+ * response — everything real on it sits one level down under
+ * `signatureWorkFlowFieldDetails`. So it was always undefined, `?? []` swallowed
+ * it, and nothing was ever hidden: in an ordered workflow signer 2 could see
+ * signer 3's fields (locked, but visible), which is exactly what ordering is
+ * supposed to prevent.
+ *
+ * The bundles carry the ordering explicitly, e.g. for a 3-signer chain:
+ *   { pK_WorkFlowActionableBundle_ID: 3021, actors:[1567], dependencies: [] }
+ *   { pK_WorkFlowActionableBundle_ID: 3022, actors:[1566],
+ *     dependencies: [{ bundleID: 3022, dependenceID: 3021 }] }
+ *   { pK_WorkFlowActionableBundle_ID: 3023, actors:[1568],
+ *     dependencies: [{ bundleID: 3023, dependenceID: 3022 }] }
+ * `dependenceID` is the bundle that must finish first, so walking dependants
+ * forward from the current user's bundle yields everyone downstream of them.
+ *
+ * Deliberately derived from the dependency edges alone, not from bundle status
+ * codes: the edges are unambiguous, whereas the status enum's meaning would
+ * have to be assumed — and hiding the wrong bundle would take a signer's own
+ * fields away and wedge the workflow.
+ *
+ * Fails OPEN (returns []) for an unordered workflow, an unknown current user,
+ * or missing data — showing a field that could have been hidden is a privacy
+ * nit; hiding one that shouldn't be is a signer who cannot sign.
+ */
+export const deriveHiddenUsers = (bundleModels, currentUserID) => {
+  if (!Array.isArray(bundleModels) || !bundleModels.length) return [];
+
+  // No edges at all → unordered workflow → everyone acts in parallel.
+  const hasOrdering = bundleModels.some((b) => b.dependencies?.length > 0);
+  if (!hasOrdering) return [];
+
+  const usersOf = (b) =>
+    (b.actors ?? []).map((a) => a.pK_UID).filter((id) => id != null);
+
+  const currentBundle = bundleModels.find((b) =>
+    usersOf(b).includes(currentUserID),
+  );
+  if (!currentBundle) return [];
+
+  // dependenceID → the bundles waiting on it.
+  const dependants = new Map();
+  bundleModels.forEach((b) => {
+    (b.dependencies ?? []).forEach((d) => {
+      if (d?.dependenceID == null) return;
+      const list = dependants.get(d.dependenceID) ?? [];
+      list.push(b);
+      dependants.set(d.dependenceID, list);
+    });
+  });
+
+  // Breadth-first over everything downstream of the current user's bundle.
+  // `seen` also makes a malformed cyclic graph terminate instead of hanging.
+  const hidden = new Set();
+  const seen = new Set([currentBundle.pK_WorkFlowActionableBundle_ID]);
+  const queue = [currentBundle.pK_WorkFlowActionableBundle_ID];
+
+  while (queue.length) {
+    const bundleID = queue.shift();
+    (dependants.get(bundleID) ?? []).forEach((b) => {
+      const id = b.pK_WorkFlowActionableBundle_ID;
+      if (seen.has(id)) return;
+      seen.add(id);
+      queue.push(id);
+      usersOf(b).forEach((uid) => hidden.add(uid));
+    });
+  }
+
+  // A user assigned to more than one bundle must never hide themselves.
+  hidden.delete(currentUserID);
+  return [...hidden];
+};
+
 // === used for read only Form Fields=== //
 
 export const processXmlForReadOnly = (xmlString, nameValues) => {

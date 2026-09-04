@@ -13,8 +13,11 @@ import {
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
 import {
+  deriveHiddenUsers,
   handleBlobFiles,
+  hideFreetextElements,
   processXmlForReadOnly,
+  processXmlToHideFields,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
@@ -92,6 +95,11 @@ const stripInvalidAppearanceRefs = async (xfdfStr, pdfDoc) => {
   }
 };
 
+const getCurrentUserID = () =>
+  localStorage.getItem("userID") !== null
+    ? Number(localStorage.getItem("userID"))
+    : 0;
+
 const ViewSignatureDocument = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -155,6 +163,12 @@ const ViewSignatureDocument = () => {
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
+  /**
+   * Field names belonging to signers whose turn has not come. Read by the
+   * documentLoaded handler, which has to hide the widgets the PDF supplies
+   * regardless of what was stripped from the XFDF.
+   */
+  const hiddenFieldNamesRef = useRef(new Set());
 
   // ===== this use for current state update get =====//
 
@@ -268,7 +282,18 @@ const ViewSignatureDocument = () => {
               });
             },
           );
-          setHiddenUsers([]);
+          // Signers whose turn has not come. This screen is view-only, but the
+          // ordering rule still applies to what may be SEEN: a signer may look
+          // at their own and earlier signers' fields, never at a later one's.
+          // Hardcoding [] here meant every signer's fields were shown to
+          // everybody. Derived from the bundle dependency graph — see
+          // deriveHiddenUsers.
+          setHiddenUsers(
+            deriveHiddenUsers(
+              getWorkfFlowByFileId?.workFlow?.bundleModels ?? [],
+              getCurrentUserID(),
+            ),
+          );
           setReadOnlyUsers(AllUserIDs);
           function revert(data) {
             return data.map((item) => {
@@ -426,35 +451,57 @@ const ViewSignatureDocument = () => {
         getSignatureFileAnnotationResponse !== null &&
         getSignatureFileAnnotationResponse !== undefined
       ) {
-        // Every field name in the document, whoever it belongs to — on a
-        // view-only screen there is no "own" field, so all of them are locked.
-        const allFieldNames = [];
+        // Split every field name in the document into the ones this viewer may
+        // see (their own and earlier signers') and the ones they may not (later
+        // signers, in an ordered workflow).
+        const visibleFieldNames = [];
+        const hiddenFieldNames = [];
         userAnnotationsRef.current.forEach((obj) => {
+          const isHidden = hiddenUsersRef.current.includes(obj.userID);
           obj.xml.forEach((item) => {
             const matches =
               item.ffield?.match(/<ffield[^>]*\sname="([^"]+)"/g) ?? [];
             matches.forEach((match) => {
               const name = match.match(/name="([^"]+)"/)?.[1];
-              if (name) allFieldNames.push(name);
+              if (!name) return;
+              (isHidden ? hiddenFieldNames : visibleFieldNames).push(name);
             });
           });
         });
 
-        // STEP 1: flag every form field ReadOnly (kept visible and filled).
+        // STEP 1: flag the visible form fields ReadOnly (kept visible and filled).
         const readonlyXmlString = processXmlForReadOnly(
           getSignatureFileAnnotationResponse.annotationString,
-          allFieldNames,
+          visibleFieldNames,
         );
 
-        // STEP 2: make freetext label annotations read-only (also kept visible).
-        const readonlyFreetextXmlString = readOnlyFreetextElements(
+        // STEP 2: strip later signers' fields out of the XFDF entirely.
+        // Not sufficient on its own — the same widgets are baked into the stored
+        // PDF, and Apryse's import only deletes document widgets that the
+        // imported XFDF also contains, so one that is absent survives and renders
+        // from the file. hiddenFieldNamesRef carries the names to the
+        // documentLoaded pass, which finishes the job on the live annotations.
+        const { updatedXmlString } = processXmlToHideFields(
           readonlyXmlString,
+          hiddenFieldNames,
+        );
+        hiddenFieldNamesRef.current = new Set(hiddenFieldNames);
+
+        // STEP 3: make the remaining freetext labels read-only (kept visible).
+        const readonlyFreetextXmlString = readOnlyFreetextElements(
+          updatedXmlString,
           readOnlyUsersRef.current,
+        );
+
+        // STEP 4: drop later signers' freetext labels.
+        const { hideFreetextXmlString } = hideFreetextElements(
+          readonlyFreetextXmlString,
+          hiddenUsersRef.current,
         );
 
         setPdfResponceData((prevData) => ({
           ...prevData,
-          xfdfData: readonlyFreetextXmlString,
+          xfdfData: hideFreetextXmlString,
           attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
         }));
       }
@@ -593,6 +640,10 @@ const ViewSignatureDocument = () => {
               // blanked every signature on this read-only screen while text and
               // checkbox values (which render from <fields><value>) survived.
               // Locked + NoResize + NoMove already make the document inert.
+              const hiddenFields = hiddenFieldNamesRef.current;
+              const hiddenUserIDs = new Set(hiddenUsersRef.current);
+              const currentUserID = getCurrentUserID();
+
               annotationManager.getAnnotationsList().forEach((annot) => {
                 const wasImporting = !!annot.isImporting;
                 annot.isImporting = true;
@@ -601,6 +652,39 @@ const ViewSignatureDocument = () => {
                   annot.ReadOnly = true;
                   annot.NoResize = true;
                   annot.NoMove = true;
+
+                  // ── Later signers stay out of sight ─────────────────────
+                  //
+                  // Stripping their fields from the XFDF is not enough: the
+                  // same widgets are baked into the stored PDF, and Apryse's
+                  // import only deletes document widgets that the imported
+                  // XFDF also contains — one that is absent is never looked
+                  // up, so it survives and renders straight from the file.
+                  // That is why a viewer could still see the next signer's
+                  // fields on this screen.
+                  try {
+                    const field = annot.getField?.();
+                    const fieldName = field?.name;
+                    if (fieldName) {
+                      if (hiddenFields.has(fieldName)) field.hide?.();
+                    } else {
+                      // Freetext label — owner is the id in its Subject.
+                      const subject = annot.Subject ?? "";
+                      const dash = subject.lastIndexOf("-");
+                      const ownerID =
+                        dash === -1 ? NaN : Number(subject.substring(dash + 1));
+                      if (
+                        Number.isFinite(ownerID) &&
+                        ownerID !== currentUserID &&
+                        hiddenUserIDs.has(ownerID)
+                      ) {
+                        annot.Hidden = true;
+                        annot.NoView = true;
+                      }
+                    }
+                  } catch {
+                    /* one annotation failing must not stop the rest */
+                  }
                 } finally {
                   annot.isImporting = wasImporting;
                 }
