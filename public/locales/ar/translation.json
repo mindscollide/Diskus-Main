@@ -2743,5 +2743,8 @@
   "Invoice-date-range": "نطاق تاريخ الفاتورة",
   "Payment-date-range": "نطاق تاريخ الدفع",
   "Are-you-sure-you-want-to-delete-this-account": "هل أنت متأكد من أنك تريد حذف هذا الحساب؟",
-  "Compliance": "الامتثال"
+  "Compliance": "الامتثال",
+  "Voting-started": "Voting started",
+  "Voting-ended": "Voting ended",
+  "Please-select-package": "Please select package"
 }

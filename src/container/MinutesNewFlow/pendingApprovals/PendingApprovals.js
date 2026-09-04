@@ -32,8 +32,10 @@ import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { MeetingContext } from "../../../context/MeetingContext";
+import { useTableScrollBottom } from "../../../commen/functions/useTableScrollBottom";
 
 const DEFAULT_PENDING_APPROVALS_PAGE = { sRow: 0, Length: 10 };
+const PENDING_APPROVALS_PAGE_LENGTH = 10;
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -74,10 +76,20 @@ const PendingApproval = () => {
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [isScrollingMinutes, setIsScrollingMinutes] = useState(false);
 
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
+  // selectedValues is the live checkbox state inside the (still open) filter
+  // dropdown; appliedStatusFilter is what the table is actually filtered by
+  // and only changes when "Ok" is clicked (or "Reset") — clicking a checkbox
+  // must not touch the table until then.
   const [selectedValues, setSelectedValues] = useState([
+    "Reviewed",
+    "Pending",
+    "Expired",
+  ]);
+  const [appliedStatusFilter, setAppliedStatusFilter] = useState([
     "Reviewed",
     "Pending",
     "Expired",
@@ -123,17 +135,25 @@ const PendingApproval = () => {
     );
   };
 
+  // rowsPendingApproval is a pure derived view of originalData filtered by
+  // appliedStatusFilter (see the effect below) — commits the checkbox
+  // selection to the table only now, on Ok. Previously this recomputed
+  // rowsPendingApproval by hand, which only ever covered the single page
+  // (Length: 10) fetched on mount — there was no scroll-triggered
+  // pagination at all, so a filter could never show more than whatever
+  // matched inside that first page, and reaching the end of that short
+  // filtered list looked like the scrollbar being "stuck" (there was
+  // nothing more to fetch on scroll — see useTableScrollBottom below,
+  // which is new).
   const handleApplyFilter = () => {
-    const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.toString()),
-    );
-    setRowsPendingApproval(filteredData);
+    setAppliedStatusFilter(selectedValues);
     setVisible(false);
   };
 
   const resetFilter = () => {
-    setSelectedValues(["Reviewed", "Pending", "Expired"]);
-    setRowsPendingApproval(originalData);
+    const defaultValues = ["Reviewed", "Pending", "Expired"];
+    setSelectedValues(defaultValues);
+    setAppliedStatusFilter(defaultValues);
     setVisible(false);
   };
 
@@ -169,12 +189,21 @@ const PendingApproval = () => {
     </Menu>
   );
 
-  const toggleSort = (setter) => () =>
+  // Ant Design's Table is in single-column-sort mode here (each `sorter` is
+  // a plain function, not {multiple: N}), but each column's sortOrder was
+  // driven by its own independent state with nothing clearing the other
+  // two — so sorting one column and then clicking another left two columns
+  // simultaneously "sorted" from antd's point of view, which only honors
+  // one. Clearing the other two sort states on every click keeps exactly
+  // one column controlled-sorted at a time.
+  const toggleSort = (setter, otherSetters = []) => () => {
+    otherSetters.forEach((otherSetter) => otherSetter(null));
     setter((order) => {
       if (order === "descend") return "ascend";
       if (order === "ascend") return null;
       return "descend";
     });
+  };
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -199,8 +228,13 @@ const PendingApproval = () => {
       ellipsis: true,
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
-      sortOrderMeetingTitle,
-      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderMeetingTitle) }),
+      sortOrder: sortOrderMeetingTitle,
+      onHeaderCell: () => ({
+        onClick: toggleSort(setSortOrderMeetingTitle, [
+          setSortOrderReviewRequest,
+          setSortOrderLeaveDateTime,
+        ]),
+      }),
       render: (text, record) => (
         <p
           onClick={() => {
@@ -240,8 +274,13 @@ const PendingApproval = () => {
       ellipsis: true,
       sorter: (a, b) =>
         a.requestedBy.toLowerCase().localeCompare(b.requestedBy.toLowerCase()),
-      sortOrderReviewRequest,
-      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderReviewRequest) }),
+      sortOrder: sortOrderReviewRequest,
+      onHeaderCell: () => ({
+        onClick: toggleSort(setSortOrderReviewRequest, [
+          setSortOrderMeetingTitle,
+          setSortOrderLeaveDateTime,
+        ]),
+      }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
           {text}
@@ -268,8 +307,13 @@ const PendingApproval = () => {
       ellipsis: true,
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
-      sortOrderLeaveDateTime,
-      onHeaderCell: () => ({ onClick: toggleSort(setSortOrderLeaveDateTime) }),
+      sortOrder: sortOrderLeaveDateTime,
+      onHeaderCell: () => ({
+        onClick: toggleSort(setSortOrderLeaveDateTime, [
+          setSortOrderMeetingTitle,
+          setSortOrderReviewRequest,
+        ]),
+      }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
           {newDateFormatterForMinutesPendingApproval(text, lang)}
@@ -367,6 +411,11 @@ const PendingApproval = () => {
     } catch (error) {}
   }, [getMinutesReviewerData]);
 
+  // originalData accumulates every page fetched so far (unfiltered);
+  // rowsPendingApproval — what the table renders — is derived from it below,
+  // filtered by selectedValues. Previously this always REPLACED both with
+  // just the latest page, so a scroll-triggered fetch of page 2 would wipe
+  // out page 1 instead of appending to it.
   useEffect(() => {
     if (
       GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
@@ -375,13 +424,44 @@ const PendingApproval = () => {
     ) {
       let reducerDataRow =
         GetMinuteReviewPendingApprovalsByReviewerIdData.pendingReviews;
-      setRowsPendingApproval(reducerDataRow);
-      setOriginalData(reducerDataRow);
+      if (isScrollingMinutes) {
+        setIsScrollingMinutes(false);
+        setOriginalData((prev) => [...prev, ...(reducerDataRow || [])]);
+      } else {
+        setOriginalData(reducerDataRow || []);
+      }
     } else {
-      setRowsPendingApproval([]);
       setOriginalData([]);
     }
   }, [GetMinuteReviewPendingApprovalsByReviewerIdData]);
+
+  useEffect(() => {
+    setRowsPendingApproval(
+      originalData.filter((item) =>
+        appliedStatusFilter.includes(item.status.toString()),
+      ),
+    );
+  }, [originalData, appliedStatusFilter]);
+
+  // The stats endpoint's three counts already sum to the true total record
+  // count, so it's used here instead of requiring a totalCount field from
+  // the paginated list endpoint itself. Fetches the next Length:10 page
+  // once the table is scrolled to the bottom, as long as there's more data
+  // than what's been loaded so far — mirrors the same pattern already used
+  // by ReviewSignature.js (the Review & Sign tab) for its own pagination.
+  const totalMinutesRecords =
+    (progress.reviewed || 0) + (progress.pending || 0) + (progress.expired || 0);
+
+  useTableScrollBottom(async () => {
+    if (!reviewMinutesActive) return;
+    if (originalData.length < totalMinutesRecords) {
+      setIsScrollingMinutes(true);
+      let Data = { sRow: originalData.length, Length: PENDING_APPROVALS_PAGE_LENGTH };
+      await dispatch(
+        GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}),
+      );
+    }
+  });
 
   useEffect(() => {
     try {
@@ -560,7 +640,7 @@ const PendingApproval = () => {
                       // scroll={
                       //   rowsPendingApproval.length > 10 ? { y: 385 } : undefined
                       // }
-                      scroll={{ y: "53vh", x: "100%" }}
+                      scroll={{ y: "42vh", x: "100%" }}
                       id={(record, index) =>
                         index === rowsPendingApproval.length - 1
                           ? "last-row-class"

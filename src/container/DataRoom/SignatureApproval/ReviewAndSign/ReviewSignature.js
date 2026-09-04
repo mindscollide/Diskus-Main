@@ -100,8 +100,34 @@ const ReviewSignature = () => {
 
   const [sortOrderRequestBy, setSortOrderRequestBy] = useState(null);
   const [sortOrderDateTime, setSortOrderDateTime] = useState(null);
+
+  // Ant Design's Table is in single-column-sort mode here (each `sorter` is
+  // a plain function, not {multiple: N}), but each column's sortOrder was
+  // being driven by its own independent state with nothing clearing the
+  // other two — so sorting Document-name and then clicking Requested-by (or
+  // Received-on) left two columns simultaneously "sorted" from antd's point
+  // of view, which only honors one. toggleSort always clears the other two
+  // sort states whenever a column header is clicked, so exactly one column
+  // is ever controlled-sorted at a time.
+  const toggleSort = (setter, otherSetters) => () => {
+    otherSetters.forEach((otherSetter) => otherSetter(null));
+    setter((order) => {
+      if (order === "descend") return "ascend";
+      if (order === "ascend") return null;
+      return "descend";
+    });
+  };
   const [visible, setVisible] = useState(false);
+  // selectedValues is the live checkbox state inside the (still open) filter
+  // dropdown; appliedStatusFilter is what the table is actually filtered by
+  // and only changes when "Ok" is clicked (or "Reset") — clicking a checkbox
+  // must not touch the table until then.
   const [selectedValues, setSelectedValues] = useState([
+    "Pending Signature",
+    "Signed",
+    "Declined",
+  ]);
+  const [appliedStatusFilter, setAppliedStatusFilter] = useState([
     "Pending Signature",
     "Signed",
     "Declined",
@@ -177,17 +203,21 @@ const ReviewSignature = () => {
     );
   };
 
+  // reviewSignature is a pure derived view of originalData filtered by
+  // appliedStatusFilter (see the effect below) — commits the checkbox
+  // selection to the table only now, on Ok. Previously this recomputed
+  // reviewSignature by hand, which was fine until the next scroll-triggered
+  // page came in and overwrote it with unfiltered data (see the
+  // listOfPendingForApprovalSignatures effect).
   const handleApplyFilter = () => {
-    const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.toString()),
-    );
-    setReviewSignature(filteredData);
+    setAppliedStatusFilter(selectedValues);
     setVisible(false);
   };
 
   const resetFilter = () => {
-    setSelectedValues(["Pending Signature", "Signed", "Declined"]);
-    setReviewSignature(originalData);
+    const defaultValues = ["Pending Signature", "Signed", "Declined"];
+    setSelectedValues(defaultValues);
+    setAppliedStatusFilter(defaultValues);
     setVisible(false);
   };
 
@@ -256,14 +286,12 @@ const ReviewSignature = () => {
       ellipsis: true,
       sorter: (a, b) =>
         a.fileName.toLowerCase().localeCompare(b.fileName.toLowerCase()),
+      sortOrder: sortFileNameBy,
       onHeaderCell: () => ({
-        onClick: () => {
-          setSortFileNameBy((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
+        onClick: toggleSort(setSortFileNameBy, [
+          setSortOrderRequestBy,
+          setSortOrderDateTime,
+        ]),
       }),
       render: (text, record) => (
         <p
@@ -323,14 +351,12 @@ const ReviewSignature = () => {
       ellipsis: true,
       sorter: (a, b) =>
         a.creatorName.toLowerCase().localeCompare(b.creatorName.toLowerCase()),
+      sortOrder: sortOrderRequestBy,
       onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderRequestBy((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
+        onClick: toggleSort(setSortOrderRequestBy, [
+          setSortFileNameBy,
+          setSortOrderDateTime,
+        ]),
       }),
       render: (text, record) => (
         <span
@@ -352,10 +378,18 @@ const ReviewSignature = () => {
         <>
           <span className="d-flex justify-content-center gap-2 align-items-center">
             {t("Received-on")}{" "}
-            {sortOrderDateTime === "descend" ? (
-              <img src={ArrowUpIcon} alt="" />
-            ) : (
+            {/* Up = latest-to-oldest (antd's "descend" here, since the
+            sorter compares createdOn ascending — antd reverses that order
+            for "descend", putting the most recent date first), Down =
+            oldest-to-latest. This is the opposite of a plain A→Z/Z→A
+            up/down convention, but is what a "received on" date column is
+            expected to mean: most-recent-first when pointing up. Default
+            (unsorted, null) also shows Up, since Up is this column's
+            natural/expected starting state. */}
+            {sortOrderDateTime === "ascend" ? (
               <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -365,16 +399,19 @@ const ReviewSignature = () => {
       className: "leaveTimeParticipant",
       width: "180px",
       ellipsis: true,
+      // Was comparing a.sentOn/b.sentOn — a field this column's own
+      // dataIndex/render never used ("createdOn" is what's actually
+      // displayed). sentOn being undefined on every row made the comparator
+      // always return NaN, which Array.sort() treats as "no change" — the
+      // column looked entirely unsortable.
       sorter: (a, b) =>
-        utcConvertintoGMT(a.sentOn) - utcConvertintoGMT(b.sentOn),
+        utcConvertintoGMT(a.createdOn) - utcConvertintoGMT(b.createdOn),
+      sortOrder: sortOrderDateTime,
       onHeaderCell: () => ({
-        onClick: () => {
-          setSortOrderDateTime((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
+        onClick: toggleSort(setSortOrderDateTime, [
+          setSortFileNameBy,
+          setSortOrderRequestBy,
+        ]),
       }),
       render: (text, record) => (
         <p className={"m-0"}>
@@ -444,18 +481,18 @@ const ReviewSignature = () => {
   //   }
   // };
 
+  // Was comparing reviewSignature.length (the FILTERED, currently-displayed
+  // count) against totalRecords (the unfiltered total) — with any filter
+  // narrower than "all statuses" those two can never be equal, so scrolling
+  // to the bottom of a short filtered list kept re-firing this fetch with
+  // the same sRow forever instead of recognizing every page was already
+  // loaded. Compare against originalData.length (everything fetched so
+  // far, unfiltered) instead.
   useTableScrollBottom(async () => {
-    if (reviewSignature.length !== totalRecords) {
-      if (totalDataLnegth <= totalRecords) {
-        setIsScrolling(true);
-        let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-
-        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
-        return; // stop further execution if this condition is met
-      } else {
-        let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
-      }
+    if (originalData.length < totalRecords) {
+      setIsScrolling(true);
+      let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+      await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
     }
   });
 
@@ -493,6 +530,16 @@ const ReviewSignature = () => {
     }
   }, [getAllPendingForApprovalStats]);
 
+  // originalData is the single source of truth for every record fetched so
+  // far (accumulated across scroll pages). reviewSignature — what the table
+  // actually renders — is derived from it below, filtered by
+  // selectedValues. Previously each of these effects wrote reviewSignature
+  // directly (sometimes from originalData, sometimes from the already-
+  // filtered reviewSignature itself), so the very next scroll-triggered
+  // page load would splice unfiltered records back into the filtered view,
+  // or — merging onto reviewSignature instead of originalData — silently
+  // drop whatever the active filter had hidden. Only originalData is
+  // written here now; the derived effect keeps reviewSignature in sync.
   useEffect(() => {
     if (listOfPendingForApprovalSignatures !== null) {
       try {
@@ -501,15 +548,12 @@ const ReviewSignature = () => {
         if (Array.isArray(pendingApprovals) && pendingApprovals.length > 0) {
           if (isScrollling) {
             setIsScrolling(false);
-            setReviewSignature([...pendingApprovals, ...reviewSignature]);
-            setOriginalData([...pendingApprovals, ...reviewSignature]);
+            setOriginalData((prev) => [...prev, ...pendingApprovals]);
             setTotalRecords(totalCount);
             setTotalDataLength((prev) => prev + pendingApprovals.length);
           } else {
             setTotalRecords(totalCount);
             setTotalDataLength(pendingApprovals.length);
-
-            setReviewSignature(pendingApprovals);
             setOriginalData(pendingApprovals);
           }
         }
@@ -518,18 +562,23 @@ const ReviewSignature = () => {
   }, [listOfPendingForApprovalSignatures]);
 
   useEffect(() => {
+    setReviewSignature(
+      originalData.filter((item) =>
+        appliedStatusFilter.includes(item.status.toString()),
+      ),
+    );
+  }, [originalData, appliedStatusFilter]);
+
+  useEffect(() => {
     try {
       if (workflowsignaturedocument !== null) {
         const { data } = workflowsignaturedocument;
-        let findIfExist = reviewSignature.find(
-          (reviewSignatureData, index) =>
-            reviewSignatureData.workFlowID === data.workFlowID,
+        let findIfExist = originalData.find(
+          (originalDataItem) => originalDataItem.workFlowID === data.workFlowID,
         );
 
         if (findIfExist === undefined) {
-          setReviewSignature([data, ...reviewSignature]);
-          setOriginalData([data, originalData]);
-          // setTotalRecords(totalCount);
+          setOriginalData((prev) => [data, ...prev]);
           setTotalDataLength((prev) => prev + 1);
         }
       }
@@ -541,8 +590,8 @@ const ReviewSignature = () => {
       if (workflowsignaturedocumentActionByMe !== null) {
         const { data } = workflowsignaturedocumentActionByMe;
 
-        setReviewSignature((reviewSignatureCopy) =>
-          reviewSignatureCopy.map((data2) =>
+        setOriginalData((originalDataCopy) =>
+          originalDataCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
                   ...data2,
@@ -559,8 +608,8 @@ const ReviewSignature = () => {
     try {
       if (signatureDocumentStatusChangeForSignees !== null) {
         const { data } = signatureDocumentStatusChangeForSignees;
-        setReviewSignature((reviewSignatureCopy) =>
-          reviewSignatureCopy.map((data2) =>
+        setOriginalData((originalDataCopy) =>
+          originalDataCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
                   ...data2,
