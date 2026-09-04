@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +15,7 @@ import {
   addUpdateFieldValueApi,
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
+  clearSignatureViewerData,
 } from "../../../../store/actions/workflow_actions";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
@@ -28,6 +35,60 @@ import {
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { useApryseDocument } from "../../../../context/DocumentContext";
+
+// ─── Apryse tool patching (module scope, restorable) ─────────────────────────
+//
+// Apryse tool classes are shared prototypes, so patching them is a GLOBAL
+// mutation, not a per-component one. Guarding it with a per-component ref
+// meant a second mount re-wrapped the prototype, chaining the new wrapper onto
+// the previous mount's closure — which still captured a dead annotationManager
+// and a stale ownership Set, permanently swallowing clicks until a full reload.
+//
+// Here the prototype is wrapped at most once per page load, and the wrapper
+// delegates to `activeOwnershipCheck`, which the currently mounted screen
+// re-points at itself. Unmount restores the untouched originals.
+let toolsPatched = false;
+const originalToolHandlers = new Map();
+let activeOwnershipCheck = null;
+
+const patchSignatureTools = (Tools, ownershipCheck) => {
+  // Always re-point at the live component, even when already patched.
+  activeOwnershipCheck = ownershipCheck;
+  if (toolsPatched) return;
+  toolsPatched = true;
+
+  [Tools?.SignatureCreateTool, Tools?.SignatureFormFieldCreateTool]
+    .filter(Boolean)
+    .forEach((ToolClass) => {
+      const down = ToolClass.prototype.mouseLeftDown;
+      const up = ToolClass.prototype.mouseLeftUp;
+      originalToolHandlers.set(ToolClass, { down, up });
+
+      // Fail OPEN: with no check registered the original handler runs.
+      // Fields belonging to other users are still protected by the
+      // annotation-level Locked/ReadOnly flags applyAnnotationLocks() sets,
+      // which Apryse honours on its own — so a missing check costs a
+      // redundant guard instead of making the whole document inert.
+      ToolClass.prototype.mouseLeftDown = function (e) {
+        if (!activeOwnershipCheck || activeOwnershipCheck(e))
+          return down.call(this, e);
+      };
+      ToolClass.prototype.mouseLeftUp = function (e) {
+        if (!activeOwnershipCheck || activeOwnershipCheck(e))
+          return up.call(this, e);
+      };
+    });
+};
+
+const unpatchSignatureTools = () => {
+  activeOwnershipCheck = null;
+  originalToolHandlers.forEach(({ down, up }, ToolClass) => {
+    ToolClass.prototype.mouseLeftDown = down;
+    ToolClass.prototype.mouseLeftUp = up;
+  });
+  originalToolHandlers.clear();
+  toolsPatched = false;
+};
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
@@ -240,7 +301,14 @@ const mergeXFDFIntoAnnotations = (
 
     userAnnotations.forEach((user) => {
       user.xml.forEach((xml) => {
-        if (xml.widget?.includes(widgetName)) {
+        // Match the widget's name ATTRIBUTE, not any substring of the
+        // serialised widget XML. A bare `includes(widgetName)` also matched
+        // longer names that merely start with it — so "Radio1" matched the
+        // stored XML for "Radio10". Radio groups are where this actually
+        // bites, since their widgets are usually named with a shared prefix
+        // and a trailing index, and a mismatch silently attributes an option
+        // to the wrong entry.
+        if (xml.widget?.includes(`name="${widgetName}"`)) {
           const ffieldEl = xmlDoc.querySelector(`ffield[name="${fieldName}"]`);
           if (ffieldEl) {
             xml.ffield = ffieldEl.outerHTML;
@@ -323,7 +391,47 @@ const applyAnnotationLocks = (
   annotations,
   currentUserID,
   currentUserFieldNames,
+  // Ids of annotations this user created interactively in this session.
+  // Authoritative and timing-independent: unlike
+  // getAssociatedSignatureAnnotation(), which may not be wired up yet at the
+  // moment the "add" event fires, this is known the instant the annotation
+  // is created — so a freshly drawn signature is never mistaken for someone
+  // else's and locked.
+  sessionOwnedAnnotIds,
 ) => {
+  // ── Pre-pass: identify signature "stamps" owned by the current user ────────
+  //
+  // The visible signature Apryse creates when a Sig field is signed is a
+  // SEPARATE annotation from the widget it fills. It has no field (so the
+  // widget test below misses it) and no "<label>-<userID>" Subject (so the
+  // Subject test misses it too) — so it was classified as someone else's and
+  // Locked the instant the user created it. That is why the delete icon
+  // appeared but did nothing, and why the field could not be signed again.
+  //
+  // Resolve ownership through the widget the stamp is associated with, and
+  // scan the FULL annotation list — annotationChanged calls this with only the
+  // changed annotations, which would never include the owning widget.
+  const ownedSignatureAnnotIds = new Set();
+  try {
+    annotationManager.getAnnotationsList().forEach((a) => {
+      try {
+        if (
+          typeof a.getField !== "function" ||
+          typeof a.getAssociatedSignatureAnnotation !== "function"
+        )
+          return;
+        const fieldName = a.getField()?.name;
+        if (!fieldName || !currentUserFieldNames.has(fieldName)) return;
+        const assoc = a.getAssociatedSignatureAnnotation();
+        if (assoc?.Id) ownedSignatureAnnotIds.add(assoc.Id);
+      } catch {
+        /* ignore individual annotation failures */
+      }
+    });
+  } catch {
+    /* ignore — fall through to the per-annotation tests below */
+  }
+
   annotations.forEach((annot) => {
     const isWidget =
       typeof annot.getField === "function" ||
@@ -331,7 +439,15 @@ const applyAnnotationLocks = (
 
     let isOwner = false;
 
-    if (isWidget) {
+    if (
+      annot.Id &&
+      (ownedSignatureAnnotIds.has(annot.Id) ||
+        sessionOwnedAnnotIds?.has(annot.Id))
+    ) {
+      // The current user's own signature stamp — must stay deletable so it
+      // can be removed and the field re-signed.
+      isOwner = true;
+    } else if (isWidget) {
       try {
         const field = annot.getField?.();
         const fieldName = field?.name;
@@ -362,17 +478,31 @@ const applyAnnotationLocks = (
         } catch {}
       }
     } else {
-      // Owner: Unlock the field
+      // Owner: fillable, but NOT repositionable.
+      //
+      // This screen lets a signer FILL their own fields — it is not a layout
+      // editor. Only the creator (signatureviewer.js) may place or move a
+      // field. Clearing Locked/ReadOnly is what makes the field clickable and
+      // fillable; NoResize/NoMove/NoRotate stay ON so the widget cannot be
+      // dragged out of position or resized while signing.
       annot.Locked = false;
       annot.ReadOnly = false;
-      annot.NoResize = false;
-      annot.NoMove = false;
-      annot.NoRotate = false;
+      annot.NoResize = true;
+      annot.NoMove = true;
+      annot.NoRotate = true;
 
       if (isWidget) {
         try {
           const field = annot.getField?.();
-          if (field) field.flags.set("ReadOnly", false);
+          if (field) {
+            field.flags.set("ReadOnly", false);
+            // Mirror the non-owner branch, which sets NoToggleToOff. Leaving
+            // it set on an owned field makes a radio group behave oddly — the
+            // selected option can no longer be toggled off. Radio widgets in a
+            // group share ONE field object, so a single pass that locked this
+            // field would otherwise leave the flag stuck on for every option.
+            field.flags.set("NoToggleToOff", false);
+          }
         } catch {}
       }
     }
@@ -561,8 +691,9 @@ const PendingSignatureViewer = () => {
    */
   const currentUserFieldNamesRef = useRef(new Set());
 
-  // Guard so the SignatureCreateTool mouse handlers are patched only once.
-  const signatureToolPatchedRef = useRef(false);
+  // NOTE: the signature tool patch guard now lives at module scope
+  // (patchSignatureTools / unpatchSignatureTools) because it mutates shared
+  // Apryse prototypes, which a per-component ref cannot correctly guard.
 
   /**
    * Set of field names that the current user has already filled / signed during
@@ -573,6 +704,15 @@ const PendingSignatureViewer = () => {
    */
   const filledFieldsRef = useRef(new Set());
 
+  /**
+   * Ids of annotations this user created interactively in this session
+   * (signature stamps, above all). annotationChanged only reaches the locking
+   * code for non-imported changes, i.e. things this user just did — so these
+   * are unambiguously theirs and must never be locked, otherwise the signature
+   * they just drew becomes undeletable and the field cannot be re-signed.
+   */
+  const sessionOwnedAnnotIdsRef = useRef(new Set());
+
   // ── Sync state → refs ──────────────────────────────────────────────────────
   useEffect(() => {
     selectedUserRef.current = selectedUser;
@@ -581,14 +721,47 @@ const PendingSignatureViewer = () => {
     signerDataRef.current = signerData;
   }, [signerData]);
 
-  useEffect(() => {
-    userAnnotationsRef.current = userAnnotations;
-    // Recompute the current user's field names whenever annotations update
-    currentUserFieldNamesRef.current = getUserFieldNames(
-      userAnnotations,
-      getCurrentUserID(),
-    );
-  }, [userAnnotations]);
+  // Ownership is derived during render and mirrored into refs immediately,
+  // NOT inside a useEffect. A ref-sync effect runs after render and in
+  // declaration order, so anything reading currentUserFieldNamesRef earlier in
+  // the same commit (the viewer bootstrap, documentLoaded, Apryse click
+  // callbacks) could observe an empty Set — i.e. "I own nothing" — and treat
+  // every field, including the user's own, as not theirs. Deriving it here
+  // guarantees the value is correct before any effect in this component runs.
+  const currentUserID = useMemo(() => getCurrentUserID(), []);
+
+  const currentUserFieldNames = useMemo(
+    () => getUserFieldNames(userAnnotations, currentUserID),
+    [userAnnotations, currentUserID],
+  );
+
+  userAnnotationsRef.current = userAnnotations;
+  currentUserFieldNamesRef.current = currentUserFieldNames;
+
+  // ─── First-render readiness gate ───────────────────────────────────────────
+  //
+  // The viewer must not bootstrap until every input it depends on has arrived.
+  // Keying initialisation on attachmentBlob alone could start the viewer while
+  // signerData was still empty (so the header rendered a bare "Close" button
+  // instead of Decline/Submit) and while ownership was still unresolved (so
+  // every field, including the user's own, was treated as someone else's).
+  //
+  // getAllFieldsByWorkflowID is deliberately NOT required: it is dispatched as
+  // a failure (null) in the "no fields" branch of the API, so requiring it
+  // would hang this screen forever for documents that legitimately have none.
+  // A document with no actors at all has no signers to wait for; requiring
+  // signerData unconditionally would leave such a document on a blank screen
+  // forever instead of showing the read-only "Close" header.
+  const hasActors = Boolean(
+    getWorkfFlowByFileId?.workFlow?.bundleModels?.length,
+  );
+
+  const isViewerDataReady = Boolean(
+    pdfData.attachmentBlob &&
+      getWorkfFlowByFileId &&
+      getSignatureFileAnnotationResponse &&
+      (!hasActors || signerData.length > 0),
+  );
 
   useEffect(() => {
     userAnnotationsCopyRef.current = userAnnotationsCopy;
@@ -1035,11 +1208,7 @@ const PendingSignatureViewer = () => {
 
   // ✅ WebViewer initialisation with signature tool override
   useEffect(() => {
-    if (
-      !pdfData.attachmentBlob ||
-      webViewerInitialized.current ||
-      !viewerRef.current
-    )
+    if (!isViewerDataReady || webViewerInitialized.current || !viewerRef.current)
       return;
 
     const init = async () => {
@@ -1072,50 +1241,79 @@ const PendingSignatureViewer = () => {
         // loads — so it is always in place regardless of XFDF timing. The
         // handlers read currentUserFieldNamesRef lazily at click time, so the
         // ref being empty at install time is fine.
-        const SignatureCreateTool = Tools.SignatureCreateTool;
-        if (SignatureCreateTool && !signatureToolPatchedRef.current) {
-          signatureToolPatchedRef.current = true;
+        // True only when the click lands on a signature widget that belongs
+        // to the current user and is still signable (not signed, not locked).
+        const isOwnSignableWidget = (e) => {
+          try {
+            // Fail OPEN while ownership is unresolved. Returning false here
+            // used to mean "not yours", so any hiccup in the ownership data
+            // silently swallowed every click and the signature modal never
+            // opened until a reload. Non-owned fields remain protected by the
+            // Locked/ReadOnly flags applyAnnotationLocks() applies.
+            if (!currentUserFieldNamesRef.current.size) return true;
 
-          const origMouseDown = SignatureCreateTool.prototype.mouseLeftDown;
-          const origMouseUp = SignatureCreateTool.prototype.mouseLeftUp;
+            const widget = annotationManager.getAnnotationByMouseEvent(e);
+            if (!widget) return false;
 
-          // True only when the click lands on a signature widget that belongs
-          // to the current user and is still signable (not signed, not locked).
-          const isOwnSignableWidget = (e) => {
-            try {
-              const widget = annotationManager.getAnnotationByMouseEvent(e);
-              if (!widget || typeof widget.getField !== "function")
-                return false;
-              const fieldName = widget.getField()?.name;
-              return (
-                !!fieldName &&
-                currentUserFieldNamesRef.current.has(fieldName) &&
-                !widget.getAssociatedSignatureAnnotation() &&
-                !widget.ReadOnly
-              );
-            } catch {
-              return false;
+            // A signed field is covered by its signature stamp, which sits on
+            // top and has no field of its own — so the click lands on the stamp
+            // rather than the widget. Treat a stamp belonging to one of the
+            // current user's own fields as clickable, otherwise re-signing is
+            // impossible once a signature is present.
+            if (typeof widget.getField !== "function") {
+              return annotationManager.getAnnotationsList().some((a) => {
+                try {
+                  if (
+                    typeof a.getField !== "function" ||
+                    typeof a.getAssociatedSignatureAnnotation !== "function"
+                  )
+                    return false;
+                  const fn = a.getField()?.name;
+                  if (!fn || !currentUserFieldNamesRef.current.has(fn))
+                    return false;
+                  return a.getAssociatedSignatureAnnotation()?.Id === widget.Id;
+                } catch {
+                  return false;
+                }
+              });
             }
-          };
 
-          SignatureCreateTool.prototype.mouseLeftDown = function (e) {
-            if (isOwnSignableWidget(e)) return origMouseDown.call(this, e);
-            // click outside an owned signature field — ignore
-          };
-          SignatureCreateTool.prototype.mouseLeftUp = function (e) {
-            if (isOwnSignableWidget(e)) return origMouseUp.call(this, e);
-            // click outside an owned signature field — ignore
-          };
-        }
+            const fieldName = widget.getField()?.name;
+
+            // An already-signed field is intentionally still clickable so the
+            // signer can re-sign it. Previously this also required
+            // `!widget.getAssociatedSignatureAnnotation()`, which meant that
+            // once a field was signed the click was swallowed and the modal
+            // could never reopen — combined with the delete button being
+            // disabled, a signature became permanent.
+            return (
+              !!fieldName &&
+              currentUserFieldNamesRef.current.has(fieldName) &&
+              !widget.ReadOnly
+            );
+          } catch {
+            // Errors must not make the document inert either.
+            return true;
+          }
+        };
+
+        patchSignatureTools(Tools, isOwnSignableWidget);
 
         UI.loadDocument(handleBlobFiles(pdfData.attachmentBlob), {
           filename: pdfData.title,
         });
 
+        // NOTE: "annotationDeleteButton" and "annotationPopup" are deliberately
+        // NOT disabled — they are the only way a signer can select their own
+        // signature and delete it in order to re-sign. Disabling them made a
+        // signature permanent: it could not be removed, and the field could not
+        // be signed again. This is safe because applyAnnotationLocks() sets
+        // Locked = true on every annotation that is not the current user's, and
+        // Apryse's select/delete honours Locked — so a signer can only ever
+        // delete their own signature.
         UI.disableElements([
           "linkButton",
           "annotationStyleEditButton",
-          "annotationDeleteButton",
           "indexPanel",
           "formFieldPanel",
           "groupedLeftHeaderButtons",
@@ -1161,7 +1359,6 @@ const PendingSignatureViewer = () => {
           "viewControlsOverlay",
           "contextMenuPopup",
           "signaturePanelButton",
-          "annotationPopup",
           "richTextPopup",
           "toolbarGroup-Annotate",
           "leftPanelButton",
@@ -1195,20 +1392,19 @@ const PendingSignatureViewer = () => {
                 annotationManager.getAnnotationsList(),
                 currentUserID,
                 currentUserFieldNamesRef.current,
+                sessionOwnedAnnotIdsRef.current,
               );
             } catch (err) {}
           }
 
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              UI.setToolMode(Core.Tools.ToolNames.EDIT);
+          // Start in EDIT mode deterministically, right after annotations and
+          // locks are in place. This previously ran inside a
+          // requestAnimationFrame + 200ms setTimeout, which fired unconditionally
+          // and could reset the tool out from under a click already in flight.
+          UI.setToolMode(Core.Tools.ToolNames.EDIT);
 
-              console.log("Current Tool:", UI.getToolMode()?.name);
-            }, 200);
-          });
           documentViewer.refreshAll();
           documentViewer.updateView();
-
         });
 
         // Header buttons
@@ -1217,7 +1413,33 @@ const PendingSignatureViewer = () => {
     };
 
     init();
-  }, [pdfData.attachmentBlob]);
+  }, [isViewerDataReady]);
+
+  // ─── Unmount teardown ──────────────────────────────────────────────────────
+  //
+  // Runs once, on unmount only. Without this the screen left behind:
+  //   • patched Apryse tool prototypes (global, and re-wrapped on every mount)
+  //   • an undisposed WebViewer instance (a large WASM heap plus workers)
+  //   • the previous document's Redux state, which the next viewer's
+  //     `if (!x) return;` guards accept immediately as if it were its own
+  useEffect(() => {
+    return () => {
+      unpatchSignatureTools();
+
+      try {
+        pendingSignatureViewer.current?.UI?.dispose?.();
+      } catch {
+        /* disposal is best-effort */
+      }
+      pendingSignatureViewer.current = null;
+
+      // Allow a remount to bootstrap a fresh viewer.
+      webViewerInitialized.current = false;
+
+      dispatch(clearSignatureViewerData());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── annotationChanged + fieldChanged event listeners ──────────────────────
   //
@@ -1237,6 +1459,21 @@ const PendingSignatureViewer = () => {
     const annotHandler = async (annotations, action, { imported }) => {
       if (imported) return;
 
+      // Anything reaching here is a change this user just made interactively,
+      // so record additions as theirs before any locking runs. Without this a
+      // freshly drawn signature stamp — which has no field and no
+      // "<label>-<userID>" Subject — fails every ownership test and is locked
+      // the moment it is created, making it impossible to clear or re-sign.
+      if (action === "add") {
+        annotations.forEach((a) => {
+          if (a?.Id) sessionOwnedAnnotIdsRef.current.add(a.Id);
+        });
+      } else if (action === "delete") {
+        annotations.forEach((a) => {
+          if (a?.Id) sessionOwnedAnnotIdsRef.current.delete(a.Id);
+        });
+      }
+
       try {
         const xfdfString = await annotationManager.exportAnnotations();
         const snapshot = userAnnotationsRef.current.map((u) => ({
@@ -1253,6 +1490,7 @@ const PendingSignatureViewer = () => {
         annotations,
         currentUserID,
         currentUserFieldNamesRef.current,
+        sessionOwnedAnnotIdsRef.current,
       );
     };
 
@@ -1289,12 +1527,14 @@ const PendingSignatureViewer = () => {
         // Clear ReadOnly flag for re-sign support
         field.flags.set("ReadOnly", false);
 
+        // Re-signable, but still not repositionable — mirrors the owner
+        // branch of applyAnnotationLocks (fill yes, move/resize no).
         field.widgets?.forEach((annot) => {
           annot.Locked = false;
           annot.ReadOnly = false;
-          annot.NoResize = false;
-          annot.NoMove = false;
-          annot.NoRotate = false;
+          annot.NoResize = true;
+          annot.NoMove = true;
+          annot.NoRotate = true;
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });

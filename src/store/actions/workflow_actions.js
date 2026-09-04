@@ -2581,6 +2581,18 @@ const clearWorkFlowResponseMessage = (response) => {
   };
 };
 
+/**
+ * Clears the per-document state the signature viewer screens read on mount
+ * (workflow, field ownership, annotation/blob). Dispatch on unmount so the
+ * next viewer never sees the previous document's data through its
+ * `if (!x) return;` guards before its own requests resolve.
+ */
+const clearSignatureViewerData = () => {
+  return {
+    type: actions.CLEAR_SIGNATURE_VIEWER_DATA,
+  };
+};
+
 //Added as Minute Reviwer
 const MinuteReviwerCount = (response) => {
   return {
@@ -2621,6 +2633,7 @@ export {
   deleteSignatureFlowDocumentApi,
   getAllPendingApprovalStatusApi,
   clearWorkFlowResponseMessage,
+  clearSignatureViewerData,
   getAllPendingApprovalsStatsApi,
   getAllPendingApprovalsSignaturesApi,
   getAllSignaturesDocumentsforCreatorApi,
