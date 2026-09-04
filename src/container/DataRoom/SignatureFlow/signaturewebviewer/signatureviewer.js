@@ -72,10 +72,70 @@ const revertXmlField = (data) =>
     };
   });
 
+/**
+ * Key used with Apryse's annotation custom-data API to stamp each field with
+ * the signer it was created for. `setCustomData`/`getCustomData` is the
+ * documented way to attach app-specific data to an annotation, and it is
+ * serialised into the XFDF (as trn-custom-data), so ownership survives an
+ * export/import round trip instead of living only in memory.
+ */
+const SIGNER_CUSTOM_DATA_KEY = "diskusSignerUserId";
+
+/**
+ * Build widget/field → signer id lookup from the LIVE annotation objects.
+ *
+ * Read at merge time rather than at creation time on purpose: when the
+ * "add" event fires, a freshly placed form field often has no field attached
+ * yet, so getField() returns undefined and any field-name key recorded then
+ * would be missing. By merge time the field is attached, so both the
+ * annotation id and the field name resolve.
+ */
+const buildWidgetOwnerMap = (annotationManager) => {
+  const map = new Map();
+  try {
+    annotationManager.getAnnotationsList().forEach((a) => {
+      let owner;
+      try {
+        owner = a.getCustomData?.(SIGNER_CUSTOM_DATA_KEY);
+      } catch {
+        owner = undefined;
+      }
+      if (owner === undefined || owner === null || owner === "") return;
+
+      const ownerID = Number(owner);
+      if (!Number.isFinite(ownerID)) return;
+
+      if (a.Id) map.set(a.Id, ownerID);
+      try {
+        const fieldName = a.getField?.()?.name;
+        if (fieldName) map.set(fieldName, ownerID);
+      } catch {
+        /* not a form-field annotation — the id key is enough */
+      }
+    });
+  } catch {
+    /* fall back to the current selection in the merge below */
+  }
+  return map;
+};
+
+/**
+ * Attach each widget in the exported XFDF to the signer it belongs to.
+ *
+ * Ownership is resolved in priority order:
+ *   1. The widget is already tracked under a signer → update it in place.
+ *   2. The annotation carries a signer stamped on it via custom data → use
+ *      that. It is written the moment the field is created, so a field always
+ *      belongs to whoever was selected AT CREATION TIME, regardless of what
+ *      the dropdown is changed to afterwards.
+ *   3. Otherwise fall back to the currently selected signer (previous
+ *      behaviour, kept so nothing regresses for pre-existing documents).
+ */
 const mergeXFDFIntoAnnotations = (
   xfdfString,
   userSelectID,
   userAnnotations,
+  widgetOwnerMap,
 ) => {
   const userSelect = parseInt(userSelectID, 10);
   const parser = new DOMParser();
@@ -88,7 +148,11 @@ const mergeXFDFIntoAnnotations = (
 
     userAnnotations.forEach((user) => {
       user.xml.forEach((xml) => {
-        if (xml.widget?.includes(widgetName)) {
+        // Match the name ATTRIBUTE, not any substring of the serialised
+        // widget XML — a bare includes() also matched longer names sharing
+        // the same prefix (e.g. "Signature1" matching "Signature10"), which
+        // silently attached a widget to the wrong signer.
+        if (xml.widget?.includes(`name="${widgetName}"`)) {
           const ffieldEl = xmlDoc.querySelector(`ffield[name="${fieldName}"]`);
           if (ffieldEl) {
             xml.ffield = ffieldEl.outerHTML;
@@ -100,7 +164,10 @@ const mergeXFDFIntoAnnotations = (
     });
 
     if (!found) {
-      const target = userAnnotations.find((u) => u.userID === userSelect);
+      const recordedOwner =
+        widgetOwnerMap?.get(widgetName) ?? widgetOwnerMap?.get(fieldName);
+      const ownerID = recordedOwner ?? userSelect;
+      const target = userAnnotations.find((u) => u.userID === ownerID);
       if (target) {
         const ffieldEl = xmlDoc.querySelector(`ffield[name="${fieldName}"]`);
         if (ffieldEl)
@@ -1006,6 +1073,30 @@ const SignatureViewer = () => {
           if (imported) return;
           if (action !== "add" && action !== "modify") return;
 
+          // Record ownership at CREATION time, before anything can change the
+          // dropdown. This is what makes "draw for user A, switch to user B,
+          // draw for user B" work without having to leave and re-enter the
+          // Form tab — the merge no longer has to guess from the current
+          // selection.
+          if (action === "add") {
+            annotations.forEach((ann) => {
+              try {
+                // Stamp the signer onto the annotation itself. Only set it
+                // once: a later "modify" must never silently reassign a field
+                // to whoever happens to be selected at that moment.
+                const existing = ann.getCustomData?.(SIGNER_CUSTOM_DATA_KEY);
+                if (!existing) {
+                  ann.setCustomData?.(
+                    SIGNER_CUSTOM_DATA_KEY,
+                    String(selectedUserRef.current),
+                  );
+                }
+              } catch {
+                /* custom data unsupported — merge falls back to selection */
+              }
+            });
+          }
+
           try {
             const { r, g, b } = getActorColorByUserID(
               selectedUserRef.current,
@@ -1040,6 +1131,8 @@ const SignatureViewer = () => {
             xfdfString,
             selectedUserRef.current,
             snapshot,
+            // Built here, not at creation time, so getField() is resolved.
+            buildWidgetOwnerMap(annotationManager),
           );
           setUserAnnotations(snapshot);
         },

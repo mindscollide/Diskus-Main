@@ -1085,7 +1085,7 @@ const deleteCommitteeTaskApi = (navigate, t, Data) => {
               await dispatch(
                 deleteCommitteeTask_success(
                   response.data.responseResult,
-                  t("Record-deleted")
+                  t("Delete-successfully")
                 )
               );
               let newData = {

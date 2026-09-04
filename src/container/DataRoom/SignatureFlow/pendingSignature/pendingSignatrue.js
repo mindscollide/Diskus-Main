@@ -21,6 +21,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
 import {
+  deriveHiddenUsers,
   handleBlobFiles,
   hideFreetextElements,
   isUserSigned,
@@ -34,6 +35,7 @@ import {
   sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import { useApryseDocument } from "../../../../context/DocumentContext";
 
 // ─── Apryse tool patching (module scope, restorable) ─────────────────────────
@@ -386,6 +388,72 @@ const getAnnotationOwnerIDFromSubject = (annot) => {
  *   • annotation-level flags left unlocked
  */
 // ✅ UPDATED: Stronger locks for non-owner fields
+/**
+ * Key used with Apryse's annotation custom-data API to stamp a signature with
+ * the user who created it. Unlike the in-memory session set (empty on a fresh
+ * load) and getAssociatedSignatureAnnotation() (not reliably wired up right
+ * after import), custom data is serialised into the XFDF — so ownership still
+ * resolves after the document is saved and the page reloaded.
+ */
+const SIGNER_CUSTOM_DATA_KEY = "diskusSignerUserId";
+
+/**
+ * Summarise every marker a signature could be carried by, so the XFDF can be
+ * tracked through the revert pipeline and the exact step that drops it is
+ * visible. A signature may be represented as an <apref> on the widget, as an
+ * <appearance> block, or as an ink/stamp annotation inside <annots> — checking
+ * only one of those can miss where it actually went.
+ */
+const summariseXfdfSignature = (xfdf) => {
+  const count = (re) => (xfdf?.match(re) || []).length;
+  return {
+    length: xfdf?.length ?? 0,
+    apref: count(/<apref/g),
+    appearance: count(/<appearance/g),
+    ink: count(/<ink[\s>]/g),
+    stamp: count(/<stamp[\s>]/g),
+    freetext: count(/<freetext[\s>]/g),
+    sigFields: count(/type="Sig"/g),
+    hasAnnotsBlock: !!xfdf?.includes("<annots"),
+  };
+};
+
+/**
+ * Set annotation flags WITHOUT destroying an imported appearance.
+ *
+ * Assigning these flags one by one is not safe on a freshly imported
+ * annotation, for two reasons:
+ *
+ *  • `NoRotate`'s setter calls Apryse's internal invalidate hook with no
+ *    arguments, and that form runs `delete this.appearances; delete this.ye`.
+ *    `ye` is the ONLY place a signature imported from XFDF lives — Apryse
+ *    parses the widget's <appearance> block into `appearanceString` and stashes
+ *    it there. Setting NoRotate straight after importAnnotations() therefore
+ *    erased every signature already applied by a PREVIOUS signer: the field
+ *    repainted as an empty box with just its border, while text / checkbox /
+ *    radio survived because they render from <fields><value> instead. The
+ *    setter also has no equality guard, so re-setting the value it already
+ *    holds still wipes the appearance. Nothing here needs it: Locked +
+ *    NoResize + NoMove already block every manipulation this screen allows,
+ *    and a widget exposes no rotation handle once NoResize is set. So it is
+ *    simply not set any more — see the call sites below.
+ *
+ *  • The flags that remain are individually safe (Locked/ReadOnly invalidate in
+ *    appearance-preserving mode; NoResize/NoMove route through custom data), but
+ *    `isImporting` short-circuits the invalidate hook outright, so the whole
+ *    block is wrapped in it as a standing guard against the same class of bug.
+ *    It also stops DateModified being bumped on annotations nobody touched.
+ */
+const setAnnotationFlags = (annot, flags) => {
+  const wasImporting = !!annot.isImporting;
+  annot.isImporting = true;
+  try {
+    Object.assign(annot, flags);
+  } finally {
+    annot.isImporting = wasImporting;
+  }
+};
+
 const applyAnnotationLocks = (
   annotationManager,
   annotations,
@@ -398,7 +466,25 @@ const applyAnnotationLocks = (
   // is created — so a freshly drawn signature is never mistaken for someone
   // else's and locked.
   sessionOwnedAnnotIds,
+  // Field names owned by signers whose turn has not come (HideArray), and the
+  // ids of those signers. Both are needed because widgets are matched by field
+  // name and freetext labels by the userID in their Subject.
+  //
+  // Why hiding has to happen HERE and not only in the XFDF: the pipeline that
+  // strips <field>/<ffield>/<widget> out of the XFDF can only hide a field that
+  // exists solely in the XFDF. Every one of these fields is also baked into the
+  // stored PDF (the submit path saves the document with getFileData({xfdfString}),
+  // and the creator's Send does the same), and Apryse's XFDF import only deletes
+  // document widgets that the imported XFDF also contains — a widget absent from
+  // the XFDF is never looked up, so it survives import and renders from the PDF.
+  // That is why a later signer's fields stayed visible however thoroughly the
+  // XFDF was pruned.
+  hiddenFieldNames,
+  hiddenUserIDs,
 ) => {
+  const hiddenFields = hiddenFieldNames ?? new Set();
+  const hiddenUsers = hiddenUserIDs ?? new Set();
+
   // ── Pre-pass: identify signature "stamps" owned by the current user ────────
   //
   // The visible signature Apryse creates when a Sig field is signed is a
@@ -432,6 +518,62 @@ const applyAnnotationLocks = (
     /* ignore — fall through to the per-annotation tests below */
   }
 
+  // ── Fail OPEN when ownership is unresolved ─────────────────────────────────
+  //
+  // getUserFieldNames() returns an EMPTY set when the current user has no
+  // entry in userAnnotations yet, or an entry whose xml is still empty. That
+  // is exactly the state on the first load right after a document is sent,
+  // before the backend has materialised this signer's field records.
+  //
+  // Locking on that basis marks EVERY field Locked/ReadOnly — including the
+  // user's own — so nothing can be signed until a refresh happens to fetch
+  // complete data. That is the "cannot sign until I reload" symptom.
+  //
+  // Skipping here is safe: other signers' fields are still marked ReadOnly in
+  // the XFDF by processXmlForReadOnly before the document is imported, so that
+  // protection is already baked into what Apryse loaded.
+  //
+  // The hide pass runs FIRST, above this return, because it must not be skipped
+  // on the same condition — see below.
+  //
+  // ── Hide pass: signers whose turn has not come ─────────────────────────────
+  //
+  // Deliberately ahead of the fail-open return: whether a signer is hidden comes
+  // from the bundle dependency graph, not from field ownership, so it is still
+  // trustworthy when ownership has not resolved yet. It is a no-op when there is
+  // nothing to hide, and it can never hide a field the current user owns.
+  if (hiddenFields.size || hiddenUsers.size) {
+    annotations.forEach((annot) => {
+      try {
+        const field = annot.getField?.();
+        const fieldName = field?.name;
+
+        if (fieldName) {
+          if (!hiddenFields.has(fieldName)) return;
+          if (currentUserFieldNames?.has(fieldName)) return; // never my own
+          // Field.hide() is Apryse's own "disable visibility of all child
+          // widgets" — it covers a radio group's several widgets in one call,
+          // which per-annotation flags would not. Display only: the pristine
+          // pre-hide XFDF is what gets restored on submit, so this cannot reach
+          // the saved document.
+          field.hide?.();
+          return;
+        }
+
+        // Freetext label — ownership comes from its "<label>-<userID>" Subject.
+        const ownerID = getAnnotationOwnerIDFromSubject(annot);
+        if (ownerID === null || ownerID === currentUserID) return;
+        if (!hiddenUsers.has(ownerID)) return;
+        setAnnotationFlags(annot, { Hidden: true, NoView: true });
+        annotationManager.updateAnnotation(annot);
+      } catch {
+        /* a single annotation failing must not stop the rest being hidden */
+      }
+    });
+  }
+
+  if (!currentUserFieldNames || currentUserFieldNames.size === 0) return;
+
   annotations.forEach((annot) => {
     const isWidget =
       typeof annot.getField === "function" ||
@@ -439,7 +581,24 @@ const applyAnnotationLocks = (
 
     let isOwner = false;
 
-    if (
+    // Ownership stamped onto the annotation when it was created. This is the
+    // only signal that survives save + reload, so it is what keeps a signature
+    // deletable/re-signable after a refresh. Used only to GRANT ownership,
+    // never to revoke it, so it cannot regress the checks below.
+    let stampedOwnerID = null;
+    try {
+      const raw = annot.getCustomData?.(SIGNER_CUSTOM_DATA_KEY);
+      if (raw !== undefined && raw !== null && raw !== "") {
+        const parsed = Number(raw);
+        if (Number.isFinite(parsed)) stampedOwnerID = parsed;
+      }
+    } catch {
+      /* custom data unsupported — fall through to the tests below */
+    }
+
+    if (stampedOwnerID !== null && stampedOwnerID === currentUserID) {
+      isOwner = true;
+    } else if (
       annot.Id &&
       (ownedSignatureAnnotIds.has(annot.Id) ||
         sessionOwnedAnnotIds?.has(annot.Id))
@@ -461,12 +620,14 @@ const applyAnnotationLocks = (
     }
 
     if (!isOwner) {
-      // Non-owner: Completely disable the field
-      annot.Locked = true;
-      annot.ReadOnly = true;
-      annot.NoResize = true;
-      annot.NoMove = true;
-      annot.NoRotate = true;
+      // Non-owner: Completely disable the field.
+      // NoRotate is deliberately NOT set — see setAnnotationFlags.
+      setAnnotationFlags(annot, {
+        Locked: true,
+        ReadOnly: true,
+        NoResize: true,
+        NoMove: true,
+      });
 
       if (isWidget) {
         try {
@@ -483,13 +644,15 @@ const applyAnnotationLocks = (
       // This screen lets a signer FILL their own fields — it is not a layout
       // editor. Only the creator (signatureviewer.js) may place or move a
       // field. Clearing Locked/ReadOnly is what makes the field clickable and
-      // fillable; NoResize/NoMove/NoRotate stay ON so the widget cannot be
-      // dragged out of position or resized while signing.
-      annot.Locked = false;
-      annot.ReadOnly = false;
-      annot.NoResize = true;
-      annot.NoMove = true;
-      annot.NoRotate = true;
+      // fillable; NoResize/NoMove stay ON so the widget cannot be dragged out
+      // of position or resized while signing. (NoRotate used to be set here
+      // too — it is not, and must not be: see setAnnotationFlags.)
+      setAnnotationFlags(annot, {
+        Locked: false,
+        ReadOnly: false,
+        NoResize: true,
+        NoMove: true,
+      });
 
       if (isWidget) {
         try {
@@ -680,6 +843,13 @@ const PendingSignatureViewer = () => {
   const participantsRef = useRef(participants);
   const hiddenUsersRef = useRef(hiddenUsers);
   const removeXmlAfterHideDataRef = useRef(removeXmlAfterHideData);
+  /**
+   * Field names belonging to signers whose turn has not come (the same
+   * HideArray used to prune the XFDF). Read by the WebViewer callbacks that run
+   * after import, which need it to hide the widgets the PDF supplies regardless
+   * of what the XFDF said.
+   */
+  const hiddenFieldNamesRef = useRef(new Set());
   const removeXmlAfterFreetextHideRef = useRef(removeXmlAfterFreetextHideData);
   const fieldsDataRef = useRef(fieldsData);
   const pdfDataRef = useRef(pdfData);
@@ -756,8 +926,23 @@ const PendingSignatureViewer = () => {
     getWorkfFlowByFileId?.workFlow?.bundleModels?.length,
   );
 
+  // Step 2 of the bootstrap: the viewer is created only once EVERY response
+  // has landed AND the state derived from each has settled.
+  //
+  //   getWorkfFlowByFileId              → workflow + actors   → signerData
+  //   getSignatureFileAnnotationResponse→ XFDF + PDF bytes    → pdfData.*
+  //   signerData                        → drives the header (Decline/Submit
+  //                                       vs a bare Close button)
+  //   pdfData.documentID                → proves the pdfData above belongs to
+  //                                       THIS document and is not left over
+  //                                       from a previous one
+  //
+  // getAllFieldsByWorkflowID is intentionally excluded: it is dispatched as a
+  // failure (null) in the API's "no fields" branch, so requiring it would hang
+  // this screen forever on documents that legitimately have none.
   const isViewerDataReady = Boolean(
     pdfData.attachmentBlob &&
+      Number(pdfData.documentID) === Number(docWorkflowID) &&
       getWorkfFlowByFileId &&
       getSignatureFileAnnotationResponse &&
       (!hasActors || signerData.length > 0),
@@ -788,9 +973,53 @@ const PendingSignatureViewer = () => {
     pdfDataRef.current = pdfData;
   }, [pdfData]);
 
-  // ── Initial API calls ──────────────────────────────────────────────────────
+  // ── Bootstrap: clean → fetch → settle → (viewer starts once ready) ─────────
+  //
+  // Step 1 of an explicit sequence. Everything from any previously opened
+  // document is wiped BEFORE the first request goes out, so none of the
+  // `if (!x) return;` guards below can ever act on the previous document's
+  // Redux data while this document's responses are still in flight. The
+  // viewer itself is not created here — it waits on the readiness gate.
   useEffect(() => {
     if (!docWorkflowID) return;
+
+    // 1a. Clear shared Redux state for the signature viewers.
+    dispatch(clearSignatureViewerData());
+
+    // 1b. Reset every piece of local state this screen derives from it.
+    setFieldsData([]);
+    setSignerData([]);
+    setParticipants([]);
+    setLastParticipants([]);
+    setSelectedUser("");
+    setUserAnnotations([]);
+    setUserAnnotationsCopy([]);
+    setHiddenUsers([]);
+    setRemoveXmlAfterHideData("");
+    setRemoveXmlAfterFreetextHideData([]);
+    setPdfData({
+      xfdfData: "",
+      attachmentBlob: "",
+      workFlowID: 0,
+      documentID: 0,
+      title: "",
+      description: "",
+      creationDateTime: "",
+      isDeadline: "",
+      deadlineDatetime: "",
+      creatorID: "",
+      isCreator: 0,
+    });
+
+    // 1c. Reset per-document viewer bookkeeping so a re-open bootstraps clean.
+    webViewerInitialized.current = false;
+    sessionOwnedAnnotIdsRef.current = new Set();
+    filledFieldsRef.current = new Set();
+    currentUserFieldNamesRef.current = new Set();
+
+    // 1d. Only now start fetching. getWorkFlowByWorkFlowIdwApi chains
+    //     GetAllFieldsByWorkFlowID and then GetSignatureFileAnnotation
+    //     internally, so this one dispatch drives the whole load.
     dispatch(
       getWorkFlowByWorkFlowIdwApi(
         { FileID: Number(docWorkflowID) },
@@ -828,8 +1057,18 @@ const PendingSignatureViewer = () => {
         })),
       );
 
-      // hiddenUsers come from the API (future signers in ordered workflows)
-      setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers ?? []);
+      // Future signers in an ordered workflow — derived from the bundle
+      // dependency graph, since the API sends no hiddenUsers key. If a future
+      // backend version starts sending one, it wins. See deriveHiddenUsers.
+      const apiHiddenUsers = getAllFieldsByWorkflowID.hiddenUsers;
+      setHiddenUsers(
+        Array.isArray(apiHiddenUsers) && apiHiddenUsers.length
+          ? apiHiddenUsers
+          : deriveHiddenUsers(
+              getWorkfFlowByFileId?.workFlow?.bundleModels ?? [],
+              getCurrentUserID(),
+            ),
+      );
 
       if (containsNull(listOfFields)) {
         const bundles = getWorkfFlowByFileId?.workFlow?.bundleModels ?? [];
@@ -933,12 +1172,17 @@ const PendingSignatureViewer = () => {
         ReadArray,
       );
 
-      // 2. Strip widget / ffield entries for hidden users (ordered workflow)
+      // 2. Strip widget / ffield entries for hidden users (ordered workflow).
+      //    This alone does NOT hide them: the same widgets are baked into the
+      //    stored PDF, and Apryse's import only deletes document widgets that
+      //    the imported XFDF also contains. applyAnnotationLocks finishes the
+      //    job against the live annotations, using the names recorded here.
       const { updatedXmlString, removedItems } = processXmlToHideFields(
         withReadOnly,
         HideArray,
       );
       setRemoveXmlAfterHideData(removedItems);
+      hiddenFieldNamesRef.current = new Set(HideArray);
 
       // All non-current, non-hidden users → their freetext labels are read-only
       const readOnlyUserIDs = userAnnotationsRef.current
@@ -976,19 +1220,56 @@ const PendingSignatureViewer = () => {
         const currentUserID = getCurrentUserID();
         const currentUserFieldNames = currentUserFieldNamesRef.current;
 
+        console.group("[SUBMIT] handleSave");
+        console.log("1. currentUserID:", currentUserID);
+        console.log("1. ownedFieldNames:", [...currentUserFieldNames]);
         console.log(
-          currentUserID,
-          currentUserFieldNames,
-          "handleSavehandleSavehandle",
+          "1. userAnnotations:",
+          userAnnotationsRef.current.map((u) => ({
+            userID: u.userID,
+            actorID: u.actorID,
+            xmlCount: u.xml?.length,
+          })),
         );
+        console.log("1. hiddenUsers:", hiddenUsersRef.current);
 
-        // Export XFDF once — used for both validation and API payload
-        const xfdfString = await annotationManager.exportAnnotations();
-        console.log(xfdfString, "exported XFDF");
+        // ── Un-hide before exporting ─────────────────────────────────────────
+        //
+        // Hiding a later signer's fields is a display concession to THIS user,
+        // never a change to the document. Field.hide() sets the field's Hidden
+        // flag, and the pdf-info writer serialises field flags onto the <ffield>
+        // — so leaving it on would write Hidden into the XFDF and into the PDF
+        // saved by getFileData(), and the next signer would inherit fields they
+        // can never see. revertProcessXmlToHideFields already replaces those
+        // elements with the pristine pre-hide snapshot, so this is belt and
+        // braces; it also keeps the exported document bytes clean, which the
+        // revert cannot reach.
+        try {
+          const fieldManager = annotationManager.getFieldManager?.();
+          hiddenFieldNamesRef.current.forEach((name) => {
+            fieldManager?.getField?.(name)?.show?.();
+          });
+        } catch (err) {
+          console.warn("Could not un-hide fields before export:", err);
+        }
 
-        // Usage with your data
+        // Export XFDF once — used for both validation and API payload.
+        //
+        // Options are explicit rather than relying on defaults: this XFDF is
+        // the record the NEXT signer loads, so it has to carry the widget
+        // annotations and form-field data, not just the free annotations.
+        // A bare exportAnnotations() leaves that to Apryse's defaults, which
+        // is where a signature's appearance data can quietly be left out.
+        const xfdfString = await annotationManager.exportAnnotations({
+          widgets: true,
+          fields: true,
+          links: true,
+        });
+        console.log("2. exported XFDF (raw from viewer):", xfdfString);
+        console.log("2. SIGNATURE MARKERS:", summariseXfdfSignature(xfdfString));
+
         const isSigned = isUserSigned(xfdfString);
-        console.log("User signed:", isSigned);
+        console.log("3. isUserSigned:", isSigned);
 
         // ── Validation: every assigned field must be filled ──────────────────
         // validateViaXFDF inspects the exported XFDF synchronously:
@@ -1002,9 +1283,11 @@ const PendingSignatureViewer = () => {
           currentUserID,
         );
 
-        console.log(valid, "handleSavehandleSavehandle");
+        console.log("3. validateViaXFDF valid:", valid);
 
         if (!valid || !isSigned) {
+          console.warn("ABORTED: validation failed", { valid, isSigned });
+          console.groupEnd();
           show(t("Signature-is-required"), "warning");
           return;
         }
@@ -1024,30 +1307,115 @@ const PendingSignatureViewer = () => {
           )
           .map((u) => u.userID);
 
+        console.log("4. HideArray:", HideArray);
+        console.log("4. ReadArray:", ReadArray);
+        console.log("4. readOnlyUserIDs:", readOnlyUserIDs);
+
         let reverted = await revertProcessXmlForReadOnly(xfdfString, ReadArray);
+        console.log("5a. after revertProcessXmlForReadOnly:", summariseXfdfSignature(reverted));
+
         reverted = await revertProcessXmlToHideFields(
           reverted,
           removeXmlAfterHideDataRef.current,
         );
+        console.log("5b. after revertProcessXmlToHideFields:", summariseXfdfSignature(reverted));
         reverted = await revertReadOnlyFreetextElements(
           reverted,
           readOnlyUserIDs,
         );
+        console.log("5c. after revertReadOnlyFreetextElements:", summariseXfdfSignature(reverted));
+
         reverted = await revertHideFreetextElements(
           reverted,
           removeXmlAfterFreetextHideRef.current,
         );
+        console.log("5d. FINAL reverted XFDF:", summariseXfdfSignature(reverted));
+        console.log("5d. FINAL reverted XFDF (full):", reverted);
 
         // ── Build API payload ────────────────────────────────────────────────
         const filtered = filterAnnotationsAgainstXFDF(
           userAnnotationsRef.current,
           reverted,
         );
+        console.log(
+          "6. filterAnnotationsAgainstXFDF result:",
+          filtered.map((u) => ({ userID: u.userID, xmlCount: u.xml?.length })),
+        );
+
         const convertData = convertAnnotationsForApi(filtered);
+        console.log("6. ActorsFieldValuesList:", convertData);
         const userID = getCurrentUserID();
         const findActionBundleID = fieldsDataRef.current.find(
           (d) => Number(d.userID) === userID,
         );
+
+        // ── Signed PDF bytes ─────────────────────────────────────────────────
+        //
+        // A signature is a PDF appearance stream that the XFDF only REFERENCES
+        // (<apref objnum="N">); unlike text/checkbox values it is not
+        // self-contained. Saving only the annotation string left that object
+        // unpersisted, so for the next signer the reference dangled and the
+        // signature disappeared. Sending the document bytes keeps object N
+        // alive so the reference still resolves.
+        //
+        // Best-effort: if this fails the submit still goes through exactly as
+        // it did before, just without the appearance persisted.
+        let signedPdfPayload = "";
+        try {
+          const documentViewer =
+            pendingSignatureViewer.current?.Core?.documentViewer;
+          const doc = documentViewer?.getDocument?.();
+          if (doc) {
+            // Pass the XFDF so the annotations are MERGED INTO the saved PDF.
+            // getFileData({}) with no options returns the original document
+            // bytes without the annotation layer — so the signature, which
+            // exists only as an appearance stream in the XFDF, was never
+            // actually baked into the file being saved.
+            const fileData = await doc.getFileData({ xfdfString: reverted });
+            const base64File = await generateBase64FromBlob(
+              new Blob([new Uint8Array(fileData)], {
+                type: "application/pdf",
+              }),
+            );
+            if (base64File) {
+              signedPdfPayload = {
+                FileID: Number(docWorkflowID),
+                base64File,
+              };
+            }
+          }
+        } catch (err) {
+          console.error("Failed to serialise signed PDF:", err);
+        }
+
+        console.log("7. signedPdfPayload:", {
+          present: !!signedPdfPayload,
+          FileID: signedPdfPayload?.FileID,
+          base64Length: signedPdfPayload?.base64File?.length,
+          base64Preview: signedPdfPayload?.base64File?.slice(0, 80),
+        });
+
+        // ── Exactly what would be sent to AddUpdateFieldValue ────────────────
+        const apiArgs = {
+          "arg1 Data (ActorsFieldValuesList)": {
+            ActorsFieldValuesList: convertData,
+          },
+          "arg4 addAnnoatationofFilesAttachment": {
+            FileID: Number(docWorkflowID),
+            AnnotationString: reverted,
+            CreatorID: pdfDataRef.current.creatorID,
+          },
+          "arg5 saveSignatureDocument": signedPdfPayload,
+          "arg6 status": 3,
+          "arg8 UpdateActorBundle": {
+            WorkFlowID: pdfDataRef.current.workFlowID,
+            UserID: userID,
+            WorkFlowActionableBundleID:
+              findActionBundleID?.pK_WorkFlowActionableBundle_ID ?? 0,
+          },
+        };
+        console.log("8. FULL API ARGS →", apiArgs);
+        console.groupEnd();
 
         dispatch(
           addUpdateFieldValueApi(
@@ -1059,7 +1427,7 @@ const PendingSignatureViewer = () => {
               AnnotationString: reverted,
               CreatorID: pdfDataRef.current.creatorID,
             },
-            "",
+            signedPdfPayload,
             3,
             "",
             {
@@ -1370,6 +1738,32 @@ const PendingSignatureViewer = () => {
           await documentViewer.getAnnotationsLoadedPromise();
           UI.setFitMode(UI.FitMode.FitWidth);
 
+          // ── Leave form-field CREATION mode, before anything else ──────────
+          //
+          // While Apryse is in form-field creation mode, widgets behave as
+          // editable ANNOTATIONS: clicking one selects it and shows the
+          // edit/delete popup. Only once creation mode has ended do they
+          // behave as FILLABLE fields — text boxes accept typing, checkboxes
+          // and radios toggle, and a signature field opens the signing modal.
+          //
+          // This screen only ever fills fields; authoring happens in
+          // signatureviewer.js, which is what turns creation mode on. Nothing
+          // in this flow ever turned it back off, which is exactly the
+          // reported symptom: clicking a field showed edit/delete instead of
+          // letting the user sign, type or toggle it.
+          //
+          // Done first so the annotation locks applied below are not undone by
+          // the mode change, and unconditionally rather than behind an
+          // isInFormFieldCreationMode() check, since ending it is a no-op when
+          // it was never started.
+          try {
+            const formFieldCreationManager =
+              annotationManager.getFormFieldCreationManager?.();
+            formFieldCreationManager?.endFormFieldCreationMode?.();
+          } catch {
+            /* older Apryse builds may not expose the manager */
+          }
+
           if (pdfXfdfRef.current) {
             try {
               // Validate each <apref> objnum against the PDF XRef table;
@@ -1393,6 +1787,8 @@ const PendingSignatureViewer = () => {
                 currentUserID,
                 currentUserFieldNamesRef.current,
                 sessionOwnedAnnotIdsRef.current,
+                hiddenFieldNamesRef.current,
+                new Set(hiddenUsersRef.current),
               );
             } catch (err) {}
           }
@@ -1467,6 +1863,17 @@ const PendingSignatureViewer = () => {
       if (action === "add") {
         annotations.forEach((a) => {
           if (a?.Id) sessionOwnedAnnotIdsRef.current.add(a.Id);
+          // Also stamp it onto the annotation itself. The session set above
+          // is empty after a reload; this is what makes the signature still
+          // resolve as the current user's once it comes back from the server.
+          try {
+            const existing = a.getCustomData?.(SIGNER_CUSTOM_DATA_KEY);
+            if (!existing) {
+              a.setCustomData?.(SIGNER_CUSTOM_DATA_KEY, String(currentUserID));
+            }
+          } catch {
+            /* custom data unsupported — session set still covers this load */
+          }
         });
       } else if (action === "delete") {
         annotations.forEach((a) => {
@@ -1491,6 +1898,8 @@ const PendingSignatureViewer = () => {
         currentUserID,
         currentUserFieldNamesRef.current,
         sessionOwnedAnnotIdsRef.current,
+        hiddenFieldNamesRef.current,
+        new Set(hiddenUsersRef.current),
       );
     };
 
@@ -1499,15 +1908,17 @@ const PendingSignatureViewer = () => {
       try {
         const fieldName = field.name;
 
-        // 🔥 CRITICAL: Block non-owner fields immediately
-        if (!currentUserFieldNamesRef.current.has(fieldName)) {
-          console.warn(
-            `🚫 Blocked: Field "${fieldName}" doesn't belong to current user`,
-          );
+        // Block non-owner fields — but only once ownership is actually known.
+        // An empty set means ownership has not resolved yet (see the matching
+        // fail-open guard in applyAnnotationLocks); blocking on that basis
+        // would stop the user filling their own field and never clear the
+        // post-signature ReadOnly flag, so re-signing would break too.
+        if (
+          currentUserFieldNamesRef.current.size > 0 &&
+          !currentUserFieldNamesRef.current.has(fieldName)
+        ) {
           return;
         }
-
-        console.log(`✅ Field changed allowed for: ${fieldName}`);
 
         const fieldType = field.type || "";
 
@@ -1528,13 +1939,17 @@ const PendingSignatureViewer = () => {
         field.flags.set("ReadOnly", false);
 
         // Re-signable, but still not repositionable — mirrors the owner
-        // branch of applyAnnotationLocks (fill yes, move/resize no).
+        // branch of applyAnnotationLocks (fill yes, move/resize no), including
+        // its appearance-safe flag handling: this runs the instant a field
+        // commits, so setting NoRotate here wiped the appearance of the
+        // signature the user had just drawn.
         field.widgets?.forEach((annot) => {
-          annot.Locked = false;
-          annot.ReadOnly = false;
-          annot.NoResize = true;
-          annot.NoMove = true;
-          annot.NoRotate = true;
+          setAnnotationFlags(annot, {
+            Locked: false,
+            ReadOnly: false,
+            NoResize: true,
+            NoMove: true,
+          });
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
