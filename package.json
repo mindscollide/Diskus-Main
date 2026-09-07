@@ -111,7 +111,8 @@
     "build:optimize": "env-cmd -f .env.optimized vite build",
     "build:production": "env-cmd -f .env.production vite build",
     "preview": "vite preview --outDir build",
-    "test": "craco test",
+    "test": "vitest",
+    "test:run": "vitest run",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -144,12 +145,14 @@
     "@vitejs/plugin-react": "^4.7.0",
     "buffer": "^6.0.3",
     "env-cmd": "^11.0.0",
+    "jsdom": "^30.0.1",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5",
-    "vite": "^6.4.3"
+    "vite": "^6.4.3",
+    "vitest": "^5.0.0"
   }
 }

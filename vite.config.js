@@ -210,5 +210,27 @@ export default defineConfig(({ mode }) => {
        */
       sourcemap: false,
     },
+
+    /**
+     * (5) TESTS — Vitest.
+     *
+     * Deliberately configured here rather than in a separate vitest.config.js so
+     * tests resolve modules exactly the way the app does: the same `@` alias, the
+     * same JSX-in-`.js` loader, the same moment pinning. A separate config drifts
+     * from the build config and then tests pass against a module graph the app
+     * never actually uses.
+     *
+     * `environment: "jsdom"` because the code under test is DOM-dependent — the
+     * XFDF pipeline runs on DOMParser/XMLSerializer, which do not exist in Node.
+     *
+     * Run with `npm test` (watch) or `npm run test:run` (single pass, for CI).
+     */
+    test: {
+      environment: "jsdom",
+      include: ["src/**/*.{test,spec}.{js,jsx}"],
+      // The app is not global-test-API based; import { describe, it, expect }
+      // explicitly so a test file reads as ordinary module code.
+      globals: false,
+    },
   };
 });
