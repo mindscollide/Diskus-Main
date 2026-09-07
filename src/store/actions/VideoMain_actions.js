@@ -163,13 +163,17 @@ const InitiateVideoCall = (Data, navigate, t) => {
               sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
               // localStorage.setItem("meetingTitle", "");
               if (Data.CallTypeID === 2) {
-                localStorage.setItem(
+              localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
                   JSON.stringify(Data.RecipentIDs),
                 );
                 localStorage.setItem(
                   "callerGuid",
                   response.data.responseResult.guid,
+                );
+                localStorage.setItem(
+                  "groupCallRoomId",
+                  response.data.responseResult.roomID,
                 );
               }
             } else if (
@@ -294,6 +298,16 @@ const VideoCallResponse = (Data, navigate, t) => {
                 // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               }
 
+              if (Data.CallTypeID === 2) {
+                localStorage.setItem(
+                  "receipentGuid",
+                  response.data.responseResult.guid,
+                );
+                localStorage.setItem(
+                  "groupCallRoomId",
+                  response.data.responseResult.roomID,
+                );
+              }
               if (Data.CallStatusID === 1) {
                 const meetingHost = {
                   isHost: false,
