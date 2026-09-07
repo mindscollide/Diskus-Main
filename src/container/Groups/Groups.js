@@ -314,7 +314,9 @@ const Groups = () => {
 
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/Groups.js:", error);
+      }
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
@@ -467,7 +469,9 @@ const Groups = () => {
       } else {
         setgroupsData([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/Groups.js:", error);
+    }
   }, [GroupsReducergetAllGroupsResponse]);
 
   useEffect(() => {
@@ -480,7 +484,9 @@ const Groups = () => {
           });
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/Groups.js:", error);
+    }
   }, [GroupsReducerremoveGroupMember]);
 
   const handlechange = (value) => {

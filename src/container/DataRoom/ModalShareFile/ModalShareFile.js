@@ -164,7 +164,9 @@ const ModalShareFile = ({
           }
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalShareFile/ModalShareFile.js:", error);
+    }
   }, [getSharedFileUsers, assignees]);
 
   // change Handler for user rights

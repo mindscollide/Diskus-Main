@@ -58,7 +58,7 @@ const PakageDetailsUserManagement = () => {
         dispatch(getAllUserTypePackagesApi(navigate, t, false));
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement.js:", error);
     }
   }, []);
 

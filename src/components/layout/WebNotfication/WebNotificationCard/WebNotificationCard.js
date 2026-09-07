@@ -314,7 +314,7 @@ const WebNotificationCard = ({
         
       }
     } catch (error) {
-      
+      console.error("src/components/layout/WebNotfication/WebNotificationCard/WebNotificationCard.js:", error);
     }
   }, [NotificationMessege, NotificaitonID, maxCharacters]);
 

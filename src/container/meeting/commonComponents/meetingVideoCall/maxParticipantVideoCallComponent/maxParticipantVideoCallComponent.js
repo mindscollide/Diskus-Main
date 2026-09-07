@@ -548,7 +548,7 @@ const ParticipantVideoCallComponent = () => {
         );
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
     }
   };
 
@@ -557,7 +557,9 @@ const ParticipantVideoCallComponent = () => {
       if (leaveMeetingVideoOnLogoutResponse) {
         onClickEndVideoCall(true, false, false);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
+    }
   }, [leaveMeetingVideoOnLogoutResponse]);
 
   useEffect(() => {
@@ -565,7 +567,9 @@ const ParticipantVideoCallComponent = () => {
       if (closeQuickMeetingVideoReducer) {
         onClickEndVideoCall(false, true, false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
+    }
   }, [closeQuickMeetingVideoReducer]);
 
   useEffect(() => {
@@ -573,7 +577,9 @@ const ParticipantVideoCallComponent = () => {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
         onClickEndVideoCall(false, false, true);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
+    }
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
   const isEndCallEnabled = !joinButton || isWaiting || getReady;

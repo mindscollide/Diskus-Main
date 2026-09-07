@@ -161,7 +161,9 @@ const ViewComplianceTasks = () => {
         try {
           const { checklistList } = getAllComplianceChecklistTask;
           setViewComplianceTasksContextData(checklistList);
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/ViewComplianceTasks/index.jsx:", error);
+        }
       }
     } else if (complianceViewMode === "forMe") {
       if (
@@ -171,7 +173,9 @@ const ViewComplianceTasks = () => {
         try {
           const { checklistList } = getAllComplianceChecklistTaskForMe;
           setViewComplianceTasksContextData(checklistList);
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/ViewComplianceTasks/index.jsx:", error);
+        }
       }
     }
   }, [getAllComplianceChecklistTask, getAllComplianceChecklistTaskForMe]);

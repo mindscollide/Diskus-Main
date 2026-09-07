@@ -1027,7 +1027,9 @@ export const convertDateTimetoGMTMeetingDetail = (dateString) => {
     const seconds = date.getSeconds().toString().padStart(2, "0");
 
     return year + month + day + hours + minutes + seconds;
-  } catch {}
+  } catch (error) {
+    console.error("src/commen/functions/date_formater.js:", error);
+  }
 };
 
 export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
@@ -1241,7 +1243,9 @@ export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
       numberingSystem: locale === "ar" ? "arab" : "latn",
     };
     return date.toLocaleString(locale, options);
-  } catch {}
+  } catch (error) {
+    console.error("src/commen/functions/date_formater.js:", error);
+  }
 };
 
 export const formattedString = (dateString) => {

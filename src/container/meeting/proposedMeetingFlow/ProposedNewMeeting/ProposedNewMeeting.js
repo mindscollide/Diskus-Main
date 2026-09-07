@@ -161,7 +161,9 @@ const ProposedNewMeeting = () => {
           setEditProposedMeetingID(EditFlowData.meetingID);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+    }
   }, [getAllMeetingDetails, isProposedMeetingRoute]);
 
   //Getting All the Participants for edit flow
@@ -175,7 +177,9 @@ const ProposedNewMeeting = () => {
         setDropdowndata(getAllParticipants);
         setMembersParticipants(getAllParticipants);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+    }
   }, [getAllParticipants]);
 
   const [show, SnackBar] = useSnackbar();
@@ -262,7 +266,9 @@ const ProposedNewMeeting = () => {
           date: convertResponseDate,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+    }
   }, [getAllProposedDatesEditFlow, isProposedMeetingRoute]);
 
   const renderLabel = (img, name, isBase64 = false) => (
@@ -428,7 +434,9 @@ const ProposedNewMeeting = () => {
           MeetingType: typeData,
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+    }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   //onChange function Search
@@ -579,7 +587,9 @@ const ProposedNewMeeting = () => {
       const updatedRows = [...rows];
       updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+    }
   };
 
   //Removing the Date Time Rows

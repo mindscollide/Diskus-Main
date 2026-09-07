@@ -179,7 +179,7 @@ const EndOfComplianceReport = () => {
       // Remove the class after generation
       element.classList.remove("pdf-print-mode");
     } catch (err) {
-      
+      console.error("src/container/ComplianceUser/Tabs/Reports/endOfComplianceReport/EndOfComplianceReport.jsx:", err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -196,7 +196,7 @@ const EndOfComplianceReport = () => {
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
-      
+      console.error("src/container/ComplianceUser/Tabs/Reports/endOfComplianceReport/EndOfComplianceReport.jsx:", error);
     } finally {
       setIsGenerating(false);
     }

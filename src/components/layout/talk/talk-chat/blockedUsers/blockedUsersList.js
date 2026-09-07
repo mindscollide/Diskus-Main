@@ -103,7 +103,9 @@ const BlockedUsersList = () => {
           setBlockedUsersData(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/blockedUsers/blockedUsersList.js:", error);
+    }
   };
 
   console.log("Get Blocked Users", blockedUsersData);

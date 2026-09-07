@@ -633,7 +633,7 @@ export const ComlianceProvider = ({ children }) => {
           setCheckAnyTaskInProgress(false);
         }
       } catch (error) {
-        
+        console.error("src/context/ComplianceContext.js:", error);
       }
     }
   }, [viewComplianceByMeDetails, complianceAddEditViewState]);
@@ -683,7 +683,7 @@ export const ComlianceProvider = ({ children }) => {
           setComplianceByMeTotal((prev) => prev + 1);
         }
       } catch (error) {
-        
+        console.error("src/context/ComplianceContext.js:", error);
       }
     }
   }, [complianceCreatedMqttData]);
@@ -730,7 +730,7 @@ export const ComlianceProvider = ({ children }) => {
         ]);
       }
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceCheckListMqttData]);
 
@@ -759,7 +759,7 @@ export const ComlianceProvider = ({ children }) => {
         ),
       );
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceCheckListUpdatedMqttData]);
 
@@ -780,7 +780,7 @@ export const ComlianceProvider = ({ children }) => {
         prev.filter((item) => Number(item.checklistId) !== Number(checklistId)),
       );
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceCheckListDeletedMqttData]);
 
@@ -908,7 +908,9 @@ export const ComlianceProvider = ({ children }) => {
           //   ),
           // );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/ComplianceContext.js:", error);
+      }
 
       setComplianceByMeList((prev) =>
         prev.map((item) =>
@@ -935,7 +937,7 @@ export const ComlianceProvider = ({ children }) => {
         };
       });
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceUpdateMqttData]);
 
@@ -966,7 +968,7 @@ export const ComlianceProvider = ({ children }) => {
         };
       });
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceReopenMqttData]);
 
@@ -996,7 +998,7 @@ export const ComlianceProvider = ({ children }) => {
         });
       });
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [taskStatusChangedMqttData]);
 

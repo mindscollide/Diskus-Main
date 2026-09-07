@@ -250,7 +250,9 @@ const Committee = () => {
         localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
         setViewCommitteePage(true);
         dispatch(viewCommitteePageFlag(true));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
     }
   }, [state]);
 
@@ -337,7 +339,9 @@ const Committee = () => {
       } else {
         setGetCommitteeData([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
@@ -397,7 +401,9 @@ const Committee = () => {
   useEffect(() => {
     if (committee_meetingprop !== null) {
       try {
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
     }
   }, [committee_meetingprop]);
 
@@ -551,7 +557,9 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {
@@ -573,7 +581,9 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeCreateResponse]);
 
   useEffect(() => {
@@ -598,7 +608,9 @@ const Committee = () => {
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerremoveCommitteeMember]);
 
   const archivedmodaluser = async (e) => {

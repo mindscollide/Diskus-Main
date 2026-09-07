@@ -131,7 +131,9 @@ export const useMeetingListActions = ({
         role: getAttendeeRole(record),
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/useMeetingListActions.js:", error);
+    }
   };
 
   const handleStartMeeting = async (record) => {

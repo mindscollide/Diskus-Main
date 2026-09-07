@@ -93,7 +93,9 @@ const StarredMessagesList = () => {
           setAllStarredMessagesData(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/starredMessages/starredMessagesList.js:", error);
+    }
   };
 
   useEffect(() => {

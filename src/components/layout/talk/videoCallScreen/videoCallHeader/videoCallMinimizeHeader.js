@@ -748,7 +748,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         let callerObjectObj = JSON.parse(callerObject);
         setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallMinimizeHeader.js:", error);
+    }
   }, [callerObject]);
 
   useEffect(() => {

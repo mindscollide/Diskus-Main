@@ -95,7 +95,9 @@ const Recording = () => {
 
         setData(MeetingData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/recording/Recording.js:", error);
+    }
   }, [meetingRecordingFiles]);
 
   const handleClickTranscribe = (record) => {

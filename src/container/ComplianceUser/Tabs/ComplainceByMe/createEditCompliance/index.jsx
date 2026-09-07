@@ -43,7 +43,9 @@ const CreateEditCompliance = () => {
         dispatch(
           GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
         );
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/index.jsx:", error);
+      }
     }
   }, []);
 

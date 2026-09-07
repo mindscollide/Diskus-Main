@@ -118,7 +118,15 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-empty": [
+        "warn",
+        {
+          "allowEmptyCatch": false
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [

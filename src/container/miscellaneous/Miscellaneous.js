@@ -24,7 +24,7 @@ const CustomMiscellaneous = () => {
       try {
         setFAQsStateData(fAQsAllData);
       } catch (error) {
-        
+        console.error("src/container/miscellaneous/Miscellaneous.js:", error);
       }
     }
   }, [fAQsAllData]);

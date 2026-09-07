@@ -86,7 +86,9 @@ const RevisionHistory = ({
           minuteVersionHistory:
             GetMinuteReviewDetailsForOrganizerbyMinuteId.minuteVersionHistory,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/RevisionHistoryModal/RevisionHistory.js:", error);
+      }
     }
   }, [GetMinuteReviewDetailsForOrganizerbyMinuteId]);
 

@@ -379,7 +379,9 @@ const Polls = () => {
       } else {
         setPollsRows([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/Polls.js:", error);
+    }
   }, [getPollsMeetingID]);
 
   // MQTT Response of Polls for Meeting
@@ -393,7 +395,7 @@ const Polls = () => {
         dispatch(createPollMeetingMQTT(null));
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/Polls.js:", error);
     }
   }, [newPollMeeting]);
 
@@ -421,7 +423,7 @@ const Polls = () => {
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/Polls.js:", error);
     }
   }, [pollingSocket]);
 
@@ -438,7 +440,7 @@ const Polls = () => {
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/Polls.js:", error);
     }
   }, [newPollDelete]);
 
@@ -512,7 +514,7 @@ const Polls = () => {
         );
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/Polls.js:", error);
     }
     return () => {
       dispatch(setCastVoteID(null));

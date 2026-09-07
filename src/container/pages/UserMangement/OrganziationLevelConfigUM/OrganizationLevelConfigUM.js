@@ -168,7 +168,9 @@ const OrganizationLevelConfigUM = () => {
 
         const autoResolutionsOptionsData = autoResolutionsOptionsValues(30);
         setAutoCloseResolutionOptions(autoResolutionsOptionsData);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM.js:", error);
+      }
     };
 
     fetchData();

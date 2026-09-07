@@ -129,7 +129,7 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
           // dispatch(getCalendarDataInit(false));
         });
     } catch (error) {
-      
+      console.error("src/store/actions/GetDataForCalendar.js:", error);
     }
   };
 };
@@ -226,7 +226,7 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
           // dispatch(calendarLoader(false));
         });
     } catch (error) {
-      
+      console.error("src/store/actions/GetDataForCalendar.js:", error);
     }
   };
 };

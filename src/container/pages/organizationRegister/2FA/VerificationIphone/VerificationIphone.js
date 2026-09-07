@@ -85,7 +85,9 @@ const VerificationIphone = () => {
       let parsedDevices = JSON.parse(devicesi);
 
       setDevices(parsedDevices);
-    } catch (e) {}
+    } catch (e) {
+      console.error("src/container/pages/organizationRegister/2FA/VerificationIphone/VerificationIphone.js:", e);
+    }
   }, []);
 
   let newClient = Helper.socket;

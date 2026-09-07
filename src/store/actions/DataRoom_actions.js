@@ -672,7 +672,9 @@ const getFolderDocumentsApi = (
                     dispatch(BreadCrumbsList(newFolderRecord));
                   }
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/DataRoom_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1376,7 +1378,9 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                     t("File-deleted"),
                   ),
                 );
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/DataRoom_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

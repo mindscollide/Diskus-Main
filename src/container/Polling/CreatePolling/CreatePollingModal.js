@@ -288,7 +288,9 @@ const CreatePolling = () => {
           } else {
           }
         });
-      } catch {}
+      } catch (error) {
+        console.error("src/container/Polling/CreatePolling/CreatePollingModal.js:", error);
+      }
 
       const uniqueData = new Set(tem.map(JSON.stringify));
 
@@ -313,7 +315,9 @@ const CreatePolling = () => {
         ...createPollData,
         date: DateDate,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/CreatePolling/CreatePollingModal.js:", error);
+    }
   };
 
   // for create polls

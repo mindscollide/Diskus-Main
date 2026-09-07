@@ -874,7 +874,9 @@ export const UpdateMeetingUserApi = (
                     default:
                       break;
                   }
-                } catch (error) {}
+                } catch (error) {
+                  console.error("src/store/actions/NewMeeting2.actions.js:", error);
+                }
               },
               // _02: Update failed
               DataRoom_DataRoomManager_UpdateMeetingUsers_02: () =>
@@ -3471,7 +3473,9 @@ export const getViewMeetingByMeetingIdApi = (
                       default:
                         break;
                     }
-                  } catch (error) {}
+                  } catch (error) {
+                    console.error("src/store/actions/NewMeeting2.actions.js:", error);
+                  }
                 },
               // _02: No records found
               Meeting_MeetingServiceManager_GetMeetingsByMeetingID_02:
@@ -3560,7 +3564,9 @@ export const listOfMeetingsApi = (navigate, t, Data, routePath, object) => {
                 if (webNotifactionDataRoutecheckFlag) {
                   dispatch(webnotificationGlobalFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeeting2.actions.js:", error);
+              }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
@@ -4681,7 +4687,9 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                 //   localStorage.setItem("VidOff", true);
                 //   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 // }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeeting2.actions.js:", error);
+              }
 
               // setViewFlag(false);
             } else if (

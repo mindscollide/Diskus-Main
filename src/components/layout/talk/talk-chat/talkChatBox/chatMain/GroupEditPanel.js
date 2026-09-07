@@ -102,7 +102,9 @@ const GroupEditPanel = ({ groupId, channelId, onClose }) => {
           setOrgUsers(talkStateData.AllUsers.AllUsersData.allUsers);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/talkChatBox/chatMain/GroupEditPanel.js:", error);
+    }
   };
 
   const editGroupTitle = () => setShowEditGroupField(true);

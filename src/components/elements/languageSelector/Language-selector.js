@@ -56,7 +56,9 @@ const LanguageSelector = () => {
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/elements/languageSelector/Language-selector.js:", error);
+    }
   }, []);
 
   useEffect(() => {

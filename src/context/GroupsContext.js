@@ -246,7 +246,9 @@ export const GroupsProvider = ({ children }) => {
         dispatch(createGroupMeeting(null));
       };
       callAddAndUpdateGroupMeeting();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
 
@@ -269,7 +271,9 @@ export const GroupsProvider = ({ children }) => {
           status: "9",
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
 
@@ -330,7 +334,9 @@ export const GroupsProvider = ({ children }) => {
       });
 
       dispatch(meetingNotConductedMQTT(null));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusNotConductedMqttData]);
 
@@ -374,6 +380,7 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingAcRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -401,6 +408,7 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
+        console.error("src/context/GroupsContext.js:", error);
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -423,6 +431,7 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingOrgRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -469,6 +478,7 @@ export const GroupsProvider = ({ children }) => {
         //   return prev;
         // });
       } catch (error) {
+        console.error("src/context/GroupsContext.js:", error);
       } finally {
         dispatch(meetingStatusProposedMqtt(null));
       }
@@ -516,7 +526,9 @@ export const GroupsProvider = ({ children }) => {
       setStartMeetingButton((prev) =>
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 

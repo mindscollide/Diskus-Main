@@ -51,7 +51,7 @@ const PakageDetailsUMUpgrade = () => {
     try {
       dispatch(getAllUserTypePackagesApi(navigate, t, false));
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.js:", error);
     }
   }, []);
 
@@ -103,7 +103,7 @@ const PakageDetailsUMUpgrade = () => {
         setTableData(UserMangementReducergetAllUserTypePackagesData.packages);
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.js:", error);
     }
   }, [UserMangementReducergetAllUserTypePackagesData]);
 

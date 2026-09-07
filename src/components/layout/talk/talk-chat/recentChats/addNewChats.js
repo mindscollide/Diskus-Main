@@ -140,7 +140,9 @@ const AddNewChat = () => {
           setAllUsers(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/recentChats/addNewChats.js:", error);
+    }
   };
 
   return (

@@ -67,7 +67,7 @@ export const calculateTotalsBillingStepper = (data) => {
       Monthlycharges: totalMontlyCharges,
     };
   } catch (error) {
-    
+    console.error("src/commen/functions/TableDataCalculation.js:", error);
   }
 };
 

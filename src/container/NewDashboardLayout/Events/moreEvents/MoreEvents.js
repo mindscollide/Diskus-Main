@@ -108,7 +108,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
           setUpcomingMeetings(upcomingMeetingsData);
         }
       } catch (error) {
-        
+        console.error("src/container/NewDashboardLayout/Events/moreEvents/MoreEvents.js:", error);
       }
     }
   }, [moreEventsData]);

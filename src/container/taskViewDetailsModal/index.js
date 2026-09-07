@@ -371,7 +371,9 @@ const TaskViewDetailsModal = ({
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/taskViewDetailsModal/index.js:", error);
+    }
   }, [socketTodoStatusData]);
 
   const handleClickCommentSubmit = async (e, id) => {

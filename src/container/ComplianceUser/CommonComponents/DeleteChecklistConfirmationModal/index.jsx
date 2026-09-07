@@ -44,7 +44,9 @@ const DeleteChecklistConfirmationModal = ({
           setDeleteChecklistConfirmationModalState,
         ),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/ComplianceUser/CommonComponents/DeleteChecklistConfirmationModal/index.jsx:", error);
+    }
   };
 
   const handleNoButton = () => {

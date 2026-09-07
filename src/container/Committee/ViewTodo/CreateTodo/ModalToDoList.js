@@ -72,7 +72,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/ViewTodo/CreateTodo/ModalToDoList.js:", error);
     }
   }, [currentLanguage]);
   //task Object
@@ -131,7 +131,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setFileForSend([]);
         setTasksAttachments({ TasksAttachments: [] });
       };
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewTodo/CreateTodo/ModalToDoList.js:", error);
+    }
   }, []);
 
   const deleteFilefromAttachments = (data, index) => {
@@ -342,7 +344,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 5, setShow)
       );
     } catch (error) {
-      
+      console.error("src/container/Committee/ViewTodo/CreateTodo/ModalToDoList.js:", error);
     }
   };
 
@@ -448,7 +450,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setAllPresenters(sortedAssigners);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/ViewTodo/CreateTodo/ModalToDoList.js:", error);
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
 

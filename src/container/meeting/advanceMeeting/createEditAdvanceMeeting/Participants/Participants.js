@@ -139,7 +139,9 @@ const Participants = () => {
         );
         setParticpantsRole(Newdata);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Participants/Participants.js:", error);
+    }
   }, [NewMeetingreducer.getAllPartiicpantsRoles]);
 
   useEffect(() => {

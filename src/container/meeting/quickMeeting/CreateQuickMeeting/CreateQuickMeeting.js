@@ -824,7 +824,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         });
       });
       setReminderOptions(reminderOptions);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.js:", error);
+    }
   }, [assigneesRemindersData]);
 
   // for attendies Role handler

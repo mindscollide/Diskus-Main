@@ -435,6 +435,7 @@ const AccumulativeReport = () => {
         window.__PDF_CHUNK_DATA__ = null;
       }
     } catch (err) {
+      console.error("src/container/ComplianceUser/Tabs/Reports/accumulativeReport/AccumulativeReport.jsx:", err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -450,6 +451,7 @@ const AccumulativeReport = () => {
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
+      console.error("src/container/ComplianceUser/Tabs/Reports/accumulativeReport/AccumulativeReport.jsx:", error);
     } finally {
       setIsGenerating(false);
     }

@@ -137,7 +137,9 @@ const PrivateChats = () => {
           setSearchChatValue("");
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/privateChats/privateChats.js:", error);
+    }
   };
 
   return (

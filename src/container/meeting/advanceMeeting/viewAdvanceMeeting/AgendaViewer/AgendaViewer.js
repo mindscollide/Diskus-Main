@@ -1140,7 +1140,9 @@ const onClickVideoIconOpenVideo = () => {
         // }
       }
       // }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/AgendaViewer/AgendaViewer.js:", error);
+    }
   };
   return (
     <>

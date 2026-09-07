@@ -72,8 +72,8 @@ const MenuPopover = ({
       placement='bottom'
       overlayClassName='menu-popover'
       showArrow={false}
-      visible={visible} // Controlled visibility
-      onVisibleChange={handleVisibleChange} // Track visibility changes
+      open={visible} // Controlled visibility
+      onOpenChange={handleVisibleChange} // Track visibility changes
     >
       <span
         style={{

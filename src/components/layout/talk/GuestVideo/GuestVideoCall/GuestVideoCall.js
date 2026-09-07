@@ -269,7 +269,9 @@ const GuestVideoCall = () => {
           );
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall.js:", error);
+    }
   };
 
   useEffect(() => {

@@ -405,7 +405,7 @@ const ScheduleNewResolution = () => {
           }
         }
       } catch (error) {
-        
+        console.error("src/container/Resolution/ScheduleNewResolution/ScheduleNewResolution.js:", error);
       }
     }
     setVoters(voters_Data);
@@ -549,7 +549,7 @@ const ScheduleNewResolution = () => {
           }
         }
       } catch (error) {
-        
+        console.error("src/container/Resolution/ScheduleNewResolution/ScheduleNewResolution.js:", error);
       }
     }
     setNonVoters(nonVotersData);

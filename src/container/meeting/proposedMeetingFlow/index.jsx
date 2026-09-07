@@ -132,7 +132,9 @@ const ProposedMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -155,7 +157,9 @@ const ProposedMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -608,7 +612,9 @@ const ProposedMeeting = () => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
 
@@ -695,7 +701,9 @@ const ProposedMeeting = () => {
         };
 
         callApi1();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [UserMeetPropoDatPoll]);
   return (

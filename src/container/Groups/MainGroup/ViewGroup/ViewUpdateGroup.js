@@ -79,7 +79,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         });
       }
     } catch (error) {
-      
+      console.error("src/container/Groups/MainGroup/ViewGroup/ViewUpdateGroup.js:", error);
     }
   }, [GroupsReducer]);
 
@@ -214,7 +214,9 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         setFileAttachments([]);
         setFolderID(0);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/MainGroup/ViewGroup/ViewUpdateGroup.js:", error);
+    }
   }, [GroupsReducergroupDocuments]);
 
   const handleRemoveFile = (data) => {

@@ -506,7 +506,9 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                     });
                   });
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/MeetingAgenda_action.js:", error);
+              }
 
               dispatch(showCastVoteAgendaModal(false));
             } else if (

@@ -593,7 +593,9 @@ function useChatMessagesSync({ uploadFileTalk }) {
       try {
         if (talkStateData.ActiveChatData.messageType === "B") {
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/components/layout/talk/talk-chat/talkChatBox/chatMain/useChatMessagesSync.js:", error);
+      }
     }
   }, [
     talkStateData.talkSocketInsertBroadcastMessage

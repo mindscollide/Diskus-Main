@@ -1479,7 +1479,9 @@ const getMinuteReviewFlowByMeetingId_Success = (response, message) => {
       response: response,
       message: message,
     };
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/store/actions/Minutes_action.js:", error);
+  }
 };
 
 const getMinuteReviewFlowByMeetingId_Fail = (message, response) => {
@@ -1601,7 +1603,9 @@ const GetMinuteReviewFlowByMeetingId = (
             getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong")),
           );
         });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/store/actions/Minutes_action.js:", error);
+    }
   };
 };
 

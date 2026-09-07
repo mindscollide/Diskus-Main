@@ -522,10 +522,14 @@ const ReviewMinutes = () => {
             return parentAgendaObj;
           });
           setMinutesAgenda(transformedData);
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/MinutesNewFlow/reviewMinutes/ReviewMinutes.js:", error);
+        }
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/MinutesNewFlow/reviewMinutes/ReviewMinutes.js:", error);
+    }
   }, [
     GetMinutesForReviewerByMeetingIdData,
     getallDocumentsForAgendaWiseMinutes,

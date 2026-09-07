@@ -449,7 +449,9 @@ const VideoPanelNormal = () => {
           } else {
             console.log("share screen Iframe contentWindow is not available.");
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+        }
       }
       let newRoomID = localStorage.getItem("newRoomId");
       let activeRoomID = localStorage.getItem("activeRoomID");
@@ -694,7 +696,9 @@ const VideoPanelNormal = () => {
           iframe.contentWindow.postMessage("leaveSession", "*");
           await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      }
     };
 
     // Attach the event listener for beforeunload
@@ -808,7 +812,9 @@ const VideoPanelNormal = () => {
           }
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [InitiateVideoCallData]);
 
   useEffect(() => {
@@ -937,7 +943,9 @@ const VideoPanelNormal = () => {
           }
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [VideoCallResponseData]);
 
   useEffect(() => {
@@ -998,7 +1006,9 @@ const VideoPanelNormal = () => {
           }
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [newRoomID]);
 
   useEffect(() => {
@@ -1017,7 +1027,9 @@ const VideoPanelNormal = () => {
           console.log("share screen Iframe contentWindow is not available.");
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [presenterParticipantAlreadyInMeetingVideo]);
 
   useEffect(() => {
@@ -1034,7 +1046,9 @@ const VideoPanelNormal = () => {
         }
         setShareScreenTrue(false);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [shareScreenTrue]);
 
   // Add this useEffect to trigger RecordingStartMsgFromIframe when isMeetingVideo becomes true
@@ -1739,7 +1753,9 @@ const VideoPanelNormal = () => {
           localStorage.setItem("VidOff", !isVideoActive);
           setToggleVideoMinimizeNonMeeting(false);
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      }
     }
   }, [toggleVideoMinimizeNonMeeting]);
 
@@ -1810,7 +1826,9 @@ const VideoPanelNormal = () => {
           localStorage.setItem("VidOff", !isVideoActive);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   };
 
   const closeParticipantsList = () => {
@@ -1823,7 +1841,9 @@ const VideoPanelNormal = () => {
         hostTrasfer(makeParticipantAsHostData);
         dispatch(makeParticipantHost([], false));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [makeParticipantAsHost]);
 
   async function hostTrasfer(mqttData) {
@@ -1869,7 +1889,9 @@ const VideoPanelNormal = () => {
         // localStorage.removeItem("participantRoomId");
       } else {
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }
   useEffect(() => {
     try {
@@ -1879,7 +1901,9 @@ const VideoPanelNormal = () => {
         setIsMeetingHost(false);
         dispatch(transferMeetingHostSuccess(false));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [hostTransferFlag]);
 
   useEffect(() => {
@@ -1891,7 +1915,9 @@ const VideoPanelNormal = () => {
         dispatch(acceptHostTransferAccessGlobalFunc(false));
         dispatch(toggleParticipantsVisibility(false));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [accpetAccessOfHostTransfer]);
 
   useEffect(() => {
@@ -1900,7 +1926,9 @@ const VideoPanelNormal = () => {
       meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
       // for make host
       setIsMeetingHost(meetingHost?.isHost ? true : false);
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+    }
   }, [participantWaitinglistBox]);
 
   const onHandleClickForStartRecording = () => {

@@ -109,7 +109,9 @@ const SceduleProposedmeeting = () => {
           const formatetDateTime = utcConvertintoGMT(datetimeVal);
 
           return formatetDateTime;
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting.js:", error);
+        }
       });
 
       if (formattedDates) {

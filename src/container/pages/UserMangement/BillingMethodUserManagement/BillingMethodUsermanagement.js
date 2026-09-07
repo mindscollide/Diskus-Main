@@ -265,8 +265,8 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
       } else if (activeComponent === "PakageDetails") {
         setActiveComponent("PakageDetails");
       }
-    } catch {
-      
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement.js:", error);
     }
   };
 

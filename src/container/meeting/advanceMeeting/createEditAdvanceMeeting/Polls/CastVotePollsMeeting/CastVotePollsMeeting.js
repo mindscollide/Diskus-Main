@@ -107,7 +107,9 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Polls/CastVotePollsMeeting/CastVotePollsMeeting.js:", error);
+    }
   }, [Allpolls]);
 
   const handleCancelButton = () => {

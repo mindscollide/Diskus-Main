@@ -878,7 +878,9 @@ const VideoCallNormalHeader = ({
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
 
     if (getDashboardVideo?.isDashboardVideo === false) {
       console.log("Check isCaller True");
@@ -1297,7 +1299,9 @@ const VideoCallNormalHeader = ({
         console.log("busyCall");
         leaveCall(true, false, false, false);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [leaveMeetingVideoOnLogoutResponse]);
 
   useEffect(() => {
@@ -1306,7 +1310,9 @@ const VideoCallNormalHeader = ({
         console.log("busyCall");
         leaveCall(false, true, false, false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [closeQuickMeetingVideoReducer]);
 
   useEffect(() => {
@@ -1315,7 +1321,9 @@ const VideoCallNormalHeader = ({
         console.log("busyCall");
         leaveCall(false, false, true, false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
   const leaveCallForNonMeating = async (flag) => {
@@ -1325,7 +1333,9 @@ const VideoCallNormalHeader = ({
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
     try {
       let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
       let isMeetingVideoHostCheck = JSON.parse(
@@ -1469,7 +1479,9 @@ const VideoCallNormalHeader = ({
         localStorage.removeItem("onlyLeaveCall");
         setLeaveOneToOne(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   };
 
   useEffect(() => {
@@ -1483,7 +1495,9 @@ const VideoCallNormalHeader = ({
               : 1,
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [leaveOneToOne]);
 
   useEffect(() => {
@@ -1491,7 +1505,9 @@ const VideoCallNormalHeader = ({
       if (leavePresenterViewToJoinOneToOne) {
         participantLeaveCall();
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [leavePresenterViewToJoinOneToOne]);
 
   useEffect(() => {
@@ -1499,7 +1515,9 @@ const VideoCallNormalHeader = ({
       if (leaveMeetingVideoForOneToOneOrGroup) {
         participantLeaveCall();
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [leaveMeetingVideoForOneToOneOrGroup]);
 
   // For Participant Leave Call
@@ -1535,7 +1553,9 @@ const VideoCallNormalHeader = ({
             iframeCurrent.contentWindow.postMessage("leaveSession", "*");
             await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+        }
         localStorage.removeItem("currentHostUserID");
         localStorage.removeItem("isHost");
         localStorage.removeItem("isNewHost");
@@ -1620,7 +1640,9 @@ const VideoCallNormalHeader = ({
             iframeCurrent.contentWindow.postMessage("leaveSession", "*");
             await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+        }
         console.log("busyCall");
         let isSharedSceenEnable = JSON.parse(
           localStorage.getItem("isSharedSceenEnable"),
@@ -1780,7 +1802,9 @@ const VideoCallNormalHeader = ({
           dispatch(makeParticipantHost([], false));
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/videoCallScreen/videoCallHeader/videoCallNormalHeader.js:", error);
+    }
   }, [makeParticipantAsHost]);
 
   const getMeetingTitle = () => {

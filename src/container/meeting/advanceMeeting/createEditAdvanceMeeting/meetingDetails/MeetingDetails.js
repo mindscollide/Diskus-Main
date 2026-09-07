@@ -332,7 +332,9 @@ const MeetingDetails = () => {
       const updatedRows = [...rows];
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   };
 
   // const addRow = () => {
@@ -781,7 +783,9 @@ const MeetingDetails = () => {
         });
         setReminderFrequencyOne(Newdata);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [getAllReminderFrequency.meetingReminders]);
 
   //Recurring Drop Down Data
@@ -800,7 +804,9 @@ const MeetingDetails = () => {
         });
         setRecurringDropDown(Newdata);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [recurring.meetingRecurrances]);
 
   useEffect(() => {
@@ -858,7 +864,9 @@ const MeetingDetails = () => {
           MeetingType: typeData,
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   // Showing The reposnse messege
@@ -964,7 +972,9 @@ const MeetingDetails = () => {
         setCurrentMeetingStatus(11);
         // setRows([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [getAllMeetingDetails, currentMeetingInfo]);
 
   useEffect(() => {

@@ -185,7 +185,7 @@ const AddEditViewAuthorityModal = () => {
           authorityId: authority.authorityId,
         });
       } catch (error) {
-        
+        console.error("src/container/Admin/Compliance/Authority/addEditAuthority/index.jsx:", error);
       }
     }
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
@@ -429,7 +429,9 @@ const AddEditViewAuthorityModal = () => {
             ),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Admin/Compliance/Authority/addEditAuthority/index.jsx:", error);
+      }
     }
 
     // SHORT CODE uniqueness (API placeholder)
@@ -464,7 +466,9 @@ const AddEditViewAuthorityModal = () => {
             ),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Admin/Compliance/Authority/addEditAuthority/index.jsx:", error);
+      }
     }
   };
 

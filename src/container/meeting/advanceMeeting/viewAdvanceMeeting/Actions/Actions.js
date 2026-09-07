@@ -213,7 +213,9 @@ const Actions = () => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [socketTodoStatusData]);
 
   useEffect(() => {
@@ -543,8 +545,8 @@ const Actions = () => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -662,7 +664,9 @@ const Actions = () => {
         setOriginalData([]);
         setTotalRecords(0);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [todoListMeetingTask]);
 
   useEffect(() => {
@@ -681,7 +685,9 @@ const Actions = () => {
         }
         dispatch(createTaskMeetingMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [createTaskMeeting]);
 
   // for pagination in Create Task

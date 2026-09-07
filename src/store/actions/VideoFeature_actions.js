@@ -634,7 +634,9 @@ const getParticipantMeetingJoinMainApi = (
                 setIsWaiting(true);
                 setGetReady(false);
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   response.data.responseResult,
@@ -694,7 +696,9 @@ const getParticipantMeetingJoinMainApi = (
               );
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -706,7 +710,9 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(videoIconOrButtonState(false));
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(
                   t("invalid-video-call-url-provided"),
@@ -723,7 +729,9 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(videoIconOrButtonState(false));
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Could-not-join-call")),
               );
@@ -738,7 +746,9 @@ const getParticipantMeetingJoinMainApi = (
                 setJoinButton(false);
                 dispatch(participantVideoButtonState(false));
                 dispatch(videoIconOrButtonState(false));
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong")),
               );
@@ -778,7 +788,9 @@ const getParticipantMeetingJoinMainApi = (
                 setJoinButton(false);
                 dispatch(participantVideoButtonState(false));
                 dispatch(videoIconOrButtonState(false));
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong")),
               );
@@ -788,7 +800,9 @@ const getParticipantMeetingJoinMainApi = (
               setJoinButton(false);
               dispatch(participantVideoButtonState(false));
               dispatch(videoIconOrButtonState(false));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/VideoFeature_actions.js:", error);
+            }
             await dispatch(
               getParticipantMeetingJoinFail(t("Something-went-wrong")),
             );
@@ -798,7 +812,9 @@ const getParticipantMeetingJoinMainApi = (
             setJoinButton(false);
             dispatch(participantVideoButtonState(false));
             dispatch(videoIconOrButtonState(false));
-          } catch {}
+          } catch (error) {
+            console.error("src/store/actions/VideoFeature_actions.js:", error);
+          }
           await dispatch(
             getParticipantMeetingJoinFail(t("Something-went-wrong")),
           );
@@ -809,7 +825,9 @@ const getParticipantMeetingJoinMainApi = (
           setJoinButton(false);
           dispatch(participantVideoButtonState(false));
           dispatch(videoIconOrButtonState(false));
-        } catch {}
+        } catch (error) {
+          console.error("src/store/actions/VideoFeature_actions.js:", error);
+        }
         dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
       });
   };
@@ -1518,7 +1536,9 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/VideoFeature_actions.js:", error);
+              }
 
               dispatch(presenterStartedMainFlag(true));
               await dispatch(

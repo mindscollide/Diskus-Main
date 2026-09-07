@@ -136,7 +136,9 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
             fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
         )
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/ViewCommittee/ViewCommittee.js:", error);
+    }
   };
 
   const handleClickDownloadDoc = (data) => {
@@ -189,11 +191,11 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
             committeeMembers: committeedetails.committeMembers,
           });
         } catch (error) {
-          
+          console.error("src/container/Committee/MainCommittee/ViewCommittee/ViewCommittee.js:", error);
         }
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/ViewCommittee/ViewCommittee.js:", error);
     }
     return () => {};
   }, [getCommitteeByCommitteeID]);
@@ -304,7 +306,9 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
         setFilesSending([]);
         setFolderId(0);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/ViewCommittee/ViewCommittee.js:", error);
+    }
   }, [reteriveCommitteeDocuments]);
 
   return (

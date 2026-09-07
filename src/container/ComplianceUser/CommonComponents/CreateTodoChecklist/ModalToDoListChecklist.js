@@ -93,7 +93,7 @@ const ModalToDoListChecklist = ({
         }
       }
     } catch (error) {
-      
+      console.error("src/container/ComplianceUser/CommonComponents/CreateTodoChecklist/ModalToDoListChecklist.js:", error);
     }
   }, [currentLanguage]);
   //task Object
@@ -152,7 +152,9 @@ const ModalToDoListChecklist = ({
         setFileForSend([]);
         setTasksAttachments({ TasksAttachments: [] });
       };
-    } catch {}
+    } catch (error) {
+      console.error("src/container/ComplianceUser/CommonComponents/CreateTodoChecklist/ModalToDoListChecklist.js:", error);
+    }
   }, []);
 
   const deleteFilefromAttachments = (data, index) => {
@@ -381,7 +383,7 @@ const ModalToDoListChecklist = ({
         )
       );
     } catch (error) {
-      
+      console.error("src/container/ComplianceUser/CommonComponents/CreateTodoChecklist/ModalToDoListChecklist.js:", error);
     }
   };
 
@@ -512,7 +514,9 @@ const ModalToDoListChecklist = ({
           setTaskAssignedTo([AssingSelf.value]);
           setSelectedAsignee(AssingSelf);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/CommonComponents/CreateTodoChecklist/ModalToDoListChecklist.js:", error);
+      }
     }
   }, [AllAssigneesData]);
 

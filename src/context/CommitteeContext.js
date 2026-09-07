@@ -229,7 +229,9 @@ export const CommitteeProvider = ({ children }) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [getMeetingByCommitteeID, currentCommitteeMeetingTabActive]);
 
   useEffect(() => {
@@ -288,7 +290,9 @@ export const CommitteeProvider = ({ children }) => {
           status: "9",
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [MeetingStatusEnded]);
 
   useEffect(() => {
@@ -360,7 +364,9 @@ export const CommitteeProvider = ({ children }) => {
 
       // Reset MQTT
       dispatch(meetingNotConductedMQTT(null));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [meetingStatusNotConductedMqttData]);
 
   // ─── MQTT: Agenda Contributor Added ───
@@ -381,7 +387,9 @@ export const CommitteeProvider = ({ children }) => {
               ]);
               setCommitteeDraftMeetingDataRecord((prev) => prev + 1);
             }
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/context/CommitteeContext.js:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -389,7 +397,9 @@ export const CommitteeProvider = ({ children }) => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -405,7 +415,9 @@ export const CommitteeProvider = ({ children }) => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch (error) {
+        console.error("src/context/CommitteeContext.js:", error);
+      }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -427,7 +439,9 @@ export const CommitteeProvider = ({ children }) => {
               ]);
               setCommitteeDraftMeetingDataRecord((prev) => prev + 1);
             }
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/context/CommitteeContext.js:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -435,7 +449,9 @@ export const CommitteeProvider = ({ children }) => {
         }
       };
       callAddOrganizer();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -451,7 +467,9 @@ export const CommitteeProvider = ({ children }) => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch (error) {
+        console.error("src/context/CommitteeContext.js:", error);
+      }
     }
   }, [mqttMeetingOrgRemoved]);
 
@@ -542,7 +560,9 @@ export const CommitteeProvider = ({ children }) => {
       setStartMeetingButton((prev) =>
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 

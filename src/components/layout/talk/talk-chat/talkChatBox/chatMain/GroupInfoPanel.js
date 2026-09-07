@@ -83,7 +83,9 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
           setGroupInfoData(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/talkChatBox/chatMain/GroupInfoPanel.js:", error);
+    }
   };
 
   return (

@@ -182,7 +182,9 @@ const ModalMarketingTeamCommittee = ({
   useEffect(() => {
     try {
       dispatch(getAllGroups(navigate, t));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/ModalMarketingTeamCommittee/ModalMarketingTeamCommittee.js:", error);
+    }
   }, []);
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {

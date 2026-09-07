@@ -3017,7 +3017,9 @@ const Dashboard = () => {
             ) {
               setVideoChatUnreadCount((prev) => prev + 1);
             }
-          } catch (e) {}
+          } catch (e) {
+            console.error("src/container/dashboard/Dashboard.js:", e);
+          }
         } else if (
           data.payload.message.toLowerCase() === "USER_IS_BLOCKED".toLowerCase()
         ) {
@@ -4864,7 +4866,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(fileSharedMQTT(data.payload));
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/container/dashboard/Dashboard.js:", error);
+            }
           } else if (
             data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
           ) {
@@ -4881,7 +4885,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderSharedMQTT(data.payload));
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/container/dashboard/Dashboard.js:", error);
+            }
           } else if (
             data.payload.message.toLowerCase() ===
               "FILE_SHARING_REMOVED".toLowerCase() ||
@@ -4896,7 +4902,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(fileRemoveMQTT(data?.payload?.fileID));
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/container/dashboard/Dashboard.js:", error);
+            }
           } else if (
             data.payload.message.toLowerCase() ===
             "FOLDER_SHARING_REMOVED".toLowerCase()
@@ -4910,7 +4918,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.fileID));
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/container/dashboard/Dashboard.js:", error);
+            }
           } else if (
             data.payload.message.toLowerCase() ===
             "FOLDER_DELETED".toLowerCase()
@@ -4924,7 +4934,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.folderID));
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/container/dashboard/Dashboard.js:", error);
+            }
           }
           if (
             data.payload.message.toLowerCase() ===

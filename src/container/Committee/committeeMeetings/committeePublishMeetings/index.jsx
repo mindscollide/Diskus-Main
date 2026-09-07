@@ -459,7 +459,9 @@ const CommitteePublishedMeetingList = () => {
           });
         };
         meetingNotificationRouting();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeePublishMeetings/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -558,7 +560,9 @@ const CommitteePublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/committeeMeetings/committeePublishMeetings/index.jsx:", error);
+    }
   };
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────

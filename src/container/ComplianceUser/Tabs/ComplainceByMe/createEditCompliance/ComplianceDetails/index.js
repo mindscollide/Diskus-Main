@@ -321,7 +321,9 @@ const ComplainceDetails = () => {
           setCheckAnyTaskInProgress(false);
         }
         dispatch(clearComplianceDetailsTab());
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/ComplianceDetails/index.js:", error);
+      }
     }
   }, [viewComplianceByMeDetails]);
 
@@ -351,7 +353,9 @@ const ComplainceDetails = () => {
           0,
         );
         setTaskCount(totalTaskCount);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/ComplianceDetails/index.js:", error);
+      }
     } else {
       
       //  CLEAR UI when API returns null
@@ -375,7 +379,7 @@ const ComplainceDetails = () => {
         });
         setAuthorityOptions(allAuthority);
       } catch (error) {
-        
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/ComplianceDetails/index.js:", error);
       }
     }
   }, [getAllAuthorities]);
@@ -414,7 +418,9 @@ const ComplainceDetails = () => {
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/ComplianceDetails/index.js:", error);
+      }
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
@@ -473,7 +479,7 @@ const ComplainceDetails = () => {
 
        // ✅ DATA HERE
     } catch (error) {
-      
+      console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/ComplianceDetails/index.js:", error);
     }
   };
 

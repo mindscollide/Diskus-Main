@@ -390,7 +390,9 @@ const Agenda = () => {
         );
         return;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:", error);
+    }
   }, [getAllMeetingDetails, dispatch, meetingId, navigate, t]);
 
   useEffect(() => {
@@ -719,7 +721,9 @@ const Agenda = () => {
 
       setRows(hydrated);
       setIsPublishedState(MeetingAgendaData.isPublished);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:", error);
+    }
     // We intentionally omit allSavedPresenters/allUsersRC: hydration should
     // run when server data arrives, not whenever the dropdowns refresh.
     // eslint-disable-next-line react-hooks/exhaustive-deps

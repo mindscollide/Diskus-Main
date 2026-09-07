@@ -650,8 +650,8 @@ const Talk = () => {
                         x2='1.71707'
                         y2='19.6122'
                         gradientUnits='userSpaceOnUse'>
-                        <stop stop-color='#4ADEDE' />
-                        <stop offset='1' stop-color='#6172D6' />
+                        <stop stopColor='#4ADEDE' />
+                        <stop offset='1' stopColor='#6172D6' />
                       </linearGradient>
                       <linearGradient
                         id='paint1_linear_1355_37628'
@@ -660,8 +660,8 @@ const Talk = () => {
                         x2='14.0402'
                         y2='14.7638'
                         gradientUnits='userSpaceOnUse'>
-                        <stop stop-color='#4ADEDE' />
-                        <stop offset='1' stop-color='#6172D6' />
+                        <stop stopColor='#4ADEDE' />
+                        <stop offset='1' stopColor='#6172D6' />
                       </linearGradient>
                       <linearGradient
                         id='paint2_linear_1355_37628'
@@ -670,8 +670,8 @@ const Talk = () => {
                         x2='6.20466'
                         y2='27.0404'
                         gradientUnits='userSpaceOnUse'>
-                        <stop stop-color='#4ADEDE' />
-                        <stop offset='1' stop-color='#6172D6' />
+                        <stop stopColor='#4ADEDE' />
+                        <stop offset='1' stopColor='#6172D6' />
                       </linearGradient>
                     </defs>
                   </svg>

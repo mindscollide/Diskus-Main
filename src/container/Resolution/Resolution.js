@@ -168,12 +168,14 @@ const Resolution = () => {
                 
               });
           } catch (error) {
-            
+            console.error("src/container/Resolution/Resolution.js:", error);
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/Resolution/Resolution.js:", error);
+        }
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/Resolution.js:", error);
     }
   }, [resolutionVoter]);
 
@@ -195,7 +197,7 @@ const Resolution = () => {
             
           });
       } catch (error) {
-        
+        console.error("src/container/Resolution/Resolution.js:", error);
       }
     }
   }, [resolutionNonVoter]);
@@ -220,7 +222,9 @@ const Resolution = () => {
         localStorage.setItem("ButtonTab", 1);
         dispatch(getVoterResolution(navigate, 1, t));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Resolution/Resolution.js:", error);
+    }
 
     return () => {
       localStorage.removeItem("moderatorPage");
@@ -252,7 +256,7 @@ const Resolution = () => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/Resolution.js:", error);
     }
   }, [currentLanguage]);
 
@@ -486,7 +490,7 @@ const Resolution = () => {
         });
         dispatch(resolutionMQTTVoteCounter(null));
       } catch (error) {
-        
+        console.error("src/container/Resolution/Resolution.js:", error);
       }
     }
   }, [resolutionVoteCounter]);
@@ -1186,7 +1190,7 @@ const Resolution = () => {
         setSearchVoter([]);
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/Resolution.js:", error);
     }
   }, [ResolutionReducersearchVoterResolution]);
 
@@ -1200,7 +1204,7 @@ const Resolution = () => {
         setRows([]);
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/Resolution.js:", error);
     }
   }, [ResolutionReducerGetResolutions]);
 
@@ -1248,11 +1252,13 @@ const Resolution = () => {
               }
             }
           }
-        } catch {}
+        } catch (error) {
+          console.error("src/container/Resolution/Resolution.js:", error);
+        }
         dispatch(resolutionMQTTCreate(null));
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/Resolution.js:", error);
     }
   }, [ResolutionReducermqttResolutionCreated]);
 
@@ -1267,10 +1273,12 @@ const Resolution = () => {
                 .pK_ResolutionID,
             ),
           );
-        } catch {}
+        } catch (error) {
+          console.error("src/container/Resolution/Resolution.js:", error);
+        }
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/Resolution.js:", error);
     }
   }, [ResolutionReducermqttResolutionCancelled]);
 
@@ -1313,7 +1321,9 @@ const Resolution = () => {
             setSearchVoter(copyData);
           }
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/container/Resolution/Resolution.js:", error);
+      }
     }
   }, [ResolutionReducermqttResolutionClosed]);
 

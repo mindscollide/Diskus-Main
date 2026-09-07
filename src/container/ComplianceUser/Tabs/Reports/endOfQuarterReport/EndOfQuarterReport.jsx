@@ -450,7 +450,7 @@ const EndOfQuarterReport = () => {
         window.__PDF_CHUNK_DATA__ = null;
       }
     } catch (err) {
-      
+      console.error("src/container/ComplianceUser/Tabs/Reports/endOfQuarterReport/EndOfQuarterReport.jsx:", err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -466,7 +466,7 @@ const EndOfQuarterReport = () => {
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
-      
+      console.error("src/container/ComplianceUser/Tabs/Reports/endOfQuarterReport/EndOfQuarterReport.jsx:", error);
     } finally {
       setIsGenerating(false);
     }

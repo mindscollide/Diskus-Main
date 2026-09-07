@@ -142,7 +142,9 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
       }
     });
     return LocalUserRoutes;
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 }
 
 export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
@@ -193,7 +195,9 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     });
 
     return LocalAdminRoutes;
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 }
 
 // for enter posword state management and routes management
@@ -370,7 +374,9 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
     if (Number(localStorage.getItem("LoginFlowPageRoute")) !== 1) {
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 }
 
 // Features IDs Check Fucntion
@@ -3182,7 +3188,9 @@ export const SideBarGlobalNavigationFunctionNew = async (
           localStorage.removeItem("AdvanceMeetingOperations");
           localStorage.removeItem("NotificationClickTaskID");
           localStorage.removeItem("viewadvanceMeetingTask");
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/commen/functions/utils.js:", error);
+        }
       }
     }
   } else if (createEditMeetingModal) {
@@ -3403,7 +3411,9 @@ export const handleNavigationforParticipantVideoFlow = async ({
       default:
         break;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 };
 
 // Special handling for Meeting case

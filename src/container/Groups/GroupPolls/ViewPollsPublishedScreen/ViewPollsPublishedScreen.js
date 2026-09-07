@@ -56,7 +56,9 @@ const ViewPollsPublishedScreen = () => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/ViewPollsPublishedScreen/ViewPollsPublishedScreen.js:", error);
+    }
   }, [Allpolls]);
 
   const handleCancelButton = () => {

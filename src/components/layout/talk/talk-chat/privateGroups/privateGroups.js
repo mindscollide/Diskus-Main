@@ -199,7 +199,9 @@ const PrivateGroups = () => {
           setSearchChatValue("");
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/privateGroups/privateGroups.js:", error);
+    }
   };
 
   console.log("TalkStateData PrivateGroupsData", { talkStateData });

@@ -32,7 +32,9 @@ const VersionHistory = ({ setShowVersionHistory }) => {
           minuteVersionHistory:
             GetMinutesVersionHistorywithCommentsData.minuteVersionHistory,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/VersionHistoryModal/VersionHistory.js:", error);
+      }
     }
   }, [GetMinutesVersionHistorywithCommentsData]);
 

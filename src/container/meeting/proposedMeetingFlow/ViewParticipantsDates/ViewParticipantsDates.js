@@ -229,7 +229,9 @@ const ViewParticipantsDates = () => {
         // });
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:", error);
+    }
   }, [userWiseMeetingProposed]);
 
   //Fetching All Saved Data
@@ -246,7 +248,9 @@ const ViewParticipantsDates = () => {
             getAllMeetingDetails.advanceMeetingDetails.description,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:", error);
+    }
   }, [getAllMeetingDetails]);
 
   // onChange function for CheckBoxes
@@ -395,7 +399,9 @@ const ViewParticipantsDates = () => {
 
           dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:", error);
+      }
     }
   }, [MeetingStatusSocket]);
 

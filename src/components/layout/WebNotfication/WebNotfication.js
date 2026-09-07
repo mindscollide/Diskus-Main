@@ -169,7 +169,9 @@ const WebNotfication = ({
           return [...newData, ...prevData]; // Add new unique notifications to the front of the list
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/WebNotfication/WebNotfication.js:", error);
+    }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
@@ -196,7 +198,9 @@ const WebNotfication = ({
         );
         setGroupedNotifications(groupNotificationsData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/WebNotfication/WebNotfication.js:", error);
+    }
   }, [webNotificationData, todayDate]);
 
   // Fetches the meeting's current status, records it for the destination

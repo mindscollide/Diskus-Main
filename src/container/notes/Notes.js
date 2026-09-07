@@ -135,7 +135,7 @@ const Notes = () => {
         localStorage.removeItem("notesPageSize");
       };
     } catch (error) {
-      
+      console.error("src/container/notes/Notes.js:", error);
     }
   }, []);
 
@@ -169,7 +169,9 @@ const Notes = () => {
       } else {
         setNotes([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/notes/Notes.js:", error);
+    }
   }, [NotesReducer.GetAllNotesResponse]);
 
   //for open Add User Notes Modal

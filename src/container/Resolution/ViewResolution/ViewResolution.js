@@ -54,7 +54,7 @@ const ViewResolution = ({ setViewresolution }) => {
         setResolutionData(getResolutionByIdData);
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/ViewResolution/ViewResolution.js:", error);
     }
   }, [getResolutionByIdData]);
 

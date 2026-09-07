@@ -1766,7 +1766,9 @@ const saveTaskDocumentsApi = (
           dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
           dispatch(createUpdateTaskDataRoom_fail(""));
         });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/store/actions/ToDoList_action.js:", error);
+    }
   };
 };
 
@@ -1864,7 +1866,9 @@ const getDashbardTaskDataApi = (navigate, t) => {
         .catch((response) => {
           dispatch(getDashbardTaskData_fail(t("Something-went-wrong")));
         });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/store/actions/ToDoList_action.js:", error);
+    }
   };
 };
 

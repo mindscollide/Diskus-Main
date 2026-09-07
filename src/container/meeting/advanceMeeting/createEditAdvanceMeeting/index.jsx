@@ -109,7 +109,9 @@ const CreateEditAdvanceMeeting = () => {
       }
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
+    }
   };
 
   useEffect(() => {
@@ -191,7 +193,9 @@ const CreateEditAdvanceMeeting = () => {
             }),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
@@ -230,7 +234,9 @@ const CreateEditAdvanceMeeting = () => {
             }),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 

@@ -357,7 +357,9 @@ const PublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/publishMeeting/index.jsx:", error);
+    }
   };
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 

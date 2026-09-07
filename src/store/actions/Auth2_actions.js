@@ -3285,7 +3285,9 @@ const updatePasswordAction = (value, navigate, t) => {
                 );
                 localStorage.removeItem("updatePasswordCheck");
                 navigate("/updatepassword");
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Auth2_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

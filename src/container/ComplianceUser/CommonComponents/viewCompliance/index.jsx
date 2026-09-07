@@ -143,7 +143,9 @@ const ViewCompliance = () => {
         // setSelectAuthority(authority);
         // setSelectCriticality(criticalityLevel);
         // setComplianceDueDate(dueDate);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/index.jsx:", error);
+      }
     }
   }, [viewComplianceByMeDetails]);
 
@@ -192,7 +194,9 @@ const ViewCompliance = () => {
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/index.jsx:", error);
+      }
     }
   }, [complainceRespnseMessage, complainceSeverityMessage]);
 

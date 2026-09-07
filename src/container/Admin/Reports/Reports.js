@@ -158,7 +158,9 @@ const Reports = () => {
         setTotalRecords(0);
         setSRowsData(0);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/Reports.js:", error);
+    }
   }, [UserLoginHistoryData]);
 
   const userloginColumns = [
@@ -493,7 +495,9 @@ const Reports = () => {
         setSearchBoxExpand(false);
       } else {
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/Reports.js:", error);
+    }
   };
 
   const handleReset = () => {
@@ -526,7 +530,9 @@ const Reports = () => {
         },
         Title: "",
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/Reports.js:", error);
+    }
   };
 
   const handleKeyDown = (e) => {

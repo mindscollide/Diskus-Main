@@ -366,7 +366,9 @@ const MainMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -421,7 +423,9 @@ const MainMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/index.jsx:", error);
+      }
     }
   }, [state]);
 

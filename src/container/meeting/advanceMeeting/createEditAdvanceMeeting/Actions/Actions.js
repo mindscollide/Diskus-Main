@@ -203,7 +203,9 @@ const Actions = ({ dataroomMapFolderId }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [toDoListReducer.socketTodoStatusData]);
 
   useEffect(() => {
@@ -513,8 +515,8 @@ const Actions = ({ dataroomMapFolderId }) => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -632,7 +634,9 @@ const Actions = ({ dataroomMapFolderId }) => {
         setOriginalData([]);
         setTotalRecords(0);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [actionMeetingReducer.todoListMeetingTask]);
 
   useEffect(() => {
@@ -651,7 +655,9 @@ const Actions = ({ dataroomMapFolderId }) => {
         }
         dispatch(createTaskMeetingMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [toDoListReducer.createTaskMeeting]);
   const handleCreateTaskButton = () => {
     setCreateaTask(true);

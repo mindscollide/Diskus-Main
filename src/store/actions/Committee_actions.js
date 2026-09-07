@@ -206,7 +206,9 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
                     displayFileName: newFileID.displayFileName,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Committee_actions.js:", error);
+              }
 
               await dispatch(
                 saveFiles_success(
@@ -575,7 +577,9 @@ const getCommitteesbyCommitteeId = (
                     setViewGroupPage(true);
                   dispatch(viewCommitteePageFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Committee_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

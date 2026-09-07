@@ -294,7 +294,9 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
             ) {
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/Guest_Video.js:", error);
+              }
               // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(
                 response.data.responseResult.guestGuid,
@@ -326,7 +328,9 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
             ) {
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/Guest_Video.js:", error);
+              }
               await dispatch(
                 joinGuestVideoFail(t("meeting-organizers-not-found")),
               );
@@ -339,26 +343,34 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
             ) {
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/Guest_Video.js:", error);
+              }
               await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
             }
           } else {
             try {
               setJoinButton(false);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Guest_Video.js:", error);
+            }
             await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
           }
         } else {
           try {
             setJoinButton(false);
-          } catch {}
+          } catch (error) {
+            console.error("src/store/actions/Guest_Video.js:", error);
+          }
           await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         try {
           setJoinButton(false);
-        } catch {}
+        } catch (error) {
+          console.error("src/store/actions/Guest_Video.js:", error);
+        }
         dispatch(joinGuestVideoFail(t("Something-went-wrong")));
       });
   };

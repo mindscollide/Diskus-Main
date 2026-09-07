@@ -76,7 +76,7 @@ const ModalViewNote = ({
         });
       }
     } catch (error) {
-      
+      console.error("src/container/notes/modalViewNote/ModalViewNote.js:", error);
     }
   }, [GetNotesByNotesId]);
 
@@ -87,7 +87,9 @@ const ModalViewNote = ({
         
         setAttachments(RetrieveDocsNotes.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/notes/modalViewNote/ModalViewNote.js:", error);
+    }
   }, [RetrieveDocsNotes]);
 
   const handleCloseViewModal = () => {

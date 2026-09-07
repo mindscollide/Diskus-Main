@@ -115,7 +115,7 @@ const ModalArchivedCommittee = ({
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
       } catch (error) {
-        
+        console.error("src/container/ModalArchivedGroups/ModalArchivedGroups.js:", error);
       }
     }
   }, [GroupsReducerrealtimeGroupStatus]);
@@ -139,7 +139,9 @@ const ModalArchivedCommittee = ({
         } else {
           setGroupsArheivedData([]);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ModalArchivedGroups/ModalArchivedGroups.js:", error);
+      }
     }
   }, [GroupsReducerArcheivedGroups]);
 

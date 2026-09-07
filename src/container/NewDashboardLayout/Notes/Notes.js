@@ -88,7 +88,9 @@ const Notes = () => {
       } else {
         setNotes([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Notes/Notes.js:", error);
+    }
   }, [NotesReducer.GetAllNotesResponse]);
 
   return (

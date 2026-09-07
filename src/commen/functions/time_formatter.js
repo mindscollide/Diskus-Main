@@ -207,7 +207,9 @@ export const convertToGMTMinuteTime = (timeStr) => {
 
     let formattedTime = moment(date).format("hh:mm a");
     return formattedTime;
-  } catch {}
+  } catch (error) {
+    console.error("src/commen/functions/time_formatter.js:", error);
+  }
 };
 
 export const convertDateToGMTMinute = (dateStr) => {
@@ -242,7 +244,9 @@ export const convertDateToGMTMinute = (dateStr) => {
     }, ${date.getUTCFullYear()}`;
 
     return formattedDate;
-  } catch {}
+  } catch (error) {
+    console.error("src/commen/functions/time_formatter.js:", error);
+  }
 };
 
 // Function to format the date and time

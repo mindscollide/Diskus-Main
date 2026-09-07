@@ -357,7 +357,9 @@ const getbyGroupID = (
                     setViewGroupPage(true);
                   dispatch(viewGroupPageFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Groups_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1259,7 +1261,9 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                     displayFileName: newFileID.displayFileName,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Groups_actions.js:", error);
+              }
               await dispatch(
                 saveFiles_success(response.data.responseResult, ""),
               );
@@ -1366,7 +1370,9 @@ const SaveGroupsDocumentsApiFunc = (
               try {
                 setCreategrouppage(false);
                 setViewGroupPage(false);
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Groups_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

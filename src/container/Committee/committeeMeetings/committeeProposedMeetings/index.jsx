@@ -153,7 +153,9 @@ const CommitteeProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -176,7 +178,9 @@ const CommitteeProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 

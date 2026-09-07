@@ -40,7 +40,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
         setAuditActionsData([]);
       }
     } catch (error) {
-      
+      console.error("src/container/Admin/Reports/AuditTrial/ViewActionModal/ViewActionModal.js:", error);
     }
     return () => {
       setAuditActionsData([]);

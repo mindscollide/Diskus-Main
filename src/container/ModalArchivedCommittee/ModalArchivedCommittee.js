@@ -103,7 +103,9 @@ const ModalArchivedCommittee = ({
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/ModalArchivedCommittee/ModalArchivedCommittee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {

@@ -54,7 +54,9 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Polls/ViewPollsPublishedScreen/ViewPollsPublishedScreen.js:", error);
+    }
   }, [Allpolls]);
 
   const handleCancelButton = () => {

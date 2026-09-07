@@ -210,6 +210,27 @@ import folderColor from "../../assets/images/folder_color.svg";
  *   4 = Recently Added
  *   5 = Send for Approval
  */
+/**
+ * Row identity for the Data Room tables.
+ *
+ * The rows are a mixed list of folders and files, and the two are numbered in
+ * separate sequences server-side — so `id` alone is NOT unique across the list
+ * (folder 5 and file 5 can both be present). Prefixing with `isFolder` keeps the
+ * key unique.
+ *
+ * antd defaults `rowKey` to "key", which these records do not have, so without
+ * this React fell back to positional identity and warned "Each child in a list
+ * should have a unique key prop". That is not only console noise: on a sort or
+ * filter React reuses the DOM node that was previously at the same position, so
+ * per-row UI state (an expanded row, a checked box) sticks to the position
+ * rather than to the record.
+ *
+ * Falls back to the index only when `id` is missing, which is the best that can
+ * be done for a record with no identity at all.
+ */
+const dataRoomRowKey = (record, index) =>
+  record?.id != null ? `${record.isFolder ? "folder" : "file"}-${record.id}` : `row-${index}`;
+
 const DataRoom = () => {
   // ─── Persistent user/session values read from localStorage ──────────────
   /** Encrypted share-link token set by an external invite URL. */
@@ -515,7 +536,9 @@ const DataRoom = () => {
       } else {
         navigate("/Diskus/dataroom");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
 
     return () => {
       localStorage.removeItem("DataRoomEmail");
@@ -610,7 +633,9 @@ const DataRoom = () => {
           }
         }
       });
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
     let viewFol_action = localStorage.getItem("viewFolderLink");
     let documentViewer = localStorage.getItem("documentViewer");
     if (docSignedCrAction === null) {
@@ -784,7 +809,9 @@ const DataRoom = () => {
           "text/html",
         );
         displayBlobAsHtml(base64String);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/DataRoom.js:", error);
+      }
     }
   }, [webViewer.attachmentBlob, webViewer.isHTML]);
 
@@ -837,7 +864,9 @@ const DataRoom = () => {
         }
       }
       // }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
 
   // ─── Folder-contents response handler ────────────────────────────────────
@@ -886,7 +915,9 @@ const DataRoom = () => {
       } else {
         setGetAllData([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
   }, [DataRoomReducer.getFolderDocumentResponse]);
 
   // ─── Recent documents response handler ───────────────────────────────────
@@ -904,7 +935,9 @@ const DataRoom = () => {
           setGetAllData(RecentData);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
   }, [DataRoomReducer.RecentDocuments]);
 
   // ─── Copy folder share-link to clipboard ──────────────────────────────────
@@ -976,7 +1009,9 @@ const DataRoom = () => {
           setTotalRecords((totalValue) => totalValue + 1);
         }
         dispatch(fileSharedMQTT(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/DataRoom.js:", error);
+      }
     }
   }, [DataRoomReducer.FileSharedMQTT]);
 
@@ -996,7 +1031,9 @@ const DataRoom = () => {
           });
           setTotalRecords((totalValue) => totalValue - 1);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/DataRoom.js:", error);
+      }
     }
   }, [DataRoomReducer.FileRemoveMQTT]);
 
@@ -1017,7 +1054,9 @@ const DataRoom = () => {
           setTotalRecords((totalValue) => totalValue - 1);
         } else if (currentView === 2) {
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/DataRoom.js:", error);
+      }
     }
   }, [DataRoomReducer.FolderRemoveMQTT]);
 
@@ -1076,7 +1115,9 @@ const DataRoom = () => {
         }
 
         dispatch(folderSharedMQTT(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/DataRoom.js:", error);
+      }
     }
   }, [DataRoomReducer.FolderSharedMQTT]);
 
@@ -1942,8 +1983,8 @@ const DataRoom = () => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -3242,7 +3283,9 @@ const DataRoom = () => {
             }
 
             // Call your API for the current item
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/container/DataRoom/DataRoom.js:", error);
+          }
           // If continueUploading is false, break out of the loop
           if (!continueUploading) {
             break;
@@ -3255,7 +3298,9 @@ const DataRoom = () => {
       folder.Uploading = false;
       setDetaUplodingForFOlder((prevFolders) => [...prevFolders]);
       // All API calls are complete, you can perform other actions here
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
   };
 
   /**
@@ -3324,13 +3369,17 @@ const DataRoom = () => {
                   }
                 }
                 processArraySequentially(detaUplodingForFOlder[existingIndex]);
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/container/DataRoom/DataRoom.js:", error);
+              }
             } else {
             }
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.js:", error);
+    }
   }, [DataRoomReducer.CreatedFoldersArray]);
 
   /**
@@ -4035,8 +4084,8 @@ const DataRoom = () => {
                                         </div>
                                       }
                                       trigger='click'
-                                      visible={isPopoverVisible}
-                                      onVisibleChange={setIsPopoverVisible}
+                                      open={isPopoverVisible}
+                                      onOpenChange={setIsPopoverVisible}
                                       placement='bottomLeft'
                                       defaultOpen={false}
                                       showArrow={false}>
@@ -4131,6 +4180,7 @@ const DataRoom = () => {
                                 listviewactive === true ? (
                                 <>
                                   <TableToDo
+                                    rowKey={dataRoomRowKey}
                                     sortDirections={["descend", "ascend"]}
                                     column={shareWithmeColoumns}
                                     className={"DataRoom_Table"}
@@ -4233,6 +4283,7 @@ const DataRoom = () => {
                                     </>
                                   ) : listviewactive === true ? (
                                     <TableToDo
+                                      rowKey={dataRoomRowKey}
                                       sortDirections={["descend", "ascend"]}
                                       column={MyRecentTab}
                                       className={"DataRoom_Table"}
@@ -4361,6 +4412,7 @@ const DataRoom = () => {
                                 listviewactive === true ? (
                                 <>
                                   <TableToDo
+                                    rowKey={dataRoomRowKey}
                                     column={MyDocumentsColumns}
                                     className={"DataRoom_Table"}
                                     rows={getAllData}

@@ -533,7 +533,9 @@ const GroupPublishedMeetingList = () => {
           });
         };
         meetingNotificationRouting();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupPublishMeetings/index.jsx:", error);
+      }
     }
   }, [state,DetailsWebNotificationViewMeeting]);
 

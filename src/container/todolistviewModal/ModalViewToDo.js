@@ -307,7 +307,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           setTask(RESET_TASK);
         }
       }
-    } catch { }
+    } catch (error) {
+      console.error("src/container/todolistviewModal/ModalViewToDo.js:", error);
+    }
   }, [socketTodoStatusData]);
 
   const handleClickCommentSubmit = async (e, id) => {

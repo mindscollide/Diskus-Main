@@ -57,7 +57,7 @@ const BoardDeckModal = ({
       };
       dispatch(BoardDeckValidateIsMinutesPublishedAPI(navigate, t, data));
     } catch (error) {
-      
+      console.error("src/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal.js:", error);
     }
   }, []);
 
@@ -85,7 +85,7 @@ const BoardDeckModal = ({
         });
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal.js:", error);
     }
   }, [getMinutesPublishedData]);
 

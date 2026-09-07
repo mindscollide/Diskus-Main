@@ -306,7 +306,9 @@ const EditUser = ({ ModalTitle }) => {
       } else {
         setRows([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/BillingInfo/PaymentHistory/PaymentHistory.js:", error);
+    }
   }, [adminReducer.searchPaymentHistory]);
 
   useEffect(() => {
@@ -324,7 +326,9 @@ const EditUser = ({ ModalTitle }) => {
         });
         setPaymentMethods(newArr);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/BillingInfo/PaymentHistory/PaymentHistory.js:", error);
+    }
     return () => {
       setPaymentMethodValue({
         ...paymentMethodValue,

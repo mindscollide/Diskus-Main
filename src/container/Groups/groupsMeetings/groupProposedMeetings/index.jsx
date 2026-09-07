@@ -145,7 +145,9 @@ const GroupProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -175,7 +177,9 @@ const GroupProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -558,7 +562,9 @@ const GroupProposedMeetings = () => {
         };
 
         callApi1();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+      }
     }
   }, [UserMeetPropoDatPoll]);
   return (

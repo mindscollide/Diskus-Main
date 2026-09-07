@@ -151,7 +151,9 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/CastVotePollsMeeting/CastVotePollsMeeting.js:", error);
+    }
     return () => {
       localStorage.removeItem("NotificationClickPollID");
     };

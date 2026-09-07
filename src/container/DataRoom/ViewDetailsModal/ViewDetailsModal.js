@@ -139,7 +139,7 @@ const ViewDetailsModal = ({
         setDocumentActivityDetails(getDataAnalyticsDetails);
       }
     } catch (error) {
-      
+      console.error("src/container/DataRoom/ViewDetailsModal/ViewDetailsModal.js:", error);
     }
   }, [getDataAnalyticsDetails]);
   useEffect(() => {
@@ -178,7 +178,9 @@ const ViewDetailsModal = ({
           name: DatafileandFolderDetails.name,
         });
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/ViewDetailsModal/ViewDetailsModal.js:", error);
+    }
   }, [DatafileandFolderDetails]);
 
   return (

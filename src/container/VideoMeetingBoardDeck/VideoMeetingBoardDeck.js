@@ -59,7 +59,9 @@ const VideoMeetingBoardDeck = () => {
         };
         dispatch(BoardDeckValidateURLAPI(navigate, t, data));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/VideoMeetingBoardDeck/VideoMeetingBoardDeck.js:", error);
+    }
   }, []);
 
   //Extracting Data from the link
@@ -69,7 +71,7 @@ const VideoMeetingBoardDeck = () => {
         setVideoLink(VideoURLdata.filePath);
       }
     } catch (error) {
-      
+      console.error("src/container/VideoMeetingBoardDeck/VideoMeetingBoardDeck.js:", error);
     }
   }, [VideoURLdata]);
 
@@ -94,7 +96,9 @@ const VideoMeetingBoardDeck = () => {
         }, 1000); // Check every second
 
         return () => clearInterval(interval);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/VideoMeetingBoardDeck/VideoMeetingBoardDeck.js:", error);
+      }
     }
     
   }, [videoLink]);

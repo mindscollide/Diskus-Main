@@ -175,7 +175,9 @@ const AgendaWise = ({
         });
         setAgendaOptions(NewData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+    }
   }, [AllAgendas]);
 
   const modules = {
@@ -586,7 +588,9 @@ const AgendaWise = ({
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+    }
   }, [RetriveAgendaWiseDocuments]);
 
   //Handle Update Button Api

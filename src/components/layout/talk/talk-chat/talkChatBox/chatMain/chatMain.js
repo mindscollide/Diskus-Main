@@ -298,7 +298,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
         ...messageSendData,
         ReceiverID: talkStateData.ActiveChatData.id.toString(),
       });
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/talkChatBox/chatMain/chatMain.js:", error);
+    }
   }, [talkStateData.ActiveChatData]);
 
   const emojiClick = () => {

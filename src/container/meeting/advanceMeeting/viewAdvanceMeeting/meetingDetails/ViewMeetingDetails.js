@@ -448,7 +448,9 @@ const ViewMeetingDetails = () => {
         }
         setRows(newDateTimeData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/meetingDetails/ViewMeetingDetails.js:", error);
+    }
   }, [getAllMeetingDetails]);
 
   const leaveCallHost = () => {
