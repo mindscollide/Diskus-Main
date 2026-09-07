@@ -103,13 +103,14 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "env-cmd -f .env.local craco start",
-    "build:local": "env-cmd -f .env.local craco build",
-    "build:pso": "env-cmd -f .env.pso craco build",
-    "build:uat": "env-cmd -f .env.uat craco build",
-    "build:staging": "env-cmd -f .env.staging craco build",
-    "build:optimize": "env-cmd -f .env.optimized craco build",
-    "build:production": "env-cmd -f .env.production craco build",
+    "start": "env-cmd -f .env.local vite",
+    "build:local": "env-cmd -f .env.local vite build",
+    "build:pso": "env-cmd -f .env.pso vite build",
+    "build:uat": "env-cmd -f .env.uat vite build",
+    "build:staging": "env-cmd -f .env.staging vite build",
+    "build:optimize": "env-cmd -f .env.optimized vite build",
+    "build:production": "env-cmd -f .env.production vite build",
+    "preview": "vite preview --outDir build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -132,6 +133,7 @@
     ]
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
     "buffer": "^6.0.3",
     "env-cmd": "^11.0.0",
     "less": "^4.2.0",
@@ -139,6 +141,7 @@
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vite": "^6.4.3"
   }
 }

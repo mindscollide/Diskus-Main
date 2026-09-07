@@ -23,7 +23,6 @@ import {
   getVideoCallParticipantsGuestMainApi,
   guestLeaveMeetingVideoApi,
   hideUnhideSelfMainApi,
-  muteUnMuteParticipantMainApi,
   muteUnMuteParticipantsorGuestbyHost,
   muteUnMuteSelfMainApi,
   raiseUnRaisedHandMainApi,

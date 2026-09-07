@@ -37,7 +37,6 @@ import {
   checkFeatureIDAvailability,
   getHomeRoute,
   getLocalStorageItemNonActiveCheck,
-  SideBarGlobalNavigationFunction,
   SideBarGlobalNavigationFunctionNew,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";

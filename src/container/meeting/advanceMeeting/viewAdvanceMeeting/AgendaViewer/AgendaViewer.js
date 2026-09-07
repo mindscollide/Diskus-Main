@@ -45,7 +45,6 @@ import {
   videoIconOrButtonState,
   participantVideoButtonState,
   clearMessegesVideoFeature,
-  startOrStopPresenterGlobal,
   presenterViewGlobalState,
   openPresenterViewMainApi,
   stopPresenterViewMainApi,

@@ -9,7 +9,6 @@ import {
   leavePresenterView,
   muteUnMuteParticipant,
   openPresenterView,
-  OpenPresenterView,
   participantOfGroupCall,
   startPresenterView,
   stopPresenterView,

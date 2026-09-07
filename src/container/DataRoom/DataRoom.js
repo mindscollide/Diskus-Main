@@ -153,7 +153,6 @@ import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../commen/functions/regex";
 import {
   formatFileSize,
-  formatKBtoMB,
   formatMB,
 } from "../../commen/functions/convertFileSizeInMB";
 import { useTableScrollBottom } from "../../commen/functions/useTableScrollBottom";

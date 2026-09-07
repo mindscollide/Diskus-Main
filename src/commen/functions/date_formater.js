@@ -1,7 +1,14 @@
 import moment from "moment";
 import { formatDistanceToNow, format, parse, isSameDay } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
-import "moment/locale/ar"; // import Arabic locale (or other locales you support)
+// Must be the `moment/dist/` (ESM) locale, not `moment/locale/` (CommonJS).
+// A locale registers itself by side effect on whichever moment copy it imports;
+// the CommonJS path pulls in a second copy of moment, so the registration lands
+// on an instance nothing else uses and every Arabic date silently renders in
+// English. vite.config.js aliases bare `moment` to the same ESM build — the two
+// have to agree. Same reasoning as the locale imports in
+// components/elements/calendar/Calendar.js and .../time_picker/Time_picker.js.
+import "moment/dist/locale/ar";
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
   return `${value[0]}${value[1]}${value[2]}`;

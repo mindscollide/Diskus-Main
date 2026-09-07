@@ -22,7 +22,6 @@ import {
   DownloadBoarddeckPDF,
   BoardDeckSendEmail,
   validateVideoRecordingURL,
-  getMinutesPublishedStatus,
   GetMeetingBoardDeckCredentialsStatus,
 } from "../../commen/apis/Api_config";
 import {
