@@ -477,7 +477,11 @@ const VideoCallNormalHeader = ({
             ? newRoomID
             : participantRoomId;
         let UID = !isMeetingVideo
-          ? userID
+          ? currentCallType === 2
+            ? isCaller
+              ? localStorage.getItem("callerGuid")
+              : localStorage.getItem("receipentGuid")
+            : userID
           : isMeetingVideoHostCheck
             ? isGuid
             : participantUID;
@@ -1356,7 +1360,13 @@ const VideoCallNormalHeader = ({
           let userID = String(localStorage.getItem("userID"));
           let RoomID = !isMeetingVideo ? acceptedRoomID : null;
 
-          let UID = !isMeetingVideo ? userID : null;
+          let UID = !isMeetingVideo
+            ? currentCallType === 2
+              ? isCaller
+                ? localStorage.getItem("callerGuid")
+                : localStorage.getItem("receipentGuid")
+              : userID
+            : null;
           let data = {
             RoomID: RoomID,
             ShareScreen: false,
