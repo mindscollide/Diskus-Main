@@ -755,6 +755,7 @@ const CreatePolling = () => {
                               sm={12}
                               className='group-fields d-flex align-items-center gap-2  '>
                               <Select
+                                placeholder={t("Select")}
                                 onChange={handleSelectValue}
                                 isDisabled={
                                   PollsReducergellAllCommittesandGroups === null

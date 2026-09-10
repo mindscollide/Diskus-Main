@@ -184,7 +184,15 @@ const WebNotfication = ({
 
         const groupNotificationsData = uniqueNotifications.reduce(
           (acc, notification) => {
-            const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
+            // sentDateTime is UTC. Slicing it directly (without the same
+            // +5 hours adjustment WebNotificationDateFormatter uses for
+            // display) mismatched against todayDate (local), so a
+            // notification sent late in the UTC day but already "today"
+            // locally was wrongly grouped under Previous.
+            const notificationDate = moment
+              .utc(notification.sentDateTime, "YYYYMMDDHHmmss")
+              .add(5, "hours")
+              .format("YYYYMMDD");
             if (notificationDate === todayDate) {
               acc.today.push(notification);
             } else {

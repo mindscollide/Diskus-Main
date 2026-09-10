@@ -791,7 +791,7 @@ const VideoNewParticipantList = () => {
       <Row>
         <Col sm={12}>
           <TextField
-            placeholder="Search"
+            placeholder={t("Search")}
             applyClass="waitingParticipantsSearchField"
             change={handleChangeSearchParticipant}
             value={searchValue}
