@@ -154,7 +154,10 @@ const VideoCallNormalHeader = ({
     setVideoChatUnreadCount,
   } = useContext(MeetingContext);
 
-  console.log(groupCallParticipantList, "groupCallParticipantListgroupCallParticipantList")
+  console.log(
+    groupCallParticipantList,
+    "groupCallParticipantListgroupCallParticipantList",
+  );
 
   // Meeting group chat (presenter / meeting-video) — mirrors AgendaViewer group chat
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -314,7 +317,9 @@ const VideoCallNormalHeader = ({
   console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
 
   console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
-
+  const raisedHandGuids = useSelector(
+    (state) => state.videoFeatureReducer.raisedHandGuids,
+  );
   console.log(
     { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
     "presenterViewJoinFlagpresenterViewHostFlag",
@@ -348,9 +353,9 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck"),
   );
-  let callerGuid = localStorage.getItem("callerGuid")
+  let callerGuid = localStorage.getItem("callerGuid");
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
-  let recepientGuid = localStorage.getItem("receipentGuid")
+  let recepientGuid = localStorage.getItem("receipentGuid");
 
   let RoomID =
     callTypeID === 2
@@ -361,9 +366,9 @@ const VideoCallNormalHeader = ({
           ? newRoomID
           : participantRoomId;
   let UID =
-    callTypeID === 2 &&  callerID !== 0
+    callTypeID === 2 && callerID !== 0
       ? callerGuid
-      : callTypeID === 2 && recipentCalledID !== 0 
+      : callTypeID === 2 && recipentCalledID !== 0
         ? recepientGuid
         : presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
           ? participantUID
@@ -403,11 +408,22 @@ const VideoCallNormalHeader = ({
 
   const [screenStream, setScreenStream] = useState(null);
 
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
-
+  const isParticipantHandRaised = (participant) => {
+    if (!participant?.guid) return false;
+    const result = raisedHandGuids?.[participant.guid] === true;
+    // TEMP DEBUG — remove once raise-hand is confirmed working live.
+    console.log(
+      "[RaiseHandDebug] isParticipantHandRaised for",
+      participant?.name,
+      "guid:",
+      participant?.guid,
+      "-> result:",
+      result,
+      "| raisedHandGuids:",
+      raisedHandGuids,
+    );
+    return result;
+  };
   //when Duplicate data come in the waiting participantListCOunter
   // when duplicate data comes in waitingParticipantsListCounter
   useEffect(() => {
@@ -1774,12 +1790,17 @@ const VideoCallNormalHeader = ({
 
   const raiseUnRaiseForParticipant = (flag) => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      let data = {
-        RoomID: String(RoomID),
-        UID: String(UID),
-        IsHandRaised: flag,
-      };
-      dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+      const RoomID = localStorage.getItem("groupCallRoomId");
+      const UID = isCaller
+        ? localStorage.getItem("callerGuid")
+        : localStorage.getItem("receipentGuid");
+      dispatch(
+        raiseUnRaisedHandMainApi(navigate, t, {
+          RoomID: String(RoomID),
+          UID: String(UID),
+          IsHandRaised: flag,
+        }),
+      );
     }
   };
 
@@ -2375,6 +2396,18 @@ const VideoCallNormalHeader = ({
                                       {participant.isHost && (
                                         <span className='ms-1'>(Caller)</span>
                                       )}
+                                      {(participant.userID === currentUserID
+                                        ? raisedUnRaisedParticipant
+                                        : isParticipantHandRaised(
+                                            participant,
+                                          )) && (
+                                        <img
+                                          src={RaiseHand}
+                                          alt='Hand raised'
+                                          width={14}
+                                          height={14}
+                                        />
+                                      )}
                                     </p>
                                   </Col>
                                 </Row>
@@ -2420,6 +2453,19 @@ const VideoCallNormalHeader = ({
                                           sm={12}>
                                           <p className='participant-name'>
                                             {participantData.name}
+                                            {(participantData.userID ===
+                                            currentUserID
+                                              ? raisedUnRaisedParticipant
+                                              : isParticipantHandRaised(
+                                                  participantData,
+                                                )) && (
+                                              <img
+                                                src={RaiseHand}
+                                                alt='Hand raised'
+                                                width={14}
+                                                height={14}
+                                              />
+                                            )}
                                           </p>
                                         </Col>
                                         <Col
