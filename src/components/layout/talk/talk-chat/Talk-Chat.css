@@ -1873,26 +1873,26 @@ button.UploadFileButton {
 
 .image-thumbnail {
   display: block;
-  height: 270px;
-  width: 91%;
+  height: 100%;
+  width: 100%;
   text-align: center;
-  padding-top: 35px;
+  padding: 15px 15px 25px 15px;
   /* border: 1px solid #ccc; */
-  position: absolute;
+  /* position: absolute; */
   background: #e1e1e1;
 }
 
 img.thumbnailImage {
-  height: 200px;
-  width: 70%;
+  height: 170px;
+  width: 95%;
 }
 
-.removeImage-thumbnail {
+/* .removeImage-thumbnail {
   position: absolute;
   z-index: 9;
   right: 20px;
   top: 17px;
-}
+} */
 
 .chat-input-field.no-upload-options input {
   width: 250px !important;

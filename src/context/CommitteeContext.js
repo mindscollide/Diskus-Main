@@ -65,6 +65,10 @@ export const CommitteeProvider = ({ children }) => {
   const { CommitteeMeetingMQTT, MeetingStatusSocket, MeetingStatusEnded } =
     useSelector((state) => state.meetingIdReducer);
 
+  const meetingStatusProposedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+  );
+
   // =========================
   // STATE
   // =========================
@@ -545,6 +549,48 @@ export const CommitteeProvider = ({ children }) => {
     } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
+
+  useEffect(() => {
+    if (
+      meetingStatusProposedMqttData !== null &&
+      meetingStatusProposedMqttData !== undefined
+    ) {
+      try {
+        const updateMeetingData = async () => {
+          let meetingData = meetingStatusProposedMqttData;
+
+          const indexToUpdate = committeeProposedMeetingData.findIndex(
+            (obj) => obj.pK_MDID === meetingData.pK_MDID,
+          );
+
+          // Fetching unpublished meeting data
+          let getMeetingDataArray = await getAllUnpublishedMeetingData(
+            [meetingData],
+            1,
+          );
+
+          // Assuming getMeetingDataArray is an array with a single object
+          const getMeetingData = getMeetingDataArray[0];
+          // Check if the meeting exists in the current meetingsRecords
+
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...committeeProposedMeetingData];
+
+            updatedRows[indexToUpdate] = getMeetingData;
+
+            setCommitteeProposedMeetingData(updatedRows);
+          } else {
+            let updatedRows = [getMeetingData, ...committeeProposedMeetingData];
+
+            setCommitteeProposedMeetingData(updatedRows);
+            setCommitteeProposedMeetingDataRecord((prev) => prev + 1);
+          }
+        };
+        updateMeetingData();
+        dispatch(meetingStatusProposedMqtt(null));
+      } catch (error) {}
+    }
+  }, [meetingStatusProposedMqttData]);
 
   // useEffect(() => {
   //   if (MeetingProp !== null) {

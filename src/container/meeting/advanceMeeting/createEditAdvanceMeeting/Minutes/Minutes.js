@@ -56,7 +56,7 @@ import {
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 import { meetingIdReducer } from "../../../../../store/reducers";
 import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileApiFunc, DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const Minutes = () => {
   const { editorRole, setEditorRole, setGoBackCancelModal } =
@@ -708,12 +708,34 @@ const Minutes = () => {
   };
 
   const downloadDocument = (record) => {
-    let data = {
-      FileID: record.pK_FileID,
+     let data2 = {
+      FileID: Number(record.pK_FileID),
     };
+    if (record.displayFileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayFileName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data2,
+        t,
+        record.displayFileName,
+      ),
     );
+    // let data = {
+    //   FileID: record.pK_FileID,
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+    // );
   };
 
   return (

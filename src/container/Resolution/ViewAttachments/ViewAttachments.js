@@ -4,28 +4,40 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Button from "../../../components/elements/button/Button";
 import { useNavigate } from "react-router-dom";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import AttachmentViewer from "../../../components/elements/fileAttachment/attachment";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import CustomModal from "../../../components/elements/modal/Modal";
 const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
-  
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleClickDownloadFile = (fileID, fileName) => {
-    let data = {
+    let data2 = {
       FileID: Number(fileID),
     };
-    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
+    if (fileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data2, t, fileName),
+      );
+      return;
+    }
+    dispatch(DataRoomDownloadFileApiFunc(navigate, data2, t, fileName));
+    // let data = {
+    //   FileID: Number(fileID),
+    // };
+    // dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
   };
   const handleLinkClick = (data, ext) => {
     if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -64,7 +76,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                         handleClickDownload={() =>
                           handleClickDownloadFile(
                             data.originalAttachmentName,
-                            data.displayAttachmentName
+                            data.displayAttachmentName,
                           )
                         }
                       />

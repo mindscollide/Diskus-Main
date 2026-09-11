@@ -1056,8 +1056,8 @@ export const setProposedMeetingDateApi = (
                   showPrposedMeetingDateSuccess(
                     response.data.responseResult,
                     routePath === "saveProposedMeeting"
-                      ? t("Proposed-meeting-published")
-                      : t("Proposed-meeting-updated"),
+                      ? t("Proposed-meeting-published-successfully")
+                      : t("Proposed-meeting-updated-successfully"),
                   ),
                 );
                 const committeeInfo =
@@ -2479,7 +2479,9 @@ export const UpdateMeetingStatusApi = (
                                   route === 12) &&
                                 Data.StatusID === 9
                               ? t("Meeting-ended-successfully")
-                              : "",
+                              : Data.StatusID === 7
+                                ? t("Meeting-ended-successfully")
+                                : "",
                       ),
                     );
                     const committeeInfo =
@@ -4743,5 +4745,3 @@ export const resetCurrentMeetingInfo = () => {
     type: actions.CLEAR_CURRENT_MEETING_INFO,
   };
 };
-
-

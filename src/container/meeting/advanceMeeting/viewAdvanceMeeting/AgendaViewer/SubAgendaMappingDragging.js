@@ -26,7 +26,10 @@ import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
 import { useEffect } from "react";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
@@ -135,17 +138,39 @@ const SubAgendaMappingDragging = ({
   };
 
   const downloadDocument = (record) => {
-    let data = {
+    let data2 = {
       FileID: Number(record.originalAttachmentName),
     };
+    if (record.displayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
-        data,
+        data2,
         t,
         record.displayAttachmentName,
       ),
     );
+    // let data = {
+    //   FileID: Number(record.originalAttachmentName),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     data,
+    //     t,
+    //     record.displayAttachmentName,
+    //   ),
+    // );
   };
 
   const pdfData = (record, ext) => {

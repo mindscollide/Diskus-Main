@@ -76,6 +76,7 @@ import { isSharedScreenCall } from "../../../../commen/apis/Api_config";
 import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
+import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 
 const ModalView = ({ ModalTitle }) => {
   //For Localization
@@ -1238,17 +1239,39 @@ const ModalView = ({ ModalTitle }) => {
   };
 
   const downloadClick = (record) => {
-    let dataRoomData = {
+    let data2 = {
       FileID: Number(record.OriginalAttachmentName),
     };
+    if (record.DisplayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.DisplayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
-        dataRoomData,
+        data2,
         t,
         record.DisplayAttachmentName,
       ),
     );
+    // let dataRoomData = {
+    //   FileID: Number(record.OriginalAttachmentName),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     dataRoomData,
+    //     t,
+    //     record.DisplayAttachmentName,
+    //   ),
+    // );
   };
 
   const handeClickView = (record) => {

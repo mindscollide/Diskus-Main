@@ -35,7 +35,10 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import NextModal from "../meetingDetails/NextModal/NextModal";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
@@ -64,9 +67,9 @@ const MeetingMaterial = ({
     (state) => state.NewMeetingreducer?.currentMeetingInfo,
   );
 
-  const { editorRole, setEditorRole ,setGoBackCancelModal} = useContext(MeetingContext);
+  const { editorRole, setEditorRole, setGoBackCancelModal } =
+    useContext(MeetingContext);
 
-  
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData,
   );
@@ -148,7 +151,6 @@ const MeetingMaterial = ({
   };
   //  handle Click download a file
   const handleClickDownload = (record) => {
-    
     if (
       (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
         editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
@@ -157,22 +159,44 @@ const MeetingMaterial = ({
         editorRole.status === "10" ||
         editorRole.status === "1")
     ) {
-      let data = {
+      let data2 = {
         FileID: Number(record.originalFileName),
       };
+      if (record.displayFileName?.split(".")[1] === "pdf") {
+        dispatch(
+          DataRoomDownloadFileWithFooterApiFunc(
+            navigate,
+            data2,
+            t,
+            record.displayFileName,
+          ),
+        );
+        return;
+      }
       dispatch(
-        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+        DataRoomDownloadFileApiFunc(navigate, data2, t, record.displayFileName),
       );
     } else if (
       editorRole.status === "9" &&
       (editorRole.role === "Agenda Contributor" ||
         editorRole.role === "Organizer")
     ) {
-      let data = {
+      let data2 = {
         FileID: Number(record.originalFileName),
       };
+      if (record.displayFileName?.split(".")[1] === "pdf") {
+        dispatch(
+          DataRoomDownloadFileWithFooterApiFunc(
+            navigate,
+            data2,
+            t,
+            record.displayFileName,
+          ),
+        );
+        return;
+      }
       dispatch(
-        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+        DataRoomDownloadFileApiFunc(navigate, data2, t, record.displayFileName),
       );
     }
   };
@@ -205,13 +229,24 @@ const MeetingMaterial = ({
           "noopener noreferrer",
         );
       } else {
-        let data = {
+        let data2 = {
           FileID: Number(record.originalFileName),
         };
+        if (record.displayFileName?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data2,
+              t,
+              record.displayFileName,
+            ),
+          );
+          return;
+        }
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(
+          DataRoomDownloadFileApiFunc(
             navigate,
-            data,
+            data2,
             t,
             record.displayFileName,
           ),
@@ -240,13 +275,24 @@ const MeetingMaterial = ({
           "noopener noreferrer",
         );
       } else {
-        let data = {
+        let data2 = {
           FileID: Number(record.originalFileName),
         };
+        if (record.displayFileName?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data2,
+              t,
+              record.displayFileName,
+            ),
+          );
+          return;
+        }
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(
+          DataRoomDownloadFileApiFunc(
             navigate,
-            data,
+            data2,
             t,
             record.displayFileName,
           ),
@@ -266,14 +312,13 @@ const MeetingMaterial = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={() => handleDoubeClick(record)}
-            >
+              onClick={() => handleDoubeClick(record)}>
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
-                alt=""
+                alt=''
                 width={"25px"}
                 height={"25px"}
-                className="me-2"
+                className='me-2'
               />
               <abbr title={`${text}`}>
                 <span className={styles["docx-name-title"]}>{text}</span>
@@ -303,8 +348,7 @@ const MeetingMaterial = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex gap-3 align-items-center justify-content-center"
-              >
+                className='d-flex gap-3 align-items-center justify-content-center'>
                 <Eye
                   fontSize={22}
                   cursor={
@@ -345,8 +389,6 @@ const MeetingMaterial = ({
     setIsPublishedState(isPublishedGlobal);
   }, [meetingMaterialData, isPublishedGlobal]);
 
-  
-
   const handleCancelButton = async () => {
     setGoBackCancelModal(true);
     // let searchData = {
@@ -367,14 +409,14 @@ const MeetingMaterial = ({
     //       ? true
     //       : false,
     // };
-    // 
+    //
     // dispatch(searchNewUserMeeting(navigate, searchData, t));
     // dispatch(toggleCreateEditMeetingModal(false));
     // dispatch(setAdvanceMeetingRoute(1));
   };
 
   const handleSaveAndNext = () => {
-    dispatch(setCreateEditTab("minutes"))
+    dispatch(setCreateEditTab("minutes"));
     // setMeetingMaterial(false);
     // setMinutes(true);
     // dispatch(meetingDetailsGlobalFlag(false));
@@ -391,30 +433,28 @@ const MeetingMaterial = ({
     dispatch(uploadGlobalFlag(false));
   };
   const handlePublish = () => {
-    
     dispatch(
       UpdateMeetingStatusApi(
         navigate,
         t,
         { MeetingID: meetingID, StatusID: 1 },
         "PublishMeetingFromMeetingMaterial",
-        {setEditorRole},
+        { setEditorRole },
       ),
     );
-
   };
 
   return (
     <section>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col lg={12} md={12} sm={12}>
           {rows.length === 0 && !Loading ? (
             <>
               <ResultMessage
                 icon={
                   <img
-                    alt="NonMeeting"
-                    draggable="false"
+                    alt='NonMeeting'
+                    draggable='false'
                     src={NoMeetingsIcon}
                   />
                 }
@@ -424,8 +464,7 @@ const MeetingMaterial = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["No-meeting-material-title"]}>
                     {t("No-meeting-material")}
                   </span>
@@ -438,7 +477,7 @@ const MeetingMaterial = ({
                 column={materialColoumn}
                 scroll={{ y: "46vh" }}
                 pagination={false}
-                className="Polling_table"
+                className='Polling_table'
                 rows={rows}
               />
             </>
@@ -450,8 +489,7 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-3"
-        >
+          className='d-flex justify-content-end gap-2 mt-3'>
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}

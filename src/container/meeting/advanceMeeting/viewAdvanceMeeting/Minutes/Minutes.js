@@ -59,7 +59,10 @@ import {
   GetStatsForPublishingMinutesByWorkFlowId,
 } from "../../../../../store/actions/Minutes_action";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import {
   fileFormatforSignatureFlow,
@@ -497,17 +500,34 @@ const Minutes = () => {
 
   //Download the document
   const downloadDocument = (record) => {
-    let data = {
-      FileID: record.pK_FileID,
+    let data2 = {
+      FileID: Number(record.pK_FileID),
     };
+    if (record.displayFileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayFileName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
-        navigate,
-        data,
-        t,
-        record.displayFileName,
-      ),
+      DataRoomDownloadFileApiFunc(navigate, data2, t, record.displayFileName),
     );
+    // let data = {
+    //   FileID: record.pK_FileID,
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     data,
+    //     t,
+    //     record.displayFileName,
+    //   ),
+    // );
   };
 
   const pdfData = (record, ext) => {

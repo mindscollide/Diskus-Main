@@ -8,7 +8,10 @@ import {
   getMeetingRecordingFilesApi,
   requestMeetingRecordingTranscriptApi,
 } from "../../../../../store/actions/NewMeetingActions";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table } from "../../../../../components/elements";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
@@ -20,7 +23,7 @@ import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 
 const Recording = () => {
   const meetingRecordingFiles = useSelector(
-    (state) => state.NewMeetingreducer.meetingRecordingFiles
+    (state) => state.NewMeetingreducer.meetingRecordingFiles,
   );
   const { advanceMeetingModalID } = useMeetingContext();
   const dispatch = useDispatch();
@@ -140,7 +143,7 @@ const Recording = () => {
             <span className={styles["RecordingTable___size"]}>
               {`${convertToArabicNumerals(
                 text,
-                localStorage.getItem("i18nextLng")
+                localStorage.getItem("i18nextLng"),
               )} MB`}
             </span>
           </>
@@ -213,10 +216,25 @@ const Recording = () => {
   ];
 
   const DownloadRecording = async (record) => {
-    let data = {
+    let data2 = {
       FileID: Number(record.fileID),
     };
-    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.fileName));
+    if (record.fileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.fileName,
+        ),
+      );
+      return;
+    }
+    dispatch(DataRoomDownloadFileApiFunc(navigate, data2, t, record.fileName));
+    // let data = {
+    //   FileID: Number(record.fileID),
+    // };
+    // dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.fileName));
   };
   return (
     <Row>

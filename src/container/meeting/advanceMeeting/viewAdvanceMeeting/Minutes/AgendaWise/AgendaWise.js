@@ -50,7 +50,10 @@ import {
   convertToGMTMinuteTime,
   convertDateToGMTMinute,
 } from "../../../../../../commen/functions/time_formatter";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
 import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
@@ -430,12 +433,29 @@ const AgendaWise = ({
 
   //Download the document
   const downloadDocument = (record) => {
-    let data = {
-      FileID: record.pK_FileID,
+    let data2 = {
+      FileID: Number(record.pK_FileID),
     };
+    if (record.displayFileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayFileName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileApiFunc(navigate, data2, t, record.displayFileName),
     );
+    // let data = {
+    //   FileID: record.pK_FileID,
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+    // );
   };
 
   const handleRemoveFile = (data) => {
@@ -1376,20 +1396,14 @@ const AgendaWise = ({
                                     className='position-relative'>
                                     <div className={styles["uploaded-details"]}>
                                       {(
-                                        (
-                                          Number(editorRole.status) === 1) ||
-                                        (
-                                          Number(editorRole.status) === 11) ||
-                                        (
-                                          Number(editorRole.status) === 12)
+                                        Number(editorRole.status) === 1 ||
+                                        Number(editorRole.status) === 11 ||
+                                        Number(editorRole.status) === 12
                                           ? null
-                                          : (
-                                              editorRole.role === "Organizer" &&
+                                          : (editorRole.role === "Organizer" &&
                                               Number(editorRole.status) ===
                                                 9) ||
-                                            (
-                                              Number(editorRole.status) ===
-                                                10 &&
+                                            (Number(editorRole.status) === 10 &&
                                               editorRole.role === "Organizer")
                                       ) ? (
                                         <img
@@ -1501,29 +1515,21 @@ const AgendaWise = ({
                                               className='d-grid justify-content-end p-0'>
                                               <div className='d-flex justify-content-center align-items-center'>
                                                 {(
-                                                  (
-                                                    Number(
-                                                      editorRole.status,
-                                                    ) === 1) ||
-                                                  (
-                                                    Number(
-                                                      editorRole.status,
-                                                    ) === 11) ||
-                                                  (
-                                                    Number(
-                                                      editorRole.status,
-                                                    ) === 12)
+                                                  Number(editorRole.status) ===
+                                                    1 ||
+                                                  Number(editorRole.status) ===
+                                                    11 ||
+                                                  Number(editorRole.status) ===
+                                                    12
                                                     ? null
-                                                    : (
-                                                        editorRole.role ===
-                                                          "Organizer" &&
+                                                    : (editorRole.role ===
+                                                        "Organizer" &&
                                                         Number(
                                                           editorRole.status,
                                                         ) === 9) ||
-                                                      (
-                                                        Number(
-                                                          editorRole.status,
-                                                        ) === 10 &&
+                                                      (Number(
+                                                        editorRole.status,
+                                                      ) === 10 &&
                                                         editorRole.role ===
                                                           "Organizer")
                                                 ) ? (
@@ -1965,29 +1971,24 @@ const AgendaWise = ({
                                                   className='d-grid justify-content-end p-0'>
                                                   <div className='d-flex justify-content-center align-items-center'>
                                                     {(
-                                                      (
-                                                        Number(
-                                                          editorRole.status,
-                                                        ) === 1) ||
-                                                      (
-                                                        Number(
-                                                          editorRole.status,
-                                                        ) === 11) ||
-                                                      (
-                                                        Number(
-                                                          editorRole.status,
-                                                        ) === 12)
+                                                      Number(
+                                                        editorRole.status,
+                                                      ) === 1 ||
+                                                      Number(
+                                                        editorRole.status,
+                                                      ) === 11 ||
+                                                      Number(
+                                                        editorRole.status,
+                                                      ) === 12
                                                         ? null
-                                                        : (
-                                                            editorRole.role ===
-                                                              "Organizer" &&
+                                                        : (editorRole.role ===
+                                                            "Organizer" &&
                                                             Number(
                                                               editorRole.status,
                                                             ) === 9) ||
-                                                          (
-                                                            Number(
-                                                              editorRole.status,
-                                                            ) === 10 &&
+                                                          (Number(
+                                                            editorRole.status,
+                                                          ) === 10 &&
                                                             editorRole.role ===
                                                               "Organizer")
                                                     ) ? (
@@ -2084,15 +2085,13 @@ const AgendaWise = ({
                                             </Col>
                                           </Row>
                                         </div>
-                                        {(
-                                          Number(editorRole.status) === 1) ||
+                                        {Number(editorRole.status) === 1 ||
                                         Number(editorRole.status) === 11 ||
                                         Number(editorRole.status) ===
-                                          12 ? null : (
-                                            editorRole.role === "Organizer" &&
+                                          12 ? null : (editorRole.role ===
+                                            "Organizer" &&
                                             Number(editorRole.status) === 9) ||
-                                          (
-                                            Number(editorRole.status) === 10 &&
+                                          (Number(editorRole.status) === 10 &&
                                             editorRole.role === "Organizer") ? (
                                           <img
                                             className={styles["delete-icon"]}

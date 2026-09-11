@@ -2843,8 +2843,8 @@
   "Create-board-meeting": "Create Board Meeting",
   "Proposed-board-meeting": "Proposed Board Meeting",
   "Password-verified": "Password Verified",
-  "Proposed-meeting-published": "Proposed Meeting Published",
-  "Proposed-meeting-updated": "Proposed Meeting Updated",
+  "Proposed-meeting-published-successfully": "Proposed Meeting Published Successfully",
+  "Proposed-meeting-updated-successfully": "Proposed Meeting Updated Successfully",
   "Unsaved-changes-will-be-lost-if-you-close-continue": "Unsaved changes will be lost if you close.  Continue?",
   "RSVP": "RSVP",
   "URL": "URL",
@@ -2869,7 +2869,7 @@
   "Payment-date-range": "Payment Date Range",
   "Compliance": "Compliance",
   "Notes": "Notes",
-  "Voting-started": "Voting started",
-  "Voting-ended": "Voting ended",
+  "Voting-started": "Voting Started",
+  "Voting-ended": "Voting Ended",
   "Please-select-package": "Please select package"
 }
