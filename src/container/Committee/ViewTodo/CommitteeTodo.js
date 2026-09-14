@@ -529,7 +529,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
-                      {optValue.status}
+                      {t(optValue.status)}
                     </option>
                   );
                 })}

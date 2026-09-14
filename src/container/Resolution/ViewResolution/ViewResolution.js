@@ -14,7 +14,7 @@ import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_
 import { viewResolutionModal } from "../../../store/actions/Resolution_actions";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
+import { DataRoomDownloadFileApiFunc, DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const ViewResolution = ({ setViewresolution }) => {
@@ -42,10 +42,16 @@ const ViewResolution = ({ setViewresolution }) => {
   };
 
   const handleClickDownloadFile = (fileID, fileName) => {
-    let data = {
+   let data2 = {
       FileID: Number(fileID),
     };
-    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
+    if (fileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data2, t, fileName),
+      );
+      return;
+    }
+    dispatch(DataRoomDownloadFileApiFunc(navigate, data2, t, fileName));
   };
 
   useEffect(() => {

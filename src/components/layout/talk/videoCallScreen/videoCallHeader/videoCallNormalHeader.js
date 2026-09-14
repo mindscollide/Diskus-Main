@@ -85,6 +85,7 @@ import {
   presenterNewParticipantJoin,
   screenShareTriggeredGlobally,
   isSharedScreenTriggeredApi,
+  resetRaisedHandGuids,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -493,7 +494,11 @@ const VideoCallNormalHeader = ({
             ? newRoomID
             : participantRoomId;
         let UID = !isMeetingVideo
-          ? userID
+          ? currentCallType === 2
+            ? isCaller
+              ? localStorage.getItem("callerGuid")
+              : localStorage.getItem("receipentGuid")
+            : userID
           : isMeetingVideoHostCheck
             ? isGuid
             : participantUID;
@@ -1358,6 +1363,10 @@ const VideoCallNormalHeader = ({
       setGroupCallParticipantList([]);
       setGroupVideoCallAccepted([]);
       setUnansweredCallParticipant([]);
+      // Stale-raised-hand fix: don't let a hand raised in this call carry
+      // over as "still raised" into the next meeting/presentation joined
+      // in this tab.
+      dispatch(resetRaisedHandGuids());
       let isSharedSceenEnable = JSON.parse(
         localStorage.getItem("isSharedSceenEnable"),
       );
@@ -1372,7 +1381,13 @@ const VideoCallNormalHeader = ({
           let userID = String(localStorage.getItem("userID"));
           let RoomID = !isMeetingVideo ? acceptedRoomID : null;
 
-          let UID = !isMeetingVideo ? userID : null;
+          let UID = !isMeetingVideo
+            ? currentCallType === 2
+              ? isCaller
+                ? localStorage.getItem("callerGuid")
+                : localStorage.getItem("receipentGuid")
+              : userID
+            : null;
           let data = {
             RoomID: RoomID,
             ShareScreen: false,

@@ -688,6 +688,18 @@ const videoFeatureReducer = (state = initialState, action) => {
         },
       };
     }
+
+    // raisedHandGuids only ever gets entries merged in above — nothing
+    // cleared it back out when a call ended, so a hand raised in one
+    // group call stayed "raised" for that participant's guid in every
+    // meeting/presentation joined afterward in the same session. Dispatch
+    // this on call-end/leave to start the next call clean.
+    case actions.RESET_RAISED_HAND_GUIDS: {
+      return {
+        ...state,
+        raisedHandGuids: {},
+      };
+    }
     case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
       let { payload } = action;
 

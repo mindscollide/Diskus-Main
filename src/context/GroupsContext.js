@@ -76,6 +76,10 @@ export const GroupsProvider = ({ children }) => {
     (state) => state.NewMeetingreducer.mqttMeetingDeleted,
   );
 
+  const meetingStatusProposedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+  );
+
   // ─── Tab State ───
   const [currentGroupMeetingTabActive, setCurrentGroupMeetingTabActive] =
     useState(1);
@@ -520,6 +524,47 @@ export const GroupsProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 
+  useEffect(() => {
+    if (
+      meetingStatusProposedMqttData !== null &&
+      meetingStatusProposedMqttData !== undefined
+    ) {
+      try {
+        const updateMeetingData = async () => {
+          let meetingData = meetingStatusProposedMqttData;
+
+          const indexToUpdate = groupProposedMeetingData.findIndex(
+            (obj) => obj.pK_MDID === meetingData.pK_MDID,
+          );
+
+          // Fetching unpublished meeting data
+          let getMeetingDataArray = await getAllUnpublishedMeetingData(
+            [meetingData],
+            1,
+          );
+
+          // Assuming getMeetingDataArray is an array with a single object
+          const getMeetingData = getMeetingDataArray[0];
+          // Check if the meeting exists in the current meetingsRecords
+
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...groupProposedMeetingData];
+
+            updatedRows[indexToUpdate] = getMeetingData;
+
+            setGroupProposedMeetingData(updatedRows);
+          } else {
+            let updatedRows = [getMeetingData, ...groupProposedMeetingData];
+
+            setGroupProposedMeetingData(updatedRows);
+            setGroupProposedMeetingDataRecord((prev) => prev + 1);
+          }
+        };
+        updateMeetingData();
+        dispatch(meetingStatusProposedMqtt(null));
+      } catch (error) {}
+    }
+  }, [meetingStatusProposedMqttData]);
   // =========================
   // EFFECT: MeetingProp — participant proposed dates validation
   // =========================

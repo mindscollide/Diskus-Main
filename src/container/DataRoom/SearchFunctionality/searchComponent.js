@@ -36,6 +36,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import {
+  DataRoomDownloadFileApiFunc,
   DataRoomDownloadFileWithFooterApiFunc,
   DataRoomDownloadFolderApiFunc,
   dataBehaviour,
@@ -89,7 +90,6 @@ const SearchComponent = ({
   setFileDataforAnalyticsCount,
   showShareFolderModal,
 }) => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -103,7 +103,7 @@ const SearchComponent = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   // all assignees
   const [assignessList, setAssignessList] = useState([]);
-  
+
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -122,7 +122,6 @@ const SearchComponent = ({
   let lang = localStorage.getItem("i18nextLng");
   let organizationID = localStorage.getItem("organizationID");
 
-  
   useEffect(() => {
     if (assignees?.user && assignees?.user?.length === 0) {
       dispatch(allAssignessList(navigate, t, false));
@@ -354,7 +353,6 @@ const SearchComponent = ({
   };
 
   const handleLinkClick = (e, record) => {
-    
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
       const pdfData = {
@@ -366,13 +364,12 @@ const SearchComponent = ({
       };
       const pdfDataJson = JSON.stringify(pdfData);
       let ext = record.name.split(".").pop();
-      
+
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
-    
     if (data.value === 1) {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse
@@ -421,7 +418,18 @@ const SearchComponent = ({
         let data = {
           FileID: Number(record.id),
         };
-        dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name));
+        if (record.name?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data,
+              t,
+              record.name,
+            ),
+          );
+        } else {
+          dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+        }
       }
     } else if (data.value === 6) {
       // Delete File and Folder
@@ -488,12 +496,12 @@ const SearchComponent = ({
     {
       title: (
         <>
-          <span className="d-flex gap-2">
+          <span className='d-flex gap-2'>
             {t("Name")}{" "}
             {allDocumentsTitleSorter === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -513,15 +521,14 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
-                <img draggable="false" src={folderColor} alt="" />
+                <img draggable='false' src={folderColor} alt='' />
                 <abbr title={text}>
                   <span
                     className={`${
                       stylesss["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
-                    {text} <img draggable="false" src={sharedIcon} alt="" />
+                    onClick={() => getFolderDocuments(data.id)}>
+                    {text} <img draggable='false' src={sharedIcon} alt='' />
                   </span>
                 </abbr>
               </div>
@@ -529,20 +536,19 @@ const SearchComponent = ({
           } else {
             return (
               <>
-                <section className="d-flex gap-2">
+                <section className='d-flex gap-2'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                     width={"25px"}
                     height={"25px"}
                   />
                   <abbr title={text}>
                     <span
                       className={stylesss["dataroom_table_heading"]}
-                      onClick={(e) => handleLinkClick(e, data)}
-                    >
-                      {text} <img draggable="false" src={sharedIcon} alt="" />
+                      onClick={(e) => handleLinkClick(e, data)}>
+                      {text} <img draggable='false' src={sharedIcon} alt='' />
                     </span>
                   </abbr>
                 </section>
@@ -553,14 +559,13 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
-                <img draggable="false" src={folderColor} alt="" />
+                <img draggable='false' src={folderColor} alt='' />
                 <abbr title={text}>
                   <span
                     className={`${
                       stylesss["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
+                    onClick={() => getFolderDocuments(data.id)}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -569,11 +574,11 @@ const SearchComponent = ({
           } else {
             return (
               <>
-                <section className="d-flex gap-2">
+                <section className='d-flex gap-2'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                     width={"25px"}
                     height={"25px"}
                   />
@@ -593,12 +598,12 @@ const SearchComponent = ({
     {
       title: (
         <>
-          <span className="d-flex justify-content-center gap-2">
+          <span className='d-flex justify-content-center gap-2'>
             {t("Owner")}
             {allOwnerSorter === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -619,12 +624,12 @@ const SearchComponent = ({
     },
     {
       title: (
-        <span className="d-flex justify-content-center align-items-center gap-2">
+        <span className='d-flex justify-content-center align-items-center gap-2'>
           {t("Last-modified")}
           {allLastModifiedSorter === "descend" ? (
-            <img src={ArrowUpIcon} alt="" />
+            <img src={ArrowUpIcon} alt='' />
           ) : (
-            <img src={ArrowDownIcon} alt="" />
+            <img src={ArrowDownIcon} alt='' />
           )}
         </span>
       ),
@@ -706,8 +711,7 @@ const SearchComponent = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2 position-relative otherstuff"
-            >
+              className='d-flex justify-content-end gap-2 position-relative otherstuff'>
               <span className={styles["threeDot__Icon"]}>
                 {/* Check if Shared */}
                 {record.isShared ? (
@@ -809,14 +813,14 @@ const SearchComponent = ({
     value: user.pK_UID,
     label: (
       <>
-        <span className="d-flex align-items-center gap-2" key={user.pK_UID}>
+        <span className='d-flex align-items-center gap-2' key={user.pK_UID}>
           <img
-            draggable="false"
+            draggable='false'
             width={"25px"}
-            height="25px"
-            className="rounded-circle  "
+            height='25px'
+            className='rounded-circle  '
             src={`data:image/jpeg;base64,${user.displayProfilePictureName}`}
-            alt=""
+            alt=''
           />
           {user.name}
         </span>
@@ -2180,20 +2184,19 @@ const SearchComponent = ({
 
   return (
     <>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Search_result_Heading"]}>
             {t("Search-results")}
           </span>
         </Col>
       </Row>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col
           lg={2}
           md={2}
           sm={12}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
+          className={styles["select-dropdowns-height-DataRoom"]}>
           {/* {searchDataFields.isDocument ||
           searchDataFields.isDocument ||
           searchDataFields.isSpreadSheet ||
@@ -2277,8 +2280,7 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={3}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
+          className={styles["select-dropdowns-height-DataRoom"]}>
           {/* {searchDataFields.StatusID !== 0 ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
@@ -2325,8 +2327,7 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={3}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
+          className={styles["select-dropdowns-height-DataRoom"]}>
           {/* {searchDataFields.isOwnedByMe !== 2 ||
           searchDataFields.isSpecificUser ? (
             <div className={styles["dropdown__Document_Value"]}>
@@ -2374,8 +2375,7 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={2}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
+          className={styles["select-dropdowns-height-DataRoom"]}>
           {/* {dateConverterIntoUTCForDataroom(searchDataFields.LastModifiedStartDate, 1) !== "" &&
           dateConverterIntoUTCForDataroom(searchDataFields.LastModifiedEndDate, 2) !== "" ? (
             <div className={styles["dropdown__Document_Value"]}>
@@ -2419,12 +2419,10 @@ const SearchComponent = ({
           lg={2}
           md={2}
           sm={2}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
+          className={styles["select-dropdowns-height-DataRoom"]}>
           <span
             className={styles["Clear_All_btn"]}
-            onClick={handleClearAllSearchOptions}
-          >
+            onClick={handleClearAllSearchOptions}>
             {t("Clear-all")}
           </span>
         </Col>
@@ -2443,7 +2441,7 @@ const SearchComponent = ({
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
             height={"54vh"}
-            endMessage=""
+            endMessage=''
             loader={
               searchAllData.length <= totalRecords && (
                 <Row>
@@ -2451,14 +2449,12 @@ const SearchComponent = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center mt-2"
-                  >
+                    className='d-flex justify-content-center mt-2'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
-            }
-          >
+            }>
             <GridViewDataRoom
               data={searchAllData}
               optionsforFolder={optionsforFolder(t)}
@@ -2481,7 +2477,7 @@ const SearchComponent = ({
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
             height={"57vh"}
-            endMessage=""
+            endMessage=''
             loader={
               searchAllData.length <= totalRecords && (
                 <Row>
@@ -2489,14 +2485,12 @@ const SearchComponent = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center mt-2"
-                  >
+                    className='d-flex justify-content-center mt-2'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
-            }
-          >
+            }>
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={searchColumns}
@@ -2511,13 +2505,12 @@ const SearchComponent = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex flex-column flex-wrap gap-1 justify-content-center align-items-center"
-                    >
+                      className='d-flex flex-column flex-wrap gap-1 justify-content-center align-items-center'>
                       <img
                         src={EmptyPNGScreenSearch}
-                        alt=""
-                        height="227.48px"
-                        width="199.04px"
+                        alt=''
+                        height='227.48px'
+                        width='199.04px'
                       />
                       <span className={styles["NoMatchFoundHeading"]}>
                         {t("No-match-found")}
@@ -2537,13 +2530,12 @@ const SearchComponent = ({
         </>
       ) : (
         <div className={styles["empty-search-state"]}>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center"
-            >
+              className='d-flex justify-content-center'>
               <span className={styles["Message_nofiles"]}>
                 {t("There-are-no-items-here")}
               </span>
@@ -2571,13 +2563,12 @@ const SearchComponent = ({
         }
         ModalBody={
           <>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col
                 lg={6}
                 md={6}
                 sm={12}
-                className={styles["datePickerTodoCreate2"]}
-              >
+                className={styles["datePickerTodoCreate2"]}>
                 <DatePicker
                   format={"DD MMM, YYYY"}
                   render={
@@ -2589,9 +2580,9 @@ const SearchComponent = ({
                   containerClassName={stylesss["datePicker_Container"]}
                   onOpenPickNewDate={true}
                   editable={false}
-                  className="datePickerTodoCreate2"
+                  className='datePickerTodoCreate2'
                   onChange={handleStartDatePickerChange}
-                  inputMode=""
+                  inputMode=''
                   calendar={calendarValue}
                   locale={localValue}
                   ref={calendRef}
@@ -2602,8 +2593,7 @@ const SearchComponent = ({
                 lg={6}
                 md={6}
                 sm={6}
-                className={styles["datePickerTodoCreate2"]}
-              >
+                className={styles["datePickerTodoCreate2"]}>
                 {" "}
                 <DatePicker
                   format={"DD MMM, YYYY"}
@@ -2614,10 +2604,10 @@ const SearchComponent = ({
                     />
                   }
                   containerClassName={stylesss["datePicker_Container"]}
-                  className="datePickerTodoCreate2"
+                  className='datePickerTodoCreate2'
                   onOpenPickNewDate={true}
                   editable={false}
-                  inputMode=""
+                  inputMode=''
                   onChange={handleEndDatePickerChange}
                   calendar={calendarValue}
                   locale={localValue}
