@@ -905,6 +905,7 @@ const UpdatePolls = () => {
                                 className="group-fields d-flex align-items-center gap-2 "
                               >
                                 <Select
+                                  placeholder={t("Select")}
                                   onChange={handleSelectValue}
                                   value={selectedsearch}
                                   classNamePrefix={"selectMember"}

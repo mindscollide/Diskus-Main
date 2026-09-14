@@ -20,11 +20,7 @@ import { Plus } from "react-bootstrap-icons";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
-import {
-  AttachmentViewer,
-  Button,
-  TextField,
-} from "../../components/elements";
+import { AttachmentViewer, Button, TextField } from "../../components/elements";
 import { Spin, Tooltip } from "antd";
 import {
   GetNotes,
@@ -41,7 +37,10 @@ import CustomAccordion from "../../components/elements/accordian/CustomAccordion
 import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { buildNotesSearchPayload, normalizeNotesList } from "./notes.helpers";
 const Notes = () => {
@@ -134,9 +133,7 @@ const Notes = () => {
         localStorage.removeItem("notesPage");
         localStorage.removeItem("notesPageSize");
       };
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, []);
 
   // render Notes Data
@@ -154,14 +151,14 @@ const Notes = () => {
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
           setNotes(
-            normalizeNotesList(NotesReducer.GetAllNotesResponse.getNotes)
+            normalizeNotesList(NotesReducer.GetAllNotesResponse.getNotes),
           );
         } else if (
           typeof NotesReducer.GetAllNotesResponse.getNotes === "object" &&
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
           setNotes(
-            normalizeNotesList(NotesReducer.GetAllNotesResponse.getNotes)
+            normalizeNotesList(NotesReducer.GetAllNotesResponse.getNotes),
           );
         } else {
           setNotes([]);
@@ -186,8 +183,8 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        4
-      )
+        4,
+      ),
     );
     //Retrive Documents of the Notes
     let Data = {
@@ -206,8 +203,8 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        1
-      )
+        1,
+      ),
     );
     //Retrive Documents of the Notes
     let Data = {
@@ -279,7 +276,9 @@ const Notes = () => {
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
       setEnterpressed(true);
-      let Data = buildNotesSearchPayload({ Title: noteSearchState.searchValue });
+      let Data = buildNotesSearchPayload({
+        Title: noteSearchState.searchValue,
+      });
       dispatch(GetNotes(navigate, Data, t));
     }
   };
@@ -413,7 +412,6 @@ const Notes = () => {
 
   // this is onchange envent of search modal Documnet
   const handleChangeDocumentsOptions = (event) => {
-    
     setSearchResultFields((prevState) => ({
       ...prevState, // Copy the existing state
       Type: event, // Update the Type field
@@ -597,8 +595,19 @@ const Notes = () => {
     let data2 = {
       FileID: Number(data.pK_FileID),
     };
+    if (data.displayFileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          data.displayFileName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(navigate, data2, t, data.displayFileName)
+      DataRoomDownloadFileApiFunc(navigate, data2, t, data.displayFileName),
     );
   };
   const handleClickOpenDoc = (data) => {
@@ -614,7 +623,7 @@ const Notes = () => {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -773,7 +782,6 @@ const Notes = () => {
             {/* Test Accordian Body Starts  */}
             {notes.length > 0 && notes !== null && notes !== undefined ? (
               notes.map((data, index) => {
-                
                 return (
                   <CustomAccordion
                     key={data.pK_NotesID}
@@ -807,9 +815,9 @@ const Notes = () => {
                         <span
                           className={styles["collapse-text-attached-material"]}>
                           {`${_justShowDateformat(
-                            data?.modifiedDate + data?.modifiedTime
+                            data?.modifiedDate + data?.modifiedTime,
                           )} ${" | "} ${_justShowDay(
-                            data?.modifiedDate + data?.modifiedTime
+                            data?.modifiedDate + data?.modifiedTime,
                           )}`}
                         </span>
                       </>
@@ -963,7 +971,6 @@ const Notes = () => {
           setViewNotes={setViewModalShow}
         />
       ) : null}
-      
     </>
   );
 };

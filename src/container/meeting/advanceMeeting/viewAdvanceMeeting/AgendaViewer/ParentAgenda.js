@@ -31,6 +31,7 @@ import ViewVoteModal from "../Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
 import CastVoteAgendaModal from "../Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
 import moment from "moment";
+import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 
 const ParentAgenda = ({
   data,
@@ -167,17 +168,39 @@ const ParentAgenda = ({
   };
 
   const downloadDocument = (record) => {
-    let data = {
+    let data2 = {
       FileID: Number(record.originalAttachmentName),
     };
+    if (record.displayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
-        data,
+        data2,
         t,
         record.displayAttachmentName,
       ),
     );
+    // let data = {
+    //   FileID: Number(record.originalAttachmentName),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     data,
+    //     t,
+    //     record.displayAttachmentName,
+    //   ),
+    // );
   };
 
   const pdfData = (record, ext) => {

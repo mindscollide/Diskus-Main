@@ -65,6 +65,7 @@ import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 import { useSnackbar } from "@/components/elements";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import { useMeetingContext } from "../../../../context/MeetingContext";
+import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
@@ -2415,17 +2416,39 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   };
 
   const downloadClick = (record) => {
-    let dataRoomData = {
+    let data2 = {
       FileID: Number(record.OriginalAttachmentName),
     };
+    if (record.DisplayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.DisplayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
-        dataRoomData,
+        data2,
         t,
         record.DisplayAttachmentName,
       ),
     );
+    // let dataRoomData = {
+    //   FileID: Number(record.OriginalAttachmentName),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     dataRoomData,
+    //     t,
+    //     record.DisplayAttachmentName,
+    //   ),
+    // );
   };
 
   const handeClickView = (record) => {
