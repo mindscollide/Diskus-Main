@@ -85,6 +85,7 @@ import {
   presenterNewParticipantJoin,
   screenShareTriggeredGlobally,
   isSharedScreenTriggeredApi,
+  resetRaisedHandGuids,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -1362,6 +1363,10 @@ const VideoCallNormalHeader = ({
       setGroupCallParticipantList([]);
       setGroupVideoCallAccepted([]);
       setUnansweredCallParticipant([]);
+      // Stale-raised-hand fix: don't let a hand raised in this call carry
+      // over as "still raised" into the next meeting/presentation joined
+      // in this tab.
+      dispatch(resetRaisedHandGuids());
       let isSharedSceenEnable = JSON.parse(
         localStorage.getItem("isSharedSceenEnable"),
       );

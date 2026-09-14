@@ -18,6 +18,8 @@ import {
   minimizeVideoPanelFlag,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
+  resetRaisedHandGuids,
+  setRaisedUnRaisedParticiant,
   videoOutgoingCallFlag,
 } from "./VideoFeature_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
@@ -163,7 +165,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
               sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
               // localStorage.setItem("meetingTitle", "");
               if (Data.CallTypeID === 2) {
-              localStorage.setItem(
+                localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
                   JSON.stringify(Data.RecipentIDs),
                 );
@@ -321,7 +323,7 @@ const VideoCallResponse = (Data, navigate, t) => {
                 await dispatch(
                   videoCallResponseSuccess(
                     response.data.responseResult,
-                    t("Video-Call-Status-Updated"),
+                    // t("Video-Call-Status-Updated"),
                   ),
                 );
               } else if (Data.CallStatusID === 3) {
@@ -715,6 +717,9 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
               localStorage.setItem("NewRoomID", 0);
               localStorage.setItem("newCallerID", 0);
               localStorage.removeItem("isSharedSceenEnable");
+              localStorage.setItem("handStatus", false);
+              dispatch(setRaisedUnRaisedParticiant(false));
+              dispatch(resetRaisedHandGuids());
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
               if (flag === 1) {

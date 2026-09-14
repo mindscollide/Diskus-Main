@@ -35,6 +35,7 @@ import {
   participantWaitingList,
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
+  resetRaisedHandGuids,
   participantHideUnhideVideo,
   getParticipantsNewJoin,
   getVideoUrlForParticipant,
@@ -1226,8 +1227,12 @@ const Dashboard = () => {
               }
 
               dispatch(getMeetingStatusfromSocket(data.payload));
-            } else if(data.payload.message.toLowerCase().includes("MEETING_STATUS_EDITED_DELETED".toLowerCase())) {
-      if (data.viewable) {
+            } else if (
+              data.payload.message
+                .toLowerCase()
+                .includes("MEETING_STATUS_EDITED_DELETED".toLowerCase())
+            ) {
+              if (data.viewable) {
                 setNotification({
                   ...notification,
                   notificationShow: true,
@@ -1239,7 +1244,7 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-                dispatch(deleteMeetingMQtt(data.payload));
+              dispatch(deleteMeetingMQtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_STATUS_EDITED_ADMIN".toLowerCase()
@@ -2410,7 +2415,11 @@ const Dashboard = () => {
           const isComplianceTaskModalOpen = JSON.parse(
             sessionStorage.getItem("complianceTaskViewModalOpen"),
           );
-          if (data.viewable && !isComplianceTaskModalOpen && !data.receiverID.includes(Number(localStorage.getItem("userID")))) {
+          if (
+            data.viewable &&
+            !isComplianceTaskModalOpen &&
+            !data.receiverID.includes(Number(localStorage.getItem("userID")))
+          ) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -2433,7 +2442,11 @@ const Dashboard = () => {
           const isComplianceTaskModalOpenComment = JSON.parse(
             sessionStorage.getItem("complianceTaskViewModalOpen"),
           );
-          if (data.viewable && !isComplianceTaskModalOpenComment && !data.receiverID.includes(Number(localStorage.getItem("userID")))) {
+          if (
+            data.viewable &&
+            !isComplianceTaskModalOpenComment &&
+            !data.receiverID.includes(Number(localStorage.getItem("userID")))
+          ) {
             setNotification({
               notificationShow: true,
               message: changeMQQTTJSONTwo(
@@ -3419,27 +3432,60 @@ const Dashboard = () => {
             console.log(activeCall, "Check active");
             console.log("Check active");
             // dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
-            dispatch(incomingVideoCallFlag(true));
-            let timeValue = Number(localStorage.getItem("callRingerTimeout"));
-            localStorage.setItem("NewRoomID", data.payload.roomID);
-            timeValue = timeValue * 1000;
-            const timeoutId = setTimeout(() => {
-              console.log("Check active");
+            // Same-user multi-tab fix (see the fresh-call branch below for
+            // the full explanation of why a plain localStorage check isn't
+            // enough): use the Web Locks API as a real cross-tab mutex so
+            // only one tab claims this call's ringer.
+            if (document.visibilityState !== "visible") {
+              await new Promise((resolve) => setTimeout(resolve, 200));
+            }
 
-              let Data = {
-                ReciepentID: Number(createrID),
-                RoomID: data.payload.roomID,
-                CallStatusID: 3,
-                CallTypeID: data.payload.callTypeID,
-              };
-              if (IncomingVideoCallFlagReducer === true) {
+            let claimedRingerHereBusy = false;
+            if (typeof navigator !== "undefined" && navigator.locks) {
+              await navigator.locks.request(
+                "diskus-incoming-call-claim",
+                async () => {
+                  const alreadyRingingOnAnotherTabBusy =
+                    String(localStorage.getItem("NewRoomID")) ===
+                    String(data.payload.roomID);
+                  if (!alreadyRingingOnAnotherTabBusy) {
+                    localStorage.setItem("NewRoomID", data.payload.roomID);
+                    claimedRingerHereBusy = true;
+                  }
+                },
+              );
+            } else {
+              const alreadyRingingOnAnotherTabBusy =
+                String(localStorage.getItem("NewRoomID")) ===
+                String(data.payload.roomID);
+              if (!alreadyRingingOnAnotherTabBusy) {
+                localStorage.setItem("NewRoomID", data.payload.roomID);
+                claimedRingerHereBusy = true;
+              }
+            }
+
+            if (claimedRingerHereBusy) {
+              dispatch(incomingVideoCallFlag(true));
+              let timeValue = Number(localStorage.getItem("callRingerTimeout"));
+              timeValue = timeValue * 1000;
+              const timeoutId = setTimeout(() => {
                 console.log("Check active");
 
-                dispatch(VideoCallResponse(Data, navigate, t));
-                localStorage.removeItem("NewRoomID");
-              }
-            }, timeValue);
-            return () => clearTimeout(timeoutId);
+                let Data = {
+                  ReciepentID: Number(createrID),
+                  RoomID: data.payload.roomID,
+                  CallStatusID: 3,
+                  CallTypeID: data.payload.callTypeID,
+                };
+                if (IncomingVideoCallFlagReducer === true) {
+                  console.log("Check active");
+
+                  dispatch(VideoCallResponse(Data, navigate, t));
+                  localStorage.removeItem("NewRoomID");
+                }
+              }, timeValue);
+              return () => clearTimeout(timeoutId);
+            }
           } else if (
             (activeCall === false ||
               activeCall === undefined ||
@@ -3448,15 +3494,61 @@ const Dashboard = () => {
           ) {
             console.log("Check active");
 
-            dispatch(incomingVideoCallFlag(true));
-            console.log(data.payload.message, "Show me a message");
-            dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
-            localStorage.setItem("NewRoomID", data.payload.roomID);
-            // localStorage.setItem("acceptedRoomID", 0);
-            localStorage.setItem("callerID", data.payload.callerID);
-            localStorage.setItem("callerNameInitiate", data.payload.callerName);
-            localStorage.setItem("recipentID", data.receiverID[0]);
-            localStorage.setItem("recipentName", currentUserName);
+            // Same-user multi-tab fix: every open tab of the same logged-in
+            // user independently receives this MQTT event. A plain
+            // read-then-write check on localStorage is NOT atomic across
+            // tabs — both tabs can read "not yet claimed" before either
+            // writes, especially when both get the MQTT push almost
+            // simultaneously (confirmed still double-ringing with that
+            // approach). The Web Locks API gives a real cross-tab mutex so
+            // only one tab can win the claim. A background tab first waits
+            // a short moment so the tab the user is actually looking at
+            // gets the first chance to claim it.
+            if (document.visibilityState !== "visible") {
+              await new Promise((resolve) => setTimeout(resolve, 200));
+            }
+
+            let claimedRingerHere = false;
+            if (typeof navigator !== "undefined" && navigator.locks) {
+              await navigator.locks.request(
+                "diskus-incoming-call-claim",
+                async () => {
+                  const alreadyRingingOnAnotherTab =
+                    String(localStorage.getItem("NewRoomID")) ===
+                    String(data.payload.roomID);
+                  if (!alreadyRingingOnAnotherTab) {
+                    localStorage.setItem("NewRoomID", data.payload.roomID);
+                    claimedRingerHere = true;
+                  }
+                },
+              );
+            } else {
+              // Browsers without Web Locks support fall back to the old
+              // best-effort check (a rare race remains possible there).
+              const alreadyRingingOnAnotherTab =
+                String(localStorage.getItem("NewRoomID")) ===
+                String(data.payload.roomID);
+              if (!alreadyRingingOnAnotherTab) {
+                localStorage.setItem("NewRoomID", data.payload.roomID);
+                claimedRingerHere = true;
+              }
+            }
+
+            if (claimedRingerHere) {
+              dispatch(incomingVideoCallFlag(true));
+              console.log(data.payload.message, "Show me a message");
+              dispatch(
+                incomingVideoCallMQTT(data.payload, data.payload.message),
+              );
+              // localStorage.setItem("acceptedRoomID", 0);
+              localStorage.setItem("callerID", data.payload.callerID);
+              localStorage.setItem(
+                "callerNameInitiate",
+                data.payload.callerName,
+              );
+              localStorage.setItem("recipentID", data.receiverID[0]);
+              localStorage.setItem("recipentName", currentUserName);
+            }
           }
           dispatch(callRequestReceivedMQTT({}, ""));
         } else if (
@@ -4108,6 +4200,11 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
         ) {
+          // Stale-raised-hand fix: a hand raised during this call must not
+          // carry over as "still raised" into the next meeting/presentation
+          // this tab joins — raisedHandGuids only ever accumulates entries,
+          // nothing else clears it, so reset it here on call-end.
+          dispatch(resetRaisedHandGuids());
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
           let isMeetingVideo = JSON.parse(
@@ -4118,6 +4215,9 @@ const Dashboard = () => {
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let CallType = Number(localStorage.getItem("CallType"));
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
+          localStorage.setItem("handStatus", false);
+          dispatch(setRaisedUnRaisedParticiant(false));
+
           let roomID = 0;
           let flagCheck1 = false;
           localStorage.setItem("MicOff", true);
@@ -4351,6 +4451,8 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
+          // Stale-raised-hand fix — see VIDEO_CALL_DISCONNECTED_CALLER above.
+          dispatch(resetRaisedHandGuids());
           let roomID = localStorage.getItem("acceptedRoomID");
           let newRoomID = localStorage.getItem("newRoomId");
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
