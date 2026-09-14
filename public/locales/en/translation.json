@@ -2869,12 +2869,8 @@
   "Payment-date-range": "Payment Date Range",
   "Compliance": "Compliance",
   "Notes": "Notes",
-  "Voting-started": "Voting started",
-  "Voting-ended": "Voting ended",
-<<<<<<< Updated upstream
-  "Please-select-package": "Please select package"
-=======
+  "Voting-started": "Voting Started",
+  "Voting-ended": "Voting Ended",
   "Please-select-package": "Please select package",
   "Recording...": "Recording..."
->>>>>>> Stashed changes
 }
