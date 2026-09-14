@@ -1953,7 +1953,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         {talkStateData.ActiveChatData.fullName}
                       </p>
                     </Col>
-                    <Col lg={5} md={5} sm={12} className="d-flex justify-content-end align-items-center">
+                    <Col
+                      lg={5}
+                      md={5}
+                      sm={12}
+                      className='d-flex justify-content-end align-items-center'>
                       {" "}
                       <span>
                         <img
@@ -2162,7 +2166,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             {activePanel === null ? (
               <>
                 <Row>
-                  <Col className='p-0'>
+                  <Col>
                     <div
                       className={
                         activeModal !== null
@@ -3737,22 +3741,28 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           </div>
                         ) : (
                           <>
-                            <div className='removeImage-thumbnail'>
-                              <img
-                                draggable='false'
-                                onClick={removeFileFunction}
-                                src={CrossIcon}
-                                className='cursor-pointer'
-                                alt=''
-                              />
-                            </div>
+                            {/* <div className='removeImage-thumbnail'>
+                            
+                            </div> */}
                             <div className='image-thumbnail'>
-                              <img
-                                draggable='false'
-                                className='img-cover thumbnailImage'
-                                src={file}
-                                alt=''
-                              />
+                              <div className="text-end">
+                                {" "}
+                                <img
+                                  draggable='false'
+                                  onClick={removeFileFunction}
+                                  src={CrossIcon}
+                                  className='cursor-pointer'
+                                  alt=''
+                                />
+                              </div>
+                              <div>
+                                <img
+                                  draggable='false'
+                                  className='img-cover thumbnailImage'
+                                  src={file}
+                                  alt=''
+                                />
+                              </div>
                             </div>
                           </>
                         )}

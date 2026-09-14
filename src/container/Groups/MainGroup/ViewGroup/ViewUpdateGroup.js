@@ -17,19 +17,20 @@ import {
   saveFilesGroupsApi,
   uploadDocumentsGroupsApi,
 } from "../../../../store/actions/Groups_actions";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../store/actions/DataRoom_actions";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
-  
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [fileAttachments, setFileAttachments] = useState([]);
 
-  
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
 
   const [folderID, setFolderID] = useState(0);
@@ -50,11 +51,11 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const { GroupsReducer } = useSelector((state) => state);
 
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
-    (state) => state.GroupsReducer.getGroupByGroupIdResponse
+    (state) => state.GroupsReducer.getGroupByGroupIdResponse,
   );
 
   const GroupsReducergroupDocuments = useSelector(
-    (state) => state.GroupsReducer.groupDocuments
+    (state) => state.GroupsReducer.groupDocuments,
   );
 
   useEffect(() => {
@@ -62,10 +63,10 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       if (GroupsReducergetGroupByGroupIdResponse !== null) {
         let groupDetails = GroupsReducergetGroupByGroupIdResponse;
         let groupHeadsData = groupDetails.groupMembers.filter(
-          (data, index) => data.groupRole.groupRoleID === 2
+          (data, index) => data.groupRole.groupRoleID === 2,
         );
         let groupMembersData = groupDetails.groupMembers.filter(
-          (data, index) => data.groupRole.groupRoleID === 1
+          (data, index) => data.groupRole.groupRoleID === 1,
         );
         setViewGroupDetails({
           Title: groupDetails.title,
@@ -113,7 +114,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         }
 
         let fileExists = fileAttachments.some(
-          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name,
         );
 
         if (!size) {
@@ -160,7 +161,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -169,13 +170,24 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
     let data2 = {
       FileID: Number(data.pK_FileID),
     };
+    if (data.DisplayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          data.DisplayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
         data2,
         t,
-        data.DisplayAttachmentName
-      )
+        data.DisplayAttachmentName,
+      ),
     );
   };
 
@@ -200,7 +212,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 pK_FileID: docsData.pK_FileID,
                 DisplayAttachmentName: docsData.displayFileName,
               });
-            }
+            },
           );
           setPreviousFileIDs(PrevIds);
           setFileAttachments(retirveArray);
@@ -222,22 +234,22 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
       prevFiles.filter(
-        (fileSend) => fileSend.name !== data.DisplayAttachmentName
-      )
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName,
+      ),
     );
 
     setPreviousFileIDs((prevFiles) =>
       prevFiles.filter(
         (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName,
+      ),
     );
 
     setFileAttachments((prevFiles) =>
       prevFiles.filter(
         (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName,
+      ),
     );
   };
 
@@ -247,26 +259,26 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj)
+          uploadDocumentsGroupsApi(navigate, t, newData, folderID, fileObj),
         );
       });
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
       await dispatch(
-        saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile)
+        saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile),
       );
     }
     setFileAttachments((prev) =>
       prev.map((data) => {
         const updateId = newfile.find(
-          (item) => item.displayFileName === data.DisplayAttachmentName
+          (item) => item.displayFileName === data.DisplayAttachmentName,
         );
 
         if (updateId) {
           return { ...data, pK_FileID: updateId.pK_FileID };
         }
         return data;
-      })
+      }),
     );
 
     setPreviousFileIDs((prev) => {
@@ -287,7 +299,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       }),
     };
     dispatch(
-      SaveGroupsDocumentsApiFunc(navigate, Data, t, setViewGroupPage, 1)
+      SaveGroupsDocumentsApiFunc(navigate, Data, t, setViewGroupPage, 1),
     );
   };
   const handleClose = () => {
@@ -296,7 +308,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   };
   return (
     <>
-      <section className=" color-5a5a5a">
+      <section className=' color-5a5a5a'>
         <Row>
           <Col lg={6} md={6} sm={6}>
             <Row>
@@ -306,14 +318,14 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Management-Heading-View-Group"]}>
                   {viewGroupDetails?.Title}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-1">
+            <Row className='mt-1'>
               <Col lg={12} md={12} sm={12}>
                 <p className={styles["paragraph-content-View-Group"]}>
                   {viewGroupDetails?.Description}
@@ -325,16 +337,15 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["scroll-bar-creategroup"]}
-              >
-                <Row className="mt-2">
+                className={styles["scroll-bar-creategroup"]}>
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Create-group-Head-Heading"]}>
                       {t("Group-head")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   {viewGroupDetails.GroupHeads !== null
                     ? viewGroupDetails.GroupHeads.map((data, index) => {
                         return (
@@ -344,24 +355,22 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                               md={6}
                               sm={12}
                               className={styles["group-head-info"]}
-                              key={index}
-                            >
+                              key={index}>
                               <Row>
                                 <Col lg={3} md={3} sm={12}>
                                   <img
                                     src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                     width={50}
                                     height={50}
-                                    alt=""
-                                    draggable="false"
+                                    alt=''
+                                    draggable='false'
                                   />
                                 </Col>
-                                <Col lg={9} md={9} sm={9} className="mt-1">
+                                <Col lg={9} md={9} sm={9} className='mt-1'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
-                                        className={styles["name-create-group"]}
-                                      >
+                                        className={styles["name-create-group"]}>
                                         {data?.userName}
                                       </span>
                                     </Col>
@@ -371,8 +380,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                                       <span
                                         className={
                                           styles["Designation-create-group"]
-                                        }
-                                      >
+                                        }>
                                         {data?.designation}
                                       </span>
                                     </Col>
@@ -380,8 +388,9 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
-                                        className={styles["email-create-group"]}
-                                      >
+                                        className={
+                                          styles["email-create-group"]
+                                        }>
                                         <a>{data?.emailAddress}</a>
                                       </span>
                                     </Col>
@@ -394,14 +403,14 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                       })
                     : null}
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["members-create-group-page"]}>
                       {t("Regular-members")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   {viewGroupDetails.GroupMembers !== null
                     ? viewGroupDetails.GroupMembers.map((data, index) => {
                         return (
@@ -409,30 +418,27 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                             lg={6}
                             md={6}
                             sm={12}
-                            className="mt-3"
-                            key={index}
-                          >
+                            className='mt-3'
+                            key={index}>
                             <Row>
                               <Col lg={3} md={3} sm={12}>
                                 <img
                                   src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                   width={50}
                                   height={50}
-                                  alt=""
-                                  draggable="false"
+                                  alt=''
+                                  draggable='false'
                                 />
                               </Col>
                               <Col
                                 lg={9}
                                 md={9}
                                 sm={12}
-                                className={styles["group-head-info"]}
-                              >
-                                <Row className="mt-1">
+                                className={styles["group-head-info"]}>
+                                <Row className='mt-1'>
                                   <Col lg={12} md={12} sm={12}>
                                     <span
-                                      className={styles["name-create-group"]}
-                                    >
+                                      className={styles["name-create-group"]}>
                                       {data?.userName}
                                     </span>
                                   </Col>
@@ -442,8 +448,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                                     <span
                                       className={
                                         styles["Designation-create-group"]
-                                      }
-                                    >
+                                      }>
                                       {data?.designation}
                                     </span>
                                   </Col>
@@ -451,8 +456,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <span
-                                      className={styles["email-create-group"]}
-                                    >
+                                      className={styles["email-create-group"]}>
                                       <a>{data?.emailAddress}</a>
                                     </span>
                                   </Col>
@@ -468,22 +472,21 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
             </Row>
           </Col>
           <Col lg={6} md={6} sm={6}>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <Dragger
                   disabled={groupStatus === 3 ? false : true}
                   {...props}
                   fileList={[]}
-                  className={styles["dragdrop_attachment_create_resolution"]}
-                >
-                  <p className="ant-upload-drag-icon">
+                  className={styles["dragdrop_attachment_create_resolution"]}>
+                  <p className='ant-upload-drag-icon'>
                     <span className={styles["create_resolution_dragger"]}>
                       <img
                         src={featherupload}
-                        width="18.87px"
-                        height="18.87px"
-                        draggable="false"
-                        alt=""
+                        width='18.87px'
+                        height='18.87px'
+                        draggable='false'
+                        alt=''
                       />
                     </span>
                   </p>
@@ -498,7 +501,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
               </Col>
             </Row>
             <section className={styles["Scroller_files"]}>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
                       return (
@@ -524,13 +527,12 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
             </section>
           </Col>
         </Row>
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               className={styles["Close-ViewGroup-btn"]}
               text={t("Close")}
@@ -546,8 +548,8 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
           </Col>
         </Row>
       </section>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

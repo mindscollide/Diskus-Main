@@ -650,7 +650,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               : participantRoomId;
 
           let UID = !isMeetingVideo
-            ? userID
+            ? currentCallType === 2
+              ? isCaller
+                ? localStorage.getItem("callerGuid")
+                : localStorage.getItem("receipentGuid")
+              : userID
             : isMeetingVideoHostCheck
               ? isGuid
               : participantUID;

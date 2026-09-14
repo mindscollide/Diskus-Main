@@ -18,14 +18,16 @@ import {
 } from "../../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
 import featherupload from "../../../../assets/images/featherupload.svg";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../store/actions/DataRoom_actions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import {
   fileFormatforSignatureFlow,
   maxFileSize,
 } from "../../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
-  
   const { Dragger } = Upload;
   const previousFileListRef = useRef([]);
 
@@ -35,18 +37,16 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
 
   const getCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
+    (state) => state.CommitteeReducer.getCommitteeByCommitteeID,
   );
   const reteriveCommitteeDocuments = useSelector(
-    (state) => state.CommitteeReducer.reteriveCommitteeDocuments
+    (state) => state.CommitteeReducer.reteriveCommitteeDocuments,
   );
   const [folderID, setFolderId] = useState(0);
   const [filesSending, setFilesSending] = useState([]);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   let currentUserID = localStorage.getItem("userID");
-
-  
 
   const [show, SnackBar] = useSnackbar();
   const [committeeData, setCommitteeData] = useState({
@@ -71,7 +71,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj)
+          uploadDocumentsCommitteesApi(navigate, t, newData, folderID, fileObj),
         );
       });
 
@@ -79,20 +79,20 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
       await Promise.all(uploadPromises);
 
       await dispatch(
-        saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder)
+        saveFilesCommitteesApi(navigate, t, fileObj, folderID, newFolder),
       );
     }
     setFileAttachments((prev) =>
       prev.map((data) => {
         const updateId = newFolder.find(
-          (item) => item.displayFileName === data.DisplayAttachmentName
+          (item) => item.displayFileName === data.DisplayAttachmentName,
         );
 
         if (updateId) {
           return { ...data, pK_FileID: updateId.pK_FileID };
         }
         return data;
-      })
+      }),
     );
 
     setFilesSending((prev) => {
@@ -119,22 +119,22 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
     try {
       setFileForSend((prevFiles) =>
         prevFiles.filter(
-          (fileSend) => fileSend.name !== data.DisplayAttachmentName
-        )
+          (fileSend) => fileSend.name !== data.DisplayAttachmentName,
+        ),
       );
 
       setFilesSending((prevFiles) =>
         prevFiles.filter(
           (fileSend) =>
-            fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-        )
+            fileSend.DisplayAttachmentName !== data.DisplayAttachmentName,
+        ),
       );
 
       setFileAttachments((prevFiles) =>
         prevFiles.filter(
           (fileSend) =>
-            fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-        )
+            fileSend.DisplayAttachmentName !== data.DisplayAttachmentName,
+        ),
       );
     } catch (error) {
       console.error("src/container/Committee/MainCommittee/ViewCommittee/ViewCommittee.js:", error);
@@ -145,13 +145,24 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
     let data2 = {
       FileID: Number(data.pK_FileID),
     };
+    if (data.DisplayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          data.DisplayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
         data2,
         t,
-        data.DisplayAttachmentName
-      )
+        data.DisplayAttachmentName,
+      ),
     );
   };
   const handleClickOpenDoc = (data) => {
@@ -167,7 +178,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -239,7 +250,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
         // ❌ Duplicate check (existing + current batch)
         const isDuplicate =
           fileAttachments.some(
-            (f) => f.DisplayAttachmentName === fileObj.name
+            (f) => f.DisplayAttachmentName === fileObj.name,
           ) || newFiles.some((f) => f.DisplayAttachmentName === fileObj.name);
 
         if (isDuplicate) {
@@ -313,7 +324,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
 
   return (
     <>
-      <section className=" color-5a5a5a">
+      <section className=' color-5a5a5a'>
         <Row>
           <Col lg={6} md={6} sm={6}>
             <Row>
@@ -323,14 +334,14 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Management-Heading-View-Committee"]}>
                   {committeeData?.committeeTitle}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-1">
+            <Row className='mt-1'>
               <Col lg={12} md={12} sm={12}>
                 <p className={styles["paragraph-content-View-Committee"]}>
                   {committeeData?.committeeDescription}
@@ -342,52 +353,48 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["scroll-bar-ViewGroup"]}
-              >
+                className={styles["scroll-bar-ViewGroup"]}>
                 {/* Chair Person Members */}
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span
-                      className={styles["members-ViewCommittee-group-page"]}
-                    >
+                      className={styles["members-ViewCommittee-group-page"]}>
                       {t("Chair-person-members")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   {committeeData?.committeeMembers
                     .filter(
                       (filterData, index) =>
-                        filterData.committeeRole.committeeRoleID === 3
+                        filterData.committeeRole.committeeRoleID === 3,
                     )
                     .map((data, index) => {
                       return (
-                        <Col lg={6} md={6} sm={12} className="mt-2">
+                        <Col lg={6} md={6} sm={12} className='mt-2'>
                           <Row>
                             <Col lg={3} md={3} sm={12}>
                               <img
                                 src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                 width={50}
                                 height={50}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
                             </Col>
                             <Col
                               lg={9}
                               md={9}
                               sm={12}
-                              className={styles["ViewCommittee-head-info"]}
-                            >
+                              className={styles["ViewCommittee-head-info"]}>
                               <Row>
-                                <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Col lg={12} md={12} sm={12} className='mt-1'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["name-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         {data?.userName}
                                       </span>
                                     </Col>
@@ -399,8 +406,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                           styles[
                                             "Designation-ViewCommittee-group"
                                           ]
-                                        }
-                                      >
+                                        }>
                                         {data?.designation}
                                       </span>
                                     </Col>
@@ -410,8 +416,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                       <span
                                         className={
                                           styles["email-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         <a>{data?.emailAddress}</a>
                                       </span>
                                     </Col>
@@ -425,49 +430,46 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                     })}
                 </Row>
                 {/* Vice Chair Person Members */}
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span
-                      className={styles["members-ViewCommittee-group-page"]}
-                    >
+                      className={styles["members-ViewCommittee-group-page"]}>
                       {t("Vice-chair-person-members")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   {committeeData?.committeeMembers
                     .filter(
                       (filterData, index) =>
-                        filterData.committeeRole.committeeRoleID === 4
+                        filterData.committeeRole.committeeRoleID === 4,
                     )
                     .map((data, index) => {
                       return (
-                        <Col lg={6} md={6} sm={12} className="mt-2">
+                        <Col lg={6} md={6} sm={12} className='mt-2'>
                           <Row>
                             <Col lg={3} md={3} sm={12}>
                               <img
                                 src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                 width={50}
                                 height={50}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
                             </Col>
                             <Col
                               lg={9}
                               md={9}
                               sm={12}
-                              className={styles["ViewCommittee-head-info"]}
-                            >
+                              className={styles["ViewCommittee-head-info"]}>
                               <Row>
-                                <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Col lg={12} md={12} sm={12} className='mt-1'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["name-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         {data?.userName}
                                       </span>
                                     </Col>
@@ -479,8 +481,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                           styles[
                                             "Designation-ViewCommittee-group"
                                           ]
-                                        }
-                                      >
+                                        }>
                                         {data?.designation}
                                       </span>
                                     </Col>
@@ -490,8 +491,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                       <span
                                         className={
                                           styles["email-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         <a>{data?.emailAddress}</a>
                                       </span>
                                     </Col>
@@ -505,20 +505,19 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                     })}
                 </Row>
                 {/* Secretary Members */}
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span
-                      className={styles["members-ViewCommittee-group-page"]}
-                    >
+                      className={styles["members-ViewCommittee-group-page"]}>
                       {t("Secretary")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   {committeeData?.committeeMembers
                     .filter(
                       (filterData, index) =>
-                        filterData.committeeRole.committeeRoleID === 5
+                        filterData.committeeRole.committeeRoleID === 5,
                     )
                     .map((data) => {
                       return (
@@ -526,33 +525,30 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                           lg={6}
                           md={6}
                           sm={12}
-                          className="mt-2 position-relative"
-                        >
+                          className='mt-2 position-relative'>
                           <Row>
                             <Col lg={3} md={3} sm={12}>
                               <img
                                 src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                 width={50}
                                 height={50}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
                             </Col>
                             <Col
                               lg={9}
                               md={9}
                               sm={12}
-                              className={styles["ViewCommittee-head-info"]}
-                            >
+                              className={styles["ViewCommittee-head-info"]}>
                               <Row>
-                                <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Col lg={12} md={12} sm={12} className='mt-1'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["name-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         {data?.userName}
                                       </span>
                                     </Col>
@@ -564,8 +560,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                           styles[
                                             "Designation-ViewCommittee-group"
                                           ]
-                                        }
-                                      >
+                                        }>
                                         {data?.designation}
                                       </span>
                                     </Col>
@@ -575,8 +570,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                       <span
                                         className={
                                           styles["email-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         <a>{data?.emailAddress}</a>
                                       </span>
                                     </Col>
@@ -590,47 +584,45 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                     })}
                 </Row>
                 {/* Executive Members */}
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["View-Committee-Head-Heading"]}>
                       {t("Executive-member")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   {committeeData?.committeeMembers
                     .filter(
                       (filterData, index) =>
-                        filterData.committeeRole.committeeRoleID === 2
+                        filterData.committeeRole.committeeRoleID === 2,
                     )
                     .map((data, index) => {
                       return (
-                        <Col lg={6} md={6} sm={6} className="mt-2">
+                        <Col lg={6} md={6} sm={6} className='mt-2'>
                           <Row>
                             <Col lg={3} md={3} sm={12}>
                               <img
                                 src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                 width={50}
                                 height={50}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
                             </Col>
                             <Col
                               lg={9}
                               md={9}
                               sm={12}
-                              className={styles["ViewCommittee-head-info"]}
-                            >
+                              className={styles["ViewCommittee-head-info"]}>
                               <Row>
-                                <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Col lg={12} md={12} sm={12} className='mt-1'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["name-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         {data?.userName}
                                       </span>
                                     </Col>
@@ -642,8 +634,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                           styles[
                                             "Designation-ViewCommittee-group"
                                           ]
-                                        }
-                                      >
+                                        }>
                                         {data?.designation}
                                       </span>
                                     </Col>
@@ -653,8 +644,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                       <span
                                         className={
                                           styles["email-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         <a>{data?.emailAddress}</a>
                                       </span>
                                     </Col>
@@ -668,49 +658,46 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                     })}
                 </Row>
                 {/* Regular Members */}
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span
-                      className={styles["members-ViewCommittee-group-page"]}
-                    >
+                      className={styles["members-ViewCommittee-group-page"]}>
                       {t("Regular-members")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   {committeeData?.committeeMembers
                     .filter(
                       (filterData, index) =>
-                        filterData.committeeRole.committeeRoleID === 1
+                        filterData.committeeRole.committeeRoleID === 1,
                     )
                     .map((data, index) => {
                       return (
-                        <Col lg={6} md={6} sm={6} className="mt-2">
+                        <Col lg={6} md={6} sm={6} className='mt-2'>
                           <Row>
                             <Col lg={3} md={3} sm={3}>
                               <img
                                 src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                 width={50}
                                 height={50}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
                             </Col>
                             <Col
                               lg={9}
                               md={9}
                               sm={12}
-                              className={styles["ViewCommittee-head-info"]}
-                            >
+                              className={styles["ViewCommittee-head-info"]}>
                               <Row>
-                                <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Col lg={12} md={12} sm={12} className='mt-1'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["name-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         {data?.userName}
                                       </span>
                                     </Col>
@@ -722,8 +709,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                           styles[
                                             "Designation-ViewCommittee-group"
                                           ]
-                                        }
-                                      >
+                                        }>
                                         {data?.designation}
                                       </span>
                                     </Col>
@@ -733,8 +719,7 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
                                       <span
                                         className={
                                           styles["email-ViewCommittee-group"]
-                                        }
-                                      >
+                                        }>
                                         <a>{data?.emailAddress}</a>
                                       </span>
                                     </Col>
@@ -751,22 +736,21 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
             </Row>
           </Col>
           <Col lg={6} md={6} sm={6}>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <Dragger
                   disabled={committeeStatus === 3 ? false : true}
                   {...props}
                   fileList={[]}
-                  className={styles["dragdrop_attachment_create_resolution"]}
-                >
-                  <p className="ant-upload-drag-icon">
+                  className={styles["dragdrop_attachment_create_resolution"]}>
+                  <p className='ant-upload-drag-icon'>
                     <span className={styles["create_resolution_dragger"]}>
                       <img
                         src={featherupload}
-                        alt=""
-                        width="18.87px"
-                        height="18.87px"
-                        draggable="false"
+                        alt=''
+                        width='18.87px'
+                        height='18.87px'
+                        draggable='false'
                       />
                     </span>
                   </p>
@@ -807,13 +791,12 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
             </section>
           </Col>
         </Row>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex gap-3 justify-content-end"
-          >
+            className='d-flex gap-3 justify-content-end'>
             <Button
               className={styles["Close-ViewCommittee-btn"]}
               text={t("Close")}
@@ -829,8 +812,8 @@ const ViewCommitteeDetails = ({ setViewCommitteePage, committeeStatus }) => {
           </Col>
         </Row>
       </section>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

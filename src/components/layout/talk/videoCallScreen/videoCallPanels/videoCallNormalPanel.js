@@ -1377,7 +1377,11 @@ const VideoPanelNormal = () => {
                     ? newRoomID
                     : participantRoomId;
                 let UID = !isMeetingVideo
-                  ? userID
+                  ? CallType === 2
+                    ? isCaller
+                      ? localStorage.getItem("callerGuid")
+                      : localStorage.getItem("receipentGuid")
+                    : userID
                   : isMeetingVideoHostCheck
                     ? isGuid
                     : participantUID;
@@ -1477,7 +1481,11 @@ const VideoPanelNormal = () => {
                     ? newRoomID
                     : participantRoomId;
                 let UID = !isMeetingVideo
-                  ? userID
+                  ? CallType === 2
+                    ? isCaller
+                      ? localStorage.getItem("callerGuid")
+                      : localStorage.getItem("receipentGuid")
+                    : userID
                   : isMeetingVideoHostCheck
                     ? isGuid
                     : participantUID;

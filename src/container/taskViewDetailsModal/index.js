@@ -31,7 +31,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { useMeetingContext } from "../../context/MeetingContext";
 import { getRandomUniqueNumber } from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/drageFunction";
@@ -408,10 +411,16 @@ const TaskViewDetailsModal = ({
   };
 
   const handleClickDownloadFile = (fileID, fileName) => {
-    let data = {
+    let data2 = {
       FileID: Number(fileID),
     };
-    dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, fileName));
+    if (fileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(navigate, data2, t, fileName),
+      );
+      return;
+    }
+    dispatch(DataRoomDownloadFileApiFunc(navigate, data2, t, fileName));
   };
 
   const handleLinkClick = (data, ext) => {
@@ -444,12 +453,12 @@ const TaskViewDetailsModal = ({
         onHide={handleClose}
         show={viewFlagToDo}
         setShow={setViewFlagToDo}
-        className="todview-modal"
+        className='todview-modal'
         contentClassName={"py-4 px-3"}
-        modalBodyClassName="modalTodoViewBody "
-        modalFooterClassName="modalTodoViewFooter"
-        modalHeaderClassName="modalTodoViewHeader d-none"
-        size="xl"
+        modalBodyClassName='modalTodoViewBody '
+        modalFooterClassName='modalTodoViewFooter'
+        modalHeaderClassName='modalTodoViewHeader d-none'
+        size='xl'
         ModalBody={
           <>
             {/* <Col sm={12} md={12} lg={12} className="mt-2">
@@ -699,9 +708,9 @@ const TaskViewDetailsModal = ({
                 <span className={styles.taskTitle}>{task.Title}</span>
               </Col>
             </Row>
-            <Row className="my-3">
+            <Row className='my-3'>
               <Col sm={12} md={6} lg={6}>
-                <Row className="mb-4">
+                <Row className='mb-4'>
                   <Col sm={12} md={12} lg={12}>
                     <p className={styles.label}>Task Description</p>
                     <div className={styles.TaskDescription}>
@@ -709,7 +718,7 @@ const TaskViewDetailsModal = ({
                     </div>
                   </Col>
                 </Row>
-                <Row className="mb-4">
+                <Row className='mb-4'>
                   <Col sm={12} md={6} lg={6}>
                     <p className={styles.label}>Assigned To</p>
                     <span>{TaskAssignedTo?.[0]?.name || "-"}</span>
@@ -724,7 +733,7 @@ const TaskViewDetailsModal = ({
                       : "-"}
                   </Col>
                 </Row>
-                <Row className="mb-4">
+                <Row className='mb-4'>
                   <Col sm={12} md={6} lg={6}>
                     <p className={styles.label}>Status</p>
                     <span>{task.Status}</span>
@@ -740,7 +749,7 @@ const TaskViewDetailsModal = ({
                   )}
                 </Row>
 
-                <Row className="mb-4">
+                <Row className='mb-4'>
                   <Col sm={12} md={12} lg={12}>
                     <p className={styles.labelBig}>Attachments</p>
                     <section className={styles.taskAttachmentsList}>
@@ -809,9 +818,8 @@ const TaskViewDetailsModal = ({
                                     sm={12}
                                     lg={12}
                                     md={12}
-                                    className="MontserratRegular my-1 FontArabicRegular position-relative"
-                                    key={commentData.taskCommentID}
-                                  >
+                                    className='MontserratRegular my-1 FontArabicRegular position-relative'
+                                    key={commentData.taskCommentID}>
                                     <TextArea
                                       rows={2}
                                       timeValue={newTimeFormaterAsPerUTCFullDate(
@@ -819,28 +827,28 @@ const TaskViewDetailsModal = ({
                                         currentLanguage,
                                       )}
                                       label={commentData.taskCommentUserName}
-                                      labelClassName=" d-flex justify-content-start  fw-bold "
-                                      disable="false"
-                                      className="comment-view sender text-white  "
+                                      labelClassName=' d-flex justify-content-start  fw-bold '
+                                      disable='false'
+                                      className='comment-view sender text-white  '
                                       value={commentData.Comment}
                                       timeClass={"timeClass"}
-                                      formClassPosition="relative-position-form"
+                                      formClassPosition='relative-position-form'
                                     />
 
                                     {DeleteCommentSpinnerData &&
                                     deleteCommentsId ===
                                       commentData.taskCommentID ? (
-                                      <span className="deleteCommentSpinner">
-                                        <Spin size="small" />
+                                      <span className='deleteCommentSpinner'>
+                                        <Spin size='small' />
                                       </span>
                                     ) : commentData.taskCommentID === 0 ||
                                       commentData.taskCommentID !== 0 ? (
                                       <>
                                         <img
-                                          draggable="false"
+                                          draggable='false'
                                           src={CrossIcon}
                                           width={14}
-                                          alt=""
+                                          alt=''
                                           onClick={() =>
                                             handleDeleteComments(
                                               commentData.taskCommentID,
@@ -865,22 +873,21 @@ const TaskViewDetailsModal = ({
                                     sm={12}
                                     lg={12}
                                     md={12}
-                                    className="MontserratRegular my-1 FontArabicRegular"
-                                    key={commentData.taskCommentID}
-                                  >
+                                    className='MontserratRegular my-1 FontArabicRegular'
+                                    key={commentData.taskCommentID}>
                                     <TextArea
                                       rows={2}
                                       label={commentData.taskCommentUserName}
-                                      disable="false"
-                                      className="comment-view"
+                                      disable='false'
+                                      className='comment-view'
                                       value={commentData.Comment}
-                                      labelClassName=" d-flex justify-content-start mx-2 "
+                                      labelClassName=' d-flex justify-content-start mx-2 '
                                       timeValue={newTimeFormaterAsPerUTCFullDate(
                                         commentData.DateTime,
                                         currentLanguage,
                                       )}
                                       timeClass={"timeClass Participant"}
-                                      formClassPosition="relative-position-form"
+                                      formClassPosition='relative-position-form'
                                     />
                                   </Col>
                                 </>
@@ -890,22 +897,20 @@ const TaskViewDetailsModal = ({
                         : null}
                       <div ref={todoComments} />
                     </section>
-                    <div className="mt-2">
+                    <div className='mt-2'>
                       <Form
-                        className="d-flex h-100 justify-content-center align-items-center"
+                        className='d-flex h-100 justify-content-center align-items-center'
                         onSubmit={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
-                        }
-                      >
+                        }>
                         <Col
                           sm={11}
                           md={11}
                           lg={11}
-                          className="todolist-modal-fields InputFieldStyle"
-                        >
+                          className='todolist-modal-fields InputFieldStyle'>
                           <TextField
                             placeholder={t("Type-in")}
-                            applyClass="todoviewmodalcomments"
+                            applyClass='todoviewmodalcomments'
                             width={"460"}
                             labelclass={"d-none"}
                             value={assgineeComments}
@@ -917,14 +922,13 @@ const TaskViewDetailsModal = ({
                           sm={1}
                           md={1}
                           lg={1}
-                          className="comment-enter-button d-flex justify-content-center align-items-center"
-                        >
+                          className='comment-enter-button d-flex justify-content-center align-items-center'>
                           {currentLanguage === "ar" ? (
                             <ChevronLeft
                               width={25}
                               height={35}
                               color={"white"}
-                              className="cursor-pointer"
+                              className='cursor-pointer'
                               onClick={(e) =>
                                 handleClickCommentSubmit(e, task.PK_TID)
                               }
@@ -934,7 +938,7 @@ const TaskViewDetailsModal = ({
                               width={25}
                               height={35}
                               color={"white"}
-                              className="cursor-pointer"
+                              className='cursor-pointer'
                               onClick={(e) =>
                                 handleClickCommentSubmit(e, task.PK_TID)
                               }
@@ -956,8 +960,7 @@ const TaskViewDetailsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <Button
                   className={"CloseBtn_TaskView"}
                   onClick={handleClose}

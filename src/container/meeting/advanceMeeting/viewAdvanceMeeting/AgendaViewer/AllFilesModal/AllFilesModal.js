@@ -8,7 +8,10 @@ import styles from "./AllFilesModal.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../../../../commen/functions/utils";
@@ -33,17 +36,39 @@ const AllFilesModal = ({
   const { t } = useTranslation();
 
   const downloadDocument = (record) => {
-    let data = {
+    let data2 = {
       FileID: Number(record.originalAttachmentName),
     };
+    if (record.displayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
-        data,
+        data2,
         t,
-        record.displayAttachmentName
-      )
+        record.displayAttachmentName,
+      ),
     );
+    // let data = {
+    //   FileID: Number(record.originalAttachmentName),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     data,
+    //     t,
+    //     record.displayAttachmentName
+    //   )
+    // );
   };
 
   const closeAllFileModal = () => {
@@ -55,7 +80,6 @@ const AllFilesModal = ({
   };
 
   const pdfData = (record, ext) => {
-    
     let Data = {
       taskId: Number(record.originalAttachmentName),
       commingFrom: 4,
@@ -67,16 +91,16 @@ const AllFilesModal = ({
       if (Number(editorRole.status) === 10) {
         window.open(
           `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
-            pdfDataJson
+            pdfDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       }
     }
@@ -106,13 +130,13 @@ const AllFilesModal = ({
                   {agendaIndex !== -1 && subAgendaIndex === -1
                     ? agendaIndex + 1 + ". " + agendaName
                     : agendaIndex !== -1 && subAgendaIndex !== -1
-                    ? agendaIndex +
-                      1 +
-                      "." +
-                      (subAgendaIndex + 1) +
-                      ". " +
-                      agendaName
-                    : null}
+                      ? agendaIndex +
+                        1 +
+                        "." +
+                        (subAgendaIndex + 1) +
+                        ". " +
+                        agendaName
+                      : null}
                 </p>
               </Col>
             </Row>
@@ -133,7 +157,7 @@ const AllFilesModal = ({
                         handleEyeIcon={() =>
                           pdfData(
                             filesData,
-                            getFileExtension(filesData?.displayAttachmentName)
+                            getFileExtension(filesData?.displayAttachmentName),
                           )
                         }
                       />

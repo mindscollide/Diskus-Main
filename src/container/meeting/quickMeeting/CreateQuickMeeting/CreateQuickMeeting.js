@@ -64,6 +64,7 @@ import {
 import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_actions";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
+import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -1896,8 +1897,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-
-
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
       notify(t("Please-add-atleast-one-participant"), "error");
       return;
@@ -2110,17 +2109,39 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   };
 
   const downloadClick = (record) => {
-    let dataRoomData = {
+    let data2 = {
       FileID: Number(record.OriginalAttachmentName),
     };
+    if (record.DisplayAttachmentName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.DisplayAttachmentName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
+      DataRoomDownloadFileApiFunc(
         navigate,
-        dataRoomData,
+        data2,
         t,
         record.DisplayAttachmentName,
       ),
     );
+    // let dataRoomData = {
+    //   FileID: Number(record.OriginalAttachmentName),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     dataRoomData,
+    //     t,
+    //     record.DisplayAttachmentName,
+    //   ),
+    // );
   };
 
   const handleCloseModal = () => {

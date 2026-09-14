@@ -28,7 +28,10 @@ import {
   convertDateToGMTMinute,
   convertToGMTMinuteTime,
 } from "../../../commen/functions/time_formatter";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions.js";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../store/actions/DataRoom_actions.js";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.js";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils.js";
 import { forRecentActivity } from "../../../commen/functions/date_formater.js";
@@ -365,12 +368,29 @@ const ReviewMinutes = () => {
 
   //Download the document
   const downloadDocument = (record) => {
-    let data = {
-      FileID: record.pK_FileID,
+    let data2 = {
+      FileID: Number(record.pK_FileID),
     };
+    if (record.displayFileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          record.displayFileName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+      DataRoomDownloadFileApiFunc(navigate, data2, t, record.displayFileName),
     );
+    // let data = {
+    //   FileID: record.pK_FileID,
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName),
+    // );
   };
 
   const pdfData = (record, ext) => {
@@ -420,11 +440,7 @@ const ReviewMinutes = () => {
       let Data = { MeetingID: meetingID };
 
       dispatch(
-        AllDocumentsForAgendaWiseMinutesApiFunc(
-          navigate,
-          t,
-          allAgendaWiseDocs,
-        ),
+        AllDocumentsForAgendaWiseMinutesApiFunc(navigate, t, allAgendaWiseDocs),
       );
 
       dispatch(

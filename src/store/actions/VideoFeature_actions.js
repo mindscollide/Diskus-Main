@@ -293,6 +293,12 @@ const participanRaisedUnRaisedHand = (response) => {
   };
 };
 
+const resetRaisedHandGuids = () => {
+  return {
+    type: actions.RESET_RAISED_HAND_GUIDS,
+  };
+};
+
 const participantHideUnhideVideo = (response) => {
   return {
     type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
@@ -3029,6 +3035,7 @@ export {
   guestLeaveVideoMeeting,
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
+  resetRaisedHandGuids,
   participantHideUnhideVideo,
   muteUnMuteParticipantMainApi,
   hideUnHideParticipantGuestMainApi,
