@@ -39,7 +39,6 @@ const authReducer = (state = initialState, action) => {
         errorSeverity: "success",
         Token: action.response.token,
         Refresh: action.response.refreshToken,
-        errorSeverity: "success",
       };
 
     case actions.REFRESH_TOKEN_FAIL:

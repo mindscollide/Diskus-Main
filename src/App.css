@@ -1046,7 +1046,20 @@ body[dir="rtl"] svg.DatePickerIcon {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-@import "~antd/dist/antd.less";
+/* Removed: `@import "~antd/dist/antd.less";` — dead under Vite (and likely
+   already dead under the old CRA build). Two independent reasons:
+   (1) CSS requires @import to precede every other rule in the file; this sat
+       ~1000 lines in, which Vite's PostCSS flags and ignores.
+   (2) the leading `~` is webpack/css-loader's node_modules-resolution syntax
+       and has no meaning to a plain .css @import — nothing in this project's
+       build config (checked craco.config.js history and current
+       vite.config.js) ever wired a Less pipeline to handle it, and no
+       modifyVars/theme override ever existed for it either.
+   antd's base styles are loaded correctly elsewhere, via plain
+   `import "antd/dist/antd.min.css"` in Time_picker.js, CommitteeTodo.js,
+   ViewGroupTodo.js and Todolist.js — CSS side-effect imports apply globally
+   regardless of which component imports them, so removing this line changes
+   nothing that was actually working. */
 
 /* // global css for sidebar ends here */
 .ant-table-thead > tr * {

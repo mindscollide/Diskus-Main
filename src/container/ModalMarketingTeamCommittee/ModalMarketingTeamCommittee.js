@@ -46,11 +46,14 @@ const ModalMarketingTeamCommittee = ({
   const searchFilterHandler = (value) => {
     let getAllGroupsData = GroupsReducer.getAllGroups;
     
+    // `!= NaN` and `!= []` never reject anything: NaN never equals anything
+    // (not even itself), and comparing to a freshly-created [] literal compares
+    // object references, which a new literal can never match. The real intent,
+    // given getAllGroupsData.filter(...) runs right after, is "is this a
+    // non-empty array" — which also covers the null/undefined cases above.
     if (
-      GroupsReducer.getAllGroups != undefined &&
-      GroupsReducer.getAllGroups != null &&
-      GroupsReducer.getAllGroups != NaN &&
-      GroupsReducer.getAllGroups != []
+      Array.isArray(GroupsReducer.getAllGroups) &&
+      GroupsReducer.getAllGroups.length > 0
     ) {
       return getAllGroupsData
         .filter((item) => {

@@ -6,7 +6,6 @@ const initialState = {
   ResponseMessage: "",
   errorSeverity: null,
   severity: null, // success | error | ""
-  errorSeverity: null,
   GetAllAuthorities: null,
   GetAuthorityByID: null,
   DeleteAuthority: null,

@@ -930,7 +930,6 @@ const SubAgendaMappingDragging = ({
                                                       value={
                                                         subAgendaData.description
                                                       }
-                                                      maxLength={5000}
                                                       disable={
                                                         parentIslockedCheck ||
                                                         subAgendaData.isLocked ||
