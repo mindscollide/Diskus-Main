@@ -2872,5 +2872,7 @@
   "Voting-started": "Voting Started",
   "Voting-ended": "Voting Ended",
   "Please-select-package": "Please select package",
-  "Recording...": "Recording..."
+  "Recording...": "Recording...",
+  "Reopen-date-and-reason": "Reopen date and reason",
+  "Overdue": "Overdue"
 }

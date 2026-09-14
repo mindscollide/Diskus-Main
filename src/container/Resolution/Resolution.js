@@ -498,7 +498,7 @@ const Resolution = () => {
       record.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
         ? true
         : false;
-    if (votingDeadline < newDate) {
+    // if (votingDeadline < newDate) {
       return (
         <img
           draggable="false"
@@ -508,9 +508,9 @@ const Resolution = () => {
           onClick={() => getResultHandle(record.resolutionID, isClosed)}
         />
       );
-    } else {
-      return "";
-    }
+    // } else {
+    //   return "";
+    // }
   };
 
   // Decision-label renderer shared by the moderator (open) and moderator

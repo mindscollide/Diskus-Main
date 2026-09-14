@@ -248,6 +248,11 @@ const Groups = () => {
       dispatch(toggleViewProposedMeetingModal(false));
       dispatch(toggleIsParticipantProposedMeetingDates(false));
       dispatch(resetViewTabs());
+      // Reset the Published/Draft/Proposed tab selection too — without
+      // this, leaving Group Meetings on the Draft/Proposed tab and coming
+      // back (e.g. via the sidebar) reopened on that same tab instead of
+      // defaulting back to Published (1).
+      setCurrentGroupMeetingTabActive(1);
     };
   }, []);
 

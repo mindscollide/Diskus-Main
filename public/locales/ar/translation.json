@@ -2747,5 +2747,7 @@
   "Voting-started": "Voting Started",
   "Voting-ended": "Voting Ended",
   "Please-select-package": "Please select package",
-  "Recording...": "جاري التسجيل..."
+  "Recording...": "جاري التسجيل...",
+  "Reopen-date-and-reason": "Reopen date and reason",
+  "Overdue": "متأخر"
 }

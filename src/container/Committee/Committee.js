@@ -226,6 +226,11 @@ const Committee = () => {
       dispatch(resetViewTabs());
       setShowModal(false); // Reset modal visibility
       dispatch(viewCommitteePageFlag(false));
+      // Reset the Published/Draft/Proposed tab selection too — without
+      // this, leaving Committee Meetings on the Draft/Proposed tab and
+      // coming back (e.g. via the sidebar) reopened on that same tab
+      // instead of defaulting back to Published (1).
+      setCurrentCommitteeMeetingTabActive(1);
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
   useEffect(() => {
