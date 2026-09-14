@@ -2746,5 +2746,10 @@
   "Compliance": "الامتثال",
   "Voting-started": "Voting started",
   "Voting-ended": "Voting ended",
+<<<<<<< Updated upstream
   "Please-select-package": "Please select package"
+=======
+  "Please-select-package": "Please select package",
+  "Recording...": "جاري التسجيل..."
+>>>>>>> Stashed changes
 }
