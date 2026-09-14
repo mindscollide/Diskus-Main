@@ -19,7 +19,10 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../../store/actions/DataRoom_actions";
 import { Eye } from "react-bootstrap-icons";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
@@ -38,15 +41,15 @@ const MeetingMaterialPrev = ({
   const { editorRole } = useMeetingContext();
 
   const meetingMaterialData = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialData
+    (state) => state.NewMeetingreducer.meetingMaterialData,
   );
   const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial,
   );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   // row state for meeting Material
@@ -86,17 +89,33 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
-        let data = {
+        let data2 = {
           FileID: Number(record.originalFileName),
         };
+        if (record.displayFileName?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data2,
+              t,
+              record.displayFileName,
+            ),
+          );
+          return;
+        }
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data2,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     } else if (
@@ -116,18 +135,40 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
-        let data = {
+        let data2 = {
           FileID: Number(record.originalFileName),
         };
+        if (record.displayFileName?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data2,
+              t,
+              record.displayFileName,
+            ),
+          );
+          return;
+        }
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data2,
+            t,
+            record.displayFileName,
+          ),
         );
+        // let data = {
+        //   FileID: Number(record.originalFileName),
+        // };
+        // dispatch(
+        //   DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
+        // );
       }
     } else if (
       editorRole.role === "Participant" &&
@@ -143,18 +184,45 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
-        let data = {
+          let data2 = {
           FileID: Number(record.originalFileName),
         };
+        if (record.displayFileName?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data2,
+              t,
+              record.displayFileName,
+            ),
+          );
+          return;
+        }
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data2,
+            t,
+            record.displayFileName,
+          ),
         );
+        // let data = {
+        //   FileID: Number(record.originalFileName),
+        // };
+        // dispatch(
+        //   DataRoomDownloadFileWithFooterApiFunc(
+        //     navigate,
+        //     data,
+        //     t,
+        //     record.displayFileName,
+        //   ),
+        // );
       }
     } else if (editorRole.role === "Participant" && editorRole.status === "9") {
       if (ext === "pdf") {
@@ -168,18 +236,45 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
-        let data = {
+          let data2 = {
           FileID: Number(record.originalFileName),
         };
+        if (record.displayFileName?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data2,
+              t,
+              record.displayFileName,
+            ),
+          );
+          return;
+        }
         dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data2,
+            t,
+            record.displayFileName,
+          ),
         );
+        // let data = {
+        //   FileID: Number(record.originalFileName),
+        // };
+        // dispatch(
+        //   DataRoomDownloadFileWithFooterApiFunc(
+        //     navigate,
+        //     data,
+        //     t,
+        //     record.displayFileName,
+        //   ),
+        // );
       }
     }
   };
@@ -195,14 +290,13 @@ const MeetingMaterialPrev = ({
           <div>
             <section
               className={styles["docx-name-title"]}
-              onClick={() => handleDoubeClick(record)}
-            >
+              onClick={() => handleDoubeClick(record)}>
               <img
                 src={getIconSource(getFileExtension(record.displayFileName))}
-                alt=""
+                alt=''
                 width={"25px"}
                 height={"25px"}
-                className="me-2"
+                className='me-2'
               />
               <abbr title={`${text} - ${record.agendaID}`}>
                 <span className={styles["docx-name-title"]}>
@@ -235,8 +329,7 @@ const MeetingMaterialPrev = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex gap-3 align-items-center justify-content-center"
-              >
+                className='d-flex gap-3 align-items-center justify-content-center'>
                 <Eye
                   fontSize={22}
                   cursor={ext === "pdf" ? "pointer" : "default"}
@@ -268,8 +361,8 @@ const MeetingMaterialPrev = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     dispatch(toggleViewMeetingModal(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -297,13 +390,13 @@ const MeetingMaterialPrev = ({
 
   return (
     <section>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col lg={12} md={12} sm={12}>
           <Table
             column={materialColoumn}
             scroll={{ y: "46vh" }}
             pagination={false}
-            className="Polling_table"
+            className='Polling_table'
             rows={rows}
           />
         </Col>
@@ -313,8 +406,7 @@ const MeetingMaterialPrev = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-2"
-        >
+          className='d-flex justify-content-end gap-2 mt-2'>
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Meeting_Details"]}

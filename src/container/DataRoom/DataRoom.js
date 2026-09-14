@@ -116,6 +116,7 @@ import {
   isFolder,
   validateUserAvailibilityEncryptedStringDataRoomApi,
   getFolderDocumentsApiScrollBehaviour,
+  DataRoomDownloadFileApiFunc,
 } from "../../store/actions/DataRoom_actions";
 
 // ─── Redux actions — DataRoom2 (file/folder details & analytics) ──────────────
@@ -1101,12 +1102,12 @@ const DataRoom = () => {
       };
       dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
     } else {
+      if (record.name.split("")[0] === "pdf") {
+      }
       let data = {
         FileID: Number(record.id),
       };
-      dispatch(
-        DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name),
-      );
+      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
     }
   };
 
@@ -1343,9 +1344,18 @@ const DataRoom = () => {
         let data = {
           FileID: Number(record.id),
         };
-        dispatch(
-          DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.name),
-        );
+        if (record.name?.split(".")[1] === "pdf") {
+          dispatch(
+            DataRoomDownloadFileWithFooterApiFunc(
+              navigate,
+              data,
+              t,
+              record.name,
+            ),
+          );
+        } else {
+          dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+        }
       }
     } else if (data.value === 6) {
       // Delete File and Folder
@@ -2926,8 +2936,7 @@ const DataRoom = () => {
    */
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
-
-    console.log(file, "filefilefilefilefile")
+    console.log(file, "filefilefilefilefile");
     const taskId = Math.floor(Math.random() * 1000000);
     const axiosCancelSource = axios.CancelToken.source();
     let newJsonCreateFile = {

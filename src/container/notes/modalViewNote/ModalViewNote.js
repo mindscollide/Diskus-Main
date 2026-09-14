@@ -11,7 +11,10 @@ import { useTranslation } from "react-i18next";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { DataRoomDownloadFileWithFooterApiFunc } from "../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../store/actions/DataRoom_actions";
 
 const ModalViewNote = ({
   ModalTitle,
@@ -25,12 +28,12 @@ const ModalViewNote = ({
   const dispatch = useDispatch();
 
   const GetNotesByNotesId = useSelector(
-    (state) => state.NotesReducer.GetNotesByNotesId
+    (state) => state.NotesReducer.GetNotesByNotesId,
   );
 
   //Getting Notes Files Data From Global State
   const RetrieveDocsNotes = useSelector(
-    (state) => state.NotesReducer.retrieveNotesDocumentData
+    (state) => state.NotesReducer.retrieveNotesDocumentData,
   );
 
   const [attachments, setAttachments] = useState([]);
@@ -55,7 +58,6 @@ const ModalViewNote = ({
   useEffect(() => {
     try {
       if (GetNotesByNotesId && GetNotesByNotesId !== null) {
-        
         setNotesData({
           ...notesData,
           date: GetNotesByNotesId.date,
@@ -75,16 +77,13 @@ const ModalViewNote = ({
           username: GetNotesByNotesId.username,
         });
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }, [GetNotesByNotesId]);
 
   //UseEffect Extracting the Files Data
   useEffect(() => {
     try {
       if (RetrieveDocsNotes && RetrieveDocsNotes !== null) {
-        
         setAttachments(RetrieveDocsNotes.data);
       }
     } catch (error) {}
@@ -101,14 +100,31 @@ const ModalViewNote = ({
     let data2 = {
       FileID: Number(data.pK_FileID),
     };
+    if (data.displayFileName?.split(".")[1] === "pdf") {
+      dispatch(
+        DataRoomDownloadFileWithFooterApiFunc(
+          navigate,
+          data2,
+          t,
+          data.displayFileName,
+        ),
+      );
+      return;
+    }
     dispatch(
-      DataRoomDownloadFileWithFooterApiFunc(
-        navigate,
-        data2,
-        t,
-        data.displayFileName
-      )
+      DataRoomDownloadFileApiFunc(navigate, data2, t, data.displayFileName),
     );
+    // let data2 = {
+    //   FileID: Number(data.pK_FileID),
+    // };
+    // dispatch(
+    //   DataRoomDownloadFileWithFooterApiFunc(
+    //     navigate,
+    //     data2,
+    //     t,
+    //     data.displayFileName
+    //   )
+    // );
   };
   const handleClickOpenDoc = (data) => {
     let ext = data?.displayFileName?.split(".")[1];
@@ -123,7 +139,7 @@ const ModalViewNote = ({
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -194,7 +210,6 @@ const ModalViewNote = ({
                 <Row>
                   {attachments.length > 0
                     ? attachments.map((data, index) => {
-                        
                         return (
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer
