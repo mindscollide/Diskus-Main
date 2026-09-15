@@ -2872,5 +2872,7 @@
   "Recording...": "Recording...",
   "Voting-started": "Voting Started",
   "Voting-ended": "Voting Ended",
-  "Please-select-package": "Please select package"
+  "Please-select-package": "Please select package",
+  "Call-has-ended-by-the-host": "Call has ended by the host",
+  "You-have-missed-calls":"You have missedcalls"
 }

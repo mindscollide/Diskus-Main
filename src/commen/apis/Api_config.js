@@ -2225,3 +2225,7 @@ export const validateEmailActionTokenRM = {
 export const getPresentationParticipants = {
   RequestMethod: "ServiceManager.GetPresentationParticipants",
 };
+
+export const getVideoCallStatusToRejoinGroupCall = {
+  RequestMethod: "ServiceManager.GetVideoCallStatus",
+};

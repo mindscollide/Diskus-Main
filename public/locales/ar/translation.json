@@ -2747,5 +2747,7 @@
   "Recording...": "جاري التسجيل...",
   "Voting-started": "Voting Started",
   "Voting-ended": "Voting Ended",
-  "Please-select-package": "Please select package"
+  "Please-select-package": "Please select package",
+  "Call-has-ended-by-the-host": "أنهى المضيف المكالمة",
+  "You-have-missed-calls":"You have missedcalls"
 }
