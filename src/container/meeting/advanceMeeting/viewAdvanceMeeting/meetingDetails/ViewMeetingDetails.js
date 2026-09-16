@@ -100,6 +100,7 @@ const ViewMeetingDetails = () => {
     setDataroomMapFolderId,
     setMeetingMaterial,
     setAgenda,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   const { meetingID, meetingTitle, mapFolderId } = useSelector(
@@ -1003,6 +1004,15 @@ const ViewMeetingDetails = () => {
                 </Row>
               </Col>
             </Row>
+          </Col>
+          <Col>
+            {Number(editorRole.status) !== 10 && (
+              <Button
+                text={t("Close")}
+                className={styles["CloseMeetingButton"]}
+                onClick={handleCloseMeeting}
+              />
+            )}
           </Col>
         </Row>
         {endMeetingConfirmationModal && (

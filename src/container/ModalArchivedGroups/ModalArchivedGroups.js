@@ -26,19 +26,19 @@ const ModalArchivedCommittee = ({
   const navigate = useNavigate();
 
   const GroupsReducerrealtimeGroupStatus = useSelector(
-    (state) => state.GroupsReducer.realtimeGroupStatus
+    (state) => state.GroupsReducer.realtimeGroupStatus,
   );
 
   const GroupsReducergetAllGroupsResponse = useSelector(
-    (state) => state.GroupsReducer.getAllGroupsResponse
+    (state) => state.GroupsReducer.getAllGroupsResponse,
   );
 
   const GroupsReducerArcheivedGroups = useSelector(
-    (state) => state.GroupsReducer.ArcheivedGroups
+    (state) => state.GroupsReducer.ArcheivedGroups,
   );
 
   const GroupsReducerArcheivedGroupsSpinner = useSelector(
-    (state) => state.GroupsReducer.Loading
+    (state) => state.GroupsReducer.Loading,
   );
 
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
@@ -95,14 +95,14 @@ const ModalArchivedCommittee = ({
           groupMembers: [...groupMembers],
         };
         const groupExists = groupsArheivedData.some(
-          (data) => data.groupID === groupID
+          (data) => data.groupID === groupID,
         );
 
         if (groupStatusID === 1 || groupStatusID === 3) {
           // Archive => remove from list if exists
           if (groupExists) {
             setGroupsArheivedData((prevGroupData) =>
-              prevGroupData.filter((data2) => data2.groupID !== groupID)
+              prevGroupData.filter((data2) => data2.groupID !== groupID),
             );
           }
         } else if (groupStatusID === 2) {
@@ -114,9 +114,7 @@ const ModalArchivedCommittee = ({
 
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
@@ -138,8 +136,12 @@ const ModalArchivedCommittee = ({
           setGroupsArheivedData(updateGroups);
         } else {
           setGroupsArheivedData([]);
+          setTotalrecord(0);
         }
       } catch (error) {}
+    } else {
+      setGroupsArheivedData([]);
+      setTotalrecord(0);
     }
   }, [GroupsReducerArcheivedGroups]);
 
@@ -256,13 +258,13 @@ const ModalArchivedCommittee = ({
                                   onClickFunction={() =>
                                     ViewGroupmodal(
                                       data.groupID,
-                                      data.groupStatusID
+                                      data.groupStatusID,
                                     )
                                   }
                                   titleOnCLick={() =>
                                     ViewGroupmodal(
                                       data.groupID,
-                                      data.groupStatusID
+                                      data.groupStatusID,
                                     )
                                   }
                                   StatusID={data.groupStatusID}

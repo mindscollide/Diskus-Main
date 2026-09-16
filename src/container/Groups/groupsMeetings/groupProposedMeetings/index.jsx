@@ -145,7 +145,7 @@ const GroupProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -175,11 +175,11 @@ const GroupProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [proposedMeetingParticipant]);
 
-  
+
 
   const handelChangePagination = async (current, PageSize) => {
     setCurrentPageProposedGroupMeeting(current);
@@ -201,6 +201,11 @@ const GroupProposedMeetings = () => {
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState("descend");
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
+
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -418,7 +423,7 @@ const GroupProposedMeetings = () => {
             value === maxValue && value === 0 && maxValue === 0
               ? null
               : record.meetingPoll?.totalNoOfDirectors ===
-                record.meetingPoll?.totalNoOfDirectorsVoted;
+              record.meetingPoll?.totalNoOfDirectorsVoted;
           if (record.meetingPoll) {
             return allVoterVotedCompleted ? (
               <>
@@ -436,10 +441,10 @@ const GroupProposedMeetings = () => {
                 {currentLanguage === "en"
                   ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                   : `${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectorsVoted,
-                    )} / ${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectors,
-                    )}`}
+                    record.meetingPoll?.totalNoOfDirectorsVoted,
+                  )} / ${convertToArabicNumerals(
+                    record.meetingPoll?.totalNoOfDirectors,
+                  )}`}
               </span>
             );
           } else {
@@ -480,21 +485,27 @@ const GroupProposedMeetings = () => {
                 <div>
                   <Popover
                     content={moreButtons(record)}
-                    trigger='click'
+                    trigger='hover'
                     overlayClassName='MoreButtons_overlay'
                     showArrow={false}
-                    placement='bottomRight'>
-                    <CustomButton
-                      className={styles.MoreMeetingButton}
-                      text='More'
-                      icon2={
-                        <img
-                          src={ChevronDownIcon}
-                          alt='Chevron Down'
-                          width={10}
-                        />
-                      }
-                    />
+                    placement='bottomRight'
+                    open={openPopoverMeetingID === record.pK_MDID}
+                    onOpenChange={(isOpen) =>
+                      handelChangePopoverOpen(record.pK_MDID, isOpen)
+                    }>
+                    <span>
+                      <CustomButton
+                        className={styles.MoreMeetingButton}
+                        text='More'
+                        icon2={
+                          <img
+                            src={ChevronDownIcon}
+                            alt='Chevron Down'
+                            width={10}
+                          />
+                        }
+                      />
+                    </span>
                   </Popover>
                 </div>
               </div>
@@ -503,7 +514,7 @@ const GroupProposedMeetings = () => {
         },
       },
     ];
-  }, [meetingTitleSort, meetingDateSort]);
+  }, [meetingTitleSort, meetingDateSort, openPopoverMeetingID]);
 
   //
 
@@ -560,7 +571,7 @@ const GroupProposedMeetings = () => {
         };
 
         callApi1();
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [UserMeetPropoDatPoll]);
   return (

@@ -108,20 +108,26 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     if (
-      CommitteeReducer.ArcheivedCommittees &&
-      CommitteeReducer.ArcheivedCommittees.committees &&
-      CommitteeReducer.ArcheivedCommittees.committees.length > 0
+      CommitteeReducer.ArcheivedCommittees !== null &&
+      CommitteeReducer.ArcheivedCommittees !== undefined
     ) {
-      setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords);
+      try {
+        if (CommitteeReducer.ArcheivedCommittees.committees.length > 0) {
+          setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords);
 
-      let copyData = [...CommitteeReducer.ArcheivedCommittees?.committees];
-      // Create a new copy of committeeMembers array for each committee
-      const updatedCommittees = copyData.map((committee) => ({
-        ...committee,
-        committeeMembers: [...committee.committeeMembers],
-      }));
+          let copyData = [...CommitteeReducer.ArcheivedCommittees?.committees];
+          // Create a new copy of committeeMembers array for each committee
+          const updatedCommittees = copyData.map((committee) => ({
+            ...committee,
+            committeeMembers: [...committee.committeeMembers],
+          }));
 
-      setGetCommitteeData(updatedCommittees); // Update the state with the new array
+          setGetCommitteeData(updatedCommittees); // Update the state with the new array
+        } else {
+          setGetCommitteeData([]);
+          setTotalLength(0);
+        }
+      } catch (error) {}
     } else {
       setGetCommitteeData([]);
       setTotalLength(0);
@@ -263,7 +269,7 @@ const ModalArchivedCommittee = ({
                       })
                     ) : (
                       <Row>
-                        <Col className="h-100">
+                        <Col className='h-100'>
                           <span
                             className={styles["ArchivedCommitteesNotfound"]}>
                             {" "}

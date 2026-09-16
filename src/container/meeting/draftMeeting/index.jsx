@@ -106,6 +106,15 @@ const DraftMeetingList = () => {
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  // Matches the same controlled-Popover pattern already used on the
+  // Published tab, extended here so it can also be closed on scroll.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
+
 
   // ─── MQTT: Agenda Contributor Added ───
   useEffect(() => {
@@ -116,7 +125,7 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {}
+          } catch (error) { }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -124,7 +133,7 @@ const DraftMeetingList = () => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) {}
+    } catch (error) { }
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -140,7 +149,7 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch { }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -153,7 +162,7 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {}
+          } catch (error) { }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -161,7 +170,7 @@ const DraftMeetingList = () => {
         }
       };
       callAddOrganizer();
-    } catch (error) {}
+    } catch (error) { }
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -177,7 +186,7 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch { }
     }
   }, [mqttMeetingOrgRemoved]);
 
@@ -240,7 +249,7 @@ const DraftMeetingList = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} },
+            { role, callFunc: () => { } },
           ),
         );
       }
@@ -469,9 +478,8 @@ const DraftMeetingList = () => {
           Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
         render: (_, record) => {
@@ -509,17 +517,23 @@ const DraftMeetingList = () => {
             <div>
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
+                trigger="hover"
                 overlayClassName="MoreButtons_overlay"
                 className="moreOptionsPopover"
                 showArrow={false}
                 placement="bottomRight"
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }
               >
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text="More"
-                  icon2={<img src={ChevronDownIcon} width={10} />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text="More"
+                    icon2={<img src={ChevronDownIcon} width={10} />}
+                  />
+                </span>
               </Popover>
             </div>
           </div>
@@ -532,6 +546,7 @@ const DraftMeetingList = () => {
     meetingTimeSort,
     meetingDateSort,
     isMeetingTypeFilter,
+    openPopoverMeetingID,
   ]);
 
   return (

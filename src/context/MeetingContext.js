@@ -5,7 +5,17 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetViewTabs,
+  toggleViewMeetingModal,
+} from "../store/actions/ModalStates_actions";
+import {
+  listOfMeetingsApi,
+  resetCurrentMeetingInfo,
+} from "../store/actions/NewMeeting2.actions";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 /**
  * @context MeetingContext
@@ -44,6 +54,9 @@ export const MeetingContext = createContext();
 
 // Create a Provider component
 export const MeetingProvider = ({ children }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   // Fetch user profile data from the Redux store
   const UserProfileData = useSelector(
     (state) => state.settingReducer.UserProfileData,
@@ -84,6 +97,14 @@ export const MeetingProvider = ({ children }) => {
   );
   const currentMeetingInfo = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
   );
   const [
     viewAdvanceMeetingModalUnpublish,
@@ -322,8 +343,50 @@ export const MeetingProvider = ({ children }) => {
     pendingSignature: 0,
   });
 
+  const handleCloseMeeting = () => {
+    try {
+      setEditorRole({ status: null, role: null });
+      dispatch(resetViewTabs());
+      dispatch(toggleViewMeetingModal(false));
+      dispatch(resetCurrentMeetingInfo());
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
+
+    if (committeeInfo === null && groupInfo === null) {
+      dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(localStorage.getItem("userID")),
+            PageNumber:
+              localStorage.getItem("MeetingPageCurrent") !== null
+                ? Number(localStorage.getItem("MeetingPageCurrent"))
+                : 1,
+            Length:
+              localStorage.getItem("MeetingPageRows") !== null
+                ? Number(localStorage.getItem("MeetingPageRows"))
+                : 30,
+            PublishedMeetings:
+              localStorage.getItem("MeetingCurrentView") !== null &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 1,
+            ProposedMeetings:
+              localStorage.getItem("MeetingCurrentView") !== null &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 2,
+          },
+          "",
+        ),
+      );
+    }
+  };
+
   // Consolidate all states into a single object for easier passing to the context
   let statesData = {
+    handleCloseMeeting,
     startMeetingFunction,
     joinMeetingFunction,
     setGoBackCancelModal,

@@ -123,7 +123,7 @@ const ViewMeetingModal = () => {
     iframeRef,
   } = useContext(MeetingContext);
 
-  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID } =
+  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID,handleCloseMeeting } =
     useMeetingContext();
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const advanceMeetingOperations =
@@ -552,37 +552,37 @@ const ViewMeetingModal = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
-  const handleCloseMeeting = () => {
-    try {
-      setEditorRole({ status: null, role: null });
-      dispatch(resetViewTabs());
-      dispatch(toggleViewMeetingModal(false));
-      dispatch(resetCurrentMeetingInfo());
-    } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
-    }
+  // const handleCloseMeeting = () => {
+  //   try {
+  //     setEditorRole({ status: null, role: null });
+  //     dispatch(resetViewTabs());
+  //     dispatch(toggleViewMeetingModal(false));
+  //     dispatch(resetCurrentMeetingInfo());
+  //   } catch (error) {
+  //     console.log(error, "errorerrorerrorerrorerror");
+  //   }
 
-    if (committeeInfo === null && groupInfo === null) {
-      dispatch(
-        listOfMeetingsApi(
-          navigate,
-          t,
-          {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-            PublishedMeetings: currentView && Number(currentView) === 1,
-            ProposedMeetings: currentView && Number(currentView) === 2,
-          },
-          "",
-        ),
-      );
-    }
-  };
+  //   if (committeeInfo === null && groupInfo === null) {
+  //     dispatch(
+  //       listOfMeetingsApi(
+  //         navigate,
+  //         t,
+  //         {
+  //           Date: "",
+  //           Title: "",
+  //           HostName: "",
+  //           UserID: Number(userID),
+  //           PageNumber:
+  //             meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+  //           Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+  //           PublishedMeetings: currentView && Number(currentView) === 1,
+  //           ProposedMeetings: currentView && Number(currentView) === 2,
+  //         },
+  //         "",
+  //       ),
+  //     );
+  //   }
+  // };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 
   useEffect(() => {
@@ -1026,17 +1026,14 @@ const ViewMeetingModal = () => {
               {polls && <Polls />}
               {attendance && <Attendence />}
               {isRecording && <Recording />}
-              {/* </> */}
-              {/* // ))} */}
-              {Number(editorRole.status) !== 10 && (
-                <footer className={styles["View_meeting_footer"]}>
+         
+              {/* {Number(editorRole.status) !== 10 && (
                   <Button
                     text={t("Close")}
                     className={styles["CloseMeetingButton"]}
                     onClick={handleCloseMeeting}
                   />
-                </footer>
-              )}
+              )} */}
             </span>
           </Col>
         </Row>

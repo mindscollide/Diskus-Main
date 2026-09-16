@@ -172,6 +172,9 @@ const PublishedMeetingList = () => {
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  // Scrolling the table left the "More" popover open and floating in its
+  // old position — close it as soon as the user scrolls.
+
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
@@ -357,7 +360,7 @@ const PublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) {}
+    } catch (error) { }
   };
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
@@ -796,9 +799,8 @@ const PublishedMeetingList = () => {
           Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
         render: (_, record) => {
@@ -980,17 +982,19 @@ const PublishedMeetingList = () => {
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
-                trigger={"click"}
+                trigger={"hover"}
                 placement='bottomRight'
                 open={openPopoverMeetingID === record.pK_MDID}
                 onOpenChange={(isOpen) =>
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt='' />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} alt='' />}
+                  />
+                </span>
               </Popover>
             </div>
           );
