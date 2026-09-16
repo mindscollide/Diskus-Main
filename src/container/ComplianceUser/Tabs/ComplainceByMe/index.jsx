@@ -17,6 +17,7 @@ import {
 import {
   formatDateToYMD,
   getDueDateTimeNumber,
+  getComplianceStatusClassKey,
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 
@@ -484,43 +485,30 @@ const ComplianceByMe = () => {
         return (
           <div style={{ padding: 8 }}>
             <Checkbox.Group
-              options={allComplianceStatusForFilter.map((s) => ({
-                label: s.statusTitle,
-                value: s.statusTitle,
-              }))}
+              className={styles["StatusFilterCheckboxGroup"]}
               value={selectedKeys}
               onChange={handleCheckboxChange}
-              className={
-                selectedKeys?.[0] === "Not Started"
-                  ? styles["Not_Started_value"]
-                  : selectedKeys?.[1] === "In Progress"
-                    ? styles["In_Progress_value"]
-                    : selectedKeys?.[2] === "Completed"
-                      ? styles["Completed_value"]
-                      : selectedKeys?.[3] === "Overdue"
-                        ? styles["Overdue_value"]
-                        : selectedKeys?.[4] === "Submitted for Approval"
-                          ? styles["Submitted_for_Approval_value"]
-                          : selectedKeys?.[5] === "Reopened"
-                            ? styles["Reopened_value"]
-                            : selectedKeys?.[6] === "On Hold"
-                              ? styles["On_Hold_value"]
-                              : selectedKeys?.[7] === "Cancelled"
-                                ? styles["Cancelled_value"]
-                                : null
-              }
               style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: 6,
               }}
-            />
+            >
+              {allComplianceStatusForFilter.map((s) => (
+                <Checkbox key={s.statusTitle} value={s.statusTitle}>
+                  <span className={styles[getComplianceStatusClassKey(s.statusTitle)]}>
+                    {s.statusTitle}
+                  </span>
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
 
             <div
               style={{
                 display: "flex",
                 gap: 8,
                 marginTop: 10,
+                justifyContent: "flex-end"
               }}
             >
               <CustomButton

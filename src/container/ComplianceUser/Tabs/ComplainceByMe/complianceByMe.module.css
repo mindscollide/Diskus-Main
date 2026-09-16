@@ -58,3 +58,13 @@
 .Not_Started_value{
   color: #A2A2A2 !important;
 }
+
+/* Checkbox.Group's default antd styling puts margin-inline-start:8px
+   between adjacent .ant-checkbox-wrapper siblings — meant for a horizontal
+   row of checkboxes. In this vertical status-filter list that pushed every
+   option after the first one progressively out of alignment with it. */
+.StatusFilterCheckboxGroup :global(.ant-checkbox-wrapper) {
+  margin-inline-start: 0 !important;
+  display: flex !important;
+  align-items: center;
+}

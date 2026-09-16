@@ -2481,7 +2481,7 @@ export const UpdateMeetingStatusApi = (
                                 Data.StatusID === 9
                               ? t("Meeting-ended-successfully")
                               : Data.StatusID === 7
-                                ? t("Meeting-ended-successfully")
+                                ? t("Meeting-deleted-successfully")
                                 : "",
                       ),
                     );

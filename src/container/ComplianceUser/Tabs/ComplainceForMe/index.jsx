@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import {
   formatDateToYMD,
   getDueDateTimeNumber,
+  getComplianceStatusClassKey,
 } from "../../CommonComponents/commonFunctions";
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
@@ -237,16 +238,21 @@ const ComplianceForMe = () => {
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
-            options={allComplianceStatusForFilter.map((s) => ({
-              label: s.statusTitle,
-              value: s.statusTitle,
-            }))}
+            className={styles["StatusFilterCheckboxGroup"]}
             value={selectedKeys}
             onChange={(values) => setSelectedKeys(values)}
-            style={{ display: "flex", flexDirection: "column", }}
-          />
+            style={{ display: "flex", flexDirection: "column", gap: 6, }}
+          >
+            {allComplianceStatusForFilter.map((s) => (
+              <Checkbox key={s.statusTitle} value={s.statusTitle}>
+                <span className={styles[getComplianceStatusClassKey(s.statusTitle)]}>
+                  {s.statusTitle}
+                </span>
+              </Checkbox>
+            ))}
+          </Checkbox.Group>
 
-          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          <div style={{ display: "flex", gap: 8, marginTop: 10, justifyContent: "flex-end" }}>
             {/* Reset */}
             <CustomButton
               text={t("Reset")}
