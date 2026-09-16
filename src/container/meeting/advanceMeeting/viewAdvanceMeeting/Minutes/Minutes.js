@@ -85,6 +85,7 @@ const Minutes = () => {
     setViewAdvanceMeetingModal,
     setMeetingMaterial,
     setactionsPage,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   let userID = localStorage.getItem("userID");
@@ -2418,18 +2419,21 @@ const Minutes = () => {
               />
             ) : null}
 
-            {/* <Button
-            text={t("Previous")}
-            className={styles["Previous_Button"]}
-            onClick={handlePreviousButton}
-          /> */}
             <Button
               text={t("Next")}
               onClick={handleNextButton}
               className={styles["Button_Next"]}
             />
+            {Number(editorRole.status) !== 10 && (
+              <Button
+                text={t("Close")}
+                className={styles["CloseMeetingButton"]}
+                onClick={handleCloseMeeting}
+              />
+            )}
           </Col>
         </Row>
+    
         {unsaveFileUploadMinutes && (
           <UnsavedMinutes
             setMinutes={setMinutes}

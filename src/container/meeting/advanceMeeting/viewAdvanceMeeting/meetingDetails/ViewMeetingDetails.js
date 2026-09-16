@@ -1005,7 +1005,8 @@ const ViewMeetingDetails = () => {
               </Col>
             </Row>
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-end">
+          
             {Number(editorRole.status) !== 10 && (
               <Button
                 text={t("Close")}

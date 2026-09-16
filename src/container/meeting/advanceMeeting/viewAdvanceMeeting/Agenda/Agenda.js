@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
+import { Button } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
@@ -35,6 +36,7 @@ const Agenda = () => {
     setPolls,
     setMinutes,
     advanceMeetingModalID,
+    handleCloseMeeting,
   } = useMeetingContext();
   const agendaItemRemoved = useSelector(
     (state) => state.NewMeetingreducer.agendaItemRemoved,
@@ -247,7 +249,7 @@ const Agenda = () => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-center mt-3'>
+              className='d-flex justify-content-center mb-3'>
               <img
                 draggable={false}
                 src={emptyContributorState}
@@ -395,6 +397,18 @@ const Agenda = () => {
                 />
               </Col>
             </Row> */}
+
+            {Number(editorRole.status) !== 10 && (
+              <Row className='mt-3'>
+                <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+                  <Button
+                    text={t("Close")}
+                    className={styles["CloseMeetingButton"]}
+                    onClick={handleCloseMeeting}
+                  />
+                </Col>
+              </Row>
+            )}
           </section>
         </>
       )}

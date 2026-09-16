@@ -57,6 +57,8 @@ const Attendence = () => {
     setViewAdvanceMeetingModal,
     setAdvanceMeetingModalID,
     setEditorRole,
+    editorRole,
+    handleCloseMeeting,
   } = useMeetingContext();
   //reducer call from Attendance_Reducers
   const attendanceConfirmationModal = useSelector(
@@ -408,6 +410,17 @@ const Attendence = () => {
           />
         </Col>
       </Row>
+      {Number(editorRole.status) !== 10 && (
+        <Row className='mt-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+            <Button
+              text={t("Close")}
+              className={styles["CloseMeetingButton"]}
+              onClick={handleCloseMeeting}
+            />
+          </Col>
+        </Row>
+      )}
       {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}

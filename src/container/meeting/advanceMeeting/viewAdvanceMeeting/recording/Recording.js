@@ -25,7 +25,8 @@ const Recording = () => {
   const meetingRecordingFiles = useSelector(
     (state) => state.NewMeetingreducer.meetingRecordingFiles,
   );
-  const { advanceMeetingModalID } = useMeetingContext();
+  const { advanceMeetingModalID, handleCloseMeeting, editorRole } =
+    useMeetingContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -237,11 +238,24 @@ const Recording = () => {
     // dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.fileName));
   };
   return (
-    <Row>
-      <Col sm={12} md={12} lg={12}>
-        <Table rows={data} column={columns} pagination={false} />
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col sm={12} md={12} lg={12}>
+          <Table rows={data} column={columns} pagination={false} />
+        </Col>
+      </Row>
+      {Number(editorRole.status) !== 10 && (
+        <Row className='mt-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+            <Button
+              text={t("Close")}
+              className={styles["CloseMeetingButton"]}
+              onClick={handleCloseMeeting}
+            />
+          </Col>
+        </Row>
+      )}
+    </>
   );
 };
 
