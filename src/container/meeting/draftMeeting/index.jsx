@@ -530,7 +530,7 @@ const DraftMeetingList = () => {
                 <span>
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text="More"
+                    text={t("More")}
                     icon2={<img src={ChevronDownIcon} width={10} />}
                   />
                 </span>

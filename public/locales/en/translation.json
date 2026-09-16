@@ -2874,5 +2874,11 @@
   "Please-select-package": "Please select package",
   "Recording...": "Recording...",
   "Reopen-date-and-reason": "Reopen date and reason",
-  "Overdue": "Overdue"
+  "Overdue": "Overdue",
+  "Secondary": "Secondary",
+  "Done": "Done",
+  "Board-meetings": "Board Meetings",
+  "Propose": "Propose",
+  "Or": "OR"
+  
 }

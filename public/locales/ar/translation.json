@@ -2749,5 +2749,11 @@
   "Please-select-package": "Please select package",
   "Recording...": "جاري التسجيل...",
   "Reopen-date-and-reason": "Reopen date and reason",
-  "Overdue": "متأخر"
+  "Overdue": "متأخر",
+  "Secondary": "ثانوي",
+  "Done": "تم",
+  "Participants-details-updated-successfully": "تمت إضافة تفاصيل المشاركين بنجاح",
+  "Board-meetings": "اجتماعات مجلس الإدارة",
+  "Propose": "يقترح",
+  "Or": "أو"
 }

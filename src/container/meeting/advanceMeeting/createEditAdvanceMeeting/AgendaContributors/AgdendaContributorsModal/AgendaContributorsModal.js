@@ -415,6 +415,7 @@ const AgendaContributorsModal = ({
                       value={selectedsearch}
                       isSearchable={true}
                       filterOption={customFilter}
+                        placeholder={t("Select")}
                     />
                   </Col>
                   <Col md={2} lg={2} sm={2}>

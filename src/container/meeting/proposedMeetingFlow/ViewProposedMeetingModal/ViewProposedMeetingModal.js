@@ -46,6 +46,8 @@ const ViewProposedMeetingModal = () => {
     MeetingType: "",
     meetingId: 0,
   });
+
+  console.log(basicmeetingTitle, "basicmeetingTitlebasicmeetingTitle")
   const [sendResponseByDate, setSendResponseByDate] = useState("");
   const [partcipatns, setParticipants] = useState([]);
   const [meetingProposedDates, setMeetingProposedDates] = useState([]);
