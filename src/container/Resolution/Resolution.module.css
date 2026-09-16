@@ -695,12 +695,12 @@ body[dir="rtl"] .decision_text_Moderator_closed {
 }
 
 .Result_Icon_cursor_pointer {
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
   cursor: pointer;
 }
 
 body[dir="rtl"] .Result_Icon_cursor_pointer {
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
   cursor: pointer;
 }
 

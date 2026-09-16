@@ -3038,68 +3038,90 @@ const downloadFail = (response) => {
 };
 
 // DownloadFile
+
 const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   let form = new FormData();
+
   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
-  let ext = Name.split(".").pop();
-  let contentType;
-  if (ext === "doc") {
-    contentType = "application/msword";
-  } else if (ext === "docx") {
-    contentType =
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-  } else if (ext === "xls") {
-    contentType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  } else if (ext === "xlsx") {
-    contentType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  } else if (ext === "pdf") {
-    contentType = "application/pdf";
-  } else if (ext === "png") {
-    contentType = "image/png";
-  } else if (ext === "txt") {
-    contentType = "text/plain";
-  } else if (ext === "jpg") {
-    contentType = "image/jpeg";
-  } else if (ext === "jpeg") {
-    contentType = "image/jpeg";
-  } else {
-  }
+
   return (dispatch) => {
     dispatch(DownloadMessage(1));
     dispatch(DownloadFileForDataRoomStart());
 
     axiosInstance
       .post(DataRoomAllFilesDownloads, form, {
-        headers: {
-          "Content-Disposition": "attachment; filename=template." + ext,
-          "Content-Type": contentType,
-        },
-        responseType: "arraybuffer",
+        responseType: "blob",
       })
-
       .then(async (response) => {
-        if (response.status === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
-        } else if (response.status === 200) {
+        // Handle API error response
+        if (response.status === 400) {
+          let errorResponse = null;
+
+          try {
+            const text = await response.data.text();
+            errorResponse = JSON.parse(text);
+          } catch (error) {
+            console.error("Unable to parse error response:", error);
+          }
+
+          console.log("Download Error Response:", errorResponse);
+
+          dispatch(DownloadFileForDataRoomEnded(false));
+          dispatch(DownloadMessage(0));
+
+          return;
+        }
+
+        // Successful file download
+        if (response.status === 200) {
           const url = window.URL.createObjectURL(new Blob([response.data]));
+
           const link = document.createElement("a");
           link.href = url;
           link.setAttribute("download", Name);
+
           document.body.appendChild(link);
           link.click();
+
+          link.remove();
+          window.URL.revokeObjectURL(url);
 
           dispatch(DownloadFileForDataRoomEnded(false));
           dispatch(DownloadMessage(0));
         }
       })
-      .catch((response) => {
+      .catch(async (error) => {
         dispatch(DownloadMessage(0));
+        dispatch(DownloadFileForDataRoomEnded(false));
 
-        dispatch(downloadFail(response));
+        // Axios error response with responseType: blob
+        if (error.response?.data instanceof Blob) {
+          try {
+            const text = await error.response.data.text();
+            const errorResponse = JSON.parse(text);
+
+            console.log("Download API Error:", errorResponse);
+
+            // Example:
+            // errorResponse.responseCode === 400
+            // errorResponse.responseMessage === "Failure"
+            // errorResponse.responseResult contains actual reason
+
+            if (errorResponse?.responseCode === 400) {
+              console.log(
+                "File Download Failed:",
+                errorResponse?.responseResult,
+              );
+
+              return;
+            }
+          } catch (parseError) {
+            console.error("Unable to parse error response:", parseError);
+          }
+        }
+
+        dispatch(downloadFail(error));
       });
   };
 };

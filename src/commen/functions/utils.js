@@ -3001,13 +3001,38 @@ export const handleNavigation = (
     const docSignAction = localStorage.getItem("docSignAction");
     const docSignedAction = localStorage.getItem("docSignedAction");
     const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+    const viewMeeting_action = localStorage.getItem("viewMeeting_action");
+    const committee_viewMeeting_action = localStorage.getItem(
+      "committee_viewMeeting_action",
+    );
+    const groups_viewMeeting_action = localStorage.getItem(
+      "groups_viewMeeting_action",
+    );
+    const committee_meetingprop_action = localStorage.getItem(
+      "committee_meetingprop_action",
+    );
+    const groups_meetingprop_action = localStorage.getItem(
+      "groups_meetingprop_action",
+    );
+    const committee_meetingUpd_action = localStorage.getItem(
+      "committee_meetingUpd_action",
+    );
+    const groups_meetingUpd_action = localStorage.getItem(
+      "groups_meetingUpd_action",
+    );
+    const committee_meetingStr_action = localStorage.getItem(
+      "committee_meetingStr_action",
+    );
+    const groups_meetingStr_action = localStorage.getItem(
+      "groups_meetingStr_action",
+    );
     if (isFirstLogin) {
       // if (adminRights) {
       //   navigate("/Admin/ManageUsers");
       // } else if (userRights) {
 
-      if(OnlyComplianceFeature) {
-        return navigate("/Diskus/compliance")
+      if (OnlyComplianceFeature) {
+        return navigate("/Diskus/compliance");
       }
       navigate("/onboard");
       // }
@@ -3039,7 +3064,8 @@ export const handleNavigation = (
         meetingCanc !== null ||
         reviewSubmittedMinutesLink !== null ||
         viewPublishMinutesLink !== null ||
-        viewMeetingLink !== null
+        viewMeetingLink !== null ||
+        viewMeeting_action !== ""
       ) {
         navigate("/Diskus/Meeting");
       } else if (
@@ -3048,9 +3074,23 @@ export const handleNavigation = (
         pollExpire !== null
       ) {
         navigate("/Diskus/polling");
-      } else if (committeeView_Id !== null || committeeList !== null) {
+      } else if (
+        committeeView_Id !== null ||
+        committeeList !== null ||
+        committee_viewMeeting_action !== null ||
+        committee_meetingStr_action !== null ||
+        committee_meetingUpd_action !== null ||
+        committee_meetingprop_action !== null
+      ) {
         navigate("/Diskus/committee");
-      } else if (groupView_Id !== null || groupList !== null) {
+      } else if (
+        groupView_Id !== null ||
+        groupList !== null ||
+        groups_meetingStr_action !== null ||
+        groups_meetingUpd_action !== null ||
+        groups_meetingprop_action !== null ||
+        groups_viewMeeting_action !== null
+      ) {
         navigate("/Diskus/groups");
       } else if (taskListView_Id !== null || taskListView !== null) {
         navigate("/Diskus/todolist");

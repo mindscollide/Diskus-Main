@@ -70,7 +70,7 @@ import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { state } = useLocation();
+  const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
 
   const groupsMeetingView = localStorage.getItem("groups_viewMeeting_action");
@@ -378,23 +378,39 @@ const Groups = () => {
   useEffect(() => {
     if (state !== null) {
       try {
-        const {
-          message,
-          response: { committeeGroupMeetingID, committeeGroupTitle },
-        } = state;
+        const { message, response } = state;
+        // response.committeeGroupMeetingID/committeeGroupTitle never
+        // existed on this object — routeMeetingTypeNotification only ever
+        // populated it with the meeting-status API result plus
+        // MeetingID/isQuickMeeting, so this was always undefined, which
+        // corrupted ViewGroupID in localStorage to the literal string
+        // "undefined" on every web-notification click and broke every
+        // subsequent API call that read it. Use the fields that actually
+        // exist: GroupID (forwarded from the notification payload) and
+        // meetingTitle (from the meeting-status result itself).
+        const groupID = response?.GroupID;
+        const groupTitle = response?.meetingTitle;
         if (message === "proposedmeeting") {
           setCurrentGroupMeetingTabActive(2);
         }
-        dispatch(
-          viewGroupDetails({
-            groupID: committeeGroupMeetingID,
-            groupTitle: committeeGroupTitle,
-          }),
-        );
-        localStorage.setItem("ViewGroupID", committeeGroupMeetingID);
-        setCurrentViewGroupTabs(4);
-        setViewGroupPage(true);
-        dispatch(viewGroupPageFlag(true));
+        if (groupID) {
+          dispatch(
+            viewGroupDetails({
+              groupID,
+              groupTitle,
+            }),
+          );
+          localStorage.setItem("ViewGroupID", groupID);
+          setCurrentViewGroupTabs(4);
+          setViewGroupPage(true);
+          dispatch(viewGroupPageFlag(true));
+        }
+        // Clear the routing state once consumed — otherwise it survives
+        // navigating away and back (or a second click reusing the same
+        // location.state) and this effect re-fires with stale data,
+        // matching the pattern already used by meeting/index.jsx for the
+        // same notification flow.
+        navigate(pathname, { replace: true, state: null });
       } catch (error) {
         console.log(error);
       }

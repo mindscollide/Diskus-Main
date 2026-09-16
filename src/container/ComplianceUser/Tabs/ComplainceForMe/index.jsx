@@ -67,7 +67,7 @@ const ComplianceForMe = () => {
     statusFilter,
     setStatusFilter,
   } = useComplianceContext();
-  
+
 
   const TAB = {
     DASHBOARD: 1,
@@ -135,7 +135,7 @@ const ComplianceForMe = () => {
   }, [allComplianceStatusForFilter, statusFilter.length]);
 
   const handleViewCompliance = (record) => {
-    
+
     const Data = {
       complianceId: record.complianceId,
       viewType: 2,
@@ -243,7 +243,7 @@ const ComplianceForMe = () => {
             }))}
             value={selectedKeys}
             onChange={(values) => setSelectedKeys(values)}
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{ display: "flex", flexDirection: "column", }}
           />
 
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
@@ -397,13 +397,23 @@ const ComplianceForMe = () => {
         ellipsis: true,
         align: "center",
         ...getStatusColumnProps(),
-        render: (text) => {
-          return (
-            <span>
-              <Tooltip title={text}>{text}</Tooltip>
-            </span>
-          );
-        },
+        render: (text) => <Tooltip title={text}><span className={text === "Not Started"
+          ? styles["Not_Started_value"]
+          : text === "In Progress"
+            ? styles["In_Progress_value"]
+            : text === "Completed"
+              ? styles["Completed_value"]
+              : text === "Overdue"
+                ? styles["Overdue_value"]
+                : text === "Submitted for Approval"
+                  ? styles["Submitted_for_Approval_value"]
+                  : text === "Reopened"
+                    ? styles["Reopened_value"]
+                    : text === "On Hold"
+                      ? styles["On_Hold_value"]
+                      : text === "Cancelled"
+                        ? styles["Cancelled_value"]
+                        : null}>{text}</span></Tooltip>,
       },
       {
         title: (

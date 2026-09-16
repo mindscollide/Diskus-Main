@@ -33,3 +33,28 @@
   background: #fff !important;
   color: #5a5a5a !important;
 }
+
+.Overdue_value {
+  color: #f16b6b !important;
+}
+.In_Progress_value {
+  color: #D8A709 !important;
+}
+.Completed_value {
+  color: #81DB86 !important;
+}
+.Submitted_for_Approval_value {
+  color: #6172D6 !important;
+}
+.Reopened_value {
+  color: #2197D7 !important;
+}
+.On_Hold_value {
+  color: #4ADEDE !important;
+}
+.Cancelled_value {
+  color: #5A5A5A !important;
+}
+.Not_Started_value{
+  color: #A2A2A2 !important;
+}

@@ -73,7 +73,7 @@ const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
@@ -236,25 +236,39 @@ const Committee = () => {
   useEffect(() => {
     if (state !== null) {
       try {
-        const {
-          message,
-          response: { committeeGroupMeetingID, committeeGroupTitle },
-        } = state;
+        const { message, response } = state;
+        // response.committeeGroupMeetingID/committeeGroupTitle never
+        // existed on this object — routeMeetingTypeNotification only ever
+        // populated it with the meeting-status API result plus
+        // MeetingID/isQuickMeeting, so this was always undefined, which
+        // corrupted ViewCommitteeID in localStorage to the literal string
+        // "undefined" on every web-notification click and broke every
+        // subsequent API call that read it. Use the fields that actually
+        // exist: CommitteeID (forwarded from the notification payload) and
+        // meetingTitle (from the meeting-status result itself).
+        const committeeID = response?.CommitteeID;
+        const committeeTitle = response?.meetingTitle;
         if (message === "proposedmeeting") {
           setCurrentCommitteeMeetingTabActive(2);
-        } else {
         }
-        dispatch(
-          viewCommitteeDetails({
-            committeeID: committeeGroupMeetingID,
-            committeeTitle: committeeGroupTitle,
-          }),
-        );
-        setCurrentViewCommitteeTabs(4);
-
-        localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
-        setViewCommitteePage(true);
-        dispatch(viewCommitteePageFlag(true));
+        if (committeeID) {
+          dispatch(
+            viewCommitteeDetails({
+              committeeID,
+              committeeTitle,
+            }),
+          );
+          setCurrentViewCommitteeTabs(4);
+          localStorage.setItem("ViewCommitteeID", committeeID);
+          setViewCommitteePage(true);
+          dispatch(viewCommitteePageFlag(true));
+        }
+        // Clear the routing state once consumed — otherwise it survives
+        // navigating away and back (or a second click reusing the same
+        // location.state) and this effect re-fires with stale data,
+        // matching the pattern already used by meeting/index.jsx for the
+        // same notification flow.
+        navigate(pathname, { replace: true, state: null });
       } catch (error) {}
     }
   }, [state]);

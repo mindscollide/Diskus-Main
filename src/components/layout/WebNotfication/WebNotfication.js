@@ -244,6 +244,14 @@ const WebNotfication = ({
               ...responseData.responseResult,
               MeetingID: PayLoadData.MeetingID,
               isQuickMeeting: PayLoadData?.isQuickMeeting,
+              // Committee.js/Groups.js need to know WHICH committee/group
+              // this meeting belongs to (GetMeetingStatusData's own result
+              // doesn't carry that — only the meeting itself). Forward it
+              // from the notification payload, where it's already used the
+              // same way by the other committee/group notification
+              // branches (see notificationActionID 16/21 above).
+              CommitteeID: PayLoadData?.CommitteeID,
+              GroupID: PayLoadData?.GroupID,
             },
           },
         });
