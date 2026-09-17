@@ -90,7 +90,7 @@ export const getHoursMinutesSec = (date) => {
     const minutes = ("0" + date.getMinutes()).slice(-2);
     const formattedTime = `${hours.padStart(2, "0")}${minutes.padStart(
       2,
-      "0"
+      "0",
     )}${"00"}`;
     return formattedTime;
   }
@@ -189,7 +189,7 @@ export const getTimeDifference = (dateLogin, dateLogOut) => {
 
 export const convertToGMTMinuteTime = (timeStr) => {
   try {
-    let fullDateyear =
+    const fullDateyear =
       timeStr.slice(0, 4) +
       "-" +
       timeStr.slice(4, 6) +
@@ -202,25 +202,48 @@ export const convertToGMTMinuteTime = (timeStr) => {
       ":" +
       timeStr.slice(12, 14) +
       ".000Z";
-    // Create a Date object
-    let date = new Date(fullDateyear).toString();
 
-    let formattedTime = moment(date).format("hh:mm a");
-    return formattedTime;
-  } catch {}
+    const date = new Date(fullDateyear);
+
+    const currentLanguage = localStorage.getItem("i18nextLng");
+
+    if (currentLanguage === "ar") {
+      return new Intl.DateTimeFormat("ar-EG", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }).format(date);
+    }
+
+    return moment(date).format("hh:mm a");
+  } catch {
+    return "";
+  }
 };
 
 export const convertDateToGMTMinute = (dateStr) => {
   try {
-    // Extract year, month, and day from the input string
-    let year = parseInt(dateStr.substring(0, 4), 10);
-    let month = parseInt(dateStr.substring(4, 6), 10) - 1; // Months are zero-indexed in JavaScript
-    let day = parseInt(dateStr.substring(6, 8), 10);
+    // Extract year, month, and day
+    const year = parseInt(dateStr.substring(0, 4), 10);
+    const month = parseInt(dateStr.substring(4, 6), 10) - 1;
+    const day = parseInt(dateStr.substring(6, 8), 10);
 
     // Create a Date object
-    let date = new Date(Date.UTC(year, month, day));
+    const date = new Date(Date.UTC(year, month, day));
 
-    // Define month names
+    const currentLanguage = localStorage.getItem("i18nextLng");
+
+    // Arabic language
+    if (currentLanguage === "ar") {
+      return new Intl.DateTimeFormat("ar-EG", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        calendar: "gregory",
+      }).format(date);
+    }
+
+    // English month names
     const monthNames = [
       "January",
       "February",
@@ -236,13 +259,15 @@ export const convertDateToGMTMinute = (dateStr) => {
       "December",
     ];
 
-    // Format the date
-    let formattedDate = `${date.getUTCDate()}th ${
+    // English date format
+    const formattedDate = `${date.getUTCDate()}th ${
       monthNames[date.getUTCMonth()]
     }, ${date.getUTCFullYear()}`;
 
     return formattedDate;
-  } catch {}
+  } catch {
+    return "";
+  }
 };
 
 // Function to format the date and time

@@ -72,6 +72,8 @@ const Attendence = () => {
     (state) => state.attendanceMeetingReducer.attendanceMeetings
   );
   const [attendenceRows, setAttendenceRows] = useState([]);
+
+  console.log(attendenceRows, "attendenceRowsattendenceRowsattendenceRows")
   const [show, SnackBar] = useSnackbar();
 
   const [cancelModalView, setCancelModalView] = useState(false);
@@ -141,7 +143,7 @@ const Attendence = () => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Designation"]}>
-                {record.designation}
+                {t(record.designation)}
               </span>
             </Col>
           </Row>

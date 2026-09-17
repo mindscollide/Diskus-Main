@@ -2379,7 +2379,7 @@ const Minutes = () => {
                                             {convertToGMTMinuteTime(
                                               data.lastUpdatedDate +
                                                 data.lastUpdatedTime,
-                                            ) + ","}
+                                            )}
                                           </p>
                                           <p
                                             className={styles["date-uploader"]}>
@@ -2433,7 +2433,7 @@ const Minutes = () => {
             )}
           </Col>
         </Row>
-    
+
         {unsaveFileUploadMinutes && (
           <UnsavedMinutes
             setMinutes={setMinutes}

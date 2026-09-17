@@ -98,14 +98,6 @@ const Agenda = () => {
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDData]);
 
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      show(t("Record-saved"), "success");
-    } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      show(t("Record-updated"), "success");
-    }
-    dispatch(clearResponseMessage(""));
-  }, [MeetingAgendaReducer.ResponseMessage]);
 
   useEffect(() => {
     if (

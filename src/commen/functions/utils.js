@@ -3065,7 +3065,7 @@ export const handleNavigation = (
         reviewSubmittedMinutesLink !== null ||
         viewPublishMinutesLink !== null ||
         viewMeetingLink !== null ||
-        viewMeeting_action !== ""
+        viewMeeting_action !== null
       ) {
         navigate("/Diskus/Meeting");
       } else if (

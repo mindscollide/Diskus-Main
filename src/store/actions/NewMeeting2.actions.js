@@ -2152,7 +2152,7 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                   dispatch(
                     addUpdateAdvanceMeetingAgenda_success(
                       response.data.responseResult,
-                      t("Record-saved"),
+                      ""
                     ),
                   );
                   const meetingId =
@@ -3972,7 +3972,7 @@ export const scheduleMeetingFromProposedMeetingApi = (
               dispatch(
                 scheduleMeetingSuccess(
                   response.data.responseResult.responseMessage,
-                  t("Record-saved"),
+      ""
                 ),
               );
               const { setEditorRole } = object;

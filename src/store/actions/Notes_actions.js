@@ -874,7 +874,7 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
               dispatch(
                 RetrieveNotesDocumentSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

@@ -2879,6 +2879,9 @@
   "Done": "Done",
   "Board-meetings": "Board Meetings",
   "Propose": "Propose",
-  "Or": "OR"
-  
+  "Or": "OR",
+  "Mute": "Mute",
+  "Revisions": "Revisions",
+
+  "General-Minutes": "General Minutes"
 }
