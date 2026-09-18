@@ -701,38 +701,95 @@ const Dashboard = () => {
           }
         } else if (
           !presenterViewFlagRef.current &&
-          !presenterViewJoinFlagRef.current
+          !presenterViewJoinFlagRef.current &&
+          // meetingDocumentViewer is a standalone document-review tab, not
+          // a genuine meeting participant view — it shouldn't react to a
+          // presentation starting at all. Without this, when it's the ONLY
+          // other open tab there's no second tab to race against, so the
+          // Web Locks claim below doesn't help: this tab simply wins the
+          // claim by itself and wrongly opens the presenter-view iframe.
+          // (Same exclusion already used for the <Talk/> widget below.)
+          !location.pathname.includes("meetingDocumentViewer")
         ) {
-          console.log("mqtt mqmqmqmqmqmq");
-          console.log("maximizeParticipantVideoFlag");
-          if (maximizeParticipantVideoFlagRef.current) {
-            console.log("maximizeParticipantVideoFlag");
-            console.log("mqtt mqmqmqmqmqmq");
+          // Same-user multi-tab fix: every open tab of the same logged-in
+          // user (e.g. two genuine AgendaViewer tabs for the same meeting)
+          // independently receives this MQTT event and independently
+          // reaches this branch — isMeeting/currentMeetingID are shared
+          // across tabs via localStorage, but presenterViewFlag/
+          // presenterViewJoinFlag are per-tab Redux state, so every OTHER open tab looks just as
+          // "uninvolved" as this one. Without a claim, every such tab would
+          // call joinPresenterViewMainApi and open its own presenter-view
+          // iframe. Uses the same Web Locks cross-tab mutex already used
+          // for the incoming-call ringer claim above (see there for why a
+          // plain localStorage read-then-write isn't atomic across tabs).
+          const presentationClaimID = String(payload?.meetingID);
 
-            console.log("maximizeParticipantVideoFlag");
+          if (document.visibilityState !== "visible") {
+            await new Promise((resolve) => setTimeout(resolve, 200));
+          }
 
-            dispatch(videoIconOrButtonState(false));
-            dispatch(participantVideoButtonState(false));
-            dispatch(maxParticipantVideoCallPanel(false));
-            let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-            let data = {
-              VideoCallURL: String(currentMeetingVideoURL),
-              WasInVideo: isMeetingVideo ? true : false,
-            };
-            dispatch(participantWaitingListBox(false));
-
-            dispatch(joinPresenterViewMainApi(navigate, t, data));
+          let claimedPresentationJoinHere = false;
+          if (typeof navigator !== "undefined" && navigator.locks) {
+            await navigator.locks.request(
+              "diskus-presentation-join-claim",
+              async () => {
+                const alreadyClaimedOnAnotherTab =
+                  String(localStorage.getItem("presentationJoinClaimedID")) ===
+                  presentationClaimID;
+                if (!alreadyClaimedOnAnotherTab) {
+                  localStorage.setItem(
+                    "presentationJoinClaimedID",
+                    presentationClaimID,
+                  );
+                  claimedPresentationJoinHere = true;
+                }
+              },
+            );
           } else {
-            console.log("mqtt mqmqmqmqmqmq");
-            let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-            let data = {
-              VideoCallURL: String(currentMeetingVideoURL),
-              WasInVideo: isMeetingVideo ? true : false,
-            };
-            console.log("mqtt mqmqmqmqmqmq");
-            dispatch(participantWaitingListBox(false));
+            const alreadyClaimedOnAnotherTab =
+              String(localStorage.getItem("presentationJoinClaimedID")) ===
+              presentationClaimID;
+            if (!alreadyClaimedOnAnotherTab) {
+              localStorage.setItem(
+                "presentationJoinClaimedID",
+                presentationClaimID,
+              );
+              claimedPresentationJoinHere = true;
+            }
+          }
 
-            dispatch(joinPresenterViewMainApi(navigate, t, data));
+          if (claimedPresentationJoinHere) {
+            console.log("mqtt mqmqmqmqmqmq");
+            console.log("maximizeParticipantVideoFlag");
+            if (maximizeParticipantVideoFlagRef.current) {
+              console.log("maximizeParticipantVideoFlag");
+              console.log("mqtt mqmqmqmqmqmq");
+
+              console.log("maximizeParticipantVideoFlag");
+
+              dispatch(videoIconOrButtonState(false));
+              dispatch(participantVideoButtonState(false));
+              dispatch(maxParticipantVideoCallPanel(false));
+              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+              let data = {
+                VideoCallURL: String(currentMeetingVideoURL),
+                WasInVideo: isMeetingVideo ? true : false,
+              };
+              dispatch(participantWaitingListBox(false));
+
+              dispatch(joinPresenterViewMainApi(navigate, t, data));
+            } else {
+              console.log("mqtt mqmqmqmqmqmq");
+              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+              let data = {
+                VideoCallURL: String(currentMeetingVideoURL),
+                WasInVideo: isMeetingVideo ? true : false,
+              };
+              console.log("mqtt mqmqmqmqmqmq");
+              dispatch(participantWaitingListBox(false));
+
+              dispatch(joinPresenterViewMainApi(navigate, t, data));
+            }
           }
         }
       }
@@ -769,6 +826,15 @@ const Dashboard = () => {
       "mqtt mqmqmqmqmqmq",
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
+      // Release the same-user multi-tab join claim (see startPresenterView
+      // above) so a future presentation start for this meeting can be
+      // claimed fresh by whichever tab is active then.
+      if (
+        String(localStorage.getItem("presentationJoinClaimedID")) ===
+        String(payload?.meetingID)
+      ) {
+        localStorage.removeItem("presentationJoinClaimedID");
+      }
       console.log("mqtt mqmqmqmqmqmq", payload);
       console.log("mqtt mqmqmqmqmqmq", isMeetingVideo);
       // dispatch(setAudioControlHost(false));
