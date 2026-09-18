@@ -9417,7 +9417,7 @@ const getMeetingRecordingFilesApi = (
                 )
             ) {
               dispatch(
-                getMeetingRecordingFiles_fail(t("No-meeting-recording-found")),
+                getMeetingRecordingFiles_fail(""),
               );
             } else if (
               response.data.responseResult.responseMessage

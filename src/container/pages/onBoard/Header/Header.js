@@ -62,11 +62,15 @@ const Header = ({ searchVisible }) => {
             {isExpand && (
               <>
                 <CustomDatePicker />
-                <TextField width="200px" className="mx-2" placeholder="Task" />
                 <TextField
                   width="200px"
                   className="mx-2"
-                  placeholder="Assigned To"
+                  placeholder={t("Task-placeholder")}
+                />
+                <TextField
+                  width="200px"
+                  className="mx-2"
+                  placeholder={t("Assigned-to")}
                 />
               </>
             )}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./VideoMaxMultiple.css";
+import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Button, Modal } from "../../../../../components/elements";
 import img10 from "../../../../../assets/images/10.png";
@@ -9,6 +10,7 @@ import MultipleAvatar2 from "../../../../../assets/images/newElements/MultipleVi
 import MultipleAvatar3 from "../../../../../assets/images/newElements/MultipleVideoAvatar-3.png";
 
 const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
+  const { t } = useTranslation();
 
   const [droidCamAudio, setDroidCamAudio] = useState(false);
   const [realCamAudio, setRealCamAudio] = useState(false);
@@ -68,7 +70,7 @@ const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
             sm={12}
             className="d-flex justify-content-center"
           >
-            <p className="multiple-host-title-max">Host</p>
+            <p className="multiple-host-title-max">{t("Host")}</p>
           </Col>
         </Row>
 
@@ -80,7 +82,7 @@ const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
 
         <Row>
           <Col sm={12} md={12} lg={12} className="outgoing-title-max">
-            <p className="Participants-text-max">Participants</p>
+            <p className="Participants-text-max">{t("Participants")}</p>
           </Col>
         </Row>
 
@@ -131,7 +133,9 @@ const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
                     sm={12}
                     className="d-flex justify-content-start"
                   >
-                    <p className="choose-modal-title">Choose Your Microphone</p>
+                    <p className="choose-modal-title">
+                      {t("Choose-your-microphone")}
+                    </p>
                   </Col>
                 </Row>
 
@@ -221,7 +225,7 @@ const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
                     sm={12}
                     className="d-flex justify-content-end"
                   >
-                    <Button text="Join" className="Join-Btn" />
+                    <Button text={t("Join")} className="Join-Btn" />
                   </Col>
                 </Row>
               </>

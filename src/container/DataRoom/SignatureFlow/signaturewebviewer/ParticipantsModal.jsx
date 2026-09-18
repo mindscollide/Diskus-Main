@@ -182,7 +182,7 @@ const ParticipantsModal = ({
                   applyClass="signatureflow_input"
                   placeholder={t("Email")}
                   value={signerForm.EmailAddress}
-                  label="Email"
+                  label={t("Email")}
                 />
               </Col>
             </Row>
@@ -233,7 +233,7 @@ const ParticipantsModal = ({
                                         applyClass="signatureflow_input"
                                         placeholder={t("Name")}
                                         value={signer.Name}
-                                        label="Name"
+                                        label={t("Name")}
                                       />
                                     </Col>
                                     <Col sm={6}>
@@ -246,7 +246,7 @@ const ParticipantsModal = ({
                                         applyClass="signatureflow_input"
                                         placeholder={t("Email")}
                                         value={signer.EmailAddress}
-                                        label="Email"
+                                        label={t("Email")}
                                       />
                                     </Col>
                                   </Row>

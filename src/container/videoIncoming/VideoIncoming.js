@@ -1,4 +1,5 @@
 import styles from "./VideoIncoming.module.css";
+import { useTranslation } from "react-i18next";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "../../components/elements";
 import videoEndIcon from "../../assets/images/newElements/VideoEndIcon.png";
@@ -6,8 +7,7 @@ import videoAvatar from "../../assets/images/newElements/VideoAvatar.png";
 import videoAttendIcon from "../../assets/images/newElements/VideoAttendIcon.png";
 
 const VideoIncoming = () => {
-
-
+  const { t } = useTranslation();
 
   return (
     <Container className={styles["videoIncoming"]}>
@@ -24,13 +24,15 @@ const VideoIncoming = () => {
           lg={12}
           className={styles["someone-calling-title"]}
         >
-          <p className={styles["outgoing-call-text"]}>Some One Calling</p>
+          <p className={styles["outgoing-call-text"]}>
+            {t("Some-one-calling")}
+          </p>
         </Col>
       </Row>
 
       <Row className="mt-5">
         <Col sm={12} md={12} lg={12} className={styles["calling-title"]}>
-          <p className={styles["calling-text"]}>Calling...</p>
+          <p className={styles["calling-text"]}>{t("Calling")}...</p>
         </Col>
       </Row>
 

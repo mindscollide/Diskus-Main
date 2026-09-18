@@ -161,7 +161,7 @@ const CreateNewShoutAll = () => {
         <Row className="margin-top-10">
           <Col lg={11} md={11} sm={12}>
             <div className="new-chat">
-              <p className="fw-bold m-0">Create a new Shout</p>
+              <p className="fw-bold m-0">{t("Create-a-new-shout")}</p>
             </div>
           </Col>
 

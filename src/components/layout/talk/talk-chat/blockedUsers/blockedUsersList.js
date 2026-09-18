@@ -175,7 +175,7 @@ const BlockedUsersList = () => {
                     </p>
                     <Button
                       className="MontserratRegular Unblock-btn"
-                      text="Unblock"
+                      text={t("Unblock")}
                       onClick={() => unblockblockContactHandler(dataItem)}
                     />
                   </div>
