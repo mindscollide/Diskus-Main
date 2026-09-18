@@ -273,8 +273,6 @@ const Committee = () => {
     }
   }, [state]);
 
-
-
   useEffect(() => {
     if (committeeViewId !== null) {
       const callApi = async () => {
@@ -1071,29 +1069,19 @@ const Committee = () => {
               </Col>
             </Row>
             {getcommitteedata.length > 0 && (
-              <Row className='mt-2'>
+              <Row>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center '>
-                  <Container className={styles["PaginationStyle-Committee"]}>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={"pagination-groups-table"}>
-                        <CustomPagination
-                          total={totalRecords}
-                          current={JSON.parse(currentPage)}
-                          pageSize={8}
-                          onChange={handlechange}
-                          showSizer={false}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
+                  className={"pagination-groups-table d-flex justify-content-center"}>
+                  <CustomPagination
+                    total={totalRecords}
+                    current={JSON.parse(currentPage)}
+                    pageSize={8}
+                    onChange={handlechange}
+                    showSizer={false}
+                  />
                 </Col>
               </Row>
             )}

@@ -1068,34 +1068,29 @@ const PublishedMeetingList = () => {
         </Col>
         <Col>
           {publishedMeetingData.length > 0 && (
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={`${styles["Meeting_Pagination"]} d-flex justify-content-center`}>
-              <Row className={styles["PaginationStyle-Meeting"]}>
-                <Col
-                  className='pagination-groups-table'
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    onChange={handelChangePagination}
-                    total={publishedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </Col>
+
+            <Row >
+              <Col
+                className='pagination-groups-table d-flex justify-content-center'
+                sm={12}
+                md={12}
+                lg={12}>
+                <CustomPagination
+                  current={
+                    meetingPageCurrent !== null
+                      ? Number(meetingPageCurrent)
+                      : 1
+                  }
+                  pageSize={
+                    meetingpageRow !== null ? Number(meetingpageRow) : 50
+                  }
+                  onChange={handelChangePagination}
+                  total={publishedMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Col>
       </Row>

@@ -10,7 +10,7 @@ import { formatValue } from "../../../../../commen/functions/regex";
 const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
   const { t } = useTranslation();
   const SignatureWorkFlowReducer = useSelector(
-    (state) => state.SignatureWorkFlowReducer
+    (state) => state.SignatureWorkFlowReducer,
   );
   const currentLanguage = localStorage.getItem("i18nextLng");
   const [declineSignatories, setDeclineSignatories] = useState(0);
@@ -67,12 +67,12 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
           const declineCommentNewData = declinedSignatories.reduce(
             (acc, data) => {
               const comment = declinedComments.find(
-                (comment) => comment.userID === data.userID
+                (comment) => comment.userID === data.userID,
               );
               if (comment) acc.push({ ...data, ...comment });
               return acc;
             },
-            []
+            [],
           );
           setComments(declineCommentNewData);
         }
@@ -86,7 +86,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
     const max = Math.max(
       combinedData[0]?.SignedData?.length || 0,
       combinedData[1]?.DeclineData?.length || 0,
-      combinedData[2]?.PendingData?.length || 0
+      combinedData[2]?.PendingData?.length || 0,
     );
     setMaxRows(max);
 
@@ -188,9 +188,13 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
             <h2 className={styles["Signatories_heading"]}>
               {t("Signatories")}{" "}
               {`(${
-                TotalCountOfSignatories < 10
-                  ? `0${TotalCountOfSignatories}`
-                  : TotalCountOfSignatories
+                localStorage.getItem("i18nextLng") === "ar"
+                  ? new Intl.NumberFormat("ar-EG", {
+                      useGrouping: false,
+                    })
+                      .format(TotalCountOfSignatories)
+                      .padStart(2, "٠")
+                  : String(TotalCountOfSignatories).padStart(2, "0")
               })`}
             </h2>
           </Col>

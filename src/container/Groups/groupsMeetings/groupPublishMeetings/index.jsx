@@ -1225,24 +1225,21 @@ const GroupPublishedMeetingList = () => {
           />
         </Col>
         {groupPublishedMeetingData.length > 0 && (
+
           <Col
             sm={12}
             md={12}
             lg={12}
-            className={
-              "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
-            }
+            className="d-flex justify-content-center my-3 pagination-groups-table"
           >
-            <span className="PaginationStyle-TodoList">
-              <CustomPagination
-                current={currentPagePublishGroupMeeting}
-                showSizer={true}
-                onChange={handleChangePaginationPublishedMeeting}
-                pageSizeOptionsValues={["30", "50", "100"]}
-                total={groupPublishedMeetingDataRecord}
-                pageSize={currentLengthPublishGroupMeeting}
-              />
-            </span>
+            <CustomPagination
+              current={currentPagePublishGroupMeeting}
+              showSizer={true}
+              onChange={handleChangePaginationPublishedMeeting}
+              pageSizeOptionsValues={["30", "50", "100"]}
+              total={groupPublishedMeetingDataRecord}
+              pageSize={currentLengthPublishGroupMeeting}
+            />
           </Col>
         )}
       </Row>

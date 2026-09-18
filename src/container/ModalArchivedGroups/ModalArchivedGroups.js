@@ -305,37 +305,20 @@ const ModalArchivedCommittee = ({
                 {groupsArheivedData.length > 0 &&
                 Object.values(groupsArheivedData).length > 0 ? (
                   <>
-                    <Row className='d-flex'>
-                      <Col lg={4} md={4} sm={4}></Col>
-                      <Col lg={4} md={4} sm={4}>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className='d-flex justify-content-center  '>
-                          <Container
-                            className={
-                              styles["PaginationStyle-Committee-Archived_modal"]
-                            }>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={"pagination-groups-table"}>
-                                <CustomPagination
-                                  total={totalRecords}
-                                  pageSize={8}
-                                  current={currentGroupPage}
-                                  onChange={handlechange}
-                                />
-                                ;
-                              </Col>
-                            </Row>
-                          </Container>
-                        </Col>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={"pagination-groups-table d-flex justify-content-center"}>
+                        <CustomPagination
+                          total={totalRecords}
+                          pageSize={8}
+                          current={currentGroupPage}
+                          onChange={handlechange}
+                        />
+                        ;
                       </Col>
-                      <Col lg={4} md={4} sm={4}></Col>
                     </Row>
                   </>
                 ) : null}

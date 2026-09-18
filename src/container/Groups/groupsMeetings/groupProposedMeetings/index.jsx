@@ -595,26 +595,23 @@ const GroupProposedMeetings = () => {
           />
         </Col>{" "}
         {groupProposedMeetingData.length > 0 && (
-          <Col className={styles["ProposedMeeting_Pagination"]}>
-            <div className='d-flex justify-content-center mt-2 '>
-              <Row className={styles["PaginationStyle-Committee"]}>
-                <Col
-                  className={"pagination-groups-table"}
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={currentPageProposedGroupMeeting}
-                    pageSize={currentLengthProposedGroupMeeting}
-                    onChange={handelChangePagination}
-                    total={groupProposedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
+          <Row>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className="d-flex justify-content-center my-3 pagination-groups-table"
+            >
+              <CustomPagination
+                current={currentPageProposedGroupMeeting}
+                pageSize={currentLengthProposedGroupMeeting}
+                onChange={handelChangePagination}
+                total={groupProposedMeetingDataRecord}
+                showSizer={true}
+                pageSizeOptionsValues={["30", "50", "100", "200"]}
+              />
+            </Col>
+          </Row>
         )}
       </Row>
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}

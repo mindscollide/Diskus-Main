@@ -894,15 +894,13 @@ const Groups = () => {
                   className={
                     "pagination-groups-table d-flex justify-content-center"
                   }>
-                  <span className={styles["PaginationStyle-Committee"]}>
-                    <CustomPagination
-                      total={totalLength}
-                      current={currentPage}
-                      pageSize={8}
-                      onChange={handlechange}
-                      showSizer={false}
-                    />
-                  </span>
+                  <CustomPagination
+                    total={totalLength}
+                    current={currentPage}
+                    pageSize={8}
+                    onChange={handlechange}
+                    showSizer={false}
+                  />
                 </Col>
               </Row>
             )}

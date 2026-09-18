@@ -1252,26 +1252,23 @@ const CommitteePublishedMeetingList = () => {
             />
           </Col>
           {committeePublishedMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Publish_Pagination"]}>
-              <div className='d-flex justify-content-center mt-2 '>
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}>
-                    <CustomPagination
-                      current={currentPagePublishCommitteeMeeting}
-                      showSizer={true}
-                      onChange={handleChangePaginationPublishedMeeting}
-                      pageSizeOptionsValues={["30", "50", "100"]}
-                      total={committeePublishedMeetingDataRecord}
-                      pageSize={currentLengthPublishCommitteeMeeting}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center my-3 pagination-groups-table"
+              >
+                <CustomPagination
+                  current={currentPagePublishCommitteeMeeting}
+                  showSizer={true}
+                  onChange={handleChangePaginationPublishedMeeting}
+                  pageSizeOptionsValues={["30", "50", "100"]}
+                  total={committeePublishedMeetingDataRecord}
+                  pageSize={currentLengthPublishCommitteeMeeting}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
 

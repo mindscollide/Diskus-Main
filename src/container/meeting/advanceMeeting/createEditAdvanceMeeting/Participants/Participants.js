@@ -229,7 +229,7 @@ const Participants = () => {
         ),
         dataIndex: "userName",
         key: "userName",
-        align: "left",
+        align: "start",
         ellipsis: true,
       },
 
@@ -237,7 +237,7 @@ const Participants = () => {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
-        align: "left",
+        align: "center",
         ellipsis: true,
       },
       {

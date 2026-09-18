@@ -43,3 +43,12 @@ body[dir="rtl"] .DragDropText_dataroom {
 /* .form-check-input {
     background-image: none !important;
 } */
+.Global_pagination_styles {
+  padding: 12px 40px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background-color: #fff;
+}

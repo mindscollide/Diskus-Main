@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
+import { formatNumber } from "../../../../commen/functions/utils";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
@@ -26,10 +27,10 @@ const ViewPollProgress = () => {
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const PollsReducerAllpolls = useSelector(
-    (state) => state.PollsReducer.Allpolls
+    (state) => state.PollsReducer.Allpolls,
   );
   const PollsReducerviewPollProgress = useSelector(
-    (state) => state.PollsReducer.viewPollProgress
+    (state) => state.PollsReducer.viewPollProgress,
   );
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
@@ -69,7 +70,7 @@ const ViewPollProgress = () => {
       if (pollSelectedAnswers.length > 0) {
         pollOptions.forEach((newdata, index) => {
           let find = pollSelectedAnswers.find(
-            (data, index) => data.pollAnswerID === newdata.pollAnswerID
+            (data, index) => data.pollAnswerID === newdata.pollAnswerID,
           );
           newOption.push(buildOptionData(newdata, find !== undefined));
         });
@@ -92,9 +93,8 @@ const ViewPollProgress = () => {
   }, [PollsReducerAllpolls]);
 
   const changeDateStartHandler2 = (date) => {
-    
     let newDate = moment(date, "YYYYMMDDHHmmss").format("DD MMMM YYYY");
-    
+
     return newDate;
   };
 
@@ -125,21 +125,19 @@ const ViewPollProgress = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["BackGround_strip_viewmodal_progress"]}
-              >
-                <Row className="mt-1">
+                className={styles["BackGround_strip_viewmodal_progress"]}>
+                <Row className='mt-1'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center gap-2"
-                  >
+                    className='d-flex justify-content-center gap-2'>
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={AlarmClock}
-                      width="14.97px"
-                      height="14.66px"
-                      alt=""
+                      width='14.97px'
+                      height='14.66px'
+                      alt=''
                     />
                     <span className={styles["ViewPRogressDueDate"]}>
                       {t("Due-date-on")}{" "}
@@ -160,14 +158,13 @@ const ViewPollProgress = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={BlackCrossIcon}
-                  alt=""
-                  width="16px"
-                  height="16px"
+                  alt=''
+                  width='16px'
+                  height='16px'
                   className={styles["View_cross_icon"]}
                   onClick={() => {
                     dispatch(setviewpollProgressModal(false));
@@ -178,33 +175,30 @@ const ViewPollProgress = () => {
             <Row className={styles["OverAll_padding"]}>
               <Col lg={12} md={12} sm={12}>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                  <Col lg={12} md={12} sm={12} className='m-0 p-0'>
                     <span className={styles["View_poll_heading"]}>
                       {t("View-poll")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={`${styles["BOx_for_yes"]} d-flex`}
-                  >
-                    <Row className="mt-2">
+                    className={`${styles["BOx_for_yes"]} d-flex`}>
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         {viewProgressPollsDetails.PollTitle.length > 100 ? (
                           // Add d-flex class and justify-content-center to center the text
                           <div
-                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                          >
+                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}>
                             {viewProgressPollsDetails.PollTitle}
                           </div>
                         ) : (
                           // Add d-flex class and align-items-center to center the text
                           <div
-                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                          >
+                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}>
                             {viewProgressPollsDetails.PollTitle}
                           </div>
                         )}
@@ -223,16 +217,10 @@ const ViewPollProgress = () => {
                                 <Row key={index}>
                                   <Col lg={12} md={12} sm={12}>
                                     <span
-                                      className={styles["Yes_ViewProgress"]}
-                                    >
+                                      className={styles["Yes_ViewProgress"]}>
                                       {data.answer}{" "}
                                       <span>
-                                        {"(" +
-                                          convertToArabicNumerals(
-                                            data.totalVotes,
-                                            currentLanguage
-                                          ) +
-                                          ")"}
+                                        ({formatNumber(data.totalVotes)})
                                       </span>
                                     </span>
                                   </Col>
@@ -244,14 +232,13 @@ const ViewPollProgress = () => {
                                     sm={1}
                                     className={
                                       styles["CheckBox_ViewProgressPolls"]
-                                    }
-                                  >
+                                    }>
                                     {viewProgressPollsDetails.AllowMultipleAnswers ===
                                     true ? (
                                       <Checkbox
                                         disabled={true}
                                         checked={data.voted}
-                                        classNameCheckBoxP="d-none"
+                                        classNameCheckBoxP='d-none'
                                       />
                                     ) : data.voted ? (
                                       <CustomRadio2
@@ -273,12 +260,11 @@ const ViewPollProgress = () => {
                                     sm={11}
                                     className={
                                       styles["Progress_bar_view_polls"]
-                                    }
-                                  >
+                                    }>
                                     <Progress
-                                      className="Progress_bar_Polls"
-                                      percent={data.votePercentage}
-                                      status="active"
+                                      className='Progress_bar_Polls'
+                                      percent={formatNumber(data.votePercentage)}
+                                      status='active'
                                     />
                                   </Col>
                                 </Row>
@@ -301,19 +287,19 @@ const ViewPollProgress = () => {
                                     lg={11}
                                     md={11}
                                     sm={12}
-                                    className="m-0 p-0 "
-                                  >
-                                    <Row className="mt-2">
+                                    className='m-0 p-0 '>
+                                    <Row className='mt-2'>
                                       <Col lg={12} md={12} sm={12}>
                                         <span
-                                          className={styles["Yes_ViewProgress"]}
-                                        >
+                                          className={
+                                            styles["Yes_ViewProgress"]
+                                          }>
                                           {data.answer}
                                           <span>
                                             {"(" +
                                               convertToArabicNumerals(
                                                 data.totalVotes,
-                                                currentLanguage
+                                                currentLanguage,
                                               ) +
                                               ")"}
                                           </span>
@@ -329,14 +315,13 @@ const ViewPollProgress = () => {
                                     sm={1}
                                     className={
                                       styles["CheckBox_ViewProgressPolls"]
-                                    }
-                                  >
+                                    }>
                                     {viewProgressPollsDetails.AllowMultipleAnswers ===
                                     true ? (
                                       <Checkbox
                                         disabled={true}
                                         checked={data.voted}
-                                        classNameCheckBoxP="d-none"
+                                        classNameCheckBoxP='d-none'
                                       />
                                     ) : data.voted ? (
                                       <CustomRadio2
@@ -358,12 +343,11 @@ const ViewPollProgress = () => {
                                     sm={10}
                                     className={
                                       styles["Progress_bar_view_polls"]
-                                    }
-                                  >
+                                    }>
                                     <Progress
-                                      className="Progress_bar_Polls"
-                                      percent={data.votePercentage}
-                                      status="active"
+                                      className='Progress_bar_Polls'
+                                      percent={formatNumber(data.votePercentage)}
+                                      status='active'
                                     />
                                   </Col>
                                 </Row>
@@ -380,8 +364,7 @@ const ViewPollProgress = () => {
                     lg={11}
                     sm={11}
                     md={12}
-                    className="d-flex justify-content-start m-0 p-0 mt-2"
-                  >
+                    className='d-flex justify-content-start m-0 p-0 mt-2'>
                     <span className={styles["Multiple_answer"]}>
                       {viewProgressPollsDetails.AllowMultipleAnswers === true
                         ? "Mutiple Answer Allowed"
@@ -389,22 +372,21 @@ const ViewPollProgress = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
-                  <Col lg={12} md={12} sm={12} className="d-flex m-0 p-0">
+                <Row className='mt-2'>
+                  <Col lg={12} md={12} sm={12} className='d-flex m-0 p-0'>
                     <span className={styles["Participants_Heading"]}>
                       {t("Participants")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
                     className={
                       styles["Scroller_For_CreatePollModal2_View_poll"]
-                    }
-                  >
+                    }>
                     <Row>
                       {viewpollMembers.map((data, index) => {
                         return (
@@ -413,18 +395,17 @@ const ViewPollProgress = () => {
                             lg={6}
                             md={6}
                             sm={12}
-                            className="mt-2"
-                          >
+                            className='mt-2'>
                             <Row>
-                              <Col lg={11} md={11} sm={12} className="m-0 p-0">
+                              <Col lg={11} md={11} sm={12} className='m-0 p-0'>
                                 <Row className={styles["Card_border2"]}>
                                   <Col sm={12} md={12} lg={12}>
                                     <img
-                                      draggable="false"
+                                      draggable='false'
                                       src={`data:image/jpeg;base64,${data.profilePicture.displayProfilePictureName}`}
-                                      width="33px"
-                                      height="33px"
-                                      alt=""
+                                      width='33px'
+                                      height='33px'
+                                      alt=''
                                     />
                                     <span className={styles["Name_cards"]}>
                                       {data.userName}
@@ -450,15 +431,13 @@ const ViewPollProgress = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_padding"]}
-              >
-                <Row className="mt-4">
+                className={styles["OverAll_padding"]}>
+                <Row className='mt-4'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end gap-2 m-0 p-0 "
-                  >
+                    className='d-flex justify-content-end gap-2 m-0 p-0 '>
                     <Button
                       text={t("Close")}
                       className={styles["Close_Button_viewprogress"]}

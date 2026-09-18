@@ -3571,3 +3571,10 @@ export const switchOnMessage = (responseMessage, cases) => {
   const handler = matchedKey ? cases[matchedKey] : cases.default;
   if (handler) handler();
 };
+export const formatNumber = (number) => {
+  return localStorage.getItem("i18nextLng") === "ar"
+    ? new Intl.NumberFormat("ar-EG", {
+        useGrouping: false,
+      }).format(number)
+    : number;
+};

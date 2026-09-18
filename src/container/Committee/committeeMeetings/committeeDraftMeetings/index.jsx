@@ -156,7 +156,7 @@ const CommitteeDraftMeetings = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} },
+            { role, callFunc: () => { } },
           ),
         );
       }
@@ -385,12 +385,12 @@ const CommitteeDraftMeetings = () => {
                 onOpenChange={(isOpen) =>
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }>
-                  <span>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text='More'
-                  icon2={<img src={ChevronDownIcon} width={10} />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text='More'
+                    icon2={<img src={ChevronDownIcon} width={10} />}
+                  />
                 </span>
               </Popover>
             </div>
@@ -431,26 +431,23 @@ const CommitteeDraftMeetings = () => {
             />
           </Col>
           {committeeDraftMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Pagination"]}>
-              <div className='d-flex justify-content-center mt-2 '>
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}>
-                    <CustomPagination
-                      current={currentPageDraftCommitteeMeeting}
-                      pageSize={currentLengthDraftCommitteeMeeting}
-                      onChange={handelChangePagination}
-                      total={committeeDraftMeetingDataRecord}
-                      showSizer={true}
-                      pageSizeOptionsValues={["30", "50", "100", "200"]}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center my-3 pagination-groups-table"
+              >
+                <CustomPagination
+                  current={currentPageDraftCommitteeMeeting}
+                  pageSize={currentLengthDraftCommitteeMeeting}
+                  onChange={handelChangePagination}
+                  total={committeeDraftMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
       </div>

@@ -751,37 +751,22 @@ const Actions = ({ dataroomMapFolderId }) => {
                   </Row>
 
                   {actionsRows.length > 0 && (
-                    <Row className='tasks_pagination'>
+                    <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={
-                              "pagination-groups-table d-flex justify-content-center"
-                            }>
-                            <span className='PaginationStyle-TodoList'>
-                              <CustomPagination
-                                onChange={handleForPagination}
-                                current={currentPage}
-                                showSizer={true}
-                                total={totalRecords}
-                                pageSizeOptionsValues={[
-                                  "10",
-                                  "25",
-                                  "50",
-                                  "200",
-                                ]}
-                                pageSize={currentPageSize}
-                              />
-                            </span>
-                          </Col>
-                        </Row>
+                        className={
+                          "pagination-groups-table d-flex justify-content-center"
+                        }>
+                        <CustomPagination
+                          onChange={handleForPagination}
+                          current={currentPage}
+                          showSizer={true}
+                          total={totalRecords}
+                          pageSizeOptionsValues={["10", "25", "50", "200"]}
+                          pageSize={currentPageSize}
+                        />
                       </Col>
                     </Row>
                   )}

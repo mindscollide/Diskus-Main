@@ -573,33 +573,29 @@ const DraftMeetingList = () => {
             />
           </Col>
           {draftMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Pagination"]}>
-              <div className="d-flex justify-content-center mt-2 ">
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                  >
-                    <CustomPagination
-                      current={
-                        meetingPageCurrent !== null
-                          ? Number(meetingPageCurrent)
-                          : 1
-                      }
-                      pageSize={
-                        meetingpageRow !== null ? Number(meetingpageRow) : 30
-                      }
-                      onChange={handelChangePagination}
-                      total={draftMeetingDataRecord}
-                      showSizer={true}
-                      pageSizeOptionsValues={["30", "50", "100", "200"]}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                className={"pagination-groups-table d-flex justify-content-center "}
+                sm={12}
+                md={12}
+                lg={12}
+              >
+                <CustomPagination
+                  current={
+                    meetingPageCurrent !== null
+                      ? Number(meetingPageCurrent)
+                      : 1
+                  }
+                  pageSize={
+                    meetingpageRow !== null ? Number(meetingpageRow) : 30
+                  }
+                  onChange={handelChangePagination}
+                  total={draftMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
       </div>
