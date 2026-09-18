@@ -16,6 +16,7 @@ import { UpdatedCastVoteAPI } from "../../../../../../store/actions/Polls_action
 import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
+import { formatNumber } from "../../../../../../commen/functions/utils";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
@@ -201,7 +202,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                     className={styles["Messege_span_Class"]}
                                   >
                                     {data.answer}{" "}
-                                    <span>({data.totalVotes})</span>
+                         <span>({formatNumber(data.totalVotes)})</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -264,7 +265,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                       )}
                                       <Progress
                                         className="Progress_bar_Polls"
-                                        percent={data.votePercentage}
+                                        percent={formatNumber(data.votePercentage)}
                                         status="active"
                                         onClick={() =>
                                           handleSectionClick(data.pollAnswerID)

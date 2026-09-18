@@ -543,67 +543,52 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
     return "Invalid date";
   }
 
-  // Format date string into ISO format
-  const fullDateyear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
+  try {
+    const fullDateyear =
+      dateTime.slice(0, 4) +
+      "-" +
+      dateTime.slice(4, 6) +
+      "-" +
+      dateTime.slice(6, 8) +
+      "T" +
+      dateTime.slice(8, 10) +
+      ":" +
+      dateTime.slice(10, 12) +
+      ":" +
+      dateTime.slice(12, 14) +
+      ".000Z";
 
-  const date = new Date(fullDateyear);
+    const date = new Date(fullDateyear);
 
-  // Define month names in English and Arabic
-  const monthNamesEn = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
-  ];
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
 
-  // Select month names based on locale
-  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+    const monthNamesEn = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
 
-  // Format the date components
-  const formattedDay = String(date.getDate()).padStart(2, "0");
-  const formattedMonth = monthNames[date.getMonth()];
-  const formattedYear = date.getFullYear();
+    const monthNamesAr = [
+      "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+      "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر",
+    ];
 
-  // Format the date and apply Arabic numerals if locale is "ar"
-  const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
+    const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
 
-  return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
-    : formattedDate;
+    // Use UTC methods because the date string contains UTC (Z)
+    const formattedDay = String(date.getUTCDate()).padStart(2, "0");
+    const formattedMonth = monthNames[date.getUTCMonth()];
+    const formattedYear = date.getUTCFullYear();
+
+    const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
+
+    return locale === "ar"
+      ? formattedDate.replace(/[0-9]/g, (digit) => "٠١٢٣٤٥٦٧٨٩"[digit])
+      : formattedDate;
+  } catch (error) {
+    return "Invalid date";
+  }
 };
 
 export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {

@@ -87,6 +87,15 @@ const GroupDraftMeetings = () => {
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  // Matches the same controlled-Popover pattern already used on the
+  // Published tab, extended here so it can also be closed on scroll.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
+
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -149,7 +158,7 @@ const GroupDraftMeetings = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} },
+            { role, callFunc: () => { } },
           ),
         );
       }
@@ -369,19 +378,25 @@ const GroupDraftMeetings = () => {
             <div>
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
+                trigger="hover"
                 overlayClassName="MoreButtons_overlay"
                 className="moreOptionsPopover"
                 showArrow={false}
                 placement="bottomRight"
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }
               >
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text="More"
-                  icon2={
-                    <img src={ChevronDownIcon} alt="Chevron Down" width={10} />
-                  }
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text="More"
+                    icon2={
+                      <img src={ChevronDownIcon} alt="Chevron Down" width={10} />
+                    }
+                  />
+                </span>
               </Popover>
             </div>
           </div>
@@ -394,6 +409,7 @@ const GroupDraftMeetings = () => {
     meetingTimeSort,
     meetingDateSort,
     isMeetingTypeFilter,
+    openPopoverMeetingID,
   ]);
 
   return (
@@ -420,27 +436,23 @@ const GroupDraftMeetings = () => {
             />
           </Col>
           {groupDraftMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Pagination"]}>
-              <div className="d-flex justify-content-center mt-2 ">
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                  >
-                    <CustomPagination
-                      current={currentPageDraftGroupMeeting}
-                      pageSize={currentLengthDraftGroupMeeting}
-                      onChange={handelChangePagination}
-                      total={groupDraftMeetingDataRecord}
-                      showSizer={true}
-                      pageSizeOptionsValues={["30", "50", "100", "200"]}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center my-3 pagination-groups-table"
+              >
+                <CustomPagination
+                  current={currentPageDraftGroupMeeting}
+                  pageSize={currentLengthDraftGroupMeeting}
+                  onChange={handelChangePagination}
+                  total={groupDraftMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
       </div>

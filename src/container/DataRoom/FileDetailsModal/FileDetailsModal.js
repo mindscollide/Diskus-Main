@@ -13,7 +13,7 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
   const fileDetials = useSelector((state) => state.DataRoomReducer.fileDetials);
   const getDataAnalyticsCountDetails = useSelector(
     (state) =>
-      state.DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails
+      state.DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails,
   );
   const FileDetails = [
     {
@@ -29,6 +29,7 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
       dataIndex: "Documents",
       key: "Documents",
       width: "250px",
+      align: "start",
       render: (text, record) => {
         return (
           <span className={styles["sharedUserTitle"]}>
@@ -36,8 +37,8 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
               src={`data:image/jpeg;base64,${record.sharedUser.base64Img}`}
               width={30}
               height={30}
-              className="rounded-circle"
-              alt=""
+              className='rounded-circle'
+              alt=''
             />
             {record.sharedUser.userName}
           </span>
@@ -59,7 +60,15 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
       width: "100px",
       align: "center",
       render: (text, record) => {
-        return <span>{record.viewedCount}</span>;
+        return (
+          <span>
+            {localStorage.getItem("i18nextLng") === "ar"
+              ? new Intl.NumberFormat("ar-EG", {
+                  useGrouping: false,
+                }).format(record.viewedCount)
+              : record.viewedCount}
+          </span>
+        );
       },
     },
     {
@@ -74,13 +83,21 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
       ),
       dataIndex: "Edit",
       key: "Edit",
-      width: "150px",
+      width: "100px",
       align: "center",
       render: (text, record) => {
         if (record.sharedUser.permissionID === 1) {
           return <span>{t("Not-allowed")}</span>;
         } else {
-          return <span>{record.editedCount}</span>;
+          return (
+            <span>
+              {localStorage.getItem("i18nextLng") === "ar"
+                ? new Intl.NumberFormat("ar-EG", {
+                    useGrouping: false,
+                  }).format(record.editedCount)
+                : record.editedCount}
+            </span>
+          );
         }
       },
     },
@@ -116,7 +133,7 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
                   column={FileDetails}
                   scroll={{ y: "30vh" }}
                   pagination={false}
-                  className="NewMeeting_table"
+                  className='NewMeeting_table'
                   rows={analyticsCountData}
                 />
               </Col>

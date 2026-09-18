@@ -46,6 +46,8 @@ const Organizers = () => {
     setViewAdvanceMeetingModal,
     setAgendaContributors,
     setAdvanceMeetingModalID,
+    handleCloseMeeting,
+    editorRole,
   } = useMeetingContext();
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -484,6 +486,18 @@ const Organizers = () => {
             </section>
           </Col>
         </Row> */}
+
+        {Number(editorRole.status) !== 10 && (
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+              <Button
+                text={t("Close")}
+                className={styles["CloseMeetingButton"]}
+                onClick={handleCloseMeeting}
+              />
+            </Col>
+          </Row>
+        )}
       </section>
 
       

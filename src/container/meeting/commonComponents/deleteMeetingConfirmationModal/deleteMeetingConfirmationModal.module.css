@@ -5,6 +5,13 @@
   top: 25px !important;
   display: block;
 }
+body[dir="rtl"] .iconclassname {
+   position: absolute;
+  left: auto !important;
+  right: 94% !important;
+  top: 25px !important;
+  display: block;
+}
 .delete-meeting-heading {
   color: #6172d6;
   font-size: 30px;

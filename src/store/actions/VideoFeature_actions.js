@@ -2,6 +2,7 @@ import {
   getPresentationParticipants,
   getVideoCallParticipantsAndWaitingList,
   getVideoCallParticipantsForGuest,
+  getVideoCallStatusToRejoinGroupCall,
   hideUnHidePaticipantVideo,
   isSharedScreenCall,
   joinMeetingVideoRequest,
@@ -2729,6 +2730,101 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
   };
 };
 
+// Get Video Call Status (used to check if a group call is still active
+// before showing a "Rejoin" option, or "Call has ended by the host")
+const getVideoCallStatusToRejoinGroupCallInit = () => {
+  return {
+    type: actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_INIT,
+  };
+};
+
+const getVideoCallStatusToRejoinGroupCallSuccess = (response, message) => {
+  return {
+    type: actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getVideoCallStatusToRejoinGroupCallFail = (message) => {
+  return {
+    type: actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_FAIL,
+    message: message,
+  };
+};
+
+const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
+  return async (dispatch) => {
+    dispatch(getVideoCallStatusToRejoinGroupCallInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getVideoCallStatusToRejoinGroupCall.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(data));
+    await axiosInstance
+      .post(videoApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallStatus_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoCallStatusToRejoinGroupCallSuccess(
+                  response.data.responseResult,
+                  t("Record-found"),
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallStatus_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoCallStatusToRejoinGroupCallFail(t("UnSuccessful")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallStatus_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoCallStatusToRejoinGroupCallFail(
+                  t("Something-went-wrong"),
+                ),
+              );
+            }
+          } else {
+            await dispatch(
+              getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+        );
+      });
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -3078,6 +3174,7 @@ export {
   acceptHostTransferAccessGlobalFunc,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
+  getVideoCallStatusToRejoinGroupCallMainApi,
   updatedParticipantListForPresenter,
   stopScreenShareOnPresenterStarting,
   isSharedScreenTriggeredApi,

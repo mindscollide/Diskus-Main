@@ -28,7 +28,10 @@ import {
   validateEncryptedMinutesReviewerApi,
   validateEncryptedMinutesReviewer_clear,
 } from "../../../store/actions/workflow_actions";
-import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  formatNumber,
+} from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { MeetingContext } from "../../../context/MeetingContext";
@@ -196,14 +199,16 @@ const PendingApproval = () => {
   // simultaneously "sorted" from antd's point of view, which only honors
   // one. Clearing the other two sort states on every click keeps exactly
   // one column controlled-sorted at a time.
-  const toggleSort = (setter, otherSetters = []) => () => {
-    otherSetters.forEach((otherSetter) => otherSetter(null));
-    setter((order) => {
-      if (order === "descend") return "ascend";
-      if (order === "ascend") return null;
-      return "descend";
-    });
-  };
+  const toggleSort =
+    (setter, otherSetters = []) =>
+    () => {
+      otherSetters.forEach((otherSetter) => otherSetter(null));
+      setter((order) => {
+        if (order === "descend") return "ascend";
+        if (order === "ascend") return null;
+        return "descend";
+      });
+    };
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -366,7 +371,9 @@ const PendingApproval = () => {
   useEffect(() => {
     let Data = DEFAULT_PENDING_APPROVALS_PAGE;
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
-    dispatch(GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}));
+    dispatch(
+      GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}),
+    );
     // Notification Click Rendering if Clicked on Notification Added you as Reviewer
     if (JSON.parse(localStorage.getItem("MinutesOperations")) === true) {
       dispatch(reviewMinutesPage(true));
@@ -450,13 +457,18 @@ const PendingApproval = () => {
   // than what's been loaded so far — mirrors the same pattern already used
   // by ReviewSignature.js (the Review & Sign tab) for its own pagination.
   const totalMinutesRecords =
-    (progress.reviewed || 0) + (progress.pending || 0) + (progress.expired || 0);
+    (progress.reviewed || 0) +
+    (progress.pending || 0) +
+    (progress.expired || 0);
 
   useTableScrollBottom(async () => {
     if (!reviewMinutesActive) return;
     if (originalData.length < totalMinutesRecords) {
       setIsScrollingMinutes(true);
-      let Data = { sRow: originalData.length, Length: PENDING_APPROVALS_PAGE_LENGTH };
+      let Data = {
+        sRow: originalData.length,
+        Length: PENDING_APPROVALS_PAGE_LENGTH,
+      };
       await dispatch(
         GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}),
       );
@@ -518,7 +530,7 @@ const PendingApproval = () => {
               {/* Buttons for reviewing minutes */}
               <Button
                 text={t("Review-minutes")}
-                icon={pendingApprovalsTabCount.pendingMinutes}
+                icon={formatNumber(pendingApprovalsTabCount.pendingMinutes)}
                 iconClass={
                   reviewMinutesActive === false &&
                   pendingApprovalsTabCount.pendingMinutes !== 0
@@ -537,7 +549,7 @@ const PendingApproval = () => {
                 checkFeatureIDAvailability(21)) && (
                 <Button
                   text={t("Review-&-sign")}
-                  icon={pendingApprovalsTabCount.pendingSignature}
+                  icon={formatNumber(pendingApprovalsTabCount.pendingSignature)}
                   // iconClass={styles["pendingSignatureValue"]}
                   iconClass={
                     pendingApprovalsTabCount.pendingSignature !== 0 &&

@@ -50,7 +50,7 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
               lg={5}
               md={5}
               sm={12}
-              className="d-flex justify-content-end align-items-center"
+              className="d-flex justify-content-end align-items-center position-relative"
             >
               <img
                 draggable={false}
@@ -59,6 +59,7 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
                 width={100}
                 className={styles["ClassImage"]}
               />
+                     <span className={"DragDropText"}>{t("Drop-files-here")}</span>
             </Col>
             <Col lg={7} md={7} sm={12}>
               <Row className="mt-3">

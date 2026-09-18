@@ -184,7 +184,7 @@ const LanguageSelector = () => {
   return (
     <Popover
       content={languageContent}
-      trigger='click'
+      trigger='hover'
       open={open}
       showArrow={false}
       // openClassName=""

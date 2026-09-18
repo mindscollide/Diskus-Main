@@ -95,6 +95,7 @@ import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import {
+  deleteCommentModalGeneral,
   MinutesWorkFlowActorStatusNotificationAPI,
   ResendUpdatedMinuteForReview,
 } from "./Minutes_action";
@@ -2490,7 +2491,7 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
                   "Polls_PollsServiceManager_GetPollsByMeetingID_02".toLowerCase(),
                 )
             ) {
-              dispatch(showPollsByMeetingIdFailed(t("No-record-found")));
+              dispatch(showPollsByMeetingIdFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3407,7 +3408,7 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
               dispatch(
                 ShowADDGeneralMinutesSuccess(
                   response.data.responseResult.minuteID,
-                  t("Record-saved"),
+                  "",
                 ),
               );
             } else if (
@@ -3638,7 +3639,7 @@ const GetAllGeneralMinutesApiFunc = (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
           ) {
-            dispatch(showAllGeneralMinutesFailed(t("No-record-found")));
+            dispatch(showAllGeneralMinutesFailed(""));
           } else if (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
@@ -4630,22 +4631,28 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
               await dispatch(
                 DeleteGeneralMinutesSuccess(
                   response.data.responseResult.responseMessage,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
 
-              let DelMeet = {
-                MeetingID: currentMeeting,
-              };
+              try {
+                dispatch(deleteCommentModalGeneral(false));
 
-              dispatch(
-                GetAllGeneralMinutesApiFunc(
-                  navigate,
-                  t,
-                  DelMeet,
-                  currentMeeting,
-                ),
-              );
+                let DelMeet = {
+                  MeetingID: currentMeeting,
+                };
+
+                dispatch(
+                  GetAllGeneralMinutesApiFunc(
+                    navigate,
+                    t,
+                    DelMeet,
+                    currentMeeting,
+                  ),
+                );
+              } catch (error) {
+                console.log(error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4752,7 +4759,7 @@ const AddAgendaWiseMinutesApiFunc = (navigate, t, Data, routeValue, object) => {
                 await dispatch(
                   showAgendaWiseAddMinutesSuccess(
                     response.data.responseResult.minuteID,
-                    t("Record-saved"),
+                    "",
                   ),
                 );
                 const { setAgendaOptionValue } = object;
@@ -5471,7 +5478,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
               await dispatch(
                 showDeleteGeneralMeetingDocumentsSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
               let Erase = {

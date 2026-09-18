@@ -695,12 +695,12 @@ body[dir="rtl"] .decision_text_Moderator_closed {
 }
 
 .Result_Icon_cursor_pointer {
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
   cursor: pointer;
 }
 
 body[dir="rtl"] .Result_Icon_cursor_pointer {
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
   cursor: pointer;
 }
 
@@ -736,26 +736,7 @@ body[dir="rtl"] .cancel_icon_resolution {
   cursor: pointer !important;
 }
 
-.PaginationStyle-Resolution {
-  background-color: #fff !important;
-  display: flex !important;
-  justify-content: center !important;
-  width: auto !important;
-  padding: 12px 40px !important;
-  margin: 20px 0 40px 0;
-  height: auto !important;
-  box-shadow: 0px 0px 5px #ccc !important;
-  border-radius: 4px !important;
-}
 
-.PaginationStyle-Resolution:is(:focus-visible) {
-  outline: none !important;
-}
-
-body[dir="rtl"] .PaginationStyle-Resolution {
-  width: auto !important;
-  padding: 12px 10px !important;
-}
 
 .search_input {
   position: relative !important;

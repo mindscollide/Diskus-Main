@@ -1197,7 +1197,7 @@ const getResolutionResult = (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetResultDetails_02".toLowerCase()
             ) {
-              dispatch(getResolutionResult_Fail(t("No-record-added")));
+              dispatch(getResolutionResult_Fail(t("No-result-found")));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetResultDetails_03".toLowerCase()

@@ -80,6 +80,7 @@ const Polls = () => {
     currentMeeting,
     setAdvanceMeetingModalID,
     setactionsPage,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   const { viewVotes, setviewVotes } = usePollsContext();
@@ -962,6 +963,17 @@ const Polls = () => {
                 ) : null}
               </Col>
             </Row> */}
+            {Number(editorRole.status) !== 10 && (
+              <Row className='mt-3'>
+                <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+                  <Button
+                    text={t("Close")}
+                    className={styles["CloseMeetingButton"]}
+                    onClick={handleCloseMeeting}
+                  />
+                </Col>
+              </Row>
+            )}
           </>
         )}
 

@@ -658,7 +658,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             rows="8"
                             value={createGroupDetails.Description}
                             maxLength={500}
-                            placeholder={t("Group-Description")}
+                            placeholder={t("Description")}
                             required={true}
                             change={onChangeFunc}
                             name="groupdescription"
@@ -1176,7 +1176,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Attachments_Heading"]}>
-                            {"Attachment"}
+                            {t("Attachments")}
                           </span>
                         </Col>
                       </Row>

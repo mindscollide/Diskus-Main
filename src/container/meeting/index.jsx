@@ -643,7 +643,7 @@ const MainMeeting = () => {
         navigate,
         t,
         {
-          Date: createConvert(new Date(searchFields.Date)).slice(0, 8),
+          Date: searchFields.Date !== "" ? createConvert(new Date(searchFields.Date)).slice(0, 8) : "",
           Title: searchFields.MeetingTitle,
           HostName: searchFields.OrganizerName,
           UserID: Number(localStorage.getItem("userID")),

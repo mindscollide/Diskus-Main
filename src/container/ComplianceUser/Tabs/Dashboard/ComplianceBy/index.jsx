@@ -34,10 +34,10 @@ const ComplianceBy = () => {
   );
 
   const filterOptions = [
-    { label: "Progress", value: 1 },
-    { label: "Due Date", value: 2 },
-    { label: "Criticality", value: 3 },
-    { label: "Authority", value: 4 },
+    { label: t("Progress"), value: 1 },
+    { label: t("Due-date"), value: 2 },
+    { label: t("Criticality"), value: 3 },
+    { label: t("Authority"), value: 4 },
   ];
 
   const complianceList =
@@ -46,14 +46,14 @@ const ComplianceBy = () => {
   const hasDataComplianceBy = GetComplianceByDashboardData !== null;
 
   const handleCardClick = (complianceId) => {
-    
+
     const getViewType = localStorage.getItem("viewType");
     setMainComplianceTabs(2);
     const Data = {
       complianceId: Number(complianceId),
       viewType: Number(getViewType),
     };
-    
+
     dispatch(
       ViewComplianceDetailsByViewTypeAPI(
         navigate,
