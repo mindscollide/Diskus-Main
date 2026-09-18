@@ -86,7 +86,12 @@ const RevisionHistory = ({
           minuteVersionHistory:
             GetMinuteReviewDetailsForOrganizerbyMinuteId.minuteVersionHistory,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error(
+          "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/RevisionHistoryModal/RevisionHistory.js:",
+          error,
+        );
+      }
     }
   }, [GetMinuteReviewDetailsForOrganizerbyMinuteId]);
 
@@ -128,6 +133,7 @@ const RevisionHistory = ({
       size={
         editMinute || confirmationEdit || resendMinuteForReview ? "md" : "lg"
       }
+      modalHeaderClassName={"d-none"}
       ModalBody={
         editMinute ? (
           <EditCommentModal
@@ -185,10 +191,19 @@ const RevisionHistory = ({
           <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <Row>
+                <Row className="mb-3">
                   <Col
-                    lg={12}
-                    md={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    className='d-flex justify-content-start align-items-center'>
+                    <span className={styles["Parent-title-heading"]}>
+                      {t("Revision-history")}
+                    </span>
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
                     sm={12}
                     className='d-flex justify-content-end align-items-center'>
                     <img
@@ -200,13 +215,6 @@ const RevisionHistory = ({
                   </Col>
                 </Row>
                 <div className={styles["gap-subcomments"]}>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <p className={styles["Parent-title-heading"]}>
-                        {t("Revision-history")}
-                      </p>
-                    </Col>
-                  </Row>
                   {revisionHistoryData.mainMinute !== null && (
                     <div>
                       <>

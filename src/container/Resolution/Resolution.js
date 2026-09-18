@@ -62,6 +62,7 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { useResolutionContext } from "../../context/ResolutionContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+import { formatNumber } from "../../commen/functions/utils";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -498,7 +499,7 @@ const Resolution = () => {
       record.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
         ? true
         : false;
-    if (votingDeadline < newDate) {
+    // if (votingDeadline < newDate) {
       return (
         <img
           draggable="false"
@@ -508,9 +509,9 @@ const Resolution = () => {
           onClick={() => getResultHandle(record.resolutionID, isClosed)}
         />
       );
-    } else {
-      return "";
-    }
+    // } else {
+    //   return "";
+    // }
   };
 
   // Decision-label renderer shared by the moderator (open) and moderator
@@ -604,7 +605,7 @@ const Resolution = () => {
       width: "110px",
       render: (text) => (
         <span className={styles["voterCountStyle"]}>
-          {convertToArabicNumerals(text, CurrentLanguage)}
+          {formatNumber(text)}
         </span>
       ),
     },
@@ -1085,13 +1086,13 @@ const Resolution = () => {
       sortDirections: ["descend", "ascend"],
       render: (text) => {
         if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{text}</span>;
+          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
         } else if (text === "Not Approved") {
           return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
+            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
           );
         } else {
-          return <span className={styles["decision_text"]}>{text}</span>;
+          return <span className={styles["decision_text"]}>{t(text)}</span>;
         }
       },
     },
@@ -1800,7 +1801,6 @@ const Resolution = () => {
                         total={totalVoterResolution}
                         pageSize={voterRows !== null ? Number(voterRows) : 50}
                         pageSizeOptionsValues={["30", "50", "100", "200"]}
-                        className={styles["PaginationStyle-Resolution"]}
                         onChange={handleChangeVoterResolutionPagination}
                         showSizer={true}
                       />

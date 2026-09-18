@@ -562,10 +562,19 @@ export const NewMeetingProvider = ({ children }) => {
       const meetingtypeFilter = [
         { value: "0", text: t("Quick-meeting") },
         ...types.map((data) => ({
-          text: data.type,
+          text:
+            data.type === "Board Meetings"
+              ? t("Board-meetings")
+              : "Committee Meeting"
+                ? t("Committee-meeting")
+                : "Group Meeting"
+                  ? t("Group-meeting")
+                  : data.type,
           value: String(data.pK_MTID),
         })),
-      ];
+      ];  
+
+      console.log(meetingtypeFilter, "meetingtypeFiltermeetingtypeFilter")
 
       setMeetingTypeFilter(meetingtypeFilter);
     } catch (error) {}

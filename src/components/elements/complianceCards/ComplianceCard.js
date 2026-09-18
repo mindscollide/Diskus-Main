@@ -129,7 +129,8 @@ const ComplianceCard = ({
           <Col span={24}>
             {description && (
               <span className={styles.boldLabel}>
-                t{"Reopen-date-and-reason"}
+                {t("Reopen-date-and-reason")}
+
                 <span className={styles.description}>
                   {" "}
                   {description}{" "}

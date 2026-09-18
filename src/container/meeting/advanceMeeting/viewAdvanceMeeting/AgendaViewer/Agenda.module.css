@@ -1,3 +1,13 @@
+.CloseMeetingButton {
+  min-width: 88px !important;
+  min-height: 39px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
 .BackGround_Agenda {
   width: 100% !important;
   height: auto !important;
@@ -192,8 +202,11 @@ body[dir="rtl"] .SubajendaBox {
 }
 
 .Scroller_Agenda {
-  min-height: 52vh !important;
+  max-height: 62vh !important;
   overflow-x: hidden !important;
+  overflow-y: auto !important;
+  margin: 0 !important;
+  margin-top: 10px !important;
 }
 
 .Scroller_Agenda::-webkit-scrollbar {
@@ -1158,4 +1171,8 @@ body[dir="rtl"] .disabled-box-agenda-camera {
 .Stop-presenter-view-class p {
   margin: 0;
   display: inline-block;
+}
+.AgendaViewer_wrapper{
+    max-height: 62vh !important;
+  overflow-x: hidden !important;
 }

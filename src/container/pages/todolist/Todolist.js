@@ -651,16 +651,16 @@ const TodoList = () => {
           </Menu.Item>
         ))}
         <Menu.Divider />
-        <div className="d-flex gap-3 align-items-center justify-content-center">
+        <div className='d-flex gap-3 align-items-center justify-content-center'>
           <Button
             text={t("Reset")}
-            className="FilterResetBtn"
+            className='FilterResetBtn'
             onClick={resetFilter}
           />
           <Button
             text={t("Ok")}
             disableBtn={selectedValues.length === 0}
-            className="ResetOkBtn"
+            className='ResetOkBtn'
             onClick={handleApplyFilter}
           />
         </div>
@@ -693,11 +693,11 @@ const TodoList = () => {
       // ── Task title ────────────────────────────────────────────────────────
       {
         title: (
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Task")}
             <img
               src={taskTitleSort === "descend" ? DescendIcon : AscendIcon}
-              alt=""
+              alt=''
             />
           </span>
         ),
@@ -716,10 +716,9 @@ const TodoList = () => {
         }),
         render: (text, record) => (
           <p
-            className="todolist-title-col"
+            className='todolist-title-col'
             title={text}
-            onClick={() => viewModalHandler(record.pK_TID)}
-          >
+            onClick={() => viewModalHandler(record.pK_TID)}>
             {text}
           </p>
         ),
@@ -728,11 +727,11 @@ const TodoList = () => {
       // ── Assigned by ───────────────────────────────────────────────────────
       {
         title: (
-          <span className="d-flex gap-2 justify-content-center align-items-center">
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-by")}
             <img
               src={taskAssignedBySort === "descend" ? DescendIcon : AscendIcon}
-              alt=""
+              alt=''
             />
           </span>
         ),
@@ -754,12 +753,12 @@ const TodoList = () => {
             ),
         }),
         render: (creator) => (
-          <p className="m-0 d-flex justify-content-center MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
+          <p className='m-0 d-flex justify-content-center MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             <img
-              draggable="false"
-              className="data-img"
+              draggable='false'
+              className='data-img'
               src={`data:image/jpeg;base64,${creator?.displayProfilePictureName}`}
-              alt=""
+              alt=''
             />
             {creator?.name}
           </p>
@@ -769,11 +768,11 @@ const TodoList = () => {
       // ── Assigned to ───────────────────────────────────────────────────────
       {
         title: (
-          <span className="d-flex gap-2 justify-content-center align-items-center">
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-to")}
             <img
               src={taskAssignedToSort === "descend" ? DescendIcon : AscendIcon}
-              alt=""
+              alt=''
             />
           </span>
         ),
@@ -797,12 +796,12 @@ const TodoList = () => {
           if (!assignees?.length) return null;
           const first = assignees[0];
           return (
-            <p className="m-0 MontserratRegular d-flex justify-content-center color-505050 FontArabicRegular text-nowrap">
+            <p className='m-0 MontserratRegular d-flex justify-content-center color-505050 FontArabicRegular text-nowrap'>
               <img
-                draggable="false"
-                className="data-img"
+                draggable='false'
+                className='data-img'
                 src={`data:image/jpeg;base64,${first.displayProfilePictureName}`}
-                alt=""
+                alt=''
               />
               {first.name}
             </p>
@@ -813,11 +812,11 @@ const TodoList = () => {
       // ── Deadline ──────────────────────────────────────────────────────────
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-center">
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Deadline")}
             <img
               src={taskDeadlineSort === "descend" ? ArrowDownIcon : ArrowUpIcon}
-              alt=""
+              alt=''
             />
           </span>
         ),
@@ -837,7 +836,7 @@ const TodoList = () => {
             ),
         }),
         render: (_, record) => (
-          <span className="text-nowrap text-center">
+          <span className='text-nowrap text-center'>
             {newTimeFormaterAsPerUTCFullDate(
               record.deadlineDateTime,
               currentLanguage,
@@ -856,7 +855,7 @@ const TodoList = () => {
         filterMultiple: true,
         filterIcon: () => (
           <ChevronDown
-            className="filter-chevron-icon-todolist"
+            className='filter-chevron-icon-todolist'
             onClick={() => setFilterVisible((v) => !v)}
           />
         ),
@@ -864,8 +863,7 @@ const TodoList = () => {
           <Dropdown
             overlay={filterMenu}
             visible={filterVisible}
-            onVisibleChange={setFilterVisible}
-          >
+            onVisibleChange={setFilterVisible}>
             <div />
           </Dropdown>
         ),
@@ -884,10 +882,9 @@ const TodoList = () => {
             <Select
               value={t(status.status)}
               bordered={false}
-              popupClassName="Status-Todo"
+              popupClassName='Status-Todo'
               className={cls}
-              onChange={(val) => statusChangeHandler(val, record.pK_TID)}
-            >
+              onChange={(val) => statusChangeHandler(val, record.pK_TID)}>
               {statusOptions.map(({ id, status: label }) => (
                 <option key={id} value={id}>
                   {t(label)}
@@ -912,10 +909,9 @@ const TodoList = () => {
         render: (creator, record) =>
           Number(creator?.pK_UID) === creatorID ? (
             <i
-              className="meeting-editbutton cursor-pointer"
-              onClick={() => deleteTodolist(record)}
-            >
-              <img draggable="false" src={del} alt="delete" />
+              className='meeting-editbutton cursor-pointer'
+              onClick={() => deleteTodolist(record)}>
+              <img draggable='false' src={del} alt='delete' />
             </i>
           ) : null,
       },
@@ -943,18 +939,18 @@ const TodoList = () => {
 
   return (
     <>
-      <div className="todolistContainer">
+      <div className='todolistContainer'>
         {/* ── Header: title, create button, expandable search bar ── */}
-        <Row className="d-flex justify-content-start align-items-center">
-          <Col md={2} sm={4} lg={2} className="todolist-heading-size">
+        <Row className='d-flex justify-content-start align-items-center'>
+          <Col md={2} sm={4} lg={2} className='todolist-heading-size'>
             {t("Tasks")}
           </Col>
 
-          <Col lg={2} md={2} sm={4} className="todolist-create-btn">
+          <Col lg={2} md={2} sm={4} className='todolist-create-btn'>
             <Button
-              className="btn btn-primary"
+              className='btn btn-primary'
               icon={<Plus width={20} height={20} fontWeight={800} />}
-              variant="Primary"
+              variant='Primary'
               text={t("Create-a-task")}
               onClick={() => setShow(true)}
             />
@@ -964,34 +960,33 @@ const TodoList = () => {
             md={8}
             lg={8}
             sm={4}
-            className="todo-list-field todolist-search-row"
-          >
+            className='todo-list-field todolist-search-row'>
             <Search
-              width="24px"
-              height="24px"
-              className="search-Icon toExpandSearch Meeting"
+              width='24px'
+              height='24px'
+              className='search-Icon toExpandSearch Meeting'
               onClick={toggleSearch}
             />
 
             {isExpand && (
-              <div className="expandableMenuSearch">
-                <Form className="d-flex">
+              <div className='expandableMenuSearch'>
+                <Form className='d-flex'>
                   <DatePicker
                     selected={searchData.Date}
-                    format="DD/MM/YYYY"
-                    placeholder="DD/MM/YYYY"
+                    format='DD/MM/YYYY'
+                    placeholder='DD/MM/YYYY'
                     render={
-                      <div className="iconForDatePicker margin-right-20">
+                      <div className='iconForDatePicker margin-right-20'>
                         <CalendarFill
-                          className="DatePickerIcon"
+                          className='DatePickerIcon'
                           size={34}
                           onClick={handleIconClick}
                         />
                       </div>
                     }
-                    calendarPosition="bottom-right"
+                    calendarPosition='bottom-right'
                     editable
-                    className="datePickerTodoCreate2"
+                    className='datePickerTodoCreate2'
                     onOpenPickNewDate={false}
                     highlightToday
                     showOtherDays
@@ -1001,35 +996,35 @@ const TodoList = () => {
                     onFocusedDateChange={searchHandlerDate}
                   />
                   <TextField
-                    applyClass="form-control2"
-                    width="250px"
-                    name="Title"
+                    applyClass='form-control2'
+                    width='250px'
+                    name='Title'
                     value={searchData.Title}
-                    className="mx-2"
+                    className='mx-2'
                     placeholder={t("Task")}
-                    labelclass="textFieldSearch"
+                    labelclass='textFieldSearch'
                     change={searchHandler}
                   />
                   <TextField
-                    applyClass="form-control2"
-                    width="180px"
-                    name="AssignedToName"
+                    applyClass='form-control2'
+                    width='180px'
+                    name='AssignedToName'
                     value={searchData.AssignedToName}
-                    className="mx-2"
+                    className='mx-2'
                     placeholder={t("Assigned-to")}
-                    labelclass="textFieldSearch"
+                    labelclass='textFieldSearch'
                     change={searchHandler}
                   />
                   <Button
-                    className="btn btn-primary meeting search me-3"
-                    variant="Primary"
+                    className='btn btn-primary meeting search me-3'
+                    variant='Primary'
                     text={<ArrowRight />}
                     onClick={handleSearch}
                   />
                   <Button
-                    className="btn btn-primary meeting search"
-                    variant="Primary"
-                    type="reset"
+                    className='btn btn-primary meeting search'
+                    variant='Primary'
+                    type='reset'
                     text={<ArrowCounterclockwise />}
                     onClick={resetSearchBar}
                   />
@@ -1040,24 +1035,24 @@ const TodoList = () => {
         </Row>
 
         {/* ── Main table ── */}
-        <section className="todolist_main_section">
+        <section className='todolist_main_section'>
           <Row>
             <Col sm={12} md={12} lg={12}>
               <TableToDo
                 column={columnsToDo}
-                className="ToDo"
+                className='ToDo'
                 pagination={false}
                 rows={rowsToDo}
                 scroll={scroll}
                 locale={{
                   emptyText: (
-                    <section className="d-flex flex-column align-items-center justify-content-center">
+                    <section className='d-flex flex-column align-items-center justify-content-center'>
                       <img
                         src={TodoMessageIcon1}
-                        width="250px"
-                        alt="No tasks available"
+                        width='250px'
+                        alt='No tasks available'
                       />
-                      <span className="NotaskTodolist">{t("No-Task")}</span>
+                      <span className='NotaskTodolist'>{t("No-Task")}</span>
                     </section>
                   ),
                 }}
@@ -1066,23 +1061,20 @@ const TodoList = () => {
           </Row>
 
           {rowsToDo.length > 0 && (
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="pagination-groups-table d-flex justify-content-center"
-              >
-                <span className="PaginationStyle-TodoList">
-                  <CustomPagination
-                    onChange={paginationChangeHandler}
-                    current={getStoredPage()}
-                    showSizer
-                    total={totalRecords}
-                    pageSizeOptionsValues={["15", "30", "50", "100"]}
-                    pageSize={getStoredSize()}
-                  />
-                </span>
+                className='pagination-groups-table d-flex justify-content-center'>
+                <CustomPagination
+                  onChange={paginationChangeHandler}
+                  current={getStoredPage()}
+                  showSizer
+                  total={totalRecords}
+                  pageSizeOptionsValues={["15", "30", "50", "100"]}
+                  pageSize={getStoredSize()}
+                />
               </Col>
             </Row>
           )}
@@ -1099,7 +1091,7 @@ const TodoList = () => {
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className="toDoViewModal"
+          className='toDoViewModal'
         />
       )}
       {!show && viewFlagToDo && (

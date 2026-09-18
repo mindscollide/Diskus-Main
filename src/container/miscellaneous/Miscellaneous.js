@@ -23,13 +23,9 @@ const CustomMiscellaneous = () => {
     if (Array.isArray(fAQsAllData) && fAQsAllData.length > 0) {
       try {
         setFAQsStateData(fAQsAllData);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [fAQsAllData]);
-
-  
 
   return (
     <>
@@ -52,7 +48,7 @@ const CustomMiscellaneous = () => {
                           : currentLanguage === "ar" &&
                               data.questionArabic !== ""
                             ? data.questionArabic
-                            : data.question}
+                            : null}
                       </Card.Title>
                     }
                     AccordioonBody={
@@ -63,7 +59,7 @@ const CustomMiscellaneous = () => {
                             : currentLanguage === "ar" &&
                                 data.answerArabic !== ""
                               ? data.answerArabic
-                              : data.answer}
+                              : null}
                         </Card.Text>
 
                         <Row>

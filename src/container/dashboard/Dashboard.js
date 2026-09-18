@@ -3081,7 +3081,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `You have been added in Talk Group for ${data.payload.data[0].fullName}`,
+            message: changeMQTTJSONOne(t("NEW_GROUP_CREATED"), "[FullName]",data.payload.data[0].fullName )
           });
           dispatch(mqttGroupCreated(data.payload));
 

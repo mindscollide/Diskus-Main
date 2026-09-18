@@ -31,6 +31,7 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { validateInput } from "../../../commen/functions/regex";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import { formatNumber } from "../../../commen/functions/utils";
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -570,12 +571,7 @@ const CreatePolling = () => {
                                           <Col lg={12} md={12} sm={12}>
                                             <span className='position-relative'>
                                               <TextField
-                                                placeholder={
-                                                  "Option" +
-                                                  " " +
-                                                  parseInt(index + 1) +
-                                                  "*"
-                                                }
+                                                placeholder={`${t("Option")} ${formatNumber(index + 1)} *`}
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }
@@ -595,12 +591,7 @@ const CreatePolling = () => {
                                           <Col lg={12} md={12} sm={12}>
                                             <span className='position-relative'>
                                               <TextField
-                                                placeholder={
-                                                  "Option" +
-                                                  " " +
-                                                  parseInt(index + 1) +
-                                                  "*"
-                                                }
+                                                placeholder={`${t("Option")} ${formatNumber(index + 1)}`}
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }

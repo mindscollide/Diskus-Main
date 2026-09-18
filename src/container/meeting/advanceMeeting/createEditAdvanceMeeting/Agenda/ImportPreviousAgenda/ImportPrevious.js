@@ -23,7 +23,7 @@ const ImportPrevious = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
   // const [importAgendaData, setImportAgendaData] = useState({
   //   InputSearchVal: "",
@@ -38,7 +38,6 @@ const ImportPrevious = () => {
 
   const handleRadioChange = (record) => {
     setSelectedRow(record);
-    
   };
 
   const MeetingColoumns = [
@@ -81,7 +80,7 @@ const ImportPrevious = () => {
       key: "meetingID",
       width: "100px",
       render: (text, record) => {
-        return <label className="column-boldness">{t("Ended")}</label>;
+        return <label className='column-boldness'>{t("Ended")}</label>;
       },
     },
     {
@@ -100,9 +99,9 @@ const ImportPrevious = () => {
       render: (text, record) => {
         if (record.endTime !== null && record.meetingDate !== null) {
           return (
-            <label className="column-boldness">
+            <label className='column-boldness'>
               {newTimeFormaterForImportMeetingAgenda(
-                record.meetingDate + record.endTime
+                record.meetingDate + record.endTime,
               )}
             </label>
           );
@@ -129,7 +128,6 @@ const ImportPrevious = () => {
   }, []);
 
   const handelChangePagination = async (current, PageSize) => {
-    
     let Data = {
       PageNumber: current,
       Length: PageSize,
@@ -146,10 +144,10 @@ const ImportPrevious = () => {
       MeetingAgendaReducer.GetAllMeetingForAgendaImportData.length !== 0
     ) {
       setRowsData(
-        MeetingAgendaReducer.GetAllMeetingForAgendaImportData.meetings
+        MeetingAgendaReducer.GetAllMeetingForAgendaImportData.meetings,
       );
       setTotalRecords(
-        MeetingAgendaReducer.GetAllMeetingForAgendaImportData.totalRecords
+        MeetingAgendaReducer.GetAllMeetingForAgendaImportData.totalRecords,
       );
     } else {
       setRowsData([]);
@@ -167,10 +165,6 @@ const ImportPrevious = () => {
   const closeImportAgendaModal = () => {
     dispatch(showImportPreviousAgendaModal(false));
   };
-
-  
-
-  
 
   return (
     <section>
@@ -190,8 +184,7 @@ const ImportPrevious = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_Padding"]}
-              >
+                className={styles["OverAll_Padding"]}>
                 <Row>
                   <Col lg={10} md={10} sm={12}>
                     <span className={styles["Import_previous_agenda_heading"]}>
@@ -202,14 +195,13 @@ const ImportPrevious = () => {
                     lg={2}
                     md={2}
                     sm={12}
-                    className="d-flex justify-content-end align-items-center"
-                  >
+                    className='d-flex justify-content-end align-items-center'>
                     <img
                       src={BlackCrossIcon}
-                      height="16px"
-                      width="16px"
-                      alt=""
-                      className="cursor-pointer"
+                      height='16px'
+                      width='16px'
+                      alt=''
+                      className='cursor-pointer'
                       onClick={() => {
                         dispatch(showImportPreviousAgendaModal(false));
                       }}
@@ -227,8 +219,7 @@ const ImportPrevious = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_Padding"]}
-              >
+                className={styles["OverAll_Padding"]}>
                 {/* <Row>
                   <Col lg={10} md={10} sm={12} className="group-fields">
                     <InputSearchFilter
@@ -250,37 +241,27 @@ const ImportPrevious = () => {
                       column={MeetingColoumns}
                       scroll={{ y: "30vh" }}
                       pagination={false}
-                      className="NewMeeting_table"
+                      className='NewMeeting_table'
                       rows={rowsData}
                     />
                   </Col>
                 </Row>
                 {rowsData.length > 0 ? (
                   <>
-                    <Row className="mt-5">
+                    <Row>
                       <Col
-                        lg={12}
-                        md={12}
+                        className={"pagination-groups-table d-flex justify-content-center  "}
                         sm={12}
-                        className="d-flex justify-content-center "
-                      >
-                        <Row className={styles["PaginationStyle-Committee"]}>
-                          <Col
-                            className={"pagination-groups-table"}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                          >
-                            <CustomPagination
-                              current={isCurrent}
-                              pageSize={isPageSize}
-                              onChange={handelChangePagination}
-                              pageSizeOptionsValues={["20", "50", "100", "200"]}
-                              total={totalRecords}
-                              showSizer={true}
-                            />
-                          </Col>
-                        </Row>
+                        md={12}
+                        lg={12}>
+                        <CustomPagination
+                          current={isCurrent}
+                          pageSize={isPageSize}
+                          onChange={handelChangePagination}
+                          pageSizeOptionsValues={["20", "50", "100", "200"]}
+                          total={totalRecords}
+                          showSizer={true}
+                        />
                       </Col>
                     </Row>
                   </>
@@ -296,15 +277,13 @@ const ImportPrevious = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_Padding"]}
-              >
+                className={styles["OverAll_Padding"]}>
                 <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end gap-2"
-                  >
+                    className='d-flex justify-content-end gap-2'>
                     <Button
                       text={t("Cancel")}
                       className={styles["Cancel_button_IMportAgenda"]}

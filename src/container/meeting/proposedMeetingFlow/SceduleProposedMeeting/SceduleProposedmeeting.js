@@ -140,24 +140,30 @@ const SceduleProposedmeeting = () => {
 
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
-    if (organizerRows && Array.isArray(organizerRows)) {
-      const count = organizerRows.reduce((total, row) => {
-        if (
-          row &&
-          row.selectedProposedDates.length > 0 &&
-          row.selectedProposedDates[columnIndex].isSelected
-        ) {
-          return total + 1;
-        }
-        return total;
-      }, 0);
+  if (organizerRows && Array.isArray(organizerRows)) {
+    const count = organizerRows.reduce((total, row) => {
+      if (
+        row &&
+        row.selectedProposedDates?.length > 0 &&
+        row.selectedProposedDates?.[columnIndex]?.isSelected
+      ) {
+        return total + 1;
+      }
 
-      // Add a zero prefix to the count if it's a single digit
-      return count < 10 ? `0${count}` : count;
-    } else {
-      return "00";
-    }
-  };
+      return total;
+    }, 0);
+
+    const formattedCount = count < 10 ? `0${count}` : `${count}`;
+
+    return localStorage.getItem("i18nextLng") === "ar"
+      ? new Intl.NumberFormat("ar-EG", {
+          useGrouping: true,
+        }).format(Number(formattedCount))
+      : formattedCount;
+  }
+
+  return localStorage.getItem("i18nextLng") === "ar" ? "٠٠" : "00";
+};
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
@@ -191,8 +197,8 @@ const SceduleProposedmeeting = () => {
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}>
-                {record.userName}
+                title={t(record.userName)}>
+                {t(record.userName)}
               </span>
             ) : (
               <span className={styles["ParticipantName"]}>

@@ -1,4 +1,10 @@
 
+.menu-popover.ant-popover,
+.menu-popover .ant-popover-content {
+  transition-duration: 0.01s !important;
+  animation-duration: 0.01s !important;
+}
+
 .popOver_content {
     min-width: 100px !important;
 }

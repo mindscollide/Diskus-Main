@@ -58,6 +58,7 @@ import {
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
 import { ALLOW_AGENDA_START_TIME_AND_END_TIME } from "../../../../../commen/featureFlags";
+import { formatNumber } from "../../../../../commen/functions/utils";
 
 const ParentAgenda = ({
   data,
@@ -507,8 +508,9 @@ const ParentAgenda = ({
                                 <Col lg={12} md={12} sm={12}>
                                   <span
                                     className={styles["Meeting_title_heading"]}>
-                                    <span>{index + 1}.</span>{" "}
-                                    {t("Agenda-title")} <span>{index + 1}</span>
+                                    <span>{formatNumber(index + 1)}.</span>{" "}
+                                    {t("Agenda-title")}{" "}
+                                    <span>{formatNumber(index + 1)}</span>
                                   </span>
                                 </Col>
                               </Row>
