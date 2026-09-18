@@ -2415,6 +2415,7 @@
   "Stop-presentation": "Stop Presentation",
   "Leave-presentation": "Leave Presentation",
   "Join-presentation": "Join Presentation",
+  "Presentation-stopped-by-host": "The presentation has been stopped by the host.",
   "Start-presenting": "Start Presenting",
   "Stop-presenting": "Stop Presenting",
   "Leave-presenting": "Leave presenting view",

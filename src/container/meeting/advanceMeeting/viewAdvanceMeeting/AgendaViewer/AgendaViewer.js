@@ -58,6 +58,7 @@ import {
   toggleParticipantsVisibility,
   disableZoomBeforeJoinSession,
   videoChatMessagesFlag,
+  presentationJoinFlowFlag,
 } from "@/store/actions/VideoFeature_actions";
 import emptyContributorState from "@/assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -1114,14 +1115,13 @@ const onClickVideoIconOpenVideo = () => {
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
-          console.log("onClickStopPresenter", value);
-          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-          let data = {
-            VideoCallURL: String(currentMeetingVideoURL),
-            WasInVideo: isMeetingVideo ? true : false,
-          };
-          console.log("onClickStopPresenter", data);
-          dispatch(joinPresenterViewMainApi(navigate, t, data));
+          // CR(0012249): "Join Presentation" now opens the waiting room
+          // instead of joining directly. joinPresenterViewMainApi is fired
+          // later, from maxParticipantVideoCallComponent.js, only once the
+          // host approves the join request (PRESENTATION_JOIN_REQUEST_APPROVED).
+          localStorage.setItem("presentationRoomID", String(RoomID));
+          dispatch(presentationJoinFlowFlag(true));
+          dispatch(maxParticipantVideoCallPanel(true));
         }
       } else if (value === 3) {
         // if (alreadyInMeetingVideo) {

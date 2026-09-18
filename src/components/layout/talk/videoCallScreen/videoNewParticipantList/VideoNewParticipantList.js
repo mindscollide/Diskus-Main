@@ -51,6 +51,7 @@ import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
   participantAcceptandReject,
+  participantPresentationAcceptandReject,
   participantWaitingListBox,
   presenterLeaveParticipant,
   presenterNewParticipantJoin,
@@ -58,6 +59,7 @@ import {
 } from "../../../../../store/actions/VideoFeature_actions";
 import {
   admitRejectAttendeeMainApi,
+  admitRejectPresentationAttendeeMainApi,
   raiseUnRaisedHandMainApi,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
@@ -158,6 +160,10 @@ const VideoNewParticipantList = () => {
   const waitingParticipants = useSelector(
     (s) => s.videoFeatureReducer.waitingParticipantsList,
   );
+  // CR(0012249) — presentation-host equivalent of waitingParticipants above.
+  const presentationWaitingParticipants = useSelector(
+    (s) => s.videoFeatureReducer.presentationWaitingParticipantsList,
+  );
 
   console.log(waitingParticipants, "waitingParticipantswaitingParticipants");
   const NormalizeVideoFlag = useSelector(
@@ -214,6 +220,11 @@ const VideoNewParticipantList = () => {
   /** De-duplicated waiting-room entries */
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
+  /** CR(0012249) — same, but for the presentation waiting room */
+  const [
+    filteredPresentationWaitingParticipants,
+    setFilteredPresentationWaitingParticipants,
+  ] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
@@ -318,6 +329,24 @@ const VideoNewParticipantList = () => {
 
     setFilteredWaitingParticipants(waitingParticipants);
   }, [waitingParticipants]);
+
+  // CR(0012249) — same de-dupe/sync effect, for the presentation waiting list.
+  useEffect(() => {
+    if (!presentationWaitingParticipants?.length) {
+      setFilteredPresentationWaitingParticipants([]);
+      return;
+    }
+    setFilteredPresentationWaitingParticipants(presentationWaitingParticipants);
+  }, [presentationWaitingParticipants]);
+
+  // CR(0012249) — true only for the presentation HOST (the person who
+  // started the presentation). Used to pick the right waiting list + admit
+  // API without disturbing the existing presenterViewFlag/presenterViewHostFlag
+  // checks used everywhere else in this file.
+  const isPresenterHostContext = presenterViewFlag && presenterViewHostFlag;
+  const effectiveWaitingParticipants = isPresenterHostContext
+    ? filteredPresentationWaitingParticipants
+    : filteredWaitingParticipants;
 
   // ─────────────────────────────────────────────────────────────────────────
   // DERIVED: Mute-All button visibility and label
@@ -573,6 +602,39 @@ const VideoNewParticipantList = () => {
    */
   const handleClickAllAcceptAndReject = useCallback(
     (flag) => {
+      // CR(0012249): presenter-host gets its own list/API branch below;
+      // for everyone else this is unchanged (presenterViewFlag && !host
+      // still bails out, since a presentation viewer can't admit anyone).
+      if (isPresenterHostContext) {
+        if (!filteredPresentationWaitingParticipants.length) return;
+
+        dispatch(
+          admitRejectPresentationAttendeeMainApi(navigate, t, {
+            MeetingID: session.currentMeetingID,
+            RoomID: String(session.acceptedRoomID),
+            IsRequestAccepted: flag === 1,
+            AttendeeResponseList: filteredPresentationWaitingParticipants.map(
+              (p) => ({
+                IsGuest: p.isGuest,
+                UID: p.guid,
+                UserID: p.userID,
+              }),
+            ),
+          }),
+        );
+
+        dispatch(
+          participantPresentationAcceptandReject(
+            filteredPresentationWaitingParticipants.map((p) => ({
+              ...p,
+              meetingID: session.currentMeetingID,
+              guid: p.guid,
+            })),
+          ),
+        );
+        return;
+      }
+
       if (presenterViewFlag || !filteredWaitingParticipants.length) return;
 
       dispatch(
@@ -609,10 +671,11 @@ const VideoNewParticipantList = () => {
       navigate,
       t,
       presenterViewFlag,
+      isPresenterHostContext,
       filteredWaitingParticipants,
+      filteredPresentationWaitingParticipants,
       filteredParticipants,
-      session.roomID,
-      session.currentMeetingID,
+      session,
     ],
   );
 
@@ -625,6 +688,36 @@ const VideoNewParticipantList = () => {
     (participantInfo, flag) => {
       //  ENSURE meetingID IS NOT UNDEFINED
       const meetingID = participantInfo.meetingID || session.currentMeetingID;
+
+      // CR(0012249): route presentation waiting-room rows to the
+      // presentation-specific admit/reject API + list instead.
+      if (isPresenterHostContext) {
+        dispatch(
+          admitRejectPresentationAttendeeMainApi(navigate, t, {
+            MeetingID: meetingID,
+            RoomID: String(session.acceptedRoomID),
+            IsRequestAccepted: flag === 1,
+            AttendeeResponseList: [
+              {
+                IsGuest: participantInfo.isGuest,
+                UID: participantInfo.guid,
+                UserID: participantInfo.userID,
+              },
+            ],
+          }),
+        );
+
+        dispatch(
+          participantPresentationAcceptandReject([
+            {
+              ...participantInfo,
+              meetingID: meetingID,
+              guid: participantInfo.guid,
+            },
+          ]),
+        );
+        return;
+      }
 
       dispatch(
         admitRejectAttendeeMainApi(
@@ -661,8 +754,8 @@ const VideoNewParticipantList = () => {
       dispatch,
       navigate,
       t,
-      session.currentMeetingID,
-      session.roomID,
+      isPresenterHostContext,
+      session,
       filteredParticipants,
     ],
   );
@@ -1066,10 +1159,11 @@ const VideoNewParticipantList = () => {
         </div>
       </Col>
 
-      {/* ── Waiting-room section — host-only, hidden in presenter view ── */}
-      {!presenterViewFlag &&
-        !presenterViewHostFlag &&
-        filteredWaitingParticipants.length > 0 && (
+      {/* ── Waiting-room section — host-only. Shown for the regular
+           meeting-video host, and (CR(0012249)) for the presentation host
+           too; hidden for a presentation viewer who isn't the host. ── */}
+      {(!presenterViewFlag || presenterViewHostFlag) &&
+        effectiveWaitingParticipants.length > 0 && (
           <>
             <Col sm={12}>
               <div className={styles["Waiting-New-Participant-hosttab"]}>
@@ -1106,7 +1200,7 @@ const VideoNewParticipantList = () => {
                 </Row>
 
                 {/* Per-participant admit / deny rows */}
-                {filteredWaitingParticipants.map((data) => (
+                {effectiveWaitingParticipants.map((data) => (
                   <Row className="mb-2" key={data.guid}>
                     <Col sm={5} className="d-flex align-items-center gap-2">
                       <img

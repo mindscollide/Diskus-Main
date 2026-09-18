@@ -2354,6 +2354,7 @@
   "Stop-presentation": "إيقاف العرض التقديمي",
   "Leave-presentation": "مغادرة عرض التقديم",
   "Join-presentation": "الانضمام إلى عرض التقديم",
+  "Presentation-stopped-by-host": "تم إيقاف العرض التقديمي بواسطة المضيف.",
   "Has-changed-his-vote-in": "قام بتغيير التصويت في:",
   "Start-presenting": "بدء العرض",
   "Stop-presenting": "إيقاف العرض",

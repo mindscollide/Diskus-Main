@@ -66,9 +66,17 @@ import {
   getGroupCallParticipantsMainApi,
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
+  presentationJoinFlowFlag,
   presenterLeaveParticipant,
   presentationParticipantJoinedMqtt,
   presentationParticipantLeftMqtt,
+  presentationParticipantJoinRequestMqtt,
+  presentationJoinRequestApprovedMqtt,
+  presentationJoinRequestRejectedMqtt,
+  presentationNewParticipantsJoinedMqtt,
+  removedFromPresentationToWaitingRoomMqtt,
+  participantRemovedFromPresentationMqtt,
+  presentationStoppedMqtt,
   clearPresenterParticipants,
   nonMeetingVideoGlobalModal,
   acceptHostTransferAccessGlobalFunc,
@@ -703,37 +711,28 @@ const Dashboard = () => {
           !presenterViewFlagRef.current &&
           !presenterViewJoinFlagRef.current
         ) {
-          console.log("mqtt mqmqmqmqmqmq");
-          console.log("maximizeParticipantVideoFlag");
-          if (maximizeParticipantVideoFlagRef.current) {
-            console.log("maximizeParticipantVideoFlag");
-            console.log("mqtt mqmqmqmqmqmq");
-
-            console.log("maximizeParticipantVideoFlag");
-
-            dispatch(videoIconOrButtonState(false));
-            dispatch(participantVideoButtonState(false));
-            dispatch(maxParticipantVideoCallPanel(false));
-            let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-            let data = {
-              VideoCallURL: String(currentMeetingVideoURL),
-              WasInVideo: isMeetingVideo ? true : false,
-            };
-            dispatch(participantWaitingListBox(false));
-
-            dispatch(joinPresenterViewMainApi(navigate, t, data));
-          } else {
-            console.log("mqtt mqmqmqmqmqmq");
-            let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-            let data = {
-              VideoCallURL: String(currentMeetingVideoURL),
-              WasInVideo: isMeetingVideo ? true : false,
-            };
-            console.log("mqtt mqmqmqmqmqmq");
-            dispatch(participantWaitingListBox(false));
-
-            dispatch(joinPresenterViewMainApi(navigate, t, data));
-          }
+          // CR(0012249): MEETING_PRESENTATION_STARTED must no longer
+          // auto-join this participant into the presentation — it now
+          // opens maxParticipantVideoCallComponent (presentation waiting
+          // room) instead, exactly like clicking "Join Presentation"
+          // manually. The participant sends the actual join request from
+          // there; joinPresenterViewMainApi only fires later, once the
+          // host admits (PRESENTATION_JOIN_REQUEST_APPROVED).
+          console.log(
+            payload,
+            "CR0012249 MEETING_PRESENTATION_STARTED payload",
+          );
+          dispatch(videoIconOrButtonState(false));
+          dispatch(participantVideoButtonState(false));
+          dispatch(participantWaitingListBox(false));
+          let presentationRoomID = String(
+            payload?.roomID ||
+              payload?.RoomID ||
+              localStorage.getItem("acceptedRoomID"),
+          );
+          localStorage.setItem("presentationRoomID", presentationRoomID);
+          dispatch(presentationJoinFlowFlag(true));
+          dispatch(maxParticipantVideoCallPanel(true));
         }
       }
     }
@@ -2107,7 +2106,82 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
             ) {
+              // stopPresenterView does the real cleanup for anyone who was
+              // ALREADY in presenter view (resets raised hands, presenter
+              // participants list, audio/video controls, etc.) — this call
+              // was mistakenly dropped in an earlier pass of this CR; kept
+              // as-is here. presentationStoppedMqtt is the CR(0012249)
+              // addition alongside it, purely for whoever was still in the
+              // presentation WAITING ROOM (not yet admitted) — the toast
+              // below is for that group.
               stopPresenterView(data.payload);
+              dispatch(presentationStoppedMqtt(data.payload));
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: t("Presentation-stopped-by-host"),
+              });
+              setNotificationID(id);
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_PARTICIPANT_JOIN_REQUEST".toLowerCase()
+            ) {
+              // CR(0012249): presentation host is notified a participant
+              // wants to join — mirrors MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST's
+              // role for the meeting-video waiting list, but kept on its
+              // own dedicated reducer field so it can't interfere with
+              // that existing flow. Popup only opens for the presentation
+              // host — using the ref (not the raw presenterViewHostFlag
+              // variable) because onMessageArrived is only re-bound to the
+              // MQTT client on a narrow dependency list that doesn't
+              // include presenterViewHostFlag, so the plain variable would
+              // read stale here (this file's established pattern for
+              // exactly this reason — see presenterViewHostFlagFlagRef's
+              // other uses).
+              dispatch(presentationParticipantJoinRequestMqtt(data.payload));
+              if (presenterViewHostFlagFlagRef.current) {
+                dispatch(guestJoinPopup(true));
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_JOIN_REQUEST_APPROVED".toLowerCase()
+            ) {
+              // CR(0012249): sent to the requesting participant once the
+              // host admits them. Per the API doc, JoinPresenterView should
+              // be called ONLY after this arrives — that trigger wiring is
+              // a later step; for now this just surfaces the payload.
+              dispatch(presentationJoinRequestApprovedMqtt(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_JOIN_REQUEST_REJECTED".toLowerCase()
+            ) {
+              // CR(0012249): sent to the requesting participant if the
+              // host rejects them.
+              dispatch(presentationJoinRequestRejectedMqtt(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_NEW_PARTICIPANTS_JOINED".toLowerCase()
+            ) {
+              // CR(0012249): sent to already-admitted participants so their
+              // roster reflects a newly-admitted attendee.
+              dispatch(presentationNewParticipantsJoinedMqtt(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM".toLowerCase()
+            ) {
+              // CR(0012249): sent to the participant the host just removed
+              // — unlike meeting-video's REMOVED_FROM_MEETING, they go back
+              // to the waiting room rather than being fully disconnected.
+              dispatch(
+                removedFromPresentationToWaitingRoomMqtt(data.payload),
+              );
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()
+            ) {
+              // CR(0012249): sent to the OTHER admitted participants so
+              // their roster drops the removed attendee.
+              dispatch(participantRemovedFromPresentationMqtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
@@ -5641,7 +5715,14 @@ const Dashboard = () => {
           )}
 
           {ShowGuestPopup &&
-            JSON.parse(localStorage.getItem("isMeetingVideo")) === true &&
+            // CR(0012249): a presentation host isn't necessarily flagged
+            // isMeetingVideo (e.g. presenting without being in the
+            // meeting-video call at all), so this popup never mounted for
+            // them. presenterViewFlag is already used as the parallel
+            // condition to isMeetingVideo elsewhere in this file (see the
+            // chat-panel condition below) — same pattern here.
+            (JSON.parse(localStorage.getItem("isMeetingVideo")) === true ||
+              presenterViewFlag) &&
             (location.pathname.includes("/Diskus/Meeting") ||
               location.pathname.includes("/Diskus/committee") ||
               location.pathname.includes("/Diskus/groups")) &&

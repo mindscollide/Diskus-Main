@@ -70,6 +70,11 @@ const initialState = {
   MaximizeHostVideoFlag: false,
   NormalHostVideoFlag: false,
   maximizeParticipantVideoFlag: false,
+  // CR(0012249) — see PRESENTATION_JOIN_FLOW_FLAG in action_types.js.
+  // Kept default false so every existing meeting-video read/dispatch of
+  // maximizeParticipantVideoFlag etc. is unaffected until something
+  // explicitly opts into presentation mode.
+  isPresentationJoinFlow: false,
   normalParticipantVideoFlag: false,
   maxParticipantVideoDeniedFlag: false,
   maxParticipantVideoRemovedFlag: false,
@@ -134,6 +139,16 @@ const initialState = {
   presentationParticipantsList: [],
   raisedHandGuids: {},
   // startOrStopPresenter: false,
+
+  // CR(0012249) — Presentation waiting-room MQTT signals (raw payload
+  // capture only; UI wiring comes in a later step).
+  presentationWaitingParticipantsList: [],
+  presentationJoinApprovedData: null,
+  presentationJoinRejectedData: null,
+  presentationNewParticipantsJoinedData: null,
+  removedFromPresentationToWaitingRoomData: null,
+  participantRemovedFromPresentationData: null,
+  presentationStoppedData: null,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -163,6 +178,25 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         waitingParticipantsList: filteredParticipants,
+      };
+    }
+    case actions.PRESENTATION_ACCEPT_AND_REMOVE_PARTICIPANTS: {
+      const { payload } = action;
+      const filteredPresentationParticipants =
+        state.presentationWaitingParticipantsList.filter(
+          (participant) =>
+            !payload.some(
+              (p) =>
+                String(p.guid) === String(participant.guid) &&
+                (!p.meetingID ||
+                  !participant.meetingID ||
+                  Number(p.meetingID) === Number(participant.meetingID)),
+            ),
+        );
+
+      return {
+        ...state,
+        presentationWaitingParticipantsList: filteredPresentationParticipants,
       };
     }
 
@@ -849,6 +883,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
 
+    // CR(0012249)
+    case actions.PRESENTATION_JOIN_FLOW_FLAG: {
+      return {
+        ...state,
+        isPresentationJoinFlow: action.response,
+      };
+    }
+
     case actions.MAX_PARTICIPANT_VIDEO_DENIED:
       return {
         ...state,
@@ -1512,6 +1554,81 @@ const videoFeatureReducer = (state = initialState, action) => {
             : {}),
           participantList: updatedList,
         },
+      };
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // CR(0012249) — Presentation waiting-room MQTT signals
+    // ─────────────────────────────────────────────────────────────────
+    case actions.PRESENTATION_PARTICIPANT_JOIN_REQUESTS_MQTT: {
+      // Mirrors PARTICIPANT_JOINT_REQUESTS above (meeting-video's waiting
+      // list): de-dupe on guid so repeated MQTT delivery doesn't create
+      // duplicate rows.
+      const exists = state.presentationWaitingParticipantsList.some(
+        (p) => String(p.guid) === String(action.response.guid),
+      );
+      if (exists) {
+        return state;
+      }
+      return {
+        ...state,
+        presentationWaitingParticipantsList: [
+          ...state.presentationWaitingParticipantsList,
+          action.response,
+        ],
+      };
+    }
+
+    case actions.PRESENTATION_JOIN_REQUEST_APPROVED_MQTT: {
+      return {
+        ...state,
+        presentationJoinApprovedData: action.response,
+      };
+    }
+
+    case actions.PRESENTATION_JOIN_REQUEST_REJECTED_MQTT: {
+      return {
+        ...state,
+        presentationJoinRejectedData: action.response,
+      };
+    }
+
+    case actions.PRESENTATION_NEW_PARTICIPANTS_JOINED_MQTT: {
+      return {
+        ...state,
+        presentationNewParticipantsJoinedData: action.response,
+      };
+    }
+
+    case actions.REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM_MQTT: {
+      return {
+        ...state,
+        removedFromPresentationToWaitingRoomData: action.response,
+      };
+    }
+
+    case actions.PARTICIPANT_REMOVED_FROM_PRESENTATION_MQTT: {
+      // Also drop the removed participant from the waiting list (if they
+      // were re-added there) and the admitted roster, so the host's UI
+      // doesn't keep showing someone who was just removed.
+      const removedGuid = action.response?.guid ?? action.response?.UID;
+      return {
+        ...state,
+        participantRemovedFromPresentationData: action.response,
+        presentationWaitingParticipantsList:
+          state.presentationWaitingParticipantsList.filter(
+            (p) => String(p.guid) !== String(removedGuid),
+          ),
+      };
+    }
+
+    case actions.MEETING_PRESENTATION_STOPPED_MQTT: {
+      return {
+        ...state,
+        presentationStoppedData: action.response,
+        // Clear the waiting list too — nobody should still be shown as
+        // "waiting" once the presentation itself has stopped.
+        presentationWaitingParticipantsList: [],
       };
     }
 

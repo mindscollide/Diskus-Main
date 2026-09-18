@@ -43,11 +43,14 @@ import {
   participantVideoButtonState,
   setAudioControlHost,
   setVideoControlHost,
+  joinPresenterViewMainApi,
+  presentationJoinFlowFlag,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { Tooltip } from "antd";
 import { useResolutionContext } from "../../../../../context/ResolutionContext";
+import { joinPresentationRequestMainApi } from "../../../../../store/actions/Guest_Video";
 
 const ParticipantVideoCallComponent = () => {
   const dispatch = useDispatch();
@@ -89,6 +92,27 @@ const ParticipantVideoCallComponent = () => {
 
   const allNavigatorVideoStream = useSelector(
     (state) => state.videoFeatureReducer.allNavigatorVideoStream
+  );
+
+  // CR(0012249) — false for every existing meeting-video usage of this
+  // component; only true when this same modal is opened for a
+  // Presentation join instead.
+  const isPresentationJoinFlow = useSelector(
+    (state) => state.videoFeatureReducer.isPresentationJoinFlow
+  );
+
+  // CR(0012249) — host's response to this participant's presentation join
+  // request, and the "host stopped the presentation" signal while still
+  // waiting. Only acted on when isPresentationJoinFlow is true, so none of
+  // this can affect the existing meeting-video waiting flow.
+  const presentationJoinApprovedData = useSelector(
+    (state) => state.videoFeatureReducer.presentationJoinApprovedData
+  );
+  const presentationJoinRejectedData = useSelector(
+    (state) => state.videoFeatureReducer.presentationJoinRejectedData
+  );
+  const presentationStoppedData = useSelector(
+    (state) => state.videoFeatureReducer.presentationStoppedData
   );
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
@@ -238,6 +262,57 @@ const ParticipantVideoCallComponent = () => {
     }
   }, [allNavigatorVideoStream]);
 
+  // CR(0012249) — host admitted this participant into the presentation.
+  // Completes the join using the same joinPresenterViewMainApi call that
+  // used to fire immediately on click (AgendaViewer.js), then closes this
+  // waiting-room panel so the actual presenter view can take over.
+  useEffect(() => {
+    if (isPresentationJoinFlow && presentationJoinApprovedData) {
+      // videoCallNormalHeader.js's shared RoomID/UID resolution for the
+      // in-call mute/hide/raise-hand controls checks callTypeID === 2
+      // (an active 1:1/group call) BEFORE it checks presenter-view state.
+      // A presentation participant is never in that kind of call by this
+      // point, but callTypeID is easy to have left stale in localStorage
+      // from an earlier 1:1/group call in the same session — which then
+      // makes those controls resolve UID from callerGuid/recepientGuid
+      // (never set here) instead of participantUID, sending null UID.
+      // Clearing it here (scoped to this presentation-join path only)
+      // keeps that existing shared logic correct without touching it.
+      localStorage.removeItem("callTypeID");
+      let data = {
+        VideoCallURL: String(newVideoUrl),
+        WasInVideo: false,
+      };
+      dispatch(joinPresenterViewMainApi(navigate, t, data));
+      dispatch(presentationJoinFlowFlag(false));
+      dispatch(maxParticipantVideoCallPanel(false));
+      localStorage.removeItem("presentationRoomID");
+    }
+  }, [presentationJoinApprovedData]);
+
+  // CR(0012249) — host rejected this participant's presentation join
+  // request. Reuses the existing meeting-video "denied" screen/flag since
+  // no presentation-specific denied screen exists yet.
+  useEffect(() => {
+    if (isPresentationJoinFlow && presentationJoinRejectedData) {
+      dispatch(presentationJoinFlowFlag(false));
+      dispatch(maxParticipantVideoCallPanel(false));
+      dispatch(maxParticipantVideoDenied(true));
+      localStorage.removeItem("presentationRoomID");
+    }
+  }, [presentationJoinRejectedData]);
+
+  // CR(0012249) — host stopped the presentation while this participant was
+  // still waiting to be admitted. Just close the waiting room; the toast is
+  // shown from Dashboard.js's MEETING_PRESENTATION_STOPPED handler.
+  useEffect(() => {
+    if (isPresentationJoinFlow && presentationStoppedData) {
+      dispatch(presentationJoinFlowFlag(false));
+      dispatch(maxParticipantVideoCallPanel(false));
+      localStorage.removeItem("presentationRoomID");
+    }
+  }, [presentationStoppedData]);
+
   // it'll check when Video Html Tag is Connected when connected then make video Icon enable otherwise it'll disable
   useEffect(() => {
     const video = videoRef.current;
@@ -268,6 +343,14 @@ const ParticipantVideoCallComponent = () => {
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
+    // CR(0012249): in the presentation waiting room, mic/camera are off by
+    // default and the participant must not be able to turn them back on
+    // themselves. The icon is already visually locked below (pointerEvents),
+    // this is a defense-in-depth guard in case toggleAudio is ever invoked
+    // another way. Turning OFF is still allowed either way.
+    if (isPresentationJoinFlow && enable) {
+      return;
+    }
     dispatch(setAudioControlHost(enable));
     localStorage.setItem("isMicEnabled", enable);
     if (!enable) {
@@ -303,6 +386,10 @@ const ParticipantVideoCallComponent = () => {
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
+    // CR(0012249): see the matching guard in toggleAudio above.
+    if (isPresentationJoinFlow && enable) {
+      return;
+    }
     dispatch(setVideoControlHost(enable));
     localStorage.setItem("isWebCamEnabled", enable);
     if (!enable) {
@@ -348,6 +435,29 @@ const ParticipantVideoCallComponent = () => {
 
   const joinNewApiVideoCallOnClick = async () => {
     setJoinButton(true);
+
+    // CR(0012249) — Presentation join request, kept fully separate from
+    // the existing meeting-video branch below (which is untouched).
+    // NOTE: RoomID's source (presentationRoomID) isn't wired yet — the
+    // next step (opening this component for a started Presentation) needs
+    // to set this localStorage key before the participant can click here,
+    // since JoinPresentationRequest requires the presentation's own
+    // RoomID, not the meeting's.
+    if (isPresentationJoinFlow) {
+      let presentationData = {
+        RoomID: localStorage.getItem("presentationRoomID"),
+        MeetingID: Number(meetingId),
+        IsMuted: isMicEnabled,
+        HideVideo: isWebCamEnabled,
+      };
+      await dispatch(
+        joinPresentationRequestMainApi(navigate, t, presentationData),
+      );
+      setIsWaiting(true);
+      setJoinButton(false);
+      return;
+    }
+
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
       localStorage.setItem("isMeetingVideo", true);
@@ -615,9 +725,16 @@ const ParticipantVideoCallComponent = () => {
             <div
               className="max-videoParticipant-Icons-state"
               style={{
-                pointerEvents: canVideoPlay ? "auto" : "none",
-                opacity: canVideoPlay ? 1 : 0.4,
-                cursor: canVideoPlay ? "pointer" : "not-allowed",
+                // CR(0012249): in the presentation waiting room the
+                // participant can't control mic/camera at all — same
+                // locked look as the existing canVideoPlay readiness gate.
+                pointerEvents:
+                  canVideoPlay && !isPresentationJoinFlow ? "auto" : "none",
+                opacity: canVideoPlay && !isPresentationJoinFlow ? 1 : 0.4,
+                cursor:
+                  canVideoPlay && !isPresentationJoinFlow
+                    ? "pointer"
+                    : "not-allowed",
               }}
             >
               {isMicEnabled ? (
@@ -645,9 +762,15 @@ const ParticipantVideoCallComponent = () => {
             <div
               className="max-videoParticipant-Icons-state"
               style={{
-                pointerEvents: canVideoPlay ? "auto" : "none",
-                opacity: canVideoPlay ? 1 : 0.4,
-                cursor: canVideoPlay ? "pointer" : "not-allowed",
+                // CR(0012249): same presentation-mode lock as the mic block
+                // above.
+                pointerEvents:
+                  canVideoPlay && !isPresentationJoinFlow ? "auto" : "none",
+                opacity: canVideoPlay && !isPresentationJoinFlow ? 1 : 0.4,
+                cursor:
+                  canVideoPlay && !isPresentationJoinFlow
+                    ? "pointer"
+                    : "not-allowed",
               }}
             >
               {isWebCamEnabled ? (

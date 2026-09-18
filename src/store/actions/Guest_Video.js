@@ -11,6 +11,9 @@ import {
   muteUnMuteParticipant,
   transferMeetingHost,
   removeParticipantMeeting,
+  joinPresentationRequest,
+  admitRejectPresentationAttendee,
+  removeParticipantFromPresentation,
   guestLeaveMeetingVideo,
   muteUnMuteSelf,
   hideUnHideVideoSelf,
@@ -832,6 +835,326 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
   };
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// CR(0012249) — Presentation waiting-room / admit-reject / remove flow.
+// Mirrors admitRejectAttendeeMainApi / removeParticipantMeetingMainApi
+// above (same file, same request/response plumbing style), kept as pure
+// API-layer dispatches for now — no side effects on the meeting-video
+// waitingParticipantsList/admitGuestUserRequestData state, so this can't
+// affect the existing meeting-video flow. UI wiring (waiting-list state,
+// popups) comes in a later step.
+// ─────────────────────────────────────────────────────────────────────────
+
+const joinPresentationRequestInit = () => {
+  return {
+    type: actions.JOIN_PRESENTATION_REQUEST_INIT,
+  };
+};
+
+const joinPresentationRequestSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_PRESENTATION_REQUEST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const joinPresentationRequestFail = (message) => {
+  return {
+    type: actions.JOIN_PRESENTATION_REQUEST_FAIL,
+    message: message,
+  };
+};
+
+const joinPresentationRequestMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(joinPresentationRequestInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinPresentationRequest.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(joinPresentationRequestMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Invalid-request-data-2")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_05".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              joinPresentationRequestFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            joinPresentationRequestFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(joinPresentationRequestFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const admitRejectPresentationInit = () => {
+  return {
+    type: actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_INIT,
+  };
+};
+
+const admitRejectPresentationSuccess = (response, message) => {
+  return {
+    type: actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const admitRejectPresentationFail = (message) => {
+  return {
+    type: actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_FAIL,
+    message: message,
+  };
+};
+
+const admitRejectPresentationAttendeeMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(admitRejectPresentationInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      admitRejectPresentationAttendee.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(admitRejectPresentationAttendeeMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationFail(t("Invalid-request-data-2")),
+              );
+            }
+          } else {
+            await dispatch(
+              admitRejectPresentationFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            admitRejectPresentationFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(admitRejectPresentationFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const removeParticipantPresentationInit = () => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_INIT,
+  };
+};
+
+const removeParticipantPresentationSuccess = (response, message) => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const removeParticipantPresentationFail = (message) => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_FAIL,
+    message: message,
+  };
+};
+
+// Note: the backend doc gives these response codes WITHOUT the leading
+// "Meeting_" that the other three presentation APIs use (it's literally
+// "MeetingServiceManager_RemoveParticipantFromPresentation_01", not
+// "Meeting_MeetingServiceManager_..._01") — matched exactly as documented.
+const removeParticipantFromPresentationMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(removeParticipantPresentationInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      removeParticipantFromPresentation.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(removeParticipantFromPresentationMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationFail(t("Invalid-request-data-2")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              removeParticipantPresentationFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            removeParticipantPresentationFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          removeParticipantPresentationFail(t("Something-went-wrong")),
+        );
+      });
+  };
+};
+
 const setAdmittedParticipant = (response) => {
   return {
     type: actions.SET_PARTICIPANT_NAME,
@@ -1340,6 +1663,9 @@ export {
   raiseUnRaisedHandMainApi,
   transferMeetingHostMainApi,
   removeParticipantMeetingMainApi,
+  joinPresentationRequestMainApi,
+  admitRejectPresentationAttendeeMainApi,
+  removeParticipantFromPresentationMainApi,
   setAdmittedParticipant,
   guestLeaveMeetingVideoApi,
   removeParticipantFromVideo,

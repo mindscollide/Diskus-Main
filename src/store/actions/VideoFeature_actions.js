@@ -264,6 +264,13 @@ const participantAcceptandReject = (response) => {
   };
 };
 
+const participantPresentationAcceptandReject = (response) => {
+  return {
+    type: actions.PRESENTATION_ACCEPT_AND_REMOVE_PARTICIPANTS,
+    payload: response,
+  };
+};
+
 const guestLeaveVideoMeeting = (response) => {
   return {
     type: actions.GUEST_PARTICIPANT_LEAVE_VIDEO,
@@ -522,6 +529,14 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
 const maxParticipantVideoCallPanel = (response) => {
   return {
     type: actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL,
+    response: response,
+  };
+};
+
+// CR(0012249) — see PRESENTATION_JOIN_FLOW_FLAG in action_types.js
+const presentationJoinFlowFlag = (response) => {
+  return {
+    type: actions.PRESENTATION_JOIN_FLOW_FLAG,
     response: response,
   };
 };
@@ -2997,6 +3012,64 @@ const presentationParticipantLeftMqtt = (uid) => {
   };
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// CR(0012249) — Presentation waiting-room MQTT signals. Same
+// {type, response} pass-through shape as presentationParticipantJoinedMqtt
+// above — each just captures the latest raw MQTT payload into its own new
+// reducer field. No side effects on the existing meeting-video waiting-list
+// or presenter-view state; UI wiring (which screen to show, roster
+// patching) is deferred to a later step.
+// ─────────────────────────────────────────────────────────────────────────
+
+const presentationParticipantJoinRequestMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_PARTICIPANT_JOIN_REQUESTS_MQTT,
+    response: response,
+  };
+};
+
+const presentationJoinRequestApprovedMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_JOIN_REQUEST_APPROVED_MQTT,
+    response: response,
+  };
+};
+
+const presentationJoinRequestRejectedMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_JOIN_REQUEST_REJECTED_MQTT,
+    response: response,
+  };
+};
+
+const presentationNewParticipantsJoinedMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_NEW_PARTICIPANTS_JOINED_MQTT,
+    response: response,
+  };
+};
+
+const removedFromPresentationToWaitingRoomMqtt = (response) => {
+  return {
+    type: actions.REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM_MQTT,
+    response: response,
+  };
+};
+
+const participantRemovedFromPresentationMqtt = (response) => {
+  return {
+    type: actions.PARTICIPANT_REMOVED_FROM_PRESENTATION_MQTT,
+    response: response,
+  };
+};
+
+const presentationStoppedMqtt = (response) => {
+  return {
+    type: actions.MEETING_PRESENTATION_STOPPED_MQTT,
+    response: response,
+  };
+};
+
 const getVideoPresentationParticipantsMainApi = (Data, navigate, t) => {
   return (dispatch) => {
     dispatch(getVideoPresentationParticipantInit());
@@ -3076,6 +3149,7 @@ const getVideoPresentationParticipantsMainApi = (Data, navigate, t) => {
 
 export {
   participantAcceptandReject,
+  participantPresentationAcceptandReject,
   participantWaitingList,
   participantWaitingListBox,
   videoChatPanel,
@@ -3121,6 +3195,7 @@ export {
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
+  presentationJoinFlowFlag,
   maxParticipantVideoDenied,
   maxParticipantVideoRemoved,
   participantListWaitingListMainApi,
@@ -3183,4 +3258,11 @@ export {
   getVideoPresentationParticipantsMainApi,
   presentationParticipantJoinedMqtt,
   presentationParticipantLeftMqtt,
+  presentationParticipantJoinRequestMqtt,
+  presentationJoinRequestApprovedMqtt,
+  presentationJoinRequestRejectedMqtt,
+  presentationNewParticipantsJoinedMqtt,
+  removedFromPresentationToWaitingRoomMqtt,
+  participantRemovedFromPresentationMqtt,
+  presentationStoppedMqtt,
 };

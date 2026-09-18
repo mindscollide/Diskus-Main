@@ -78,6 +78,7 @@ import {
   setAudioControlHost,
   joinPresenterViewMainApi,
   maxParticipantVideoCallPanel,
+  presentationJoinFlowFlag,
   openPresenterViewMainApi,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
@@ -1469,12 +1470,20 @@ const VideoCallNormalHeader = ({
         } else if (flag === 2) {
           setLeaveOneToOne(false);
           setPresenterForOneToOneOrGroup(false);
-          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-          let data = {
-            VideoCallURL: String(currentMeetingVideoURL),
-            WasInVideo: false,
-          };
-          dispatch(joinPresenterViewMainApi(navigate, t, data));
+          // CR(0012249): this is the OTHER "Join Presentation" trigger —
+          // fires after a participant who was in an active 1:1/group call
+          // confirms leaving it to join the presentation instead (see
+          // AgendaViewer.js's onClickStopPresenter, activeCallState branch).
+          // Same waiting-room gate as the direct-click path there:
+          // joinPresenterViewMainApi now fires later, from
+          // maxParticipantVideoCallComponent.js, only once the host
+          // approves.
+          let presentationRoomID = String(
+            localStorage.getItem("acceptedRoomID"),
+          );
+          localStorage.setItem("presentationRoomID", presentationRoomID);
+          dispatch(presentationJoinFlowFlag(true));
+          dispatch(maxParticipantVideoCallPanel(true));
         } else if (flag === 3) {
           setLeaveOneToOne(false);
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
