@@ -387,7 +387,7 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
               };
 
               dispatch(getAgendaAndVotingInfo_success(updatedResponse, ""));
-              
+
               dispatch(AgendaPollVotingStartedAction(false));
               dispatch(showCastVoteAgendaModal(true));
             } else if (
@@ -1409,7 +1409,13 @@ const AgendaVotingStatusUpdate = (
                   "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_01".toLowerCase(),
                 )
             ) {
-              dispatch(agendaVotingStatusUpdate_success(t("Voting-started")));
+              dispatch(
+                agendaVotingStatusUpdate_success(
+                  Data.DoVotingStart === true
+                    ? t("Voting-started")
+                    : t("Voting-ended"),
+                ),
+              );
               let DataGet = {
                 MeetingID: Number(advanceMeetingModalID),
               };

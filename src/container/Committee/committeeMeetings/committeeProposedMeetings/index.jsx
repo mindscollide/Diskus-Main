@@ -556,7 +556,7 @@ const CommitteeProposedMeetings = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center my-3 pagination-groups-table"
+                className="d-flex justify-content-center  pagination-groups-table"
               >
 
                 <CustomPagination

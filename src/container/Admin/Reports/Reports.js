@@ -53,6 +53,11 @@ const Reports = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchText, setSearchText] = useState([]);
+  // The Title pill must only reflect what was actually searched (committed
+  // via Enter), not the live value of the input while the user is still
+  // typing — kept separate from userLoginHistorySearch.Title, which tracks
+  // the input's live value.
+  const [committedTitleSearch, setCommittedTitleSearch] = useState("");
   const [show, SnackBar] = useSnackbar();
   const [isIpAddressValid, setIsIpAddressValid] = useState(false);
   const [userLoginHistorySearch, setUserLoginHistorySearch] = useState({
@@ -311,7 +316,7 @@ const Reports = () => {
         if (valueCheck) {
           setUserLoginHistorySearch((prevState) => ({
             ...prevState,
-            [name]: value.trim(),
+            [name]: value.trimStart(),
           }));
         }
       } else {
@@ -490,7 +495,7 @@ const Reports = () => {
       ) {
         let Data = {
           OrganizationID: Number(OrganizationID),
-          Username: userLoginHistorySearch.userName,
+          Username: userLoginHistorySearch.userName.trim(),
           UserEmail: userLoginHistorySearch.userEmail,
           IpAddress: userLoginHistorySearch.IpAddress,
           DeviceID:
@@ -525,6 +530,7 @@ const Reports = () => {
       };
       dispatch(userLoginHistory_Api(navigate, t, Data, true));
       setShowSearchText(false);
+      setCommittedTitleSearch("");
       setUserLoginHistorySearch({
         ...userLoginHistorySearch,
         userName: "",
@@ -545,9 +551,10 @@ const Reports = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      let trimmedTitle = userLoginHistorySearch.Title.trim();
       let Data = {
         OrganizationID: Number(OrganizationID),
-        Username: userLoginHistorySearch.Title,
+        Username: trimmedTitle,
         UserEmail: userLoginHistorySearch.userEmail,
         IpAddress: userLoginHistorySearch.IpAddress,
         DeviceID:
@@ -560,12 +567,42 @@ const Reports = () => {
         Length: 10,
       };
       dispatch(userLoginHistory_Api(navigate, t, Data, true));
-      setSearchText([...searchText, userLoginHistorySearch.Title]);
+      setSearchText([...searchText, trimmedTitle]);
+      setCommittedTitleSearch(trimmedTitle);
+      setShowSearchText(true);
     }
   };
 
   const handleCloseSearcbBox = () => {
     setSearchBoxExpand(false);
+    setCommittedTitleSearch("");
+    setUserLoginHistorySearch({
+      userName: "",
+      userEmail: "",
+      DateFrom: "",
+      DateForView: "",
+      DateTo: "",
+      DateToView: "",
+      IpAddress: "",
+      InterFaceType: {
+        value: 0,
+        label: "",
+      },
+      Title: "",
+    });
+
+    let Data = {
+      OrganizationID: Number(OrganizationID),
+      Username: "",
+      UserEmail: "",
+      IpAddress: "",
+      DeviceID: "",
+      DateLogin: "",
+      DateLogOut: "",
+      sRow: 0,
+      Length: 10,
+    };
+    dispatch(userLoginHistory_Api(navigate, t, Data, true));
   };
 
   const handleIputSearchIcon = () => {
@@ -587,10 +624,16 @@ const Reports = () => {
       ...userLoginHistorySearch,
       [fieldName]: "",
     });
+    if (fieldName === "Title") {
+      setCommittedTitleSearch("");
+    }
 
     let Data = {
       OrganizationID: Number(OrganizationID),
-      Username: fieldName === "userName" ? "" : userLoginHistorySearch.userName,
+      Username:
+        fieldName === "userName" || fieldName === "Title"
+          ? ""
+          : userLoginHistorySearch.userName || userLoginHistorySearch.Title,
       UserEmail:
         fieldName === "userEmail" ? "" : userLoginHistorySearch.userEmail,
       IpAddress:
@@ -672,7 +715,7 @@ const Reports = () => {
 
                   {showsearchText &&
                   (userLoginHistorySearch.userName !== "" ||
-                    userLoginHistorySearch.Title !== "" ||
+                    committedTitleSearch !== "" ||
                     userLoginHistorySearch.userEmail !== "" ||
                     userLoginHistorySearch.IpAddress !== "" ||
                     userLoginHistorySearch.DateFrom !== "" ||
@@ -704,10 +747,10 @@ const Reports = () => {
                           </div>
                         )}
 
-                        {userLoginHistorySearch.Title !== "" && (
+                        {committedTitleSearch !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
-                              {userLoginHistorySearch.Title}
+                              {committedTitleSearch}
                             </span>
                             <img
                               src={Crossicon}
@@ -716,7 +759,7 @@ const Reports = () => {
                               width={13}
                               onClick={() =>
                                 handleSearches(
-                                  userLoginHistorySearch.Title,
+                                  committedTitleSearch,
                                   "Title",
                                 )
                               }

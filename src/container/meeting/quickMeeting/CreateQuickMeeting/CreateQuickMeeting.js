@@ -69,6 +69,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
   // checkFlag 5 is for Create Meeting
+  // check 1 is for when user open meeting from header component
+  // check 2 is for when user open meeting from Calendar component
+
 
   //For Localization
   const [notify, SnackBar] = useSnackbar();
@@ -76,8 +79,14 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isQuickMeetingCreate, setIsQuickMeetingCreate } =
-    useNewMeetingContext();
+  const {
+    isQuickMeetingCreate,
+    setIsQuickMeetingCreate,
+    isQuickMeetingFromHeader,
+    setIsQuickMeetingFromHeader,
+    isQuickMeetingFromCalendar,
+    setIsQuickMeetingFromCalendar,
+  } = useNewMeetingContext();
 
   const assigneesRemindersData = useSelector(
     (state) => state.assignees.RemindersData,
@@ -860,6 +869,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     return () => {
       setModalField(false);
       setIsQuickMeetingCreate(false);
+      setIsQuickMeetingFromHeader(false);
+      setIsQuickMeetingFromCalendar(false);
       setIsDetails(true);
       setCurrentStep(1);
 
@@ -1958,15 +1969,14 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-
+    let forModalCloseState =
+      checkFlag === 1
+        ? setIsQuickMeetingFromHeader
+        : checkFlag === 2
+          ? setIsQuickMeetingFromCalendar
+          : setIsQuickMeetingCreate;
     await dispatch(
-      ScheduleNewMeeting(
-        navigate,
-        t,
-        checkFlag,
-        newData,
-        setIsQuickMeetingCreate,
-      ),
+      ScheduleNewMeeting(navigate, t, checkFlag, newData, forModalCloseState),
     );
   };
 
@@ -2080,6 +2090,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
   const handleCloseUpdateMeeting = () => {
     setIsQuickMeetingCreate(false);
+    setIsQuickMeetingFromHeader(false);
+    setIsQuickMeetingFromCalendar(false)
   };
 
   const handleChangePresenter = (value) => {
@@ -2155,9 +2167,17 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   return (
     <>
       <Modal
-        show={isQuickMeetingCreate}
+        show={
+          isQuickMeetingCreate ||
+          isQuickMeetingFromHeader ||
+          isQuickMeetingFromCalendar
+        }
         onHide={onHideHandleModal}
-        setShow={setIsQuickMeetingCreate}
+        setShow={
+          setIsQuickMeetingCreate ||
+          setIsQuickMeetingFromHeader ||
+          setIsQuickMeetingFromCalendar
+        }
         className={
           closeConfirmationModal === true
             ? null

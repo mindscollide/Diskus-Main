@@ -1105,14 +1105,7 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(77) ? (
                   <Nav.Link
                     as={Link}
-                    to={
-                      advanceMeetingCreateEditModal === true ||
-                      advanceMeetingViewModal === true ||
-                      proposedMeetingCreateEditModal === true ||
-                      proposedMeetingViewModal === true
-                        ? "/Diskus/Meeting"
-                        : "/Diskus/compliance"
-                    }
+                    to="/Diskus/compliance"
                     disabled={false}
                     draggable='false'
                     className={
@@ -1174,14 +1167,7 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(48) ? (
                   <Nav.Link
                     as={Link}
-                    to={
-                      advanceMeetingCreateEditModal === true ||
-                      advanceMeetingViewModal === true ||
-                      proposedMeetingCreateEditModal === true ||
-                      proposedMeetingViewModal === true
-                        ? "/Diskus/Meeting"
-                        : "/Diskus/committee"
-                    }
+                    to="/Diskus/committee"
                     disabled={false}
                     draggable='false'
                     className={
