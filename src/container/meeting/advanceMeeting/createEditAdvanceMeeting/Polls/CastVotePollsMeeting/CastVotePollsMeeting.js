@@ -16,6 +16,7 @@ import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_f
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
 import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
+import { formatNumber } from "../../../../../../commen/functions/utils";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
@@ -149,7 +150,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                     <span
                                       className={styles["Messege_span_Class"]}>
                                       {data.answer}{" "}
-                                      <span>({data.totalVotes})</span>
+                              <span>({formatNumber(data.totalVotes)})</span>
                                     </span>
                                   </Col>
                                 </Row>
@@ -195,7 +196,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                         )}
                                         <Progress
                                           className='Progress_bar_Polls'
-                                          percent={data.votePercentage}
+                                          percent={formatNumber(data.votePercentage)}
                                           status='active'
                                         />
                                       </Col>

@@ -17,6 +17,7 @@ import {
   GetUserRecentCallsScroll,
   callRequestReceivedMQTT,
   LeaveCall,
+  VideoCallResponse,
 } from "../../../../../../store/actions/VideoMain_actions";
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -36,6 +37,7 @@ import {
   setAudioControlHost,
   makeHostNow,
   disableZoomBeforeJoinSession,
+  getVideoCallStatusToRejoinGroupCallMainApi,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
@@ -48,10 +50,11 @@ import { DownloadCallRecording } from "../../../../../../store/actions/VideoChat
 import { LeaveMeetingVideo } from "../../../../../../store/actions/NewMeetingActions";
 import { videoRecording } from "../../../../../../store/actions/DataRoom2_actions";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
+import store from "../../../../../../store/store";
 
 const VideoPanelBodyRecent = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const dispatch = useDispatch();
@@ -90,7 +93,7 @@ const VideoPanelBodyRecent = () => {
   let changeDateFormatCurrent = moment(currentDateTime).utc();
 
   let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
-    "YYYYMMDDHHmmss"
+    "YYYYMMDDHHmmss",
   );
 
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
@@ -115,14 +118,17 @@ const VideoPanelBodyRecent = () => {
 
   const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false);
 
+  const [showCallEndedModal, setShowCallEndedModal] = useState(false);
+  const [checkingRejoinRoomId, setCheckingRejoinRoomId] = useState(null);
+
   const [recentCallRecipientData, setRecentCallRecipientData] = useState([]);
 
   const videRecording = useSelector(
-    (state) => state.DataRoomReducer.videRecording
+    (state) => state.DataRoomReducer.videRecording,
   );
   console.log(
     VideoMainReducer.RecentCallsData,
-    "VideoMainReducerRecentCallsData"
+    "VideoMainReducerRecentCallsData",
   );
 
   const searchChat = (e) => {
@@ -143,13 +149,13 @@ const VideoPanelBodyRecent = () => {
                     .includes(e.toLowerCase()) ||
                   value.callerName.toLowerCase().includes(e.toLowerCase())
                 );
-              }
+              },
             );
           setRecentVideoCalls(filteredData.length > 0 ? filteredData : []);
         } else {
           // When search input is empty, reset to original data
           setRecentVideoCalls(
-            VideoMainReducer.RecentCallsData.videoCallHistory
+            VideoMainReducer.RecentCallsData.videoCallHistory,
           );
         }
       }
@@ -171,6 +177,57 @@ const VideoPanelBodyRecent = () => {
     };
   }, []);
 
+  // Live "Rejoin" support while this panel is already open: Dashboard.js
+  // dispatches groupCallMissedByMeData ONLY when this exact user is the
+  // one who just missed a group call (see VIDEO_CALL_UNANSWERED handler)
+  // — unlike MissedCallCountMqttData, which updates for every kind of
+  // missed notification and caused a refetch loop when watched here.
+  // Check that one call's live status and patch its row in place instead
+  // of refetching the whole list.
+  useEffect(() => {
+    const missed = VideoMainReducer?.groupCallMissedByMeData;
+    if (missed && missed.roomID) {
+      (async () => {
+        await dispatch(
+          getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, {
+            RoomID: missed.roomID,
+          }),
+        );
+        const isActive =
+          store.getState().videoFeatureReducer.isVideoCallActive;
+        if (isActive) {
+          let foundMatch = false;
+          setRecentVideoCalls((prev) => {
+            const updated = prev.map((item) => {
+              if (item.roomID === missed.roomID) {
+                foundMatch = true;
+                return {
+                  ...item,
+                  callStatus: { ...item.callStatus, status: "Unanswered" },
+                };
+              }
+              return item;
+            });
+            return foundMatch ? updated : prev;
+          });
+          // This call was initiated after the panel's list was already
+          // loaded, so there's no existing row to patch — fall back to a
+          // single scoped refetch to pull it in. Only reached for this
+          // user's own genuine "missed a group call" event, so it can't
+          // loop the way watching a noisy always-changing field would.
+          if (!foundMatch) {
+            let Data = {
+              OrganizationID: currentOrganization,
+              Length: 10,
+              sRow: 0,
+            };
+            dispatch(GetUserRecentCalls(Data, navigate, t));
+          }
+        }
+      })();
+    }
+  }, [VideoMainReducer?.groupCallMissedByMeData]);
+
   //Setting state data of all users
   useEffect(() => {
     if (
@@ -182,23 +239,23 @@ const VideoPanelBodyRecent = () => {
         dispatch(ScrollRecentCalls(false));
         setSRowsData(
           (prev) =>
-            prev + VideoMainReducer?.RecentCallsData?.videoCallHistory.length
+            prev + VideoMainReducer?.RecentCallsData?.videoCallHistory.length,
         );
         setTotalRecords(VideoMainReducer?.RecentCallsData?.recentCallCount);
         let copyData = [...recentVideoCalls];
         VideoMainReducer?.RecentCallsData?.videoCallHistory.map(
           (data, index) => {
             copyData.push(data);
-          }
+          },
         );
         setRecentVideoCalls(copyData);
       } else {
         setSRowsData(
-          VideoMainReducer?.RecentCallsData?.videoCallHistory.length
+          VideoMainReducer?.RecentCallsData?.videoCallHistory.length,
         );
         setTotalRecords(VideoMainReducer?.RecentCallsData?.recentCallCount);
         setRecentVideoCalls(
-          VideoMainReducer?.RecentCallsData?.videoCallHistory
+          VideoMainReducer?.RecentCallsData?.videoCallHistory,
         );
       }
     }
@@ -273,7 +330,7 @@ const VideoPanelBodyRecent = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("activeCall", true);
-    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
 
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(getVideoRecipentData(data));
@@ -314,7 +371,7 @@ const VideoPanelBodyRecent = () => {
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
-    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
 
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(normalizeVideoPanelFlag(true));
@@ -326,6 +383,49 @@ const VideoPanelBodyRecent = () => {
       } else if (data.callType.callTypeID === 2) {
         setInitiateVideoModalGroup(true);
       }
+    }
+  };
+
+  // Rejoin a missed group call from Recent
+  const rejoinGroupCall = async (recentCallData) => {
+    const RoomID = recentCallData.roomID;
+    setCheckingRejoinRoomId(RoomID);
+    await dispatch(
+      getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, { RoomID }),
+    );
+    const isActive = store.getState().videoFeatureReducer.isVideoCallActive;
+    setCheckingRejoinRoomId(null);
+
+    if (isActive) {
+      const Data = {
+        ReciepentID: currentUserID,
+        RoomID: RoomID,
+        CallStatusID: 1,
+        CallTypeID: 2,
+      };
+      await dispatch(VideoCallResponse(Data, navigate, t));
+      localStorage.setItem("isCaller", false);
+      localStorage.setItem("CallType", 2);
+      localStorage.setItem("callTypeID", 2);
+      localStorage.setItem("acceptedRoomID", RoomID);
+      localStorage.setItem("activeRoomID", RoomID);
+      localStorage.setItem("activeCall", true);
+      // Dashboard.js's call-disconnected cleanup only resets activeCall
+      // back to false when callerID === newCallerID (see
+      // VIDEO_CALL_DISCONNECTED_CALLER). That pairing normally comes from
+      // the live incoming-call flow (incommingNewCallerID), which a
+      // rejoin skips entirely — leaving newCallerID unset/stale, so the
+      // check failed, activeCall stayed stuck true after the caller ended
+      // the call, and the next call attempt wrongly redirected to the
+      // "Already In Call" page. Set both to the same value here so that
+      // reset fires correctly.
+      localStorage.setItem("callerID", recentCallData.callerID);
+      localStorage.setItem("newCallerID", recentCallData.callerID);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+      dispatch(normalizeVideoPanelFlag(true));
+      dispatch(videoChatPanel(false));
+    } else {
+      setShowCallEndedModal(true);
     }
   };
 
@@ -378,8 +478,8 @@ const VideoPanelBodyRecent = () => {
       isDashboardVideo: false,
     };
     await dispatch(makeHostNow(meetingHost));
-          localStorage.setItem("isMeeting", true);
-  sessionStorage.setItem("isMeeting", true);
+    localStorage.setItem("isMeeting", true);
+    sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -490,8 +590,8 @@ const VideoPanelBodyRecent = () => {
       isDashboardVideo: false,
     };
     await dispatch(makeHostNow(meetingHost));
-          localStorage.setItem("isMeeting", true);
-  sessionStorage.setItem("isMeeting", true);
+    localStorage.setItem("isMeeting", true);
+    sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -787,7 +887,7 @@ const VideoPanelBodyRecent = () => {
                           <Tooltip
                             placement="top"
                             title={`${formatUserNames(
-                              recentCallData.recipients
+                              recentCallData.recipients,
                             )}`}
                           >
                             <p className="Video-chat-username m-0">
@@ -815,12 +915,12 @@ const VideoPanelBodyRecent = () => {
                               recentCallData.callType.callTypeID === 1
                                 ? recentCallData.recipients[0].userName
                                 : recentCallData.callerName !==
-                                    currentUserName &&
-                                  recentCallData.callType.callTypeID === 1
-                                ? recentCallData.callerName
-                                : recentCallData.callType.callTypeID === 2
-                                ? formatUserNames(recentCallData.recipients)
-                                : null
+                                      currentUserName &&
+                                    recentCallData.callType.callTypeID === 1
+                                  ? recentCallData.callerName
+                                  : recentCallData.callType.callTypeID === 2
+                                    ? formatUserNames(recentCallData.recipients)
+                                    : null
                             }`}
                             showArrow={false}
                           >
@@ -829,12 +929,12 @@ const VideoPanelBodyRecent = () => {
                               recentCallData.callType.callTypeID === 1
                                 ? recentCallData.recipients[0].userName
                                 : recentCallData.callerName !==
-                                    currentUserName &&
-                                  recentCallData.callType.callTypeID === 1
-                                ? recentCallData.callerName
-                                : recentCallData.callType.callTypeID === 2
-                                ? formatUserNames(recentCallData.recipients)
-                                : null}
+                                      currentUserName &&
+                                    recentCallData.callType.callTypeID === 1
+                                  ? recentCallData.callerName
+                                  : recentCallData.callType.callTypeID === 2
+                                    ? formatUserNames(recentCallData.recipients)
+                                    : null}
                               <span className="call-status-icon">
                                 {recentCallData.isIncoming === false ? (
                                   <img src={OutgoingIcon} alt="" />
@@ -853,7 +953,7 @@ const VideoPanelBodyRecent = () => {
                             <>
                               {newTimeFormaterAsPerUTCTalkTime(
                                 recentCallDateTime,
-                                lang
+                                lang,
                               )}
                             </>
                           ) : recentCallData.callDate === yesterdayDateUtc &&
@@ -862,7 +962,7 @@ const VideoPanelBodyRecent = () => {
                             <>
                               {newTimeFormaterAsPerUTCTalkDate(
                                 recentCallDateTime,
-                                lang
+                                lang,
                               ) + " "}
                               | {t("Yesterday")}
                             </>
@@ -872,7 +972,7 @@ const VideoPanelBodyRecent = () => {
                               recentCallData.callDate !== undefined
                                 ? newTimeFormaterAsPerUTCTalkDate(
                                     recentCallDateTime,
-                                    lang
+                                    lang,
                                   )
                                 : ""}
                             </>
@@ -891,17 +991,34 @@ const VideoPanelBodyRecent = () => {
                           />
                         </Tooltip>
                       ) : null}
-                      <Tooltip
-                        placement="bottomLeft"
-                        title={t("Start-video-call")}
-                      >
-                        <img
-                          alt=""
-                          className="cursor-pointer"
-                          src={VideoCallIcon}
-                          onClick={() => otoVideoCall(recentCallData)}
+                      {(recentCallData.callStatus.status === "Unanswered" ||
+                        recentCallData.callStatus.status === "Busy") &&
+                      recentCallData.callType.callTypeID === 2 ? (
+                        <Button
+                          text={t("Rejoin")}
+                          disableBtn={
+                            checkingRejoinRoomId === recentCallData.roomID
+                          }
+                          onClick={() =>
+                            checkingRejoinRoomId === null &&
+                            rejoinGroupCall(recentCallData)
+                          }
+                          iconClass="me-1 d-inline-flex align-items-center"
+                          className="rejoin-button"
                         />
-                      </Tooltip>
+                      ) : (
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Start-video-call")}
+                        >
+                          <img
+                            alt=""
+                            className="cursor-pointer"
+                            src={VideoCallIcon}
+                            onClick={() => otoVideoCall(recentCallData)}
+                          />
+                        </Tooltip>
+                      )}
                     </Col>
                   </Row>
                 </>
@@ -958,10 +1075,10 @@ const VideoPanelBodyRecent = () => {
                       isMeetingVideo
                         ? leavecallMeetingVideo
                         : callerID === currentUserID || callerID === 0
-                        ? leaveCallHostOto
-                        : callerID !== currentUserID
-                        ? leaveCallParticipantOto
-                        : null
+                          ? leaveCallHostOto
+                          : callerID !== currentUserID
+                            ? leaveCallParticipantOto
+                            : null
                     }
                   />
 
@@ -1006,16 +1123,16 @@ const VideoPanelBodyRecent = () => {
                       callerID === currentUserID || callerID === 0
                         ? t("End Host")
                         : callerID !== currentUserID
-                        ? t("End Participant")
-                        : null
+                          ? t("End Participant")
+                          : null
                     }
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHostGroup
                         : callerID !== currentUserID
-                        ? leaveCallParticipantGroup
-                        : null
+                          ? leaveCallParticipantGroup
+                          : null
                     }
                   />
 
@@ -1023,6 +1140,40 @@ const VideoPanelBodyRecent = () => {
                     text={t("Cancel")}
                     className="leave-meeting-options__btn leave-meeting-gray-button"
                     onClick={() => setInitiateVideoModalGroup(false)}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </>
+        }
+      />
+
+      <Modal
+        show={showCallEndedModal}
+        onHide={() => setShowCallEndedModal(false)}
+        setShow={setShowCallEndedModal}
+        modalFooterClassName="d-none"
+        centered
+        size={"sm"}
+        ModalBody={
+          <>
+            <Container>
+              <Row>
+                <Col lg={12} md={12} sm={12} className="textcenteredalign">
+                  <p>{t("Call-has-ended-by-the-host")}</p>
+                </Col>
+              </Row>
+              <Row className="mt-3 mb-4">
+                <Col
+                  lg={12}
+                  sm={12}
+                  md={12}
+                  className="d-flex justify-content-center gap-2"
+                >
+                  <Button
+                    text={t("Ok")}
+                    className="RejoinEndModalOkButton"
+                    onClick={() => setShowCallEndedModal(false)}
                   />
                 </Col>
               </Row>

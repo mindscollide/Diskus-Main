@@ -1,9 +1,54 @@
 .RecordingTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.DragDropText {
+  position: absolute;
+  bottom: 19px;
+  font-size: 7px;
+  font-weight: 600;
+  right: 28px;
+  color: #5a5a5a;
+  left: auto;
+}
+body[dir="rtl"] .DragDropText {
+  position: absolute;
+  bottom: 19px;
+  font-size: 8px;
+  font-weight: 600;
+  left: 43px;
+  right: auto;
+  color: #5a5a5a;
+}
+.DragDropText_dataroom {
+  position: absolute;
+  bottom: 75px;
+  font-size: 17px;
+  font-weight: 600;
+  right: 100px;
+  color: #5a5a5a;
+  left: auto;
 }
 
+body[dir="rtl"] .DragDropText_dataroom {
+  position: absolute;
+  bottom: 75px;
+  font-size: 17px;
+  font-weight: 600;
+  left: 110px;
+  right: auto;
+  color: #5a5a5a;
+}
 /* .form-check-input {
     background-image: none !important;
 } */
+.Global_pagination_styles {
+  padding: 12px 40px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background-color: #fff;
+}

@@ -123,7 +123,7 @@ const ViewMeetingModal = () => {
     iframeRef,
   } = useContext(MeetingContext);
 
-  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID } =
+  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID,handleCloseMeeting } =
     useMeetingContext();
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const advanceMeetingOperations =
@@ -142,6 +142,8 @@ const ViewMeetingModal = () => {
   const AgendaVotingModalStartedData = useSelector(
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData,
   );
+
+  console.log(AgendaVotingModalStartedData, "AgendaVotingModalStartedDataAgendaVotingModalStartedData")
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag,
   );
@@ -550,37 +552,37 @@ const ViewMeetingModal = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
-  const handleCloseMeeting = () => {
-    try {
-      setEditorRole({ status: null, role: null });
-      dispatch(resetViewTabs());
-      dispatch(toggleViewMeetingModal(false));
-      dispatch(resetCurrentMeetingInfo());
-    } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
-    }
+  // const handleCloseMeeting = () => {
+  //   try {
+  //     setEditorRole({ status: null, role: null });
+  //     dispatch(resetViewTabs());
+  //     dispatch(toggleViewMeetingModal(false));
+  //     dispatch(resetCurrentMeetingInfo());
+  //   } catch (error) {
+  //     console.log(error, "errorerrorerrorerrorerror");
+  //   }
 
-    if (committeeInfo === null && groupInfo === null) {
-      dispatch(
-        listOfMeetingsApi(
-          navigate,
-          t,
-          {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber:
-              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-            PublishedMeetings: currentView && Number(currentView) === 1,
-            ProposedMeetings: currentView && Number(currentView) === 2,
-          },
-          "",
-        ),
-      );
-    }
-  };
+  //   if (committeeInfo === null && groupInfo === null) {
+  //     dispatch(
+  //       listOfMeetingsApi(
+  //         navigate,
+  //         t,
+  //         {
+  //           Date: "",
+  //           Title: "",
+  //           HostName: "",
+  //           UserID: Number(userID),
+  //           PageNumber:
+  //             meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+  //           Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+  //           PublishedMeetings: currentView && Number(currentView) === 1,
+  //           ProposedMeetings: currentView && Number(currentView) === 2,
+  //         },
+  //         "",
+  //       ),
+  //     );
+  //   }
+  // };
   // ─── MQTT: Meeting AC/Org Removed ─────────────────────────────────────────
 
   useEffect(() => {
@@ -609,7 +611,7 @@ const ViewMeetingModal = () => {
             t,
           ),
         );
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
@@ -640,7 +642,7 @@ const ViewMeetingModal = () => {
             t,
           ),
         );
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
@@ -678,7 +680,7 @@ const ViewMeetingModal = () => {
           }
           localStorage.setItem("folderDataRoomMeeting", 0);
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
@@ -718,13 +720,13 @@ const ViewMeetingModal = () => {
   useEffect(() => {
     try {
       if (leaveMeetingOnLogoutResponse) leaveMeeting(true, false);
-    } catch {}
+    } catch { }
   }, [leaveMeetingOnLogoutResponse]);
 
   useEffect(() => {
     try {
       if (leaveMeetingOnEndStatusMqttFlag) leaveMeeting(false, true);
-    } catch {}
+    } catch { }
   }, [leaveMeetingOnEndStatusMqttFlag]);
 
   // ─── Agenda Voting MQTT ───────────────────────────────────────────────────
@@ -737,13 +739,13 @@ const ViewMeetingModal = () => {
       ) {
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
-            AgendaVotingModalStartedData.meetingID &&
+          AgendaVotingModalStartedData.meetingID &&
           !editorRole.isPrimaryOrganizer
         ) {
           dispatch(AgendaPollVotingStartedAction(true));
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [AgendaVotingModalStartedData]);
 
   // ─── Web Notification Routing ─────────────────────────────────────────────
@@ -776,7 +778,7 @@ const ViewMeetingModal = () => {
         );
         dispatch(webnotificationGlobalFlag(false));
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [globalFunctionWebnotificationFlag]);
 
   // ─── Vote Cast Success Message ────────────────────────────────────────────
@@ -893,7 +895,7 @@ const ViewMeetingModal = () => {
                   />
 
                   {isMinutePublished === "true" &&
-                  Number(editorRole.status) === 9 ? (
+                    Number(editorRole.status) === 9 ? (
                     <Button
                       text={t("Minutes")}
                       className={
@@ -915,7 +917,7 @@ const ViewMeetingModal = () => {
                       onClick={showMinutes}
                       disableBtn={
                         Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
+                          Number(editorRole.status) === 9
                           ? false
                           : true
                       }
@@ -933,7 +935,7 @@ const ViewMeetingModal = () => {
                       onClick={showActions}
                       disableBtn={
                         Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
+                          Number(editorRole.status) === 9
                           ? false
                           : true
                       }
@@ -951,7 +953,7 @@ const ViewMeetingModal = () => {
                       onClick={ShowPolls}
                       disableBtn={
                         Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
+                          Number(editorRole.status) === 9
                           ? false
                           : true
                       }
@@ -972,7 +974,7 @@ const ViewMeetingModal = () => {
                           Number(editorRole.status) === 11
                             ? true
                             : Number(editorRole.status) === 10 &&
-                                editorRole.role === "Organizer"
+                              editorRole.role === "Organizer"
                               ? false
                               : true
                         }
@@ -1024,17 +1026,14 @@ const ViewMeetingModal = () => {
               {polls && <Polls />}
               {attendance && <Attendence />}
               {isRecording && <Recording />}
-              {/* </> */}
-              {/* // ))} */}
-              {Number(editorRole.status) !== 10 && (
-                <footer className={styles["View_meeting_footer"]}>
+         
+              {/* {Number(editorRole.status) !== 10 && (
                   <Button
                     text={t("Close")}
                     className={styles["CloseMeetingButton"]}
                     onClick={handleCloseMeeting}
                   />
-                </footer>
-              )}
+              )} */}
             </span>
           </Col>
         </Row>

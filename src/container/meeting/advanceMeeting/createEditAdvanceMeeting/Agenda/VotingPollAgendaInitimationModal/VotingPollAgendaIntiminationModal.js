@@ -10,7 +10,7 @@ import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { GetAgendaAndVotingInfo } from "../../../../../../store/actions/MeetingAgenda_action";
+import { GetAgendaAndVotingInfo, GetCurrentAgendaDetails } from "../../../../../../store/actions/MeetingAgenda_action";
 const VotingPollAgendaIntiminationModal = ({
   AgendaVotingModalStartedData,
 }) => {
@@ -32,6 +32,7 @@ const VotingPollAgendaIntiminationModal = ({
       AgendaVotingID: Number(AgendaVotingModalStartedData.votingID),
     };
     dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+      dispatch(GetCurrentAgendaDetails(AgendaVotingModalStartedData));
   };
 
   const handleDiscardFunction = () => {

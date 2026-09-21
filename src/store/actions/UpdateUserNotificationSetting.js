@@ -31,7 +31,6 @@ const updateusernotificationfail = (message, response) => {
 };
 
 const getUserNotificationSetting = (navigate, userSettingData, t) => {
-
   let currentUserID = localStorage.getItem("userID");
   let Data = {
     UserNotificationSettings: {
@@ -55,7 +54,7 @@ const getUserNotificationSetting = (navigate, userSettingData, t) => {
     form.append("RequestMethod", updateUserNotificationSetting.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -65,8 +64,8 @@ const getUserNotificationSetting = (navigate, userSettingData, t) => {
             await dispatch(
               updateusernotificationsuccess(
                 response.data.responseResult.responseMessage,
-                response.data.responseResult
-              )
+                response.data.responseResult,
+              ),
             );
             await dispatch(getUserSetting(JSON.parse(currentUserID), false));
           } else {
@@ -106,7 +105,6 @@ const DiskusWebNotificationActionMethodFail = (message) => {
 };
 
 const DiskusWebNotificationActionMethodAPI = (navigate, t, data) => {
-
   return (dispatch) => {
     dispatch(DiskusWebNotificationActionMethodInit());
     let form = new FormData();
@@ -124,54 +122,58 @@ const DiskusWebNotificationActionMethodAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetUserWebNotifications_01".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserWebNotifications_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 DiskusWebNotificationActionMethodSuccess(
                   response.data.responseResult,
-                  t("Data-available")
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetUserWebNotifications_02".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserWebNotifications_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                DiskusWebNotificationActionMethodFail(t("No-data-available"))
+                DiskusWebNotificationActionMethodFail(t("No-data-available")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetUserWebNotifications_03".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserWebNotifications_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                DiskusWebNotificationActionMethodFail(t("Something-went-wrong"))
+                DiskusWebNotificationActionMethodFail(
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
-                DiskusWebNotificationActionMethodFail(t("Something-went-wrong"))
+                DiskusWebNotificationActionMethodFail(
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              DiskusWebNotificationActionMethodFail(t("Something-went-wrong"))
+              DiskusWebNotificationActionMethodFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            DiskusWebNotificationActionMethodFail(t("Something-went-wrong"))
+            DiskusWebNotificationActionMethodFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          DiskusWebNotificationActionMethodFail(t("Something-went-wrong"))
+          DiskusWebNotificationActionMethodFail(t("Something-went-wrong")),
         );
       });
   };
@@ -205,16 +207,15 @@ const DiskusWebNotificationMarkAsReadAPI = (
   t,
   data,
   setUnReadCountNotification,
-  setwebNotificationData
+  setwebNotificationData,
 ) => {
-
   return (dispatch) => {
     dispatch(DiskusWebNotificationMarkAsReadInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", DiskusWebNotificationMarkAsRead.RequestMethod);
     axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -224,8 +225,8 @@ const DiskusWebNotificationMarkAsReadAPI = (
               t,
               data,
               setUnReadCountNotification,
-              setwebNotificationData
-            )
+              setwebNotificationData,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -233,14 +234,14 @@ const DiskusWebNotificationMarkAsReadAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_01".toLowerCase()
+                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 DiskusWebNotificationMarkAsReadSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
               //For Bring Notification Count to Zero
               (await isFunction(setUnReadCountNotification)) &&
@@ -252,24 +253,24 @@ const DiskusWebNotificationMarkAsReadAPI = (
                     (notification) =>
                       notification.isRead === false
                         ? { ...notification, isRead: true } // Update isRead to true
-                        : notification // Keep as is
-                  )
+                        : notification, // Keep as is
+                  ),
                 );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_02".toLowerCase()
+                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                DiskusWebNotificationMarkAsReadFail(t("Invalid-request-data"))
+                DiskusWebNotificationMarkAsReadFail(t("Invalid-request-data")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_03".toLowerCase()
+                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_03".toLowerCase(),
                 )
             ) {
               dispatch(DiskusWebNotificationMarkAsReadFail(t("UnSuccessful")));
@@ -277,29 +278,29 @@ const DiskusWebNotificationMarkAsReadAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_04".toLowerCase()
+                  "Settings_SettingsServiceManager_MarkNotificationsAsRead_04".toLowerCase(),
                 )
             ) {
               DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong"));
             } else {
               dispatch(
-                DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong"))
+                DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong"))
+              DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong"))
+            DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong"))
+          DiskusWebNotificationMarkAsReadFail(t("Something-went-wrong")),
         );
       });
   };

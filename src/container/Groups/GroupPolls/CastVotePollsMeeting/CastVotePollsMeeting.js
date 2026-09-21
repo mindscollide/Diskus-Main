@@ -19,6 +19,7 @@ import {
   UpdatedCastVoteAPI,
 } from "../../../../store/actions/Polls_actions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
+import { formatNumber } from "../../../../commen/functions/utils";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
@@ -190,7 +191,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                       className={styles["Messege_span_Class"]}
                                     >
                                       {data.answer}{" "}
-                                      <span>({data.totalVotes})</span>
+                                  <span>({formatNumber(data.totalVotes)})</span>
                                     </span>
                                   </Col>
                                 </Row>

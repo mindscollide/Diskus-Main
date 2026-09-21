@@ -26,19 +26,19 @@ const ModalArchivedCommittee = ({
   const navigate = useNavigate();
 
   const GroupsReducerrealtimeGroupStatus = useSelector(
-    (state) => state.GroupsReducer.realtimeGroupStatus
+    (state) => state.GroupsReducer.realtimeGroupStatus,
   );
 
   const GroupsReducergetAllGroupsResponse = useSelector(
-    (state) => state.GroupsReducer.getAllGroupsResponse
+    (state) => state.GroupsReducer.getAllGroupsResponse,
   );
 
   const GroupsReducerArcheivedGroups = useSelector(
-    (state) => state.GroupsReducer.ArcheivedGroups
+    (state) => state.GroupsReducer.ArcheivedGroups,
   );
 
   const GroupsReducerArcheivedGroupsSpinner = useSelector(
-    (state) => state.GroupsReducer.Loading
+    (state) => state.GroupsReducer.Loading,
   );
 
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
@@ -95,14 +95,14 @@ const ModalArchivedCommittee = ({
           groupMembers: [...groupMembers],
         };
         const groupExists = groupsArheivedData.some(
-          (data) => data.groupID === groupID
+          (data) => data.groupID === groupID,
         );
 
         if (groupStatusID === 1 || groupStatusID === 3) {
           // Archive => remove from list if exists
           if (groupExists) {
             setGroupsArheivedData((prevGroupData) =>
-              prevGroupData.filter((data2) => data2.groupID !== groupID)
+              prevGroupData.filter((data2) => data2.groupID !== groupID),
             );
           }
         } else if (groupStatusID === 2) {
@@ -114,9 +114,7 @@ const ModalArchivedCommittee = ({
 
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
@@ -138,8 +136,12 @@ const ModalArchivedCommittee = ({
           setGroupsArheivedData(updateGroups);
         } else {
           setGroupsArheivedData([]);
+          setTotalrecord(0);
         }
       } catch (error) {}
+    } else {
+      setGroupsArheivedData([]);
+      setTotalrecord(0);
     }
   }, [GroupsReducerArcheivedGroups]);
 
@@ -256,13 +258,13 @@ const ModalArchivedCommittee = ({
                                   onClickFunction={() =>
                                     ViewGroupmodal(
                                       data.groupID,
-                                      data.groupStatusID
+                                      data.groupStatusID,
                                     )
                                   }
                                   titleOnCLick={() =>
                                     ViewGroupmodal(
                                       data.groupID,
-                                      data.groupStatusID
+                                      data.groupStatusID,
                                     )
                                   }
                                   StatusID={data.groupStatusID}
@@ -303,37 +305,20 @@ const ModalArchivedCommittee = ({
                 {groupsArheivedData.length > 0 &&
                 Object.values(groupsArheivedData).length > 0 ? (
                   <>
-                    <Row className='d-flex'>
-                      <Col lg={4} md={4} sm={4}></Col>
-                      <Col lg={4} md={4} sm={4}>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className='d-flex justify-content-center  '>
-                          <Container
-                            className={
-                              styles["PaginationStyle-Committee-Archived_modal"]
-                            }>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={"pagination-groups-table"}>
-                                <CustomPagination
-                                  total={totalRecords}
-                                  pageSize={8}
-                                  current={currentGroupPage}
-                                  onChange={handlechange}
-                                />
-                                ;
-                              </Col>
-                            </Row>
-                          </Container>
-                        </Col>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={"pagination-groups-table d-flex justify-content-center"}>
+                        <CustomPagination
+                          total={totalRecords}
+                          pageSize={8}
+                          current={currentGroupPage}
+                          onChange={handlechange}
+                        />
+                        ;
                       </Col>
-                      <Col lg={4} md={4} sm={4}></Col>
                     </Row>
                   </>
                 ) : null}

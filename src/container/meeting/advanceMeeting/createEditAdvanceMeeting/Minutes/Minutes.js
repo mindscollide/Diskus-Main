@@ -474,6 +474,8 @@ const Minutes = () => {
   }, [addMinuteID]);
 
   const handleRemovingTheMinutes = (MinuteData) => {
+
+    console.log(MinuteData, "MinuteDataMinuteDataMinuteData")
     let Data = {
       MDID: meetingID,
       MeetingGeneralMinutesID: MinuteData.minuteID,

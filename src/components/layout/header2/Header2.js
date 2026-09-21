@@ -85,6 +85,7 @@ const Header2 = ({ isVideo }) => {
   const { createNotesModal, setCreateNotesModal } = useNotesContext();
   const {
     editorRole,
+    setEditorRole,
     minutes,
     polls,
     actionsPage,
@@ -544,12 +545,20 @@ const Header2 = ({ isVideo }) => {
   };
 
   const homePageDashboardClickNoCall = () => {
+    // Was missing setEditorRole (the function's 6th positional param) —
+    // every downstream param shifted by one, so this call was actually
+    // passing setCancelConfirmationModal as setEditorRole and
+    // setGoBackCancelModal as setCancelConfirmationModal, with the real
+    // setCancelConfirmationModal/setGoBackCancelModal args left undefined.
+    // Every Sidebar.js call site already passes all 8 args in the correct
+    // order — this now matches that.
     SideBarGlobalNavigationFunctionNew(
       dispatch,
       navigate,
       t,
       defaultDashboard,
       editorRole,
+      setEditorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
     );

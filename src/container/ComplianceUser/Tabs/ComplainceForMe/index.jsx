@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import {
   formatDateToYMD,
   getDueDateTimeNumber,
+  getComplianceStatusClassKey,
 } from "../../CommonComponents/commonFunctions";
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
@@ -67,7 +68,7 @@ const ComplianceForMe = () => {
     statusFilter,
     setStatusFilter,
   } = useComplianceContext();
-  
+
 
   const TAB = {
     DASHBOARD: 1,
@@ -135,7 +136,7 @@ const ComplianceForMe = () => {
   }, [allComplianceStatusForFilter, statusFilter.length]);
 
   const handleViewCompliance = (record) => {
-    
+
     const Data = {
       complianceId: record.complianceId,
       viewType: 2,
@@ -237,16 +238,21 @@ const ComplianceForMe = () => {
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
-            options={allComplianceStatusForFilter.map((s) => ({
-              label: s.statusTitle,
-              value: s.statusTitle,
-            }))}
+            className={styles["StatusFilterCheckboxGroup"]}
             value={selectedKeys}
             onChange={(values) => setSelectedKeys(values)}
-            style={{ display: "flex", flexDirection: "column" }}
-          />
+            style={{ display: "flex", flexDirection: "column", gap: 6, }}
+          >
+            {allComplianceStatusForFilter.map((s) => (
+              <Checkbox key={s.statusTitle} value={s.statusTitle}>
+                <span className={styles[getComplianceStatusClassKey(s.statusTitle)]}>
+                  {s.statusTitle}
+                </span>
+              </Checkbox>
+            ))}
+          </Checkbox.Group>
 
-          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          <div style={{ display: "flex", gap: 8, marginTop: 10, justifyContent: "flex-end" }}>
             {/* Reset */}
             <CustomButton
               text={t("Reset")}
@@ -397,13 +403,23 @@ const ComplianceForMe = () => {
         ellipsis: true,
         align: "center",
         ...getStatusColumnProps(),
-        render: (text) => {
-          return (
-            <span>
-              <Tooltip title={text}>{text}</Tooltip>
-            </span>
-          );
-        },
+        render: (text) => <Tooltip title={text}><span className={text === "Not Started"
+          ? styles["Not_Started_value"]
+          : text === "In Progress"
+            ? styles["In_Progress_value"]
+            : text === "Completed"
+              ? styles["Completed_value"]
+              : text === "Overdue"
+                ? styles["Overdue_value"]
+                : text === "Submitted for Approval"
+                  ? styles["Submitted_for_Approval_value"]
+                  : text === "Reopened"
+                    ? styles["Reopened_value"]
+                    : text === "On Hold"
+                      ? styles["On_Hold_value"]
+                      : text === "Cancelled"
+                        ? styles["Cancelled_value"]
+                        : null}>{text}</span></Tooltip>,
       },
       {
         title: (

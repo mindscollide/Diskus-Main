@@ -265,41 +265,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           ) : null}
         </Col>
       </Row>
-      {/* <Row>
-        <Col sm={12} md={12} lg={12}>
-          <Table
-            column={MeetingColoumns}
-            scroll={scroll}
-            rows={rows}
-            pagination={false}
-            size='small'
-            className='newMeetingTable'
-            locale={{
-              emptyText: emptyText(),
-            }}
-          />
-        </Col>
-        {rows && rows.length > 0 ? (
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className={
-              "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
-              <CustomPagination
-                current={Number(currentPage)}
-                showSizer={true}
-                onChange={handleChangePagination}
-                pageSizeOptionsValues={["30", "50", "100", "200"]}
-                total={totalRecords}
-                pageSize={pageSize}
-              />
-            </span>
-          </Col>
-        ) : null}
-      </Row> */}
+
     </>
   );
 };

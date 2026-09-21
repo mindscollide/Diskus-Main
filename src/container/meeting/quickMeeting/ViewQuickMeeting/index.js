@@ -1322,6 +1322,14 @@ const ModalView = ({ ModalTitle }) => {
     // if (meetingVideoData.roleID === 2) {
     //   dispatch(maxParticipantVideoCallPanel(true));
     // } else {
+    // getParticipantMeetingJoinMainApi (VideoFeature_actions.js) sets
+    // isMeetingVideo=true on entering the call, but never sets
+    // meetingTitle — so the video header's getMeetingTitle() found
+    // isMeetingVideo true but the title itself empty/stale, showing a
+    // blank (or wrong leftover) name. Set it here from this Quick
+    // Meeting's own record before joining, regardless of how it was
+    // created (main listing, Committee, or Group).
+    localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
     let findRoleId = createMeeting.MeetingAttendees.find(
       (attendee, index) => attendee.User.PK_UID === parseInt(createrID),
     );

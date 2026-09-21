@@ -4434,12 +4434,17 @@ const DataRoom = () => {
                                           handleUploadFile
                                         }
                                         Icon={
-                                          <img
-                                            src={DrapDropIcon}
-                                            heigh='356.89'
-                                            width='356.89'
-                                            alt=''
-                                          />
+                                          <div className="position-relative">
+                                            <img
+                                              src={DrapDropIcon}
+                                              heigh='356.89'
+                                              width='356.89'
+                                              alt=''
+                                            />
+                                            <span className={"DragDropText_dataroom"}>
+                                              {t("Drop-files-here")}
+                                            </span>
+                                          </div>
                                         }
                                       />
                                     </Col>

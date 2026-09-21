@@ -332,6 +332,8 @@ const ApprovalSend = () => {
       ),
       render: (text, record) => {
         const { workFlowStatusID, status } = record;
+
+        console.log(status, "statusstatusstatusstatus")
         return (
           <p
             className={
@@ -344,7 +346,7 @@ const ApprovalSend = () => {
                     : styles["draftStatus"]
             }
           >
-            {t(status)}
+            {status === "Pending Signature" ? t("Pending-signature") :t(status)}
           </p>
         );
       },

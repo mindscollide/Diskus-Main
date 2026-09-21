@@ -181,5 +181,33 @@ p.disconnection-text {
   object-fit: cover;
   width: 50px;
   height: 50px;
+}
 
+.textcenteredalign {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #5a5a5a !important;
+}
+
+.RejoinEndModalOkButton {
+  background: #6172d6 !important;
+  border-radius: 4px;
+  border-color: #6172d6 !important;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 20px;
+  color: #fff !important;
+}
+
+.rejoin-button {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  line-height: 1;
 }

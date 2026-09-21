@@ -113,12 +113,6 @@ const ProposedNewMeeting = () => {
   const getEndTime = getEndTimeWitlCeilFunction();
   const getCurrentDateforMeeting = getCurrentDate();
   const [editProposedMeetingID, setEditProposedMeetingID] = useState(0);
-  const [EditmeetingTypeDetails, setEditmeetingTypeDetails] = useState({
-    MeetingType: {
-      PK_MTID: 0,
-      Type: "",
-    },
-  });
 
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
@@ -138,13 +132,7 @@ const ProposedNewMeeting = () => {
         const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
 
         if (isProposedMeetingRoute === 2) {
-          setEditmeetingTypeDetails({
-            MeetingType: {
-              PK_MTID: EditFlowData.meetingType.pK_MTID,
-              Type: EditFlowData.meetingType.type,
-            },
-          });
-
+        
           // Update meetingTypeDetails based on the edit flow
           setMeetingTypeDetails({
             MeetingType: {
@@ -156,6 +144,7 @@ const ProposedNewMeeting = () => {
           setProposedMeetingDetails({
             MeetingTitle: EditFlowData.meetingTitle,
             Description: EditFlowData.description,
+            ...EditFlowData,
           });
 
           setEditProposedMeetingID(EditFlowData.meetingID);
@@ -733,8 +722,8 @@ const ProposedNewMeeting = () => {
             MeetingType: meetingTypeDetails.MeetingType,
             Location: "",
             Description: proposedMeetingDetails.Description,
-            IsVideoChat: false,
-            IsTalkGroup: false,
+            IsVideoChat: proposedMeetingDetails.isVideo,
+            IsTalkGroup: proposedMeetingDetails.isTalkGroup,
             OrganizationId: Number(OrganizationID),
             MeetingDates: Dates[0] ? [Dates[0]] : [],
             MeetingReminders: [4],
@@ -830,7 +819,7 @@ const ProposedNewMeeting = () => {
             MeetingType: meetingTypeDetails.MeetingType,
             Location: "",
             Description: proposedMeetingDetails.Description,
-            IsVideoChat: false,
+            IsVideoChat: true,
             IsTalkGroup: false,
             OrganizationId: Number(OrganizationID),
             MeetingDates: Dates[0] ? [Dates[0]] : [],

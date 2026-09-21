@@ -47,17 +47,18 @@ const CreateTask = ({ setCreateaTask }) => {
   const navigate = useNavigate();
   const { Dragger } = Upload;
   const { meetingID = 0, mapFolderId = 0 } = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
 
   const getMeetingusers = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingusers
+    (state) => state.NewMeetingreducer.getMeetingusers,
   );
   const unsavedActions = useSelector(
-    (state) => state.NewMeetingreducer.unsavedActions
+    (state) => state.NewMeetingreducer.unsavedActions,
   );
   const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
   );
   //Notification State
   const [show, SnackBar] = useSnackbar();
@@ -72,7 +73,7 @@ const CreateTask = ({ setCreateaTask }) => {
   const [error, seterror] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  
+
   const [selectedTask, setSelectedTask] = useState({
     value: 0,
     label: "",
@@ -148,10 +149,10 @@ const CreateTask = ({ setCreateaTask }) => {
           Description: createTaskDetails.Description,
           IsMainTask: true,
           DeadLineDate: multiDatePickerDateChangIntoUTC(
-            createTaskDetails.date
+            createTaskDetails.date,
           ).slice(0, 8),
           DeadLineTime: multiDatePickerDateChangIntoUTC(
-            createTaskDetails.date
+            createTaskDetails.date,
           ).slice(8, 14),
           CreationDateTime: "",
         },
@@ -190,7 +191,7 @@ const CreateTask = ({ setCreateaTask }) => {
         }
 
         let fileExists = taskAttachments.some(
-          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
+          (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name,
         );
 
         if (!size) {
@@ -226,14 +227,14 @@ const CreateTask = ({ setCreateaTask }) => {
     setFileForSend((preFileforSend) =>
       preFileforSend.filter(
         (filesendData, index) =>
-          filesendData.name !== fileData.DisplayAttachmentName
-      )
+          filesendData.name !== fileData.DisplayAttachmentName,
+      ),
     );
     setTaskAttachments((fileTaskAttachment) =>
       fileTaskAttachment.filter(
         (prevFiles, index) =>
-          prevFiles.DisplayAttachmentName !== fileData.DisplayAttachmentName
-      )
+          prevFiles.DisplayAttachmentName !== fileData.DisplayAttachmentName,
+      ),
     );
   };
 
@@ -277,13 +278,13 @@ const CreateTask = ({ setCreateaTask }) => {
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadActionMeetingApi(navigate, t, newData, mapFolderId, newFolder)
+          uploadActionMeetingApi(navigate, t, newData, mapFolderId, newFolder),
         );
       });
       // Wait for all promises to resolve
       await Promise.all(uploadPromises);
       await dispatch(
-        saveFilesTaskApi(navigate, t, newFolder, mapFolderId, newSaveFiles)
+        saveFilesTaskApi(navigate, t, newFolder, mapFolderId, newSaveFiles),
       );
 
       newAttachmentData = newSaveFiles.map((data, index) => {
@@ -319,8 +320,8 @@ const CreateTask = ({ setCreateaTask }) => {
         7,
         setCreateaTask,
         newData,
-        setCreateTaskID
-      )
+        setCreateTaskID,
+      ),
     );
   };
 
@@ -405,7 +406,7 @@ const CreateTask = ({ setCreateaTask }) => {
                 });
               }
               newmembersArray.push(MeetingOrganizerData);
-            }
+            },
           );
         }
         if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
@@ -478,7 +479,7 @@ const CreateTask = ({ setCreateaTask }) => {
                 });
               }
               newmembersArray.push(MeetingAgendaContributorData);
-            }
+            },
           );
         }
         if (createMeetingTaskData.meetingParticipants.length > 0) {
@@ -550,13 +551,13 @@ const CreateTask = ({ setCreateaTask }) => {
                 });
               }
               newmembersArray.push(MeetingParticipantsData);
-            }
+            },
           );
         }
       }
-      
+
       let sortAssginersArr = newmembersArray.sort((a, b) =>
-        a.name.localeCompare(b.name)
+        a.name.localeCompare(b.name),
       );
       setTaskMemberSelect(sortAssginersArr);
     } else {
@@ -791,7 +792,6 @@ const CreateTask = ({ setCreateaTask }) => {
                         <Col className={styles["Scroller_Actions_Page"]}>
                           <Row className='ps-3'>
                             {taskAttachments.map((data, index) => {
-                              
                               return (
                                 <>
                                   <Col lg={2} md={2} sm={2}>
@@ -819,7 +819,7 @@ const CreateTask = ({ setCreateaTask }) => {
                           lg={5}
                           md={5}
                           sm={12}
-                          className='d-flex justify-content-end align-items-center'>
+                          className='d-flex justify-content-end align-items-center position-relative'>
                           <img
                             draggable={false}
                             src={DrapDropIcon}
@@ -827,6 +827,9 @@ const CreateTask = ({ setCreateaTask }) => {
                             className={styles["ClassImage"]}
                             alt=''
                           />
+                          <span className={"DragDropText"}>
+                            {t("Drop-files-here")}
+                          </span>
                         </Col>
                         <Col lg={7} md={7} sm={12}>
                           <Row className='mt-3'>
@@ -897,8 +900,8 @@ const CreateTask = ({ setCreateaTask }) => {
         </Row>
         {unsavedActions && <UnsavedActions setCreateaTask={setCreateaTask} />}
       </section>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

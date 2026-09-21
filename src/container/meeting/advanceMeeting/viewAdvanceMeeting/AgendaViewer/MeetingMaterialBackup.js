@@ -281,7 +281,7 @@ const MeetingMaterialPrev = ({
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
     {
-      title: "Document Name",
+      title: t("Document-name"),
       dataIndex: "displayFileName",
       key: "displayFileName",
       width: "300px",
@@ -309,7 +309,7 @@ const MeetingMaterialPrev = ({
       },
     },
     {
-      title: "Agenda Name",
+      title: t("Agenda-name"),
       dataIndex: "agendaName",
       key: "agendaName",
       align: "center",

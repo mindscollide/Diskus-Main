@@ -36,7 +36,7 @@ const ReopenedCompliance = () => {
       state.ComplainceSettingReducerReducer.GetComplianceReopenDashboardData,
   );
 
-  
+
 
   // Sync API response into context
   useEffect(() => {
@@ -50,22 +50,22 @@ const ReopenedCompliance = () => {
   const complianceListReopen = reopenDashboardList?.slice(0, 3) || [];
 
   const filterOptions = [
-    { label: "Due Date", value: 1 },
-    { label: "Criticality", value: 2 },
-    { label: "Authority", value: 3 },
+    { label: t("Due-date"), value: 1 },
+    { label: t("Criticality"), value: 2 },
+    { label: t("Authority"), value: 3 },
   ];
 
   const hasReopenedCompliance = reopenDashboardList?.length > 0;
 
   const handleCardClick = (complianceId) => {
-    
+
     const getViewType = localStorage.getItem("viewType");
     setMainComplianceTabs(2);
     const Data = {
       complianceId: Number(complianceId),
       viewType: Number(getViewType),
     };
-    
+
     dispatch(
       ViewComplianceDetailsByViewTypeAPI(
         navigate,

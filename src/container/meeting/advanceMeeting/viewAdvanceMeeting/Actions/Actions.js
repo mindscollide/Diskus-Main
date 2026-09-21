@@ -58,6 +58,7 @@ const Actions = () => {
     setPolls,
     advanceMeetingModalID,
     dataroomMapFolderId,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   const cancelActions = useSelector(
@@ -825,32 +826,22 @@ const Actions = () => {
                 </Row>
 
                 {Object.keys(actionsRows).length > 0 && (
-                  <Row className=''>
+                  <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center'>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={
-                            "pagination-groups-table d-flex justify-content-center"
-                          }>
-                          <span className='PaginationStyle-TodoList'>
-                            <CustomPagination
-                              onChange={handleForPagination}
-                              current={currentPage}
-                              showSizer={true}
-                              total={totalRecords}
-                              pageSizeOptionsValues={["10", "25", "50", "100"]}
-                              pageSize={currentPageSize}
-                            />
-                          </span>
-                        </Col>
-                      </Row>
+                      className={
+                        "pagination-groups-table d-flex justify-content-center"
+                      }>
+                      <CustomPagination
+                        onChange={handleForPagination}
+                        current={currentPage}
+                        showSizer={true}
+                        total={totalRecords}
+                        pageSizeOptionsValues={["10", "25", "50", "100"]}
+                        pageSize={currentPageSize}
+                      />
                     </Col>
                   </Row>
                 )}
@@ -883,6 +874,21 @@ const Actions = () => {
               </Row> */}
             </Col>
           </Row>
+          {Number(editorRole.status) !== 10 && (
+            <Row className='mt-3'>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className='d-flex justify-content-end'>
+                <Button
+                  text={t("Close")}
+                  className={"CloseMeetingButton"}
+                  onClick={handleCloseMeeting}
+                />
+              </Col>
+            </Row>
+          )}
         </>
       )}
       {viewTaskModal && (

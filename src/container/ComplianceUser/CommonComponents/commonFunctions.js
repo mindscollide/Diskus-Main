@@ -217,6 +217,28 @@ export const parseBackendDate = (dateStr) => {
   return new Date(year, month, day, hours, minutes, seconds);
 };
 
+// Maps a compliance status display string to its CSS-module class key
+// (e.g. "In Progress" -> "In_Progress_value"). Both complianceByMe.module.css
+// and complianceForMe.module.css define the same set of *_value classes —
+// pass whichever module's `styles` object applies at the call site:
+// styles[getComplianceStatusClassKey(status)]. Centralized here so the row
+// render and the status filter dropdown (which previously didn't color
+// options at all, or colored the whole group by list position instead of
+// by each option's own status) stay in sync.
+const COMPLIANCE_STATUS_CLASS_KEYS = {
+  "Not Started": "Not_Started_value",
+  "In Progress": "In_Progress_value",
+  Completed: "Completed_value",
+  Overdue: "Overdue_value",
+  "Submitted for Approval": "Submitted_for_Approval_value",
+  Reopened: "Reopened_value",
+  "On Hold": "On_Hold_value",
+  Cancelled: "Cancelled_value",
+};
+
+export const getComplianceStatusClassKey = (statusTitle) =>
+  COMPLIANCE_STATUS_CLASS_KEYS[statusTitle] || null;
+
 export const getDynamicFileName = (name) => {
   const now = new Date();
 

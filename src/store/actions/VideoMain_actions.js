@@ -874,6 +874,18 @@ const missedCallCount = (response, message) => {
   };
 };
 
+// Narrow, single-purpose signal: fired only when the CURRENT user is the
+// one whose group call just went unanswered (see Dashboard.js's
+// VIDEO_CALL_UNANSWERED handler). Kept separate from missedCallCount
+// (MissedCallCountMqttData), which updates for every kind of missed
+// notification and is too noisy to safely watch for a targeted UI update.
+const groupCallMissedByMeMQTT = (response) => {
+  return {
+    type: actions.GROUP_CALL_MISSED_BY_ME_MQTT,
+    response: response,
+  };
+};
+
 const groupCallRecipients = (response) => {
   return {
     type: actions.GROUP_CALL_RECIPIENTS,
@@ -909,6 +921,7 @@ export {
   ScrollRecentCalls,
   LeaveCall,
   missedCallCount,
+  groupCallMissedByMeMQTT,
   groupCallRecipients,
   LeaveInitmationMessegeVideoMeetAction,
   initiateVideoCallFail,

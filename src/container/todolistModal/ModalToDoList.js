@@ -622,7 +622,7 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
                         setIsCreateTodo(false);
                       }}
                       className={"cancelButton_createTodo"}
-                      text={"Cancel"}
+                      text={t("Cancel")}
                     />
                     <Button
                       onClick={createToDoList}
