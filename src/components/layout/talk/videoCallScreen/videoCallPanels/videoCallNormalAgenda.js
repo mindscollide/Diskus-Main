@@ -1,10 +1,12 @@
 import React from 'react'
 import {  Row, Col } from 'react-bootstrap'
 import { X } from 'react-bootstrap-icons'
+import { useTranslation } from 'react-i18next'
 import './videoCallNormalAgenda.css'
 import ChatPlus from '../../../../../assets/images/newElements/chatPlus.png'
 
 const VideoPanelNormalAgenda = () => {
+  const { t } = useTranslation()
   const onClickCloseAgendaHandler = () => {}
 
   return (
@@ -12,7 +14,7 @@ const VideoPanelNormalAgenda = () => {
       <div className="isAgendamedium-div-changes">
         <Row>
           <Col lg={10} md={10} sm={10}>
-            <p className="Agenda-title-heading">Agenda</p>
+            <p className="Agenda-title-heading">{t("Agenda")}</p>
           </Col>
 
           <Col lg={2} md={2} sm={2}>

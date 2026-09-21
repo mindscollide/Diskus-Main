@@ -574,6 +574,7 @@ const GroupProposedMeetings = () => {
       } catch (error) { }
     }
   }, [UserMeetPropoDatPoll]);
+  
   return (
     <>
       <Row>

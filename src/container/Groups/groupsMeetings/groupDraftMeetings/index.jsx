@@ -391,7 +391,7 @@ const GroupDraftMeetings = () => {
                 <span>
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text="More"
+                    text={t("More")}
                     icon2={
                       <img src={ChevronDownIcon} alt="Chevron Down" width={10} />
                     }

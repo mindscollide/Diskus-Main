@@ -46,7 +46,7 @@ const DismissWarningAlert = () => {
           <strong className={styles["AlertHeading"]}>
             {t("Your-subscription-will-expire-soon")}
           </strong>
-          <a className={styles["revoke"]}>Revoke Cancellation</a>
+          <a className={styles["revoke"]}>{t("Revoke-cancellation")}</a>
           <img
             className={styles["image2"]}
             alt=""

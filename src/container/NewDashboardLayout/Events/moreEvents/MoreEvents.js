@@ -140,7 +140,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
       show={moreEventModal}
       size={"md"}
       onHide={() => setMoreEventModal(false)}
-      ModalTitle={<>Events</>}
+      ModalTitle={<>{t("Events")}</>}
       modalTitleClassName={styles["Moreevents_container_title"]}
       modalHeaderClassName={styles["Moreevents_container_header"]}
       modalBodyClassName={styles["Moreevents_container_body"]}

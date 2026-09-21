@@ -66,6 +66,11 @@ export const NewMeetingProvider = ({ children }) => {
   const [draftMeetingData, setDraftMeetingData] = useState([]);
   const [draftMeetingDataRecord, setDraftMeetingDataRecord] = useState(0);
 
+  const [isQuickMeetingFromHeader, setIsQuickMeetingFromHeader] =
+    useState(false);
+  const [isQuickMeetingFromCalendar, setIsQuickMeetingFromCalendar] =
+    useState(false);
+
   // --- Local Filtering and Data Management ---
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [minutesAgo, setMinutesAgo] = useState(0);
@@ -572,9 +577,9 @@ export const NewMeetingProvider = ({ children }) => {
                   : data.type,
           value: String(data.pK_MTID),
         })),
-      ];  
+      ];
 
-      console.log(meetingtypeFilter, "meetingtypeFiltermeetingtypeFilter")
+      console.log(meetingtypeFilter, "meetingtypeFiltermeetingtypeFilter");
 
       setMeetingTypeFilter(meetingtypeFilter);
     } catch (error) {}
@@ -647,6 +652,10 @@ export const NewMeetingProvider = ({ children }) => {
     // Request payload
     requestData,
     setRequestData,
+    isQuickMeetingFromHeader,
+    setIsQuickMeetingFromHeader,
+    isQuickMeetingFromCalendar,
+    setIsQuickMeetingFromCalendar,
   };
 
   return (

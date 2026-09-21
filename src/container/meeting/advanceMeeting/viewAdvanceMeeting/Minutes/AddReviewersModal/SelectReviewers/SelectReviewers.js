@@ -418,7 +418,7 @@ const SelectReviewers = ({
                         alt=""
                       />
                       <p className={styles["agenda-title"]}>
-                        {t("General-Minutes")}
+                        {t("General-minutes")}
                       </p>
                     </div>
                   </Col>

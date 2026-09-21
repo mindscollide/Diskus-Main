@@ -702,7 +702,7 @@ const TaskViewDetailsModal = ({
               </Col> */}
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <p className={styles.label}>Task title</p>
+                <p className={styles.label}>{t("Task-title")}</p>
                 <span className={styles.taskTitle}>{task.Title}</span>
               </Col>
             </Row>
@@ -710,7 +710,7 @@ const TaskViewDetailsModal = ({
               <Col sm={12} md={6} lg={6}>
                 <Row className='mb-4'>
                   <Col sm={12} md={12} lg={12}>
-                    <p className={styles.label}>Task Description</p>
+                    <p className={styles.label}>{t("Task-description")}</p>
                     <div className={styles.TaskDescription}>
                       {task.Description}
                     </div>
@@ -718,11 +718,11 @@ const TaskViewDetailsModal = ({
                 </Row>
                 <Row className='mb-4'>
                   <Col sm={12} md={6} lg={6}>
-                    <p className={styles.label}>Assigned To</p>
+                    <p className={styles.label}>{t("Assigned-to")}</p>
                     <span>{TaskAssignedTo?.[0]?.name || "-"}</span>
                   </Col>
                   <Col sm={12} md={6} lg={6}>
-                    <p className={styles.label}>Deadline</p>
+                    <p className={styles.label}>{t("Deadline")}</p>
                     {task.DeadLineDate
                       ? newTimeFormaterAsPerUTCFullDate(
                           task.DeadLineDate + task.DeadLineTime,
@@ -733,13 +733,13 @@ const TaskViewDetailsModal = ({
                 </Row>
                 <Row className='mb-4'>
                   <Col sm={12} md={6} lg={6}>
-                    <p className={styles.label}>Status</p>
+                    <p className={styles.label}>{t("Status")}</p>
                     <span>{task.Status}</span>
                   </Col>
 
                   {isCompliance && (
                     <Col sm={12} md={6} lg={6}>
-                      <p className={styles.label}>Assigned By</p>
+                      <p className={styles.label}>{t("Assigned-by")}</p>
                       <span>
                         {TodoListReducerData?.taskCreator?.name || "-"}
                       </span>
@@ -749,7 +749,7 @@ const TaskViewDetailsModal = ({
 
                 <Row className='mb-4'>
                   <Col sm={12} md={12} lg={12}>
-                    <p className={styles.labelBig}>Attachments</p>
+                    <p className={styles.labelBig}>{t("Attachments")}</p>
                     <section className={styles.taskAttachmentsList}>
                       <Row>
                         {tasksAttachments.TasksAttachments.length > 0
@@ -803,7 +803,7 @@ const TaskViewDetailsModal = ({
               <Col sm={12} md={6} lg={6}>
                 <Row>
                   <Col sm={12} md={12} lg={12}>
-                    <p className={styles.labelBig}>Comments</p>
+                    <p className={styles.labelBig}>{t("Comments")}</p>
                     <section className={styles.taskCommentList}>
                       {taskAssigneeComments.length > 0
                         ? taskAssigneeComments.map((commentData, index) => {

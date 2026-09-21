@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col, Container, Form } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { X } from 'react-bootstrap-icons'
 import GroupIcon from '../../../../../assets/images/newElements/Peoplegroup.png'
@@ -27,6 +28,7 @@ import {
 
 const VideoLargeBody = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   // for open chat div
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [isAgendaOpen, setIsAgendaOpen] = useState(false)
@@ -253,7 +255,7 @@ const VideoLargeBody = () => {
               <div className="isAgenda-max-div">
                 <Row>
                   <Col lg={10} md={10} sm={10}>
-                    <p className="Agenda-title-max">Agenda</p>
+                    <p className="Agenda-title-max">{t("Agenda")}</p>
                   </Col>
 
                   <Col lg={2} md={2} sm={2}>
