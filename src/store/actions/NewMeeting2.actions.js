@@ -75,7 +75,9 @@ import {
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import {
   joinPresenterViewMainApi,
+  maxParticipantVideoCallPanel,
   nonMeetingVideoGlobalModal,
+  presentationJoinFlowFlag,
   presenterViewGlobalState,
   videoIconOrButtonState,
 } from "./VideoFeature_actions";
@@ -3277,12 +3279,16 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                   response.data.responseResult.isPresenterViewStarted;
 
                 if (presenterViewStatus && !activeStatusOneToOne) {
-                  dispatch(
-                    joinPresenterViewMainApi(navigate, t, {
-                      VideoCallURL: String(Data.VideoCallURL),
-                      WasInVideo: false,
-                    }),
+                  // CR(0012249): opening this meeting revealed a
+                  // presentation is already active — opens the waiting
+                  // room instead of joining directly (see the matching fix
+                  // in NewMeetingActions.js).
+                  localStorage.setItem(
+                    "presentationRoomID",
+                    String(response.data.responseResult.roomID),
                   );
+                  dispatch(presentationJoinFlowFlag(true));
+                  dispatch(maxParticipantVideoCallPanel(true));
                 } else if (presenterViewStatus && activeStatusOneToOne) {
                   localStorage.setItem("JoinpresenterForonetoone", true);
                   dispatch(nonMeetingVideoGlobalModal(true));

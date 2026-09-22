@@ -61,6 +61,7 @@ import {
   admitRejectAttendeeMainApi,
   admitRejectPresentationAttendeeMainApi,
   raiseUnRaisedHandMainApi,
+  removeParticipantFromPresentationMainApi,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
@@ -597,6 +598,29 @@ const VideoNewParticipantList = () => {
   );
 
   /**
+   * CR(0012249) — Remove a participant from the presentation. Unlike
+   * removeParticipantMeetingOnClick above, this doesn't disconnect them —
+   * the backend sends them REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM, which
+   * puts them back in the waiting room to request joining again.
+   */
+  const removeParticipantPresentationOnClick = useCallback(
+    (usersData) => {
+      setFilteredParticipants((prev) =>
+        prev.filter((p) => p.guid !== usersData.guid),
+      );
+      dispatch(
+        removeParticipantFromPresentationMainApi(navigate, t, {
+          RoomID: String(session.acceptedRoomID),
+          UID: usersData.guid,
+          Name: usersData.name,
+          MeetingID: session.currentMeetingID,
+        }),
+      );
+    },
+    [dispatch, navigate, t, session.acceptedRoomID, session.currentMeetingID],
+  );
+
+  /**
    * Admit or deny all participants currently in the waiting room at once.
    * flag === 1 → admit all, flag === 2 → deny all.
    */
@@ -1061,12 +1085,33 @@ const VideoNewParticipantList = () => {
                           {/* Status-only block when both mic and video are already disabled */}
                           {usersData.mute && usersData.hideCamera && (
                             <div className="presenter-status-text px-3 py-2">
-                              <span className="status-muted d-block">
+                              <span className={styles["status-muted"]}>
                                 {t("Mic Disabled")}
                               </span>
-                              <span className="status-hidden d-block">
+                              <br />
+
+                              <span className={styles["status-hidden"]}>
                                 {t("Video Hidden")}
                               </span>
+                              {/* CR(0012249) — presentation host can remove a
+                              participant (sends them back to the waiting
+                              room, doesn't disconnect them). Only the host
+                              gets this, unlike Mute/Hide-video above which
+                              any admitted presentation viewer can already
+                              do here today. */}
+                              <br />
+                              {isPresenterHostContext && (
+                                <span
+                                  className={styles["status-hidden"]}
+                                  onClick={() =>
+                                    removeParticipantPresentationOnClick(
+                                      usersData,
+                                    )
+                                  }
+                                >
+                                  {t("Remove")}
+                                </span>
+                              )}
                             </div>
                           )}
                           {canMute && (

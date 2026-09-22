@@ -2172,9 +2172,21 @@ const Dashboard = () => {
               // CR(0012249): sent to the participant the host just removed
               // — unlike meeting-video's REMOVED_FROM_MEETING, they go back
               // to the waiting room rather than being fully disconnected.
+              // Exit the live presenter view the same way stop/leave does
+              // elsewhere in this file, then reopen the waiting room so
+              // they can request to join again.
               dispatch(
                 removedFromPresentationToWaitingRoomMqtt(data.payload),
               );
+              dispatch(presenterViewGlobalState(0, false, false, false));
+              localStorage.setItem(
+                "presentationRoomID",
+                String(
+                  data.payload?.roomID || localStorage.getItem("acceptedRoomID"),
+                ),
+              );
+              dispatch(presentationJoinFlowFlag(true));
+              dispatch(maxParticipantVideoCallPanel(true));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()

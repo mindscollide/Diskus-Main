@@ -1557,15 +1557,18 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterFail(t("Presentation-is-already-underway")),
               );
-              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
+              // CR(0012249): a presentation is already active — this no
+              // longer joins directly, it opens the waiting room (same as
+              // clicking "Join Presentation" or receiving
+              // MEETING_PRESENTATION_STARTED). The actual join happens
+              // later via joinPresenterViewMainApi, only once the host
+              // admits the request.
+              localStorage.setItem(
+                "presentationRoomID",
+                String(response.data.responseResult.roomID),
               );
-              let data = {
-                VideoCallURL: String(currentMeetingVideoURL),
-                WasInVideo: isMeetingVideo ? true : false,
-              };
-              dispatch(joinPresenterViewMainApi(navigate, t, data));
+              dispatch(presentationJoinFlowFlag(true));
+              dispatch(maxParticipantVideoCallPanel(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
