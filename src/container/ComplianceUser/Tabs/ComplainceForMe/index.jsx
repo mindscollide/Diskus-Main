@@ -372,7 +372,7 @@ const ComplianceForMe = () => {
         key: "complianceTitle",
         width: "43%",
         ellipsis: true,
-        align: "left",
+        align: "start",
         render: (text) => <Tooltip title={text}>{text}</Tooltip>,
       },
       {
@@ -471,7 +471,7 @@ const ComplianceForMe = () => {
               /> */}
               <CustomButton
                 className={styles["actionButtons_complianceList"]}
-                text={"View Details"}
+                text={t("View-details")}
                 onClick={() => handleViewCompliance(record)}
               />
             </div>

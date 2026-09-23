@@ -5,6 +5,7 @@ import { Progress } from "antd";
 import { useSelector } from "react-redux";
 import { ComplianceEmptyState } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import { formatNumber } from "../../../../../commen/functions/utils";
 
 const QuarterlyTask = () => {
   const { t } = useTranslation();
@@ -47,8 +48,10 @@ const QuarterlyTask = () => {
             <Col xs={12}>
               <div className={styles.progressWrapper}>
                 <div className={styles.progressLabel}>
-                  {GetComlianceQuarterlyTasksDashboardData?.percentCompleted ??
-                    "0"}
+                  {formatNumber(
+                    GetComlianceQuarterlyTasksDashboardData?.percentCompleted ??
+                      0,
+                  )}
                   %
                 </div>
                 <Progress
@@ -64,12 +67,28 @@ const QuarterlyTask = () => {
                 {/* Overlay Text */}
                 <div className={styles.progressText}>
                   <span className={styles.leftText}>
-                    {GetComlianceQuarterlyTasksDashboardData?.completedOutOfTotalText ??
-                      `0/0 ${t("Completed")}`}
+                    {(() => {
+                      // completedOutOfTotalText comes from the API as plain
+                      // English (e.g. "0/2 Completed") — the trailing word
+                      // never goes through t(), so it stays English even in
+                      // Arabic. Pull out just the "completed/total" numbers
+                      // and rebuild the label with our own translated word.
+                      const [, completedCount, totalCount] =
+                        GetComlianceQuarterlyTasksDashboardData?.completedOutOfTotalText?.match(
+                          /^(\d+)\/(\d+)/,
+                        ) ?? [];
+                      return `${formatNumber(
+                        Number(completedCount ?? 0),
+                      )}/${formatNumber(Number(totalCount ?? 0))} ${t(
+                        "Completed",
+                      )}`;
+                    })()}
                   </span>
                   <span className={styles.rightText}>
-                    {`${GetComlianceQuarterlyTasksDashboardData?.remainingTasks} ${t("remaining")}` ??
-                      `0 ${t("remaining")}`}
+                    {`${formatNumber(
+                      GetComlianceQuarterlyTasksDashboardData?.remainingTasks ??
+                        0,
+                    )} ${t("Remaining")}`}
                   </span>
                 </div>
               </div>
@@ -80,14 +99,18 @@ const QuarterlyTask = () => {
             <Col xs={12} className={styles.deadlineRow}>
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>
-                  {GetComlianceQuarterlyTasksDashboardData?.dueThisMonth ?? "0"}
+                  {formatNumber(
+                    GetComlianceQuarterlyTasksDashboardData?.dueThisMonth ?? 0,
+                  )}
                 </span>{" "}
                 <span className={styles.normalText}>{t("Due-this-month")}</span>
               </span>
 
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>
-                  {GetComlianceQuarterlyTasksDashboardData?.dueThisWeek ?? "0"}
+                  {formatNumber(
+                    GetComlianceQuarterlyTasksDashboardData?.dueThisWeek ?? 0,
+                  )}
                 </span>{" "}
                 <span className={styles.normalText}>{t("Due-this-week")}</span>
               </span>

@@ -406,14 +406,17 @@ export const ComlianceProvider = ({ children }) => {
     {
       label: t("High"),
       value: 1,
+      labelString: "High",
     },
     {
       label: t("Medium"),
       value: 2,
+      labelString: "Medium",
     },
     {
       label: t("Low"),
       value: 3,
+      labelString: "Low",
     },
   ];
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
@@ -541,7 +544,7 @@ export const ComlianceProvider = ({ children }) => {
         });
 
         const selectedCriticality = criticalityOptions.find(
-          (item) => item.label === criticalityLevel,
+          (item) => item.labelString === criticalityLevel,
         );
 
         setComplianceDetailsViewState((prev) => ({
@@ -647,6 +650,9 @@ export const ComlianceProvider = ({ children }) => {
         );
 
         if (findIsExist === undefined) {
+          let criticalityObj = criticalityOptions.find(
+            (data, index) => data.value === criticality,
+          );
           // Your logic here
           let complianceObj = {
             complianceId: complianceID,
@@ -654,7 +660,7 @@ export const ComlianceProvider = ({ children }) => {
             authorityId: authorityId,
             organizationId: localStorage.getItem("organizationID"),
             description: description,
-            criticality: criticality,
+            criticality: criticalityObj !== undefined ? criticality : null,
             complianceStatusId: 1,
             complianceStatusTitle: "Not Started",
             dueDate: dueDate,

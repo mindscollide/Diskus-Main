@@ -2562,7 +2562,7 @@
   "Checklists": " قوائم التحقق",
   "Compliance-title": "عنوان الامتثال",
   "Compliance-title.click-the-icon-to-view-more-options": " عنوان الامتثال. انقر على الأيقونة لعرض المزيد من الخيارات.",
-  "compliance-description": " وصف الامتثال",
+  "Compliance-description": " وصف الامتثال",
   "Please-select-authority": " يرجى اختيار الجهة",
   "Criticality": "مستوى الأهمية",
   "Tags": " الوسوم",
@@ -2923,5 +2923,12 @@
   "IP": "عنوان IP",
   "Username": "اسم المستخدم",
   "Download-successfully": "تم التنزيل بنجاح",
-  "Select-a-country": "اختر دولة"
+  "Select-a-country": "اختر دولة",
+  "Remaining": "المتبقي",
+  "End-of-compliance": "نهاية الامتثال",
+  "Accumulative": "تراكمي",
+  "No-results-press-enter-to-add": "لا توجد نتائج، اضغط إدخال للإضافة",
+ "High": "عالي",
+  "Medium": "متوسط",
+  "Low": "منخفض"
 }

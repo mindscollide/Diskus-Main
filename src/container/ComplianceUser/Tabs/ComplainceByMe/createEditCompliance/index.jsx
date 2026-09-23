@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 import { useSelector } from "react-redux";
+import { formatNumber } from "../../../../../commen/functions/utils";
 
 const CreateEditCompliance = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ const CreateEditCompliance = () => {
 
     // Edit mode
     if (isComplianceCreatOrEdit === 2) {
-      return `Edit: ${complianceInfo?.complianceName || ""}`;
+      return `${t("Edit")}: ${complianceInfo?.complianceName || ""}`;
     }
 
     return "";
@@ -80,7 +81,7 @@ const CreateEditCompliance = () => {
           {}
           <Col sm={12} md={3} lg={3} className={styles["mainHeading2"]}>
             {complianceDetailsState.dueDate !== ""
-              ? `Due Date: ${
+              ? `${t("Due-date")}: ${
                   complianceDetailsState.dueDate !== null &&
                   complianceDetailsState.dueDate !== undefined &&
                   complianceDetailsState.dueDate !== "" &&
@@ -137,7 +138,7 @@ const CreateEditCompliance = () => {
                       ? false
                       : true
                 }
-                text={`${checklistCount} ${t("Checklists")}`}
+                text={`${formatNumber(checklistCount)} ${t("Checklists")}`}
                 onClick={() => {
                   setChecklistTabs(2);
                 }}
@@ -157,7 +158,7 @@ const CreateEditCompliance = () => {
                         ? true
                         : false
                 }
-                text={`${taskCount} ${t("Tasks")}`}
+                text={`${formatNumber(taskCount)} ${t("Tasks")}`}
                 onClick={() => {
                   setChecklistTabs(3);
                 }}

@@ -48,6 +48,7 @@ import StatusSubmitForApprovalModal from "../../../../CommonComponents/StatusCha
 import ComplianceStatusCompleteExceptionModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCompleteModal";
 import ComplianceStatusReopenedModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusReopenedModal";
 import { uploadDocumentsTaskApi } from "../../../../../../store/actions/ToDoList_action";
+import { formatNumber } from "../../../../../../commen/functions/utils";
 
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
@@ -90,7 +91,11 @@ const ComplainceDetails = () => {
     setIsReopenConfirmed,
   } = useComplianceContext();
 
-  
+  console.log(
+    criticalityOptions,
+    complianceDetailsState,
+    "criticalityOptionscriticalityOptions",
+  );
   const complianceDataroomFolderId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
@@ -98,11 +103,6 @@ const ComplainceDetails = () => {
   const complianceReopenedDetail = useSelector(
     (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails,
   );
-
-  
-
-  
-  
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -144,10 +144,6 @@ const ComplainceDetails = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
-
-  
-
-  
 
   const [editComplianceData, setEditComplianceData] = useState(null);
 
@@ -213,7 +209,7 @@ const ComplainceDetails = () => {
         });
 
         const selectedCriticality = criticalityOptions.find(
-          (item) => item.label === criticalityLevel,
+          (item) => item.labelString === criticalityLevel,
         );
         setComplianceDetailsState((prev) => ({
           ...prev,
@@ -353,7 +349,6 @@ const ComplainceDetails = () => {
         setTaskCount(totalTaskCount);
       } catch (error) {}
     } else {
-      
       //  CLEAR UI when API returns null
       setTaskCount(0);
       return;
@@ -374,9 +369,7 @@ const ComplainceDetails = () => {
           };
         });
         setAuthorityOptions(allAuthority);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   }, [getAllAuthorities]);
 
@@ -389,7 +382,6 @@ const ComplainceDetails = () => {
         setTagsOptions(GetAllTagsByOrganizationIDData.tags);
       } catch (error) {
         setTagsOptions([]);
-        
       }
     } else {
       setTagsOptions([]);
@@ -459,7 +451,6 @@ const ComplainceDetails = () => {
           ),
         );
       } else {
-        
         dispatch(
           EditComplianceAPI(
             navigate,
@@ -471,10 +462,8 @@ const ComplainceDetails = () => {
         );
       }
 
-       // ✅ DATA HERE
-    } catch (error) {
-      
-    }
+      // ✅ DATA HERE
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -483,9 +472,7 @@ const ComplainceDetails = () => {
     }
   }, [complianceDataroomFolderId, complianceReopenedDetail]);
 
-  useEffect(() => {
-    
-  }, [complianceDetailsState.dueDate]);
+  useEffect(() => {}, [complianceDetailsState.dueDate]);
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
@@ -529,9 +516,8 @@ const ComplainceDetails = () => {
           fontWeight: "600",
           color: length >= MAX_TAG_LENGTH ? "#f16b6b" : "#5a5a5a",
           whiteSpace: "nowrap",
-        }}
-      >
-        {`${length} / ${MAX_TAG_LENGTH}`}
+        }}>
+        {`${formatNumber(length)} / ${formatNumber(MAX_TAG_LENGTH)}`}
       </div>
     );
   };
@@ -569,7 +555,7 @@ const ComplainceDetails = () => {
       };
       if (complianceDetailsState.status.value === 6 && isReopenConfirmed) {
         // There should we use update with repopend compliancere
-        
+
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
           updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
@@ -579,7 +565,7 @@ const ComplainceDetails = () => {
           complianceId: complianceInfo.complianceId,
           complianceTitle: complianceDetailsState.complianceTitle,
         };
-        
+
         setEditComplianceData(Data);
         dispatch(
           AddReopenComplianceAPI(
@@ -592,7 +578,7 @@ const ComplainceDetails = () => {
         setIsReopenConfirmed(false);
         return;
       }
-      
+
       dispatch(
         EditComplianceAPI(
           navigate,
@@ -602,8 +588,7 @@ const ComplainceDetails = () => {
           ViewComplianceDetailsByViewTypeAPI,
         ),
       );
-      
-      
+
       // dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
     } else {
       const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
@@ -635,8 +620,6 @@ const ComplainceDetails = () => {
     meetingDateValueFormat2.setHours(23);
     meetingDateValueFormat2.setMinutes(59);
     meetingDateValueFormat2.setSeconds(58);
-
-    
 
     setComplianceDetailsState((prev) => ({
       ...prev,
@@ -789,7 +772,6 @@ const ComplainceDetails = () => {
 
   // Status
   const handleChangeComplianceStatus = (event) => {
-    
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
       if (complianceDetailsState.status.value === 3) {
@@ -818,8 +800,6 @@ const ComplainceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
         if (checkAnyChecklistOnPendingState || hasIncompleteChecklistOrTask) {
-          
-
           resetModalStates();
           setTempSelectedComplianceStatus(event);
           setSubmitForApprovalModal(true);
@@ -903,7 +883,7 @@ const ComplainceDetails = () => {
 
   return (
     <>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col sm={12} md={12} lg={12}>
           <div className={`${styles["labelStyle"]} ${styles["Select_label"]}`}>
             {t("Authority")}
@@ -925,13 +905,13 @@ const ComplainceDetails = () => {
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Authority") : ""
                 }
-                classNamePrefix="Select_country_Authoriy"
+                classNamePrefix='Select_country_Authoriy'
               />
             )}
           </div>
         </Col>
       </Row>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <div className={styles["ConplianceTitleInput"]}>
           <InputfieldwithCount
             label={
@@ -948,7 +928,7 @@ const ComplainceDetails = () => {
             showCount={complianceAddEditViewState === 3 ? false : true}
             maxLength={100}
             onChange={handleValueChange}
-            name="complianceTitle"
+            name='complianceTitle'
             preFixClas={
               complianceAddEditViewState === 3
                 ? "viewField_Name"
@@ -969,25 +949,24 @@ const ComplainceDetails = () => {
               errors.complianceTitle
                 ? styles["errorMessage-inLogin"]
                 : styles["errorMessage-inLogin_hidden"]
-            }
-          >
+            }>
             {errors.complianceTitle}
           </p>
         </div>
         <div className={styles["ConplianceTitleInput_loading"]}>
           {isChecklistTitleExist === true ? (
-            <Spinner size="md" className={styles["SpinnerClass"]} />
+            <Spinner size='md' className={styles["SpinnerClass"]} />
           ) : isChecklistTitleExist === false ? (
             <Check2 className={styles["CheckIcon"]} />
           ) : null}
         </div>
       </Row>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col sm={12} md={12} lg={12}>
           <TextAreafieldwithCount
             label={
               <>
-                {t("compliance-description")}
+                {t("Compliance-description")}
                 <span className={styles["sterick"]}>
                   {complianceAddEditViewState !== 3 ? " *" : ""}
                 </span>
@@ -996,13 +975,13 @@ const ComplainceDetails = () => {
             labelClass={styles["labelStyle"]}
             placeholder={
               complianceAddEditViewState !== 3
-                ? t("compliance-description")
+                ? t("Compliance-description")
                 : ""
             }
             showCount={complianceAddEditViewState === 3 ? false : true}
             maxLength={500}
             onChange={handleValueChange}
-            name="description"
+            name='description'
             preFixClas={
               complianceAddEditViewState === 3
                 ? "viewField_TextArea_Name"
@@ -1018,7 +997,7 @@ const ComplainceDetails = () => {
         </Col>
       </Row>
 
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col sm={12} md={6} lg={6}>
           <div className={`${styles["labelStyle"]} ${styles["Select_label"]}`}>
             {t("Criticality")}
@@ -1032,7 +1011,23 @@ const ComplainceDetails = () => {
             ) : (
               <Select
                 isSearchable={true}
-                options={criticalityOptions}
+                options={[
+                  {
+                    label: t("High"),
+                    value: 1,
+                    labelString: "High",
+                  },
+                  {
+                    label: t("Medium"),
+                    value: 2,
+                    labelString: "Medium",
+                  },
+                  {
+                    label: t("Low"),
+                    value: 3,
+                    arabicValue: "Low",
+                  },
+                ]}
                 labelInValue={t("Criticality")}
                 onChange={(event) =>
                   setComplianceDetailsState((prev) => ({
@@ -1040,11 +1035,11 @@ const ComplainceDetails = () => {
                     criticality: event,
                   }))
                 }
-                value={complianceDetailsState.criticality}
+                value={complianceDetailsState?.criticality}
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Criticality") : ""
                 }
-                classNamePrefix="Select_country_Authoriy"
+                classNamePrefix='Select_country_Authoriy'
                 isDisabled={
                   complianceDetailsState.authority.value === 0
                     ? true
@@ -1079,11 +1074,11 @@ const ComplainceDetails = () => {
               />
             }
             editable={false}
-            className="datePickerTodoCreate2"
+            className='datePickerTodoCreate2'
             containerClassName={"Complaince_createEditDueDate"}
             onOpenPickNewDate={true}
-            inputMode=""
-            calendarPosition="bottom-center"
+            inputMode=''
+            calendarPosition='bottom-center'
             calendar={gregorian}
             locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
             ref={calendRef}
@@ -1100,11 +1095,10 @@ const ComplainceDetails = () => {
       </Row>
 
       {complianceInfo.complianceId !== 0 && (
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col sm={12} md={4} lg={4}>
             <div
-              className={`${styles["labelStyle"]} ${styles["Select_label"]}`}
-            >
+              className={`${styles["labelStyle"]} ${styles["Select_label"]}`}>
               {t("Status")}
             </div>
             <div className={styles["Select_Authoriy_div"]}>
@@ -1119,7 +1113,7 @@ const ComplainceDetails = () => {
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Status") : ""
                 }
-                classNamePrefix="Select_country_Authoriy"
+                classNamePrefix='Select_country_Authoriy'
                 isDisabled={
                   complianceDetailsState.authority.value === 0 ? true : false
                 }
@@ -1129,7 +1123,7 @@ const ComplainceDetails = () => {
         </Row>
       )}
 
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col sm={12} md={12} lg={12}>
           <div className={styles["Select_Authoriy_div"]}>
             {complianceAddEditViewState === 3 ? (
@@ -1139,11 +1133,10 @@ const ComplainceDetails = () => {
                 <Row>
                   <Col sm={12} md={4} lg={4}>
                     <div
-                      className={`${styles["labelStyle"]} ${styles["Select_label"]}`}
-                    >
+                      className={`${styles["labelStyle"]} ${styles["Select_label"]}`}>
                       {t("Tags")}
                     </div>
-                    <div className="w-100 position-relative mt-1">
+                    <div className='w-100 position-relative mt-1'>
                       <AsyncCreatableSelect
                         cacheOptions
                         loadOptions={loadOptions}
@@ -1152,7 +1145,7 @@ const ComplainceDetails = () => {
                         onInputChange={handleInputChange}
                         onChange={handleSelectTag}
                         styles={selectStyles}
-                        classNamePrefix="tagInputBoxStyle"
+                        classNamePrefix='tagInputBoxStyle'
                         isDisabled={
                           complianceDetailsState.tags.length >= 5 ||
                           complianceDetailsState.authority.value === 0 ||
@@ -1162,12 +1155,12 @@ const ComplainceDetails = () => {
                         placeholder={t("Type-at-least-3-characters")}
                         noOptionsMessage={({ inputValue }) =>
                           inputValue.length < 3
-                            ? "No Tags"
-                            : "No results, press Enter to add"
+                            ? t("No-tags")
+                            : t("No-results-press-enter-to-add")
                         }
                         onFocus={() => setTagInputActive(true)}
                         onBlur={() => setTagInputActive(false)}
-                        formatCreateLabel={(input) => `Add "${input}"`}
+                        formatCreateLabel={(input) => `${t("Add")} "${input}"`}
                         isOptionDisabled={(option) =>
                           complianceDetailsState.tags.some(
                             (tag) => tag.tagID === option.value,
@@ -1184,8 +1177,7 @@ const ComplainceDetails = () => {
                     sm={12}
                     md={8}
                     lg={8}
-                    className="d-flex justify-content-start align-items-end flex-wrap"
-                  >
+                    className='d-flex justify-content-start align-items-end flex-wrap'>
                     {/* Selected Tags Outside */}
                     {complianceDetailsState.tags.length > 0 &&
                       complianceDetailsState.tags.map((tag) => (
@@ -1193,6 +1185,7 @@ const ComplainceDetails = () => {
                           key={tag.tagID}
                           closable
                           className={styles["tagsStyle"]}
+
                           onClose={() =>
                             setComplianceDetailsState((prev) => ({
                               ...prev,
@@ -1200,8 +1193,7 @@ const ComplainceDetails = () => {
                                 (t) => t.tagID !== tag.tagID,
                               ),
                             }))
-                          }
-                        >
+                          }>
                           {tag.tagTitle}
                         </Tag>
                       ))}
@@ -1240,7 +1232,7 @@ const ComplainceDetails = () => {
           }
         />
       </div>
-      
+
       <ComplianceCloseConfirmationModal />
       {complianceOnHoldModal && <CompliaceStatusOnHoldModal />}
       <ComplianceStatusCancelModal />

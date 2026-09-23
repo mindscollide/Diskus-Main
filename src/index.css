@@ -53,3 +53,7 @@ body[dir="rtl"] .DragDropText_dataroom {
   align-items: center;
   background-color: #fff;
 }
+
+.DashbaordSelectDropdown__value-container input {
+  left: auto !important;
+}

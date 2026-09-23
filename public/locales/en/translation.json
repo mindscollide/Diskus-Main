@@ -2567,7 +2567,7 @@
   "Compliance-title": "Compliance Title",
   "Compliance-title.click-the-icon-to-view-more-options": "Compliance Title. Click the icon to view more options.",
 
-  "compliance-description": "Compliance Description",
+  "Compliance-description": "Compliance Description",
   "Please-select-authority": "Please Select Authority",
   "Criticality": "Criticality",
   "Tags": "Tags",
@@ -2927,5 +2927,13 @@
   "Login": "Login",
   "Username": "Username",
   "Download-successffuly": "Download successffuly",
-  "Select-a-country": "Select a country"
+  "Select-a-country": "Select a country",
+  "Remaining": "remaining",
+  "End-of-compliance": "End of Compliance",
+  "Accumulative": "Accumulative",
+  "No-tags": "No tags",
+  "No-results-press-enter-to-add": "No results, press Enter to add",
+  "High": "High",
+  "Medium": "Medium",
+  "Low": "Low"
 }

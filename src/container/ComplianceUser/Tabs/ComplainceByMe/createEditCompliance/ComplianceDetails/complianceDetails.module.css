@@ -114,7 +114,10 @@
   bottom: 20px;
   right: 20px;
 }
-
+body[dir="rtl"] .buttonPosition {
+  right: auto !important;
+  left: 20px !important;
+}
 .ConplianceTitleInput {
   width: 97%;
 }
