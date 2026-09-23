@@ -257,11 +257,11 @@ const ManageAuthority = () => {
     setData((prevData) =>
       prevData.map((authority) =>
         authority?.authorityId ===
-        authorityInactiveMessage.authority.authorityId
+          authorityInactiveMessage.authority.authorityId
           ? {
-              ...authority,
-              status: authorityInactiveMessage.authority.status,
-            }
+            ...authority,
+            status: authorityInactiveMessage.authority.status,
+          }
           : authority,
       ),
     );
@@ -276,9 +276,9 @@ const ManageAuthority = () => {
       prevData.map((authority) =>
         authority?.authorityId === authorityActiveMessage.authority.authorityId
           ? {
-              ...authority,
-              status: authorityActiveMessage.authority.status,
-            }
+            ...authority,
+            status: authorityActiveMessage.authority.status,
+          }
           : authority,
       ),
     );
@@ -341,13 +341,13 @@ const ManageAuthority = () => {
       prevData.map((authority) =>
         authority?.authorityId === authorityUpdatedMessage.authority.authorityId
           ? {
-              ...authority,
-              shortCode: authorityUpdatedMessage.authority.shortCode,
-              authorityName: authorityUpdatedMessage.authority.authorityName,
-              countryName: authorityUpdatedMessage.authority.countryName,
-              sector: authorityUpdatedMessage.authority.sector,
-              status: authorityUpdatedMessage.authority.status,
-            }
+            ...authority,
+            shortCode: authorityUpdatedMessage.authority.shortCode,
+            authorityName: authorityUpdatedMessage.authority.authorityName,
+            countryName: authorityUpdatedMessage.authority.countryName,
+            sector: authorityUpdatedMessage.authority.sector,
+            status: authorityUpdatedMessage.authority.status,
+          }
           : authority,
       ),
     );
@@ -367,8 +367,8 @@ const ManageAuthority = () => {
   }, []);
 
   const statusOptions = [
-    { label: "Active", value: "Active" },
-    { label: "In Active", value: "Inactive" },
+    { label: t("Active"), value: "Active" },
+    { label: t("In-active"), value: "Inactive" },
   ];
   const getStatusColumnProps = () => ({
     filteredValue: statusFilter, // controlled filter
@@ -446,24 +446,24 @@ const ManageAuthority = () => {
         dataIndex: "shortCode",
         key: "shortCode",
         width: "10%",
-        align: "left",
+        align: "start",
         ellipsis: true,
         sorter: (a, b) =>
           shortCodeSort === "descend"
             ? b.shortCode
-                ?.toLowerCase()
-                .localeCompare(a.shortCode?.toLowerCase())
+              ?.toLowerCase()
+              .localeCompare(a.shortCode?.toLowerCase())
             : shortCodeSort === "ascend"
               ? a.shortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.shortCode?.toLowerCase())
+                ?.toLowerCase()
+                .localeCompare(b.shortCode?.toLowerCase())
               : a.shortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.shortCode?.toLowerCase()),
+                ?.toLowerCase()
+                .localeCompare(b.shortCode?.toLowerCase()),
       },
       {
         title: (
-          <span className='d-flex gap-2 align-items-center justify-content-start'>
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Authority-name")}
             {authorityNameSort === "descend" ? (
               <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
@@ -476,25 +476,25 @@ const ManageAuthority = () => {
         ),
         dataIndex: "authorityName",
         key: "authorityName",
-        width: "20%",
+        width: 200,
         ellipsis: true,
-        align: "left",
+        align: "center",
         sorter: (a, b) =>
           authorityNameSort === "descend"
             ? b.authorityName
-                ?.toLowerCase()
-                .localeCompare(a.authorityName?.toLowerCase())
+              ?.toLowerCase()
+              .localeCompare(a.authorityName?.toLowerCase())
             : authorityNameSort === "ascend"
               ? a.authorityName
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityName?.toLowerCase())
+                ?.toLowerCase()
+                .localeCompare(b.authorityName?.toLowerCase())
               : a.authorityName
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityName?.toLowerCase()),
+                ?.toLowerCase()
+                .localeCompare(b.authorityName?.toLowerCase()),
       },
       {
         title: (
-          <span className='d-flex gap-2 align-items-center justify-content-start'>
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Country")}
             {countrySort === "descend" ? (
               <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
@@ -508,25 +508,25 @@ const ManageAuthority = () => {
         sorter: (a, b) =>
           countrySort === "descend"
             ? b.countryName
-                ?.toLowerCase()
-                .localeCompare(a.countryName?.toLowerCase())
+              ?.toLowerCase()
+              .localeCompare(a.countryName?.toLowerCase())
             : countrySort === "ascend"
               ? a.countryName
-                  ?.toLowerCase()
-                  .localeCompare(b.countryName?.toLowerCase())
+                ?.toLowerCase()
+                .localeCompare(b.countryName?.toLowerCase())
               : a.countryName
-                  ?.toLowerCase()
-                  .localeCompare(b.countryName?.toLowerCase()),
+                ?.toLowerCase()
+                .localeCompare(b.countryName?.toLowerCase()),
 
         dataIndex: "countryName",
         key: "countryName",
-        width: "12%",
-        align: "left",
+        width: 120,
+        align: "center",
         ellipsis: true,
       },
       {
         title: (
-          <span className='d-flex gap-2 align-items-center justify-content-start'>
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Sector")}
             {sectorSort === "descend" ? (
               <img src={ArrowUpIcon} alt='' className='cursor-pointer' />
@@ -546,26 +546,26 @@ const ManageAuthority = () => {
 
         dataIndex: "sector",
         key: "sector",
-        width: "22%",
-        align: "left",
+       width: 120,
+        align: "center",
         ellipsis: true,
       },
       {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        width: "5%",
+        width: 120,
         align: "center",
         ellipsis: true,
         ...getStatusColumnProps(),
-        render: (text) => (text === "Inactive" ? t("In-active") : text),
+        render: (text) => (text === "Inactive" ? t("In-active") : t("Active")),
       },
       {
         title: t(""),
         dataIndex: "Delete",
         key: "Delete",
-        width: "15%",
-
+        width: 180,
+        align: "center",
         // Action buttons column
         render: (text, record) => {
           return (
@@ -574,7 +574,7 @@ const ManageAuthority = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-end align-items-center gap-4'>
+                className='d-flex justify-content-center align-items-center gap-4'>
                 {/* Delete Authority */}
                 <img
                   className='cursor-pointer'
@@ -734,7 +734,7 @@ const ManageAuthority = () => {
   };
 
   const handleChangeAuthorityFilerSorter = (pagination, filters, sorter) => {
-    
+
     // 🔁 Reset all icons first
     resetAllSorts();
 
@@ -746,7 +746,7 @@ const ManageAuthority = () => {
       setAuthorityNameSort(sorter.order);
     }
     if (sorter.columnKey === "countryName") {
-      
+
       setCountrySort(sorter.order);
     }
     if (sorter.columnKey === "sector") {
@@ -771,7 +771,7 @@ const ManageAuthority = () => {
     return data;
   }, [data]);
 
-  
+
   // ========================
   // JSX Rendering
   // ========================
@@ -957,7 +957,7 @@ const ManageAuthority = () => {
             column={columnsAuthority}
             className='Authority_Table mt-3'
             rows={rowsData}
-            scroll={{ x: "scroll", y: 500 }}
+            scroll={{ x: "max-content", y: 500 }}
             pagination={false}
             onChange={handleChangeAuthorityFilerSorter}
           />
@@ -985,10 +985,10 @@ const ManageAuthority = () => {
                   className='d-flex justify-content-center'>
                   <span className={styles["EmptyAuthorityState_heading"]}>
                     {searchPayload.shortCode !== "" ||
-                    searchPayload.authorityName !== "" ||
-                    searchPayload.countryId !== 0 ||
-                    searchPayload.sector !== "" ||
-                    searchPayload.authorityTitle !== ""
+                      searchPayload.authorityName !== "" ||
+                      searchPayload.countryId !== 0 ||
+                      searchPayload.sector !== "" ||
+                      searchPayload.authorityTitle !== ""
                       ? t("No-matching-records")
                       : t("No-authority-available")}
                   </span>
@@ -1002,10 +1002,10 @@ const ManageAuthority = () => {
                   className='d-flex justify-content-center'>
                   <span className={styles["EmptyAuthorityState_subHeading"]}>
                     {searchPayload.shortCode !== "" ||
-                    searchPayload.authorityName !== "" ||
-                    searchPayload.countryId !== 0 ||
-                    searchPayload.sector !== "" ||
-                    searchPayload.authorityTitle !== ""
+                      searchPayload.authorityName !== "" ||
+                      searchPayload.countryId !== 0 ||
+                      searchPayload.sector !== "" ||
+                      searchPayload.authorityTitle !== ""
                       ? null
                       : t("You-dont-have-any-authority-at-the-moment")}
                   </span>

@@ -1,24 +1,35 @@
-export const options = [];
+import { formatNumber } from "../../../../commen/functions/utils";
 
-for (let i = 0; i < 50; i++) {
-  options.push({
-    label: `${i + 1} ${i + 1 === 1 ? "Day" : "Days"}`,
-    value: i + 1,
-  });
-}
+// This module runs at import time (outside React), so it has no access to
+// useTranslation() — callers pass in `t` from their own component instead.
+export const getDaysOptions = (t) => {
+  const options = [];
+  for (let i = 0; i < 50; i++) {
+    options.push({
+      label: `${formatNumber(i + 1)} ${i + 1 === 1 ? t("Day") : t("Days")}`,
+      value: i + 1,
+    });
+  }
+  return options;
+};
 
-export const MonthOptions = [];
-for (let i = 0; i < 15; i++) {
-  MonthOptions.push({
-    label: `${i + 1} ${i + 1 === 1 ? "Month" : "Months"}`,
-    value: i + 1,
-  });
-}
+export const getMonthOptions = (t) => {
+  const options = [];
+  for (let i = 0; i < 15; i++) {
+    options.push({
+      label: `${formatNumber(i + 1)} ${
+        i + 1 === 1 ? t("Month") : t("Months")
+      }`,
+      value: i + 1,
+    });
+  }
+  return options;
+};
 export const autoResolutionsOptionsValues = (lastValue = 30) => {
   const options = [];
   for (let i = 1; i <= lastValue; i++) {
     options.push({
-      label: i,
+      label: formatNumber(i),
       value: i,
     });
   }

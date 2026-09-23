@@ -36,7 +36,7 @@ const CloseConfirmationModal = () => {
               </div>
               <div className={styles["ConfirmationHeading"]}>
                 {t(
-                  "“All your changes will be lost. Are you sure you want to discard them?"
+                  "“All-your-changes-will-be-lost-are-you-sure-you-want-to-discard-them"
                 )}
               </div>
             </Col>

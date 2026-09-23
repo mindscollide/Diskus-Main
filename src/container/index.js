@@ -44,7 +44,7 @@ export { default as PaymentForm2 } from "../container/Admin/Subscriptions/Paymen
 export { default as NewMeeting } from "../container/pages/meeting/MeetingTwo";
 export { default as UserSettings } from "../container/setting/UserLevelSettings/UserSettings";
 export { default as EmptyState } from "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState";
-export { default as VideoPanelMaximize } from "../components/layout/talk/videoCallScreen/videoCallPanels/videoCallMaximizePanel";
+
 export { default as RSVP } from "../container/pages/meeting/RSVP";
 
 export { default as MinutesFlow } from "../container/MinutesNewFlow/Main";

@@ -483,7 +483,7 @@ const PakageDetailsUMUpgrade = () => {
 
     // Return an object with the totals that can be used as a row in your table.
     return {
-      name: "Total",
+      name: t("Total"),
       Numberoflicenses: Number(totalOrganizationPackagePrice),
       price: Number(totalMonthlyCharges),
       Quarterlycharges: Number(totalQuarterlyCharges),

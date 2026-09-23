@@ -53,7 +53,7 @@ const QuarterlyTask = () => {
                 </div>
                 <Progress
                   percent={
-                    GetComlianceQuarterlyTasksDashboardData?.percentCompleted
+                    (GetComlianceQuarterlyTasksDashboardData?.percentCompleted)
                   }
                   className='complianceProgressBarColor'
                   trailColor='#E1E1E1'

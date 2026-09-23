@@ -2950,7 +2950,11 @@ const Dashboard = () => {
             setNotification({
               ...notification,
               notificationShow: true,
-              message: `You have received a new message from ${data.payload.data[0].senderName}`,
+              message: changeMQTTJSONOne(
+                t("NEW_ONE_TO_ONE_MESSAGE"),
+                "[SenderName]",
+                data.payload.data[0].senderName,
+              ),
             });
           }
           dispatch(mqttInsertOtoMessage(data.payload));
@@ -3006,7 +3010,13 @@ const Dashboard = () => {
             setNotification({
               ...notification,
               notificationShow: true,
-              message: `${data.payload.data[0].senderName} has sent a message in group ${data.payload.data[0].groupName}`,
+              message: changeMQQTTJSONTwo(
+                t("NEW_GROUP_MESSAGE"),
+                "[SenderName]",
+                data.payload.data[0].senderName,
+                ["GroupName"],
+                data.payload.data[0].groupName,
+              ),
             });
           }
           dispatch(mqttInsertPrivateGroupMessage(data.payload));
@@ -3036,7 +3046,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: "Selected user is blocked",
+            message: t("USER_IS_BLOCKED"),
           });
           dispatch(mqttBlockUser(data.payload));
           setNotificationID(id);
@@ -3047,7 +3057,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: "Selected user is Unblocked",
+            message: t("USER_IS_UNBLOCKED"),
           });
           dispatch(mqttUnblockUser(data.payload));
           setNotificationID(id);
@@ -3059,7 +3069,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: "Message Starred",
+            message: t("MESSAGE_FLAGGED"),
           });
           dispatch(mqttStarMessage(data.payload));
           setNotificationID(id);
@@ -3070,7 +3080,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: "Message Unstarred",
+            message: t("MESSAGE_UNFLAGGED"),
           });
           dispatch(mqttUnstarMessage(data.payload));
           setNotificationID(id);
@@ -3081,7 +3091,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: changeMQTTJSONOne(t("NEW_GROUP_CREATED"), "[FullName]",data.payload.data[0].fullName )
+            message: changeMQTTJSONOne(
+              t("NEW_GROUP_CREATED"),
+              "[FullName]",
+              data.payload.data[0].fullName,
+            ),
           });
           dispatch(mqttGroupCreated(data.payload));
 
@@ -3092,7 +3106,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Group ${data.payload.data[0].fullName} has updated`,
+            message: changeMQTTJSONOne(
+              t("GROUP_MODIFIED"),
+              "[FullName]",
+              data.payload.data[0].fullName,
+            ),
           });
           dispatch(mqttGroupUpdated(data.payload));
           setNotificationID(id);
@@ -3108,7 +3126,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
+            message: changeMQQTTJSONTwo(
+              t("NEW_BROADCAST_MESSAGE"),
+              "[BroadcastName]",
+              data.payload.data[0].broadcastName,
+            ),
           });
           dispatch(mqttInsertBroadcastMessage(data.payload));
           setNotificationID(id);
@@ -3130,7 +3152,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Message Deleted`,
+            message: t("MESSAGE_DELETED"),
           });
           setNotificationID(id);
         } else if (
@@ -3141,7 +3163,7 @@ const Dashboard = () => {
             setNotification({
               ...notification,
               notificationShow: true,
-              message: "You have left the group",
+              message: t("USER_LEFT_THE_GROUP"),
             });
             setNotificationID(id);
             dispatch(mqttGroupLeft(data.payload));
@@ -4030,9 +4052,7 @@ const Dashboard = () => {
             !isMeetingVideo &&
             isThisUserTheUnansweredRecipient
           ) {
-            dispatch(
-              groupCallMissedByMeMQTT({ roomID: data.payload.roomID }),
-            );
+            dispatch(groupCallMissedByMeMQTT({ roomID: data.payload.roomID }));
           }
 
           console.log("mqtt");
@@ -5656,12 +5676,11 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -5669,7 +5688,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -5680,14 +5699,13 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   <Outlet />
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -5696,7 +5714,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+                <img src={IconMetroAttachment} alt='' draggable='false' />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -5733,8 +5751,8 @@ const Dashboard = () => {
             // openMeetingGroupChat, so they still render this instance as
             // before.
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -5761,24 +5779,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
-                  <Row className="mb-1">
+                  <Row className='mb-1'>
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className="d-flex justify-content-center">
+                        <Col className='d-flex justify-content-center'>
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
+                            alt=''
+                            draggable='false'
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="text-center mt-4">
+                        <Col className='text-center mt-4'>
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -5791,13 +5809,12 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

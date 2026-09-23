@@ -12,9 +12,9 @@ import GroupIcon from "../../../../assets/images/GroupSetting.svg";
 import ResolutionIcon from "../../../../assets/images/new_ResolutionIcon2.svg";
 import VideoIcon from "../../../../assets/images/ColoredVideo.svg";
 import {
-  MonthOptions,
+  getMonthOptions,
   autoResolutionsOptionsValues,
-  options,
+  getDaysOptions,
 } from "./OrganizationLevelConfigValuesUM";
 import line from "../../../../assets/images/Line 27.svg";
 import { Col, Row } from "react-bootstrap";
@@ -28,7 +28,10 @@ import {
   updateOrganizationLevelSetting,
 } from "../../../../store/actions/OrganizationSettings";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
-import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  formatNumber,
+} from "../../../../commen/functions/utils";
 const OrganizationLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -2415,15 +2418,15 @@ const OrganizationLevelConfigUM = () => {
                         {t("Calendar-months-span")}
                       </span>
                       <Select
-                        options={MonthOptions}
+                        options={getMonthOptions(t)}
                         defaultValue={{
                           value: userOrganizationSetting.CalenderMonthsSpan,
-                          label: `${
-                            userOrganizationSetting.CalenderMonthsSpan
-                          }  ${
+                          label: `${formatNumber(
+                            userOrganizationSetting.CalenderMonthsSpan,
+                          )}  ${
                             userOrganizationSetting.CalenderMonthsSpan === 1
-                              ? "Month"
-                              : "Months"
+                              ? t("Month")
+                              : t("Months")
                           }`,
                         }}
                         onChange={CalendarSpanChangeHandler}
@@ -2451,17 +2454,17 @@ const OrganizationLevelConfigUM = () => {
                       <Select
                         menuShouldScrollIntoView={false}
                         isSearchable={false}
-                        options={options}
+                        options={getDaysOptions(t)}
                         value={{
                           value:
                             userOrganizationSetting.DormatInactiveUsersforDays,
-                          label: `${
-                            userOrganizationSetting.DormatInactiveUsersforDays
-                          } ${
+                          label: `${formatNumber(
+                            userOrganizationSetting.DormatInactiveUsersforDays,
+                          )} ${
                             userOrganizationSetting.DormatInactiveUsersforDays ===
                             1
-                              ? "Day"
-                              : "Days"
+                              ? t("Day")
+                              : t("Days")
                           }`,
                         }}
                         onChange={handleChangeDormant}

@@ -23,9 +23,13 @@ const Notification = React.memo(({ open, setOpen }) => {
   useEffect(() => {
     if (
       message !== t("Record-available") &&
+      message !== t("No-records-found") &&
+      message !== t("Records-found") &&
+      message !== t("Data-available") &&
+      message !== t("No-data-available") &&
       message !== "" &&
       message !== undefined &&
-      message !== null&&
+      message !== null &&
       message !== isNaN
     ) {
       if (isOpen) {

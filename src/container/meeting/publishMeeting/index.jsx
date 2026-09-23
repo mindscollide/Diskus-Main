@@ -389,8 +389,9 @@ const PublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE
+          //  || status === STATUS.NOT_CONDUCTED
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -943,17 +944,17 @@ const PublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className='d-flex justify-content-center align-items-center'>
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className='d-flex justify-content-center align-items-center'>
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },

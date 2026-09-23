@@ -714,23 +714,6 @@ const AgendaWise = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (
-  //     ResponseMessage !== t("No-record-found") &&
-  //     ResponseMessage !== t("No-records-found") &&
-  //     ResponseMessage !== "" &&
-  //     ResponseMessage !== t("No-record-found") &&
-  //     ResponseMessage !== t("List-updated-successfully") &&
-  //     ResponseMessage !== t("No-data-available")
-  //   ) {
-  //
-  //     showMessage(ResponseMessage, "success", setOpen);
-  //     dispatch(CleareMessegeNewMeeting());
-  //   } else {
-  //     dispatch(CleareMessegeNewMeeting());
-  //   }
-  // }, [ResponseMessage]);
-
   useEffect(() => {
     let Data = {
       isAgenda: true,

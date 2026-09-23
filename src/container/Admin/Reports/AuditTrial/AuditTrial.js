@@ -720,7 +720,7 @@ const AuditTrial = () => {
                           width={"100%"}
                           value={auditTrialSearch.userName}
                           iconclassname={"d-block"}
-                          placeholder={`${t("UserName")}...`}
+                          placeholder={t("Username")}
                           name={"UserName"}
                           change={handeSearchBoxTextField}
                         />

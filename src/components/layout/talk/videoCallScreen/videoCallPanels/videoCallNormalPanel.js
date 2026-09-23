@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import "./videoCallNormalPanel.css";
 import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
-import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
 import { LoaderPanelVideoScreen, Notification } from "../../../../elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
@@ -2470,9 +2469,7 @@ const VideoPanelNormal = () => {
                         <VideoPanelNormalAgenda />
                       ) : null}
 
-                      {VideoMinutesMeetingNormalFlag === true ? (
-                        <VideoPanelNormalMinutesMeeting />
-                      ) : null}
+                 
                     </Col>
                   </Row>
                 </>

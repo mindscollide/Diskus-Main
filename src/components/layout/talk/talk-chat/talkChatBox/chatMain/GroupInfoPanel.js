@@ -10,7 +10,14 @@ import GroupIcon from "../../../../../../assets/images/Group-Icon.png";
 import CloseChatIcon from "../../../../../../assets/images/Cross-Chat-Icon.png";
 import SingleIcon from "../../../../../../assets/images/Single-Icon.png";
 
-const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose }) => {
+const GroupInfoPanel = ({
+  groupId,
+  channelId,
+  groupCreatedDate,
+  lang,
+  onClose,
+}) => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -25,7 +32,11 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
   // fetched earlier, which went stale after switching groups or editing.
   useEffect(() => {
     dispatch(
-      GetAllPrivateGroupMembers(navigate, { GroupID: groupId, ChannelID: channelId }, t),
+      GetAllPrivateGroupMembers(
+        navigate,
+        { GroupID: groupId, ChannelID: channelId },
+        t,
+      ),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId, channelId]);
@@ -88,47 +99,47 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
 
   return (
     <>
-      <Row className="mt-1">
+      <Row className='mt-1'>
         <Col lg={4} md={4} sm={12}></Col>
-        <Col lg={4} md={4} sm={12} className="d-flex justify-content-center">
-          <div className="chat-groupinfo-icon">
-            <img draggable="false" src={GroupIcon} width={28} alt="" />
+        <Col lg={4} md={4} sm={12} className='d-flex justify-content-center'>
+          <div className='chat-groupinfo-icon'>
+            <img draggable='false' src={GroupIcon} width={28} alt='' />
           </div>
         </Col>
-        <Col lg={4} md={4} sm={12} className="text-end">
+        <Col lg={4} md={4} sm={12} className='text-end'>
           <img
-            className="cursor-pointer"
-            draggable="false"
+            className='cursor-pointer'
+            draggable='false'
             onClick={onClose}
             src={CloseChatIcon}
             width={10}
-            alt=""
+            alt=''
           />
         </Col>
       </Row>
-      <Row className="">
+      <Row className=''>
         <Col lg={2} md={2} sm={12}></Col>
-        <Col lg={8} md={8} sm={12} className="text-center">
-          <p className="groupinfo-groupname m-0">
+        <Col lg={8} md={8} sm={12} className='text-center'>
+          <p className='groupinfo-groupname m-0'>
             {groupInfoData === undefined || groupInfoData.length === 0
               ? ""
               : groupInfoData[0].name}
           </p>
-          <p className="groupinfo-createdon m-0">
+          <p className='groupinfo-createdon m-0'>
             {t("Created-on")}:{" "}
             {groupInfoData === undefined || groupInfoData.length === 0
               ? ""
               : newTimeFormaterAsPerUTCTalkDateTime(groupCreatedDate, lang)}
           </p>
         </Col>
-        <Col lg={2} md={2} sm={12} className="text-end"></Col>
+        <Col lg={2} md={2} sm={12} className='text-end'></Col>
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12} style={{ marginBottom: "5px" }}>
           <TextField
             maxLength={200}
-            applyClass="form-control2"
-            name="Name"
+            applyClass='form-control2'
+            name='Name'
             change={(e) => {
               searchGroupInfoUser(e.target.value);
             }}
@@ -138,28 +149,54 @@ const GroupInfoPanel = ({ groupId, channelId, groupCreatedDate, lang, onClose })
           />
         </Col>
       </Row>
-      <div className="users-list-groupinfo">
+      <div className='users-list-groupinfo'>
         {groupInfoData !== undefined &&
         groupInfoData !== null &&
         groupInfoData.length > 0
           ? [
-              ...new Map(groupInfoData.map((item) => [item.userID, item])).values(),
+              ...new Map(
+                groupInfoData.map((item) => [item.userID, item]),
+              ).values(),
             ].map((dataItem, index) => {
               return (
-                <Row style={{ alignItems: "center" }}>
-                  <Col lg={12} md={12} sm={12} style={{ paddingRight: "20px" }}>
-                    <div className="users-groupinfo">
-                      <div className="chat-profile-icon groupinfo">
-                        <img draggable="false" src={SingleIcon} width={15} alt="" />
-                      </div>
-                      <p className="groupinfo-groupusersname m-0">
-                        {dataItem.userName}
+                <Row className='mb-2 border-bottom'>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    className='d-flex align-items-center justify-content-start gap-2'>
+                    <span className='chat-profile-icon_group'>
+                      <img
+                        draggable='false'
+                        src={SingleIcon}
+                        width={15}
+                        alt=''
+                      />
+                    </span>
+
+                    <span className='groupinfo-groupusersname'>
+                      {dataItem.userName}
+                    </span>
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    className='d-flex align-items-center justify-content-end'>
+                    <div>
+                      {dataItem.adminUser === dataItem.userID ? (
+                        <span className='groupinfo-admin_group'>{t("Admin")}</span>
+                      ) : null}
+                    </div>
+
+                    {/* <div className='users-groupinfo'>
+                      <p className='groupinfo-groupusersname m-0'>
 
                         {dataItem.adminUser === dataItem.userID ? (
-                          <span className="groupinfo-admin">{t("Admin")}</span>
+                          <span className='groupinfo-admin'>{t("Admin")}</span>
                         ) : null}
                       </p>
-                    </div>
+                    </div> */}
                   </Col>
                 </Row>
               );

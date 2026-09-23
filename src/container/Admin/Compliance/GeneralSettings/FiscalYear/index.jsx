@@ -5,24 +5,30 @@ import { useTranslation } from "react-i18next";
 import styles from "./fiscalYear.module.css";
 import { TextField } from "../../../../../components/elements";
 import Select from "react-select";
+import { formatNumber } from "../../../../../commen/functions/utils";
+
+const monthLabels = {
+  en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+  ar: ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر']
+};
 
 const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
   const { t } = useTranslation();
 
   const months = useMemo(
     () => [
-      { label: "January", value: 1 },
-      { label: "February", value: 2 },
-      { label: "March", value: 3 },
-      { label: "April", value: 4 },
-      { label: "May", value: 5 },
-      { label: "June", value: 6 },
-      { label: "July", value: 7 },
-      { label: "August", value: 8 },
-      { label: "September", value: 9 },
-      { label: "October", value: 10 },
-      { label: "November", value: 11 },
-      { label: "December", value: 12 },
+      { label: t("January"), value: 1 },
+      { label: t("February"), value: 2 },
+      { label: t("March"), value: 3 },
+      { label: t("April"), value: 4 },
+      { label: t("May"), value: 5 },
+      { label: t("June"), value: 6 },
+      { label: t("July"), value: 7 },
+      { label: t("August"), value: 8 },
+      { label: t("September"), value: 9 },
+      { label: t("October"), value: 10 },
+      { label: t("November"), value: 11 },
+      { label: t("December"), value: 12 },
     ],
     []
   );
@@ -95,16 +101,22 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
     return new Date(2024, monthValue, 0).getDate();
   };
 
-  const calculateFiscalYearEndDate = (day, month) => {
-    if (!day || !month) return null;
+const calculateFiscalYearEndDate = (day, month) => {
+  if (!day || !month) return null;
 
-    // Fiscal year end = one year later, minus one day
-    const startDate = new Date(2024, month - 1, day);
-    startDate.setFullYear(startDate.getFullYear() + 1);
-    startDate.setDate(startDate.getDate() - 1);
+  // Fiscal year end = one year later, minus one day
+  const startDate = new Date(2024, month - 1, day);
+  startDate.setFullYear(startDate.getFullYear() + 1);
+  startDate.setDate(startDate.getDate() - 1);
 
-    return `${startDate.getDate()} ${months[startDate.getMonth()].label}`;
-  };
+  const lang = localStorage.getItem('i18nextLng') || 'en';
+  const dayValue = startDate.getDate();
+  const monthLabel = monthLabels[lang][startDate.getMonth()];
+
+  return lang === 'ar'
+    ? `${formatNumber(dayValue)} ${monthLabel}`
+    : `${dayValue} ${monthLabel}`;
+};
 
   return (
     <Row>

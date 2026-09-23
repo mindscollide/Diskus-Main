@@ -135,7 +135,7 @@ body[dir="rtl"] .Resolution-All-btn_Active {
 }
 
 .Resolution-vote-btn {
-  width: 60px;
+  min-width: 60px;
   height: 29px;
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -159,7 +159,7 @@ body[dir="rtl"] .Resolution-vote-btn {
 .Resolution-vote-btn:focus,
 .Resolution-vote-btn:active,
 .Resolution-vote-btn:focus-visible {
-  width: 60px !important;
+  min-width: 60px;
   height: 29px !important;
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
