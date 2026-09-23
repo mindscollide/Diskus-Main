@@ -624,6 +624,7 @@ const PublishedMeetingList = () => {
         key: "title",
         width: 300,
         ellipsis: true,
+        align: "start",
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
         render: (text, record) => (

@@ -273,8 +273,8 @@ const PrivateChats = () => {
         })
       ) : (
         <ResultMessage
-          icon={<img src={PrivateMessagesIcon} width={250} />}
-          title={"You haven't started any private conversations yet"}
+          icon={<img src={PrivateMessagesIcon} width={250} alt="" />}
+          title={t("You-haven't-started-any-private-conversations-yet")}
           className="emptyRecentChats"
         />
       )}

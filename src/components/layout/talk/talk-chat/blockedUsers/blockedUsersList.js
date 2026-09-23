@@ -188,7 +188,7 @@ const BlockedUsersList = () => {
         blockedUsersData.length === 0 ? (
         <ResultMessage
           icon={<img src={BlockedContactsIcon} width={250} />}
-          title={"Your blocked list is empty"}
+          title={t("Your-blocked-list-is-empty")}
           className="emptyRecentChats"
         />
       ) : null}

@@ -17,6 +17,7 @@ import {
   ViewComplianceDetailsByViewTypeAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
+import { formatNumber } from "../../../../commen/functions/utils";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
@@ -312,7 +313,7 @@ const ViewCompliance = () => {
                             )}
                           </span>
                           <span className={styles["progressBarHeading"]}>
-                            {`${complianceDetailsState.progressPercent}%`}
+                            {`${formatNumber(complianceDetailsState.progressPercent)}%`}
                           </span>
                         </div>
                         <ProgressLoader

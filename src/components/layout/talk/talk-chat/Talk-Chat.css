@@ -2061,6 +2061,10 @@ textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
   top: 4px;
   z-index: 9;
 }
+body[dir="rtl"] .chat-searchfield .valid-feedback{
+  right: auto !important;
+  left: -7px !important;
+}
 
 span.background-close-search {
   display: flex;

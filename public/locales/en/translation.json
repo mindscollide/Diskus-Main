@@ -1400,8 +1400,8 @@
   "Are-you-sure-note-reset-closed": "Are you sure? If you click on close button the data will reset and modal will close.",
   "No-agenda-contributor": "NO AGENDA CONTRIBUTOR",
   "There-are-no-agenda-contributors": "There are no agenda contributors",
-  "Start-date": "Start Time",
-  "End-date": "End Time",
+  "Start-date": "Start Date",
+  "End-date": "End Date",
   "Show-more": "Show more",
   "Hide-details": "Hide Details",
   "Show-details": "Show Details",
@@ -2935,5 +2935,12 @@
   "No-results-press-enter-to-add": "No results, press Enter to add",
   "High": "High",
   "Medium": "Medium",
-  "Low": "Low"
+  "Low": "Low",
+  "No-compliance-standing-report-title": "No Compliance Standing Report Title",
+  "Your-blocked-list-is-empty": "Your blocked list is empty",
+  "No-announcements-to-make-shout-to-all-your-contacts-and-make-your-voice-heard": "No announcements to make? Shout to all your contacts and make your voice heard",
+  "You-haven't-started-any-private-conversations-yet": "You haven't started any private conversations yet",
+  "You-haven't-starred-any-messages-yet-mark-important-messages-for-quick-access": "You haven't starred any messages yet. Mark important messages for quick access",
+  "No-private-groups-created-create-a-group-and-chat-with-multiple-friends-at-once": "No private groups created. Create a group and chat with multiple friends at once",
+  "Recording": "Recording"
 }

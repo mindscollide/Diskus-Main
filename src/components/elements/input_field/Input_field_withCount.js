@@ -1,60 +1,8 @@
 import { forwardRef, memo } from "react";
 import { Input } from "antd";
 import "./Input_field_withCount.css";
+import { formatNumber } from "../../../commen/functions/utils";
 const { TextArea } = Input;
-
-// const InputfieldwithCount = forwardRef(
-//   (
-//     {
-//       showCount = true,
-//       value,
-//       onChange,
-//       enterKeyHint,
-//       name,
-//       preFixClas,
-//       placeholder,
-//       maxLength,
-//       minLength,
-//       pattern,
-//       label,
-//       labelClass,
-//       prefix,
-//       onBlur,
-//       loading,
-//       onKeyDown,
-//       disabled = false,
-//       ...rest
-//     },
-//     ref
-//   ) => {
-//     const isMaxReached = maxLength && value.length >= maxLength;
-//     return (
-//       <div className="position-relative">
-//         {label && <label className={labelClass}>{label}</label>}
-
-//         <Input
-//           {...rest}
-//           showCount={showCount}
-//           value={value}
-//           onChange={onChange}
-//           name={name}
-//           enterKeyHint={enterKeyHint}
-//           placeholder={placeholder}
-//           prefixCls={preFixClas}
-//           maxLength={maxLength}
-//           minLength={minLength}
-//           pattern={pattern}
-//           prefix={prefix}
-//           onBlur={onBlur}
-//           ref={ref}
-//           onKeyDown={onKeyDown}
-//           disabled={disabled}
-//           status={isMaxReached ? "error" : ""}
-//         />
-//       </div>
-//     );
-//   }
-// );
 
 const InputfieldwithCount = forwardRef(
   (
@@ -73,26 +21,31 @@ const InputfieldwithCount = forwardRef(
       onKeyDown,
       disabled = false,
       style,
+      t,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const isMaxReached = maxLength && value.length >= maxLength;
 
     return (
-      <div className="position-relative">
+      <div className='position-relative'>
         {label && <label className={labelClass}>{label}</label>}
 
         <Input
           {...rest}
           style={style}
+          
           value={value}
           onChange={onChange}
           name={name}
           placeholder={placeholder}
           prefixCls={preFixClas}
           maxLength={maxLength}
-          showCount={showCount}
+          showCount={{
+            formatter: ({ count, maxLength }) => `${formatNumber(count)} / ${formatNumber(maxLength)}`,
+
+          }}
           prefix={prefix}
           onBlur={onBlur}
           ref={ref}
@@ -102,7 +55,7 @@ const InputfieldwithCount = forwardRef(
         />
       </div>
     );
-  }
+  },
 );
 
 const TextAreafieldwithCount = memo(
@@ -129,7 +82,7 @@ const TextAreafieldwithCount = memo(
     const isMaxReached = maxLength && value.length >= maxLength;
     return (
       <>
-        <div className="position-relative">
+        <div className='position-relative'>
           <label className={labelClass}>{label}</label>
           <TextArea
             showCount={showCount}
@@ -152,7 +105,7 @@ const TextAreafieldwithCount = memo(
         </div>
       </>
     );
-  }
+  },
 );
 
 export { InputfieldwithCount, TextAreafieldwithCount };

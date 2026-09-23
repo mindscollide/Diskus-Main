@@ -1396,9 +1396,8 @@
   "No-more-levels-to-climb": "لا مزيد من المستويات لتسلقها..",
   "Are-you-sure-note-reset-closed": "هل أنت متأكد؟ إذا نقرت على زر الإغلاق، فسيتم إعادة ضبط البيانات وسيتم إغلاق النموذج.",
   "No-agenda-contributor": "لا يوجد مساهم في جدول الأعمال",
-  "There-are-no-agenda-contributors": "لا يوجد مساهمون في جدول الأعمال",
-  "Start-date": "وقت البداية",
-  "End-date": "وقت النهاية",
+  "Start-date": "تاريخ البداية",
+  "End-date": "تاريخ النهاية",
   "Show-more": "اظهار التفاصيل",
   "Hide-details": "اخفاء التفاصيل",
   "Show-details": "اظهار التفاصيل",
@@ -2928,7 +2927,14 @@
   "End-of-compliance": "نهاية الامتثال",
   "Accumulative": "تراكمي",
   "No-results-press-enter-to-add": "لا توجد نتائج، اضغط إدخال للإضافة",
- "High": "عالي",
+  "High": "عالي",
   "Medium": "متوسط",
-  "Low": "منخفض"
+  "Low": "منخفض",
+  "No-compliance-standing-report-title": "عنوان تقرير حالة عدم الامتثال",
+  "Your-blocked-list-is-empty": "قائمة الحظر الخاصة بك فارغة",
+  "No-announcements-to-make-shout-to-all-your-contacts-and-make-your-voice-heard": "لا توجد إعلانات لتقديمها؟ اصرخ لجميع جهات اتصالك واجعل صوتك مسموعًا",
+  "You-haven't-started-any-private-conversations-yet": "لم تبدأ أي محادثات خاصة بعد",
+  "You-haven't-starred-any-messages-yet-mark-important-messages-for-quick-access": "لم تميّز أي رسائل بعد. ميّز الرسائل المهمة للوصول السريع",
+  "No-private-groups-created-create-a-group-and-chat-with-multiple-friends-at-once": "لم يتم إنشاء أي مجموعات خاصة. أنشئ مجموعة وتحدث مع عدة أصدقاء في وقت واحد",
+    "Recording": "التسجيل"
 }

@@ -142,7 +142,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                           name="InvoiceEnd"
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder={t("End-dates")}
+                          placeholder={t("End-date")}
                           value={paymentInvoiceSection.InvoiceEnd}
                         />
                       </Col>
@@ -179,7 +179,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                           onKeyDown={(event) => enterHandler(event, Invoice)}
                           applyClass="form-control2"
                           className="payment-history-select"
-                          placeholder={t("End-dates")}
+                          placeholder={t("End-date")}
                           value={paymentInvoiceSection.PaymentEnd}
                         />
                       </Col>

@@ -279,7 +279,7 @@ const ModalToDoListChecklist = ({
 
     // Step 2: Validate and process task creation date and time
     if (!task.creationDate) {
-      notify(t("Due date is required"), "error"); // Validate task creation date
+      notify(t("Due-date-is-required"), "error"); // Validate task creation date
       return;
     }
 
@@ -584,7 +584,7 @@ const ModalToDoListChecklist = ({
                       name="Title"
                       applyClass="createtodo-title"
                       type="text"
-                      placeholder={t("Task title")}
+                      placeholder={t("Task-title")}
                       required
                       value={task.Title}
                       labelclass={"d-none"}
@@ -773,7 +773,7 @@ const ModalToDoListChecklist = ({
                       setIsCreateTodo(false);
                     }}
                     className={"cancelButton_createTodo"}
-                    text={"Cancel"}
+                    text={t("Cancel")}
                   />
                   <Button
                     onClick={createToDoList}

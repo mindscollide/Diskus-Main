@@ -702,7 +702,7 @@ const TaskViewDetailsModal = ({
               </Col> */}
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <p className={styles.label}>{t("Task-title")}</p>
+                <p className={styles.label}>{t("Title")}</p>
                 <span className={styles.taskTitle}>{task.Title}</span>
               </Col>
             </Row>
@@ -710,7 +710,7 @@ const TaskViewDetailsModal = ({
               <Col sm={12} md={6} lg={6}>
                 <Row className='mb-4'>
                   <Col sm={12} md={12} lg={12}>
-                    <p className={styles.label}>{t("Task-description")}</p>
+                    <p className={styles.label}>{t("Description")}</p>
                     <div className={styles.TaskDescription}>
                       {task.Description}
                     </div>

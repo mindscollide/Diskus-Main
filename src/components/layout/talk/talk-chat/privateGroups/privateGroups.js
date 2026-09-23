@@ -344,7 +344,7 @@ const PrivateGroups = () => {
         <ResultMessage
           icon={<img src={PrivateGroupIcon} width={250} alt="" />}
           title={
-            "No private groups created. Create a group and chat with multiple friends at once"
+            t("No-private-groups-created-create-a-group-and-chat-with-multiple-friends-at-once")
           }
           className="emptyRecentChats"
         />

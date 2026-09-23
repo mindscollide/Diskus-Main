@@ -239,7 +239,7 @@ export const _justShowDateformat = (dateTime) => {
   return locale === "ar"
     ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
         /[0-9]/g,
-        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+        (d) => "٠١٢٣٤٥٦٧٨٩"[d],
       )
     : `${formattedDay} ${formattedMonth}, ${formattedYear}`;
 };
@@ -328,7 +328,7 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
 
   // let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
   let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
-    "YYYYMMDD"
+    "YYYYMMDD",
   );
 
   return _dateTime;
@@ -430,38 +430,34 @@ export const editResolutionTimeView = (dateTime) => {
 
 export const resolutionResultTable = (dateTime) => {
   try {
-    if(dateTime !== null && dateTime !== undefined) {
+    if (dateTime !== null && dateTime !== undefined) {
       if (!dateTime || dateTime.length < 14) {
         return "Invalid date";
       }
     }
     let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
+      dateTime.slice(0, 4) +
+      "-" +
+      dateTime.slice(4, 6) +
+      "-" +
+      dateTime.slice(6, 8) +
+      "T" +
+      dateTime.slice(8, 10) +
+      ":" +
+      dateTime.slice(10, 12) +
+      ":" +
+      dateTime.slice(12, 14) +
+      ".000Z";
 
-  let convertTime = new Date(fullDateYear);
+    let convertTime = new Date(fullDateYear);
 
-  return convertTime;
+    return convertTime;
   } catch (error) {
-    
     return "Invalid date";
-    
   }
-
 };
 
 export const createConvert = (dateTime) => {
-  
   let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   let utcDate = new Date(convertintoISO).toUTCString();
 
@@ -538,7 +534,8 @@ export const newTimeFormaterAsPerUTCTalkTime = (dateTime, locale) => {
   return formattedTime;
 };
 
-export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
+export const newTimeFormaterAsPerUTCTalkDate = (dateTime) => {
+  const locale = localStorage.getItem("i18nextLng") || "en";
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
   }
@@ -565,13 +562,33 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
     }
 
     const monthNamesEn = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
 
     const monthNamesAr = [
-      "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-      "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر",
+      "يناير",
+      "فبراير",
+      "مارس",
+      "أبريل",
+      "مايو",
+      "يونيو",
+      "يوليو",
+      "أغسطس",
+      "سبتمبر",
+      "أكتوبر",
+      "نوفمبر",
+      "ديسمبر",
     ];
 
     const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
@@ -825,7 +842,6 @@ export function formatTimeToHHMMSS(date) {
 export function formatDateToUTC(inputDate, value) {
   // Validate inputDate
   if (!inputDate || isNaN(new Date(inputDate).getTime())) {
-    
     throw new RangeError("Invalid date value provided.");
   }
 
@@ -916,10 +932,10 @@ export const convertUtcToGmt = (utcTime) => {
   const currentDateTime = new Date();
   const utcDateTime = `${utcTime.slice(0, 2)}:${utcTime.slice(
     2,
-    4
+    4,
   )}:${utcTime.slice(4, 6)}`;
   const utcDate = new Date(
-    `${currentDateTime.toISOString().split("T")[0]}T${utcDateTime}Z`
+    `${currentDateTime.toISOString().split("T")[0]}T${utcDateTime}Z`,
   );
 
   return utcDate;
@@ -1077,7 +1093,7 @@ export const convertDateTimeRangeToGMT = (startTime, endTime) => {
   let convertIntoGMTEndTime = new Date(endTimeFormat);
 
   return `${moment(convertDateIntoGMT).format("Do MMM, YYYY")} ${moment(
-    convertIntoGMTStartTime
+    convertIntoGMTStartTime,
   ).format("h:mm A")} - ${moment(convertIntoGMTEndTime).format("h:mm A")}`;
 };
 
@@ -1120,12 +1136,12 @@ export const getDifferentisDateisPassed = (currentDate, dataDateValue) => {
     const currentDateOnlyDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
-      currentDate.getDate()
+      currentDate.getDate(),
     );
     const dataDateValueOnlyDate = new Date(
       dataDateValue.getFullYear(),
       dataDateValue.getMonth(),
-      dataDateValue.getDate()
+      dataDateValue.getDate(),
     );
 
     // Compare the dates
@@ -1205,11 +1221,11 @@ export const convertUTCDateToLocalDate = (utcDateTime, locale) => {
     const date = new Date(
       `${utcDateTime.slice(0, 4)}-${utcDateTime.slice(
         4,
-        6
+        6,
       )}-${utcDateTime.slice(6, 8)}T${utcDateTime.slice(
         8,
-        10
-      )}:${utcDateTime.slice(10, 12)}:${utcDateTime.slice(12, 14)}.000Z`
+        10,
+      )}:${utcDateTime.slice(10, 12)}:${utcDateTime.slice(12, 14)}.000Z`,
     );
 
     const options = {
@@ -1448,7 +1464,7 @@ export function formatDateDownGradeSubscription(dateString, locale) {
   return locale === "ar"
     ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
         /[0-9]/g,
-        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+        (d) => "٠١٢٣٤٥٦٧٨٩"[d],
       ) // Convert to Arabic numerals
     : `${formattedDay} ${formattedMonth} ${formattedYear}`;
 }
@@ -1528,7 +1544,7 @@ export const timePassed = (dateString, locale) => {
   if (locale === "ar") {
     formattedTime = formattedTime.replace(
       /\d/g,
-      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit],
     );
   }
 
@@ -1562,7 +1578,7 @@ export const formatToLocalTimezone = (dateString) => {
 
   // Convert to local time by adjusting for the timezone offset
   const localDate = new Date(
-    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000,
   );
 
   // Format the local date as "dd MMMM, yyyy | EEEE" with the specified locale
@@ -1574,7 +1590,7 @@ export const formatToLocalTimezone = (dateString) => {
   if (currentLang === "ar") {
     formattedDate = formattedDate.replace(
       /\d/g,
-      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit],
     );
   }
 
@@ -1591,7 +1607,7 @@ export const isSameAsToday = (utcDateString) => {
 
   // Convert UTC date to local time
   const localDate = new Date(
-    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000,
   );
 
   // Get today's date in local timezone
@@ -1738,42 +1754,42 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
     // Parse the UTC date and time into Date objects
     const datePart = `${dateData.proposedDate.substring(
       0,
-      4
+      4,
     )}-${dateData.proposedDate.substring(
       4,
-      6
+      6,
     )}-${dateData.proposedDate.substring(6, 8)}`;
 
     const startDateTimeUTC = new Date(
       `${datePart}T${dateData.startTime.substring(
         0,
-        2
+        2,
       )}:${dateData.startTime.substring(2, 4)}:${dateData.startTime.substring(
         4,
-        6
-      )}Z`
+        6,
+      )}Z`,
     );
 
     const endDateTimeUTC = new Date(
       `${datePart}T${dateData.endTime.substring(
         0,
-        2
+        2,
       )}:${dateData.endTime.substring(2, 4)}:${dateData.endTime.substring(
         4,
-        6
-      )}Z`
+        6,
+      )}Z`,
     );
 
     // Convert the UTC times to local timezone
     const startDateTimeLocal = new Date(
       startDateTimeUTC.toLocaleString("en-US", {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      })
+      }),
     );
     const endDateTimeLocal = new Date(
       endDateTimeUTC.toLocaleString("en-US", {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      })
+      }),
     );
 
     // Format the date and times based on the language
@@ -1795,7 +1811,6 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
 
     return `${startTime} - ${endTime} | ${proposedDate}`;
   } catch (error) {
-    
     return "";
   }
 }
@@ -1893,9 +1908,9 @@ export function WebNotificationDateFormatter(input, locale) {
     // Default to English formatting
     const formattedDate = `${String(day).padStart(
       2,
-      "0"
+      "0",
     )}-${date.toLocaleString("en-US", { month: "short" })}-${String(
-      year
+      year,
     ).substring(2)}`;
     const formattedTime = `${hours12}:${minute} ${ampm}`;
 
@@ -1935,7 +1950,7 @@ export const AuditTrialDateTimeFunction = (dateTime, locale = "en") => {
 
 export const AuditTrialDateTimeFunctionViewActionDetails = (
   dateTime,
-  locale = "en"
+  locale = "en",
 ) => {
   if (!dateTime || dateTime.length !== 14) return "";
 
@@ -1960,8 +1975,6 @@ export const AuditTrialDateTimeFunctionViewActionDetails = (
   return momentObj.format("YYYY-MM-DD | hh:mm A");
 };
 
-
-
 export const newDateTimeFormatterForOTPResend = (dateTime) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
@@ -1983,8 +1996,18 @@ export const newDateTimeFormatterForOTPResend = (dateTime) => {
   // Arabic formatting
   if (locale === "ar") {
     const monthsAr = [
-      "يناير","فبراير","مارس","أبريل","مايو","يونيو",
-      "يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"
+      "يناير",
+      "فبراير",
+      "مارس",
+      "أبريل",
+      "مايو",
+      "يونيو",
+      "يوليو",
+      "أغسطس",
+      "سبتمبر",
+      "أكتوبر",
+      "نوفمبر",
+      "ديسمبر",
     ];
 
     const monthIndex = m.month();
@@ -2001,4 +2024,3 @@ export const newDateTimeFormatterForOTPResend = (dateTime) => {
 
   return formatted;
 };
-

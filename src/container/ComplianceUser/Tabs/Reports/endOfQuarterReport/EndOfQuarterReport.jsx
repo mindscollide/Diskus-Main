@@ -91,7 +91,7 @@ const QuarterlyPdfLayout = ({ data, reportData, t }) => {
             >
               <img src={ComplianceCalendar} alt="ComplianceCalendar" />
               <div>
-                <label>{t("Start-dates")}:</label>
+                <label>{t("Start-date")}:</label>
                 <p>
                   <span className={styles.dateText}>
                     {formatDateToYMDLong(reportData?.quarterStartDate)}
@@ -101,7 +101,7 @@ const QuarterlyPdfLayout = ({ data, reportData, t }) => {
             </Col>
             <Col lg={5} xs="auto">
               <div>
-                <label>{t("End-dates")}:</label>
+                <label>{t("End-date")}:</label>
                 <p>
                   <span className={styles.dateText}>
                     {formatDateToYMDLong(reportData?.quarterEndDate)}
@@ -554,7 +554,7 @@ const EndOfQuarterReport = () => {
 
                     <div className={styles.metaRow}>
                       <div>
-                        <span>{t("Start-dates")}</span>
+                        <span>{t("Start-date")}</span>
                         <p>
                           {formatDateToYMD(
                             GetQuarterReport?.header?.quarterStartDate,
@@ -562,7 +562,7 @@ const EndOfQuarterReport = () => {
                         </p>
                       </div>
                       <div>
-                        <span>{t("End-dates")}</span>
+                        <span>{t("End-date")}</span>
                         <p>
                           {formatDateToYMD(
                             GetQuarterReport?.header?.quarterEndDate,

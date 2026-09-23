@@ -391,7 +391,7 @@ const ViewComplianceTasks = () => {
       key: "taskTitle",
       width: "45%",
       ellipsis: true,
-      align: "left",
+      align: "start",
       render: (text, record) => (
         <span
           // className="text-truncate"
@@ -415,7 +415,7 @@ const ViewComplianceTasks = () => {
 
     {
       title: (
-        <span className="d-flex gap-2 align-items-center justify-content-start">
+        <span className="d-flex gap-2 align-items-center justify-content-center">
           {t("Assigned-to")}
           {activeSortedChecklistId === checklistId ? (
             assignedToSort === "descend" ? (
@@ -434,7 +434,7 @@ const ViewComplianceTasks = () => {
       dataIndex: "assignedUsers",
       key: "assignedUsers",
       width: "17%",
-      align: "left",
+      align: "center",
       ellipsis: true,
       render: (text, record) => {
         const firstUser = text?.[0];
@@ -460,7 +460,7 @@ const ViewComplianceTasks = () => {
     },
     {
       title: (
-        <span className="d-flex gap-2 align-items-center justify-content-start">
+        <span className="d-flex gap-2 align-items-center justify-content-center">
           {t("Due-date")}
           {activeSortedChecklistId === checklistId ? (
             dueDateSort === "descend" ? (
@@ -491,7 +491,7 @@ const ViewComplianceTasks = () => {
       dataIndex: "deadLineDate",
       key: "deadLineDate",
       width: "15%",
-      align: "left",
+      align: "center",
       ellipsis: true,
       render: (text) => (
         <span className="text-truncate">{formatDateToYMD(text)}</span>
