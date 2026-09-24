@@ -758,7 +758,7 @@ export const UpdateMeetingUserApi = (
                               ParticipantRoleID:
                                 row.participantRole?.participantRoleID ?? 0,
                             })),
-                            MeetingID: Number(meetingId),
+                            MeetingID: Number(Data.MeetingID),
                             IsParticipantsAddFlow:
                               Number(editableSave) === 2 ? true : false,
                             NotificationMessage: "",
@@ -790,13 +790,13 @@ export const UpdateMeetingUserApi = (
                               Title: item.organizerTitle,
                               UserID: item.userID,
                             })),
-                            MeetingID: meetingId,
+                            MeetingID: Data.MeetingID,
                             IsOrganizerAddFlow:
                               isEditValue === 1 ? true : false,
                             NotificationMessage: notificationMessage,
                           },
                           "saveMeetingOrganizer",
-                          { currentMeeting: meetingId },
+                          { currentMeeting: Data.MeetingID },
                         ),
                       );
                       break;
@@ -814,10 +814,10 @@ export const UpdateMeetingUserApi = (
                               Title: data.Title,
                               AgendaListRightsAll: data.agendaListRightsAll,
                               MeetingID:
-                                meetingId !== 0 ? Number(meetingId) : 0,
+                                Data.MeetingID !== 0 ? Number(Data.MeetingID) : 0,
                               IsContributorNotified: data.isContributorNotified,
                             })),
-                            MeetingID: Number(meetingId),
+                            MeetingID: Number(Data.MeetingID),
                             IsAgendaContributorAddFlow: isEditFlag !== 1,
                             NotificationMessage: notifyMessageField,
                           },
@@ -842,7 +842,7 @@ export const UpdateMeetingUserApi = (
                           t,
                           {
                             MeetingParticipants: newMembers,
-                            MeetingID: meetingId,
+                            MeetingID: Data.MeetingID,
                           },
                           "saveProposedMeeting",
                           { sortedDates, sendResponseBtDateVal },
@@ -864,7 +864,7 @@ export const UpdateMeetingUserApi = (
                           t,
                           {
                             MeetingParticipants: newMembers,
-                            MeetingID: meetingId,
+                            MeetingID: Data.MeetingID,
                           },
                           "updateProposedMeeting",
                           { sortedDates, sendResponseBtDateVal },
@@ -3796,8 +3796,8 @@ export const saveParcipantsProposeMeetingApi = (
                 store.getState().NewMeetingreducer?.currentMeetingInfo
                   ?.meetingID;
 
-              let Data = {
-                MeetingID: meetingId,
+              let Data2 = {
+                MeetingID: Data.MeetingID,
                 SendResponsebyDate: sendResponseBtDateVal,
                 ProposedDates: sortedDates,
               };
@@ -3807,7 +3807,7 @@ export const saveParcipantsProposeMeetingApi = (
                     setProposedMeetingDateApi(
                       navigate,
                       t,
-                      Data,
+                      Data2,
                       "saveProposedMeeting",
                       {},
                       // setProposedNewMeeting,
@@ -3820,7 +3820,7 @@ export const saveParcipantsProposeMeetingApi = (
                     setProposedMeetingDateApi(
                       navigate,
                       t,
-                      Data,
+                      Data2,
                       "updateProposedMeeting",
                       {},
                       // setProposedNewMeeting,

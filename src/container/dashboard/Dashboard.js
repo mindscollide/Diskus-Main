@@ -1321,7 +1321,16 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_POLL_RESPONSE".toLowerCase()
             ) {
-              dispatch(meetingStatusProposedMqtt(data.payload));
+              // senderID travels with the payload so the consuming
+              // screens (Meeting/Committee/Group proposed tabs) can tell
+              // whether this poll response came from the logged-in user
+              // before deciding to flip that user's Vote/Voted button.
+              dispatch(
+                meetingStatusProposedMqtt({
+                  ...data.payload,
+                  senderID: data.senderID,
+                }),
+              );
               if (data.viewable) {
                 setNotification({
                   ...notification,
