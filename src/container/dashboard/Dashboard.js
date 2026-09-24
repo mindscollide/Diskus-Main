@@ -286,6 +286,7 @@ const Dashboard = () => {
     setLeaveOneToOne,
     setGroupVideoCallAccepted,
     setGroupCallParticipantList,
+    setRecentlyLeftGroupCallUserIDs,
     setUnansweredCallParticipant,
     iframeRef,
     startRecordingState,
@@ -1114,6 +1115,19 @@ const Dashboard = () => {
       }
     }
   };
+  // Marks a userID as "just left" so a stale roster refresh can't re-add them.
+  const markGroupCallUserRecentlyLeft = (userID) => {
+    if (userID === undefined || userID === null) return;
+    setRecentlyLeftGroupCallUserIDs((prev) =>
+      prev.includes(userID) ? prev : [...prev, userID],
+    );
+    setTimeout(() => {
+      setRecentlyLeftGroupCallUserIDs((prev) =>
+        prev.filter((id) => id !== userID),
+      );
+    }, 15000);
+  };
+
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -3811,22 +3825,7 @@ const Dashboard = () => {
           }
 
           if (data.payload.callTypeID === 2) {
-            // Authoritative refresh: re-pull the roster so the rejected user is
-            // dropped consistently on every client. IMPORTANT: a reject from a
-            // still-ringing invitee carries THAT invitee's ringer room, not the
-            // active call room — so we must fetch using OUR OWN active call room
-            // (caller -> initiateCallRoomID, participant -> activeRoomID),
-            // otherwise the active call's roster is never refreshed.
-            dispatch(
-              getGroupCallParticipantsMainApi(navigate, t, {
-                RoomID:
-                  (isCaller ? initiateCallRoomID : activeRoomID) ||
-                  data.payload.roomID,
-              }),
-            );
-            // Remove the rejecter from EVERY roster list so all clients
-            // (caller renders groupCallParticipantList, participants render
-            // inCallParticipantsList) drop them consistently.
+            // Drop the rejecter from every roster list, immediately.
             setGroupCallParticipantList((prevState) =>
               (Array.isArray(prevState) ? prevState : []).filter(
                 (user) => user.userID !== data.payload.recepientID,
@@ -3842,6 +3841,18 @@ const Dashboard = () => {
                 (user) => user.recepientID !== data.payload.recepientID,
               ),
             );
+            markGroupCallUserRecentlyLeft(data.payload.recepientID);
+            // Delayed so the backend has time to process the reject
+            // before we re-fetch the roster (use OUR OWN active room).
+            setTimeout(() => {
+              dispatch(
+                getGroupCallParticipantsMainApi(navigate, t, {
+                  RoomID:
+                    (isCaller ? initiateCallRoomID : activeRoomID) ||
+                    data.payload.roomID,
+                }),
+              );
+            }, 1500);
           }
           let falgCheck1 = false;
           if (isZoomEnabled) {
@@ -3941,7 +3952,16 @@ const Dashboard = () => {
                     "RecipentIDsOninitiateVideoCall",
                     JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
-                  if (RecipentIDsOninitiateVideoCall.length === 0) {
+                  // "0 remaining" means everyone RESPONDED, not that
+                  // everyone left — someone may have accepted. Only end
+                  // the call if nobody accepted.
+                  const anyoneAccepted = existingData.some(
+                    (entry) => entry.CallStatus === "Accepted",
+                  );
+                  if (
+                    RecipentIDsOninitiateVideoCall.length === 0 &&
+                    !anyoneAccepted
+                  ) {
                     localStorage.setItem("onlyLeaveCall", true);
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
@@ -4559,22 +4579,37 @@ const Dashboard = () => {
 
           console.log("mqtt");
           console.log("mqtt", RoomID);
+          // GC-DEBUG: temporary
+          console.log("GC-DEBUG LEAVE received", {
+            recipientID: data.payload.recipientID,
+            payloadRoomID: data.payload.roomID,
+            myRoomID: RoomID,
+            roomMatch: RoomID === data.payload.roomID,
+            activeCall,
+            isCaller,
+            callerStatusObject: localStorage.getItem("callerStatusObject"),
+            pendingIDs: localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+          });
 
           if (data.payload.callTypeID === 2) {
-            // Authoritative refresh: re-pull the group-call roster so the
-            // disconnected user is dropped consistently on every client.
-            dispatch(
-              getGroupCallParticipantsMainApi(navigate, t, {
-                RoomID: data.payload.roomID,
-              }),
-            );
-            // Also remove the user from groupCallParticipantList (instant feedback)
+            // Also remove the user from groupCallParticipantList (instant
+            // feedback) — done first, before the authoritative refresh
+            // below, so the UI updates immediately.
             setGroupCallParticipantList((prevList) =>
               prevList.filter(
                 (participant) =>
                   participant.userID !== data.payload.recipientID,
               ),
             );
+            markGroupCallUserRecentlyLeft(data.payload.recipientID);
+            // Delayed so the backend has time to process the disconnect.
+            setTimeout(() => {
+              dispatch(
+                getGroupCallParticipantsMainApi(navigate, t, {
+                  RoomID: data.payload.roomID,
+                }),
+              );
+            }, 1500);
           }
 
           if (RoomID === data.payload.roomID && activeCall) {
@@ -4610,13 +4645,14 @@ const Dashboard = () => {
                 RoomID: data.payload.roomID,
               };
 
+              // Match by RecipientID only — Name/RoomID must match exactly
+              // too in the old check, and any mismatch there (formatting,
+              // etc.) meant this entry never got removed, so the call
+              // could never auto-end even after the last participant left.
               let existingObjectIndex = existingData.findIndex(
                 (item) =>
-                  item.RecipientName === newData.RecipientName &&
-                  item.RecipientID === newData.RecipientID &&
-                  item.RoomID === newData.RoomID,
+                  String(item.RecipientID) === String(newData.RecipientID),
               );
-              // console.log("mqtt",RoomID)
 
               if (existingObjectIndex !== -1) {
                 existingData.splice(existingObjectIndex, 1);
@@ -4624,9 +4660,15 @@ const Dashboard = () => {
                   "callerStatusObject",
                   JSON.stringify(existingData),
                 );
+                // End the call only when nobody who accepted is still in it
+                // (Rejected entries stay in callerStatusObject forever).
+                const anyoneStillIn = existingData.some(
+                  (entry) => entry.CallStatus === "Accepted",
+                );
                 if (
+                  isCaller &&
                   RecipentIDsOninitiateVideoCall.length === 0 &&
-                  existingData.length === 0
+                  !anyoneStillIn
                 ) {
                   localStorage.setItem("onlyLeaveCall", true);
                   console.log("setLeaveOneToOne");
@@ -4782,7 +4824,8 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
               }
-            } else if (data.payload.callTypeID === 2) {
+            } else if (data.payload.callTypeID === 2 && isCaller) {
+              // Same isCaller guard as VIDEO_CALL_REJECTED — only the caller should end the call.
               let newData = {
                 RecipientName: data.payload.recepientName,
                 RecipientID: data.payload.recepientID,
