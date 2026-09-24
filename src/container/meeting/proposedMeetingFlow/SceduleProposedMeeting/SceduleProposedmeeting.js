@@ -8,7 +8,6 @@ import { Modal, Button, Table } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 
 import BlueTick from "../../../../assets/images/BlueTick.svg";
-import moment from "moment";
 import {
   newTimeFormaterViewPoll,
   utcConvertintoGMT,
@@ -206,7 +205,7 @@ const SceduleProposedmeeting = () => {
     },
     ...formattedDates.map((formattedDate, index) => {
       const proposedRecord = proposedDatesData[index];
-
+      console.log(formattedDate, "rowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecord")
       const isNoneOfAbove =
         proposedRecord?.proposedDate === "10000101" &&
         proposedRecord?.startTime === "000000" &&
@@ -217,6 +216,7 @@ const SceduleProposedmeeting = () => {
       if (proposedRecord) {
         const datetimeVal = `${proposedRecord?.proposedDate}${proposedRecord?.startTime}`;
         const formatetDateTime = utcConvertintoGMT(datetimeVal);
+      console.log(formatetDateTime, "rowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecord")
 
         if (String(formatetDateTime) === String(formattedDate)) {
           isFind = proposedRecord;
@@ -260,7 +260,7 @@ const SceduleProposedmeeting = () => {
             const totalDate = rowRecord?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0,
             );
-
+            console.log(rowRecord, "rowRecordrowRecordrowRecordrowRecord")
             if (totalDate) {
               return (
                 <span className={styles["TotalCount"]}>
@@ -269,10 +269,14 @@ const SceduleProposedmeeting = () => {
               );
             }
           } else {
-            const proposedDate = rowRecord?.selectedProposedDates?.find(
-              (date) =>
-                date.proposedDate === moment(formattedDate).format("YYYYMMDD"),
-            );
+            console.log(rowRecord, "rowRecordrowRecordrowRecordrowRecord")
+
+            // selectedProposedDates is already index-aligned with the
+            // column list (countSelectedProposedDatesForColumn above relies
+            // on this same alignment) — matching by re-comparing date
+            // strings broke when utcConvertintoGMT shifted formattedDate's
+            // date across a day boundary relative to the row's raw UTC date.
+            const proposedDate = rowRecord?.selectedProposedDates?.[index];
 
             // Never show tick for None of the above
             if (proposedDate?.isSelected) {

@@ -32,6 +32,9 @@ export const CommitteeProvider = ({ children }) => {
   // =========================
   // REDUX
   // =========================
+  const allMeetingsSocketData = useSelector(
+    (state) => state.meetingIdReducer.allMeetingsSocketData,
+  );
   const getMeetingByCommitteeID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingByCommitteeID,
   );
@@ -303,22 +306,22 @@ export const CommitteeProvider = ({ children }) => {
     }
   }, [mqttMeetingDeleted]);
 
-  // useEffect(() => {
-  //   if (!allMeetingsSocketData) return;
+  useEffect(() => {
+    if (!allMeetingsSocketData) return;
 
-  //   try {
-  //     const updateMeetingSocket = async () => {
-  //       const meetingID = allMeetingsSocketData.pK_MDID;
-  //       const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
+    try {
+      const updateMeetingSocket = async () => {
+        const meetingID = allMeetingsSocketData.pK_MDID;
+        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
 
-  //       if (!meetingID) return;
-  //       updateMeetingInAllLists(meetingID, () => newMeetingData);
-  //     };
-  //     updateMeetingSocket();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [allMeetingsSocketData]);
+        if (!meetingID) return;
+        updateMeetingInAllLists(meetingID, () => newMeetingData);
+      };
+      updateMeetingSocket();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [allMeetingsSocketData]);
 
   useEffect(() => {
     if (!meetingStatusNotConductedMqttData) return;

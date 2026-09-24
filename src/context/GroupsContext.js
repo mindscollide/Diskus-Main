@@ -31,8 +31,6 @@ export const GroupContext = createContext();
 
 export const GroupsProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   // ─── UI State ───
   const [ViewGroupPage, setViewGroupPage] = useState(true);
@@ -288,6 +286,23 @@ export const GroupsProvider = ({ children }) => {
   // =========================
   // EFFECT: allMeetingsSocketData — update meeting in any list
   // =========================
+
+  useEffect(() => {
+    if (!allMeetingsSocketData) return;
+
+    try {
+      const updateMeetingSocket = async () => {
+        const meetingID = allMeetingsSocketData.pK_MDID;
+        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
+
+        if (!meetingID) return;
+        updateMeetingInAllLists(meetingID, () => newMeetingData);
+      };
+      updateMeetingSocket();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [allMeetingsSocketData]);
 
   // =========================
   // EFFECT: meetingStatusNotConductedMqttData
