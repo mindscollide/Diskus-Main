@@ -505,19 +505,26 @@ const Agenda = () => {
     // ---- Step 1 & 2: upload + persist files only if there are any ---------
     if (fileForSend.length > 0) {
       // Upload every file in parallel rather than sequentially — they're independent.
-      await Promise.all(
-        fileForSend.map((file) =>
-          dispatch(
-            UploadDocumentsMeetingAgendaApi(
-              navigate,
-              t,
-              file,
-              "uploadDocumentsFromAgenda",
-              { newfile },
-            ),
+      // Upload one file at a time. Firing all of them in parallel
+      // (Promise.all + map) overwhelmed the backend with N simultaneous
+      // requests for the same meeting/agenda context, causing some uploads
+      // to silently fail — Promise.all still resolved since a failed
+      // upload dispatches a _fail action instead of rejecting, so `newfile`
+      // ended up missing entries. Downstream, a file whose upload never
+      // landed in `newfile` falls back to its raw filename instead of a
+      // real ID, and Number(filename) is NaN, which JSON.stringify sends
+      // to the API as PK_FileID: null.
+      for (const file of fileForSend) {
+        await dispatch(
+          UploadDocumentsMeetingAgendaApi(
+            navigate,
+            t,
+            file,
+            "uploadDocumentsFromAgenda",
+            { newfile },
           ),
-        ),
-      );
+        );
+      }
 
       // Then register the uploaded files as a single batch.
       await dispatch(

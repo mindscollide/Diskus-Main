@@ -814,7 +814,9 @@ export const UpdateMeetingUserApi = (
                               Title: data.Title,
                               AgendaListRightsAll: data.agendaListRightsAll,
                               MeetingID:
-                                Data.MeetingID !== 0 ? Number(Data.MeetingID) : 0,
+                                Data.MeetingID !== 0
+                                  ? Number(Data.MeetingID)
+                                  : 0,
                               IsContributorNotified: data.isContributorNotified,
                             })),
                             MeetingID: Number(Data.MeetingID),
@@ -2191,12 +2193,12 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                         : null;
                     const agendaFiles = agendas.Files.map((file) => ({
                       PK_FileID: Number(file.OriginalAttachmentName),
-                    }));
+                    })).filter((file) => !Number.isNaN(file.PK_FileID));
                     const subAgendaFiles =
                       agendas.SubAgenda.length > 0
                         ? agendas.SubAgenda[0].Subfiles.map((file) => ({
                             PK_FileID: parseInt(file.OriginalAttachmentName),
-                          }))
+                          })).filter((file) => !Number.isNaN(file.PK_FileID))
                         : [];
                     if (agendaFiles.length > 0) {
                       newUpdateFileList.UpdateFileList.push({
