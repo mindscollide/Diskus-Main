@@ -2075,6 +2075,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setIsAgenda(true);
       setIsAttendees(false);
       setCurrentStep(3);
+      setCloseConfirmationModal(false);
+
     }
   };
 

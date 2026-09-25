@@ -2948,8 +2948,6 @@ export const handleNavigation = (
   navigate,
   response,
   isFirstLogin,
-  userRights = [],
-  adminRights = [],
   dispatch,
 ) => {
   try {
