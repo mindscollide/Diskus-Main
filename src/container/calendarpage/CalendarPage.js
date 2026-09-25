@@ -145,6 +145,8 @@ const CalendarPage = () => {
     isQuickMeetingFromCalendar,
     setIsQuickMeetingFromCalendar,
   } = useNewMeetingContext();
+
+  const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [meetingData, setMeetingData] = useState(null);
   const [calenderData, setCalenderDatae] = useState([]);
@@ -655,12 +657,10 @@ const CalendarPage = () => {
       </div>
       {isQuickMeetingView && <MeetingViewModalCalendar data={meetingData} />}
 
-      {isQuickMeetingFromCalendar && (
+      {isQuickMeetingFromCalendar  && (
         <CreateQuickMeeting
           // this is check from where its called 2 is from Calendar
           checkFlag={2}
-          // show={meetingModalShow}
-          // setShow={setMeetingModalShow}
         />
       )}
       {todolistModalShow && (

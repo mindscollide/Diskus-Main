@@ -73,8 +73,6 @@ const Header2 = ({ isVideo }) => {
   const { t } = useTranslation();
   const WebNotificationBell = useRef();
   const {
-    isQuickMeetingCreate,
-    setIsQuickMeetingCreate,
     isQuickMeetingFromHeader,
     setIsQuickMeetingFromHeader
   } = useNewMeetingContext();

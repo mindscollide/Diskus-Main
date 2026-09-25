@@ -72,7 +72,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // check 1 is for when user open meeting from header component
   // check 2 is for when user open meeting from Calendar component
 
-
   //For Localization
   const [notify, SnackBar] = useSnackbar();
   const { t } = useTranslation();
@@ -87,11 +86,6 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     isQuickMeetingFromCalendar,
     setIsQuickMeetingFromCalendar,
   } = useNewMeetingContext();
-
-  const assigneesRemindersData = useSelector(
-    (state) => state.assignees.RemindersData,
-  );
-  const assigneesuser = useSelector((state) => state.assignees?.user);
   const CommitteeReducergetCommitteeByCommitteeID = useSelector(
     (state) => state.CommitteeReducer?.getCommitteeByCommitteeID,
   );

@@ -32,6 +32,9 @@ export const CommitteeProvider = ({ children }) => {
   // =========================
   // REDUX
   // =========================
+  const allMeetingsSocketData = useSelector(
+    (state) => state.meetingIdReducer.allMeetingsSocketData,
+  );
   const getMeetingByCommitteeID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingByCommitteeID,
   );
@@ -303,22 +306,22 @@ export const CommitteeProvider = ({ children }) => {
     }
   }, [mqttMeetingDeleted]);
 
-  // useEffect(() => {
-  //   if (!allMeetingsSocketData) return;
+  useEffect(() => {
+    if (!allMeetingsSocketData) return;
 
-  //   try {
-  //     const updateMeetingSocket = async () => {
-  //       const meetingID = allMeetingsSocketData.pK_MDID;
-  //       const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
+    try {
+      const updateMeetingSocket = async () => {
+        const meetingID = allMeetingsSocketData.pK_MDID;
+        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
 
-  //       if (!meetingID) return;
-  //       updateMeetingInAllLists(meetingID, () => newMeetingData);
-  //     };
-  //     updateMeetingSocket();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [allMeetingsSocketData]);
+        if (!meetingID) return;
+        updateMeetingInAllLists(meetingID, () => newMeetingData);
+      };
+      updateMeetingSocket();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [allMeetingsSocketData]);
 
   useEffect(() => {
     if (!meetingStatusNotConductedMqttData) return;
@@ -576,7 +579,25 @@ export const CommitteeProvider = ({ children }) => {
           if (indexToUpdate !== -1) {
             let updatedRows = [...committeeProposedMeetingData];
 
-            updatedRows[indexToUpdate] = getMeetingData;
+            // This poll-response event is broadcast to every connected
+            // user, not just the one who voted. The vote count in
+            // getMeetingData is correct for everyone, but its isVoted flag
+            // reflects the sender's vote — applying it as-is would flip
+            // other users' Vote button to Voted too. Only trust isVoted
+            // when the logged-in user is the one who actually voted.
+            let currentUserID = Number(localStorage.getItem("userID"));
+            let mergedMeetingData =
+              Number(meetingData.senderID) !== currentUserID
+                ? {
+                    ...getMeetingData,
+                    meetingPoll: {
+                      ...getMeetingData.meetingPoll,
+                      isVoted: updatedRows[indexToUpdate]?.meetingPoll?.isVoted,
+                    },
+                  }
+                : getMeetingData;
+
+            updatedRows[indexToUpdate] = mergedMeetingData;
 
             setCommitteeProposedMeetingData(updatedRows);
           } else {
