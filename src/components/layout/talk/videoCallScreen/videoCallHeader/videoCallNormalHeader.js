@@ -134,6 +134,7 @@ const VideoCallNormalHeader = ({
     setGroupVideoCallAccepted,
     groupCallParticipantList,
     setGroupCallParticipantList,
+    recentlyLeftGroupCallUserIDs,
     unansweredCallParticipant,
     advanceMeetingModalID,
     setUnansweredCallParticipant,
@@ -585,7 +586,8 @@ const VideoCallNormalHeader = ({
     return (
       !status.includes("reject") &&
       !status.includes("unanswer") &&
-      !status.includes("declin")
+      !status.includes("declin") &&
+      !status.includes("left")
     );
   };
 
@@ -596,14 +598,20 @@ const VideoCallNormalHeader = ({
     // and the caller's participant list + counter went blank / 0. Merging the
     // in-call list (the same source participants already use) keeps accepted
     // users visible to the caller for the whole call.
+    // Excludes anyone Dashboard.js just marked as left, in case the API response is stale.
+    const recentlyLeft = Array.isArray(recentlyLeftGroupCallUserIDs)
+      ? recentlyLeftGroupCallUserIDs
+      : [];
     const pending = (
       Array.isArray(pendingCallParticipantList)
         ? pendingCallParticipantList
         : []
-    ).filter(isActiveInvitee);
-    const inCall = Array.isArray(inCallParticipantList)
-      ? inCallParticipantList
-      : [];
+    )
+      .filter(isActiveInvitee)
+      .filter((p) => !recentlyLeft.includes(p.userID));
+    const inCall = (
+      Array.isArray(inCallParticipantList) ? inCallParticipantList : []
+    ).filter((p) => !recentlyLeft.includes(p.userID));
 
     const mergedMap = new Map();
 
@@ -626,10 +634,19 @@ const VideoCallNormalHeader = ({
       if (!mergedMap.has(p.userID)) mergedMap.set(p.userID, p);
     });
 
+    // GC-DEBUG: temporary
+    console.log("GC-DEBUG caller roster built", {
+      isCaller,
+      recentlyLeft,
+      result: Array.from(mergedMap.values()).map(
+        (p) => `${p.userID}:${p.name}`,
+      ),
+    });
     setGroupCallParticipantList(Array.from(mergedMap.values()));
   }, [
     pendingCallParticipantList,
     inCallParticipantList,
+    recentlyLeftGroupCallUserIDs,
     isCaller,
     currentUserID,
   ]);
@@ -643,11 +660,20 @@ const VideoCallNormalHeader = ({
       // Use the backend in-call list as-is. It already contains every user who
       // accepted (INCLUDING the current user), so the previous "filter out the
       // current user" step is what hid each user's own name from their list.
-      setInCallParticipantsList(inCallParticipantList);
+      //
+      // Same "exclude recently left" fix as the merge effect above.
+      const recentlyLeft = Array.isArray(recentlyLeftGroupCallUserIDs)
+        ? recentlyLeftGroupCallUserIDs
+        : [];
+      setInCallParticipantsList(
+        inCallParticipantList.filter(
+          (p) => !recentlyLeft.includes(p.userID),
+        ),
+      );
     } else {
       setInCallParticipantsList([]); // no participants
     }
-  }, [inCallParticipantList]);
+  }, [inCallParticipantList, recentlyLeftGroupCallUserIDs]);
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
@@ -2353,19 +2379,31 @@ const VideoCallNormalHeader = ({
                     !getMeetingHostInfo.isDashboard
                       ? /* ===== VIEWER LIST (MERGED) ===== */
                         (() => {
-                          // Merge inCall and pending lists, removing duplicates by userID
-                          const inCallList = Array.isArray(
-                            inCallParticipantsList,
+                          // Excludes anyone recently left, same as the caller list.
+                          const recentlyLeftViewer = Array.isArray(
+                            recentlyLeftGroupCallUserIDs,
                           )
-                            ? inCallParticipantsList
+                            ? recentlyLeftGroupCallUserIDs
                             : [];
+                          // Merge inCall and pending lists, removing duplicates by userID
+                          const inCallList = (
+                            Array.isArray(inCallParticipantsList)
+                              ? inCallParticipantsList
+                              : []
+                          ).filter(
+                            (p) => !recentlyLeftViewer.includes(p.userID),
+                          );
                           // Drop rejected / unanswered / declined invitees so they
                           // are removed from the participant list (not shown).
                           const pendingList = (
                             Array.isArray(pendingCallParticipantList)
                               ? pendingCallParticipantList
                               : []
-                          ).filter(isActiveInvitee);
+                          )
+                            .filter(isActiveInvitee)
+                            .filter(
+                              (p) => !recentlyLeftViewer.includes(p.userID),
+                            );
 
                           // Create a Map to deduplicate by userID
                           const mergedMap = new Map();
@@ -2391,6 +2429,16 @@ const VideoCallNormalHeader = ({
                           const mergedParticipants = Array.from(
                             mergedMap.values(),
                           );
+                          // GC-DEBUG: temporary
+                          console.log("GC-DEBUG viewer list rendered", {
+                            recentlyLeftViewer,
+                            inCallParticipantsList: (
+                              inCallParticipantsList || []
+                            ).map((p) => `${p.userID}:${p.name}`),
+                            result: mergedParticipants.map(
+                              (p) => `${p.userID}:${p.name}`,
+                            ),
+                          });
 
                           return mergedParticipants.length > 0
                             ? mergedParticipants.map((participant, index) => (
