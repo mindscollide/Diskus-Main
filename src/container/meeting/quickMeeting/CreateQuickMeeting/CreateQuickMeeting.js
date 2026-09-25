@@ -95,6 +95,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const UserProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData,
   );
+
+    const assigneesuser = useSelector((state) => state.assignees?.user);
   const {
     userName = "",
     organizationName = "",
