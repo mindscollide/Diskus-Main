@@ -2190,14 +2190,18 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                       agendas.SubAgenda.length > 0
                         ? agendas.SubAgenda[0].SubAgendaID
                         : null;
+                    // A file whose upload never resolved to a real ID still
+                    // carries its raw filename in OriginalAttachmentName,
+                    // so Number(...)/parseInt(...) on it is NaN — filter
+                    // those out instead of sending PK_FileID: null to the API.
                     const agendaFiles = agendas.Files.map((file) => ({
                       PK_FileID: Number(file.OriginalAttachmentName),
-                    }));
+                    })).filter((file) => !Number.isNaN(file.PK_FileID));
                     const subAgendaFiles =
                       agendas.SubAgenda.length > 0
                         ? agendas.SubAgenda[0].Subfiles.map((file) => ({
                             PK_FileID: parseInt(file.OriginalAttachmentName),
-                          }))
+                          })).filter((file) => !Number.isNaN(file.PK_FileID))
                         : [];
                     if (agendaFiles.length > 0) {
                       newUpdateFileList.UpdateFileList.push({
