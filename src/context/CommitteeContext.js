@@ -269,6 +269,35 @@ export const CommitteeProvider = ({ children }) => {
           setList((prev) => [newMeetingData, ...prev]);
         }
 
+        // A meeting that just got published can no longer be a draft or a
+        // proposed meeting — drop it from those tabs regardless of which
+        // tab is currently active, so it doesn't linger there. Only
+        // decrement each tab's record count when the meeting actually was
+        // in that tab.
+        const publishedMeetingID = Number(meeting.pK_MDID);
+        if (
+          committeeDraftMeetingData.some(
+            (item) => Number(item.pK_MDID) === publishedMeetingID,
+          )
+        ) {
+          setCommitteeDraftMeetingData((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== publishedMeetingID),
+          );
+          setCommitteeDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
+        }
+        if (
+          committeeProposedMeetingData.some(
+            (item) => Number(item.pK_MDID) === publishedMeetingID,
+          )
+        ) {
+          setCommitteeProposedMeetingData((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== publishedMeetingID),
+          );
+          setCommitteeProposedMeetingDataRecord((prev) =>
+            Math.max(0, prev - 1),
+          );
+        }
+
         dispatch(createCommitteeMeeting(null));
       };
 

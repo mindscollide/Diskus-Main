@@ -815,7 +815,9 @@ export const UpdateMeetingUserApi = (
                               Title: data.Title,
                               AgendaListRightsAll: data.agendaListRightsAll,
                               MeetingID:
-                                Data.MeetingID !== 0 ? Number(Data.MeetingID) : 0,
+                                Data.MeetingID !== 0
+                                  ? Number(Data.MeetingID)
+                                  : 0,
                               IsContributorNotified: data.isContributorNotified,
                             })),
                             MeetingID: Number(Data.MeetingID),

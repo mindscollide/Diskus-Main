@@ -40,7 +40,7 @@ const NavigationButtons = () => {
           <Col
             onClick={() => {
               document.body.style.overflow = "auto";
-              handleNavigation(navigate, null, false, [] , [] ,dispatch);
+              handleNavigation(navigate, null, false ,dispatch);
             }}
             className='d-flex justify-content-center mt-2'>
             <h3 className='tour-skip'>{t("Skip-demo")}</h3>

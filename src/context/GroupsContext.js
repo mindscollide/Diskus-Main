@@ -245,6 +245,33 @@ export const GroupsProvider = ({ children }) => {
           setList((prev) => [newMeetingData, ...prev]);
         }
 
+        // A meeting that just got published can no longer be a draft or a
+        // proposed meeting — drop it from those tabs regardless of which
+        // tab is currently active, so it doesn't linger there. Only
+        // decrement each tab's record count when the meeting actually was
+        // in that tab.
+        const publishedMeetingID = Number(meetingData.pK_MDID);
+        if (
+          groupDraftMeetingData.some(
+            (item) => Number(item.pK_MDID) === publishedMeetingID,
+          )
+        ) {
+          setGroupDraftMeetingData((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== publishedMeetingID),
+          );
+          setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
+        }
+        if (
+          groupProposedMeetingData.some(
+            (item) => Number(item.pK_MDID) === publishedMeetingID,
+          )
+        ) {
+          setGroupProposedMeetingData((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== publishedMeetingID),
+          );
+          setGroupProposedMeetingDataRecord((prev) => Math.max(0, prev - 1));
+        }
+
         dispatch(createGroupMeeting(null));
       };
       callAddAndUpdateGroupMeeting();
