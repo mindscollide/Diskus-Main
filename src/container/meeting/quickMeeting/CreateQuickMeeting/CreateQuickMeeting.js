@@ -95,8 +95,10 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const UserProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData,
   );
-
-    const assigneesuser = useSelector((state) => state.assignees?.user);
+  const assigneesRemindersData = useSelector(
+    (state) => state.assignees.RemindersData,
+  );
+  const assigneesuser = useSelector((state) => state.assignees?.user);
   const {
     userName = "",
     organizationName = "",
@@ -832,7 +834,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setReminderOptions(reminderOptions);
     } catch (error) {
       console.error(
-        "src/container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.js:",
+        "CreateQuickMeeting.js:",
         error,
       );
     }
@@ -2087,7 +2089,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const handleCloseUpdateMeeting = () => {
     setIsQuickMeetingCreate(false);
     setIsQuickMeetingFromHeader(false);
-    setIsQuickMeetingFromCalendar(false)
+    setIsQuickMeetingFromCalendar(false);
   };
 
   const handleChangePresenter = (value) => {
