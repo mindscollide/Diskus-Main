@@ -858,12 +858,24 @@ const PublishedMeetingList = () => {
           const isButtonShown = startMeetingButton.find(
             (btn) => Number(btn.meetingID) === Number(pK_MDID),
           );
-          const canStartMeeting =
-            (meetingCurrentStatus === STATUS.UPCOMING &&
-              isOrganizer &&
-              minutesDifference < minutesAgo) ||
-            (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
 
+          const canStartMeeting =
+            meetingCurrentStatus === STATUS.UPCOMING &&
+            isOrganizer &&
+            (
+              minutesDifference < minutesAgo ||
+              (
+                pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton &&
+                minutesDifference < minutesAgo
+              )
+            );
+          // const canStartMeeting =
+          //   (meetingCurrentStatus === STATUS.UPCOMING &&
+          //     isOrganizer &&
+          //     minutesDifference < minutesAgo) ||
+          //   (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
+          console.log(canStartMeeting, minutesDifference, minutesAgo, "")
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 
