@@ -66,12 +66,18 @@ const CommitteeDraftMeetings = () => {
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
 
 
 
   const {
     handleViewMeeting,
   } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
   })
 
   const {
