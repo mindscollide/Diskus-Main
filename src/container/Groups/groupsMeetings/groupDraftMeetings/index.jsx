@@ -95,11 +95,7 @@ const GroupDraftMeetings = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+ 
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   // Matches the same controlled-Popover pattern already used on the
