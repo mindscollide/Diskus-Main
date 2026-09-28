@@ -37,23 +37,22 @@ const CustomModal = ({
           dialogClassName={dialogClassName}
           fullscreen={fullscreen}
           contentClassName={contentClassName}>
-          <Modal.Header
-            className={`${modalHeaderClassName} ${"border-0"}`}
-            dir='rtl'>
+          <Modal.Header className={`${modalHeaderClassName} ${"border-0"}`}>
             {localStorage.getItem("i18nextLng") === "en" ? (
               <>
-                   {closeButton && <img src={CrossIcon} alt='' onClick={onHide} />}
+                {closeButton && <img src={CrossIcon} alt='' onClick={onHide} />}
                 <Modal.Title className={modalTitleClassName}>
                   {ModalTitle}
                 </Modal.Title>
-           
               </>
             ) : (
               <>
                 <Modal.Title className={modalTitleClassName}>
                   {ModalTitle}
                 </Modal.Title>
-                {closeButton && <img src={CrossIcon} onClick={onHide} alt='' /> }{" "}
+                {closeButton && (
+                  <img src={CrossIcon} onClick={onHide} alt='' />
+                )}{" "}
               </>
             )}
           </Modal.Header>
