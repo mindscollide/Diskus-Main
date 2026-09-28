@@ -37,6 +37,7 @@ import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/de
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import { useGroupsContext } from "../../../../context/GroupsContext";
 import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -57,6 +58,18 @@ const GroupDraftMeetings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+  })
   const {
     groupDraftMeetingData,
     setGroupDraftMeetingData,
@@ -223,6 +236,7 @@ const GroupDraftMeetings = () => {
   };
 
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -263,8 +277,8 @@ const GroupDraftMeetings = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),
