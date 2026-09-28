@@ -46,6 +46,7 @@ import {
   setViewTab,
   toggleViewMeetingModal,
 } from "../../../store/actions/ModalStates_actions";
+import { useMeetingListActions } from "../commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -67,6 +68,22 @@ const DraftMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  })
 
   // ─── Context ───
   const {
@@ -102,10 +119,7 @@ const DraftMeetingList = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+
 
   // ─── MQTT: Agenda Contributor Added ───
   useEffect(() => {
@@ -116,7 +130,7 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {}
+          } catch (error) { }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -124,7 +138,7 @@ const DraftMeetingList = () => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) {}
+    } catch (error) { }
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -140,7 +154,7 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch { }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -153,7 +167,7 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {}
+          } catch (error) { }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -161,7 +175,7 @@ const DraftMeetingList = () => {
         }
       };
       callAddOrganizer();
-    } catch (error) {}
+    } catch (error) { }
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -177,7 +191,7 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch { }
     }
   }, [mqttMeetingOrgRemoved]);
 
@@ -240,7 +254,7 @@ const DraftMeetingList = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} },
+            { role, callFunc: () => { } },
           ),
         );
       }
@@ -303,7 +317,10 @@ const DraftMeetingList = () => {
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
+
+
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -344,8 +361,8 @@ const DraftMeetingList = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),
@@ -469,9 +486,8 @@ const DraftMeetingList = () => {
           Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
         render: (_, record) => {
