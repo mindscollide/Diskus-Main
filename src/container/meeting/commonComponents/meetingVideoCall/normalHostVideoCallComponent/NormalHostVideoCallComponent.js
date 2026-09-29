@@ -47,36 +47,55 @@ const NormalHostVideoCallComponent = () => {
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
   const [isMicEnabled, setIsMicEnabled] = useState(true);
 
+  // Latest streams for the unmount cleanup (state in a closure would be stale)
+  const streamRef = useRef(null);
+  const streamAudioRef = useRef(null);
   useEffect(() => {
-    // Automatically enable the webcam on initial load
-    if (isWebCamEnabled) {
-      const mediaDevices = navigator.mediaDevices;
-      mediaDevices
-        ?.getUserMedia({
-          video: true,
-          audio: true,
-        })
-        .then((stream) => {
-          const video = videoRef.current;
-          if (video) {
-            video.srcObject = stream;
-            video.muted = true;
-            video.play();
-          }
-          setStream(stream); // Store the stream to disable later
-          setIsWebCamEnabled(true); // Webcam is now enabled
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+    streamRef.current = stream;
+  }, [stream]);
+  useEffect(() => {
+    streamAudioRef.current = streamAudio;
+  }, [streamAudio]);
+
+  useEffect(() => {
+    // Automatically enable the webcam and mic once on initial load; later
+    // toggles are handled by toggleVideo / toggleAudio.
+    let cancelled = false;
+    const mediaDevices = navigator.mediaDevices;
+    mediaDevices
+      ?.getUserMedia({
+        video: true,
+        audio: true,
+      })
+      .then((mediaStream) => {
+        if (cancelled) {
+          mediaStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+        const video = videoRef.current;
+        if (video) {
+          video.srcObject = mediaStream;
+          video.muted = true;
+          video.play().catch(() => {});
+        }
+        setStream(mediaStream); // Store the stream to disable later
+        // Track the mic separately so toggleAudio(false) can stop it
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        if (audioTrack) {
+          setStreamAudio(new MediaStream([audioTrack]));
+        }
+        setIsWebCamEnabled(true); // Webcam is now enabled
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
     return () => {
-      // Cleanup on unmount
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
+      // Release the camera/mic on unmount so the call iframe can use them
+      cancelled = true;
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamAudioRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [isWebCamEnabled]);
+  }, []);
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
@@ -235,7 +254,7 @@ const NormalHostVideoCallComponent = () => {
                           position: "relative",
                         }}
                       >
-                        <video ref={videoRef} className="video-Normal-host" />
+                        <video ref={videoRef} playsInline muted className="video-Normal-host" />
                       </div>
                     </div>
                   </div>

@@ -30,36 +30,44 @@ const NormalParticipantVideoComponent = () => {
   const [stream, setStream] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
 
+  // Latest stream for the unmount cleanup (state in a closure would be stale)
+  const streamRef = useRef(null);
   useEffect(() => {
-    // Automatically enable the webcam on initial load
-    if (isWebCamEnabled) {
-      const mediaDevices = navigator.mediaDevices;
-      mediaDevices
-        ?.getUserMedia({
-          video: true,
-          audio: true,
-        })
-        .then((stream) => {
-          const video = videoRef.current;
-          if (video) {
-            video.srcObject = stream;
-            video.muted = true;
-            video.play();
-          }
-          setStream(stream); // Store the stream to disable later
-          setIsWebCamEnabled(true); // Webcam is now enabled
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+    streamRef.current = stream;
+  }, [stream]);
+
+  useEffect(() => {
+    // Automatically enable the webcam once on initial load
+    let cancelled = false;
+    const mediaDevices = navigator.mediaDevices;
+    mediaDevices
+      ?.getUserMedia({
+        video: true,
+        audio: true,
+      })
+      .then((mediaStream) => {
+        if (cancelled) {
+          mediaStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+        const video = videoRef.current;
+        if (video) {
+          video.srcObject = mediaStream;
+          video.muted = true;
+          video.play().catch(() => {});
+        }
+        setStream(mediaStream); // Store the stream to disable later
+        setIsWebCamEnabled(true); // Webcam is now enabled
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
     return () => {
-      // Cleanup on unmount
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
+      // Release the camera/mic on unmount so the call iframe can use them
+      cancelled = true;
+      streamRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [isWebCamEnabled]);
+  }, []);
 
   const joinNewApiVideoCallOnClick = () => {
     let data = {
@@ -143,7 +151,7 @@ const NormalParticipantVideoComponent = () => {
                         }}
                       >
                         <video
-                          ref={videoRef}
+                          ref={videoRef} playsInline muted
                           className="video-normal-videoParticipant"
                         />
                       </div>
