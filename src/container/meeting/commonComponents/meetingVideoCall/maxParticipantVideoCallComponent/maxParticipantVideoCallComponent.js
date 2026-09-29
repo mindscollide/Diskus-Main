@@ -126,36 +126,52 @@ const ParticipantVideoCallComponent = () => {
 
   
 
+  // Latest streams for the unmount cleanup (state in a closure would be stale)
+  const streamRef = useRef(null);
+  const streamAudioRef = useRef(null);
   useEffect(() => {
-    // Enable webcam and microphone when isWebCamEnabled is true
+    streamRef.current = stream;
+  }, [stream]);
+  useEffect(() => {
+    streamAudioRef.current = streamAudio;
+  }, [streamAudio]);
+
+  useEffect(() => {
+    // Enable webcam and microphone once on mount; later toggles are handled by
+    // toggleVideo / toggleAudio (re-running this leaked a second stream and
+    // reset the stored mic state).
+    let cancelled = false;
     const enableWebCamAndMic = async () => {
       try {
-        if (!isWebCamEnabled) {
-          // Access video and audio streams
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
+        // Access video and audio streams
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        if (cancelled) {
+          // Screen already closed before permission resolved
+          mediaStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
 
-          // Set up video playback
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            videoRef.current.muted = true;
-            await videoRef.current.play();
-          }
-          localStorage.setItem("isWebCamEnabled", false);
-          setStream(stream); // Store the video and audio stream
+        // Set up video playback. A rejected play() (e.g. Safari autoplay
+        // policy) must not drop the stream, or it would never be released.
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+        localStorage.setItem("isWebCamEnabled", false);
+        setStream(mediaStream); // Store the video and audio stream
+        sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+        sessionStorage.setItem("videoStreamId", mediaStream.id); // Save video stream ID
 
-          // Handle microphone setup
-          const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-          if (streamAudio) {
-            // Stop any existing audio tracks
-            streamAudio.getTracks().forEach((track) => track.stop());
-          }
-          localStorage.setItem("isMicEnabled", false);
+        // Handle microphone setup
+        localStorage.setItem("isMicEnabled", false);
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        if (audioTrack) {
+          const audioStream = new MediaStream([audioTrack]);
           setStreamAudio(audioStream);
-          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
-          sessionStorage.setItem("videoStreamId", stream.id); // Save video stream ID
           sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
           sessionStorage.setItem("audioStreamId", audioStream.id);
         }
@@ -166,23 +182,16 @@ const ParticipantVideoCallComponent = () => {
 
     enableWebCamAndMic();
 
-    // Cleanup on unmount or when isWebCamEnabled changes
+    // Release the camera/mic on unmount so the call iframe can use them
     return () => {
+      cancelled = true;
       if (videoRef.current) {
         videoRef.current.srcObject = null; // Clear the video source
       }
-
-      // Stop video stream
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-
-      // Stop audio stream
-      if (streamAudio) {
-        streamAudio.getTracks().forEach((track) => track.stop());
-      }
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamAudioRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [isWebCamEnabled]);
+  }, []);
 
   useEffect(() => {
     if (allNavigatorVideoStream === 1) {
@@ -755,7 +764,7 @@ const ParticipantVideoCallComponent = () => {
                     <div className="max-videoParticipant-gradient-sheet">
                       <div className="avatar-class">
                         <video
-                          ref={videoRef}
+                          ref={videoRef} playsInline muted
                           className={
                             minimizeState
                               ? "video-max-minimize-videoParticipant-panel"

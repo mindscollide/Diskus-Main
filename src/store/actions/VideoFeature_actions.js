@@ -1626,6 +1626,14 @@ const stopPresenterViewMainApi = (
     RoomID: data.RoomID,
     VideoCallUrl: videoCallURL,
   };
+  // Several callers (AgendaViewer, Header2 logout, NewEndMeetingModal) don't
+  // pass the lock ref, so guard every unlock; unlock on every terminal outcome
+  // so a failed stop can't block later stops until reload.
+  const releaseStopLock = () => {
+    if (stopApiCalledRef) {
+      stopApiCalledRef.current = false; // 🔓 UNLOCK
+    }
+  };
   return (dispatch) => {
     dispatch(stopPresenterInit());
     let form = new FormData();
@@ -1646,6 +1654,7 @@ const stopPresenterViewMainApi = (
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
               setLeavePresenterViewToJoinOneToOne,
+              stopApiCalledRef,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -1660,7 +1669,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 let alreadyInMeetingVideo = JSON.parse(
                   sessionStorage.getItem("alreadyInMeetingVideo")
                     ? sessionStorage.getItem("alreadyInMeetingVideo")
@@ -1802,7 +1811,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 await dispatch(stopPresenterFail(t("UnSuccessful")));
               } else if (
                 response.data.responseResult.responseMessage
@@ -1811,7 +1820,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 await dispatch(
                   stopPresenterFail(t("Error-while-stop-presentation")),
                 );
@@ -1822,22 +1831,30 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase(),
                   )
               ) {
+                releaseStopLock();
+                await dispatch(stopPresenterFail(t("Something-went-wrong")));
+              } else {
+                releaseStopLock();
                 await dispatch(stopPresenterFail(t("Something-went-wrong")));
               }
             } else {
+              releaseStopLock();
               await dispatch(stopPresenterFail(t("Something-went-wrong")));
             }
           } catch (error) {
+            releaseStopLock();
             console.error(
               "Error processing stopPresenterViewMainApi response:",
               error,
             );
           }
         } else {
+          releaseStopLock();
           await dispatch(stopPresenterFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        releaseStopLock();
         dispatch(stopPresenterFail(t("Something-went-wrong")));
       });
   };

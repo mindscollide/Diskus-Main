@@ -92,9 +92,9 @@ const GuestJoinVideo = ({
 
   const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
+  // Stored as the string "true"/"false"; "false" is truthy, so compare explicitly
   let isZoomEnabled =
-    sessionStorage.getItem("isZoomEnabled") !== null &&
-    sessionStorage.getItem("isZoomEnabled");
+    String(sessionStorage.getItem("isZoomEnabled")).toLowerCase() === "true";
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
@@ -236,36 +236,56 @@ const GuestJoinVideo = ({
     }
   }, []);
 
+  // Latest streams for the unmount cleanup (state in a closure would be stale)
+  const streamRef = useRef(null);
+  const streamAudioRef = useRef(null);
   useEffect(() => {
-    // Automatically enable the webcam on initial load
-    if (isWebCamEnabled) {
-      const mediaDevices = navigator.mediaDevices;
-      mediaDevices
-        ?.getUserMedia({
-          video: true,
-          audio: true,
-        })
-        .then((stream) => {
-          const video = videoRef.current;
-          if (video) {
-            video.srcObject = stream;
-            video.muted = true;
-            video.play();
-          }
-          setStream(stream); // Store the stream to disable later
-          setIsWebCamEnabled(true); // Webcam is now enabled
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+    streamRef.current = stream;
+  }, [stream]);
+  useEffect(() => {
+    streamAudioRef.current = streamAudio;
+  }, [streamAudio]);
+
+  useEffect(() => {
+    // Automatically enable the webcam and mic once on initial load. Re-enabling
+    // later is handled by toggleVideo / toggleAudio.
+    let cancelled = false;
+    const mediaDevices = navigator.mediaDevices;
+    mediaDevices
+      ?.getUserMedia({
+        video: true,
+        audio: true,
+      })
+      .then((mediaStream) => {
+        if (cancelled) {
+          // Lobby already left before permission resolved
+          mediaStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+        const video = videoRef.current;
+        if (video) {
+          video.srcObject = mediaStream;
+          video.muted = true;
+          video.play();
+        }
+        setStream(mediaStream); // Store the stream to disable later
+        // Track the mic separately so toggleAudio(false) can stop it
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        if (audioTrack) {
+          setStreamAudio(new MediaStream([audioTrack]));
+        }
+        setIsWebCamEnabled(true); // Webcam is now enabled
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
     return () => {
-      // Cleanup on unmount
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
+      cancelled = true;
+      // Stop the preview camera and mic when leaving the lobby
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamAudioRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [isWebCamEnabled]);
+  }, []);
   useEffect(() => {
     if (setStreamStop) {
       if (streamAudio) {
@@ -331,7 +351,7 @@ const GuestJoinVideo = ({
                                 position: "relative",
                               }}
                             >
-                              <video ref={videoRef} className="video-size" />
+                              <video ref={videoRef} playsInline muted className="video-size" />
                             </div>
                           </div>
 

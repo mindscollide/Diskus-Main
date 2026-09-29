@@ -29,6 +29,7 @@ import {
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
+import { playSoundWithAutoplayRetry } from "../../../../../commen/functions/playSound";
 
 const VideoMaxIncoming = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -125,13 +126,11 @@ const VideoMaxIncoming = () => {
   useEffect(() => {
     dispatch(incomingVideoCallFlag(true));
 
-    // Create the audio element
-    const audioElement = new Audio("/IncomingCall.wav");
-
-    audioElement.loop = true;
-
-    // Play the audio when the component mounts
-    audioElement.play();
+    // Play the ringtone; if the browser blocks autoplay (Safari), it starts on
+    // the user's first click/key/touch instead of failing silently
+    const stopRingtone = playSoundWithAutoplayRetry("/IncomingCall.wav", {
+      loop: true,
+    });
     console.log("busyCall");
 
     const timer = setTimeout(() => {
@@ -154,8 +153,7 @@ const VideoMaxIncoming = () => {
       localStorage.removeItem("incommingNewCallerID");
       dispatch(incomingVideoCallFlag(false));
       setIsVisible(false);
-      audioElement.pause();
-      audioElement.currentTime = 0;
+      stopRingtone();
       console.log("busyCall");
     }, timeValue);
 
@@ -167,8 +165,7 @@ const VideoMaxIncoming = () => {
 
     return () => {
       console.log("busyCall");
-      audioElement.pause();
-      audioElement.currentTime = 0;
+      stopRingtone();
       clearTimeout(timer);
     };
   }, []);

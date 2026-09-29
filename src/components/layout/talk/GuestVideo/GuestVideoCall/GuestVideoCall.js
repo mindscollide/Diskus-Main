@@ -14,7 +14,6 @@ import {
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
-  hostEndVideoCallMeeting,
   makeStreamStop,
   muteUnMuteByHost,
   muteUnMuteParticipantsorGuest,
@@ -27,7 +26,6 @@ import {
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 import Helper from "../../../../../commen/functions/history_logout";
-import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
 import {
@@ -107,6 +105,21 @@ const GuestVideoCall = () => {
       isHideCamera.toString()
     );
 
+    // Zoom iframe URLs (identified by sessionKey) have no placeholders. The
+    // Zoom app applies isMute / isHideCamera when its audio and camera start,
+    // so pass the lobby choices through so the call starts in that state.
+    try {
+      const parsedUrl = new URL(modifiedUrl);
+      if (parsedUrl.searchParams.has("sessionKey")) {
+        parsedUrl.searchParams.set("isMute", String(Boolean(isMute)));
+        parsedUrl.searchParams.set(
+          "isHideCamera",
+          String(Boolean(isHideCamera))
+        );
+        modifiedUrl = parsedUrl.toString();
+      }
+    } catch {}
+
     return modifiedUrl;
   }
   useEffect(() => {
@@ -127,10 +140,6 @@ const GuestVideoCall = () => {
 
   const onJoinNameChange = (name) => {
     setGuestName(name);
-  };
-
-  const onConnectionLost = () => {
-    setTimeout(mqttConnectionGuestUser(guestUserId, dispatch), 3000);
   };
 
   const onMessageArrived = async (msg) => {
@@ -172,7 +181,7 @@ const GuestVideoCall = () => {
             // dispatch(setVoiceControleGuest(true));
             console.log("data formute", data);
             dispatch(
-              setVoiceControleGuestForAllbyHost(true, data.payload.isMute)
+              setVoiceControleGuestForAllbyHost(true, data.payload.isMuted)
             );
           } else {
             // // Handle additional logic for individual mute/unmute, if needed
@@ -228,9 +237,10 @@ const GuestVideoCall = () => {
         ) {
           console.log(data, "JOINEDJOINEDJOINED");
           console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          // Append every participant in the batch, not just the first
           dispatch(
             getVideoCallParticipantGuestSuccess(
-              data.payload.newParticipants[0],
+              data.payload.newParticipants,
               "",
               2
             )
@@ -279,7 +289,8 @@ const GuestVideoCall = () => {
         guestClient,
         "guestVideoClientguestVideoClientguestVideoClient"
       );
-      guestClient.onConnectionLost = onConnectionLost;
+      // Reconnect is handled by mqttConnectionGuestUser's own onConnectionLost
+      // (3s delay); overriding it here reconnected immediately.
       guestClient.onMessageArrived = onMessageArrived;
     } else {
       console.log(guestUserId, "guestUserIdguestUserId");
