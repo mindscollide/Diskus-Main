@@ -1,3 +1,14 @@
+.CloseMeetingButton {
+  min-width: 88px !important;
+  min-height: 39px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
 .Add-note-QuillRow {
   position: relative;
   margin-top: 10px !important;
@@ -575,9 +586,7 @@ p.Attachments {
 .Arrow_Expanded {
   transition: transform 0.5s ease;
   transform: rotate(180deg);
-
 }
-
 
 .pendingApprovalContainer {
   width: 98% !important;

@@ -40,7 +40,7 @@ const ViewDetailsModal = ({
   const navigate = useNavigate();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { DatafileandFolderDetails, getDataAnalyticsDetails } = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer
+    (state) => state.DataRoomFileAndFoldersDetailsReducer,
   );
   const [activityState, setActivityState] = useState(false);
   const [detailsState, setDetailsState] = useState(true);
@@ -72,8 +72,6 @@ const ViewDetailsModal = ({
   });
   const [documentActivityDetails, setDocumentActivityDetails] = useState(null);
 
-  
-
   const handleDetialsButton = () => {
     setDetailsState(true);
     setActivityState(false);
@@ -84,7 +82,7 @@ const ViewDetailsModal = ({
       FileID: documentDetails?.ownerDetails?.id,
     };
     dispatch(
-      getDataAnalyticsApi(navigate, t, Data, setActivityState, setDetailsState)
+      getDataAnalyticsApi(navigate, t, Data, setActivityState, setDetailsState),
     );
   };
 
@@ -273,7 +271,6 @@ const ViewDetailsModal = ({
                             {documentDetails?.sharedUsers.length > 0 &&
                               documentDetails?.sharedUsers.map(
                                 (data, index) => {
-                                  
                                   return (
                                     <img
                                       src={`data:image/jpeg;base64,${data.base64Img}`}
@@ -285,14 +282,14 @@ const ViewDetailsModal = ({
                                         data.permissionID === 1
                                           ? "view"
                                           : data.permissionID === 2
-                                          ? "edit"
-                                          : data.permissionID === 3
-                                          ? "view and edit"
-                                          : null
+                                            ? "edit"
+                                            : data.permissionID === 3
+                                              ? "view and edit"
+                                              : null
                                       }`}
                                     />
                                   );
-                                }
+                                },
                               )}
                           </>
                         ) : Number(documentDetails.generalAccess) === 2 ? (
@@ -306,7 +303,7 @@ const ViewDetailsModal = ({
                                 height={20}
                                 className=''
                                 title={t(
-                                  "Anyone-in-my-organization-can-find-and-view"
+                                  "Anyone-in-my-organization-can-find-and-view",
                                 )}
                               />
                             </span>
@@ -322,7 +319,7 @@ const ViewDetailsModal = ({
                                 width={17}
                                 height={17}
                                 title={t(
-                                  "Anyone-on-the-internet-with-link-can-view"
+                                  "Anyone-on-the-internet-with-link-can-view",
                                 )}
                               />
                               {/* </Tooltip> */}
@@ -339,7 +336,7 @@ const ViewDetailsModal = ({
                             Number(currentUserID)
                               ? t("You")
                               : `${documentDetails?.ownerDetails?.userName} ${t(
-                                  "Shared-with"
+                                  "Shared-with",
                                 )} `
                           }`}
                           {/* {t("Owned-by-you-shared-with")}{" "} */}
@@ -461,12 +458,12 @@ const ViewDetailsModal = ({
                                 documentDetails?.openedDate !== ""
                                   ? newTimeFormaterAsPerUTCTalkDate(
                                       documentDetails?.openedDate + "000000",
-                                      CurrentLanguage
+                                      CurrentLanguage,
                                     )
                                   : ""
                               } ${t("By")} ${
                                 Number(
-                                  documentDetails?.ownerDetails?.userID
+                                  documentDetails?.ownerDetails?.userID,
                                 ) === Number(currentUserID)
                                   ? t("Me")
                                   : documentDetails?.openedByUser
@@ -540,12 +537,12 @@ const ViewDetailsModal = ({
                                 documentDetails?.modifiedDate !== ""
                                   ? newTimeFormaterAsPerUTCTalkDate(
                                       documentDetails?.modifiedDate + "000000",
-                                      CurrentLanguage
+                                      CurrentLanguage,
                                     )
                                   : ""
                               } ${t("By")} ${
                                 Number(
-                                  documentDetails?.ownerDetails?.userID
+                                  documentDetails?.ownerDetails?.userID,
                                 ) === Number(currentUserID)
                                   ? t("Me")
                                   : documentDetails?.modifiedByUser
@@ -567,7 +564,7 @@ const ViewDetailsModal = ({
                               className={styles["DetialsHeading_subHeading"]}>
                               {newTimeFormaterAsPerUTCTalkDate(
                                 documentDetails?.createdDate + "000000",
-                                CurrentLanguage
+                                CurrentLanguage,
                               )}
                             </span>
                           </Col>
@@ -610,7 +607,6 @@ const ViewDetailsModal = ({
 
                     {documentActivityDetails?.today?.length > 0 &&
                       documentActivityDetails?.today.map((todayData, index) => {
-                        
                         return (
                           <>
                             <Row className='mt-2'>
@@ -638,7 +634,7 @@ const ViewDetailsModal = ({
                                       {todayData.createdDateTime !== "" &&
                                         newTimeFormaterAsPerUTCTalkDate(
                                           todayData.createdDateTime,
-                                          CurrentLanguage
+                                          CurrentLanguage,
                                         )}
                                     </span>
                                     <Row>
@@ -650,8 +646,8 @@ const ViewDetailsModal = ({
                                         <img
                                           src={getIconSource(
                                             getFileExtension(
-                                              todayData?.displayFileName
-                                            )
+                                              todayData?.displayFileName,
+                                            ),
                                           )}
                                           alt=''
                                           height='17px'
@@ -676,7 +672,7 @@ const ViewDetailsModal = ({
                                       {todayData.createdDateTime !== "" &&
                                         newTimeFormaterAsPerUTCTalkDate(
                                           todayData.createdDateTime,
-                                          CurrentLanguage
+                                          CurrentLanguage,
                                         )}
                                     </span>
                                     <Row>
@@ -688,8 +684,8 @@ const ViewDetailsModal = ({
                                         <img
                                           src={getIconSource(
                                             getFileExtension(
-                                              todayData?.displayFileName
-                                            )
+                                              todayData?.displayFileName,
+                                            ),
                                           )}
                                           alt=''
                                           height='17px'
@@ -715,7 +711,7 @@ const ViewDetailsModal = ({
                                       {todayData.createdDateTime !== "" &&
                                         newTimeFormaterAsPerUTCTalkDate(
                                           todayData.createdDateTime,
-                                          CurrentLanguage
+                                          CurrentLanguage,
                                         )}
                                     </span>
                                     <Row>
@@ -727,8 +723,8 @@ const ViewDetailsModal = ({
                                         <img
                                           src={getIconSource(
                                             getFileExtension(
-                                              todayData?.displayFileName
-                                            )
+                                              todayData?.displayFileName,
+                                            ),
                                           )}
                                           alt=''
                                           height='17px'
@@ -754,7 +750,7 @@ const ViewDetailsModal = ({
                                       {todayData.createdDateTime !== "" &&
                                         newTimeFormaterAsPerUTCTalkDate(
                                           todayData.createdDateTime,
-                                          CurrentLanguage
+                                          CurrentLanguage,
                                         )}
                                     </span>
                                     <Row>
@@ -766,8 +762,8 @@ const ViewDetailsModal = ({
                                         <img
                                           src={getIconSource(
                                             getFileExtension(
-                                              todayData?.displayFileName
-                                            )
+                                              todayData?.displayFileName,
+                                            ),
                                           )}
                                           alt=''
                                           height='17px'
@@ -793,7 +789,7 @@ const ViewDetailsModal = ({
                                       {todayData.createdDateTime !== "" &&
                                         newTimeFormaterAsPerUTCTalkDate(
                                           todayData.createdDateTime,
-                                          CurrentLanguage
+                                          CurrentLanguage,
                                         )}
                                     </span>
                                     <Row>
@@ -805,8 +801,8 @@ const ViewDetailsModal = ({
                                         <img
                                           src={getIconSource(
                                             getFileExtension(
-                                              todayData?.displayFileName
-                                            )
+                                              todayData?.displayFileName,
+                                            ),
                                           )}
                                           alt=''
                                           height='17px'
@@ -869,7 +865,7 @@ const ViewDetailsModal = ({
                                         {YesterDayData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             YesterDayData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -881,8 +877,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                YesterDayData?.displayFileName
-                                              )
+                                                YesterDayData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -907,7 +903,7 @@ const ViewDetailsModal = ({
                                         {YesterDayData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             YesterDayData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -919,8 +915,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                YesterDayData?.displayFileName
-                                              )
+                                                YesterDayData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -945,7 +941,7 @@ const ViewDetailsModal = ({
                                         {YesterDayData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             YesterDayData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -957,8 +953,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                YesterDayData?.displayFileName
-                                              )
+                                                YesterDayData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -983,7 +979,7 @@ const ViewDetailsModal = ({
                                         {YesterDayData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             YesterDayData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -995,8 +991,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                YesterDayData?.displayFileName
-                                              )
+                                                YesterDayData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1021,7 +1017,7 @@ const ViewDetailsModal = ({
                                         {YesterDayData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             YesterDayData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1033,8 +1029,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                YesterDayData?.displayFileName
-                                              )
+                                                YesterDayData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1054,7 +1050,7 @@ const ViewDetailsModal = ({
                               </Row>
                             </>
                           );
-                        }
+                        },
                       )}
 
                     {/* this Week */}
@@ -1099,7 +1095,7 @@ const ViewDetailsModal = ({
                                         {thisweekData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisweekData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1111,8 +1107,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisweekData?.displayFileName
-                                              )
+                                                thisweekData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1137,7 +1133,7 @@ const ViewDetailsModal = ({
                                         {thisweekData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisweekData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1149,8 +1145,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisweekData?.displayFileName
-                                              )
+                                                thisweekData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1175,7 +1171,7 @@ const ViewDetailsModal = ({
                                         {thisweekData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisweekData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1187,8 +1183,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisweekData?.displayFileName
-                                              )
+                                                thisweekData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1214,7 +1210,7 @@ const ViewDetailsModal = ({
                                         {thisweekData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisweekData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1226,8 +1222,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisweekData?.displayFileName
-                                              )
+                                                thisweekData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1253,7 +1249,7 @@ const ViewDetailsModal = ({
                                         {thisweekData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisweekData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1265,8 +1261,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisweekData?.displayFileName
-                                              )
+                                                thisweekData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1286,7 +1282,7 @@ const ViewDetailsModal = ({
                               </Row>
                             </>
                           );
-                        }
+                        },
                       )}
 
                     {/* This Month */}
@@ -1330,7 +1326,7 @@ const ViewDetailsModal = ({
                                         {thisMonthData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1342,8 +1338,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisMonthData?.displayFileName
-                                              )
+                                                thisMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1368,7 +1364,7 @@ const ViewDetailsModal = ({
                                         {thisMonthData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1380,8 +1376,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisMonthData?.displayFileName
-                                              )
+                                                thisMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1406,7 +1402,7 @@ const ViewDetailsModal = ({
                                         {thisMonthData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1418,8 +1414,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisMonthData?.displayFileName
-                                              )
+                                                thisMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1444,7 +1440,7 @@ const ViewDetailsModal = ({
                                         {thisMonthData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1456,8 +1452,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisMonthData?.displayFileName
-                                              )
+                                                thisMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1482,7 +1478,7 @@ const ViewDetailsModal = ({
                                         {thisMonthData.createdDateTime !== "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             thisMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1494,8 +1490,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                thisMonthData?.displayFileName
-                                              )
+                                                thisMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1515,7 +1511,7 @@ const ViewDetailsModal = ({
                               </Row>
                             </>
                           );
-                        }
+                        },
                       )}
 
                     {/* Pervious Month */}
@@ -1560,7 +1556,7 @@ const ViewDetailsModal = ({
                                           "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             previousMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1572,8 +1568,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                previousMonthData?.displayFileName
-                                              )
+                                                previousMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1600,7 +1596,7 @@ const ViewDetailsModal = ({
                                           "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             previousMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1612,8 +1608,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                previousMonthData?.displayFileName
-                                              )
+                                                previousMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1640,7 +1636,7 @@ const ViewDetailsModal = ({
                                           "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             previousMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1652,8 +1648,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                previousMonthData?.displayFileName
-                                              )
+                                                previousMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1680,7 +1676,7 @@ const ViewDetailsModal = ({
                                           "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             previousMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1692,8 +1688,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                previousMonthData?.displayFileName
-                                              )
+                                                previousMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1719,7 +1715,7 @@ const ViewDetailsModal = ({
                                           "" &&
                                           newTimeFormaterAsPerUTCTalkDate(
                                             previousMonthData.createdDateTime,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                       </span>
                                       <Row>
@@ -1731,8 +1727,8 @@ const ViewDetailsModal = ({
                                           <img
                                             src={getIconSource(
                                               getFileExtension(
-                                                previousMonthData?.displayFileName
-                                              )
+                                                previousMonthData?.displayFileName,
+                                              ),
                                             )}
                                             alt=''
                                             height='17px'
@@ -1752,7 +1748,7 @@ const ViewDetailsModal = ({
                               </Row>
                             </>
                           );
-                        }
+                        },
                       )}
                   </Col>
                 </Row>

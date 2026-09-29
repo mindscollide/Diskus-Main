@@ -28,7 +28,7 @@ import {
   saveTaskDocumentsAndAssigneesApi,
 } from "../../../../../../store/actions/Action_Meeting";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import { convertGMTDateintoUTC, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {  multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
@@ -37,7 +37,6 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
-import { maxFileSize } from "../../../../../../commen/functions/utils";
 import { isFileSizeValid } from "../../../../../../commen/functions/convertFileSizeInMB";
 const CreateTask = ({
   setCreateaTask,
@@ -704,6 +703,7 @@ const CreateTask = ({
                       options={taskMemberSelect}
                       onChange={handleSelectMemberValue}
                       isSearchable={false}
+                      placeholder={t("Select")}
                       // minMenuHeight={50}
                       maxMenuHeight={200}
                     />
@@ -737,6 +737,7 @@ const CreateTask = ({
                       options={agendaValue}
                       onChange={onChangeSelectAgenda}
                       isSearchable={false}
+                      placeholder={t("Select-agenda")}
                     />
                   </Col>
                 </Row>
@@ -856,7 +857,7 @@ const CreateTask = ({
                           lg={5}
                           md={5}
                           sm={12}
-                          className='d-flex justify-content-end align-items-center'>
+                          className='d-flex justify-content-end align-items-center position-relative'>
                           <img
                             draggable={false}
                             src={DrapDropIcon}
@@ -864,6 +865,7 @@ const CreateTask = ({
                             className={styles["ClassImage"]}
                             alt=''
                           />
+                          <span className={"DragDropText"}>{t("Drop-files-here")}</span>
                         </Col>
                         <Col lg={7} md={7} sm={12}>
                           <Row className='mt-3'>

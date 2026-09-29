@@ -952,7 +952,6 @@ const Notes = () => {
                   onChange={handelChangeNotesPagination}
                   total={totalRecords}
                   pageSize={notesPagesize !== null ? notesPagesize : 50}
-                  className={styles["PaginationStyle-Notes"]}
                 />
               </>
             ) : null}

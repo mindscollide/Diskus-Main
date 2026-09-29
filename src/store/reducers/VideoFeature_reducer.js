@@ -91,6 +91,7 @@ const initialState = {
   isAudioGlobalStream: false,
   isVideoGlobalStream: false,
   allNavigatorVideoStream: 0,
+  isVideoCallActive: null,
   getAllParticipantMain: [],
   participantsVisible: false,
   leaveMeetingOnLogoutResponse: false,
@@ -1343,6 +1344,37 @@ const videoFeatureReducer = (state = initialState, action) => {
         pendingCallParticipantList: [],
         ResponseMessage: action.message,
         errorSeverity: "error", // Added
+      };
+    }
+
+    // Get Video Call Status (rejoin-group-call feasibility check)
+    case actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        isVideoCallActive: action.response.isVideoCallActive,
+        errorSeverity: "success",
+      };
+    }
+
+    case actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        // Treat "couldn't verify" the same as "not active" — safer default
+        // than leaving it null, since the Rejoin click-handler only needs
+        // a clean true/false to decide whether to join or show the
+        // "call has ended" message.
+        isVideoCallActive: false,
+        ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 

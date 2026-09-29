@@ -345,6 +345,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       filterOption={customFilter}
                       closeMenuOnSelect={false}
                       isSearchable={true}
+                      placeholder={t("Select")}
                     />
 
                     <Button

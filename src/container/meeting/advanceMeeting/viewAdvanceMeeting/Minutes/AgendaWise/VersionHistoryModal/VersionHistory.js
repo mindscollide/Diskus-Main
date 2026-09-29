@@ -13,7 +13,7 @@ import { Col, Row } from "react-bootstrap";
 const VersionHistory = ({ setShowVersionHistory }) => {
   const { t } = useTranslation();
   const { GetMinutesVersionHistorywithCommentsData } = useSelector(
-    (state) => state.MinutesReducer
+    (state) => state.MinutesReducer,
   );
 
   const [newVersionHistoryData, setNewVersionHistoryData] = useState({
@@ -33,7 +33,10 @@ const VersionHistory = ({ setShowVersionHistory }) => {
             GetMinutesVersionHistorywithCommentsData.minuteVersionHistory,
         });
       } catch (error) {
-        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/VersionHistoryModal/VersionHistory.js:", error);
+        console.error(
+          "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/VersionHistoryModal/VersionHistory.js:",
+          error,
+        );
       }
     }
   }, [GetMinutesVersionHistorywithCommentsData]);
@@ -53,19 +56,21 @@ const VersionHistory = ({ setShowVersionHistory }) => {
       className={"FullScreenModal"}
       fullscreen={true}
       closeButton={true}
+      ModalTitle={
+        <>
+          {" "}
+          <p className={styles["Parent-title-heading"]}>
+            {t("Version-history")}
+          </p>
+        </>
+      }
       ModalBody={
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
               <div className={styles["gap-subcomments"]}>
                 {/* First */}
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <p className={styles["Parent-title-heading"]}>
-                      {t("Version-history")}
-                    </p>
-                  </Col>
-                </Row>
+
                 {newVersionHistoryData.mainVersionHistory !== null && (
                   <>
                     <Row>
@@ -73,13 +78,11 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="position-relative"
-                      >
+                        className='position-relative'>
                         <div
                           className={
                             styles["version-control-wrapper-with-more"]
-                          }
-                        >
+                          }>
                           <span className={styles["with-text"]}>
                             V
                             {
@@ -97,14 +100,12 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                   __html:
                                     newVersionHistoryData?.mainVersionHistory
                                       ?.minutesDetails,
-                                }}
-                              ></p>
-                              <Row className="mt-1">
+                                }}></p>
+                              <Row className='mt-1'>
                                 {newVersionHistoryData?.mainVersionHistory
                                   ?.minuteAttachmentFiles.length > 0
                                   ? newVersionHistoryData?.mainVersionHistory?.minuteAttachmentFiles.map(
                                       (data, index) => {
-                                        
                                         return (
                                           <>
                                             <Col lg={3} md={3} sm={3}>
@@ -117,7 +118,7 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                             </Col>
                                           </>
                                         );
-                                      }
+                                      },
                                     )
                                   : null}
                               </Row>
@@ -126,10 +127,9 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className="position-relative"
-                            >
-                              <Row className="m-0">
-                                <Col lg={12} md={12} sm={12} className="p-0">
+                              className='position-relative'>
+                              <Row className='m-0'>
+                                <Col lg={12} md={12} sm={12} className='p-0'>
                                   <span className={styles["bar-line"]}></span>
                                   <p className={styles["uploadedbyuser"]}>
                                     {t("Uploaded-by")}
@@ -138,7 +138,7 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                     <img
                                       src={`data:image/jpeg;base64,${newVersionHistoryData?.mainVersionHistory?.userProfilePicture?.displayProfilePictureName}`}
                                       className={styles["Image"]}
-                                      alt=""
+                                      alt=''
                                       draggable={false}
                                     />
                                     <p className={styles["agendaCreater"]}>
@@ -151,15 +151,14 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                 </Col>
                               </Row>
                               <Row
-                                className={`${styles["positioning-tb"]} m-0`}
-                              >
+                                className={`${styles["positioning-tb"]} m-0`}>
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["time-uploader"]}>
                                     {newTimeFormaterForImportMeetingAgenda(
                                       newVersionHistoryData?.mainVersionHistory
                                         ?.lastUpdatedDate +
                                         newVersionHistoryData
-                                          ?.mainVersionHistory?.lastUpdatedTime
+                                          ?.mainVersionHistory?.lastUpdatedTime,
                                     )}
                                   </p>
                                   {newVersionHistoryData?.mainVersionHistory
@@ -192,80 +191,71 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="position-relative"
-                                >
+                                  className='position-relative'>
                                   <div
                                     className={
                                       styles["version-control-wrapper"]
-                                    }
-                                  >
+                                    }>
                                     <span></span>
                                   </div>
                                   <div
                                     className={
                                       styles["uploaded-details-rejected"]
-                                    }
-                                  >
+                                    }>
                                     <Row>
                                       <Col lg={9} md={9} sm={12}>
                                         <p
                                           className={styles["minutes-text"]}
                                           dangerouslySetInnerHTML={{
                                             __html: declineReviewData.reason,
-                                          }}
-                                        ></p>
+                                          }}></p>
                                       </Col>
                                       <Col
                                         lg={3}
                                         md={3}
                                         sm={12}
-                                        className="position-relative"
-                                      >
-                                        <Row className="m-0">
+                                        className='position-relative'>
+                                        <Row className='m-0'>
                                           <Col
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className="p-0"
-                                          >
+                                            className='p-0'>
                                             <span
-                                              className={styles["bar-line"]}
-                                            ></span>
+                                              className={
+                                                styles["bar-line"]
+                                              }></span>
                                             <p
                                               className={
                                                 styles["uploadedbyuser"]
-                                              }
-                                            >
+                                              }>
                                               {t("Commented-by")}
                                             </p>
                                             <div className={styles["gap-ti"]}>
                                               <img
                                                 src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
-                                                alt=""
+                                                alt=''
                                                 draggable={false}
                                               />
                                               <p
                                                 className={
                                                   styles["agendaCreater"]
-                                                }
-                                              >
+                                                }>
                                                 {declineReviewData.actorName}
                                               </p>
                                             </div>
                                           </Col>
                                         </Row>
                                         <Row
-                                          className={`${styles["positioning-tb"]} m-0`}
-                                        >
+                                          className={`${styles["positioning-tb"]} m-0`}>
                                           <Col lg={12} md={12} sm={12}>
                                             <p
                                               className={
                                                 styles["time-uploader"]
-                                              }
-                                            >
+                                              }>
                                               {newTimeFormaterForImportMeetingAgenda(
-                                                declineReviewData.modifiedOn
+                                                declineReviewData.modifiedOn,
                                               )}
                                             </p>
                                           </Col>
@@ -276,7 +266,7 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                 </Col>
                               </Row>
                             );
-                          }
+                          },
                         )
                       : null}
                   </>
@@ -292,13 +282,11 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="position-relative"
-                            >
+                              className='position-relative'>
                               <div
                                 className={
                                   styles["version-control-wrapper-with-more"]
-                                }
-                              >
+                                }>
                                 <span className={styles["with-text"]}>
                                   V{versionData.versionNumber}
                                 </span>
@@ -310,25 +298,21 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                       className={styles["minutes-text"]}
                                       dangerouslySetInnerHTML={{
                                         __html: versionData.minutesDetails,
-                                      }}
-                                    ></p>
+                                      }}></p>
                                   </Col>
                                   <Col
                                     lg={3}
                                     md={3}
                                     sm={12}
-                                    className="position-relative"
-                                  >
-                                    <Row className="m-0">
+                                    className='position-relative'>
+                                    <Row className='m-0'>
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className="p-0"
-                                      >
+                                        className='p-0'>
                                         <span
-                                          className={styles["bar-line"]}
-                                        ></span>
+                                          className={styles["bar-line"]}></span>
                                         <p className={styles["uploadedbyuser"]}>
                                           {t("Uploaded-by")}
                                         </p>
@@ -336,12 +320,11 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                           <img
                                             src={`data:image/jpeg;base64,${newVersionHistoryData?.mainVersionHistory?.userProfilePicture?.displayProfilePictureName}`}
                                             className={styles["Image"]}
-                                            alt=""
+                                            alt=''
                                             draggable={false}
                                           />
                                           <p
-                                            className={styles["agendaCreater"]}
-                                          >
+                                            className={styles["agendaCreater"]}>
                                             {
                                               newVersionHistoryData
                                                 ?.mainVersionHistory?.userName
@@ -351,13 +334,12 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                       </Col>
                                     </Row>
                                     <Row
-                                      className={`${styles["positioning-tb"]} m-0`}
-                                    >
+                                      className={`${styles["positioning-tb"]} m-0`}>
                                       <Col lg={12} md={12} sm={12}>
                                         <p className={styles["time-uploader"]}>
                                           {newTimeFormaterForImportMeetingAgenda(
                                             versionData.lastUpdatedDate +
-                                              versionData.lastUpdatedTime
+                                              versionData.lastUpdatedTime,
                                           )}
                                         </p>
                                         {versionData.declinedReviews.length >
@@ -390,20 +372,17 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className="position-relative"
-                                      >
+                                        className='position-relative'>
                                         <div
                                           className={
                                             styles["version-control-wrapper"]
-                                          }
-                                        >
+                                          }>
                                           <span></span>
                                         </div>
                                         <div
                                           className={
                                             styles["uploaded-details-rejected"]
-                                          }
-                                        >
+                                          }>
                                           <Row>
                                             <Col lg={9} md={9} sm={12}>
                                               <p
@@ -413,50 +392,45 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                                 dangerouslySetInnerHTML={{
                                                   __html:
                                                     declineReviewData.reason,
-                                                }}
-                                              ></p>
+                                                }}></p>
                                             </Col>
                                             <Col
                                               lg={3}
                                               md={3}
                                               sm={12}
-                                              className="position-relative"
-                                            >
-                                              <Row className="m-0">
+                                              className='position-relative'>
+                                              <Row className='m-0'>
                                                 <Col
                                                   lg={12}
                                                   md={12}
                                                   sm={12}
-                                                  className="p-0"
-                                                >
+                                                  className='p-0'>
                                                   <span
                                                     className={
                                                       styles["bar-line"]
-                                                    }
-                                                  ></span>
+                                                    }></span>
                                                   <p
                                                     className={
                                                       styles["uploadedbyuser"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {t("Commented-by")}
                                                   </p>
                                                   <div
-                                                    className={styles["gap-ti"]}
-                                                  >
+                                                    className={
+                                                      styles["gap-ti"]
+                                                    }>
                                                     <img
                                                       src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
                                                       }
-                                                      alt=""
+                                                      alt=''
                                                       draggable={false}
                                                     />
                                                     <p
                                                       className={
                                                         styles["agendaCreater"]
-                                                      }
-                                                    >
+                                                      }>
                                                       {
                                                         declineReviewData.actorName
                                                       }
@@ -465,16 +439,14 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                                 </Col>
                                               </Row>
                                               <Row
-                                                className={`${styles["positioning-tb"]} m-0`}
-                                              >
+                                                className={`${styles["positioning-tb"]} m-0`}>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <p
                                                     className={
                                                       styles["time-uploader"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {newTimeFormaterForImportMeetingAgenda(
-                                                      declineReviewData.modifiedOn
+                                                      declineReviewData.modifiedOn,
                                                     )}
                                                   </p>
                                                 </Col>
@@ -485,7 +457,7 @@ const VersionHistory = ({ setShowVersionHistory }) => {
                                       </Col>
                                     </Row>
                                   );
-                                }
+                                },
                               )
                             : null}
                         </>

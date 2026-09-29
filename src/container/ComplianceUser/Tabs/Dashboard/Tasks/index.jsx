@@ -23,7 +23,7 @@ const ComplianceTasks = () => {
 
   const { complianceTaskDashboardFilter, setComplianceTaskDashboardFilter } =
     useComplianceContext();
-
+  console.log(complianceTaskDashboardFilter, "complianceTaskDashboardFiltercomplianceTaskDashboardFilter")
   const [openTaskViewModal, setOpenTaskViewModal] = useState(false);
 
   const GetComplianceTasksDashboardData = useSelector(
@@ -68,12 +68,39 @@ const ComplianceTasks = () => {
                   isSearchable={false}
                   options={filterOptions}
                   value={filterOptions.find(
+                    (o) => o.value === complianceTaskDashboardFilter
+                  )}
+                  onChange={(selected) =>
+                    setComplianceTaskDashboardFilter(selected.value)
+                  }
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      direction: "rtl",
+                    }),
+                    singleValue: (provided) => ({
+                      ...provided,
+                      direction: "rtl",
+                      textAlign: "right",
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      direction: "rtl",
+                      textAlign: "right",
+                    }),
+                  }}
+                />
+                {/* <Select
+                  classNamePrefix="DashbaordSelectDropdown"
+                  isSearchable={false}
+                  options={filterOptions}
+                  value={filterOptions.find(
                     (o) => o.value === complianceTaskDashboardFilter,
                   )}
                   onChange={(selected) =>
                     setComplianceTaskDashboardFilter(selected.value)
                   }
-                />
+                /> */}
               </Col>
             </Row>
           </div>

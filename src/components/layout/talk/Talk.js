@@ -49,6 +49,7 @@ import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
 import {
   checkFeatureID,
   checkFeatureIDAvailability,
+  formatNumber,
 } from "../../../commen/functions/utils";
 import {
   clearPendingApprovalCount,
@@ -614,7 +615,7 @@ const Talk = () => {
                 onClick={handleMeetingPendingApprovals}>
                 <span className={hasPendingApprovals ? "talk-count" : ""}>
                   {hasPendingApprovals
-                    ? convertNumbersInString(totalPendingApprovals, currentLang)
+                    ? formatNumber(totalPendingApprovals)
                     : ""}
                 </span>
 
@@ -780,7 +781,7 @@ const Talk = () => {
                 <span className={missedCallCount === 0 ? "" : "talk-count"}>
                   {missedCallCount === 0
                     ? ""
-                    : convertNumbersInString(missedCallCount, currentLang)}
+                    : formatNumber(missedCallCount)}
                 </span>
                 <svg
                   id='Icon_feather-video'
@@ -823,7 +824,7 @@ const Talk = () => {
                 }
                 onClick={iconClick}>
                 <span className={unreadMessageCount === 0 ? "" : "talk-count"}>
-                  {unreadMessageCount === 0 ? "" : unreadMessageCount}
+                  {unreadMessageCount === 0 ? "" : formatNumber(unreadMessageCount)}
                 </span>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -866,7 +867,7 @@ const Talk = () => {
             }>
             {totalValue === 0 || totalValue === undefined || totalValue === null
               ? ""
-              : totalValue}
+              : formatNumber(totalValue)}
           </span>
           <svg
             xmlns='http://www.w3.org/2000/svg'

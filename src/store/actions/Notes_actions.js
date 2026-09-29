@@ -602,7 +602,7 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
               dispatch(
                 CreateUpadateNotesDataRoomMapSuccess(
                   response.data.responseResult.folderID,
-                  t("Updated")
+                  ""
                 )
               );
             } else if (
@@ -874,7 +874,7 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
               dispatch(
                 RetrieveNotesDocumentSuccess(
                   response.data.responseResult,
-                  t("Data-available")
+                  ""
                 )
               );
             } else if (

@@ -2,6 +2,7 @@ import {
   getPresentationParticipants,
   getVideoCallParticipantsAndWaitingList,
   getVideoCallParticipantsForGuest,
+  getVideoCallStatusToRejoinGroupCall,
   hideUnHidePaticipantVideo,
   isSharedScreenCall,
   joinMeetingVideoRequest,
@@ -1644,6 +1645,14 @@ const stopPresenterViewMainApi = (
     RoomID: data.RoomID,
     VideoCallUrl: videoCallURL,
   };
+  // Several callers (AgendaViewer, Header2 logout, NewEndMeetingModal) don't
+  // pass the lock ref, so guard every unlock; unlock on every terminal outcome
+  // so a failed stop can't block later stops until reload.
+  const releaseStopLock = () => {
+    if (stopApiCalledRef) {
+      stopApiCalledRef.current = false; // 🔓 UNLOCK
+    }
+  };
   return (dispatch) => {
     dispatch(stopPresenterInit());
     let form = new FormData();
@@ -1664,6 +1673,7 @@ const stopPresenterViewMainApi = (
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
               setLeavePresenterViewToJoinOneToOne,
+              stopApiCalledRef,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -1678,7 +1688,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 let alreadyInMeetingVideo = JSON.parse(
                   sessionStorage.getItem("alreadyInMeetingVideo")
                     ? sessionStorage.getItem("alreadyInMeetingVideo")
@@ -1820,7 +1830,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 await dispatch(stopPresenterFail(t("UnSuccessful")));
               } else if (
                 response.data.responseResult.responseMessage
@@ -1829,7 +1839,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 await dispatch(
                   stopPresenterFail(t("Error-while-stop-presentation")),
                 );
@@ -1840,22 +1850,30 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase(),
                   )
               ) {
+                releaseStopLock();
+                await dispatch(stopPresenterFail(t("Something-went-wrong")));
+              } else {
+                releaseStopLock();
                 await dispatch(stopPresenterFail(t("Something-went-wrong")));
               }
             } else {
+              releaseStopLock();
               await dispatch(stopPresenterFail(t("Something-went-wrong")));
             }
           } catch (error) {
+            releaseStopLock();
             console.error(
               "Error processing stopPresenterViewMainApi response:",
               error,
             );
           }
         } else {
+          releaseStopLock();
           await dispatch(stopPresenterFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        releaseStopLock();
         dispatch(stopPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -2748,6 +2766,101 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
   };
 };
 
+// Get Video Call Status (used to check if a group call is still active
+// before showing a "Rejoin" option, or "Call has ended by the host")
+const getVideoCallStatusToRejoinGroupCallInit = () => {
+  return {
+    type: actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_INIT,
+  };
+};
+
+const getVideoCallStatusToRejoinGroupCallSuccess = (response, message) => {
+  return {
+    type: actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getVideoCallStatusToRejoinGroupCallFail = (message) => {
+  return {
+    type: actions.GROUP_VIDEOCALL_STATUS_REJOIN_CALL_FAIL,
+    message: message,
+  };
+};
+
+const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
+  return async (dispatch) => {
+    dispatch(getVideoCallStatusToRejoinGroupCallInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getVideoCallStatusToRejoinGroupCall.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(data));
+    await axiosInstance
+      .post(videoApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallStatus_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoCallStatusToRejoinGroupCallSuccess(
+                  response.data.responseResult,
+                  t("Record-found"),
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallStatus_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoCallStatusToRejoinGroupCallFail(t("UnSuccessful")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallStatus_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getVideoCallStatusToRejoinGroupCallFail(
+                  t("Something-went-wrong"),
+                ),
+              );
+            }
+          } else {
+            await dispatch(
+              getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+        );
+      });
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -3097,6 +3210,7 @@ export {
   acceptHostTransferAccessGlobalFunc,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
+  getVideoCallStatusToRejoinGroupCallMainApi,
   updatedParticipantListForPresenter,
   stopScreenShareOnPresenterStarting,
   isSharedScreenTriggeredApi,

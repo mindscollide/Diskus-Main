@@ -178,6 +178,9 @@ const GroupPublishedMeetingList = () => {
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  // Scrolling the table left the "More" popover open and floating in its
+  // old position — close it as soon as the user scrolls.
+
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -478,7 +481,7 @@ const GroupPublishedMeetingList = () => {
     if (state !== null && DetailsWebNotificationViewMeeting !== null) {
       try {
         const meetingNotificationRouting = async () => {
-          const { message = ""} = state;
+          const { message = "" } = state;
 
           let obj = {
             isQuickMeeting: DetailsWebNotificationViewMeeting.isQuickMeeting,
@@ -537,7 +540,7 @@ const GroupPublishedMeetingList = () => {
         console.error("src/container/Groups/groupsMeetings/groupPublishMeetings/index.jsx:", error);
       }
     }
-  }, [state,DetailsWebNotificationViewMeeting]);
+  }, [state, DetailsWebNotificationViewMeeting]);
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
@@ -1140,7 +1143,7 @@ const GroupPublishedMeetingList = () => {
             <div className="d-flex justify-content-center align-items-center">
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
+                trigger="hover"
                 overlayClassName="MoreButtons_overlay"
                 className="moreOptionsPopover"
                 showArrow={false}
@@ -1150,11 +1153,13 @@ const GroupPublishedMeetingList = () => {
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }
               >
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt="" />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} alt="" />}
+                  />
+                </span>
               </Popover>
             </div>
           );
@@ -1222,24 +1227,21 @@ const GroupPublishedMeetingList = () => {
           />
         </Col>
         {groupPublishedMeetingData.length > 0 && (
+
           <Col
             sm={12}
             md={12}
             lg={12}
-            className={
-              "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
-            }
+            className="d-flex justify-content-center my-3 pagination-groups-table"
           >
-            <span className="PaginationStyle-TodoList">
-              <CustomPagination
-                current={currentPagePublishGroupMeeting}
-                showSizer={true}
-                onChange={handleChangePaginationPublishedMeeting}
-                pageSizeOptionsValues={["30", "50", "100"]}
-                total={groupPublishedMeetingDataRecord}
-                pageSize={currentLengthPublishGroupMeeting}
-              />
-            </span>
+            <CustomPagination
+              current={currentPagePublishGroupMeeting}
+              showSizer={true}
+              onChange={handleChangePaginationPublishedMeeting}
+              pageSizeOptionsValues={["30", "50", "100"]}
+              total={groupPublishedMeetingDataRecord}
+              pageSize={currentLengthPublishGroupMeeting}
+            />
           </Col>
         )}
       </Row>

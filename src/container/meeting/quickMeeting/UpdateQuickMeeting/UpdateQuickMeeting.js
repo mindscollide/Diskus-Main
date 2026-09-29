@@ -2542,7 +2542,7 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           : "   isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
-                      text={t("Agendas")}
+                      text={t("Agenda")}
                       onClick={changeSelectAgenda}
                       datatut='show-agenda'
                     />

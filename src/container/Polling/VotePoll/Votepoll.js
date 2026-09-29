@@ -18,15 +18,16 @@ import {
 } from "../../../store/actions/Polls_actions";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
+import { formatNumber } from "../../../commen/functions/utils";
 const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const PollsReducerAllpolls = useSelector(
-    (state) => state.PollsReducer.Allpolls
+    (state) => state.PollsReducer.Allpolls,
   );
   const PollsReducerisVotePollModal = useSelector(
-    (state) => state.PollsReducer.isVotePollModal
+    (state) => state.PollsReducer.isVotePollModal,
   );
   let userID = localStorage.getItem("userID");
   const { t } = useTranslation();
@@ -46,7 +47,7 @@ const Votepoll = () => {
       let pollDetails = pollData.pollDetails;
       let pollOptions = pollData.pollOptions;
       let selectedAnswers = pollData.selectedAnswers;
-      
+
       if (pollOptions.length > 0) {
         setPollsOption(pollOptions);
       }
@@ -137,15 +138,14 @@ const Votepoll = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={BlackCrossIcon}
-                    alt=""
+                    alt=''
                     className={styles["Vote_Poll_cross_ICon"]}
-                    height="16px"
-                    width="16px"
+                    height='16px'
+                    width='16px'
                     onClick={() => {
                       dispatch(setVotePollModal(false));
                     }}
@@ -155,33 +155,30 @@ const Votepoll = () => {
               <Row className={styles["OverAll_padding"]}>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                    <Col lg={12} md={12} sm={12} className='m-0 p-0'>
                       <span className={styles["Vote_poll_Heading"]}>
                         {t("Vote-poll")}
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={`${styles["BOx_for_yes"]} d-flex`}
-                    >
-                      <Row className="mt-2">
+                      className={`${styles["BOx_for_yes"]} d-flex`}>
+                      <Row className='mt-2'>
                         <Col lg={12} md={12} sm={12}>
                           {viewProgressPollsDetails.PollTitle.length > 100 ? (
                             // Add d-flex class and justify-content-center to center the text
                             <div
-                              className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                            >
+                              className={`${styles["scrollable-title"]} d-flex justify-content-center`}>
                               {viewProgressPollsDetails.PollTitle}
                             </div>
                           ) : (
                             // Add d-flex class and align-items-center to center the text
                             <div
-                              className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                            >
+                              className={`${styles["scrollable-title2"]} d-flex align-items-center`}>
                               {viewProgressPollsDetails.PollTitle}
                             </div>
                           )}
@@ -205,7 +202,7 @@ const Votepoll = () => {
                                       handleCheckBoxYes({
                                         target: {
                                           checked: !handleForCheck(
-                                            data.pollAnswerID
+                                            data.pollAnswerID,
                                           ),
                                           name: data.pollAnswerID,
                                         },
@@ -216,26 +213,19 @@ const Votepoll = () => {
                                       });
                                     }
                                   }}
-                                  className="clickable-row"
-                                  style={{ cursor: "pointer" }}
-                                >
+                                  className='clickable-row'
+                                  style={{ cursor: "pointer" }}>
                                   <Row>
                                     <Col lg={1} md={1} sm={12}></Col>
                                     <Col
                                       lg={11}
                                       md={11}
                                       sm={12}
-                                      className="m-0 p-0"
-                                    >
+                                      className='m-0 p-0'>
                                       <span className={styles["Yes_Vote_poll"]}>
                                         {data.answer}{" "}
                                         <span>
-                                          (
-                                          {convertToArabicNumerals(
-                                            data.totalVotes,
-                                            CurrentLanguage
-                                          )}
-                                          )
+                                          ({formatNumber(data.totalVotes)})
                                         </span>
                                       </span>
                                     </Col>
@@ -247,16 +237,15 @@ const Votepoll = () => {
                                       sm={12}
                                       className={
                                         styles["CheckBox_ViewProgressPolls"]
-                                      }
-                                    >
+                                      }>
                                       {viewProgressPollsDetails.AllowMultipleAnswers ? (
                                         <Checkbox
                                           name={data.pollAnswerID}
                                           checked={handleForCheck(
-                                            data.pollAnswerID
+                                            data.pollAnswerID,
                                           )}
                                           onChange={handleCheckBoxYes}
-                                          classNameCheckBoxP="d-none"
+                                          classNameCheckBoxP='d-none'
                                         />
                                       ) : (
                                         <CustomRadio2
@@ -274,12 +263,11 @@ const Votepoll = () => {
                                       sm={12}
                                       className={
                                         styles["Progress_bar_view_polls"]
-                                      }
-                                    >
+                                      }>
                                       <Progress
-                                        className="Progress_bar_Polls"
-                                        percent={data.votePercentage}
-                                        status="active"
+                                        className='Progress_bar_Polls'
+                                        percent={formatNumber(data.votePercentage)}
+                                        status='active'
                                       />
                                     </Col>
                                   </Row>
@@ -306,15 +294,14 @@ const Votepoll = () => {
                                       lg={11}
                                       md={11}
                                       sm={12}
-                                      className="m-0 p-0"
-                                    >
+                                      className='m-0 p-0'>
                                       <span className={styles["Yes_Vote_poll"]}>
                                         {data.answer}
                                         <span>
                                           (
                                           {convertToArabicNumerals(
                                             data.totalVotes,
-                                            CurrentLanguage
+                                            CurrentLanguage,
                                           )}
                                           )
                                         </span>
@@ -328,17 +315,16 @@ const Votepoll = () => {
                                       sm={12}
                                       className={
                                         styles["CheckBox_ViewProgressPolls"]
-                                      }
-                                    >
+                                      }>
                                       {viewProgressPollsDetails.AllowMultipleAnswers ===
-                                        true ? (
+                                      true ? (
                                         <Checkbox
                                           name={data.pollAnswerID}
                                           checked={handleForCheck(
-                                            data.pollAnswerID
+                                            data.pollAnswerID,
                                           )}
                                           onChange={(e) => handleCheckBoxYes(e)}
-                                          classNameCheckBoxP="d-none"
+                                          classNameCheckBoxP='d-none'
                                         />
                                       ) : (
                                         <CustomRadio2
@@ -346,7 +332,7 @@ const Votepoll = () => {
                                             viewProgressPollsDetails.answer
                                           }
                                           Optios={data.pollAnswerID}
-                                          className="custom-radio"
+                                          className='custom-radio'
                                           onChange={handleCheckBoxForOneOnly}
                                         />
                                       )}
@@ -357,12 +343,11 @@ const Votepoll = () => {
                                       sm={12}
                                       className={
                                         styles["Progress_bar_view_polls"]
-                                      }
-                                    >
+                                      }>
                                       <Progress
-                                        className="Progress_bar_Polls"
-                                        percent={data.votePercentage}
-                                        status="active"
+                                        className='Progress_bar_Polls'
+                                        percent={formatNumber(data.votePercentage)}
+                                        status='active'
                                       />
                                     </Col>
                                   </Row>
@@ -384,8 +369,7 @@ const Votepoll = () => {
                         lg={11}
                         sm={11}
                         md={12}
-                        className="d-flex justify-content-start m-0 p-0 mt-2"
-                      >
+                        className='d-flex justify-content-start m-0 p-0 mt-2'>
                         <span className={styles["Multiple_vote_poll"]}>
                           {t("You-can-select-multiple-options")}
                         </span>
@@ -405,15 +389,13 @@ const Votepoll = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className={styles["OverAll_padding"]}
-                >
-                  <Row className="mt-3">
+                  className={styles["OverAll_padding"]}>
+                  <Row className='mt-3'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="m-0 p-0 d-flex gap-2"
-                    >
+                      className='m-0 p-0 d-flex gap-2'>
                       <Button
                         text={t("Close")}
                         className={styles["Close_Btn_votepoll"]}
@@ -434,8 +416,8 @@ const Votepoll = () => {
           }
         />
       </Container>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

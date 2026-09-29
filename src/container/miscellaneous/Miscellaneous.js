@@ -29,8 +29,6 @@ const CustomMiscellaneous = () => {
     }
   }, [fAQsAllData]);
 
-  
-
   return (
     <>
       <section className='faqs_container'>
@@ -52,7 +50,7 @@ const CustomMiscellaneous = () => {
                           : currentLanguage === "ar" &&
                               data.questionArabic !== ""
                             ? data.questionArabic
-                            : data.question}
+                            : null}
                       </Card.Title>
                     }
                     AccordioonBody={
@@ -63,7 +61,7 @@ const CustomMiscellaneous = () => {
                             : currentLanguage === "ar" &&
                                 data.answerArabic !== ""
                               ? data.answerArabic
-                              : data.answer}
+                              : null}
                         </Card.Text>
 
                         <Row>

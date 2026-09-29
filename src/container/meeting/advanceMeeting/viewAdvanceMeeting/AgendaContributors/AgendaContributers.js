@@ -44,6 +44,8 @@ const AgendaContributers = () => {
     setViewAdvanceMeetingModal,
     advanceMeetingModalID,
     setAdvanceMeetingModalID,
+    handleCloseMeeting,
+    editorRole,
   } = useMeetingContext();
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
@@ -378,6 +380,18 @@ const AgendaContributers = () => {
             />
           </Col>
         </Row> */}
+
+        {Number(editorRole.status) !== 10 && (
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+              <Button
+                text={t("Close")}
+                className={styles["CloseMeetingButton"]}
+                onClick={handleCloseMeeting}
+              />
+            </Col>
+          </Row>
+        )}
       </section>
       {cancelModalView && (
         <CancelButtonModal

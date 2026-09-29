@@ -574,7 +574,9 @@ export const GroupsProvider = ({ children }) => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/GroupsContext.js:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
   // =========================

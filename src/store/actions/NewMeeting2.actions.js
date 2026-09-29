@@ -86,6 +86,7 @@ import {
 } from "../../commen/functions/utils";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
+import { Data } from "emoji-mart";
 
 // ─── Save Meeting Details ────────────────────────────────────────────────────
 
@@ -842,7 +843,7 @@ export const UpdateMeetingUserApi = (
                           t,
                           {
                             MeetingParticipants: newMembers,
-                            MeetingID: meetingId,
+                            MeetingID: Data.MeetingID,
                           },
                           "saveProposedMeeting",
                           { sortedDates, sendResponseBtDateVal },
@@ -2153,7 +2154,7 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                   dispatch(
                     addUpdateAdvanceMeetingAgenda_success(
                       response.data.responseResult,
-                      t("Record-saved"),
+                      ""
                     ),
                   );
                   const meetingId =
@@ -2482,7 +2483,7 @@ export const UpdateMeetingStatusApi = (
                                 Data.StatusID === 9
                               ? t("Meeting-ended-successfully")
                               : Data.StatusID === 7
-                                ? t("Meeting-ended-successfully")
+                                ? t("Meeting-deleted-successfully")
                                 : "",
                       ),
                     );
@@ -3802,8 +3803,8 @@ export const saveParcipantsProposeMeetingApi = (
                 store.getState().NewMeetingreducer?.currentMeetingInfo
                   ?.meetingID;
 
-              let Data = {
-                MeetingID: meetingId,
+              let Data2 = {
+                MeetingID: Data.MeetingID,
                 SendResponsebyDate: sendResponseBtDateVal,
                 ProposedDates: sortedDates,
               };
@@ -3813,7 +3814,7 @@ export const saveParcipantsProposeMeetingApi = (
                     setProposedMeetingDateApi(
                       navigate,
                       t,
-                      Data,
+                      Data2,
                       "saveProposedMeeting",
                       {},
                       // setProposedNewMeeting,
@@ -3826,7 +3827,7 @@ export const saveParcipantsProposeMeetingApi = (
                     setProposedMeetingDateApi(
                       navigate,
                       t,
-                      Data,
+                      Data2,
                       "updateProposedMeeting",
                       {},
                       // setProposedNewMeeting,
@@ -3977,7 +3978,7 @@ export const scheduleMeetingFromProposedMeetingApi = (
               dispatch(
                 scheduleMeetingSuccess(
                   response.data.responseResult.responseMessage,
-                  t("Record-saved"),
+      ""
                 ),
               );
               const { setEditorRole } = object;

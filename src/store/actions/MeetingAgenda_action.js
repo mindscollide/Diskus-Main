@@ -387,7 +387,7 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
               };
 
               dispatch(getAgendaAndVotingInfo_success(updatedResponse, ""));
-
+              
               dispatch(AgendaPollVotingStartedAction(false));
               dispatch(showCastVoteAgendaModal(true));
             } else if (

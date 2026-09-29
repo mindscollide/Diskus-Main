@@ -106,7 +106,7 @@ const ParentAgenda = ({
       AgendaVotingID: record.agendaVotingID,
     };
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
-    dispatch(showCastVoteAgendaModal(true));
+    // dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
   };
 

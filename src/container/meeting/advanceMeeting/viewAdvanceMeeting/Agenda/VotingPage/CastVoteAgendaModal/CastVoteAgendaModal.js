@@ -97,8 +97,14 @@ const CastVoteAgendaModal = ({ AgendaVotingModalStartedData }) => {
           },
         ],
       };
-      let isMainAgenda = currentAgendaDetails && "id" in currentAgendaDetails;
-
+      const isMainAgenda = viewMeetingAgendaViewerRowData.some(
+        (agenda) =>
+          String(agenda.id) === String(AgendaVotingModalStartedData.agendaID),
+      );
+      console.log(
+        { isMainAgenda, Data },
+        "CasteVoteForAgendaCasteVoteForAgenda",
+      );
       dispatch(
         CasteVoteForAgenda(
           Data,

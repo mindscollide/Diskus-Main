@@ -112,13 +112,13 @@ const SendDocumentModal = ({
             <Col sm={12} md={12} lg={12} className='my-2'>
               {/* Message Box */}
               <TextField
-                placeholder={"Message"}
+                placeholder={t("Message")}
                 labelclass={styles["labelClassMessage"]}
                 as={"textarea"}
                 rows={5}
                 change={(event) => handleChangeMessage(event)}
                 value={sendMessage}
-                label={t("Message (Optional)")}
+                label={t("Message-optional")}
               />
             </Col>
             {/* <Col
@@ -133,7 +133,7 @@ const SendDocumentModal = ({
               {/* File Name and Save Signed Copy as Input Field */}
               <TextField
                 labelclass={styles["labelClassMessage"]}
-                label={t("Save Signed Copy as")}
+                label={t("Save-signed-copy-as")}
                 value={pdfResponceData?.title || ""}
                 change={(event) =>
                   setPdfResponceData({

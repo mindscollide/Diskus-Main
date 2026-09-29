@@ -93,32 +93,32 @@ const ScheduleNewResolution = () => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  const reminderData = [
-    {
-      label: "10 minutes before",
-      value: 1,
-    },
-    {
-      label: "30 minutes before",
-      value: 2,
-    },
-    {
-      label: "1 hour before",
-      value: 3,
-    },
-    {
-      label: "5 hours before",
-      value: 4,
-    },
-    {
-      label: "1 day before",
-      value: 5,
-    },
-    {
-      label: "7 days before",
-      value: 6,
-    },
-  ];
+const reminderData = [
+  {
+    label: t("10-minutes-before"),
+    value: 1,
+  },
+  {
+    label: t("30-minutes-before"),
+    value: 2,
+  },
+  {
+    label: t("1-hour-before"),
+    value: 3,
+  },
+  {
+    label: t("5-hours-before"),
+    value: 4,
+  },
+  {
+    label: t("1-day-before"),
+    value: 5,
+  },
+  {
+    label: t("7-days-before"),
+    value: 6,
+  },
+];
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: dateforSend(new Date(), 1),
     time: timeforSend(new Date()),

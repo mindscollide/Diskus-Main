@@ -107,7 +107,7 @@ const ParentAgenda = ({
     };
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
 
-    dispatch(showCastVoteAgendaModal(true));
+    // dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
   };
 
@@ -240,7 +240,7 @@ const ParentAgenda = ({
             : ""
         }>
         <span className='position-relative'>
-          <Row key={data.id} className='mt-4 m-0 p-0'>
+          <Row key={data.id} className=' m-0 p-0'>
             <img
               draggable={false}
               src={CollapseIcon}

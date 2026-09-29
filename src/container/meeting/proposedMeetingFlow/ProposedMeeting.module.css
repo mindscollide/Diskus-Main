@@ -188,7 +188,7 @@ body[dir="rtl"] .ResetOkBtn {
   bottom: 10px;
 }
 .VoteMeetingButton{
-  max-width: 128px !important;
+  min-width: 75px !important;
   max-height: 25px !important;
   background: #6172d6 !important;
   color: #fff !important;

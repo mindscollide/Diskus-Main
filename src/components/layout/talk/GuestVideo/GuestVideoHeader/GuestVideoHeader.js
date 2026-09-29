@@ -28,6 +28,7 @@ import {
   raiseUnRaisedHandMainApi,
   setVoiceControleGuestForAllbyHost,
 } from "../../../../../store/actions/Guest_Video";
+import { isSharedScreenTriggeredApi } from "../../../../../store/actions/VideoFeature_actions";
 import { useSelector } from "react-redux";
 
 /**
@@ -61,10 +62,6 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.joinGuestData
   );
   console.log(joinGuestData, "joinGuestData");
-
-  const guestMuteUnMuteData = useSelector(
-    (state) => state.GuestVideoReducer.muteUmMuteByHost
-  );
 
   const guesthideunHideByHostData = useSelector(
     (state) => state.GuestVideoReducer.hideunHideByHost
@@ -104,6 +101,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const voiceControleForAllByHostFlag = useSelector(
     (state) => state.GuestVideoReducer.voiceControleForAllByHostFlag
   );
+  // Host's mute-all / unmute-all choice (true = muted)
+  const voiceControleForAllByHost = useSelector(
+    (state) => state.GuestVideoReducer.voiceControleForAllByHost
+  );
 
   console.log(voiceControle, "voiceControlevoiceControle");
 
@@ -130,9 +131,9 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
+  // Stored as the string "true"/"false"; "false" is truthy, so compare explicitly
   let isZoomEnabled =
-    sessionStorage.getItem("isZoomEnabled") !== null &&
-    sessionStorage.getItem("isZoomEnabled");
+    String(sessionStorage.getItem("isZoomEnabled")).toLowerCase() === "true";
 
   console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
 
@@ -165,51 +166,6 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       setAllParticipantGuest([]);
     }
   }, [getAllParticipantGuest]);
-  console.log(guestMuteUnMuteData, "guestMuteUnMuteData");
-
-  useEffect(() => {
-    if (
-      guestMuteUnMuteData &&
-      guestMuteUnMuteData.isForAll &&
-      guestMuteUnMuteData.isMuted !== undefined
-    ) {
-      const iframe = frameRef.current;
-      if (iframe.contentWindow) {
-        // Update the microphone state based on host's action
-        if (guestMuteUnMuteData.isMuted) {
-          console.log("enableVideo", guestMuteUnMuteData);
-          iframe.contentWindow.postMessage("MicOff", "*");
-          setMicOn(true); // Mic is off (muted)
-        } else {
-          console.log("enableVideo", guestMuteUnMuteData);
-          iframe.contentWindow.postMessage("MicOn", "*");
-          setMicOn(false); // Mic is on (unmuted)
-        }
-      }
-    }
-  }, [guestMuteUnMuteData]);
-
-  // for only single Mute
-  useEffect(() => {
-    if (guestMuteUnMuteData !== null && guestUID === guestMuteUnMuteData.uid) {
-      const iframe = frameRef.current;
-      if (iframe.contentWindow !== null) {
-        if (guestMuteUnMuteData.isMuted === true) {
-          console.log("enableVideo", guestMuteUnMuteData);
-          iframe.contentWindow.postMessage("MicOff", "*");
-          console.log("isVideoOnisVideoOn");
-
-          setMicOn(true);
-        } else {
-          console.log("enableVideo", guestMuteUnMuteData);
-          iframe.contentWindow.postMessage("MicOn", "*");
-          console.log("isVideoOnisVideoOn");
-
-          setMicOn(false);
-        }
-      }
-    }
-  }, [guestMuteUnMuteData]);
 
   useEffect(() => {
     if (
@@ -274,15 +230,15 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       console.log("data formute", voiceControleForAllByHostFlag);
       // if (muteUnMuteParticpantorGuest?.uid === guestUID) {
       const iframe = frameRef.current;
-      if (voiceControleForAllByHostFlag) {
-        console.log("enableVideo", voiceControleForAllByHostFlag);
+      const isMuted = voiceControleForAllByHost === true;
+      // "MicOn" mutes and "MicOff" unmutes in the Zoom iframe
+      if (isMuted) {
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
-        console.log("enableVideo", voiceControleForAllByHostFlag);
         iframe.contentWindow.postMessage("MicOff", "*");
       }
-      setMicOn(voiceControleForAllByHostFlag);
-      sessionStorage.setItem("MicOff", voiceControleForAllByHostFlag);
+      setMicOn(isMuted);
+      sessionStorage.setItem("MicOff", isMuted);
       // }
       dispatch(setVoiceControleGuestForAllbyHost(false, false));
     }
@@ -348,9 +304,44 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     const iframe = frameRef.current;
     if (iframe) {
       iframe.contentWindow.postMessage("ScreenShare", "*");
-      setIsScreenShare(!isScreenShare);
+      // With Zoom the real share state arrives from the iframe (see the
+      // message listener below); only toggle locally for the legacy provider.
+      if (!isZoomEnabled) {
+        setIsScreenShare(!isScreenShare);
+      }
     }
   };
+
+  // Share started/stopped inside the Zoom iframe (including via the browser's
+  // "Stop sharing" bar): keep the button in sync and tell the backend so other
+  // participants' share buttons are locked/unlocked.
+  const guestGuid = joinGuestData?.guestGuid;
+  useEffect(() => {
+    const handleIframeMessage = (event) => {
+      if (event.origin !== process.env.REACT_APP_VIDEO_EVENTS) return;
+      if (
+        event.data !== "ScreenSharedMsgFromIframe" &&
+        event.data !== "ScreenSharedStopMsgFromIframe"
+      ) {
+        return;
+      }
+      const isSharing = event.data === "ScreenSharedMsgFromIframe";
+      setIsScreenShare(isSharing);
+      if (isZoomEnabled && roomId && guestGuid) {
+        dispatch(
+          isSharedScreenTriggeredApi(navigate, t, {
+            RoomID: String(roomId),
+            ShareScreen: isSharing,
+            UID: String(guestGuid),
+          })
+        );
+      }
+    };
+    window.addEventListener("message", handleIframeMessage);
+    return () => {
+      window.removeEventListener("message", handleIframeMessage);
+    };
+  }, [isZoomEnabled, roomId, guestGuid, dispatch, navigate, t]);
 
   const openRaiseHand = (flag) => {
     setIsRaiseHand(flag);
@@ -383,6 +374,18 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   };
 
   const onClickEndGuestVideo = () => {
+    // The iframe is unmounted without sending a stop event, so release the
+    // share lock for everyone else if this guest was sharing.
+    if (isZoomEnabled && isScreenShare && roomId && guestGuid) {
+      dispatch(
+        isSharedScreenTriggeredApi(navigate, t, {
+          RoomID: String(roomId),
+          ShareScreen: false,
+          UID: String(guestGuid),
+        })
+      );
+      setIsScreenShare(false);
+    }
     setIsVideoOn(false);
     setMicOn(false);
     let data = {
@@ -639,7 +642,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
           title="Live Video"
           width="100%"
           height="100%"
-          allow={"camera;microphone;display-capture"}
+          allow="camera; microphone; fullscreen; display-capture; cross-origin-isolated"
         />
       </div>
     </>

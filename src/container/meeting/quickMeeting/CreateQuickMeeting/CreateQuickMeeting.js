@@ -826,7 +826,10 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       });
       setReminderOptions(reminderOptions);
     } catch (error) {
-      console.error("src/container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.js:", error);
+      console.error(
+        "src/container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.js:",
+        error,
+      );
     }
   }, [assigneesRemindersData]);
 
@@ -2071,6 +2074,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setIsAgenda(true);
       setIsAttendees(false);
       setCurrentStep(3);
+      setCloseConfirmationModal(false);
     }
   };
 

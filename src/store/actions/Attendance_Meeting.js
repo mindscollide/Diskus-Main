@@ -139,7 +139,7 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
               dispatch(
                 saveAttendanceSuccess(
                   response.data.responseResult,
-                  t("Record-saved")
+                  ""
                 )
               );
             } else if (

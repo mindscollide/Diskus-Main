@@ -526,6 +526,12 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   padding-top: 5px !important;
 }
 
+.MoreButtons_overlay.ant-popover,
+.MoreButtons_overlay .ant-popover-content {
+  transition-duration: 0.01s !important;
+  animation-duration: 0.01s !important;
+}
+
 .MoreButtons_overlay .ant-popover-inner .ant-popover-inner-content {
   padding: 0 15px !important;
 }

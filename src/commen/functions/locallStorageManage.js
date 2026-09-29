@@ -76,6 +76,15 @@ export const localStorageManage = (
     docSignedAction: localStorage.getItem("docSignedAction"),
     docSignedCrAction: localStorage.getItem("docSignedCrAction"),
     emailActionToken: localStorage.getItem("emailActionToken"),
+    viewMeeting_action : localStorage.getItem("viewMeeting_action"),
+    committee_viewMeeting_action: localStorage.getItem("committee_viewMeeting_action"),
+    groups_viewMeeting_action: localStorage.getItem("groups_viewMeeting_action"),
+    committee_meetingprop_action: localStorage.getItem("committee_meetingprop_action"),
+    groups_meetingprop_action: localStorage.getItem("groups_meetingprop_action"),
+    committee_meetingUpd_action: localStorage.getItem("committee_meetingUpd_action"),
+    groups_meetingUpd_action: localStorage.getItem("groups_meetingUpd_action"),
+    committee_meetingStr_action: localStorage.getItem("committee_meetingStr_action"),
+    groups_meetingStr_action: localStorage.getItem("groups_meetingStr_action")
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

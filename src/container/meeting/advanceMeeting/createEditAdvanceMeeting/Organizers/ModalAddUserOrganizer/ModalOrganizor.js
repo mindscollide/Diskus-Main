@@ -320,6 +320,7 @@ const ModalOrganizor = () => {
                     isMulti
                     options={dropdowndata}
                     isSearchable
+                    placeholder={t("Select")}
                     filterOption={customFilter}
                   />
 

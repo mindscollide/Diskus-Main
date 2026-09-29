@@ -5,6 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import { Button } from "../../../../../../components/elements";
 import { usePollsContext } from "../../../../../../context/PollsContext";
+import { formatNumber } from "../../../../../../commen/functions/utils";
 
 const ViewVotesScreen = () => {
   const { setviewVotes } = usePollsContext();
@@ -98,7 +99,7 @@ const ViewVotesScreen = () => {
                                       className="d-flex gap-3"
                                     >
                                       <Progress
-                                        percent={data.votePercentage}
+                                        percent={formatNumber(data.votePercentage)}
                                         status="active"
                                         className="pollsDetailsProgress"
                                       />

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import { Button } from "../../../../../../components/elements";
+import { formatNumber } from "../../../../../../commen/functions/utils";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
   const { t } = useTranslation();
@@ -84,7 +85,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                     className={styles["Messege_span_Class"]}
                                   >
                                     {data.answer}
-                                    {""} <span>({data.totalVotes})</span>
+                        <span>({formatNumber(data.totalVotes)})</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -98,7 +99,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                       className="d-flex gap-3"
                                     >
                                       <Progress
-                                        percent={data.votePercentage}
+                                        percent={formatNumber(data.votePercentage)}
                                         status="active"
                                         className="pollsDetailsProgress"
                                       />
@@ -127,7 +128,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                       <Row className="mt-1">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Participant_Count"]}>
-                            {data.answer} <span>({data.totalVotes})</span>
+                            {data.answer}     <span>({formatNumber(data.totalVotes)})</span>
                           </span>
                         </Col>
                       </Row>

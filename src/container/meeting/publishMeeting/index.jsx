@@ -172,6 +172,9 @@ const PublishedMeetingList = () => {
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  // Scrolling the table left the "More" popover open and floating in its
+  // old position — close it as soon as the user scrolls.
+
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
@@ -798,9 +801,8 @@ const PublishedMeetingList = () => {
           Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
         render: (_, record) => {
@@ -810,6 +812,8 @@ const PublishedMeetingList = () => {
           );
           if (record.isQuickMeeting && meetingType === 1)
             return t("Quick-meeting");
+
+          console.log(matchedFilter, "matchedFiltermatchedFilter")
           return matchedFilter ? (
             <span className={styles.columnValue}>
               <Tooltip
@@ -982,17 +986,19 @@ const PublishedMeetingList = () => {
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
-                trigger={"click"}
+                trigger={"hover"}
                 placement='bottomRight'
                 open={openPopoverMeetingID === record.pK_MDID}
                 onOpenChange={(isOpen) =>
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt='' />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} alt='' />}
+                  />
+                </span>
               </Popover>
             </div>
           );
@@ -1064,34 +1070,29 @@ const PublishedMeetingList = () => {
         </Col>
         <Col>
           {publishedMeetingData.length > 0 && (
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={`${styles["Meeting_Pagination"]} d-flex justify-content-center`}>
-              <Row className={styles["PaginationStyle-Meeting"]}>
-                <Col
-                  className='pagination-groups-table'
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    onChange={handelChangePagination}
-                    total={publishedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </Col>
+
+            <Row >
+              <Col
+                className='pagination-groups-table d-flex justify-content-center'
+                sm={12}
+                md={12}
+                lg={12}>
+                <CustomPagination
+                  current={
+                    meetingPageCurrent !== null
+                      ? Number(meetingPageCurrent)
+                      : 1
+                  }
+                  pageSize={
+                    meetingpageRow !== null ? Number(meetingpageRow) : 50
+                  }
+                  onChange={handelChangePagination}
+                  total={publishedMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Col>
       </Row>

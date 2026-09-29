@@ -17,6 +17,7 @@ import {
 import {
   formatDateToYMD,
   getDueDateTimeNumber,
+  getComplianceStatusClassKey,
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 
@@ -453,50 +454,91 @@ const ComplianceByMe = () => {
    */
   const statusColumnProps = useMemo(
     () => ({
-      filteredValue: statusFilter,
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <div style={{ padding: 8 }}>
-          <Checkbox.Group
-            options={allComplianceStatusForFilter.map((s) => ({
-              label: s.statusTitle,
-              value: s.statusTitle,
-            }))}
-            value={selectedKeys}
-            onChange={(values) => setSelectedKeys(values)}
-            style={{ display: "flex", flexDirection: "column" }}
-          />
-          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-            <CustomButton
-              text={t("Reset")}
-              className={styles["ResetButtonFilter"]}
-              onClick={() => {
-                const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle,
-                );
-                setSelectedKeys(all);
-                setStatusFilter(all);
-                confirm();
+      filteredValue: statusFilter?.length ? statusFilter : null,
+
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys = [],
+        confirm,
+        clearFilters,
+      }) => {
+        const handleCheckboxChange = (values) => {
+          setSelectedKeys(values);
+        };
+
+        const handleReset = () => {
+          const allStatuses = allComplianceStatusForFilter.map(
+            (s) => s.statusTitle
+          );
+
+          setSelectedKeys(allStatuses);
+          setStatusFilter(allStatuses);
+
+          confirm();
+        };
+
+        const handleOk = () => {
+          setStatusFilter(selectedKeys);
+
+          confirm();
+        };
+        return (
+          <div style={{ padding: 8 }}>
+            <Checkbox.Group
+              className={styles["StatusFilterCheckboxGroup"]}
+              value={selectedKeys}
+              onChange={handleCheckboxChange}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
               }}
-            />
-            <CustomButton
-              text={t("Ok")}
-              className={styles["ResetButtonFilter"]}
-              onClick={() => {
-                setStatusFilter(selectedKeys);
-                confirm();
+            >
+              {allComplianceStatusForFilter.map((s) => (
+                <Checkbox key={s.statusTitle} value={s.statusTitle}>
+                  <span className={styles[getComplianceStatusClassKey(s.statusTitle)]}>
+                    {s.statusTitle}
+                  </span>
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
+
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                marginTop: 10,
+                justifyContent: "flex-end"
               }}
-            />
+            >
+              <CustomButton
+                text={t("Reset")}
+                className={styles["ResetButtonFilter"]}
+                onClick={handleReset}
+              />
+
+              <CustomButton
+                text={t("Ok")}
+                className={styles["ResetButtonFilter"]}
+                onClick={handleOk}
+              />
+            </div>
           </div>
-        </div>
-      ),
-      onFilter: (value, record) => value === record.complianceStatusTitle,
-      filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        );
+      },
+
+      onFilter: (value, record) => {
+        return record.complianceStatusTitle === value;
+      },
+
+      filterIcon: (filtered) => (
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+        />
       ),
     }),
-    [statusFilter, allComplianceStatusForFilter, t],
+    [statusFilter, allComplianceStatusForFilter, t]
   );
-
   // ── Columns ───────────────────────────────────────────────────────────────
 
   const columns = useMemo(
@@ -549,7 +591,23 @@ const ComplianceByMe = () => {
         ellipsis: true,
         align: "center",
         ...statusColumnProps,
-        render: (text) => <Tooltip title={text}>{text}</Tooltip>,
+        render: (text) => <Tooltip title={text}><span className={text === "Not Started"
+          ? styles["Not_Started_value"]
+          : text === "In Progress"
+            ? styles["In_Progress_value"]
+            : text === "Completed"
+              ? styles["Completed_value"]
+              : text === "Overdue"
+                ? styles["Overdue_value"]
+                : text === "Submitted for Approval"
+                  ? styles["Submitted_for_Approval_value"]
+                  : text === "Reopened"
+                    ? styles["Reopened_value"]
+                    : text === "On Hold"
+                      ? styles["On_Hold_value"]
+                      : text === "Cancelled"
+                        ? styles["Cancelled_value"]
+                        : null}>{text}</span></Tooltip>,
       },
       {
         title: (

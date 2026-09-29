@@ -55,7 +55,6 @@ import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
 } from "../../../store/actions/NotificationRouting_actions";
-
 const ProposedMeeting = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -105,6 +104,14 @@ const ProposedMeeting = () => {
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState("descend");
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  // Matches the same controlled-Popover pattern already used on the
+  // Published tab, extended here so it can also be closed on scroll.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
 
   useEffect(() => {
     if (proposedMeetingParticipant !== null) {
@@ -392,9 +399,8 @@ const ProposedMeeting = () => {
 
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
 
@@ -485,7 +491,7 @@ const ProposedMeeting = () => {
             value === maxValue && value === 0 && maxValue === 0
               ? null
               : record.meetingPoll?.totalNoOfDirectors ===
-                record.meetingPoll?.totalNoOfDirectorsVoted;
+              record.meetingPoll?.totalNoOfDirectorsVoted;
           if (record.meetingPoll) {
             return allVoterVotedCompleted ? (
               <>
@@ -503,10 +509,10 @@ const ProposedMeeting = () => {
                 {currentLanguage === "en"
                   ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                   : `${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectorsVoted,
-                    )} / ${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectors,
-                    )}`}
+                    record.meetingPoll?.totalNoOfDirectorsVoted,
+                  )} / ${convertToArabicNumerals(
+                    record.meetingPoll?.totalNoOfDirectors,
+                  )}`}
               </span>
             );
           } else {
@@ -547,21 +553,27 @@ const ProposedMeeting = () => {
                 <div>
                   <Popover
                     content={moreButtons(record)}
-                    trigger='click'
+                    trigger={"hover"}
                     overlayClassName='MoreButtons_overlay'
                     showArrow={false}
-                    placement='bottomRight'>
-                    <CustomButton
-                      className={styles.MoreMeetingButton}
-                      text='More'
-                      icon2={
-                        <img
-                          src={ChevronDownIcon}
-                          alt='Chevron Down'
-                          width={10}
-                        />
-                      }
-                    />
+                    placement='bottomRight'
+                    open={openPopoverMeetingID === record.pK_MDID}
+                    onOpenChange={(isOpen) =>
+                      handelChangePopoverOpen(record.pK_MDID, isOpen)
+                    }>
+                    <span>
+                      <CustomButton
+                        className={styles.MoreMeetingButton}
+                        text={t('More')}
+                        icon2={
+                          <img
+                            src={ChevronDownIcon}
+                            alt='Chevron Down'
+                            width={10}
+                          />
+                        }
+                      />
+                    </span>
                   </Popover>
                 </div>
               </div>
@@ -570,7 +582,12 @@ const ProposedMeeting = () => {
         },
       },
     ];
-  }, [meetingTitleSort, meetingDateSort, isMeetingTypeFilter]);
+  }, [
+    meetingTitleSort,
+    meetingDateSort,
+    isMeetingTypeFilter,
+    openPopoverMeetingID,
+  ]);
 
   //
 
@@ -727,32 +744,28 @@ const ProposedMeeting = () => {
           />
         </Col>{" "}
         {proposedMeetingData.length > 0 && (
-          <Col className={styles["Meeting_Pagination"]}>
-            <div className='d-flex justify-content-center mt-2 '>
-              <Row className={styles["PaginationStyle-Committee"]}>
-                <Col
-                  className={"pagination-groups-table"}
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    onChange={handelChangeProposedMeetingPagination}
-                    total={proposedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
+          <Row >
+            <Col
+              className={"pagination-groups-table d-flex justify-content-center"}
+              sm={12}
+              md={12}
+              lg={12}>
+              <CustomPagination
+                current={
+                  meetingPageCurrent !== null
+                    ? Number(meetingPageCurrent)
+                    : 1
+                }
+                pageSize={
+                  meetingpageRow !== null ? Number(meetingpageRow) : 50
+                }
+                onChange={handelChangeProposedMeetingPagination}
+                total={proposedMeetingDataRecord}
+                showSizer={true}
+                pageSizeOptionsValues={["30", "50", "100", "200"]}
+              />
+            </Col>
+          </Row>
         )}
       </Row>
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}

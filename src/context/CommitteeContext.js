@@ -608,7 +608,9 @@ export const CommitteeProvider = ({ children }) => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/CommitteeContext.js:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
 

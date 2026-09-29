@@ -10,6 +10,7 @@ import ErrorIcon from "../../../assets/images/ErrorIcon.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
 import { useTranslation } from "react-i18next";
 import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
+import { formatNumber } from "../../../commen/functions/utils";
 
 const UploadindUiComponent = ({
   detaUplodingForFOlder,
@@ -71,7 +72,7 @@ const UploadindUiComponent = ({
     // Check if any object in the combined array has UploadCancel set to true
     return combinedArray.some((obj) => obj.UploadCancel === true);
   }
-  
+
   return (
     <>
       <Row>
@@ -83,23 +84,19 @@ const UploadindUiComponent = ({
             collapes
               ? styles["Back_ground_For_uploader_active"]
               : styles["Back_ground_For_uploader_folder"]
-          }
-        >
+          }>
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["Blue_Strip"]}>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col
                   lg={9}
                   md={9}
                   sm={9}
-                  className="d-flex justify-content-start gap-3"
-                >
+                  className='d-flex justify-content-start gap-3'>
                   {isAnyUploadNotCanceled(detaUplodingForFOlder, dataArray) ? (
                     <>
                       <span className={styles["Uploading"]}>
-                        {`${detaUplodingForFOlder.length} ${itemCancel} ${t(
-                          "Uploading-cancel"
-                        )}`}
+                        {`${formatNumber(detaUplodingForFOlder.length)} ${itemCancel} ${t("Uploading-cancel")}`}
                       </span>
                     </>
                   ) : (
@@ -107,19 +104,20 @@ const UploadindUiComponent = ({
                       {isNaN(percentageUploaded) === false &&
                       percentageUploaded < 100 ? (
                         <span className={styles["Uploading"]}>
-                          {`${t("Uploading")} ${totalObjectsToCount} ${item}`}
+                          {`${t("Uploading")} ${formatNumber(totalObjectsToCount)} ${item}`}
                         </span>
                       ) : null}
                       {isNaN(percentageUploaded) === false &&
                       percentageUploaded === 100 ? (
                         <span className={styles["Uploading"]}>
-                          {`${totalObjectsToCount} ${item} ${t("Uploaded")}`}
+                          {`${formatNumber(totalObjectsToCount)} ${item} ${t("Uploaded")}`}
                         </span>
                       ) : null}
                       <Space className={styles["Progress_bar"]}>
-                        {isNaN(percentageUploaded)
-                          ? 0 + " %"
-                          : percentageUploaded + " %"}
+                        {formatNumber(
+                          isNaN(percentageUploaded) ? 0 : percentageUploaded,
+                        )}{" "}
+                        %
                       </Space>
                     </>
                   )}
@@ -129,33 +127,32 @@ const UploadindUiComponent = ({
                   lg={3}
                   md={3}
                   sm={3}
-                  className="d-flex justify-content-end gap-2 mt-1"
-                >
+                  className='d-flex justify-content-end gap-2 mt-1'>
                   {collapes ? (
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={chevronUp}
                       width={9}
-                      alt=""
-                      className="cursor-pointer"
+                      alt=''
+                      className='cursor-pointer'
                       onClick={() => setCollapes(false)}
                     />
                   ) : (
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={chevdown}
-                      alt=""
+                      alt=''
                       width={9}
-                      className="cursor-pointer"
+                      className='cursor-pointer'
                       onClick={() => setCollapes(true)}
                     />
                   )}
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={Cancellicon}
                     width={9}
-                    alt=""
-                    className="cursor-pointer"
+                    alt=''
+                    className='cursor-pointer'
                     onClick={CanceUpload}
                   />
                 </Col>
@@ -174,28 +171,26 @@ const UploadindUiComponent = ({
                             sm={12}
                             md={12}
                             lg={12}
-                            className={styles["showUploadBar"]}
-                          >
+                            className={styles["showUploadBar"]}>
                             <Row>
                               <Col
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className="d-flex justify-content-between align-items-center gap-3"
-                              >
-                                <div className="d-flex align-items-center gap-3">
+                                className='d-flex justify-content-between align-items-center gap-3'>
+                                <div className='d-flex align-items-center gap-3'>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={folderColor}
                                     width={20}
-                                    alt=""
+                                    alt=''
                                   />
                                   <span> {data.FolderName}</span>
                                   {data.UploadCancel ? null : (
                                     <span>
-                                      {`${data.UploadedAttachments}  ${"Of"}  ${
-                                        data.FileList.length
-                                      }  `}{" "}
+                                      {`${formatNumber(data.UploadedAttachments)} ${t("Of")} ${formatNumber(
+                                        data.FileList.length,
+                                      )}`}
                                     </span>
                                   )}
                                 </div>
@@ -208,17 +203,16 @@ const UploadindUiComponent = ({
                                     sm={3}
                                     md={3}
                                     lg={3}
-                                    className={styles["progress_bar"]}
-                                  >
+                                    className={styles["progress_bar"]}>
                                     <CircularProgressbar
                                       value={data.UploadedAttachments}
                                       maxValue={data.FileList.length}
                                       className={styles["folderProgress"]}
                                     />
                                     <img
-                                      draggable="false"
+                                      draggable='false'
                                       src={CrossIcon}
-                                      alt=""
+                                      alt=''
                                       onClick={() => cancelUpload(data)}
                                       className={styles["crossIcon"]}
                                     />
@@ -248,20 +242,18 @@ const UploadindUiComponent = ({
                             key={index}
                             className={`${"d-flex justify-content-between"} ${
                               styles["showUploadBarUploaded-file"]
-                            }`}
-                          >
+                            }`}>
                             <Space
-                              direction="vertical"
-                              className="d-flex  gap-3 flex-row"
-                            >
+                              direction='vertical'
+                              className='d-flex  gap-3 flex-row'>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={getIconSource(
-                                  getFileExtension(data.FileName)
+                                  getFileExtension(data.FileName),
                                 )}
-                                height="20px"
-                                alt=""
-                                width="20px"
+                                height='20px'
+                                alt=''
+                                width='20px'
                                 className={styles["Icon_in_Bar"]}
                               />
                               <span className={styles["name_of_life_in_Bar"]}>
@@ -273,18 +265,18 @@ const UploadindUiComponent = ({
                             ) : data.Progress === 100 &&
                               data.UploadCancel !== true ? (
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={Greentick}
-                                alt=""
+                                alt=''
                                 className={styles["GreentickIcon_forfile"]}
                               />
                             ) : data.Progress < 100 ? (
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={CrossIcon}
                                 width={"20px"}
                                 height={"20px"}
-                                alt=""
+                                alt=''
                                 onClick={() => cancelFileUpload(data)}
                                 className={styles["crossIcon-file"]}
                               />
@@ -316,46 +308,43 @@ const UploadindUiComponent = ({
                             sm={12}
                             md={12}
                             lg={12}
-                            className={styles["showUploadBarUploaded"]}
-                          >
+                            className={styles["showUploadBarUploaded"]}>
                             <Row>
                               <Col
                                 sm={9}
                                 md={9}
                                 lg={9}
-                                className="d-flex align-items-center gap-3"
-                              >
+                                className='d-flex align-items-center gap-3'>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={folderColor}
                                   width={20}
-                                  alt=""
+                                  alt=''
                                 />
                                 <span> {data.FolderName}</span>
                                 <span>
-                                  {`${data.UploadedAttachments}  ${"Of"}  ${
-                                    data.FileList.length
-                                  }  `}{" "}
+                                  {`${formatNumber(data.UploadedAttachments)}  ${t("Of")}  ${formatNumber(
+                                    data.FileList.length,
+                                  )}  `}{" "}
                                 </span>
                               </Col>
                               <Col
                                 sm={3}
                                 md={3}
                                 lg={3}
-                                className={styles["progress_bar"]}
-                              >
+                                className={styles["progress_bar"]}>
                                 {data.NetDisconnect ? (
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={ErrorIcon}
-                                    alt=""
+                                    alt=''
                                     className={styles["GreentickIcon_forfile"]}
                                   />
                                 ) : (
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={Greentick}
-                                    alt=""
+                                    alt=''
                                     className={styles["GreentickIcon"]}
                                   />
                                 )}
@@ -384,20 +373,18 @@ const UploadindUiComponent = ({
                             key={index}
                             className={`${"d-flex justify-content-between"} ${
                               styles["showUploadBarUploaded"]
-                            }`}
-                          >
+                            }`}>
                             <Space
-                              direction="vertical"
-                              className="d-flex  gap-3 flex-row "
-                            >
+                              direction='vertical'
+                              className='d-flex  gap-3 flex-row '>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={getIconSource(
-                                  getFileExtension(data.FileName)
+                                  getFileExtension(data.FileName),
                                 )}
-                                height="20px"
-                                alt=""
-                                width="20px"
+                                height='20px'
+                                alt=''
+                                width='20px'
                                 className={styles["Icon_in_Bar"]}
                               />
                               <span className={styles["name_of_life_in_Bar"]}>
@@ -406,16 +393,16 @@ const UploadindUiComponent = ({
                             </Space>
                             {data.UploadingError || data.NetDisconnect ? (
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={ErrorIcon}
-                                alt=""
+                                alt=''
                                 className={styles["GreentickIcon_forfile"]}
                               />
                             ) : data.Progress === 100 ? (
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={Greentick}
-                                alt=""
+                                alt=''
                                 className={styles["GreentickIcon_forfile"]}
                               />
                             ) : null}

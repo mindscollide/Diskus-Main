@@ -17,6 +17,8 @@ const MenuPopover = ({
     setVisible(newVisible); // Toggle Popover visibility
   };
 
+  
+
   const handleItemClick = (optionVal) => {
     let fileData;
     if (!record.isFolder) {
@@ -68,7 +70,7 @@ const MenuPopover = ({
   return (
     <Popover
       content={content}
-      trigger='click'
+      trigger='hover'
       placement='bottom'
       overlayClassName='menu-popover'
       showArrow={false}
