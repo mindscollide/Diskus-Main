@@ -239,6 +239,9 @@ const VideoPanelNormal = () => {
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost,
   );
+  // Live value for the iframe message listener (registered once, stale closure otherwise).
+  const videoControlRef = useRef(videoControl);
+  videoControlRef.current = videoControl;
 
   const participantsVisible = useSelector(
     (state) => state.videoFeatureReducer.participantsVisible,
@@ -1560,11 +1563,22 @@ const VideoPanelNormal = () => {
               console.log(" Recording notification shown on StreamConnected");
             }
 
+            // Host may hide the camera before the session joins; that VidOn is lost,
+            // so re-apply the hidden state once the stream is connected.
+            const reapplyHiddenVideo = () => {
+              if (videoControlRef.current === true) {
+                iframeRef.current?.contentWindow?.postMessage("VidOn", "*");
+              }
+            };
+
             if (isZoomEnabled) {
               console.log("is Zoom Connected");
               setTimeout(() => {
                 dispatch(disableZoomBeforeJoinSession(false));
+                reapplyHiddenVideo();
               }, 4000);
+            } else {
+              reapplyHiddenVideo();
             }
 
             if (presenterViewFlag && presenterViewHostFlag) {

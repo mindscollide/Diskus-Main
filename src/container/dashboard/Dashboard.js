@@ -1,6 +1,6 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "@/container/meeting/commonComponents/closeMeetingTab/CancelModal";
 import {
@@ -278,6 +278,8 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+  // Stable store handle so MQTT handlers can read live state (no stale closure).
+  const store = useStore();
 
   const {
     editorRole,
@@ -1821,6 +1823,21 @@ const Dashboard = () => {
               dispatch(participantHideUnhideVideo(data.payload));
 
               if (data.payload.uid === isGuid) {
+                const isVideoHidden = !!data.payload.isVideoHidden;
+                // Keep localStorage in sync so iframe reload/rejoin keeps host's choice.
+                localStorage.setItem("isWebCamEnabled", isVideoHidden);
+                // Panel only posts to iframe when Redux value changes; if it's already
+                // equal (icon shows off but iframe camera is on), post directly.
+                const alreadySame =
+                  store.getState().videoFeatureReducer.videoControlHost ===
+                  isVideoHidden;
+                const camIframe = iframeRef.current;
+                if (alreadySame && camIframe?.contentWindow) {
+                  camIframe.contentWindow.postMessage(
+                    isVideoHidden ? "VidOn" : "VidOff",
+                    "*",
+                  );
+                }
                 dispatch(setVideoControlHost(data.payload.isVideoHidden));
               }
 
@@ -3095,7 +3112,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: changeMQTTJSONOne(t("NEW_GROUP_CREATED"), "[FullName]",data.payload.data[0].fullName )
+            message: changeMQTTJSONOne(
+              t("NEW_GROUP_CREATED"),
+              "[FullName]",
+              data.payload.data[0].fullName,
+            ),
           });
           dispatch(mqttGroupCreated(data.payload));
 
@@ -4050,9 +4071,7 @@ const Dashboard = () => {
             !isMeetingVideo &&
             isThisUserTheUnansweredRecipient
           ) {
-            dispatch(
-              groupCallMissedByMeMQTT({ roomID: data.payload.roomID }),
-            );
+            dispatch(groupCallMissedByMeMQTT({ roomID: data.payload.roomID }));
           }
 
           console.log("mqtt");
@@ -4107,7 +4126,7 @@ const Dashboard = () => {
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
               dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message),
+                callRequestReceivedMQTT(data.payload, t(data.payload.message)),
               );
               console.log(data.payload.message, "datapayloadmessage");
             } else {
