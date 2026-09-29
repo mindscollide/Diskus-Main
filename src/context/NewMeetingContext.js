@@ -248,56 +248,83 @@ export const NewMeetingProvider = ({ children }) => {
    * already exists in the active list, replace it; otherwise prepend it.
    */
   useEffect(() => {
-    if (meetingStatusPublishedMqttData == null) return;
+    if (meetingStatusPublishedMqttData === null) return;
 
     const callMQTT = async () => {
       try {
         const meetingData = meetingStatusPublishedMqttData;
+
         const newMeetingData = await mqttMeetingData(meetingData, 1);
-        const { list, setList } = getActiveMeetingListAndSetter();
 
-        const indexToUpdate = list.findIndex(
-          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
-        );
+        // =========================
+        // PUBLISHED MEETING
+        // =========================
 
-        if (indexToUpdate !== -1) {
-          const updated = [...list];
-          updated[indexToUpdate] = newMeetingData;
-          setList(updated);
-        } else {
-          setList([newMeetingData, ...list]);
-        }
+        setPublishedMeetingData((prev) => {
+          const existingIndex = prev.findIndex(
+            (meetData) =>
+              Number(meetData.pK_MDID) === Number(meetingData.pK_MDID),
+          );
 
-        // A meeting that just got published can no longer be a draft or a
-        // proposed meeting — drop it from those tabs regardless of which
-        // tab is currently active, so it doesn't linger there. Only
-        // decrement each tab's record count when the meeting actually was
-        // in that tab.
+          // Meeting already exists → Update
+          if (existingIndex !== -1) {
+            return prev.map((meetData, index) =>
+              index === existingIndex ? newMeetingData : meetData,
+            );
+          }
+
+          // Meeting doesn't exist → Add
+          return [newMeetingData, ...prev];
+        });
+
+        // =========================
+        // REMOVE FROM DRAFT
+        // =========================
+
         const publishedMeetingID = Number(meetingData.pK_MDID);
-        if (
-          draftMeetingData.some(
+
+        setDraftMeetingData((prev) => {
+          const exists = prev.some(
             (obj) => Number(obj.pK_MDID) === publishedMeetingID,
-          )
-        ) {
-          setDraftMeetingData((prev) =>
-            prev.filter((obj) => Number(obj.pK_MDID) !== publishedMeetingID),
           );
-          setDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
-        }
-        if (
-          proposedMeetingData.some(
+
+          if (exists) {
+            setDraftMeetingDataRecord((prevRecord) =>
+              Math.max(0, prevRecord - 1),
+            );
+          }
+
+          return prev.filter(
+            (obj) => Number(obj.pK_MDID) !== publishedMeetingID,
+          );
+        });
+
+        // =========================
+        // REMOVE FROM PROPOSED
+        // =========================
+
+        setProposedMeetingData((prev) => {
+          const exists = prev.some(
             (obj) => Number(obj.pK_MDID) === publishedMeetingID,
-          )
-        ) {
-          setProposedMeetingData((prev) =>
-            prev.filter((obj) => Number(obj.pK_MDID) !== publishedMeetingID),
           );
-          setProposedMeetingDataRecord((prev) => Math.max(0, prev - 1));
-        }
-      } catch (error) {}
+
+          if (exists) {
+            setProposedMeetingDataRecord((prevRecord) =>
+              Math.max(0, prevRecord - 1),
+            );
+          }
+
+          return prev.filter(
+            (obj) => Number(obj.pK_MDID) !== publishedMeetingID,
+          );
+        });
+      } catch (error) {
+        console.error("meetingStatusPublishedMqttData error:", error);
+      }
     };
 
     callMQTT();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusPublishedMqttData]);
 

@@ -656,14 +656,25 @@ const Actions = () => {
         todoListMeetingTask.toDoLists.length > 0
       ) {
         setTotalRecords(todoListMeetingTask.totalRecords);
-        setActionsRows(todoListMeetingTask.toDoLists);
         setOriginalData(todoListMeetingTask.toDoLists);
+        // Re-fetches (e.g. discarding the Create Task modal) refresh this
+        // list from the API, which has no status filter of its own — the
+        // filter is applied entirely client-side. Re-apply whatever status
+        // filter is currently selected instead of overwriting the view
+        // with the unfiltered list, so a previously applied filter (with
+        // some statuses unchecked) survives the refresh.
+        setActionsRows(
+          todoListMeetingTask.toDoLists.filter((item) =>
+            selectedValues.includes(item.status.pK_TSID.toString()),
+          ),
+        );
       } else {
         setActionsRows([]);
         setOriginalData([]);
         setTotalRecords(0);
       }
     } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todoListMeetingTask]);
 
   useEffect(() => {
