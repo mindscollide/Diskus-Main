@@ -207,7 +207,7 @@ const ShoutEditPanel = ({ broadcastId, channelId, onClose }) => {
               searchShoutEditUser(e.target.value);
             }}
             value={searchValue}
-            placeholder="Search Users"
+            placeholder={t("Search-users")}
             labelclass={"d-none"}
           />
         </Col>

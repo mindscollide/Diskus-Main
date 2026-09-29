@@ -580,6 +580,7 @@ const GroupProposedMeetings = () => {
       }
     }
   }, [UserMeetPropoDatPoll]);
+  
   return (
     <>
       <Row>

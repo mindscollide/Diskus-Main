@@ -31,8 +31,6 @@ export const GroupContext = createContext();
 
 export const GroupsProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   // ─── UI State ───
   const [ViewGroupPage, setViewGroupPage] = useState(true);
@@ -129,27 +127,6 @@ export const GroupsProvider = ({ children }) => {
   // =========================
   // HELPERS
   // =========================
-  const getActiveListAndSetter = () => {
-    switch (currentGroupMeetingTabActive) {
-      case 2:
-        return {
-          list: groupProposedMeetingData,
-          setList: setGroupProposedMeetingData,
-        };
-      case 3:
-        return {
-          list: groupDraftMeetingData,
-          setList: setGroupDraftMeetingData,
-        };
-      case 1:
-      default:
-        return {
-          list: groupPublishedMeetingData,
-          setList: setGroupPublishedMeetingData,
-        };
-    }
-  };
-
   const updateMeetingInAllLists = (meetingID, updateFn) => {
     const mapper = (item) =>
       Number(item.pK_MDID) === Number(meetingID) ? updateFn(item) : item;
@@ -228,23 +205,51 @@ export const GroupsProvider = ({ children }) => {
         const meetingData = GroupMeetingMQTT.meeting;
         if (!meetingData?.pK_MDID) return;
 
-        const { list, setList } = getActiveListAndSetter();
-
-        const exists = list.some(
-          (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
-        );
+        // A published meeting always belongs on the Published tab — not
+        // whichever tab happens to be active when the MQTT arrives (that
+        // previously let a publish event add the meeting to the Proposed
+        // or Draft tab if the user was viewing it at the time).
         const newMeetingData = await mqttMeetingData(meeting, 1);
 
-        if (exists) {
-          setList((prev) =>
-            prev.map((item) =>
-              Number(item.pK_MDID) === Number(meetingData.pK_MDID)
-                ? newMeetingData
-                : item,
-            ),
+        setGroupPublishedMeetingData((prev) => {
+          const existingIndex = prev.findIndex(
+            (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
           );
-        } else {
-          setList((prev) => [newMeetingData, ...prev]);
+
+          if (existingIndex !== -1) {
+            return prev.map((item, index) =>
+              index === existingIndex ? newMeetingData : item,
+            );
+          }
+
+          return [newMeetingData, ...prev];
+        });
+
+        // A meeting that just got published can no longer be a draft or a
+        // proposed meeting — drop it from those tabs regardless of which
+        // tab is currently active, so it doesn't linger there. Only
+        // decrement each tab's record count when the meeting actually was
+        // in that tab.
+        const publishedMeetingID = Number(meetingData.pK_MDID);
+        if (
+          groupDraftMeetingData.some(
+            (item) => Number(item.pK_MDID) === publishedMeetingID,
+          )
+        ) {
+          setGroupDraftMeetingData((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== publishedMeetingID),
+          );
+          setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
+        }
+        if (
+          groupProposedMeetingData.some(
+            (item) => Number(item.pK_MDID) === publishedMeetingID,
+          )
+        ) {
+          setGroupProposedMeetingData((prev) =>
+            prev.filter((item) => Number(item.pK_MDID) !== publishedMeetingID),
+          );
+          setGroupProposedMeetingDataRecord((prev) => Math.max(0, prev - 1));
         }
 
         dispatch(createGroupMeeting(null));
@@ -292,6 +297,23 @@ export const GroupsProvider = ({ children }) => {
   // =========================
   // EFFECT: allMeetingsSocketData — update meeting in any list
   // =========================
+
+  useEffect(() => {
+    if (!allMeetingsSocketData) return;
+
+    try {
+      const updateMeetingSocket = async () => {
+        const meetingID = allMeetingsSocketData.pK_MDID;
+        const newMeetingData = await mqttMeetingData(allMeetingsSocketData, 1);
+
+        if (!meetingID) return;
+        updateMeetingInAllLists(meetingID, () => newMeetingData);
+      };
+      updateMeetingSocket();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [allMeetingsSocketData]);
 
   // =========================
   // EFFECT: meetingStatusNotConductedMqttData
@@ -562,7 +584,25 @@ export const GroupsProvider = ({ children }) => {
           if (indexToUpdate !== -1) {
             let updatedRows = [...groupProposedMeetingData];
 
-            updatedRows[indexToUpdate] = getMeetingData;
+            // This poll-response event is broadcast to every connected
+            // user, not just the one who voted. The vote count in
+            // getMeetingData is correct for everyone, but its isVoted flag
+            // reflects the sender's vote — applying it as-is would flip
+            // other users' Vote button to Voted too. Only trust isVoted
+            // when the logged-in user is the one who actually voted.
+            let currentUserID = Number(localStorage.getItem("userID"));
+            let mergedMeetingData =
+              Number(meetingData.senderID) !== currentUserID
+                ? {
+                    ...getMeetingData,
+                    meetingPoll: {
+                      ...getMeetingData.meetingPoll,
+                      isVoted: updatedRows[indexToUpdate]?.meetingPoll?.isVoted,
+                    },
+                  }
+                : getMeetingData;
+
+            updatedRows[indexToUpdate] = mergedMeetingData;
 
             setGroupProposedMeetingData(updatedRows);
           } else {

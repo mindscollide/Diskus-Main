@@ -760,7 +760,7 @@ const ComplianceStandingReport = () => {
                 </label>
                 <DatePicker.RangePicker
                   format="DD/MM/YYYY"
-                  placeholder={["Start Date", "End Date"]}
+                  placeholder={[t("Start-date"), t("End-date")]}
                   className="custom-range-picker"
                   separator="-"
                   inputReadOnly
@@ -789,7 +789,7 @@ const ComplianceStandingReport = () => {
                   <label>{t("Report-title")}:</label>
                   <p>
                     {GetComplianceStandingReport?.complianceStandingReport
-                      ?.reportTitle || "No Compliance Standing Report Title"}
+                      ?.reportTitle || t("No-compliance-standing-report-title")}
                   </p>
                 </div>
               </Col>

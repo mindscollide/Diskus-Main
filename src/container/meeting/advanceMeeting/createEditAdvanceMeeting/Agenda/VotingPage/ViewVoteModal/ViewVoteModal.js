@@ -264,7 +264,7 @@ const ViewVoteModal = () => {
                         width={"600px"}
                         height={"300px"}
                         chartType="PieChart"
-                        loader={<div>Loading Chart</div>}
+                        loader={<div>{t("Loading-chart")}</div>}
                         data={barChartData}
                         options={{
                           title: "Vote Distribution",
@@ -307,7 +307,7 @@ const ViewVoteModal = () => {
                         width={"600px"}
                         height={"300px"}
                         chartType="ColumnChart"
-                        loader={<div>Loading Chart</div>}
+                        loader={<div>{t("Loading-chart")}</div>}
                         data={barChartData}
                         options={{
                           title: "Vote Distribution",

@@ -601,6 +601,7 @@ useEffect(() => {
                     selected={selected}
                     onSelect={handleSelect}
                     selectButtonClassName={styles["flagButton"]}
+                    searchPlaceholder={t("Select")}
                     searchable={true}
                     customLabels={countryNameforPhoneNumber}
                   />

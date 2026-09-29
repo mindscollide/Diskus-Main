@@ -139,7 +139,13 @@ const CalendarPage = () => {
     (state) => state.calendarReducer.microsoftEventDelete,
   );
 
-  const { isQuickMeetingView, setIsQuickMeetingView } = useNewMeetingContext();
+  const {
+    isQuickMeetingView,
+    setIsQuickMeetingView,
+    isQuickMeetingFromCalendar,
+    setIsQuickMeetingFromCalendar,
+  } = useNewMeetingContext();
+
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [meetingData, setMeetingData] = useState(null);
@@ -580,7 +586,7 @@ const CalendarPage = () => {
   }, [MeetingPublishData]);
 
   const handleCreateMeeting = () => {
-    setMeetingModalShow(true);
+    setIsQuickMeetingFromCalendar(true);
   };
 
   const handleCreateTodo = () => {
@@ -667,12 +673,10 @@ const CalendarPage = () => {
       </div>
       {isQuickMeetingView && <MeetingViewModalCalendar data={meetingData} />}
 
-      {meetingModalShow && (
+      {isQuickMeetingFromCalendar  && (
         <CreateQuickMeeting
           // this is check from where its called 2 is from Calendar
           checkFlag={2}
-          show={meetingModalShow}
-          setShow={setMeetingModalShow}
         />
       )}
       {todolistModalShow && (

@@ -195,7 +195,7 @@ body[dir="rtl"] .ResetOkBtn {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 10px;
   font-size: 0.8em;
   border-radius: 4px !important;
+  border: none;
 }

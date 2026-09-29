@@ -5,7 +5,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import moment from "moment";
 import { Row, Col, Container, Form, Dropdown } from "react-bootstrap";
-import { Checkbox, Tooltip, Spin } from "antd";
+import { Checkbox, Tooltip, Spin, Popover } from "antd";
 import {
   oneToOneMessages,
   groupMessages,
@@ -102,6 +102,7 @@ import { HIDE_VIDEO } from "../../../../../../commen/featureFlags";
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
   const [show, SnackBar] = useSnackbar();
+  const [openPopOver , setOpenPopover] = useState(false)
   let currentUserId = localStorage.getItem("userID");
 
   let currentOrganizationId = localStorage.getItem("organizationID");
@@ -1908,6 +1909,69 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadTalkFile(navigate, Data, ext, data.fileName, t));
   };
 
+  const dropdownContent = (
+    <div className='talk-popover-menu'>
+      {/* Common Options */}
+      <div
+        className='talk-popover-item'
+        onClick={() => {
+          modalHandlerSave(talkStateData.ActiveChatData);
+        }}>
+        {t("Save")}
+      </div>
+
+      <div
+        className='talk-popover-item'
+        onClick={() => {
+          modalHandlerPrint(talkStateData.ActiveChatData);
+        }}>
+        {t("Print")}
+      </div>
+
+      <div
+        className='talk-popover-item'
+        onClick={() => {
+          modalHandlerEmail(talkStateData.ActiveChatData);
+        }}>
+        {t("Email")}
+      </div>
+
+      {/* Group Options */}
+      {talkStateData.ActiveChatData.messageType === "G" && (
+        <>
+          <div className='talk-popover-item' onClick={modalHandlerGroupInfo}>
+            {t("Group-Info")}
+          </div>
+
+          <div className='talk-popover-item' onClick={deleteMultipleMessages}>
+            {t("Delete-messages")}
+          </div>
+
+          <div className='talk-popover-item' onClick={() => openModal("leave")}>
+            {t("Leave-Group")}
+          </div>
+
+          <div className='talk-popover-item' onClick={modalHandlerGroupEdit}>
+            {t("Edit-Info")}
+          </div>
+        </>
+      )}
+
+      {/* Shout Options */}
+      {talkStateData.ActiveChatData.messageType === "B" && (
+        <>
+          <div className='talk-popover-item' onClick={deleteShoutFunction}>
+            {t("Delete-Shout")}
+          </div>
+
+          <div className='talk-popover-item' onClick={editShoutFunction}>
+            {t("Edit-shout")}
+          </div>
+        </>
+      )}
+    </div>
+  );
+
   return (
     <>
       <div className='positionRelative'>
@@ -1922,8 +1986,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       : "chat-header"
                   }>
                   <Row>
-                    <Col lg={1} md={1} sm={12}>
-                      <div className='chat-profile-icon'>
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      className='d-flex justify-content-start align-items-center gap-2'>
+                      <span className='chat-profile-icon'>
                         {talkStateData.ActiveChatData.messageType === "O" ? (
                           <img
                             draggable='false'
@@ -1946,18 +2014,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             alt=''
                           />
                         ) : null}
-                      </div>
-                    </Col>
-                    <Col lg={6} md={6} sm={12}>
-                      <p className='chat-username chathead'>
+                      </span>
+                      <span className='chat-username chathead'>
                         {talkStateData.ActiveChatData.fullName}
-                      </p>
+                      </span>
                     </Col>
+
                     <Col
                       lg={5}
                       md={5}
                       sm={12}
-                      className='d-flex justify-content-end align-items-center'>
+                      className='d-flex justify-content-end align-items-center gap-2'>
                       {" "}
                       <span>
                         <img
@@ -1967,7 +2034,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           alt=''
                         />
                       </span>
-                      <Dropdown className=' cursor-pointer positionRelative'>
+                      <Popover
+                        content={dropdownContent}
+                        overlayClassName='talkChatBox_threeDots'
+                        placement='bottom'
+                        trigger="hover"
+                        showArrow={false}>
+                        <div className='talk-dropdown-toggle cursor-pointer positionRelative'>
+                          <img draggable='false' src={MenuIcon} alt='' />
+                        </div>
+                      </Popover>
+                      {/* <Dropdown className=' cursor-pointer positionRelative'>
                         <Dropdown.Toggle
                           // as="div"
                           className='talk-dropdown-toggle'
@@ -2076,7 +2153,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             </>
                           )}
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown> */}
                       {activeCall === false &&
                       checkFeatureIDAvailability(5) &&
                       !HIDE_VIDEO ? (
@@ -2251,7 +2328,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                         messageData,
                                                       )
                                                     }>
-                                                    {t("Delete for me")}
+                                                    {t("Delete-for-me")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
                                                     onClick={() =>
@@ -2702,7 +2779,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageData,
                                                     )
                                                   }>
-                                                  {t("Delete for me")}
+                                                  {t("Delete-for-me")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={() =>
@@ -2960,7 +3037,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageData,
                                                     )
                                                   }>
-                                                  {t("Delete for me")}
+                                                  {t("Delete-for-me")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={() =>
@@ -3247,7 +3324,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       messageData,
                                                     )
                                                   }>
-                                                  {t("Delete for me")}
+                                                {t("Delete-for-me")}
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={() =>
@@ -3486,7 +3563,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                         messageData,
                                                       )
                                                     }>
-                                                    {t("Delete for me")}
+                                                        {t("Delete-for-me")}
                                                   </Dropdown.Item>
                                                   <Dropdown.Item
                                                     onClick={() =>
@@ -3745,7 +3822,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             
                             </div> */}
                             <div className='image-thumbnail'>
-                              <div className="text-end">
+                              <div className='text-end'>
                                 {" "}
                                 <img
                                   draggable='false'
@@ -3992,7 +4069,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 value={messageSendData.Body}
                                 className='chat-message-input'
                                 name='ChatMessage'
-                                placeholder={"Type a Message"}
+                                placeholder={t("Type-a-message")}
                                 maxLength={200}
                                 onChange={chatMessageHandler}
                                 autoComplete='off'
@@ -4087,7 +4164,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 // group creation date. Looks like a pre-existing bug (wrong
                 // data source), left unfixed here since the correct field
                 // isn't visible from this file; flagging rather than guessing.
-                groupCreatedDate={messageInfoData.seenDate}
+                groupCreatedDate={talkStateData?.ActiveChatData?.messageDate}
                 lang={lang}
                 onClose={handleCancel}
               />

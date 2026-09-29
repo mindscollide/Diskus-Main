@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { ComplianceEmptyState } from "../../../../../components/elements";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import { formatNumber } from "../../../../../commen/functions/utils";
 import styles from "./upcomingComplianceDeadline.module.css";
 
 /**
@@ -62,14 +63,14 @@ const UpcomingComplianceDeadline = () => {
         <Col xs={12} className={styles.deadlineRow}>
           <span className={styles.checkUpcomingCenter}>
             <span className={styles.boldNumber}>
-              {upcomingData.dueThisQuarter}
+              {formatNumber(upcomingData.dueThisQuarter)}
             </span>{" "}
             <span className={styles.normalText}>{t("Due-this-quarter")}</span>
           </span>
 
           <span className={styles.checkUpcomingCenter}>
             <span className={styles.boldNumber}>
-              {upcomingData.dueThisWeek}
+              {formatNumber(upcomingData.dueThisWeek)}
             </span>{" "}
             <span className={styles.normalText}>{t("Due-this-week")}</span>
           </span>

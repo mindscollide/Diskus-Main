@@ -135,9 +135,8 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, response) => {
         const { name } = calculateTotals(tableData);
-
         if (response.isTotalRow) {
-          return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
+          return <span className={styles["ChargesPerLicesense"]}>{t(name)}</span>;
         } else {
           return (
             <>

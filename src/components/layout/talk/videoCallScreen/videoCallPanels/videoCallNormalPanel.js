@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import "./videoCallNormalPanel.css";
 import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
-import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
 import { LoaderPanelVideoScreen, Notification } from "../../../../elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
@@ -2229,7 +2228,7 @@ const VideoPanelNormal = () => {
                               <iframe
                                 src={callerURL}
                                 ref={iframeRef}
-                                title="Live Video"
+                                title={t("Live-video")}
                                 width="100%"
                                 height="100%"
                                 frameBorder="0"
@@ -2322,11 +2321,11 @@ const VideoPanelNormal = () => {
                                               {participant.name}
                                               {participant.isHost && (
                                                 <Tooltip
-                                                  title="Host"
+                                                  title={t("Host")}
                                                   placement="top-right"
                                                 >
                                                   <span className="hostName-in-participant">
-                                                    (Host)
+                                                    ({t("Host")})
                                                   </span>
                                                 </Tooltip>
                                               )}
@@ -2504,9 +2503,7 @@ const VideoPanelNormal = () => {
                         <VideoPanelNormalAgenda />
                       ) : null}
 
-                      {VideoMinutesMeetingNormalFlag === true ? (
-                        <VideoPanelNormalMinutesMeeting />
-                      ) : null}
+                 
                     </Col>
                   </Row>
                 </>

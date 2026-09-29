@@ -668,7 +668,7 @@ const SubAgendaMappingDragging = ({
                                                               "Meeting_subAgenda"
                                                             ]
                                                           }>
-                                                          {t("Start-date")}
+                                                          {t("Start-time")}
                                                         </span>
                                                       </Col>
                                                     </Row>

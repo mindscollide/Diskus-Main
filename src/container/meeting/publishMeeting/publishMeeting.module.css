@@ -1,5 +1,5 @@
 .EndMeetingButton {
-  min-width: 100% !important;
+  min-width: 118px !important;
   max-height: 25px !important;
   background: #f16b6b !important;
   border: none !important;
@@ -11,7 +11,7 @@
   white-space: nowrap;
 }
 .StartMeetingButton {
-  min-width: 100% !important;
+  min-width: 118px !important;
   max-height: 25px !important;
   background: #55ce5c !important;
   border: none !important;
@@ -23,7 +23,7 @@
   white-space: nowrap;
 }
 .ContributeAgendaButton {
-  min-width: 100% !important;
+  min-width: 118px !important;
   max-height: 25px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -36,7 +36,7 @@
   white-space: nowrap;
 }
 .ViewMeetingButton {
-  min-width: 100% !important;
+  min-width: 118px !important;
   max-height: 25px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -50,7 +50,7 @@
 }
 
 .JoinMeetingButton {
-  min-width: 100% !important;
+  min-width: 118px !important;
   max-height: 25px !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -64,7 +64,7 @@
 }
 
 .EditMeetingButton {
-  min-width: 100% !important;
+  min-width: 118px !important;
   max-height: 25px !important;
   background: #ecefff !important;
   border: none !important;
@@ -78,7 +78,7 @@
 }
 
 .MoreMeetingButton {
-  min-width: 100% !important;
+  min-width: 88px !important;
   max-height: 25px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -100,7 +100,6 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 10px;
   font-weight: 400;
   font-size: 0.8em;
   border-radius: 4px !important;

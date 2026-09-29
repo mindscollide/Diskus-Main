@@ -46,6 +46,7 @@ import {
   setViewTab,
   toggleViewMeetingModal,
 } from "../../../store/actions/ModalStates_actions";
+import { useMeetingListActions } from "../commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -67,6 +68,22 @@ const DraftMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  })
 
   // ─── Context ───
   const {
@@ -102,10 +119,7 @@ const DraftMeetingList = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   // Matches the same controlled-Popover pattern already used on the
@@ -324,7 +338,10 @@ const DraftMeetingList = () => {
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
+
+
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -365,8 +382,8 @@ const DraftMeetingList = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../../elements";
 import { Checkbox } from "antd";
 import Google from "../../../../../assets/images/newElements/GooglePic.png";
@@ -7,6 +8,7 @@ import Gmail from "../../../../../assets/images/newElements/GmailPic.png";
 import "./VideoMaxModal.css";
 
 const VideoMaxModal = ({ videoModal, setVideoModal }) => {
+  const { t } = useTranslation();
   //for modal
   //   const [videoModal, setVideoModal] = useState(false);
 
@@ -70,7 +72,7 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                           : "btn btn-outline-primary isChrome-max-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text="Chrome"
+                      text={t("Chrome")}
                       onClick={changeIsChrome}
                     />
                   </Col>
@@ -88,7 +90,7 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                           : "btn btn-outline-primary isWindow-top-max-btn-Outline"
                       }
                       variant={"Primary"}
-                      text="Window"
+                      text={t("Window")}
                       onClick={navigateToWindow}
                     />
                   </Col>
@@ -106,7 +108,7 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                           : "btn btn-outline-primary Entire-top-max-btn-Outline"
                       }
                       variant={"Primary"}
-                      text="Entire Screen"
+                      text={t("Entire-screen")}
                       onClick={navigateToEntire}
                     ></Button>
                   </Col>
@@ -208,7 +210,7 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                         className="d-flex justify-content-start mt-3"
                       >
                         <Checkbox />
-                        <p>Select Tab Audio</p>
+                        <p>{t("Select-tab-audio")}</p>
                       </Col>
                       <Col lg={2} md={2} sm={2} />
                       <Col
@@ -218,14 +220,14 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text="Cancel"
+                          text={t("Cancel")}
                           className="cancel-video-max-modal-btn"
                         />
                       </Col>
 
                       <Col lg={3} md={3} sm={3}>
                         <Button
-                          text="Share"
+                          text={t("Share")}
                           className="share-video-max-modal-btn"
                         />
                       </Col>
@@ -242,14 +244,14 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text="Cancel"
+                          text={t("Cancel")}
                           className="cancel-video-max-modal-btn"
                         />
                       </Col>
 
                       <Col lg={3} md={3} sm={3}>
                         <Button
-                          text="Share"
+                          text={t("Share")}
                           className="share-video-max-modal-btn"
                         />
                       </Col>
@@ -265,7 +267,7 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                         className="d-flex justify-content-start mt-3"
                       >
                         <Checkbox />
-                        <p>Share System Audio </p>
+                        <p>{t("Share-system-audio")}</p>
                       </Col>
                       <Col lg={2} md={2} sm={2} />
                       <Col
@@ -275,14 +277,14 @@ const VideoMaxModal = ({ videoModal, setVideoModal }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text="Cancel"
+                          text={t("Cancel")}
                           className="cancel-video-max-modal-btn"
                         />
                       </Col>
 
                       <Col lg={3} md={3} sm={3}>
                         <Button
-                          text="Share"
+                          text={t("Share")}
                           className="share-video-max-modal-btn"
                         />
                       </Col>

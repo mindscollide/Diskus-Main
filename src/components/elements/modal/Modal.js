@@ -1,6 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import "./Modal.css";
-
+import CrossIcon from "../../../assets/images/Cross_Icon.png";
 const CustomModal = ({
   ModalTitle,
   ModalBody,
@@ -30,29 +30,38 @@ const CustomModal = ({
           show={show}
           onHide={onHide}
           backdrop={backdrop}
-          data-backdrop="false"
+          data-backdrop='false'
           size={size}
           centered={centered ?? true}
           className={className}
           dialogClassName={dialogClassName}
           fullscreen={fullscreen}
-          contentClassName={contentClassName}
-        >
-          <Modal.Header
-            className={`${modalHeaderClassName} ${"border-0"}`}
-            closeButton={closeButton}
-          >
-            <Modal.Title className={modalTitleClassName}>
-              {ModalTitle}
-            </Modal.Title>
+          contentClassName={contentClassName}>
+          <Modal.Header className={`${modalHeaderClassName} ${"border-0"}`}>
+            {localStorage.getItem("i18nextLng") === "en" ? (
+              <>
+                {closeButton && <img src={CrossIcon} alt='' onClick={onHide} />}
+                <Modal.Title className={modalTitleClassName}>
+                  {ModalTitle}
+                </Modal.Title>
+              </>
+            ) : (
+              <>
+                <Modal.Title className={modalTitleClassName}>
+                  {ModalTitle}
+                </Modal.Title>
+                {closeButton && (
+                  <img src={CrossIcon} onClick={onHide} alt='' />
+                )}{" "}
+              </>
+            )}
           </Modal.Header>
           {htmlCode !== "" && htmlCode !== null && htmlCode !== undefined ? (
             <Modal.Body
               dangerouslySetInnerHTML={{
                 __html: htmlCode !== "" ? htmlCode : null,
               }}
-              className={modalBodyClassName}
-            >
+              className={modalBodyClassName}>
               {ModalBody}
             </Modal.Body>
           ) : (

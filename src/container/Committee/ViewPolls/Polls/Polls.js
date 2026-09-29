@@ -412,7 +412,7 @@ const Polls = ({ committeeStatus }) => {
           onClick={resetFilter}
         />
         <Button
-          text="Ok"
+          text={t("Ok")}
           disableBtn={selectedValues.length === 0}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}

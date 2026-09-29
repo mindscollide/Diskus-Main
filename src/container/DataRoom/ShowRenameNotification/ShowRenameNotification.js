@@ -1,8 +1,10 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import styles from "./ShowRenameNotification.module.css";
 import cross from "../../../assets/images/Group 71.png";
 const ShowRenameNotification = ({ ClosingNotificationRenameFolder }) => {
+  const { t } = useTranslation();
   return (
     <Row>
       <Col
@@ -14,11 +16,13 @@ const ShowRenameNotification = ({ ClosingNotificationRenameFolder }) => {
         <Row className="mt-2">
           <Col lg={9} md={9} sm={9}>
             <span className={styles["Tag_line_rename_notfication"]}>
-              "Folder 1 renamed to "Folder renamed"
+              {t("Folder-renamed")}
             </span>
           </Col>
           <Col lg={2} md={2} sm={2}>
-            <span className={styles["Tag_line_rename_notfication"]}>UNDO</span>
+            <span className={styles["Tag_line_rename_notfication"]}>
+              {t("Undo")}
+            </span>
           </Col>
           <Col lg={1} md={1} sm={1}>
             <img

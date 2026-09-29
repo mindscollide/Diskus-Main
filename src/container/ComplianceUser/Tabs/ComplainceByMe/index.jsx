@@ -554,7 +554,7 @@ const ComplianceByMe = () => {
         key: "complianceTitle",
         width: "43%",
         ellipsis: true,
-        align: "left",
+        align: "start",
         render: (text, record) => (
           <span onClick={() => handleViewCompliance(record)}>
             <Tooltip className="cursor-pointer" title={text}>

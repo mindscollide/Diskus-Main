@@ -344,7 +344,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo }) => {
                   md={12}
                   xs={12}
                   className='d-flex justify-content-start flex-column margin-left-15'>
-                  <label>Attachment</label>
+                  <label>{t("Attachment")}</label>
                   <span className='custom-upload-input'>
                     <CustomUpload
                       change={uploadFilesAgenda}

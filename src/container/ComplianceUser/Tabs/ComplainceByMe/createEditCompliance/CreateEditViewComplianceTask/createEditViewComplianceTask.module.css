@@ -79,7 +79,10 @@
   bottom: 20px;
   right: 20px;
 }
-
+body[dir="rtl"] .mainButtonPosition {
+  right: auto !important;
+  left: 20px !important;
+}
 .Compliance_CloseButton {
   border-radius: 4px;
   color: #5a5a5a;
