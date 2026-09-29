@@ -1298,372 +1298,367 @@ const VideoPanelNormal = () => {
     }
   };
 
-  // Add event listener for messages
-  useEffect(() => {
-    sessionStorage.removeItem("isWaiting");
-    const messageHandler = async (event) => {
-      // Check the origin for security
-      console.log("handlePostMessage", event.data);
-      console.log("handlePostMessage", process.env.REACT_APP_VIDEO_EVENTS);
-      console.log("handlePostMessage", event.origin);
-      if (event.origin === process.env.REACT_APP_VIDEO_EVENTS) {
-        // Example actions based on the message received
+  // Iframe message handler. Rebuilt on every render and called through a ref,
+  // so it always sees current state/props. It used to be created once at
+  // mount, freezing values such as isScreenActive (false), which made Firefox
+  // ignore every ScreenSharedStopMsgFromIframe.
+  const iframeMessageHandlerRef = useRef(null);
+  iframeMessageHandlerRef.current = async (event) => {
+    // Check the origin for security
+    console.log("handlePostMessage", event.data);
+    console.log("handlePostMessage", process.env.REACT_APP_VIDEO_EVENTS);
+    console.log("handlePostMessage", event.origin);
+    if (event.origin === process.env.REACT_APP_VIDEO_EVENTS) {
+      // Example actions based on the message received
 
-        console.log("handlePostMessage", presenterViewHostFlag);
-        console.log("handlePostMessage", presenterViewHostFlag);
-        console.log("handlePostMessage", event.data);
-        console.log("handlePostMessagesss", event.data);
-        console.log("maximizeParticipantVideoFlag");
-        switch (event.data) {
-          case "ScreenSharedMsgFromIframe":
-            console.log("handlePostMessage", event.data);
+      console.log("handlePostMessage", presenterViewHostFlag);
+      console.log("handlePostMessage", presenterViewHostFlag);
+      console.log("handlePostMessage", event.data);
+      console.log("handlePostMessagesss", event.data);
+      console.log("maximizeParticipantVideoFlag");
+      switch (event.data) {
+        case "ScreenSharedMsgFromIframe":
+          console.log("handlePostMessage", event.data);
+          let alreadyInMeetingVideo = JSON.parse(
+            sessionStorage.getItem("alreadyInMeetingVideo"),
+          );
+          let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
+            sessionStorage.getItem(
+              "alreadyInMeetingVideoStartPresenterCheck",
+            ),
+          );
+          let nonPresenter = JSON.parse(
+            sessionStorage.getItem("nonPresenter"),
+          );
+          console.log("handlePostMessage", alreadyInMeetingVideo);
+          console.log(
+            "handlePostMessage",
+            alreadyInMeetingVideoStartPresenterCheck,
+          );
+          console.log("handlePostMessage", nonPresenter);
+
+          setIsScreenActive(true); // Show a modal or perform an action
+          if (nonPresenter) {
+            console.log("handlePostMessage", nonPresenter);
+            console.log("busyCall");
+
+            sessionStorage.removeItem("nonPresenter");
+            if (isZoomEnabled) {
+              console.log("busyCall");
+
+              let participantRoomId = String(
+                localStorage.getItem("participantRoomId"),
+              );
+              let roomID = String(localStorage.getItem("acceptedRoomID"));
+              let newRoomID = String(localStorage.getItem("newRoomId"));
+
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck"),
+              );
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo"),
+              );
+              let userID = localStorage.getItem("userID");
+              let isGuid = localStorage.getItem("isGuid");
+
+              let participantUID = localStorage.getItem("participantUID");
+              let RoomID = !isMeetingVideo
+                ? roomID
+                : isMeetingVideoHostCheck
+                  ? newRoomID
+                  : participantRoomId;
+              let UID = !isMeetingVideo
+                ? CallType === 2
+                  ? isCaller
+                    ? localStorage.getItem("callerGuid")
+                    : localStorage.getItem("receipentGuid")
+                  : userID
+                : isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID;
+              let data = {
+                RoomID: RoomID,
+                ShareScreen: true,
+                UID: UID,
+              };
+              dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+            }
+          } else if (alreadyInMeetingVideo) {
+            console.log("handlePostMessage", alreadyInMeetingVideo);
+            if (alreadyInMeetingVideoStartPresenterCheck) {
+              console.log(
+                "handlePostMessage",
+                alreadyInMeetingVideoStartPresenterCheck,
+              );
+              dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
+              dispatch(setVideoControlHost(true));
+            } else {
+              console.log(
+                "handlePostMessage",
+                alreadyInMeetingVideoStartPresenterCheck,
+              );
+
+              dispatch(setAudioControlHost(true));
+              console.log("videoHideUnHideForHost");
+              dispatch(setVideoControlHost(true));
+            }
+            handlerForStaringPresenterView();
+          } else if (presenterViewFlag && presenterViewHostFlag) {
+            console.log("handlePostMessage", presenterViewHostFlag);
+            // If this presenter is REJOINING their own already-active
+            // presentation (presenterID === userID on JoinPresenterView —
+            // e.g. after closing/refreshing the browser), the presentation
+            // is already started on the backend. Calling StartPresenterView
+            // again here would incorrectly restart/duplicate the existing
+            // session, so skip it for this one resumed share-click only.
+            const isRejoiningOwnPresentation = JSON.parse(
+              localStorage.getItem("isRejoiningOwnPresentation") || "false",
+            );
+            if (isRejoiningOwnPresentation) {
+              console.log(
+                "handlePostMessage: skipping StartPresenterView — rejoining own active presentation",
+              );
+              localStorage.setItem("isRejoiningOwnPresentation", false);
+            } else {
+              handlerForStaringPresenterView();
+            }
+          }
+
+          break;
+        case "ScreenSharedStopMsgFromIframe":
+          setIsScreenActive(false);
+          console.log("ScreenSharedStopMsgFromIframe");
+          const isFirefox = navigator.userAgent
+            .toLowerCase()
+            .includes("firefox");
+
+          // 🔒 Firefox false stop protection
+          if (isFirefox && !isScreenActive) {
+            console.warn(
+              "Firefox blocked screen share – ignoring stop event",
+            );
+            return;
+          }
+
+          console.log("busyCall");
+          if (isZoomEnabled) {
+            console.log("busyCall");
+            let isSharedSceenEnable = JSON.parse(
+              localStorage.getItem("isSharedSceenEnable"),
+            );
             let alreadyInMeetingVideo = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideo"),
             );
-            let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
-              sessionStorage.getItem(
-                "alreadyInMeetingVideoStartPresenterCheck",
-              ),
-            );
-            let nonPresenter = JSON.parse(
-              sessionStorage.getItem("nonPresenter"),
-            );
-            console.log("handlePostMessage", alreadyInMeetingVideo);
-            console.log(
-              "handlePostMessage",
-              alreadyInMeetingVideoStartPresenterCheck,
-            );
-            console.log("handlePostMessage", nonPresenter);
-
-            setIsScreenActive(true); // Show a modal or perform an action
-            if (nonPresenter) {
-              console.log("handlePostMessage", nonPresenter);
+            if (isSharedSceenEnable && !globallyScreenShare) {
               console.log("busyCall");
+              let participantRoomId = String(
+                localStorage.getItem("participantRoomId"),
+              );
+              let newRoomID = String(localStorage.getItem("newRoomId"));
+              let roomID = String(localStorage.getItem("acceptedRoomID"));
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck"),
+              );
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo"),
+              );
+              let userID = localStorage.getItem("userID");
+              let isGuid = localStorage.getItem("isGuid");
+              let participantUID = localStorage.getItem("participantUID");
+              let RoomID = !isMeetingVideo
+                ? roomID
+                : isMeetingVideoHostCheck
+                  ? newRoomID
+                  : participantRoomId;
+              let UID = !isMeetingVideo
+                ? CallType === 2
+                  ? isCaller
+                    ? localStorage.getItem("callerGuid")
+                    : localStorage.getItem("receipentGuid")
+                  : userID
+                : isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID;
+              let data = {
+                RoomID: RoomID,
+                ShareScreen: false,
+                UID: UID,
+              };
+              console.log("busyCall");
+              dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+            } else if (
+              (presenterViewFlag && presenterViewHostFlag) ||
+              alreadyInMeetingVideo
+            ) {
+              console.log("busyCall");
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck"),
+              );
 
-              sessionStorage.removeItem("nonPresenter");
-              if (isZoomEnabled) {
-                console.log("busyCall");
-
-                let participantRoomId = String(
-                  localStorage.getItem("participantRoomId"),
-                );
-                let roomID = String(localStorage.getItem("acceptedRoomID"));
-                let newRoomID = String(localStorage.getItem("newRoomId"));
-
-                let isMeetingVideoHostCheck = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck"),
-                );
-                let isMeetingVideo = JSON.parse(
-                  localStorage.getItem("isMeetingVideo"),
-                );
-                let userID = localStorage.getItem("userID");
-                let isGuid = localStorage.getItem("isGuid");
-
-                let participantUID = localStorage.getItem("participantUID");
-                let RoomID = !isMeetingVideo
+              let videoCallURL = Number(localStorage.getItem("videoCallURL"));
+              let roomID = localStorage.getItem("acceptedRoomID");
+              let participantRoomId =
+                localStorage.getItem("participantRoomId");
+              let RoomID =
+                presenterViewFlag &&
+                (presenterViewHostFlag || presenterViewJoinFlag)
                   ? roomID
                   : isMeetingVideoHostCheck
                     ? newRoomID
                     : participantRoomId;
-                let UID = !isMeetingVideo
-                  ? CallType === 2
-                    ? isCaller
-                      ? localStorage.getItem("callerGuid")
-                      : localStorage.getItem("receipentGuid")
-                    : userID
-                  : isMeetingVideoHostCheck
-                    ? isGuid
-                    : participantUID;
+              console.log(RoomID, "Check isShare Issue");
+
+              if (alreadyInMeetingVideo || presenterViewHostFlag) {
+                console.log("busyCall");
                 let data = {
-                  RoomID: RoomID,
-                  ShareScreen: true,
-                  UID: UID,
+                  MeetingID: currentMeetingID,
+                  RoomID: String(RoomID),
+                  VideoCallUrl: videoCallURL,
                 };
-                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
-              }
-            } else if (alreadyInMeetingVideo) {
-              console.log("handlePostMessage", alreadyInMeetingVideo);
-              if (alreadyInMeetingVideoStartPresenterCheck) {
-                console.log(
-                  "handlePostMessage",
-                  alreadyInMeetingVideoStartPresenterCheck,
-                );
-                dispatch(setAudioControlHost(false));
-                console.log("videoHideUnHideForHost");
-                dispatch(setVideoControlHost(true));
-              } else {
-                console.log(
-                  "handlePostMessage",
-                  alreadyInMeetingVideoStartPresenterCheck,
-                );
+                sessionStorage.setItem("StopPresenterViewAwait", true);
+                setLeavePresenterViewToJoinOneToOne(false);
+                console.log("stopPresenterViewMainApi");
 
-                dispatch(setAudioControlHost(true));
-                console.log("videoHideUnHideForHost");
-                dispatch(setVideoControlHost(true));
-              }
-              handlerForStaringPresenterView();
-            } else if (presenterViewFlag && presenterViewHostFlag) {
-              console.log("handlePostMessage", presenterViewHostFlag);
-              // If this presenter is REJOINING their own already-active
-              // presentation (presenterID === userID on JoinPresenterView —
-              // e.g. after closing/refreshing the browser), the presentation
-              // is already started on the backend. Calling StartPresenterView
-              // again here would incorrectly restart/duplicate the existing
-              // session, so skip it for this one resumed share-click only.
-              const isRejoiningOwnPresentation = JSON.parse(
-                localStorage.getItem("isRejoiningOwnPresentation") || "false",
-              );
-              if (isRejoiningOwnPresentation) {
-                console.log(
-                  "handlePostMessage: skipping StartPresenterView — rejoining own active presentation",
-                );
-                localStorage.setItem("isRejoiningOwnPresentation", false);
-              } else {
-                handlerForStaringPresenterView();
-              }
-            }
+                if (stopApiCalledRef.current) {
+                  console.log(
+                    "⛔ Blocked in Panel — Header already called API",
+                  );
+                  return;
+                }
 
-            break;
-          case "ScreenSharedStopMsgFromIframe":
-            setIsScreenActive(false);
-            console.log("ScreenSharedStopMsgFromIframe");
-            const isFirefox = navigator.userAgent
-              .toLowerCase()
-              .includes("firefox");
+                try {
+                  // ... existing code
 
-            // 🔒 Firefox false stop protection
-            if (isFirefox && !isScreenActive) {
-              console.warn(
-                "Firefox blocked screen share – ignoring stop event",
-              );
-              return;
-            }
+                  const result = await dispatch(
+                    stopPresenterViewMainApi(
+                      navigate,
+                      t,
+                      data,
+                      leavePresenterViewToJoinOneToOne ? 3 : 0,
+                      setLeaveMeetingVideoForOneToOneOrGroup,
+                      setJoiningOneToOneAfterLeavingPresenterView,
+                      setLeavePresenterViewToJoinOneToOne,
+                      stopApiCalledRef,
+                    ),
+                  );
 
-            console.log("busyCall");
-            if (isZoomEnabled) {
-              console.log("busyCall");
-              let isSharedSceenEnable = JSON.parse(
-                localStorage.getItem("isSharedSceenEnable"),
-              );
-              let alreadyInMeetingVideo = JSON.parse(
-                sessionStorage.getItem("alreadyInMeetingVideo"),
-              );
-              if (isSharedSceenEnable && !globallyScreenShare) {
-                console.log("busyCall");
-                let participantRoomId = String(
-                  localStorage.getItem("participantRoomId"),
-                );
-                let newRoomID = String(localStorage.getItem("newRoomId"));
-                let roomID = String(localStorage.getItem("acceptedRoomID"));
-                let isMeetingVideoHostCheck = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck"),
-                );
-                let isMeetingVideo = JSON.parse(
-                  localStorage.getItem("isMeetingVideo"),
-                );
-                let userID = localStorage.getItem("userID");
-                let isGuid = localStorage.getItem("isGuid");
-                let participantUID = localStorage.getItem("participantUID");
-                let RoomID = !isMeetingVideo
-                  ? roomID
-                  : isMeetingVideoHostCheck
-                    ? newRoomID
-                    : participantRoomId;
-                let UID = !isMeetingVideo
-                  ? CallType === 2
-                    ? isCaller
-                      ? localStorage.getItem("callerGuid")
-                      : localStorage.getItem("receipentGuid")
-                    : userID
-                  : isMeetingVideoHostCheck
-                    ? isGuid
-                    : participantUID;
-                let data = {
-                  RoomID: RoomID,
-                  ShareScreen: false,
-                  UID: UID,
-                };
-                console.log("busyCall");
-                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
-              } else if (
-                (presenterViewFlag && presenterViewHostFlag) ||
-                alreadyInMeetingVideo
-              ) {
-                console.log("busyCall");
-                let isMeetingVideoHostCheck = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck"),
-                );
-
-                let videoCallURL = Number(localStorage.getItem("videoCallURL"));
-                let roomID = localStorage.getItem("acceptedRoomID");
-                let participantRoomId =
-                  localStorage.getItem("participantRoomId");
-                let RoomID =
-                  presenterViewFlag &&
-                  (presenterViewHostFlag || presenterViewJoinFlag)
-                    ? roomID
-                    : isMeetingVideoHostCheck
-                      ? newRoomID
-                      : participantRoomId;
-                console.log(RoomID, "Check isShare Issue");
-
-                if (alreadyInMeetingVideo || presenterViewHostFlag) {
-                  console.log("busyCall");
-                  let data = {
-                    MeetingID: currentMeetingID,
-                    RoomID: String(RoomID),
-                    VideoCallUrl: videoCallURL,
-                  };
-                  sessionStorage.setItem("StopPresenterViewAwait", true);
-                  setLeavePresenterViewToJoinOneToOne(false);
-                  console.log("stopPresenterViewMainApi");
-
-                  if (stopApiCalledRef.current) {
-                    console.log(
-                      "⛔ Blocked in Panel — Header already called API",
-                    );
-                    return;
-                  }
-
-                  try {
-                    // ... existing code
-
-                    const result = await dispatch(
-                      stopPresenterViewMainApi(
-                        navigate,
-                        t,
-                        data,
-                        leavePresenterViewToJoinOneToOne ? 3 : 0,
-                        setLeaveMeetingVideoForOneToOneOrGroup,
-                        setJoiningOneToOneAfterLeavingPresenterView,
-                        setLeavePresenterViewToJoinOneToOne,
-                        stopApiCalledRef,
-                      ),
-                    );
-
-                    console.log("Stop presentation completed:", result);
-                  } catch (error) {
-                    console.error("Stop presentation failed:", error);
-                    stopApiCalledRef.current = false; // Reset on error
-                  }
+                  console.log("Stop presentation completed:", result);
+                } catch (error) {
+                  console.error("Stop presentation failed:", error);
+                  stopApiCalledRef.current = false; // Reset on error
                 }
               }
             }
+          }
 
-            break;
+          break;
 
-          case "StreamConnected":
-            console.log("disableZoomBeforeJoinSession", event.data);
-            // RecordingStopScenarioForOneToOne();
+        case "StreamConnected":
+          console.log("disableZoomBeforeJoinSession", event.data);
+          // RecordingStopScenarioForOneToOne();
 
-            // Show recording notification when stream is connected
-            if (isMeetingVideo && !recordingToastShownRef.current) {
-              recordingToastShownRef.current = true;
-              show(t("The-recording-is-started"), "info");
-              console.log(" Recording notification shown on StreamConnected");
-            }
+          // Show recording notification when stream is connected
+          if (isMeetingVideo && !recordingToastShownRef.current) {
+            recordingToastShownRef.current = true;
+            show(t("The-recording-is-started"), "info");
+            console.log(" Recording notification shown on StreamConnected");
+          }
 
-            // Host may hide the camera before the session joins; that VidOn is lost,
-            // so re-apply the hidden state once the stream is connected.
-            const reapplyHiddenVideo = () => {
-              if (videoControlRef.current === true) {
-                iframeRef.current?.contentWindow?.postMessage("VidOn", "*");
-              }
-            };
+          if (isZoomEnabled) {
+            console.log("is Zoom Connected");
+            setTimeout(() => {
+              dispatch(disableZoomBeforeJoinSession(false));
+            }, 4000);
+          }
 
+          if (presenterViewFlag && presenterViewHostFlag) {
             if (isZoomEnabled) {
-              console.log("is Zoom Connected");
               setTimeout(() => {
-                dispatch(disableZoomBeforeJoinSession(false));
-                reapplyHiddenVideo();
-              }, 4000);
-            } else {
-              reapplyHiddenVideo();
-            }
-
-            if (presenterViewFlag && presenterViewHostFlag) {
-              if (isZoomEnabled) {
-                setTimeout(() => {
-                  console.log("stream");
-                  handlePresenterView();
-                }, 2000);
-              } else {
+                console.log("stream");
                 handlePresenterView();
-              }
-            } else if (presenterViewFlag && presenterViewJoinFlag) {
-              handlePresenterViewForParticipent();
+              }, 2000);
+            } else {
+              handlePresenterView();
             }
-            break;
+          } else if (presenterViewFlag && presenterViewJoinFlag) {
+            handlePresenterViewForParticipent();
+          }
+          break;
 
-          case "ScreenSharedCancelMsg":
-            stopScreenShareEventTRiger();
-            break;
+        case "ScreenSharedCancelMsg":
+          stopScreenShareEventTRiger();
+          break;
 
-          case "RecordingStartMsgFromIframe":
-            console.log("recording Start");
-            // Show toast only once per recording session
-            if (!recordingToastShownRef.current) {
-              recordingToastShownRef.current = true;
-              show(t("The-recording-is-started"), "info");
-            }
+        case "RecordingStartMsgFromIframe":
+          console.log("recording Start");
+          // Show toast only once per recording session
+          if (!recordingToastShownRef.current) {
+            recordingToastShownRef.current = true;
+            show(t("The-recording-is-started"), "info");
+          }
 
-            // Update recording states
-            setStartRecordingState(false);
-            setPauseRecordingState(true);
-            setResumeRecordingState(false);
-            setStopRecordingState(false);
+          // Update recording states
+          setStartRecordingState(false);
+          setPauseRecordingState(true);
+          setResumeRecordingState(false);
+          setStopRecordingState(false);
 
-            break;
+          break;
 
-          case "RecordingStopMsgFromIframe":
-            recordingToastShownRef.current = false;
-            // Recording has actually stopped — reflect that in the UI state.
-            // Previously this case never updated these flags, so the badge
-            // stayed frozen at whatever it last was (e.g. still showing
-            // "Recording..." after a host-transferred user's stale state).
-            setStartRecordingState(true);
-            setPauseRecordingState(false);
-            setResumeRecordingState(false);
-            setStopRecordingState(false);
-            break;
+        case "RecordingStopMsgFromIframe":
+          recordingToastShownRef.current = false;
+          // Recording has actually stopped — reflect that in the UI state.
+          // Previously this case never updated these flags, so the badge
+          // stayed frozen at whatever it last was (e.g. still showing
+          // "Recording..." after a host-transferred user's stale state).
+          setStartRecordingState(true);
+          setPauseRecordingState(false);
+          setResumeRecordingState(false);
+          setStopRecordingState(false);
+          break;
 
-          case "RecordingPauseMsgFromIframe":
-            console.log("recording Pause");
-            // Recording is now paused — show the "Recording Paused" /
-            // Resume state. (Same gap as above: this case never updated the
-            // state flags before.)
-            setStartRecordingState(false);
-            setPauseRecordingState(false);
-            setResumeRecordingState(true);
-            setStopRecordingState(false);
-            break;
+        case "RecordingPauseMsgFromIframe":
+          console.log("recording Pause");
+          // Recording is now paused — show the "Recording Paused" /
+          // Resume state. (Same gap as above: this case never updated the
+          // state flags before.)
+          setStartRecordingState(false);
+          setPauseRecordingState(false);
+          setResumeRecordingState(true);
+          setStopRecordingState(false);
+          break;
 
-          case "RecordingResumeMsgFromIframe":
-            console.log("recording Resume");
-            // Recording is active again after a resume — same end state as
-            // a fresh start (Pause/Stop controls visible).
-            setStartRecordingState(false);
-            setPauseRecordingState(true);
-            setResumeRecordingState(false);
-            setStopRecordingState(false);
-            break;
+        case "RecordingResumeMsgFromIframe":
+          console.log("recording Resume");
+          // Recording is active again after a resume — same end state as
+          // a fresh start (Pause/Stop controls visible).
+          setStartRecordingState(false);
+          setPauseRecordingState(true);
+          setResumeRecordingState(false);
+          setStopRecordingState(false);
+          break;
 
-          case "HostTransferEvent":
-            console.log("HostTransferEvent");
+        case "HostTransferEvent":
+          console.log("HostTransferEvent");
 
-            break;
+          break;
 
-          default:
-            console.log(
-              "handlePostMessage share screen Unknown message received:",
-              event.data,
-            );
-        }
-      } else {
+        default:
+          console.log(
+            "handlePostMessage share screen Unknown message received:",
+            event.data,
+          );
       }
-    };
+    } else {
+    }
+  };
 
-    // Attach the event listener
+  // Attach the iframe message listener once; it delegates to the latest handler
+  useEffect(() => {
+    sessionStorage.removeItem("isWaiting");
+    const messageHandler = (event) => iframeMessageHandlerRef.current?.(event);
+
     window.addEventListener("message", messageHandler);
 
     // Clean up the event listener when the component unmounts

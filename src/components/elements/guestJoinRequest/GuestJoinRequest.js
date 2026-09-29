@@ -25,9 +25,8 @@ const GuestJoinRequest = () => {
   let roomID = localStorage.getItem("newRoomId");
 
   const [waitingOnParticipant, setWaitingOnParticipant] = useState([]);
-  const { GuestVideoReducer, videoFeatureReducer } = useSelector(
-    (state) => state,
-  );
+  const GuestVideoReducer = useSelector((state) => state.GuestVideoReducer);
+  const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
 
   const [loadingAdmit, setLoadingAdmit] = useState(false);
   const [loadingDeny, setLoadingDeny] = useState(false);
