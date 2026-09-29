@@ -1817,10 +1817,20 @@ const VideoCallNormalHeader = ({
 
   const raiseUnRaiseForParticipant = (flag) => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      const RoomID = localStorage.getItem("groupCallRoomId");
-      const UID = isCaller
-        ? localStorage.getItem("callerGuid")
-        : localStorage.getItem("receipentGuid");
+      // Uses the component-level RoomID / UID (resolved near the top of this
+      // component), exactly like muteUnMuteForHost and videoHideUnHideForHost.
+      //
+      // This used to re-declare both here from the group-call-only keys
+      // `groupCallRoomId` / `callerGuid` / `receipentGuid`, shadowing the
+      // correct values. Those keys are written only when CallTypeID === 2
+      // (VideoMain_actions initiate/response), so in a MEETING video call they
+      // were never set: getItem() returned null and String(null) sent the
+      // literal text "null" — {"RoomID":"null","UID":"null",...} — and the
+      // server could not match the participant.
+      //
+      // The resolved values cover every case: group call, presenter view,
+      // meeting host (newRoomId + isGuid) and meeting participant
+      // (participantRoomId + participantUID).
       dispatch(
         raiseUnRaisedHandMainApi(navigate, t, {
           RoomID: String(RoomID),
