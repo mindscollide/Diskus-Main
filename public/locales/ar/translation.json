@@ -2936,5 +2936,8 @@
   "You-haven't-started-any-private-conversations-yet": "لم تبدأ أي محادثات خاصة بعد",
   "You-haven't-starred-any-messages-yet-mark-important-messages-for-quick-access": "لم تميّز أي رسائل بعد. ميّز الرسائل المهمة للوصول السريع",
   "No-private-groups-created-create-a-group-and-chat-with-multiple-friends-at-once": "لم يتم إنشاء أي مجموعات خاصة. أنشئ مجموعة وتحدث مع عدة أصدقاء في وقت واحد",
-    "Recording": "التسجيل"
+  "Recording": "التسجيل",
+  "The-meeting-has-not-started-yet": "لم يبدأ الاجتماع بعد",
+
+  "Waiting-for-organizer-to-start-the-meeting-please-try-again-shortly": "في انتظار بدء الاجتماع من قِبل المنظم، يُرجى المحاولة مرة أخرى بعد قليل"
 }

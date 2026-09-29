@@ -267,6 +267,7 @@ import {
 } from "../../store/actions/ComplainSettingActions";
 import { useComplianceContext } from "../../context/ComplianceContext";
 import { HIDE_VIDEO } from "../../commen/featureFlags";
+import VIdeoCallNotStarted from "../../components/layout/talk/GuestVideo/VIdeoCallNotStarted";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -5766,6 +5767,7 @@ const Dashboard = () => {
                 }>
                 <>
                   <Outlet />
+
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
