@@ -87,6 +87,7 @@ const CommitteeDraftMeetings = () => {
     setCurrentPageDraftCommitteeMeeting,
     currentLengthDraftCommitteeMeeting,
     setCurrentLengthDraftCommitteeMeeting,
+    setCurrentCommitteeMeetingTabActive,
   } = useCommitteeContext();
 
   // ─── Context ───
@@ -195,7 +196,7 @@ const CommitteeDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          { setEditorRole },
+          { setEditorRole, setCurrentCommitteeMeetingTabActive },
         ),
       );
     };

@@ -60,6 +60,8 @@ import {
 } from "../../../../../store/actions/NewMeeting2.actions";
 
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 
@@ -316,6 +318,12 @@ const Agenda = () => {
     setGoBackCancelModal,
     setEditorRole,
   } = useContext(MeetingContext);
+  // This tab is shared across Main Meeting, Committee, and Group — only one
+  // of these contexts is actually "live" for any given render, but reading
+  // both here is harmless. Threaded through to the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
 
   /* --------------------------------------------------------------------------
    * Local state
@@ -578,6 +586,8 @@ const Agenda = () => {
     await dispatch(
       AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {
         setEditorRole,
+        setCurrentCommitteeMeetingTabActive,
+        setCurrentGroupMeetingTabActive,
       }),
     );
   };

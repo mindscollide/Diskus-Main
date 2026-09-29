@@ -36,6 +36,8 @@ import { Tooltip } from "antd";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import store from "../../../../../store/store";
 import { setCreateEditTab } from "../../../../../store/actions/ModalStates_actions";
 import {
@@ -65,6 +67,11 @@ const Participants = () => {
   const [isPublishedState, setIsPublishedState] = useState(false);
   const { editorRole, setEditorRole, setGoBackCancelModal } =
     useContext(MeetingContext);
+  // Shared across Main Meeting, Committee, and Group — only one context is
+  // ever actually "live"; threaded into the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
   const [show, SnackBar] = useSnackbar();
@@ -104,6 +111,8 @@ const Participants = () => {
         "publishMeetingFromParticipant",
         {
           setEditorRole, // shorthand if variable name matches key
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
         },
       ),
     );

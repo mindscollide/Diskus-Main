@@ -167,6 +167,10 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                       ),
                     );
                     (async () => {
+                      // Force the tab to Published rather than trusting
+                      // whatever tab was active before the publish action
+                      // ran — the meeting no longer belongs anywhere else.
+                      localStorage.setItem("MeetingCurrentView", 1);
                       const currentView =
                         localStorage.getItem("MeetingCurrentView");
                       const meetingpageRow =
@@ -260,6 +264,10 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                         role: "",
                         isPrimaryOrganizer: false,
                       });
+                    // Publishing moves the meeting onto the Published tab —
+                    // switch to it so the user lands where the meeting now
+                    // actually lives.
+                    object.setCurrentCommitteeMeetingTabActive?.(1);
                     // let searchData = {
                     //   CommitteeID: Number(committeeInfo.committeeID),
                     //   Date: "",
@@ -317,6 +325,10 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                         role: "",
                         isPrimaryOrganizer: false,
                       });
+                    // Publishing moves the meeting onto the Published tab —
+                    // switch to it so the user lands where the meeting now
+                    // actually lives.
+                    object.setCurrentGroupMeetingTabActive?.(1);
                     break;
                   case "saveProposedMeeting":
                     dispatch(
@@ -2513,7 +2525,15 @@ export const UpdateMeetingStatusApi = (
                             role: "",
                             isPrimaryOrganizer: false,
                           });
+                        const {
+                          setCurrentCommitteeMeetingTabActive,
+                          setCurrentGroupMeetingTabActive,
+                        } = object;
                         if (committeeInfo !== null) {
+                          // Publishing moves the meeting onto the
+                          // Published tab — switch to it so the user lands
+                          // where the meeting now actually lives.
+                          setCurrentCommitteeMeetingTabActive?.(1);
                           // let searchData = {
                           //   CommitteeID: Number(committeeInfo.committeeID),
                           //   Date: "",
@@ -2530,6 +2550,7 @@ export const UpdateMeetingStatusApi = (
                           return;
                         }
                         if (groupInfo !== null) {
+                          setCurrentGroupMeetingTabActive?.(1);
                           // let searchData = {
                           //   GroupID: Number(groupInfo.groupID),
                           //   Date: "",
@@ -2545,6 +2566,10 @@ export const UpdateMeetingStatusApi = (
                           // );
                           return;
                         }
+                        // Same for Main Meeting — force the tab to
+                        // Published rather than trusting whatever tab was
+                        // active before the publish action ran.
+                        localStorage.setItem("MeetingCurrentView", 1);
                         const currentView =
                           localStorage.getItem("MeetingCurrentView");
                         const meetingpageRow =
@@ -3981,7 +4006,21 @@ export const scheduleMeetingFromProposedMeetingApi = (
       ""
                 ),
               );
-              const { setEditorRole } = object;
+              // Scheduling a proposed meeting moves it to Draft status —
+              // switch the list's active tab now so that whenever the user
+              // exits back out of the meeting editor, they land on Draft
+              // (where the meeting now actually lives) instead of Proposed.
+              // Main Meeting's active tab lives in localStorage; Committee/
+              // Group's lives in their own React context, so both setters
+              // are threaded through here (only one is ever actually set).
+              localStorage.setItem("MeetingCurrentView", 3);
+              const {
+                setEditorRole,
+                setCurrentCommitteeMeetingTabActive,
+                setCurrentGroupMeetingTabActive,
+              } = object;
+              setCurrentCommitteeMeetingTabActive?.(3);
+              setCurrentGroupMeetingTabActive?.(3);
               await dispatch(
                 getMeetingDetailsByMeetingIdApi(
                   navigate,

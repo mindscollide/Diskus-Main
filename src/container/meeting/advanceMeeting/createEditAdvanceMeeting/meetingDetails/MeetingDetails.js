@@ -56,6 +56,8 @@ import {
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
 import { HIDE_VIDEO } from "../../../../../commen/featureFlags";
 
@@ -73,6 +75,11 @@ const MeetingDetails = () => {
     editorRole,
     setEditorRole,
   } = useContext(MeetingContext);
+  // Shared across Main Meeting, Committee, and Group — only one context is
+  // ever actually "live"; threaded into the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
 
   // const { isAdvanceMeetingRoute, setIsMeetingCreateOrEdit } =
   //   useNewMeetingContext();
@@ -432,7 +439,11 @@ const MeetingDetails = () => {
       };
 
       dispatch(
-        SaveMeetingDetailsApi(navigate, t, data, context, { setEditorRole }),
+        SaveMeetingDetailsApi(navigate, t, data, context, {
+          setEditorRole,
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        }),
       );
     } else {
       seterror(true);
@@ -518,7 +529,11 @@ const MeetingDetails = () => {
         },
       };
       dispatch(
-        SaveMeetingDetailsApi(navigate, t, data, context, { setEditorRole }),
+        SaveMeetingDetailsApi(navigate, t, data, context, {
+          setEditorRole,
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        }),
       );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
