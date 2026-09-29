@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { videoOutgoingCallFlag } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { playSoundWithAutoplayRetry } from "../../../../../commen/functions/playSound";
 
 const VideoOutgoing = () => {
   const { t } = useTranslation();
@@ -23,13 +24,11 @@ const VideoOutgoing = () => {
   let currentCallType = Number(localStorage.getItem("CallType"));
 
   useEffect(() => {
-    // Create the audio element
-    const audioElement = new Audio("/CallRing.wav");
-
-    audioElement.loop = true;
-
-    // Play the audio when the component mounts
-    audioElement.play();
+    // Play the ringback tone; retries on the next user interaction if the
+    // browser blocks autoplay (Safari) instead of an unhandled rejection
+    const stopRingtone = playSoundWithAutoplayRetry("/CallRing.wav", {
+      loop: true,
+    });
     console.log("busyCall");
 
     // const timer = setTimeout(() => {
@@ -42,9 +41,8 @@ const VideoOutgoing = () => {
 
     return () => {
       console.log("busyCall");
-      audioElement.pause();
+      stopRingtone();
       dispatch(videoOutgoingCallFlag(false));
-      audioElement.currentTime = 0;
       // clearTimeout(timer)
     };
   }, []);

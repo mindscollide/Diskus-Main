@@ -52,35 +52,49 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
 
+  // Latest streams for the unmount cleanup (state in a closure would be stale)
+  const streamRef = useRef(null);
+  const streamAudioRef = useRef(null);
   useEffect(() => {
-    // Enable webcam and microphone when isWebCamEnabled is true
+    streamRef.current = stream;
+  }, [stream]);
+  useEffect(() => {
+    streamAudioRef.current = streamAudio;
+  }, [streamAudio]);
+
+  useEffect(() => {
+    // Enable webcam and microphone once on mount; later toggles are handled by
+    // toggleVideo / toggleAudio (re-running this leaked a second stream).
+    let cancelled = false;
     const enableWebCamAndMic = async () => {
       try {
-        if (!isWebCamEnabled) {
-          // Access video and audio streams
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
+        // Access video and audio streams
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        if (cancelled) {
+          // Screen already closed before permission resolved
+          mediaStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
 
-          // Set up video playback
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            videoRef.current.muted = true;
-            await videoRef.current.play();
-          }
+        // Set up video playback. A rejected play() (e.g. Safari autoplay
+        // policy) must not drop the stream, or it would never be released.
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
 
-          localStorage.setItem("isWebCamEnabled", false);
-          setStream(stream); // Store the video and audio stream
+        localStorage.setItem("isWebCamEnabled", false);
+        setStream(mediaStream); // Store the video and audio stream
 
-          // Handle microphone setup
-          const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-          if (streamAudio) {
-            // Stop any existing audio tracks
-            streamAudio.getTracks().forEach((track) => track.stop());
-          }
-          localStorage.setItem("isMicEnabled", false);
-          setStreamAudio(audioStream);
+        // Handle microphone setup
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        localStorage.setItem("isMicEnabled", false);
+        if (audioTrack) {
+          setStreamAudio(new MediaStream([audioTrack]));
         }
       } catch (error) {
         alert(`Error accessing media devices: ${error.message}`);
@@ -89,25 +103,16 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
 
     enableWebCamAndMic();
 
-    // Cleanup on unmount or when isWebCamEnabled changes
+    // Release the camera/mic on unmount so the call iframe can use them
     return () => {
-      if (stream) {
-        stream.getVideoTracks().forEach((track) => track.stop());
-
-        // Clear the stream from state
-        setStream(null);
-
-        // Clear the video source
-        if (videoRef.current) {
-          videoRef.current.srcObject = null;
-        }
-      }
-      if (streamAudio) {
-        streamAudio.getAudioTracks().forEach((track) => track.stop());
-        setStreamAudio(null);
+      cancelled = true;
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamAudioRef.current?.getTracks().forEach((track) => track.stop());
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
       }
     };
-  }, [isWebCamEnabled]);
+  }, []);
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
     
@@ -300,7 +305,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
                         }}
                       >
                         <video
-                          ref={videoRef}
+                          ref={videoRef} playsInline muted
                           className={
                             isNormalPanel
                               ? "video-max-Participant-new"
