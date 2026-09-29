@@ -33,6 +33,7 @@ import {
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { findMissingVideoIds } from "../../commen/functions/videoCallIds";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -567,6 +568,23 @@ const raiseUnRaisedFail = (message) => {
 
 const raiseUnRaisedHandMainApi = (navigate, t, data) => {
   return (dispatch) => {
+    // Refuse to send a request the server cannot match to anyone.
+    //
+    // Callers build RoomID / UID with String(localStorage.getItem(...)), and a
+    // missing key becomes the TEXT "null" — so a lost ID used to go out as
+    // {"RoomID":"null","UID":"null",...} with no error anywhere, and the hand
+    // simply never raised. Failing here names the missing field instead.
+    // This covers raise AND lower (IsHandRaised true / false) and every caller.
+    const missingIds = findMissingVideoIds(data);
+    if (missingIds.length > 0) {
+      console.error(
+        `src/store/actions/Guest_Video.js: RaiseUnRaiseHand not sent — missing ${missingIds.join(" and ")}`,
+        data,
+      );
+      dispatch(raiseUnRaisedFail(t("Invalid-data")));
+      return;
+    }
+
     dispatch(raiseUnRaisedInit());
     let form = new FormData();
     form.append("RequestMethod", raiseUnRaisedHand.RequestMethod);
