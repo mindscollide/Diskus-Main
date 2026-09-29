@@ -93,6 +93,7 @@ import {
   UpdateMeetingStatusApi,
 } from "../../../store/actions/NewMeeting2.actions";
 import { useMeetingListActions } from "@/container/meeting/commonComponents/useMeetingListActions";
+import store from "@/store/store";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -262,9 +263,30 @@ const PublishedMeetingList = () => {
     if (data.talkGroupID !== 0) {
       let allChatMessages =
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
-      const foundRecord =
+      let foundRecord =
         Array.isArray(allChatMessages) &&
         allChatMessages.find((item) => item.id === data.talkGroupID);
+
+      // The chats reducer can be stale (e.g. a chat group created after it
+      // was last loaded) — refetch from the API before concluding the chat
+      // doesn't exist, instead of only ever trusting the cached reducer.
+      if (!foundRecord) {
+        await dispatch(
+          GetAllUserChats(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        const refreshedAllChatMessages =
+          store.getState().talkStateData.AllUserChats.AllUserChatsData
+            .allMessages;
+        foundRecord =
+          Array.isArray(refreshedAllChatMessages) &&
+          refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+      }
+
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
         localStorage.setItem("activeOtoChatID", data.talkGroupID);
