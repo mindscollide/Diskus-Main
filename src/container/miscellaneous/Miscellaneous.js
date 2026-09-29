@@ -6,6 +6,7 @@ import { Row, Col, Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { youTubeEmbedUrl } from "../../commen/functions/youtube";
 const CustomMiscellaneous = () => {
   const fAQsAllData = useSelector((state) => state.fAQsReducer.AllFAQsData);
   const { t } = useTranslation();
@@ -33,7 +34,11 @@ const CustomMiscellaneous = () => {
     <>
       <section className='faqs_container'>
         {fAQsStateData.map((data, index) => {
-          const videoId = data.videoLinkURL.split("v=")[1]?.split("&")[0];
+          // videoLinkURL may hold a bare id OR a full watch/youtu.be URL. It used
+          // to be dropped straight into `embed/${...}`, so a full URL became
+          // `embed/https://…watch?v=…` and the player showed "An error occurred…
+          // (Playback ID …)". null means no usable id, so no player is rendered.
+          const embedUrl = youTubeEmbedUrl(data.videoLinkURL);
           return (
             <>
               <Row className='mb-3' key={data.key}>
@@ -66,17 +71,24 @@ const CustomMiscellaneous = () => {
 
                         <Row>
                           <Col lg={12} md={12} sm={12} className='p-5'>
-                            {data.videoLinkURL !== "" ? (
+                            {embedUrl ? (
                               <div>
                                 <div className='ratio ratio-16x9'>
                                   <iframe
                                     width='560'
                                     height='315'
-                                    src={`https://www.youtube.com/embed/${data.videoLinkURL}`}
+                                    src={embedUrl}
                                     title='YouTube video player'
-                                    frameborder='0'
-                                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                                    allowfullscreen></iframe>
+                                    frameBorder='0'
+                                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                                    // YouTube's own embed code now includes this.
+                                    // It makes the iframe send the page's origin as
+                                    // the Referer even if the host page or server
+                                    // sets a stricter Referrer-Policy (e.g.
+                                    // no-referrer), which YouTube rejects with the
+                                    // same generic "An error occurred" playback error.
+                                    referrerPolicy='strict-origin-when-cross-origin'
+                                    allowFullScreen></iframe>
                                 </div>
                               </div>
                             ) : null}
