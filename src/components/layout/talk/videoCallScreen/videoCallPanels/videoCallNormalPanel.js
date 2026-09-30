@@ -238,6 +238,9 @@ const VideoPanelNormal = () => {
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost,
   );
+  // Live value for the iframe message listener (registered once, stale closure otherwise).
+  const videoControlRef = useRef(videoControl);
+  videoControlRef.current = videoControl;
 
   const participantsVisible = useSelector(
     (state) => state.videoFeatureReducer.participantsVisible,
