@@ -247,7 +247,40 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
             ) {
               //  Meeting-Not-started-yet"
               await dispatch(validateEncryptGuestVideoFail(""));
-      
+
+              dispatch(guestVideoNavigationScreen(6));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_06".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-Published-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
+              dispatch(guestVideoNavigationScreen(7));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_07".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-started-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
+              dispatch(guestVideoNavigationScreen(4));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_08".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-started-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
               dispatch(guestVideoNavigationScreen(6));
             }
           } else {

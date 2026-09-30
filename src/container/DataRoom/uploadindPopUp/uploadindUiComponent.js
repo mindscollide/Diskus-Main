@@ -1,6 +1,6 @@
 import { Progress, Space } from "antd";
 import { Col, Row } from "react-bootstrap";
-import styles from "../DataRoom.module.css";
+import styles from "./uploadindUiComponent.module.css";
 import chevdown from "../../../assets/images/chevron_down_white.svg";
 import chevronUp from "../../../assets/images/chevron_up.svg";
 import { CircularProgressbar } from "react-circular-progressbar";
@@ -185,9 +185,15 @@ const UploadindUiComponent = ({
                                     width={20}
                                     alt=''
                                   />
-                                  <span> {data.FolderName}</span>
+                                  <span className={styles["folderUploadName"]}>
+                                    {" "}
+                                    {data.FolderName}
+                                  </span>
                                   {data.UploadCancel ? null : (
-                                    <span>
+                                    <span
+                                      className={
+                                        styles["folderUpload_attachments"]
+                                      }>
                                       {`${formatNumber(data.UploadedAttachments)} ${t("Of")} ${formatNumber(
                                         data.FileList.length,
                                       )}`}
@@ -321,8 +327,14 @@ const UploadindUiComponent = ({
                                   width={20}
                                   alt=''
                                 />
-                                <span> {data.FolderName}</span>
-                                <span>
+                                <span className={styles["folderUploadName"]}>
+                                  {" "}
+                                  {data.FolderName}
+                                </span>
+                                <span
+                                  className={
+                                    styles["folderUpload_attachments"]
+                                  }>
                                   {`${formatNumber(data.UploadedAttachments)}  ${t("Of")}  ${formatNumber(
                                     data.FileList.length,
                                   )}  `}{" "}

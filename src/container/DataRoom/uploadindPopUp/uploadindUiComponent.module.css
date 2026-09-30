@@ -1,0 +1,149 @@
+body[dir="rtl"] .Back_ground_For_uploader_active {
+  width: 425px !important;
+  height: 44px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
+  z-index: 1 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  left: 90px;
+}
+
+.Back_ground_For_uploader_active {
+  width: 425px !important;
+  height: 44px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
+  z-index: 1 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: 90px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Back_ground_For_uploader_folder {
+  width: 425px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
+  z-index: 999999 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: 90px !important;
+  border: 1px solid #e1e1e1 !important;
+  height: auto !important;
+}
+body[dir="rtl"] .Back_ground_For_uploader_folder {
+  width: 425px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
+  z-index: 1 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  height: auto !important;
+  left: 90px;
+}
+
+.Blue_Strip {
+  width: 425px !important;
+  height: 43px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  background: #6172d6;
+  z-index: 1 !important;
+}
+
+.Uploading {
+  font-size: 12px !important;
+  color: #fff;
+  font-weight: 600;
+}
+
+.Progress_bar {
+  color: #fff !important;
+}
+.progress_bar {
+  font-size: 0px !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Scroller_bar_of_BarUploder_folder {
+  max-height: 16.8vh !important;
+  overflow-x: hidden !important;
+  background-color: #fff !important;
+  padding: 10px 0px !important;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in-out 0.3s;
+  overflow-y: auto;
+  display: block;
+}
+
+.showUploadBar:hover .crossIcon {
+  display: block !important;
+}
+.showUploadBar:hover .folderProgress {
+  display: none !important;
+}
+
+.showUploadBarUploaded-file {
+  height: 35px !important;
+}
+.showUploadBarUploaded-file:hover .crossIcon-file {
+  display: block !important;
+}
+
+.name_of_life_in_Bar {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-weight: 600;
+}
+
+.GreentickIcon_forfile {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.crossIcon-file {
+  display: none !important;
+  cursor: pointer !important;
+}
+.showUploadBarUploaded-file {
+  height: 35px !important;
+}
+.showUploadBarUploaded-file:hover .crossIcon-file {
+  display: block !important;
+}
+
+.folderUploadName{
+    max-width: 195px !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.folderUpload_attachments{
+    min-width: 60px !important;
+    white-space: nowrap;
+}
+.folderProgress {
+  width: 20% !important;
+}

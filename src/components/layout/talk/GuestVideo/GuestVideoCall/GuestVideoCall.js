@@ -34,6 +34,7 @@ import {
 } from "../../../../../store/actions/VideoFeature_actions";
 import GuestRemoveByHost from "../GuestRemoveByHost/GuestRemoveByHost";
 import VideoCallNotStarteded from "../VIdeoCallNotStarted";
+import VideoCallNotPublishedYet from "../VIdeoCallNotPublishYet";
 
 /**
  * @component GuestVideoCall
@@ -439,6 +440,8 @@ const GuestVideoCall = () => {
         </>
       ) : guestVideoNavigationData === 6 ? (
           <VideoCallNotStarteded />
+      ) : guestVideoNavigationData === 7 ? (
+        <VideoCallNotPublishedYet />
       ) : null}
     </>
   );
