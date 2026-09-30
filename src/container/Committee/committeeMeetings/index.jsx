@@ -78,9 +78,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     // };
     // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
 
-    return () => {
-      setCurrentCommitteeMeetingTabActive(1);
-    };
+    // Resetting the tab here on every unmount was too broad: Committee.js
+    // swaps its whole render tree to CreateEditAdvanceMeeting/ViewMeetingModal/
+    // ProposedNewMeeting while those flows are active, which unmounts this
+    // component too — so creating/scheduling/publishing a proposed meeting
+    // reset the tab to Published before this component even remounted.
+    // Committee.js's own top-level unmount cleanup already resets the tab
+    // when actually leaving the Committee module, so this isn't needed here.
   }, []);
 
   const handleClickTabNavigate = (value) => {

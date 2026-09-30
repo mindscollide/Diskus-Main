@@ -1974,32 +1974,28 @@ const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
                   dispatch(setCreateEditTab("organizers"));
                   break;
 
+                case "saveProposedMeetingFromGroup":
+                  // Refetch the Proposed list so the meeting just created/
+                  // updated actually shows up — the active tab was already
+                  // switched to Proposed (2) by the caller before this ran.
+                  dispatch(
+                    getMeetingbyGroupIdApi(navigate, t, {
+                      GroupID: Number(Data.GroupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(localStorage.getItem("userID")),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings: false,
+                      ProposedMeetings: true,
+                    }),
+                  );
+                  break;
+
                 default:
                   break;
               }
-              // let ViewGroupID = localStorage.getItem("ViewGroupID");
-              // let currentUserId = localStorage.getItem("userID");
-
-              // let searchData = {
-              //   GroupID: Number(ViewGroupID),
-              //   Date: "",
-              //   Title: "",
-              //   HostName: "",
-              //   UserID: Number(currentUserId),
-              //   PageNumber: 1,
-              //   Length: 50,
-              //   PublishedMeetings:
-              //     localStorage.getItem("MeetingCurrentView") &&
-              //     Number(localStorage.getItem("MeetingCurrentView")) === 1
-              //       ? true
-              //       : false,
-              //   ProposedMeetings:
-              //     localStorage.getItem("MeetingCurrentView") &&
-              //     Number(localStorage.getItem("MeetingCurrentView")) === 2
-              //       ? true
-              //       : false,
-              // };
-              // dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
