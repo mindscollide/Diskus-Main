@@ -1372,12 +1372,19 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-              let newMeetting = {
-                ...data.payload.meeting,
-                talkGroupID: data.payload.talkGroupID,
-              };
-              dispatch(meetingStatusPublishedMqtt(newMeetting));
-              setNotificationID(id);
+
+              if (data.payload.standardMeetingType === 3) {
+                dispatch(createCommitteeMeeting(data.payload));
+              } else if (data.payload.standardMeetingType === 4) {
+                dispatch(createGroupMeeting(data.payload));
+              } else {
+                let newMeetting = {
+                  ...data.payload.meeting,
+                  talkGroupID: data.payload.talkGroupID,
+                };
+                dispatch(meetingStatusPublishedMqtt(newMeetting));
+                setNotificationID(id);
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "AGENDA_VOTING_STARTED".toLowerCase()
@@ -5767,7 +5774,6 @@ const Dashboard = () => {
                 }>
                 <>
                   <Outlet />
-
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (

@@ -62,25 +62,25 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [talkGroupID, setTalkGroupID] = useState(0);
 
-  
+
 
   useEffect(() => {
-    let searchData = {
-      CommitteeID: Number(ViewCommitteeID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
-      ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
-    };
-    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
-
-    // return () => {
-    //   setCurrentCommitteeMeetingTabActive(1);
+    // let searchData = {
+    //   CommitteeID: Number(ViewCommitteeID),
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: 1,
+    //   Length: 30,
+    //   PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
+    //   ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
     // };
+    // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      setCurrentCommitteeMeetingTabActive(1);
+    };
   }, []);
 
   const handleClickTabNavigate = (value) => {
@@ -198,7 +198,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           {committeeStatus === 3 && (
             <ReactBootstrapDropdown
               className='SceduleMeetingButton d-inline-block position-relative ms-2'
-              // onClick={eventClickHandler}
+            // onClick={eventClickHandler}
             >
               <ReactBootstrapDropdown.Toggle title={t("Schedule-a-meeting")}>
                 <Row>

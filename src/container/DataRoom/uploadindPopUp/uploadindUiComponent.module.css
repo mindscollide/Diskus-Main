@@ -80,7 +80,8 @@ body[dir="rtl"] .Back_ground_For_uploader_folder {
 .progress_bar {
   font-size: 0px !important;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
 .Scroller_bar_of_BarUploder_folder {
@@ -97,6 +98,10 @@ body[dir="rtl"] .Back_ground_For_uploader_folder {
   display: block;
 }
 
+.crossIcon {
+  display: none !important;
+  cursor: pointer !important;
+}
 .showUploadBar:hover .crossIcon {
   display: block !important;
 }
