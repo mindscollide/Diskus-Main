@@ -541,6 +541,16 @@ const presentationJoinFlowFlag = (response) => {
   };
 };
 
+// CR(0012249) — see action_types.js for why this is separate from
+// presenterViewFlag. response is the meeting ID a presentation is
+// currently active for (or null when none is active).
+const activePresentationMeetingID = (response) => {
+  return {
+    type: actions.ACTIVE_PRESENTATION_MEETING_ID,
+    response: response,
+  };
+};
+
 // For Denied Max Patrticipant Video Compnent
 const maxParticipantVideoDenied = (response) => {
   return {
@@ -3199,6 +3209,7 @@ export {
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
   presentationJoinFlowFlag,
+  activePresentationMeetingID,
   maxParticipantVideoDenied,
   maxParticipantVideoRemoved,
   participantListWaitingListMainApi,

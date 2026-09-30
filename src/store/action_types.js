@@ -3276,6 +3276,16 @@ export const MAX_PARTICIPANT_VIDEO_CALL_PANEL =
 // already dispatches/reads this component's other flags, so normal
 // meeting-video behavior is unchanged unless this is explicitly set.
 export const PRESENTATION_JOIN_FLOW_FLAG = "PRESENTATION_JOIN_FLOW_FLAG";
+// CR(0012249) — global, per-meeting "is a presentation currently active"
+// signal, independent of any individual participant's own join/admit
+// status. Set from MEETING_PRESENTATION_STARTED, cleared from
+// MEETING_PRESENTATION_STOPPED, for EVERY participant unconditionally —
+// unlike presenterViewFlag (which only becomes true once someone has
+// actually joined/hosted), this stays accurate for someone who hasn't
+// been admitted yet, or was rejected, so AgendaViewer can correctly show
+// "Join Presentation" instead of "Start Presentation" for them.
+export const ACTIVE_PRESENTATION_MEETING_ID =
+  "ACTIVE_PRESENTATION_MEETING_ID";
 export const NORMAL_PARTICIPANT_VIDEO_CALL_PANEL =
   "NORMAL_PARTICIPANT_VIDEO_CALL_PANEL";
 

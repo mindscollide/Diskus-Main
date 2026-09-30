@@ -165,6 +165,11 @@ const VideoNewParticipantList = () => {
   const presentationWaitingParticipants = useSelector(
     (s) => s.videoFeatureReducer.presentationWaitingParticipantsList,
   );
+  // CR(0012249) — presentation ended entirely; used below to clear the
+  // presenter-host's own "Participants" panel (everyone left).
+  const presentationStoppedData = useSelector(
+    (s) => s.videoFeatureReducer.presentationStoppedData,
+  );
 
   console.log(waitingParticipants, "waitingParticipantswaitingParticipants");
   const NormalizeVideoFlag = useSelector(
@@ -239,8 +244,22 @@ const VideoNewParticipantList = () => {
   // EFFECT: Sync participant list from Redux
   // FIX: original used Object.keys(array).length which is always > 0 for
   // arrays; replaced with Array.isArray + length check.
+  //
+  // CR(0012249): skipped in presenter-host context. getAllParticipantMain
+  // is fed by videoCallNormalPanel.js's call to getVideoCallParticipantsMainApi
+  // (the generic MEETING-VIDEO room roster) — that call also fires for a
+  // presenter-host, and its response isn't admit-gated the way the
+  // presentation flow requires (it can include someone who only sent a
+  // join request, never admitted). This effect used to unconditionally
+  // overwrite filteredParticipants with that generic roster every time it
+  // changed, silently undoing the presenter-specific admit/leave/stop
+  // effects below. In presenter-host context, those effects (driven by
+  // newJoinPresenterParticipant / leavePresenterParticipant, both properly
+  // gated to actual admits) are the sole source of truth instead.
   // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
+    if (presenterViewFlag && presenterViewHostFlag) return;
+
     if (Array.isArray(getAllParticipantMain) && getAllParticipantMain.length) {
       setFilteredParticipants(getAllParticipantMain);
     } else {
@@ -248,7 +267,20 @@ const VideoNewParticipantList = () => {
     }
     // Reset search whenever the underlying list changes
     setSearchValue("");
-  }, [getAllParticipantMain]);
+  }, [getAllParticipantMain, presenterViewFlag, presenterViewHostFlag]);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: CR(0012249) — starting to present. filteredParticipants may
+  // still hold whatever the regular-meeting-video roster effect above last
+  // set it to (from before presenting started) — clear it so the
+  // presenter's list starts empty and is only ever built up by actual
+  // presentation admits from here on.
+  // ─────────────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (presenterViewFlag && presenterViewHostFlag) {
+      setFilteredParticipants([]);
+    }
+  }, [presenterViewFlag, presenterViewHostFlag]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Remove a participant who left (presenter view only)
@@ -275,6 +307,19 @@ const VideoNewParticipantList = () => {
     presenterViewHostFlag,
     dispatch,
   ]);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: CR(0012249) — presentation ended entirely (MEETING_PRESENTATION_STOPPED).
+  // Everyone left, so clear the presenter-host's own "Participants" panel —
+  // without this, admitted attendees from before the stop stayed listed
+  // forever (nothing else ever clears filteredParticipants wholesale).
+  // ─────────────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!presentationStoppedData || !presenterViewFlag || !presenterViewHostFlag)
+      return;
+
+    setFilteredParticipants([]);
+  }, [presentationStoppedData, presenterViewFlag, presenterViewHostFlag]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Add / replace a participant who just joined (presenter view only)
@@ -1089,16 +1134,9 @@ const VideoNewParticipantList = () => {
                                 {t("Mic Disabled")}
                               </span>
                               <br />
-
                               <span className={styles["status-hidden"]}>
                                 {t("Video Hidden")}
                               </span>
-                              {/* CR(0012249) — presentation host can remove a
-                              participant (sends them back to the waiting
-                              room, doesn't disconnect them). Only the host
-                              gets this, unlike Mute/Hide-video above which
-                              any admitted presentation viewer can already
-                              do here today. */}
                               <br />
                               {isPresenterHostContext && (
                                 <span

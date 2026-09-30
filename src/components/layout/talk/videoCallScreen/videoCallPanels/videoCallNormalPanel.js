@@ -292,6 +292,7 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
+
   // Fetch the presentation roster ONCE, the moment a non-host viewer joins
   // a presentation. From then on, PRESENTATION_PARTICIPANT_JOINED /
   // PRESENTATION_PARTICIPANT_LEFT MQTT events keep the list in sync via

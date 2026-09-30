@@ -75,6 +75,9 @@ const initialState = {
   // maximizeParticipantVideoFlag etc. is unaffected until something
   // explicitly opts into presentation mode.
   isPresentationJoinFlow: false,
+  // CR(0012249) — see action_types.js ACTIVE_PRESENTATION_MEETING_ID for
+  // why this is separate from presenterViewFlag.
+  activePresentationMeetingID: null,
   normalParticipantVideoFlag: false,
   maxParticipantVideoDeniedFlag: false,
   maxParticipantVideoRemovedFlag: false,
@@ -888,6 +891,12 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         isPresentationJoinFlow: action.response,
+      };
+    }
+    case actions.ACTIVE_PRESENTATION_MEETING_ID: {
+      return {
+        ...state,
+        activePresentationMeetingID: action.response,
       };
     }
 

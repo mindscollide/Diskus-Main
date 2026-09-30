@@ -191,6 +191,17 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterMeetingId,
   );
 
+  // CR(0012249) — presenterViewFlag alone misses anyone who hasn't been
+  // admitted into the presentation yet (still waiting, or was rejected):
+  // for them it stays false even while a presentation is genuinely active,
+  // which showed "Start Presentation" instead of "Join Presentation".
+  // activePresentationMeetingID is set unconditionally for every
+  // participant on MEETING_PRESENTATION_STARTED/STOPPED (see Dashboard.js),
+  // independent of this user's own join status.
+  const activePresentationMeetingID = useSelector(
+    (state) => state.videoFeatureReducer.activePresentationMeetingID,
+  );
+
   // The meeting THIS AgendaViewer instance is displaying — same resolution
   // logic already used to fetch this page's own agenda data (see the
   // GetAdvanceMeetingAgendabyMeetingIDForView effect below), since the bare
@@ -205,7 +216,9 @@ const AgendaViewer = () => {
       : advanceMeetingModalID,
   );
   const isPresentationForThisMeeting =
-    presenterViewFlag && Number(presenterMeetingId) === thisPageMeetingID;
+    (presenterViewFlag && Number(presenterMeetingId) === thisPageMeetingID) ||
+    (activePresentationMeetingID !== null &&
+      Number(activePresentationMeetingID) === thisPageMeetingID);
 
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
 

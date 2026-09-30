@@ -67,6 +67,7 @@ import {
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
   presentationJoinFlowFlag,
+  activePresentationMeetingID,
   presenterLeaveParticipant,
   presentationParticipantJoinedMqtt,
   presentationParticipantLeftMqtt,
@@ -350,6 +351,8 @@ const Dashboard = () => {
   const maximizeParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
+
+  console.log(maximizeParticipantVideoFlag, "maximizeParticipantVideoFlag");
 
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag,
@@ -731,6 +734,18 @@ const Dashboard = () => {
               localStorage.getItem("acceptedRoomID"),
           );
           localStorage.setItem("presentationRoomID", presentationRoomID);
+          // CR(0012249): clear any stale approved/rejected/stopped capture
+          // from a PREVIOUS waiting-room cycle before reopening. Without
+          // this, maxParticipantVideoCallComponent's own stale-data
+          // effects (see its approved/rejected/stopped useEffects) can see
+          // leftover truthy data on this fresh mount and immediately
+          // close the panel again — confirmed via a reducer-level trace:
+          // this branch's maxParticipantVideoCallPanel(true) was followed
+          // by an unexplained (false) from that component's own mount
+          // effect.
+          dispatch(presentationJoinRequestApprovedMqtt(null));
+          dispatch(presentationJoinRequestRejectedMqtt(null));
+          dispatch(presentationStoppedMqtt(null));
           dispatch(presentationJoinFlowFlag(true));
           dispatch(maxParticipantVideoCallPanel(true));
         }
@@ -2100,12 +2115,20 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STARTED".toLowerCase()
             ) {
+              // CR(0012249): set unconditionally, for every participant,
+              // regardless of their own join/admit status — this is what
+              // AgendaViewer.js's isPresentationForThisMeeting now checks
+              // to show "Join Presentation" instead of "Start Presentation"
+              // for someone who hasn't been admitted (or was rejected) yet.
+              dispatch(activePresentationMeetingID(data.payload?.meetingID));
               startPresenterView(data.payload);
               // Dispatch action with all UIDs
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
             ) {
+              // CR(0012249): clear the same unconditional signal set above.
+              dispatch(activePresentationMeetingID(null));
               // stopPresenterView does the real cleanup for anyone who was
               // ALREADY in presenter view (resets raised hands, presenter
               // participants list, audio/video controls, etc.) — this call
@@ -2175,25 +2198,52 @@ const Dashboard = () => {
               // Exit the live presenter view the same way stop/leave does
               // elsewhere in this file, then reopen the waiting room so
               // they can request to join again.
-              dispatch(
-                removedFromPresentationToWaitingRoomMqtt(data.payload),
-              );
+              dispatch(removedFromPresentationToWaitingRoomMqtt(data.payload));
               dispatch(presenterViewGlobalState(0, false, false, false));
               localStorage.setItem(
                 "presentationRoomID",
                 String(
-                  data.payload?.roomID || localStorage.getItem("acceptedRoomID"),
+                  data.payload?.roomID ||
+                    localStorage.getItem("acceptedRoomID"),
                 ),
               );
+              localStorage.removeItem("isWebCamEnabled");
+              dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
+              dispatch(setVideoControlHost(false));
+              // CR(0012249): see the matching comment in startPresenterView
+              // — clear any stale approved/rejected/stopped capture before
+              // reopening the waiting room, so maxParticipantVideoCallComponent's
+              // fresh mount can't see leftover truthy data and immediately
+              // close itself again.
+              dispatch(presentationJoinRequestApprovedMqtt(null));
+              dispatch(presentationJoinRequestRejectedMqtt(null));
+              dispatch(presentationStoppedMqtt(null));
               dispatch(presentationJoinFlowFlag(true));
               dispatch(maxParticipantVideoCallPanel(true));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()
             ) {
               // CR(0012249): sent to the OTHER admitted participants so
-              // their roster drops the removed attendee.
+              // their roster drops the removed attendee. This only ever
+              // updated presentationParticipantsList (the regular-viewer
+              // roster) — the presenter-HOST's own "Participants" panel
+              // (VideoNewParticipantList.js's filteredParticipants, local
+              // component state) was never told, so a removed attendee
+              // stayed visible there forever. Reusing presenterLeaveParticipant
+              // (the same action PRESENTATION_PARTICIPANT_LEFT already
+              // uses) instead of inventing a new mechanism — that
+              // component's existing effect already filters by .uid.
               dispatch(participantRemovedFromPresentationMqtt(data.payload));
+              dispatch(
+                presenterLeaveParticipant({
+                  uid: data.payload?.guid ?? data.payload?.UID,
+                }),
+              );
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
@@ -4050,9 +4100,7 @@ const Dashboard = () => {
             !isMeetingVideo &&
             isThisUserTheUnansweredRecipient
           ) {
-            dispatch(
-              groupCallMissedByMeMQTT({ roomID: data.payload.roomID }),
-            );
+            dispatch(groupCallMissedByMeMQTT({ roomID: data.payload.roomID }));
           }
 
           console.log("mqtt");

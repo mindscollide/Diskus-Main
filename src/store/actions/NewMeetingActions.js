@@ -8182,10 +8182,6 @@ const LeaveMeetingVideo = (
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase(),
                 )
             ) {
-              // let meetingFlag = JSON.parse(
-              //   localStorage.getItem("isMeetingVideoHostCheck")
-              // );
-
               await dispatch(videoIconOrButtonState(false));
               await dispatch(participantVideoButtonState(false));
               await dispatch(maxParticipantVideoCallPanel(false));
@@ -8196,7 +8192,6 @@ const LeaveMeetingVideo = (
                 isHostId: 0,
                 isDashboardVideo: false,
               };
-              // dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost),

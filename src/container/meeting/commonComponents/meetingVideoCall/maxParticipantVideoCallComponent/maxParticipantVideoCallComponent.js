@@ -45,6 +45,9 @@ import {
   setVideoControlHost,
   joinPresenterViewMainApi,
   presentationJoinFlowFlag,
+  presentationJoinRequestApprovedMqtt,
+  presentationJoinRequestRejectedMqtt,
+  presentationStoppedMqtt,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
@@ -101,10 +104,6 @@ const ParticipantVideoCallComponent = () => {
     (state) => state.videoFeatureReducer.isPresentationJoinFlow
   );
 
-  // CR(0012249) — host's response to this participant's presentation join
-  // request, and the "host stopped the presentation" signal while still
-  // waiting. Only acted on when isPresentationJoinFlow is true, so none of
-  // this can affect the existing meeting-video waiting flow.
   const presentationJoinApprovedData = useSelector(
     (state) => state.videoFeatureReducer.presentationJoinApprovedData
   );
@@ -154,6 +153,17 @@ const ParticipantVideoCallComponent = () => {
     // Enable webcam and microphone when isWebCamEnabled is true
     const enableWebCamAndMic = async () => {
       try {
+        // CR(0012249): this is the meeting-video waiting room's own
+        // self-preview — it unconditionally calls getUserMedia to show you
+        // your own camera before joining. For a presentation join, mic/cam
+        // must never turn on at all (the toggleAudio/toggleVideo guards and
+        // the disabled-icon styling already block the BUTTONS, but this
+        // effect was still separately grabbing the camera regardless,
+        // which is why the camera light stayed on even with those buttons
+        // disabled).
+        if (isPresentationJoinFlow) {
+          return;
+        }
         if (!isWebCamEnabled) {
           // Access video and audio streams
           const stream = await navigator.mediaDevices.getUserMedia({
@@ -206,7 +216,7 @@ const ParticipantVideoCallComponent = () => {
         streamAudio.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [isWebCamEnabled]);
+  }, [isWebCamEnabled, isPresentationJoinFlow]);
 
   useEffect(() => {
     if (allNavigatorVideoStream === 1) {
@@ -268,15 +278,6 @@ const ParticipantVideoCallComponent = () => {
   // waiting-room panel so the actual presenter view can take over.
   useEffect(() => {
     if (isPresentationJoinFlow && presentationJoinApprovedData) {
-      // videoCallNormalHeader.js's shared RoomID/UID resolution for the
-      // in-call mute/hide/raise-hand controls checks callTypeID === 2
-      // (an active 1:1/group call) BEFORE it checks presenter-view state.
-      // A presentation participant is never in that kind of call by this
-      // point, but callTypeID is easy to have left stale in localStorage
-      // from an earlier 1:1/group call in the same session — which then
-      // makes those controls resolve UID from callerGuid/recepientGuid
-      // (never set here) instead of participantUID, sending null UID.
-      // Clearing it here (scoped to this presentation-join path only)
       // keeps that existing shared logic correct without touching it.
       localStorage.removeItem("callTypeID");
       let data = {
@@ -287,18 +288,18 @@ const ParticipantVideoCallComponent = () => {
       dispatch(presentationJoinFlowFlag(false));
       dispatch(maxParticipantVideoCallPanel(false));
       localStorage.removeItem("presentationRoomID");
+      dispatch(presentationJoinRequestApprovedMqtt(null));
     }
   }, [presentationJoinApprovedData]);
 
-  // CR(0012249) — host rejected this participant's presentation join
-  // request. Reuses the existing meeting-video "denied" screen/flag since
-  // no presentation-specific denied screen exists yet.
+  // CR(0012249) — host rejected this participant's presentation join request. 
   useEffect(() => {
     if (isPresentationJoinFlow && presentationJoinRejectedData) {
-      dispatch(presentationJoinFlowFlag(false));
-      dispatch(maxParticipantVideoCallPanel(false));
-      dispatch(maxParticipantVideoDenied(true));
-      localStorage.removeItem("presentationRoomID");
+      if (!presentationStoppedData) {
+        setIsWaiting(false);
+        setJoinButton(false);
+      }
+      dispatch(presentationJoinRequestRejectedMqtt(null));
     }
   }, [presentationJoinRejectedData]);
 
@@ -310,6 +311,9 @@ const ParticipantVideoCallComponent = () => {
       dispatch(presentationJoinFlowFlag(false));
       dispatch(maxParticipantVideoCallPanel(false));
       localStorage.removeItem("presentationRoomID");
+      // See the matching reset in the approved-effect above — same
+      // stale-remount reasoning applies here.
+      dispatch(presentationStoppedMqtt(null));
     }
   }, [presentationStoppedData]);
 
@@ -436,13 +440,6 @@ const ParticipantVideoCallComponent = () => {
   const joinNewApiVideoCallOnClick = async () => {
     setJoinButton(true);
 
-    // CR(0012249) — Presentation join request, kept fully separate from
-    // the existing meeting-video branch below (which is untouched).
-    // NOTE: RoomID's source (presentationRoomID) isn't wired yet — the
-    // next step (opening this component for a started Presentation) needs
-    // to set this localStorage key before the participant can click here,
-    // since JoinPresentationRequest requires the presentation's own
-    // RoomID, not the meeting's.
     if (isPresentationJoinFlow) {
       let presentationData = {
         RoomID: localStorage.getItem("presentationRoomID"),
