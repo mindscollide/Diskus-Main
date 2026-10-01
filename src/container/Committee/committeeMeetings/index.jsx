@@ -65,19 +65,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
 
 
   useEffect(() => {
-    // let searchData = {
-    //   CommitteeID: Number(ViewCommitteeID),
-    //   Date: "",
-    //   Title: "",
-    //   HostName: "",
-    //   UserID: Number(userID),
-    //   PageNumber: 1,
-    //   Length: 30,
-    //   PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
-    //   ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
-    // };
-    // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
-
     return () => {
       setCurrentCommitteeMeetingTabActive(1);
     };
@@ -152,7 +139,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       {isQuickMeetingUpdate && (
         <UpdateQuickMeeting
           // this is check from where its called 6 is from committee create
-          checkFlag={6}
+          checkFlag={9}
         />
       )}
       <Row>

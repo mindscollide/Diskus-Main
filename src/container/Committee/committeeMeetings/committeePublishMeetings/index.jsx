@@ -181,10 +181,6 @@ const CommitteePublishedMeetingList = () => {
     loadCommitteeMeetings,
   } = useCommitteeContext();
 
-  console.log(
-    committeePublishedMeetingData,
-    "committeePublishedMeetingDatacommitteePublishedMeetingData",
-  );
 
   const { setIsQuickMeetingView } = useNewMeetingContext();
 
@@ -240,7 +236,6 @@ const CommitteePublishedMeetingList = () => {
 
   const userID = localStorage.getItem("userID");
   const currentOrganizationId = localStorage.getItem("organizationID");
-
   const statusFilters = useMemo(
     () => [
       { value: "10", text: t("Active") },
@@ -251,7 +246,21 @@ const CommitteePublishedMeetingList = () => {
     ],
     [t],
   );
+  useEffect(() => {
 
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+  }, [])
   useEffect(() => {
     if (!validatencryptedstringState) return;
 
@@ -618,7 +627,7 @@ const CommitteePublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE 
+          status === STATUS.ACTIVE
           // || status === STATUS.NOT_CONDUCTED
         ) &&
         isOrganizer,

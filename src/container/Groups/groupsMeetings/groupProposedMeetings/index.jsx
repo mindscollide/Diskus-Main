@@ -96,6 +96,21 @@ const GroupProposedMeetings = () => {
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
 
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+  }, [])
   const handleClickActions = (record) => {
     if (record.isParticipant) {
       dispatch(
@@ -580,7 +595,7 @@ const GroupProposedMeetings = () => {
       }
     }
   }, [UserMeetPropoDatPoll]);
-  
+
   return (
     <>
       <Row>
